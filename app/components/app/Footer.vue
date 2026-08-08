@@ -6,7 +6,7 @@
 			<div class="flex flex-col lg:flex-row gap-12 mb-16">
 
 				<div class="lg:w-1/4 flex-shrink-0">
-					<NuxtLinkLocale to="/" :title="$t('app.name')" class="flex items-center gap-2 mb-6 group w-fit">
+					<NuxtLink to="/" :title="$t('app.name')" class="flex items-center gap-2 mb-6 group w-fit">
 						<img
 							src="/favicon.svg"
 							alt="JSON Toolbox Logo"
@@ -15,7 +15,7 @@
 						<span class="text-2xl font-black tracking-tight text-surface-900 dark:text-surface-100">
 							<span class="text-primary-600 dark:text-primary-400">JSON</span>Toolbox
 						</span>
-					</NuxtLinkLocale>
+					</NuxtLink>
 
 					<p class="text-sm text-surface-500 leading-relaxed mb-6 dark:text-surface-400">
 						{{ $t('app.description') || 'Free, client-side JSON tools for developers. Format, validate, convert — all in your browser.' }}
@@ -47,23 +47,23 @@
 						<div v-for="cat in categoriesWithSub" :key="cat.id">
 							<strong
 								class="mb-5 text-xs font-bold uppercase tracking-widest text-surface-900 dark:text-surface-100 flex items-center gap-2">
-								<NuxtLinkLocale :title="cat.pdesc" :to="'/tools/'+cat.type">{{ cat.h2 }}</NuxtLinkLocale>
+								<NuxtLink :title="cat.pdesc" :to="'/tools/'+cat.type">{{ cat.h2 }}</NuxtLink>
 							</strong>
 
 							<ul class="space-y-3">
 								<li v-for="tool in cat.tools.slice(0, 5).sort((a: ProcessedTool, b: ProcessedTool) => a.sort - b.sort)" :key="tool.path">
-									<NuxtLinkLocale :title="tool.name" :to="tool.path"
+									<NuxtLink :title="tool.name" :to="tool.path"
 										class="text-sm font-medium text-surface-500 hover:text-primary-600 hover:translate-x-1 transition-all inline-block dark:text-surface-400 dark:hover:text-primary-400">
 										{{ tool.name }}
-									</NuxtLinkLocale>
+									</NuxtLink>
 								</li>
 
 								<li v-if="cat.tools.length > 5">
-									<NuxtLinkLocale :title="`${$t('app.footer.view_all')}${cat.h2}`" :to="`/tools/${cat.type}`"
+									<NuxtLink :title="`${$t('app.footer.view_all')}${cat.h2}`" :to="`/tools/${cat.type}`"
 										class="text-xs font-bold text-primary-600 flex items-center gap-1 hover:underline mt-2 dark:text-primary-400">
 										{{ $t('app.footer.view_all') }}
 										<Icon name="lucide:arrow-right" class="w-3 h-3" />
-									</NuxtLinkLocale>
+									</NuxtLink>
 								</li>
 							</ul>
 						</div>
@@ -84,14 +84,14 @@
 				</div>
 
 				<div class="flex flex-wrap justify-center gap-6">
-					<NuxtLinkLocale :title="$t('app.footer.support.about_us')" to="/about"
-						class="hover:text-primary-600 transition-colors dark:hover:text-surface-100">{{ $t('app.footer.support.about_us') }}</NuxtLinkLocale>
-					<NuxtLinkLocale :title="$t('app.footer.support.contact')" to="/contact"
-						class="hover:text-primary-600 transition-colors dark:hover:text-surface-100">{{ $t('app.footer.support.contact') }}</NuxtLinkLocale>
-					<NuxtLinkLocale :title="$t('app.footer.support.privacy')" to="/privacy"
-						class="hover:text-primary-600 transition-colors dark:hover:text-surface-100">{{ $t('app.footer.support.privacy') }}</NuxtLinkLocale>
-					<NuxtLinkLocale :title="$t('app.footer.support.terms')" to="/terms-of-service"
-						class="hover:text-primary-600 transition-colors dark:hover:text-surface-100">{{ $t('app.footer.support.terms') }}</NuxtLinkLocale>
+					<NuxtLink :title="$t('app.footer.support.about_us')" to="/about"
+						class="hover:text-primary-600 transition-colors dark:hover:text-surface-100">{{ $t('app.footer.support.about_us') }}</NuxtLink>
+					<NuxtLink :title="$t('app.footer.support.contact')" to="/contact"
+						class="hover:text-primary-600 transition-colors dark:hover:text-surface-100">{{ $t('app.footer.support.contact') }}</NuxtLink>
+					<NuxtLink :title="$t('app.footer.support.privacy')" to="/privacy"
+						class="hover:text-primary-600 transition-colors dark:hover:text-surface-100">{{ $t('app.footer.support.privacy') }}</NuxtLink>
+					<NuxtLink :title="$t('app.footer.support.terms')" to="/terms-of-service"
+						class="hover:text-primary-600 transition-colors dark:hover:text-surface-100">{{ $t('app.footer.support.terms') }}</NuxtLink>
 				</div>
 			</div>
 

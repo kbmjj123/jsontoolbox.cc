@@ -14,7 +14,7 @@
 
         <!-- Tools Grid -->
         <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
-          <NuxtLinkLocale
+          <NuxtLink
             v-for="tool in categoryTools"
             :key="tool.slug"
             :to="tool.path"
@@ -33,7 +33,7 @@
                 </p>
               </div>
             </div>
-          </NuxtLinkLocale>
+          </NuxtLink>
         </div>
       </div>
 
@@ -41,9 +41,9 @@
       <div v-else class="text-center py-20">
         <h1 class="text-2xl font-bold text-surface-900 dark:text-surface-100">Category Not Found</h1>
         <p class="mt-4 text-surface-600 dark:text-surface-400">The category you are looking for does not exist.</p>
-        <NuxtLinkLocale to="/tools" class="mt-6 inline-block text-primary-600 hover:text-primary-700">
+        <NuxtLink to="/tools" class="mt-6 inline-block text-primary-600 hover:text-primary-700">
           View All Tools
-        </NuxtLinkLocale>
+        </NuxtLink>
       </div>
     </div>
   </div>

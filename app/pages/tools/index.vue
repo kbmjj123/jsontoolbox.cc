@@ -36,7 +36,7 @@
         </div>
 
         <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
-          <NuxtLinkLocale
+          <NuxtLink
             v-for="tool in category.tools"
             :key="tool.slug"
             :to="tool.path"
@@ -55,7 +55,7 @@
                 </p>
               </div>
             </div>
-          </NuxtLinkLocale>
+          </NuxtLink>
         </div>
       </div>
     </div>

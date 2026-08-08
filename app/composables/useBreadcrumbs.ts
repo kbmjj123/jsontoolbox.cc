@@ -73,7 +73,7 @@ export const useBreadcrumbs = () => {
   const processPaths = (items: any[]) => {
     return items.map((item: any) => ({
       ...item,
-      path: item.path === route.path ? item.path : localePath(item.path)
+      path: item.path // 不使用 localePath，避免 undefined 前缀
     }))
   }
 

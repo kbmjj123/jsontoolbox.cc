@@ -38,9 +38,9 @@
       <div v-else class="text-center py-20">
         <h1 class="text-2xl font-bold text-surface-900 dark:text-surface-100">Tool Not Found</h1>
         <p class="mt-4 text-surface-600 dark:text-surface-400">The tool you are looking for does not exist.</p>
-        <NuxtLinkLocale to="/tools" class="mt-6 inline-block text-primary-600 hover:text-primary-700">
+        <NuxtLink to="/tools" class="mt-6 inline-block text-primary-600 hover:text-primary-700">
           View All Tools
-        </NuxtLinkLocale>
+        </NuxtLink>
       </div>
     </div>
   </div>

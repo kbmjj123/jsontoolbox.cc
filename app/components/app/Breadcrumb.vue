@@ -3,13 +3,13 @@
     <ol class="flex items-center gap-1.5 text-xs text-surface-500 dark:text-surface-400">
       <li v-for="(item, index) in breadcrumbs" :key="item.path" class="flex items-center gap-1.5">
         <Icon v-if="index > 0" name="lucide:chevron-right" class="w-3 h-3 text-surface-300 dark:text-surface-600" />
-        <NuxtLinkLocale
+        <NuxtLink
           v-if="index < breadcrumbs.length - 1"
           :to="item.path"
           class="hover:text-primary-600 dark:hover:text-primary-400 transition-colors"
         >
           {{ item.name }}
-        </NuxtLinkLocale>
+        </NuxtLink>
         <span v-else class="text-surface-700 dark:text-surface-300 font-medium">
           {{ item.name }}
         </span>

@@ -10,7 +10,7 @@
       class="mx-auto flex h-16 max-w-[1200px] items-center justify-between px-5">
 
       <!-- Logo -->
-      <NuxtLinkLocale
+      <NuxtLink
         to="/"
         :title="$t('app.name')"
         class="flex items-center gap-2.5 group flex-shrink-0 mr-3"
@@ -23,18 +23,18 @@
         <span class="text-2xl font-black tracking-tight text-surface-900 dark:text-surface-100">
           <span class="text-primary-600 dark:text-primary-400">JSON</span>Toolbox
         </span>
-      </NuxtLinkLocale>
+      </NuxtLink>
 
       <!-- 桌面端导航链接 -->
       <nav class="hidden md:flex items-center gap-1 flex-1" aria-label="Main navigation">
-        <NuxtLinkLocale
+        <NuxtLink
           v-for="link in navLinks"
           :key="link.to"
           :to="link.to"
           class="rounded-lg px-3 py-1.5 text-sm text-surface-600 hover:bg-surface-100 hover:text-surface-900 dark:text-surface-400 dark:hover:bg-surface-800 dark:hover:text-surface-100 transition-colors"
         >
           {{ $t(link.labelKey) }}
-        </NuxtLinkLocale>
+        </NuxtLink>
 
         <!-- 快捷搜索 (Ctrl+K) -->
         <button
