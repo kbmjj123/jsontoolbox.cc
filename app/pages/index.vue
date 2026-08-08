@@ -23,19 +23,19 @@
 
           <!-- CTA Buttons -->
           <div class="mt-10 flex items-center justify-center gap-4">
-            <NuxtLink
+            <NuxtLinkLocale
               to="/tools"
               class="btn-primary px-6 py-3 text-sm"
             >
               {{ $t('home.hero.cta_primary') }}
-            </NuxtLink>
-            <NuxtLink
+            </NuxtLinkLocale>
+            <NuxtLinkLocale
               to="/tools/format/json-formatter"
               class="flex items-center gap-2 rounded-xl border border-surface-200 bg-white px-6 py-3 text-sm font-bold text-surface-700 transition-colors hover:bg-surface-50 dark:border-surface-700 dark:bg-surface-800 dark:text-surface-300 dark:hover:bg-surface-700"
             >
               {{ $t('home.hero.cta_secondary') }}
               <Icon name="lucide:arrow-right" class="h-4 w-4" />
-            </NuxtLink>
+            </NuxtLinkLocale>
           </div>
         </div>
 
@@ -113,7 +113,7 @@
         </div>
 
         <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
-          <NuxtLink
+          <NuxtLinkLocale
             v-for="tool in featuredTools"
             :key="tool.slug"
             :to="tool.path"
@@ -132,17 +132,17 @@
                 </p>
               </div>
             </div>
-          </NuxtLink>
+          </NuxtLinkLocale>
         </div>
 
         <div class="mt-8 text-center">
-          <NuxtLink
+          <NuxtLinkLocale
             to="/tools"
             class="inline-flex items-center gap-2 text-sm font-bold text-primary-600 hover:text-primary-700 dark:text-primary-400"
           >
             {{ $t('home.tools_section.view_all') }}
             <Icon name="lucide:arrow-right" class="w-4 h-4" />
-          </NuxtLink>
+          </NuxtLinkLocale>
         </div>
       </div>
     </section>

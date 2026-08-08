@@ -36,7 +36,7 @@
         <h2>Contact</h2>
         <p>
           Have questions, suggestions, or feedback? Feel free to
-          <NuxtLink to="/contact">reach out to us</NuxtLink>.
+          <NuxtLinkLocale to="/contact">reach out to us</NuxtLinkLocale>.
         </p>
       </div>
     </div>

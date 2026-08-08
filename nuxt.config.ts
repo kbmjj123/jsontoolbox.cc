@@ -140,9 +140,10 @@ export default defineNuxtConfig({
     baseUrl: process.env.NUXT_PUBLIC_SITE_URL,
     locales: [
       { code: 'en', name: 'English', file: 'en.json', iso: 'en-US', flag: 'circle-flags:us' },
+      { code: 'zh', name: '简体中文', file: 'zh-CN.json', iso: 'zh-CN', flag: 'circle-flags:cn' },
     ],
     defaultLocale: 'en',
-    strategy: 'no_prefix',
+    strategy: 'prefix_except_default',
     detectBrowserLanguage: {
       useCookie: true,
       cookieKey: 'i18n_redirected',

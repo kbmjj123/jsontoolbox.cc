@@ -25,9 +25,9 @@
       <div v-else class="text-center py-20">
         <h1 class="text-2xl font-bold text-surface-900 dark:text-surface-100">Post Not Found</h1>
         <p class="mt-4 text-surface-600 dark:text-surface-400">The blog post you are looking for does not exist.</p>
-        <NuxtLink to="/blog" class="mt-6 inline-block text-primary-600 hover:text-primary-700">
+        <NuxtLinkLocale to="/blog" class="mt-6 inline-block text-primary-600 hover:text-primary-700">
           View All Posts
-        </NuxtLink>
+        </NuxtLinkLocale>
       </div>
     </div>
   </div>

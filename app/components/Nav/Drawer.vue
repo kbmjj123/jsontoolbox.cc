@@ -8,7 +8,7 @@
         <div class="p-5">
           <!-- Header -->
           <div class="flex items-center justify-between mb-6">
-            <NuxtLink to="/" class="flex items-center gap-2" @click="$emit('close')">
+            <NuxtLinkLocale to="/" class="flex items-center gap-2" @click="$emit('close')">
               <img
                 src="/favicon.svg"
                 alt="JSON Toolbox Logo"
@@ -17,7 +17,7 @@
               <span class="text-xl font-black text-surface-900 dark:text-surface-100">
                 <span class="text-primary-600">JSON</span>Toolbox
               </span>
-            </NuxtLink>
+            </NuxtLinkLocale>
             <button
               @click="$emit('close')"
               class="flex h-8 w-8 items-center justify-center rounded-lg text-surface-500 hover:bg-surface-100 dark:text-surface-400 dark:hover:bg-surface-800"
@@ -28,7 +28,7 @@
 
           <!-- Navigation Links -->
           <nav class="space-y-1">
-            <NuxtLink
+            <NuxtLinkLocale
               v-for="link in navLinks"
               :key="link.to"
               :to="link.to"
@@ -37,7 +37,7 @@
             >
               <Icon :name="link.icon" class="h-4 w-4 text-surface-400" />
               {{ $t(link.labelKey) }}
-            </NuxtLink>
+            </NuxtLinkLocale>
           </nav>
 
           <!-- Language Switcher -->

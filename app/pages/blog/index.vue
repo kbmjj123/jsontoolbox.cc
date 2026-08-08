@@ -8,9 +8,9 @@
       <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
         <div v-for="post in posts" :key="post._path" class="rounded-xl border border-surface-200 bg-white p-5 dark:border-surface-700 dark:bg-surface-900">
           <h2 class="font-bold text-surface-900 dark:text-surface-100">
-            <NuxtLink :to="post._path" class="hover:text-primary-600 dark:hover:text-primary-400 transition-colors">
+            <NuxtLinkLocale :to="post._path" class="hover:text-primary-600 dark:hover:text-primary-400 transition-colors">
               {{ post.title }}
-            </NuxtLink>
+            </NuxtLinkLocale>
           </h2>
           <p class="mt-2 text-sm text-surface-500 dark:text-surface-400 line-clamp-2">
             {{ post.description }}

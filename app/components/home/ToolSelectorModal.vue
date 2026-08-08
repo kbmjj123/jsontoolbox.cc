@@ -26,7 +26,7 @@
             <div v-if="filteredTools.length === 0" class="py-8 text-center text-sm text-surface-500 dark:text-surface-400">
               No tools found.
             </div>
-            <NuxtLink
+            <NuxtLinkLocale
               v-for="tool in filteredTools"
               :key="tool.slug"
               :to="tool.path"
@@ -40,7 +40,7 @@
                 <div class="font-medium text-surface-900 dark:text-surface-100">{{ tool.name }}</div>
                 <div class="text-xs text-surface-500 dark:text-surface-400 line-clamp-1">{{ tool.description }}</div>
               </div>
-            </NuxtLink>
+            </NuxtLinkLocale>
           </div>
         </div>
       </div>
