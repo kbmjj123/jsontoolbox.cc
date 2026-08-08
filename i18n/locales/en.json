@@ -1,0 +1,90 @@
+{
+  "app": {
+    "name": "JSON Toolbox",
+    "title": "JSON Toolbox — Free Online JSON Tools for Developers | Format, Validate, Convert",
+    "keywords": "json tools, json formatter, json validator, json to csv, json viewer, online json tools, free json tools, json converter, json parser, client-side json tools",
+    "description": "Free, client-side JSON tools for developers. Format, validate, compare, convert JSON data directly in your browser. No upload, no tracking — 100% local processing.",
+    "og_title": "JSON Toolbox — Free, Client-Side JSON Tools for Developers",
+    "nav": {
+      "home": "Home",
+      "tools": "Tools",
+      "blog": "Blog",
+      "about": "About",
+      "contact": "Contact"
+    },
+    "menu": {
+      "tools": "Tools",
+      "blog": "Blog",
+      "about": "About",
+      "contact": "Contact",
+      "quick_search": "Quick Search",
+      "view_all_tools": "View All Tools"
+    },
+    "footer": {
+      "view_all": "View All",
+      "support": {
+        "about_us": "About Us",
+        "contact": "Contact",
+        "privacy": "Privacy Policy",
+        "terms": "Terms of Service"
+      },
+      "copyright": "JSON Toolbox. All rights reserved."
+    }
+  },
+  "nav": {
+    "local_badge": "Free · Open Source",
+    "toggle_theme": "Toggle theme",
+    "open_menu": "Open menu",
+    "github": "GitHub",
+    "language": "Language"
+  },
+  "home": {
+    "hero": {
+      "badge": "Free · Open Source · No Upload",
+      "title_line1": "From JSON to",
+      "title_line2": "any format you need.",
+      "subtitle": "Format, validate, convert, compare — all in your browser, nothing to install.",
+      "cta_primary": "Explore All Tools",
+      "cta_secondary": "Open JSON Formatter"
+    },
+    "featured": {
+      "badge": {
+        "trending": "Trending",
+        "instant": "Instant",
+        "popular": "Popular",
+        "useful": "Useful"
+      }
+    },
+    "tools_section": {
+      "title": "JSON Toolbox — All the Tools You Need",
+      "subtitle": "A complete set of JSON tools for developers, data analysts, and anyone working with JSON.",
+      "view_all": "View All Tools"
+    }
+  },
+  "tools": {
+    "page_title": "All JSON Tools",
+    "page_description": "Browse all available JSON tools. Format, validate, convert, and explore JSON data."
+  },
+  "error": {
+    "not_found": {
+      "title": "Page Not Found",
+      "desc": "The page you are looking for does not exist or has been moved."
+    },
+    "generic": {
+      "title": "Something Went Wrong",
+      "desc": "An unexpected error occurred. Please try again."
+    }
+  },
+  "system": {
+    "backToHome": "Back to Home",
+    "copy": "Copy",
+    "copied": "Copied!",
+    "download": "Download",
+    "clear": "Clear",
+    "format": "Format",
+    "minify": "Minify",
+    "validate": "Validate",
+    "paste": "Paste",
+    "upload": "Upload File"
+  }
+}

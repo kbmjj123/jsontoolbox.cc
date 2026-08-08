@@ -1,0 +1,54 @@
+{
+  "name": "jsontoolbox",
+  "type": "module",
+  "private": true,
+  "packageManager": "pnpm@10.25.0",
+  "scripts": {
+    "build": "nuxt build",
+    "dev": "nuxt dev",
+    "dev-ip": "nuxt dev --host 0.0.0.0",
+    "generate": "nuxt generate --logLevel=info",
+    "preview": "nuxt preview",
+    "postinstall": "nuxt prepare"
+  },
+  "dependencies": {
+    "@fontsource/inter": "^5.2.8",
+    "@nuxt/content": "3.6.3",
+    "@nuxt/eslint": "1.8.0",
+    "@nuxt/fonts": "0.11.4",
+    "@nuxt/icon": "2.0.0",
+    "@nuxt/image": "1.11.0",
+    "@nuxt/scripts": "0.11.10",
+    "@nuxt/test-utils": "3.19.2",
+    "@nuxtjs/color-mode": "^3.5.2",
+    "@nuxtjs/i18n": "^10.0.5",
+    "@nuxtjs/seo": "^3.1.0",
+    "@nuxtjs/tailwindcss": "^6.14.0",
+    "@unhead/vue": "^2.0.3",
+    "@vueuse/core": "^13.6.0",
+    "@vueuse/nuxt": "^13.6.0",
+    "better-sqlite3": "^12.2.0",
+    "eslint": "^9.0.0",
+    "i18n": "^0.15.1",
+    "js-yaml": "^4.1.0",
+    "nuxt": "4.4.2",
+    "vue": "^3.5.18",
+    "vue-router": "^4.5.1"
+  },
+  "devDependencies": {
+    "@egoist/tailwindcss-icons": "^1.9.0",
+    "@iconify-json/circle-flags": "^1.2.10",
+    "@iconify-json/lucide": "^1.2.81",
+    "@tailwindcss/typography": "^0.5.19",
+    "chalk": "^5.6.2",
+    "dotenv": "^17.2.3",
+    "nuxt-module-feed": "^1.1.4",
+    "nuxt-open-fetch": "^0.13.2",
+    "p-limit": "^7.2.0"
+  },
+  "pnpm": {
+    "overrides": {
+      "on-change": "4.0.2"
+    }
+  }
+}

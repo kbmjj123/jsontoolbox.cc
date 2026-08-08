@@ -1,0 +1,88 @@
+{
+  "slug": "validate",
+  "sort": 2,
+  "icon": "lucide:check-circle",
+  "theme": {
+    "bg": "from-green-50 to-emerald-50 dark:from-green-950/30 dark:to-emerald-950/30",
+    "text": "text-green-600 dark:text-green-400",
+    "iconBg": "bg-green-100 dark:bg-green-900/50"
+  },
+  "en": {
+    "title": "JSON Validation Tools",
+    "description": "Validate JSON data and find errors. All processing happens in your browser.",
+    "keywords": [
+      "json validator",
+      "validate json",
+      "json lint",
+      "check json",
+      "json schema validator",
+      "json schema validation"
+    ],
+    "h2": "Validation",
+    "pdesc": "Validate JSON data and quickly find errors — all locally in your browser.",
+    "highlights": [
+      {
+        "icon": "lucide:check-circle",
+        "title": "Instant Validation",
+        "description": "Validate JSON syntax and get detailed error messages."
+      },
+      {
+        "icon": "lucide:map-pin",
+        "title": "Error Location",
+        "description": "Pinpoint the exact line and column of JSON errors."
+      }
+    ],
+    "faq": [
+      {
+        "q": "What errors can it detect?",
+        "a": "It can detect syntax errors like missing commas, unclosed brackets, invalid escape sequences, and more."
+      },
+      {
+        "q": "Is my data safe?",
+        "a": "Yes. All validation happens in your browser. No data is uploaded."
+      },
+      {
+        "q": "Does it check JSON Schema?",
+        "a": "This tool checks JSON syntax only. For JSON Schema validation, use a dedicated schema validator."
+      }
+    ]
+  },
+  "zh": {
+    "title": "JSON 验证工具",
+    "description": "验证 JSON 数据并查找错误。所有处理在浏览器中完成。",
+    "keywords": [
+      "json验证",
+      "json校验",
+      "json检查",
+      "验证json"
+    ],
+    "h2": "验证",
+    "pdesc": "验证 JSON 数据并快速定位错误 — 全部在浏览器本地完成。",
+    "highlights": [
+      {
+        "icon": "lucide:check-circle",
+        "title": "即时验证",
+        "description": "验证 JSON 语法并获取详细错误信息。"
+      },
+      {
+        "icon": "lucide:map-pin",
+        "title": "错误定位",
+        "description": "精确定位 JSON 错误的行和列。"
+      }
+    ],
+    "faq": [
+      {
+        "q": "能检测哪些错误？",
+        "a": "能检测语法错误，如缺少逗号、未闭合的括号、无效的转义序列等。"
+      },
+      {
+        "q": "我的数据安全吗？",
+        "a": "安全。所有验证在浏览器中完成，不会上传数据。"
+      },
+      {
+        "q": "会检查 JSON Schema 吗？",
+        "a": "这个工具只检查 JSON 语法。如需 JSON Schema 验证，请使用专门的 Schema 验证工具。"
+      }
+    ]
+  }
+}

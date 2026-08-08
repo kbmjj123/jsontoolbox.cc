@@ -1,0 +1,140 @@
+{
+  "slug": "json-to-code",
+  "category": "convert",
+  "component": "JsonToCode",
+  "icon": "lucide:code-2",
+  "sort": 13,
+  "applicationCategory": "DeveloperApplication",
+  "nextSteps": ["json-to-typescript", "json-formatter"],
+  "recommends": ["json-schema-generator", "json-validator"],
+  "en": {
+    "name": "JSON to Code Generator",
+    "description": "Convert JSON data to Go structs, C# classes, and Python dataclasses. Generate type definitions from JSON examples.",
+    "hero": {
+      "trustHtml": "100% client-side generation. Your JSON data never leaves your browser."
+    },
+    "meta": {
+      "title": "JSON to Go Struct, C# Class, Python Dataclass — Free Online Converter",
+      "description": "Convert JSON to Go structs, C# classes, or Python dataclasses online. Generate type definitions from JSON data automatically. Free, 100% client-side.",
+      "keywords": ["json to c#", "json to c# class", "json to csharp", "json to go", "json to go struct", "json to python", "json to struct", "json to code"]
+    },
+    "features": [
+      {
+        "icon": "lucide:code-2",
+        "title": "Multiple Languages",
+        "description": "Generate Go structs, C# classes, or Python dataclasses from JSON."
+      },
+      {
+        "icon": "lucide:settings",
+        "title": "Customizable",
+        "description": "Configure naming conventions, optional fields, and null handling."
+      },
+      {
+        "icon": "lucide:shield-check",
+        "title": "Private",
+        "description": "All generation happens in your browser. No data upload."
+      }
+    ],
+    "guide": [
+      {
+        "title": "Paste your JSON",
+        "description": "Paste your JSON data into the input field."
+      },
+      {
+        "title": "Select language",
+        "description": "Choose Go, C#, or Python as the target language."
+      },
+      {
+        "title": "Copy or download",
+        "description": "Copy the generated code or download it as a file."
+      }
+    ],
+    "faq": [
+      {
+        "question": "Is my JSON data uploaded to a server?",
+        "answer": "No. All generation happens in your browser. Your data never leaves your device."
+      },
+      {
+        "question": "Which languages are supported?",
+        "answer": "Currently supported: Go (structs), C# (classes), and Python (dataclasses). TypeScript is available as a separate tool."
+      },
+      {
+        "question": "Does it handle nested objects?",
+        "answer": "Yes. The generator creates separate type definitions for nested objects."
+      },
+      {
+        "question": "Can I configure naming conventions?",
+        "answer": "Yes. You can choose between PascalCase, camelCase, and snake_case for field names."
+      },
+      {
+        "question": "What is the difference between this and JSON to TypeScript?",
+        "answer": "This tool supports Go, C#, and Python. JSON to TypeScript is a dedicated tool for TypeScript with additional options like interface vs type."
+      }
+    ]
+  },
+  "zh": {
+    "name": "JSON 转代码生成器",
+    "description": "将 JSON 数据转换为 Go 结构体、C# 类和 Python dataclass。从 JSON 示例生成类型定义。",
+    "hero": {
+      "trustHtml": "100% 本地生成，JSON 数据不会离开浏览器。"
+    },
+    "meta": {
+      "title": "JSON 转 Go 结构体、C# 类、Python Dataclass — 免费在线转换器",
+      "description": "在线将 JSON 转换为 Go 结构体、C# 类或 Python dataclass。从 JSON 数据自动生成类型定义。免费、100% 客户端处理。",
+      "keywords": ["json转c#", "json转go", "json转python", "json转结构体", "json转代码"]
+    },
+    "features": [
+      {
+        "icon": "lucide:code-2",
+        "title": "多语言支持",
+        "description": "从 JSON 生成 Go 结构体、C# 类或 Python dataclass。"
+      },
+      {
+        "icon": "lucide:settings",
+        "title": "可配置",
+        "description": "配置命名约定、可选字段和 null 处理。"
+      },
+      {
+        "icon": "lucide:shield-check",
+        "title": "私密安全",
+        "description": "所有生成在浏览器中完成，不上传数据。"
+      }
+    ],
+    "guide": [
+      {
+        "title": "粘贴 JSON",
+        "description": "将 JSON 数据粘贴到输入框中。"
+      },
+      {
+        "title": "选择语言",
+        "description": "选择 Go、C# 或 Python 作为目标语言。"
+      },
+      {
+        "title": "复制或下载",
+        "description": "复制生成的代码或下载为文件。"
+      }
+    ],
+    "faq": [
+      {
+        "question": "我的 JSON 数据会上传到服务器吗？",
+        "answer": "不会。所有生成在浏览器中完成，数据不会离开你的设备。"
+      },
+      {
+        "question": "支持哪些语言？",
+        "answer": "目前支持：Go（结构体）、C#（类）和 Python（dataclass）。TypeScript 有独立工具。"
+      },
+      {
+        "question": "能处理嵌套对象吗？",
+        "answer": "能。生成器会为嵌套对象创建单独的类型定义。"
+      },
+      {
+        "question": "可以配置命名约定吗？",
+        "answer": "可以。你可以选择 PascalCase、camelCase 或 snake_case 作为字段命名风格。"
+      },
+      {
+        "question": "这个工具和 JSON 转 TypeScript 有什么区别？",
+        "answer": "这个工具支持 Go、C# 和 Python。JSON 转 TypeScript 是专门的 TypeScript 工具，有更多选项如 interface 和 type 的选择。"
+      }
+    ]
+  }
+}

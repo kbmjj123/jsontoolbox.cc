@@ -1,0 +1,140 @@
+{
+  "slug": "csv-to-json",
+  "category": "convert",
+  "component": "CsvToJson",
+  "icon": "lucide:file-spreadsheet",
+  "sort": 3,
+  "applicationCategory": "DeveloperApplication",
+  "nextSteps": ["json-formatter", "json-to-csv"],
+  "recommends": ["json-validator", "json-tree-viewer"],
+  "en": {
+    "name": "CSV to JSON Converter",
+    "description": "Convert CSV data to JSON array format online. Import CSV files and export as structured JSON.",
+    "hero": {
+      "trustHtml": "100% client-side conversion. Your data never leaves your browser."
+    },
+    "meta": {
+      "title": "CSV to JSON — Free Online Converter",
+      "description": "Convert CSV to JSON format online. Transform CSV files into JSON arrays. Free, fast, and runs in your browser. No upload required.",
+      "keywords": ["csv to json", "csv to json converter", "convert csv to json", "csv to json online", "csv to json format", "csv to json formatter"]
+    },
+    "features": [
+      {
+        "icon": "lucide:file-spreadsheet",
+        "title": "CSV Import",
+        "description": "Paste CSV data or upload a CSV file to convert."
+      },
+      {
+        "icon": "lucide:download",
+        "title": "JSON Export",
+        "description": "Download the JSON output or copy to clipboard."
+      },
+      {
+        "icon": "lucide:shield-check",
+        "title": "Private",
+        "description": "All conversion happens in your browser. No data upload."
+      }
+    ],
+    "guide": [
+      {
+        "title": "Paste CSV data",
+        "description": "Paste your CSV data into the input field or upload a file."
+      },
+      {
+        "title": "Click Convert",
+        "description": "Click Convert to JSON to generate the output."
+      },
+      {
+        "title": "Copy or Download",
+        "description": "Copy the JSON output or download it as a file."
+      }
+    ],
+    "faq": [
+      {
+        "question": "Is my CSV data uploaded to a server?",
+        "answer": "No. All conversion happens in your browser. Your data never leaves your device."
+      },
+      {
+        "question": "Does it handle quoted fields?",
+        "answer": "Yes. The converter properly handles quoted fields, commas within quotes, and escaped characters."
+      },
+      {
+        "question": "Can I convert large CSV files?",
+        "answer": "Yes. Since all processing happens locally, file size is limited only by your browser's memory."
+      },
+      {
+        "question": "What format does the JSON output use?",
+        "answer": "The output is a JSON array of objects, where each row becomes an object with column headers as keys."
+      },
+      {
+        "question": "Does it support different delimiters?",
+        "answer": "The converter auto-detects common delimiters like commas, tabs, and semicolons."
+      }
+    ]
+  },
+  "zh": {
+    "name": "CSV 转 JSON",
+    "description": "在线将 CSV 数据转换为 JSON 数组格式。导入 CSV 文件并导出为结构化 JSON。",
+    "hero": {
+      "trustHtml": "100% 本地转换，数据不会离开浏览器。"
+    },
+    "meta": {
+      "title": "CSV 转 JSON — 免费在线转换器",
+      "description": "在线将 CSV 转换为 JSON 格式。将 CSV 文件转换为 JSON 数组。免费、快速，在浏览器中运行。无需上传。",
+      "keywords": ["csv转json", "csv json转换器", "转换csv为json", "在线csv转json"]
+    },
+    "features": [
+      {
+        "icon": "lucide:file-spreadsheet",
+        "title": "CSV 导入",
+        "description": "粘贴 CSV 数据或上传 CSV 文件进行转换。"
+      },
+      {
+        "icon": "lucide:download",
+        "title": "JSON 导出",
+        "description": "下载 JSON 输出或复制到剪贴板。"
+      },
+      {
+        "icon": "lucide:shield-check",
+        "title": "私密安全",
+        "description": "所有转换在浏览器中完成，不上传数据。"
+      }
+    ],
+    "guide": [
+      {
+        "title": "粘贴 CSV 数据",
+        "description": "将 CSV 数据粘贴到输入框中或上传文件。"
+      },
+      {
+        "title": "点击转换",
+        "description": "点击转换为 JSON 生成输出。"
+      },
+      {
+        "title": "复制或下载",
+        "description": "复制 JSON 输出或下载为文件。"
+      }
+    ],
+    "faq": [
+      {
+        "question": "我的 CSV 数据会上传到服务器吗？",
+        "answer": "不会。所有转换在浏览器中完成，数据不会离开你的设备。"
+      },
+      {
+        "question": "能处理带引号的字段吗？",
+        "answer": "能。转换器正确处理带引号的字段、引号内的逗号和转义字符。"
+      },
+      {
+        "question": "可以转换大型 CSV 文件吗？",
+        "answer": "可以。所有处理在本地完成，文件大小仅受浏览器内存限制。"
+      },
+      {
+        "question": "JSON 输出是什么格式？",
+        "answer": "输出是 JSON 对象数组，每行变成一个对象，列头作为键。"
+      },
+      {
+        "question": "支持不同的分隔符吗？",
+        "answer": "转换器自动检测常见分隔符，如逗号、制表符和分号。"
+      }
+    ]
+  }
+}

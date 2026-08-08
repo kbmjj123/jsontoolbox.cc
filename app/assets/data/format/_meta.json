@@ -1,0 +1,86 @@
+{
+  "slug": "format",
+  "sort": 1,
+  "icon": "lucide:align-left",
+  "theme": {
+    "bg": "from-blue-50 to-indigo-50 dark:from-blue-950/30 dark:to-indigo-950/30",
+    "text": "text-blue-600 dark:text-blue-400",
+    "iconBg": "bg-blue-100 dark:bg-blue-900/50"
+  },
+  "en": {
+    "title": "JSON Format & Beautify Tools",
+    "description": "Format, beautify, and minify JSON data online. All processing happens in your browser.",
+    "keywords": ["json formatter", "json beautifier", "json minifier", "json editor", "json escape", "json unescape", "format json online"],
+    "h2": "Format & Beautify",
+    "pdesc": "Format, beautify, and minify JSON data — all locally in your browser.",
+    "highlights": [
+      {
+        "icon": "lucide:sparkles",
+        "title": "Instant Formatting",
+        "description": "Format messy JSON with proper indentation instantly."
+      },
+      {
+        "icon": "lucide:minimize",
+        "title": "Minify JSON",
+        "description": "Compress JSON to a single line for production use."
+      },
+      {
+        "icon": "lucide:shield-check",
+        "title": "Private & Secure",
+        "description": "All processing happens in your browser. No data is uploaded."
+      }
+    ],
+    "faq": [
+      {
+        "q": "Is my JSON data safe?",
+        "a": "Yes. All processing happens in your browser. Your JSON is never sent to any server."
+      },
+      {
+        "q": "What indentation options are available?",
+        "a": "You can choose between 2 spaces, 4 spaces, or tab indentation."
+      },
+      {
+        "q": "Can I format large JSON files?",
+        "a": "Yes. Since all processing happens locally, you can format JSON files as large as your browser's memory allows."
+      }
+    ]
+  },
+  "zh": {
+    "title": "JSON 格式化工具",
+    "description": "在线格式化、美化和压缩 JSON 数据。所有处理在浏览器中完成。",
+    "keywords": ["json格式化", "json美化", "json压缩", "在线json格式化"],
+    "h2": "格式化与美化",
+    "pdesc": "格式化、美化和压缩 JSON 数据 — 全部在浏览器本地完成。",
+    "highlights": [
+      {
+        "icon": "lucide:sparkles",
+        "title": "即时格式化",
+        "description": "立即将杂乱的 JSON 格式化为易读的格式。"
+      },
+      {
+        "icon": "lucide:minimize",
+        "title": "压缩 JSON",
+        "description": "将 JSON 压缩为单行，适合生产环境使用。"
+      },
+      {
+        "icon": "lucide:shield-check",
+        "title": "私密安全",
+        "description": "所有处理在浏览器中完成，不会上传任何数据。"
+      }
+    ],
+    "faq": [
+      {
+        "q": "我的 JSON 数据安全吗？",
+        "a": "是的。所有处理都在浏览器中完成，你的 JSON 不会发送到任何服务器。"
+      },
+      {
+        "q": "有哪些缩进选项？",
+        "a": "你可以选择 2 个空格、4 个空格或 Tab 缩进。"
+      },
+      {
+        "q": "可以格式化大型 JSON 文件吗？",
+        "a": "可以。所有处理在本地完成，只要浏览器内存允许，你可以格式化任意大小的 JSON 文件。"
+      }
+    ]
+  }
+}

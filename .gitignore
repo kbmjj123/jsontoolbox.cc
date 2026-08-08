@@ -1,0 +1,38 @@
+# Nuxt dev/build outputs
+.output
+.data
+.nuxt
+.nitro
+.cache
+dist
+wait-to-upload
+test_images
+# Node dependencies
+node_modules
+localbatch.net
+
+# Logs
+logs
+*.log
+
+# Misc
+.DS_Store
+.fleet
+.idea
+
+# Local env files
+.env
+.env.*
+!.env.example
+!.env.seo.example
+pnpm-lock.yaml
+
+public/1.html
+public/1.md
+
+# Added by code-review-graph
+.code-review-graph/
+
+gsc-service-account.json
+# SEO CLI cache
+.seo-cache/

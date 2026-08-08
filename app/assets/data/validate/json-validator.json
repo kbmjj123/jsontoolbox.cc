@@ -1,0 +1,140 @@
+{
+  "slug": "json-validator",
+  "category": "validate",
+  "component": "JsonValidator",
+  "icon": "lucide:check-circle",
+  "sort": 1,
+  "applicationCategory": "DeveloperApplication",
+  "nextSteps": ["json-formatter", "json-schema-validator"],
+  "recommends": ["json-compare", "json-path-tester"],
+  "en": {
+    "name": "JSON Validator",
+    "description": "Validate JSON data and get detailed error messages with line numbers. Free and runs in your browser.",
+    "hero": {
+      "trustHtml": "100% client-side. Your JSON data never leaves your browser."
+    },
+    "meta": {
+      "title": "JSON Validator — Free Online JSON Syntax Checker",
+      "description": "Validate JSON data online. Get detailed error messages with line and column numbers. No upload required.",
+      "keywords": ["json validator", "validate json", "json lint", "json checker", "json linter", "json verify", "json validation", "online json validator", "json validator online"]
+    },
+    "features": [
+      {
+        "icon": "lucide:check-circle",
+        "title": "Instant Validation",
+        "description": "Validate JSON syntax instantly with detailed error messages."
+      },
+      {
+        "icon": "lucide:map-pin",
+        "title": "Error Location",
+        "description": "See exactly where errors occur with line and column numbers."
+      },
+      {
+        "icon": "lucide:shield-check",
+        "title": "Private",
+        "description": "All validation happens in your browser. No data upload."
+      }
+    ],
+    "guide": [
+      {
+        "title": "Paste your JSON",
+        "description": "Paste your JSON data into the input field."
+      },
+      {
+        "title": "Click Validate",
+        "description": "Click the Validate button to check your JSON."
+      },
+      {
+        "title": "View Results",
+        "description": "See if your JSON is valid or get detailed error information."
+      }
+    ],
+    "faq": [
+      {
+        "question": "What errors can the JSON validator detect?",
+        "answer": "It detects all JSON syntax errors including missing commas, unclosed brackets, invalid escape sequences, trailing commas, single quotes instead of double quotes, and more. The error message includes the exact line and column number."
+      },
+      {
+        "question": "Is my JSON data safe when validating?",
+        "answer": "Yes. All validation happens in your browser. Your JSON data is never uploaded to any server, never stored, and never leaves your device."
+      },
+      {
+        "question": "What is the difference between JSON validation and JSON formatting?",
+        "answer": "JSON validation checks whether your JSON is syntactically correct and reports errors. JSON formatting restructures valid JSON with proper indentation. Use validation first to check for errors, then formatting to make it readable."
+      },
+      {
+        "question": "Can I validate JSON with comments?",
+        "answer": "Standard JSON does not support comments. If your JSON has comments (like JSON5 or JSONC), the validator will report them as errors. Remove comments before validating, or use a JSON5-compatible tool."
+      },
+      {
+        "question": "Does the validator check JSON Schema?",
+        "answer": "This validator checks JSON syntax only — it verifies that your JSON is well-formed according to the JSON specification. It does not validate against JSON Schema. For schema validation, use a dedicated JSON Schema validator."
+      }
+    ]
+  },
+  "zh": {
+    "name": "JSON 验证器",
+    "description": "验证 JSON 数据并获取带行号的详细错误信息。免费，在浏览器中运行。",
+    "hero": {
+      "trustHtml": "100% 本地处理，JSON 数据不会离开浏览器。"
+    },
+    "meta": {
+      "title": "JSON 验证器 — 免费在线 JSON 语法检查",
+      "description": "在线验证 JSON 数据。获取带行号和列号的详细错误信息。无需上传。",
+      "keywords": ["json验证器", "在线验证json", "json语法检查", "json检查工具"]
+    },
+    "features": [
+      {
+        "icon": "lucide:check-circle",
+        "title": "即时验证",
+        "description": "即时验证 JSON 语法并获取详细错误信息。"
+      },
+      {
+        "icon": "lucide:map-pin",
+        "title": "错误定位",
+        "description": "通过行号和列号精确定位错误位置。"
+      },
+      {
+        "icon": "lucide:shield-check",
+        "title": "私密安全",
+        "description": "所有验证在浏览器中完成，不上传数据。"
+      }
+    ],
+    "guide": [
+      {
+        "title": "粘贴 JSON",
+        "description": "将 JSON 数据粘贴到输入框中。"
+      },
+      {
+        "title": "点击验证",
+        "description": "点击验证按钮检查你的 JSON。"
+      },
+      {
+        "title": "查看结果",
+        "description": "查看 JSON 是否有效或获取详细错误信息。"
+      }
+    ],
+    "faq": [
+      {
+        "question": "能检测哪些错误？",
+        "answer": "能检测所有 JSON 语法错误，包括缺少逗号、未闭合的括号、无效的转义序列、多余的逗号、单引号替代双引号等。错误信息包含精确的行号和列号。"
+      },
+      {
+        "question": "验证时我的 JSON 数据安全吗？",
+        "answer": "安全。所有验证在浏览器中完成，JSON 数据不会上传到任何服务器，不会被存储，永远不会离开你的设备。"
+      },
+      {
+        "question": "JSON 验证和 JSON 格式化有什么区别？",
+        "answer": "JSON 验证检查语法是否正确并报告错误。JSON 格式化用正确的缩进重新排列有效的 JSON。建议先验证检查错误，再格式化提升可读性。"
+      },
+      {
+        "question": "可以验证带注释的 JSON 吗？",
+        "answer": "标准 JSON 不支持注释。如果你的 JSON 有注释（如 JSON5 或 JSONC），验证器会将其报告为错误。验证前请先移除注释。"
+      },
+      {
+        "question": "验证器会检查 JSON Schema 吗？",
+        "answer": "这个验证器只检查 JSON 语法——验证你的 JSON 是否符合 JSON 规范。它不验证 JSON Schema。如需 Schema 验证，请使用专门的 JSON Schema 验证工具。"
+      }
+    ]
+  }
+}

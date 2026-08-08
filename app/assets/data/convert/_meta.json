@@ -1,0 +1,94 @@
+{
+  "slug": "convert",
+  "sort": 3,
+  "icon": "lucide:arrow-right-left",
+  "theme": {
+    "bg": "from-orange-50 to-amber-50 dark:from-orange-950/30 dark:to-amber-950/30",
+    "text": "text-orange-600 dark:text-orange-400",
+    "iconBg": "bg-orange-100 dark:bg-orange-900/50"
+  },
+  "en": {
+    "title": "JSON Conversion Tools",
+    "description": "Convert JSON to CSV, YAML, XML, and more. All processing happens in your browser.",
+    "keywords": [
+      "json to csv",
+      "csv to json",
+      "json to yaml",
+      "yaml to json",
+      "json to xml",
+      "xml to json",
+      "json to excel",
+      "json to typescript",
+      "json to c#",
+      "json to go",
+      "json converter",
+      "convert json"
+    ],
+    "h2": "Conversion",
+    "pdesc": "Convert JSON to CSV, YAML, XML, and other formats — all locally in your browser.",
+    "highlights": [
+      {
+        "icon": "lucide:arrow-right-left",
+        "title": "Multiple Formats",
+        "description": "Convert JSON to CSV, YAML, XML, and more."
+      },
+      {
+        "icon": "lucide:download",
+        "title": "Easy Export",
+        "description": "Download converted files directly."
+      }
+    ],
+    "faq": [
+      {
+        "q": "What formats can I convert JSON to?",
+        "a": "You can convert JSON to CSV, YAML, XML, and TypeScript interfaces."
+      },
+      {
+        "q": "Is my data safe?",
+        "a": "Yes. All conversion happens in your browser. No data is uploaded."
+      },
+      {
+        "q": "Can I convert large files?",
+        "a": "Yes. Since all processing is local, file size is limited only by your browser's memory."
+      }
+    ]
+  },
+  "zh": {
+    "title": "JSON 转换工具",
+    "description": "将 JSON 转换为 CSV、YAML、XML 等格式。所有处理在浏览器中完成。",
+    "keywords": [
+      "json转csv",
+      "json转yaml",
+      "json转换器",
+      "转换json"
+    ],
+    "h2": "格式转换",
+    "pdesc": "将 JSON 转换为 CSV、YAML、XML 等格式 — 全部在浏览器本地完成。",
+    "highlights": [
+      {
+        "icon": "lucide:arrow-right-left",
+        "title": "多种格式",
+        "description": "将 JSON 转换为 CSV、YAML、XML 等格式。"
+      },
+      {
+        "icon": "lucide:download",
+        "title": "便捷导出",
+        "description": "直接下载转换后的文件。"
+      }
+    ],
+    "faq": [
+      {
+        "q": "可以将 JSON 转换为哪些格式？",
+        "a": "可以将 JSON 转换为 CSV、YAML、XML 和 TypeScript 接口。"
+      },
+      {
+        "q": "我的数据安全吗？",
+        "a": "安全。所有转换在浏览器中完成，不会上传数据。"
+      },
+      {
+        "q": "可以转换大文件吗？",
+        "a": "可以。所有处理在本地完成，文件大小仅受浏览器内存限制。"
+      }
+    ]
+  }
+}

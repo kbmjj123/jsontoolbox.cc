@@ -1,0 +1,140 @@
+{
+  "slug": "json-compare",
+  "category": "compare",
+  "component": "JsonCompare",
+  "icon": "lucide:git-compare",
+  "sort": 1,
+  "applicationCategory": "DeveloperApplication",
+  "nextSteps": ["json-formatter", "json-validator"],
+  "recommends": ["json-tree-viewer", "json-to-csv"],
+  "en": {
+    "name": "JSON Compare",
+    "description": "Compare two JSON documents and highlight differences. Find added, removed, and changed values instantly.",
+    "hero": {
+      "trustHtml": "100% client-side comparison. Your JSON data never leaves your browser."
+    },
+    "meta": {
+      "title": "JSON Compare — Free Online JSON Diff Tool",
+      "description": "Compare two JSON documents side by side. Highlight differences in keys, values, and structure. Free online JSON diff tool. No upload required.",
+      "keywords": ["json compare", "json diff", "compare json", "json compare online", "json diff online", "json comparer", "difference json", "online json compare"]
+    },
+    "features": [
+      {
+        "icon": "lucide:git-compare",
+        "title": "Side-by-Side View",
+        "description": "Compare two JSON documents with differences highlighted."
+      },
+      {
+        "icon": "lucide:eye",
+        "title": "Visual Diff",
+        "description": "Added, removed, and changed values are color-coded."
+      },
+      {
+        "icon": "lucide:shield-check",
+        "title": "Private",
+        "description": "All comparison happens in your browser. No data upload."
+      }
+    ],
+    "guide": [
+      {
+        "title": "Paste first JSON",
+        "description": "Paste your first JSON document into the left panel."
+      },
+      {
+        "title": "Paste second JSON",
+        "description": "Paste your second JSON document into the right panel."
+      },
+      {
+        "title": "View differences",
+        "description": "Click Compare to see all differences highlighted."
+      }
+    ],
+    "faq": [
+      {
+        "question": "Is my JSON data uploaded to a server?",
+        "answer": "No. All comparison happens in your browser. Your data never leaves your device."
+      },
+      {
+        "question": "What types of differences does it detect?",
+        "answer": "It detects added keys, removed keys, changed values, and type changes between two JSON documents."
+      },
+      {
+        "question": "Can I compare JSON files of different sizes?",
+        "answer": "Yes. The tool handles JSON documents of any size and structure. Differences are shown regardless of the documents' sizes."
+      },
+      {
+        "question": "Does it support nested JSON objects?",
+        "answer": "Yes. The comparison is recursive and works with deeply nested JSON objects and arrays."
+      },
+      {
+        "question": "Can I compare large JSON files?",
+        "answer": "Yes. Since all processing happens locally, file size is limited only by your browser's memory."
+      }
+    ]
+  },
+  "zh": {
+    "name": "JSON 比较",
+    "description": "比较两个 JSON 文档并高亮差异。即时发现新增、删除和修改的值。",
+    "hero": {
+      "trustHtml": "100% 本地比较，JSON 数据不会离开浏览器。"
+    },
+    "meta": {
+      "title": "JSON 比较 — 免费在线 JSON 差异工具",
+      "description": "并排比较两个 JSON 文档。高亮显示键、值和结构的差异。免费在线 JSON 差异工具。无需上传。",
+      "keywords": ["json比较", "json差异", "比较json", "在线json比较", "json对比工具"]
+    },
+    "features": [
+      {
+        "icon": "lucide:git-compare",
+        "title": "并排视图",
+        "description": "比较两个 JSON 文档并高亮差异。"
+      },
+      {
+        "icon": "lucide:eye",
+        "title": "可视化差异",
+        "description": "新增、删除和修改的值用不同颜色标记。"
+      },
+      {
+        "icon": "lucide:shield-check",
+        "title": "私密安全",
+        "description": "所有比较在浏览器中完成，不上传数据。"
+      }
+    ],
+    "guide": [
+      {
+        "title": "粘贴第一个 JSON",
+        "description": "将第一个 JSON 文档粘贴到左侧面板。"
+      },
+      {
+        "title": "粘贴第二个 JSON",
+        "description": "将第二个 JSON 文档粘贴到右侧面板。"
+      },
+      {
+        "title": "查看差异",
+        "description": "点击比较按钮查看所有高亮的差异。"
+      }
+    ],
+    "faq": [
+      {
+        "question": "我的 JSON 数据会上传到服务器吗？",
+        "answer": "不会。所有比较在浏览器中完成，数据不会离开你的设备。"
+      },
+      {
+        "question": "能检测哪些类型的差异？",
+        "answer": "能检测新增的键、删除的键、值的变化以及两个 JSON 文档之间的类型变化。"
+      },
+      {
+        "question": "可以比较不同大小的 JSON 文件吗？",
+        "answer": "可以。工具能处理任意大小和结构的 JSON 文档，会显示所有差异。"
+      },
+      {
+        "question": "支持嵌套 JSON 对象吗？",
+        "answer": "支持。比较是递归的，可以处理深度嵌套的 JSON 对象和数组。"
+      },
+      {
+        "question": "可以比较大型 JSON 文件吗？",
+        "answer": "可以。所有处理在本地完成，文件大小仅受浏览器内存限制。"
+      }
+    ]
+  }
+}

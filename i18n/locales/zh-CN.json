@@ -1,0 +1,90 @@
+{
+  "app": {
+    "name": "JSON 工具箱",
+    "title": "JSON 工具箱 — 免费在线 JSON 开发者工具 | 格式化、验证、转换",
+    "keywords": "json工具, json格式化, json验证, json转csv, json查看器, 在线json工具, 免费json工具, json转换器, json解析器, 客户端json工具",
+    "description": "免费、纯前端的 JSON 开发者工具。直接在浏览器中格式化、验证、比较和转换 JSON 数据。无需上传，无追踪 — 100% 本地处理。",
+    "og_title": "JSON 工具箱 — 免费、纯前端的 JSON 开发者工具",
+    "nav": {
+      "home": "首页",
+      "tools": "工具",
+      "blog": "博客",
+      "about": "关于",
+      "contact": "联系"
+    },
+    "menu": {
+      "tools": "工具",
+      "blog": "博客",
+      "about": "关于",
+      "contact": "联系",
+      "quick_search": "快速搜索",
+      "view_all_tools": "查看所有工具"
+    },
+    "footer": {
+      "view_all": "查看全部",
+      "support": {
+        "about_us": "关于我们",
+        "contact": "联系我们",
+        "privacy": "隐私政策",
+        "terms": "服务条款"
+      },
+      "copyright": "JSON 工具箱。保留所有权利。"
+    }
+  },
+  "nav": {
+    "local_badge": "免费 · 开源",
+    "toggle_theme": "切换主题",
+    "open_menu": "打开菜单",
+    "github": "GitHub",
+    "language": "语言"
+  },
+  "home": {
+    "hero": {
+      "badge": "免费 · 开源 · 无需上传",
+      "title_line1": "从 JSON 到",
+      "title_line2": "你需要的任何格式。",
+      "subtitle": "格式化、校验、转换、对比——浏览器里直接用，不用装任何东西。",
+      "cta_primary": "查看所有工具",
+      "cta_secondary": "打开 JSON 格式化"
+    },
+    "featured": {
+      "badge": {
+        "trending": "热门",
+        "instant": "即时",
+        "popular": "常用",
+        "useful": "实用"
+      }
+    },
+    "tools_section": {
+      "title": "JSON 工具箱 — 你需要的所有工具",
+      "subtitle": "为开发者、数据分析师和所有处理 JSON 的人提供完整的 JSON 工具集。",
+      "view_all": "查看所有工具"
+    }
+  },
+  "tools": {
+    "page_title": "所有 JSON 工具",
+    "page_description": "浏览所有可用的 JSON 工具。格式化、验证、转换和探索 JSON 数据。"
+  },
+  "error": {
+    "not_found": {
+      "title": "页面未找到",
+      "desc": "你访问的页面不存在或已被移动。"
+    },
+    "generic": {
+      "title": "出错了",
+      "desc": "发生了意外错误，请重试。"
+    }
+  },
+  "system": {
+    "backToHome": "返回首页",
+    "copy": "复制",
+    "copied": "已复制！",
+    "download": "下载",
+    "clear": "清除",
+    "format": "格式化",
+    "minify": "压缩",
+    "validate": "验证",
+    "paste": "粘贴",
+    "upload": "上传文件"
+  }
+}

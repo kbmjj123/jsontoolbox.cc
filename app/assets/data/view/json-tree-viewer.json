@@ -1,0 +1,140 @@
+{
+  "slug": "json-tree-viewer",
+  "category": "view",
+  "component": "JsonTreeViewer",
+  "icon": "lucide:tree",
+  "sort": 1,
+  "applicationCategory": "DeveloperApplication",
+  "nextSteps": ["json-formatter", "json-path-tester"],
+  "recommends": ["json-validator", "json-diff"],
+  "en": {
+    "name": "JSON Tree Viewer",
+    "description": "View JSON data as an interactive tree structure. Expand, collapse, and search through your JSON.",
+    "hero": {
+      "trustHtml": "100% client-side. Your JSON data stays in your browser."
+    },
+    "meta": {
+      "title": "JSON Tree Viewer — Free Online JSON Explorer",
+      "description": "View JSON data as an interactive tree. Expand, collapse, search, and copy paths. No upload required.",
+      "keywords": ["json tree viewer", "json viewer", "json viewer online", "json visualizer", "json document viewer", "json file viewer", "json explorer", "view json", "json online viewer"]
+    },
+    "features": [
+      {
+        "icon": "lucide:tree",
+        "title": "Interactive Tree",
+        "description": "Expand and collapse nodes to explore your JSON structure."
+      },
+      {
+        "icon": "lucide:search",
+        "title": "Search",
+        "description": "Search by key name or value within your JSON."
+      },
+      {
+        "icon": "lucide:copy",
+        "title": "Copy Paths",
+        "description": "Click any node to copy its JSON path."
+      }
+    ],
+    "guide": [
+      {
+        "title": "Paste JSON",
+        "description": "Paste your JSON data into the input field."
+      },
+      {
+        "title": "Explore",
+        "description": "Click nodes to expand/collapse and explore the structure."
+      },
+      {
+        "title": "Search",
+        "description": "Use the search box to find specific keys or values."
+      }
+    ],
+    "faq": [
+      {
+        "question": "Can I copy the path to a specific value?",
+        "answer": "Yes, click on any node to copy its JSON path (e.g., user.profile.name). This is useful when working with JSONPath expressions or accessing nested data in code."
+      },
+      {
+        "question": "Can I search within the JSON tree?",
+        "answer": "Yes, use the search box to filter nodes by key name or value. Matching nodes and their parents are highlighted, making it easy to find specific data in large JSON structures."
+      },
+      {
+        "question": "Is my JSON data uploaded to a server?",
+        "answer": "No. All processing happens in your browser. Your JSON data never leaves your device. The tree viewer runs entirely client-side."
+      },
+      {
+        "question": "What is the difference between a JSON tree viewer and a JSON formatter?",
+        "answer": "A JSON formatter displays JSON as indented text. A tree viewer displays JSON as an interactive expandable/collapsible tree structure, making it easier to navigate deeply nested data and understand the overall structure at a glance."
+      },
+      {
+        "question": "Can I view very large JSON files?",
+        "answer": "Yes, but very large files (over 10MB) may slow down the tree rendering. The tree viewer is best for exploring structure and navigating data. For very large files, consider using the JSON formatter or a command-line tool."
+      }
+    ]
+  },
+  "zh": {
+    "name": "JSON 树形查看器",
+    "description": "将 JSON 数据可视化为交互式树结构。支持展开、折叠和搜索。",
+    "hero": {
+      "trustHtml": "100% 本地处理，JSON 数据保留在浏览器中。"
+    },
+    "meta": {
+      "title": "JSON 树形查看器 — 免费在线 JSON 浏览器",
+      "description": "将 JSON 数据可视化为交互式树。支持展开、折叠、搜索和复制路径。无需上传。",
+      "keywords": ["json树形查看器", "json查看器在线", "json浏览器", "查看json树"]
+    },
+    "features": [
+      {
+        "icon": "lucide:tree",
+        "title": "交互式树",
+        "description": "展开和折叠节点以探索 JSON 结构。"
+      },
+      {
+        "icon": "lucide:search",
+        "title": "搜索",
+        "description": "按键名或值搜索 JSON 内容。"
+      },
+      {
+        "icon": "lucide:copy",
+        "title": "复制路径",
+        "description": "点击任意节点复制其 JSON 路径。"
+      }
+    ],
+    "guide": [
+      {
+        "title": "粘贴 JSON",
+        "description": "将 JSON 数据粘贴到输入框中。"
+      },
+      {
+        "title": "探索",
+        "description": "点击节点展开/折叠并探索结构。"
+      },
+      {
+        "title": "搜索",
+        "description": "使用搜索框查找特定的键或值。"
+      }
+    ],
+    "faq": [
+      {
+        "question": "可以复制特定值的路径吗？",
+        "answer": "可以，点击任意节点即可复制其 JSON 路径（如 user.profile.name）。这在使用 JSONPath 表达式或在代码中访问嵌套数据时非常有用。"
+      },
+      {
+        "question": "可以在 JSON 树中搜索吗？",
+        "answer": "可以，使用搜索框按键名或值过滤节点。匹配的节点及其父节点会高亮显示，方便在大型 JSON 结构中快速定位数据。"
+      },
+      {
+        "question": "我的 JSON 数据会上传到服务器吗？",
+        "answer": "不会。所有处理在浏览器中完成，JSON 数据不会离开你的设备。树形查看器完全在客户端运行。"
+      },
+      {
+        "question": "JSON 树形查看器和 JSON 格式化有什么区别？",
+        "answer": "JSON 格式化以缩进文本形式显示 JSON。树形查看器以交互式的可展开/折叠树结构显示 JSON，更便于导航深度嵌套的数据，一眼看清整体结构。"
+      },
+      {
+        "question": "可以查看非常大的 JSON 文件吗？",
+        "answer": "可以，但非常大的文件（超过 10MB）可能会减慢树的渲染速度。树形查看器最适合探索数据结构。对于超大文件，建议使用 JSON 格式化工具或命令行工具。"
+      }
+    ]
+  }
+}

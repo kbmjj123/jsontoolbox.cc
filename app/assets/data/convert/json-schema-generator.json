@@ -1,0 +1,140 @@
+{
+  "slug": "json-schema-generator",
+  "category": "convert",
+  "component": "JsonSchemaGenerator",
+  "icon": "lucide:file-json",
+  "sort": 7,
+  "applicationCategory": "DeveloperApplication",
+  "nextSteps": ["json-validator", "json-formatter"],
+  "recommends": ["json-to-typescript", "json-tree-viewer"],
+  "en": {
+    "name": "JSON Schema Generator",
+    "description": "Generate JSON Schema from JSON data automatically. Create validation schemas from your JSON examples.",
+    "hero": {
+      "trustHtml": "100% client-side generation. Your JSON data never leaves your browser."
+    },
+    "meta": {
+      "title": "JSON Schema Generator — Free Online Tool",
+      "description": "Generate JSON Schema from JSON data online. Create validation schemas automatically from JSON examples. Free, fast, and 100% client-side.",
+      "keywords": ["json schema generator", "json schema from json", "generate json schema from json", "generating json schema", "json to schema"]
+    },
+    "features": [
+      {
+        "icon": "lucide:file-json",
+        "title": "Auto Generation",
+        "description": "Generate JSON Schema from any JSON data automatically."
+      },
+      {
+        "icon": "lucide:settings",
+        "title": "Customizable",
+        "description": "Configure required fields, additional properties, and more."
+      },
+      {
+        "icon": "lucide:shield-check",
+        "title": "Private",
+        "description": "All generation happens in your browser. No data upload."
+      }
+    ],
+    "guide": [
+      {
+        "title": "Paste your JSON",
+        "description": "Paste your JSON data into the input field."
+      },
+      {
+        "title": "Click Generate",
+        "description": "Click Generate Schema to create the JSON Schema."
+      },
+      {
+        "title": "Copy or Download",
+        "description": "Copy the schema or download it as a file."
+      }
+    ],
+    "faq": [
+      {
+        "question": "Is my JSON data uploaded to a server?",
+        "answer": "No. All generation happens in your browser. Your data never leaves your device."
+      },
+      {
+        "question": "What JSON Schema version does it generate?",
+        "answer": "It generates JSON Schema Draft 7, which is widely supported by validators and tools."
+      },
+      {
+        "question": "Can I customize the generated schema?",
+        "answer": "Yes. You can configure options like required fields, additional properties, and description generation."
+      },
+      {
+        "question": "Does it handle nested objects?",
+        "answer": "Yes. The generator recursively processes nested objects and arrays to create complete schemas."
+      },
+      {
+        "question": "What is JSON Schema used for?",
+        "answer": "JSON Schema is used to validate the structure and data types of JSON data. It is commonly used in API documentation, data validation, and form generation."
+      }
+    ]
+  },
+  "zh": {
+    "name": "JSON Schema 生成器",
+    "description": "从 JSON 数据自动生成 JSON Schema。从你的 JSON 示例创建验证 Schema。",
+    "hero": {
+      "trustHtml": "100% 本地生成，JSON 数据不会离开浏览器。"
+    },
+    "meta": {
+      "title": "JSON Schema 生成器 — 免费在线工具",
+      "description": "在线从 JSON 数据生成 JSON Schema。从 JSON 示例自动创建验证 Schema。免费、快速、100% 客户端处理。",
+      "keywords": ["json schema生成器", "json schema生成", "从json生成schema", "json转schema"]
+    },
+    "features": [
+      {
+        "icon": "lucide:file-json",
+        "title": "自动生成",
+        "description": "从任何 JSON 数据自动生成 JSON Schema。"
+      },
+      {
+        "icon": "lucide:settings",
+        "title": "可配置",
+        "description": "配置必填字段、额外属性等选项。"
+      },
+      {
+        "icon": "lucide:shield-check",
+        "title": "私密安全",
+        "description": "所有生成在浏览器中完成，不上传数据。"
+      }
+    ],
+    "guide": [
+      {
+        "title": "粘贴 JSON",
+        "description": "将 JSON 数据粘贴到输入框中。"
+      },
+      {
+        "title": "点击生成",
+        "description": "点击生成 Schema 创建 JSON Schema。"
+      },
+      {
+        "title": "复制或下载",
+        "description": "复制 Schema 或下载为文件。"
+      }
+    ],
+    "faq": [
+      {
+        "question": "我的 JSON 数据会上传到服务器吗？",
+        "answer": "不会。所有生成在浏览器中完成，数据不会离开你的设备。"
+      },
+      {
+        "question": "生成什么版本的 JSON Schema？",
+        "answer": "生成 JSON Schema Draft 7，被大多数验证器和工具广泛支持。"
+      },
+      {
+        "question": "可以自定义生成的 Schema 吗？",
+        "answer": "可以。你可以配置必填字段、额外属性和描述生成等选项。"
+      },
+      {
+        "question": "能处理嵌套对象吗？",
+        "answer": "能。生成器递归处理嵌套对象和数组，创建完整的 Schema。"
+      },
+      {
+        "question": "JSON Schema 有什么用？",
+        "answer": "JSON Schema 用于验证 JSON 数据的结构和数据类型。常用于 API 文档、数据验证和表单生成。"
+      }
+    ]
+  }
+}
