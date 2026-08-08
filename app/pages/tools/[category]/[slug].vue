@@ -55,19 +55,17 @@ const category = computed(() => route.params.category as string)
 const slug = computed(() => route.params.slug as string)
 const tool = computed(() => getToolDetail(category.value, slug.value))
 
-// 动态加载工具组件
+// 可用的工具组件映射（避免 SSR 时动态 import 失败导致 500）
+const componentMap: Record<string, ReturnType<typeof defineAsyncComponent>> = {
+  JsonFormatter: defineAsyncComponent(() => import('~/components/universal/JsonFormatter.vue')),
+  JsonValidator: defineAsyncComponent(() => import('~/components/universal/JsonValidator.vue')),
+  JsonToCsv: defineAsyncComponent(() => import('~/components/universal/JsonToCsv.vue')),
+  JsonTreeViewer: defineAsyncComponent(() => import('~/components/universal/JsonTreeViewer.vue')),
+}
+
 const toolComponent = computed(() => {
   if (!tool.value?.component) return null
-
-  // 尝试从 universal 目录加载组件
-  const componentName = tool.value.component
-  try {
-    return defineAsyncComponent(() =>
-      import(`~/components/universal/${componentName}.vue`)
-    )
-  } catch {
-    return null
-  }
+  return componentMap[tool.value.component] || null
 })
 
 useSeoMeta({

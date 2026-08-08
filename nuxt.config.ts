@@ -28,7 +28,7 @@ export default defineNuxtConfig({
     preset: "static",
     static: true,
     prerender: {
-      failOnError: true,
+      failOnError: false,
       autoSubfolderIndex: false,
       routes: [
         '/llms.txt',
@@ -99,13 +99,9 @@ export default defineNuxtConfig({
       }
     ]
   },
-  // OG Image 配置
+  // OG Image 配置（暂时禁用，待修复）
   ogImage: {
-    enabled: true,
-    fonts: [
-      'Noto+Sans+SC:400',
-      'Noto+Sans+SC:700',
-    ]
+    enabled: false,
   },
   schemaOrg: {
     identity: 'Person'
