@@ -83,7 +83,6 @@ export default defineNuxtConfig({
     zeroRuntime: true,
     autoLastmod: true,
     discoverImages: false,
-    strictNuxtContentPaths: true,
     exclude: ['/404'],
     sources: [
       '/api/sitemap-urls',
