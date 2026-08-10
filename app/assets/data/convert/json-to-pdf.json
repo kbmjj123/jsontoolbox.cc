@@ -9,7 +9,7 @@
   "recommends": ["json-tree-viewer", "json-validator"],
   "en": {
     "name": "JSON to PDF Converter",
-    "description": "Convert JSON data to PDF format. Generate printable PDF documents from your JSON data.",
+    "description": "Convert JSON data to PDF format. This json to pdf converter lets you generate printable PDF documents from your JSON data — works as a json to pdf online tool.",
     "hero": {
       "trustHtml": "100% client-side conversion. Your data never leaves your browser."
     },
@@ -74,7 +74,7 @@
   },
   "zh": {
     "name": "JSON 转 PDF",
-    "description": "将 JSON 数据转换为 PDF 格式。从你的 JSON 数据生成可打印的 PDF 文档。",
+    "description": "在线json转pdf，将json数据转换为pdf格式。免费的json pdf转换器，支持转换json为pdf，从你的 JSON 数据生成可打印的 PDF 文档。",
     "hero": {
       "trustHtml": "100% 本地转换，数据不会离开浏览器。"
     },

@@ -9,7 +9,7 @@
   "recommends": ["json-tree-viewer", "json-compare"],
   "en": {
     "name": "JSON Editor",
-    "description": "Edit JSON data online with syntax highlighting and validation. Free, browser-based JSON editor.",
+    "description": "Edit JSON data online with syntax highlighting and validation. This free json editor online works as a .json editor and json online editor — right in your browser.",
     "hero": {
       "trustHtml": "100% client-side editing. Your JSON data never leaves your browser."
     },
@@ -69,12 +69,16 @@
       {
         "question": "What is the difference between JSON editor and JSON formatter?",
         "answer": "A JSON editor lets you modify JSON data interactively. A JSON formatter only restructures existing JSON with proper indentation."
+      },
+      {
+        "question": "Is this a free online JSON editor?",
+        "answer": "Yes. This is a free online json editor where you can json edit online with syntax highlighting and validation. No sign-up or upload required — edit json directly in your browser."
       }
     ]
   },
   "zh": {
     "name": "JSON 编辑器",
-    "description": "在线编辑 JSON 数据，支持语法高亮和验证。免费的浏览器 JSON 编辑器。",
+    "description": "在线编辑json数据，支持语法高亮和验证。免费的在线json编辑器，支持json编辑和编辑json。",
     "hero": {
       "trustHtml": "100% 本地编辑，JSON 数据不会离开浏览器。"
     },
@@ -134,6 +138,10 @@
       {
         "question": "JSON 编辑器和 JSON 格式化有什么区别？",
         "answer": "JSON 编辑器让你交互式地修改 JSON 数据。JSON 格式化只是用正确的缩进重新排列现有的 JSON。"
+      },
+      {
+        "question": "这是一个免费的在线json编辑器吗？",
+        "answer": "是的。这是一个免费的在线json编辑器，支持json编辑和编辑json。你可以直接在浏览器中编辑 JSON 数据，无需上传。"
       }
     ]
   }

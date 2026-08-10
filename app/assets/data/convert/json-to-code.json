@@ -9,7 +9,7 @@
   "recommends": ["json-schema-generator", "json-validator"],
   "en": {
     "name": "JSON to Code Generator",
-    "description": "Convert JSON data to Go structs, C# classes, and Python dataclasses. Generate type definitions from JSON examples.",
+    "description": "Convert JSON data to Go structs, C# classes, and Python dataclasses. This json to code tool helps you json to struct and generate type definitions from JSON examples.",
     "hero": {
       "trustHtml": "100% client-side generation. Your JSON data never leaves your browser."
     },
@@ -56,7 +56,7 @@
       },
       {
         "question": "Which languages are supported?",
-        "answer": "Currently supported: Go (structs), C# (classes), and Python (dataclasses). TypeScript is available as a separate tool."
+        "answer": "Currently supported: Go (json to go struct), C# (json to c# class), and Python (json to python dataclasses). Also supports json to csharp classes. TypeScript is available as a separate tool."
       },
       {
         "question": "Does it handle nested objects?",
@@ -74,7 +74,7 @@
   },
   "zh": {
     "name": "JSON 转代码生成器",
-    "description": "将 JSON 数据转换为 Go 结构体、C# 类和 Python dataclass。从 JSON 示例生成类型定义。",
+    "description": "将json转代码，支持json转go结构体、json转c#类和json转python dataclass。从json生成类型定义，也支持json转结构体。",
     "hero": {
       "trustHtml": "100% 本地生成，JSON 数据不会离开浏览器。"
     },
@@ -121,7 +121,7 @@
       },
       {
         "question": "支持哪些语言？",
-        "answer": "目前支持：Go（结构体）、C#（类）和 Python（dataclass）。TypeScript 有独立工具。"
+        "answer": "目前支持json转go（结构体）、json转c#（类）和json转python（dataclass）。这个json转代码工具覆盖了主流后端语言。TypeScript 有独立工具。"
       },
       {
         "question": "能处理嵌套对象吗？",

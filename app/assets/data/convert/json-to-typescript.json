@@ -9,7 +9,7 @@
   "recommends": ["json-validator", "json-tree-viewer"],
   "en": {
     "name": "JSON to TypeScript Converter",
-    "description": "Convert JSON data to TypeScript interfaces automatically. Generate type definitions from JSON examples.",
+    "description": "Convert JSON data to TypeScript interfaces automatically. Generate type definitions and json to ts code from JSON examples — all in your browser.",
     "hero": {
       "trustHtml": "100% client-side conversion. Your JSON data never leaves your browser."
     },
@@ -69,12 +69,16 @@
       {
         "question": "What is the difference between interface and type?",
         "answer": "Both can be used for type definitions. Interfaces are more extensible, while types support unions and intersections. The converter generates interfaces by default."
+      },
+      {
+        "question": "Can I generate TypeScript from JSON online?",
+        "answer": "Yes. This free json to typescript online tool lets you generate typescript from json directly in your browser. Whether you need json to typescript interface generation or simple json to ts conversion, paste your data and get type definitions instantly — no upload required."
       }
     ]
   },
   "zh": {
     "name": "JSON 转 TypeScript",
-    "description": "将 JSON 数据自动转换为 TypeScript 接口。从 JSON 示例生成类型定义。",
+    "description": "在线将json转typescript接口，自动从json生成typescript类型定义。支持json转ts，免费在浏览器中完成。",
     "hero": {
       "trustHtml": "100% 本地转换，JSON 数据不会离开浏览器。"
     },
@@ -134,6 +138,10 @@
       {
         "question": "interface 和 type 有什么区别？",
         "answer": "两者都可用于类型定义。接口更可扩展，而类型支持联合和交叉。转换器默认生成接口。"
+      },
+      {
+        "question": "如何从json生成typescript接口？",
+        "answer": "粘贴 JSON 数据，点击转换即可自动生成json typescript接口。这个工具支持json转ts和json转typescript，生成的接口可以直接复制到你的项目中使用。"
       }
     ]
   }

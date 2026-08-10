@@ -9,7 +9,7 @@
   "recommends": ["json-tree-viewer", "json-diff"],
   "en": {
     "name": "JSON Formatter",
-    "description": "Format and beautify JSON data with proper indentation. Free, fast, and runs entirely in your browser.",
+    "description": "Format, beautify, and pretty print JSON data with proper indentation. This free JSON formatter online, json beautifier, and json prettier runs entirely in your browser — no upload needed.",
     "hero": {
       "trustHtml": "100% client-side processing. Your JSON data never leaves your browser."
     },
@@ -22,7 +22,7 @@
       {
         "icon": "lucide:sparkles",
         "title": "Instant Formatting",
-        "description": "Paste your JSON and get formatted output instantly."
+        "description": "Paste your JSON and get formatted, pretty printed output instantly. This JSON prettier and json beautifier makes any data beautify-ready in one click."
       },
       {
         "icon": "lucide:settings",
@@ -68,13 +68,17 @@
       },
       {
         "question": "What is the difference between JSON formatter and JSON minifier?",
-        "answer": "A JSON formatter adds indentation and line breaks to make JSON readable. A JSON minifier removes all whitespace to make JSON as compact as possible. This tool supports both — use Format for readability and Minify for production."
+        "answer": "A JSON formatter adds indentation and line breaks to make JSON readable and pretty. A JSON minifier removes all whitespace to make JSON as compact as possible. This online JSON formatter supports both — use Format to json beautify your data for readability and Minify for production."
+      },
+      {
+        "question": "Is this a free online JSON prettifier and beautifier?",
+        "answer": "Yes. This is a free online JSON formatter, beautifier, and prettifier. You can use it as a json pretty print tool to prettify minified data, make pretty json output, and beautify any JSON string directly in your browser. Format JSON online with no sign-up, no upload — paste and format instantly."
       }
     ]
   },
   "zh": {
     "name": "JSON 格式化",
-    "description": "格式化和美化 JSON 数据，支持自定义缩进。免费、快速，完全在浏览器中运行。",
+    "description": "在线格式化json和美化 JSON 数据，支持自定义缩进。免费、快速的json格式化工具，完全在浏览器中运行。",
     "hero": {
       "trustHtml": "100% 本地处理，你的 JSON 数据永远不会离开浏览器。"
     },
@@ -133,7 +137,11 @@
       },
       {
         "question": "JSON 格式化和 JSON 压缩有什么区别？",
-        "answer": "格式化会添加缩进和换行，让 JSON 更易读。压缩会移除所有空白，让 JSON 尽可能紧凑。这个工具两种都支持——用格式化提升可读性，用压缩用于生产环境。"
+        "answer": "格式化会添加缩进和换行，让 JSON 更易读。压缩会移除所有空白，让 JSON 尽可能紧凑。这个在线 JSON 格式化工具两种都支持——用格式化提升可读性，用压缩用于生产环境。"
+      },
+      {
+        "question": "这是一个免费的在线json美化工具吗？",
+        "answer": "是的。这是一个免费的在线json格式化和json美化工具，支持格式化、压缩和验证 JSON。无需注册，无需上传数据——粘贴即可在线格式化json。"
       }
     ]
   }

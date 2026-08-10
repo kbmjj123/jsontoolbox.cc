@@ -9,7 +9,7 @@
   "recommends": ["json-formatter", "json-validator"],
   "en": {
     "name": "JSON to XML Converter",
-    "description": "Convert JSON data to XML format online. Transform JSON objects and arrays into structured XML documents.",
+    "description": "Convert JSON data to XML format online. This json xml converter and json to xml online tool transforms JSON objects and arrays into structured XML documents.",
     "hero": {
       "trustHtml": "100% client-side conversion. Your data never leaves your browser."
     },
@@ -68,13 +68,17 @@
       },
       {
         "question": "Can I convert large JSON files?",
-        "answer": "Yes. Since all processing happens locally, file size is limited only by your browser's memory."
+        "answer": "Yes. This json to xml converter handles files of any size. Since all processing happens locally, file size is limited only by your browser's memory."
+      },
+      {
+        "question": "How do I convert JSON to XML?",
+        "answer": "Simply paste your JSON data and click Convert. This free online tool lets you convert json to xml instantly — no upload required."
       }
     ]
   },
   "zh": {
     "name": "JSON 转 XML",
-    "description": "在线将 JSON 数据转换为 XML 格式。将 JSON 对象和数组转换为结构化 XML 文档。",
+    "description": "在线json转xml，将json数据转换为xml格式。免费的json xml转换器，支持转换json为xml，将 JSON 对象和数组转换为结构化 XML 文档。",
     "hero": {
       "trustHtml": "100% 本地转换，数据不会离开浏览器。"
     },

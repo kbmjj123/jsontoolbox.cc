@@ -9,7 +9,7 @@
   "recommends": ["json-to-csv", "json-tree-viewer"],
   "en": {
     "name": "JSON Minifier",
-    "description": "Compress and minify JSON data by removing all whitespace. Free, fast, and runs in your browser.",
+    "description": "Compress and minify JSON data by removing all whitespace. This json minifier and json compressor lets you compress json online — free, fast, and runs in your browser.",
     "hero": {
       "trustHtml": "100% client-side processing. Your JSON data never leaves your browser."
     },
@@ -56,7 +56,7 @@
       },
       {
         "question": "What does JSON minification do?",
-        "answer": "JSON minification removes all unnecessary whitespace, line breaks, and indentation from JSON data, making it as compact as possible. This reduces file size without changing the data."
+        "answer": "JSON minification (also called json minify) removes all unnecessary whitespace, line breaks, and indentation from JSON data, making it as compact as possible. This reduces file size without changing the data."
       },
       {
         "question": "When should I minify JSON?",
@@ -74,7 +74,7 @@
   },
   "zh": {
     "name": "JSON 压缩器",
-    "description": "压缩和最小化 JSON 数据，移除所有空白。免费、快速，在浏览器中运行。",
+    "description": "在线压缩json数据，移除所有空白。这是一个免费的json压缩器，支持json压缩和json最小化，快速在浏览器中运行。",
     "hero": {
       "trustHtml": "100% 本地处理，你的 JSON 数据永远不会离开浏览器。"
     },
@@ -124,8 +124,8 @@
         "answer": "JSON 压缩会移除 JSON 数据中所有不必要的空白、换行和缩进，使其尽可能紧凑。这会减小文件大小，同时不改变数据内容。"
       },
       {
-        "question": "什么时候应该压缩 JSON？",
-        "answer": "在网络传输、数据库存储或嵌入 URL 时压缩 JSON。压缩后的 JSON 占用更少空间，传输更快。"
+        "question": "什么时候应该压缩json？",
+        "answer": "在网络传输、数据库存储或嵌入 URL 时压缩json。压缩json后的数据占用更少空间，传输更快。"
       },
       {
         "question": "可以压缩大型 JSON 文件吗？",

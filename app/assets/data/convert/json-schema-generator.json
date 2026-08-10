@@ -9,7 +9,7 @@
   "recommends": ["json-to-typescript", "json-tree-viewer"],
   "en": {
     "name": "JSON Schema Generator",
-    "description": "Generate JSON Schema from JSON data automatically. Create validation schemas from your JSON examples.",
+    "description": "Generate JSON Schema from JSON data automatically. This json schema generator helps with generating json schema and json to schema conversion from your JSON examples.",
     "hero": {
       "trustHtml": "100% client-side generation. Your JSON data never leaves your browser."
     },
@@ -74,7 +74,7 @@
   },
   "zh": {
     "name": "JSON Schema 生成器",
-    "description": "从 JSON 数据自动生成 JSON Schema。从你的 JSON 示例创建验证 Schema。",
+    "description": "从json生成schema，自动从json数据生成json schema。这是一个json schema生成器，支持json转schema，从你的 JSON 示例创建验证 Schema。",
     "hero": {
       "trustHtml": "100% 本地生成，JSON 数据不会离开浏览器。"
     },

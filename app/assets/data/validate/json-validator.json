@@ -9,7 +9,7 @@
   "recommends": ["json-compare", "json-path-tester"],
   "en": {
     "name": "JSON Validator",
-    "description": "Validate JSON data and get detailed error messages with line numbers. Free and runs in your browser.",
+    "description": "Validate JSON data and get detailed error messages with line numbers. This free online json validator also works as a json linter and json checker — runs entirely in your browser.",
     "hero": {
       "trustHtml": "100% client-side. Your JSON data never leaves your browser."
     },
@@ -69,12 +69,16 @@
       {
         "question": "Does the validator check JSON Schema?",
         "answer": "This validator checks JSON syntax only — it verifies that your JSON is well-formed according to the JSON specification. It does not validate against JSON Schema. For schema validation, use a dedicated JSON Schema validator."
+      },
+      {
+        "question": "Is this an online JSON linter and checker?",
+        "answer": "Yes. This is a free online json validator that also works as a json lint and json checker tool. You can json verify any JSON string directly in your browser — paste your data and get instant results. The json validator online tool requires no sign-up or upload."
       }
     ]
   },
   "zh": {
     "name": "JSON 验证器",
-    "description": "验证 JSON 数据并获取带行号的详细错误信息。免费，在浏览器中运行。",
+    "description": "验证 JSON 数据并获取带行号的详细错误信息。免费的在线验证json工具，也是实用的json验证器和json检查工具，在浏览器中运行。",
     "hero": {
       "trustHtml": "100% 本地处理，JSON 数据不会离开浏览器。"
     },
@@ -134,6 +138,10 @@
       {
         "question": "验证器会检查 JSON Schema 吗？",
         "answer": "这个验证器只检查 JSON 语法——验证你的 JSON 是否符合 JSON 规范。它不验证 JSON Schema。如需 Schema 验证，请使用专门的 JSON Schema 验证工具。"
+      },
+      {
+        "question": "这是一个在线验证json的工具吗？",
+        "answer": "是的。这是一个免费的在线验证json工具，同时也支持json语法检查。你可以直接在浏览器中粘贴 JSON 并验证，无需注册，无需上传数据。"
       }
     ]
   }

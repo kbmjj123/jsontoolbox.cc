@@ -9,7 +9,7 @@
   "recommends": ["json-minifier", "json-to-csv"],
   "en": {
     "name": "JSON Escape & Unescape",
-    "description": "Escape or unescape JSON strings online. Handle special characters, quotes, and backslashes in JSON data.",
+    "description": "Escape or unescape JSON strings online. This tool handles json escape, json unescape, json string escape, and json string unescape operations for special characters, quotes, and backslashes in JSON data.",
     "hero": {
       "trustHtml": "100% client-side processing. Your JSON data never leaves your browser."
     },
@@ -74,7 +74,7 @@
   },
   "zh": {
     "name": "JSON 转义/反转义",
-    "description": "在线转义或反转义 JSON 字符串。处理 JSON 数据中的特殊字符、引号和反斜杠。",
+    "description": "在线json转义或json反转义字符串。处理json特殊字符处理，包括引号和反斜杠。",
     "hero": {
       "trustHtml": "100% 本地处理，你的 JSON 数据永远不会离开浏览器。"
     },
@@ -128,12 +128,12 @@
         "answer": "JSON 反转义移除反斜杠转义字符，将转义序列转换回原始字符。"
       },
       {
-        "question": "什么时候应该转义 JSON？",
-        "answer": "在将 JSON 字符串嵌入另一个 JSON 字符串时，或将 JSON 包含在代码、日志或配置文件中时转义。"
+        "question": "什么时候应该转义json？",
+        "answer": "在将 JSON 字符串嵌入另一个 JSON 字符串时，或将 JSON 包含在代码、日志或配置文件中时需要转义json。"
       },
       {
-        "question": "什么时候应该反转义 JSON？",
-        "answer": "当你有一个转义的 JSON 字符串（来自日志、API 响应或代码），需要读取实际的 JSON 内容时反转义。"
+        "question": "什么时候应该反转义json？",
+        "answer": "当你有一个转义的 JSON 字符串（来自日志、API 响应或代码），需要读取实际的 JSON 内容时反转义json。"
       }
     ]
   }

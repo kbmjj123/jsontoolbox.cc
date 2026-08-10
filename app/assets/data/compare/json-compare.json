@@ -9,7 +9,7 @@
   "recommends": ["json-tree-viewer", "json-to-csv"],
   "en": {
     "name": "JSON Compare",
-    "description": "Compare two JSON documents and highlight differences. Find added, removed, and changed values instantly.",
+    "description": "Compare two JSON documents and highlight differences. This online json compare tool and json comparer helps you find added, removed, and changed values instantly.",
     "hero": {
       "trustHtml": "100% client-side comparison. Your JSON data never leaves your browser."
     },
@@ -69,12 +69,16 @@
       {
         "question": "Can I compare large JSON files?",
         "answer": "Yes. Since all processing happens locally, file size is limited only by your browser's memory."
+      },
+      {
+        "question": "Is this a free online JSON compare and diff tool?",
+        "answer": "Yes. This is a free json compare online and json diff online tool. You can compare json, spot every difference json has between two versions, and use it as an online json compare tool — all in your browser with no upload."
       }
     ]
   },
   "zh": {
     "name": "JSON 比较",
-    "description": "比较两个 JSON 文档并高亮差异。即时发现新增、删除和修改的值。",
+    "description": "比较json文档并高亮json差异。这是一个在线json比较工具和json对比工具，即时发现新增、删除和修改的值。",
     "hero": {
       "trustHtml": "100% 本地比较，JSON 数据不会离开浏览器。"
     },
@@ -134,6 +138,10 @@
       {
         "question": "可以比较大型 JSON 文件吗？",
         "answer": "可以。所有处理在本地完成，文件大小仅受浏览器内存限制。"
+      },
+      {
+        "question": "这是一个在线json比较工具吗？",
+        "answer": "是的。这是一个免费的在线json比较工具，支持比较json并高亮显示差异。无需上传数据，在浏览器中即可完成所有比较。"
       }
     ]
   }

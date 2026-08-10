@@ -9,7 +9,7 @@
   "recommends": ["json-validator", "json-tree-viewer"],
   "en": {
     "name": "YAML to JSON Converter",
-    "description": "Convert YAML data to JSON format online. Transform YAML config files into JSON objects.",
+    "description": "Convert YAML data to JSON format online. This yaml to json converter lets you convert yaml to json and transform YAML config files into JSON objects — a free yaml to json online tool.",
     "hero": {
       "trustHtml": "100% client-side conversion. Your data never leaves your browser."
     },
@@ -74,7 +74,7 @@
   },
   "zh": {
     "name": "YAML 转 JSON",
-    "description": "在线将 YAML 数据转换为 JSON 格式。将 YAML 配置文件转换为 JSON 对象。",
+    "description": "在线yaml转json，将yaml数据转换为json格式。免费的yaml json转换器，支持转换yaml为json，将 YAML 配置文件转换为 JSON 对象。",
     "hero": {
       "trustHtml": "100% 本地转换，数据不会离开浏览器。"
     },

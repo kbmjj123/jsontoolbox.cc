@@ -9,7 +9,7 @@
   "recommends": ["json-formatter", "json-tree-viewer"],
   "en": {
     "name": "JSON to CSV Converter",
-    "description": "Convert JSON arrays to CSV format. Perfect for exporting data to Excel or Google Sheets.",
+    "description": "Convert JSON arrays to CSV format online. This free json to csv converter is perfect for exporting data to Excel or Google Sheets.",
     "hero": {
       "trustHtml": "100% client-side conversion. Your data never leaves your browser."
     },
@@ -22,7 +22,7 @@
       {
         "icon": "lucide:table",
         "title": "CSV Export",
-        "description": "Convert JSON arrays to CSV with proper escaping."
+        "description": "Convert JSON arrays to CSV with proper escaping. This json to csv converter online handles any JSON format to csv conversion."
       },
       {
         "icon": "lucide:download",
@@ -55,8 +55,8 @@
         "answer": "It works best with flat JSON arrays where each object has the same keys. Nested objects will be converted to JSON strings in the CSV cell. For deeply nested JSON, consider flattening it first."
       },
       {
-        "question": "Can I convert JSON to CSV for Excel?",
-        "answer": "Yes. The output CSV file can be opened directly in Excel, Google Sheets, or any spreadsheet application. The converter handles special characters and proper escaping for Excel compatibility."
+        "question": "How to convert JSON to CSV for Excel?",
+        "answer": "Yes. This online json to csv converter lets you convert json to csv and open the output directly in Excel, Google Sheets, or any spreadsheet application. The converter handles special characters and proper escaping for Excel compatibility."
       },
       {
         "question": "Is there a limit on the number of records?",
@@ -69,12 +69,16 @@
       {
         "question": "Is my data uploaded to a server?",
         "answer": "No. All conversion happens in your browser. Your JSON data never leaves your device. No data is stored or transmitted."
+      },
+      {
+        "question": "Can I transform JSON to CSV online without uploading?",
+        "answer": "Yes. This is a free online json to csv converter that runs entirely in your browser. As a json to csv converter online tool, you can transform json to csv, convert json format to csv, and download the result — all without uploading your data to any server."
       }
     ]
   },
   "zh": {
     "name": "JSON 转 CSV",
-    "description": "将 JSON 数组转换为 CSV 格式。适合导出数据到 Excel 或 Google Sheets。",
+    "description": "在线json转csv，将 JSON 数组转换为 CSV 格式。免费的json csv转换器，适合导出数据到 Excel 或 Google Sheets。",
     "hero": {
       "trustHtml": "100% 本地转换，数据不会离开浏览器。"
     },
@@ -121,7 +125,7 @@
       },
       {
         "question": "可以将 JSON 转换为 Excel 使用的 CSV 吗？",
-        "answer": "可以。输出的 CSV 文件可以直接在 Excel、Google Sheets 或任何电子表格软件中打开。转换器会处理特殊字符和正确的转义，确保 Excel 兼容。"
+        "answer": "可以。这个在线json转csv工具支持json转excel，输出的 CSV 文件可以直接在 Excel、Google Sheets 或任何电子表格软件中打开。转换器会处理特殊字符和正确的转义，确保 Excel 兼容。"
       },
       {
         "question": "有记录数量限制吗？",

@@ -9,7 +9,7 @@
   "recommends": ["json-formatter", "json-validator"],
   "en": {
     "name": "JSON to YAML Converter",
-    "description": "Convert JSON data to YAML format online. Perfect for configuration files, Kubernetes, and Docker Compose.",
+    "description": "Convert JSON data to YAML format online. This json yaml converter and json to yaml online tool is perfect for configuration files, Kubernetes, and Docker Compose.",
     "hero": {
       "trustHtml": "100% client-side conversion. Your data never leaves your browser."
     },
@@ -69,12 +69,16 @@
       {
         "question": "Can I convert large JSON files?",
         "answer": "Yes. Since all processing happens locally, file size is limited only by your browser's memory."
+      },
+      {
+        "question": "How do I convert JSON to YAML?",
+        "answer": "Paste your JSON and click Convert. This free json to yaml converter lets you convert json to yaml instantly in your browser — no upload needed."
       }
     ]
   },
   "zh": {
     "name": "JSON 转 YAML",
-    "description": "在线将 JSON 数据转换为 YAML 格式。适合配置文件、Kubernetes 和 Docker Compose。",
+    "description": "在线json转yaml，将json数据转换为yaml格式。免费的json yaml转换器，支持转换json为yaml。适合配置文件、Kubernetes 和 Docker Compose。",
     "hero": {
       "trustHtml": "100% 本地转换，数据不会离开浏览器。"
     },

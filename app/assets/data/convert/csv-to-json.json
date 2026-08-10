@@ -9,7 +9,7 @@
   "recommends": ["json-validator", "json-tree-viewer"],
   "en": {
     "name": "CSV to JSON Converter",
-    "description": "Convert CSV data to JSON array format online. Import CSV files and export as structured JSON.",
+    "description": "Convert CSV data to JSON array format online. This csv to json converter and csv to json formatter lets you import CSV files and export as structured JSON.",
     "hero": {
       "trustHtml": "100% client-side conversion. Your data never leaves your browser."
     },
@@ -69,12 +69,16 @@
       {
         "question": "Does it support different delimiters?",
         "answer": "The converter auto-detects common delimiters like commas, tabs, and semicolons."
+      },
+      {
+        "question": "How do I convert CSV to JSON online?",
+        "answer": "Paste your CSV data and click Convert. This free csv to json online tool lets you convert csv to json instantly in your browser — no upload required."
       }
     ]
   },
   "zh": {
     "name": "CSV 转 JSON",
-    "description": "在线将 CSV 数据转换为 JSON 数组格式。导入 CSV 文件并导出为结构化 JSON。",
+    "description": "在线csv转json，将csv数据转换为json数组格式。免费的csv json转换器，支持转换csv为json。导入 CSV 文件并导出为结构化 JSON。",
     "hero": {
       "trustHtml": "100% 本地转换，数据不会离开浏览器。"
     },

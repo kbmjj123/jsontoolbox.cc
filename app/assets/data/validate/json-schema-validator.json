@@ -9,7 +9,7 @@
   "recommends": ["json-formatter", "json-tree-viewer"],
   "en": {
     "name": "JSON Schema Validator",
-    "description": "Validate JSON data against a JSON Schema. Check if your JSON conforms to the expected structure and data types.",
+    "description": "Validate JSON data against a JSON Schema. This json schema validator online lets you validate json against schema and check if your JSON conforms to the expected structure and data types.",
     "hero": {
       "trustHtml": "100% client-side validation. Your JSON data never leaves your browser."
     },
@@ -69,12 +69,16 @@
       {
         "question": "Can I generate a Schema from JSON?",
         "answer": "Yes. Use our JSON Schema Generator to automatically create a schema from your JSON data."
+      },
+      {
+        "question": "How do I validate JSON Schema online?",
+        "answer": "Paste your JSON data and your JSON Schema, then click Validate. This free online tool lets you validate json schema directly in your browser — no upload required."
       }
     ]
   },
   "zh": {
     "name": "JSON Schema 验证器",
-    "description": "根据 JSON Schema 验证 JSON 数据。检查你的 JSON 是否符合预期的结构和数据类型。",
+    "description": "根据schema验证json数据。这是一个在线json schema验证工具，检查你的 JSON 是否符合预期的结构和数据类型。",
     "hero": {
       "trustHtml": "100% 本地验证，JSON 数据不会离开浏览器。"
     },
@@ -134,6 +138,10 @@
       {
         "question": "可以从 JSON 生成 Schema 吗？",
         "answer": "可以。使用我们的 JSON Schema 生成器从 JSON 数据自动创建 Schema。"
+      },
+      {
+        "question": "如何在线json schema验证？",
+        "answer": "粘贴 JSON 数据和 JSON Schema，点击验证即可。这个免费的json schema验证器支持在线json schema验证，无需上传数据。"
       }
     ]
   }

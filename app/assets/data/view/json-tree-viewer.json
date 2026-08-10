@@ -9,7 +9,7 @@
   "recommends": ["json-validator", "json-diff"],
   "en": {
     "name": "JSON Tree Viewer",
-    "description": "View JSON data as an interactive tree structure. Expand, collapse, and search through your JSON.",
+    "description": "View JSON data as an interactive tree structure. This free json viewer online also works as a json visualizer, json document viewer, and json file viewer — expand, collapse, and search through your JSON.",
     "hero": {
       "trustHtml": "100% client-side. Your JSON data stays in your browser."
     },
@@ -69,12 +69,16 @@
       {
         "question": "Can I view very large JSON files?",
         "answer": "Yes, but very large files (over 10MB) may slow down the tree rendering. The tree viewer is best for exploring structure and navigating data. For very large files, consider using the JSON formatter or a command-line tool."
+      },
+      {
+        "question": "Is this a free online JSON viewer and explorer?",
+        "answer": "Yes. This is a free json online viewer, json viewer online, and json explorer tool. You can view, explore, and visualize any JSON data directly in your browser — no upload required."
       }
     ]
   },
   "zh": {
     "name": "JSON 树形查看器",
-    "description": "将 JSON 数据可视化为交互式树结构。支持展开、折叠和搜索。",
+    "description": "将json树形查看器用于 JSON 数据可视化为交互式树结构。这是一个免费的json查看器在线工具，也支持查看json树。支持展开、折叠和搜索。",
     "hero": {
       "trustHtml": "100% 本地处理，JSON 数据保留在浏览器中。"
     },
@@ -134,6 +138,10 @@
       {
         "question": "可以查看非常大的 JSON 文件吗？",
         "answer": "可以，但非常大的文件（超过 10MB）可能会减慢树的渲染速度。树形查看器最适合探索数据结构。对于超大文件，建议使用 JSON 格式化工具或命令行工具。"
+      },
+      {
+        "question": "这是一个免费的json浏览器工具吗？",
+        "answer": "是的。这是一个免费的在线json浏览器和json查看器在线工具，可以直接在浏览器中查看和探索 JSON 数据，无需上传。"
       }
     ]
   }

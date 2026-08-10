@@ -9,7 +9,7 @@
   "recommends": ["json-formatter", "json-tree-viewer"],
   "en": {
     "name": "JSON to Excel Converter",
-    "description": "Convert JSON data to Excel-compatible format. Export JSON arrays to CSV for spreadsheet use.",
+    "description": "Convert JSON data to Excel-compatible format. This json to excel converter lets you export JSON arrays to CSV for spreadsheet use — works entirely online.",
     "hero": {
       "trustHtml": "100% client-side conversion. Your data never leaves your browser."
     },
@@ -69,12 +69,16 @@
       {
         "question": "What format does it export to?",
         "answer": "It exports to CSV format, which is compatible with Excel, Google Sheets, and all major spreadsheet applications."
+      },
+      {
+        "question": "Can I do the conversion of JSON to Excel online?",
+        "answer": "Yes. This free json to excel online tool lets you convert json to excel directly in your browser. No upload, no sign-up — paste and download."
       }
     ]
   },
   "zh": {
     "name": "JSON 转 Excel",
-    "description": "将 JSON 数据转换为 Excel 兼容格式。将 JSON 数组导出为 CSV 用于电子表格。",
+    "description": "在线json转excel，将json数据转换为excel兼容格式。免费的json excel转换器，支持转换json为excel，将 JSON 数组导出为 CSV 用于电子表格。",
     "hero": {
       "trustHtml": "100% 本地转换，数据不会离开浏览器。"
     },

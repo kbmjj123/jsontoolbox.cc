@@ -9,7 +9,7 @@
   "recommends": ["json-validator", "json-compare"],
   "en": {
     "name": "JSONPath Tester",
-    "description": "Test JSONPath expressions against your JSON data. Find and extract values using JSONPath syntax.",
+    "description": "Test JSONPath expressions against your JSON data. This jsonpath tester, json path finder, and jsonpath online tool helps you find and extract values using JSONPath syntax.",
     "hero": {
       "trustHtml": "100% client-side processing. Your JSON data never leaves your browser."
     },
@@ -74,7 +74,7 @@
   },
   "zh": {
     "name": "JSONPath 测试器",
-    "description": "对你的 JSON 数据测试 JSONPath 表达式。使用 JSONPath 语法查找和提取值。",
+    "description": "对你的json路径表达式进行jsonpath测试。这是一个jsonpath在线工具，使用 JSONPath 语法查找和提取值。",
     "hero": {
       "trustHtml": "100% 本地处理，JSON 数据不会离开浏览器。"
     },
@@ -133,7 +133,7 @@
       },
       {
         "question": "可以在大文件上测试 JSONPath 吗？",
-        "answer": "可以。所有处理在本地完成，文件大小仅受浏览器内存限制。"
+        "answer": "可以。所有处理在本地完成，文件大小仅受浏览器内存限制。这个工具可以轻松测试jsonpath表达式。"
       }
     ]
   }

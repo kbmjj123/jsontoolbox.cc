@@ -9,7 +9,7 @@
   "recommends": ["json-formatter", "json-tree-viewer"],
   "en": {
     "name": "JSON to HTML Table",
-    "description": "Convert JSON data to an HTML table view. Visualize JSON arrays as formatted, readable tables.",
+    "description": "Convert JSON data to an HTML table view. This json table converter, json table generator, and json table viewer visualizes JSON arrays as formatted, readable tables.",
     "hero": {
       "trustHtml": "100% client-side conversion. Your data never leaves your browser."
     },
@@ -69,12 +69,16 @@
       {
         "question": "What is the difference between this and JSON to CSV?",
         "answer": "JSON to Table creates an HTML table view for visual display. JSON to CSV creates a downloadable CSV file for spreadsheet applications."
+      },
+      {
+        "question": "Can I convert JSON to HTML table and get the code?",
+        "answer": "Yes. This free online tool acts as a json html table generator — paste your JSON array and convert json to html table instantly. You can copy the generated HTML code for use in your web projects."
       }
     ]
   },
   "zh": {
     "name": "JSON 转 HTML 表格",
-    "description": "将 JSON 数据转换为 HTML 表格视图。将 JSON 数组可视化为格式化的可读表格。",
+    "description": "将json转表格，转换 JSON 数据为json html表格视图。免费的json表格转换器和json表格查看器，将 JSON 数组可视化为格式化的可读表格。",
     "hero": {
       "trustHtml": "100% 本地转换，数据不会离开浏览器。"
     },
