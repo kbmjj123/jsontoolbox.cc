@@ -61,6 +61,7 @@ const componentMap: Record<string, ReturnType<typeof defineAsyncComponent>> = {
   JsonValidator: defineAsyncComponent(() => import('~/components/universal/JsonValidator.vue')),
   JsonToCsv: defineAsyncComponent(() => import('~/components/universal/JsonToCsv.vue')),
   JsonTreeViewer: defineAsyncComponent(() => import('~/components/universal/JsonTreeViewer.vue')),
+  JsonCompare: defineAsyncComponent(() => import('~/components/universal/JsonCompare.vue')),
 }
 
 const toolComponent = computed(() => {
