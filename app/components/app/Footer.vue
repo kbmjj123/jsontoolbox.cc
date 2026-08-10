@@ -30,7 +30,7 @@
 					</div>
 
 					<div class="flex gap-3">
-						<a href="https://github.com/jsontoolbox" title="github" target="_blank"
+						<a href="https://github.com/kbmjj123/jsontoolbox.cc" title="github" target="_blank"
 							class="flex h-11 w-11 items-center justify-center rounded-xl border border-surface-200 bg-white/50 text-surface-500 transition-all hover:border-primary-200 hover:bg-white hover:text-primary-600 hover:shadow-sm dark:border-surface-700/50 dark:bg-surface-900 dark:text-surface-400 dark:hover:border-surface-600 dark:hover:text-surface-100">
 							<Icon name="lucide:github" class="w-5 h-5" />
 						</a>

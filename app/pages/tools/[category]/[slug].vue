@@ -17,12 +17,6 @@
               </p>
             </div>
           </div>
-
-          <!-- Privacy Badge -->
-          <div class="inline-flex items-center gap-2 rounded-full border border-accent-200 bg-accent-50 px-3 py-1 text-xs font-medium text-accent-700 dark:border-accent-800 dark:bg-accent-900/30 dark:text-accent-400">
-            <Icon name="lucide:shield-check" class="h-3 w-3" />
-            100% Client-Side Processing
-          </div>
         </div>
 
         <!-- Tool Component -->
@@ -32,6 +26,9 @@
             <p class="text-surface-500 dark:text-surface-400">Tool component not found.</p>
           </div>
         </div>
+
+        <!-- SEO Content Sections -->
+        <ToolSeoContent :tool="tool" class="mt-12" />
       </div>
 
       <!-- 404 -->
@@ -86,8 +83,12 @@ const toolComponent = computed(() => {
 })
 
 useSeoMeta({
-  title: () => tool.value ? `${tool.value.name} | ${t('app.name')}` : t('tools.page_title'),
-  description: () => tool.value?.description || t('tools.page_description'),
+  title: () => tool.value?.meta?.title
+    ? `${tool.value.meta.title} | ${t('app.name')}`
+    : tool.value
+      ? `${tool.value.name} | ${t('app.name')}`
+      : t('tools.page_title'),
+  description: () => tool.value?.meta?.description || tool.value?.description || t('tools.page_description'),
 })
 
 // 根据工具分类动态生成 OG Image

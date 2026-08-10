@@ -16,7 +16,7 @@
         </p>
 
         <ul>
-          <li><strong>GitHub:</strong> <a href="https://github.com/jsontoolbox" target="_blank">github.com/jsontoolbox</a></li>
+          <li><strong>GitHub:</strong> <a href="https://github.com/kbmjj123/jsontoolbox.cc" target="_blank">github.com/kbmjj123/jsontoolbox.cc</a></li>
           <li><strong>Twitter:</strong> <a href="https://twitter.com/jsontoolbox" target="_blank">@jsontoolbox</a></li>
           <li><strong>Email:</strong> <a href="mailto:hello@jsontoolbox.cc">hello@jsontoolbox.cc</a></li>
         </ul>
@@ -24,7 +24,7 @@
         <h2>Report Issues</h2>
         <p>
           Found a bug or have a feature request? Please open an issue on our
-          <a href="https://github.com/jsontoolbox/issues" target="_blank">GitHub Issues</a> page.
+          <a href="https://github.com/kbmjj123/jsontoolbox.cc/issues" target="_blank">GitHub Issues</a> page.
         </p>
       </div>
     </div>

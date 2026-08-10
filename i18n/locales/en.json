@@ -75,6 +75,13 @@
       "desc": "An unexpected error occurred. Please try again."
     }
   },
+  "tool": {
+    "features_title": "Key Features",
+    "guide_title": "How to Use",
+    "faq_title": "Frequently Asked Questions",
+    "related_title": "Related Tools",
+    "next_steps_title": "What's Next"
+  },
   "system": {
     "backToHome": "Back to Home",
     "copy": "Copy",
