@@ -62,6 +62,22 @@ const componentMap: Record<string, ReturnType<typeof defineAsyncComponent>> = {
   JsonToCsv: defineAsyncComponent(() => import('~/components/universal/JsonToCsv.vue')),
   JsonTreeViewer: defineAsyncComponent(() => import('~/components/universal/JsonTreeViewer.vue')),
   JsonCompare: defineAsyncComponent(() => import('~/components/universal/JsonCompare.vue')),
+  JsonMinifier: defineAsyncComponent(() => import('~/components/universal/JsonMinifier.vue')),
+  JsonToYaml: defineAsyncComponent(() => import('~/components/universal/JsonToYaml.vue')),
+  YamlToJson: defineAsyncComponent(() => import('~/components/universal/YamlToJson.vue')),
+  JsonToTypescript: defineAsyncComponent(() => import('~/components/universal/JsonToTypescript.vue')),
+  JsonPathTester: defineAsyncComponent(() => import('~/components/universal/JsonPathTester.vue')),
+  JsonToXml: defineAsyncComponent(() => import('~/components/universal/JsonToXml.vue')),
+  XmlToJson: defineAsyncComponent(() => import('~/components/universal/XmlToJson.vue')),
+  CsvToJson: defineAsyncComponent(() => import('~/components/universal/CsvToJson.vue')),
+  JsonEscape: defineAsyncComponent(() => import('~/components/universal/JsonEscape.vue')),
+  JsonSchemaValidator: defineAsyncComponent(() => import('~/components/universal/JsonSchemaValidator.vue')),
+  JsonEditor: defineAsyncComponent(() => import('~/components/universal/JsonEditor.vue')),
+  JsonToCode: defineAsyncComponent(() => import('~/components/universal/JsonToCode.vue')),
+  JsonToExcel: defineAsyncComponent(() => import('~/components/universal/JsonToExcel.vue')),
+  JsonToPdf: defineAsyncComponent(() => import('~/components/universal/JsonToPdf.vue')),
+  JsonToTable: defineAsyncComponent(() => import('~/components/universal/JsonToTable.vue')),
+  JsonSchemaGenerator: defineAsyncComponent(() => import('~/components/universal/JsonSchemaGenerator.vue')),
 }
 
 const toolComponent = computed(() => {
