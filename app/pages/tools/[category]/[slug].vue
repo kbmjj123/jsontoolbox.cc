@@ -326,3 +326,4 @@ if (tool.value) {
       : []),
   ])
 }
+</script>
