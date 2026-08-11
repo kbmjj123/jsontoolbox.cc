@@ -50,9 +50,9 @@
       }
     ],
     "example": {
-      "input": "He said \"hello\" and she replied: OK",
-      "output": "\"He said \\\"hello\\\" and she replied: OK\"",
-      "useCase": "Escape a string to make it a valid JSON string value. Useful when embedding user input in JSON."
+      "input": "He said \"hello\"\nShe replied: \"OK\"\tThanks",
+      "output": "He said \\\"hello\\\"\\nShe replied: \\\"OK\\\"\\tThanks",
+      "useCase": "Escape special characters (quotes, newlines, tabs) so the string can be safely embedded in JSON."
     },
     "faq": [
       {
@@ -126,9 +126,9 @@
       }
     ],
     "example": {
-      "input": "He said \"hello\" and she replied: OK",
-      "output": "\"He said \\\"hello\\\" and she replied: OK\"",
-      "useCase": "转义字符串使其成为合法的 JSON 字符串值。适用于在 JSON 中嵌入用户输入。"
+      "input": "He said \"hello\"\nShe replied: \"OK\"\tThanks",
+      "output": "He said \\\"hello\\\"\\nShe replied: \\\"OK\\\"\\tThanks",
+      "useCase": "转义特殊字符（引号、换行、制表符），使字符串可以安全地嵌入 JSON 中。"
     },
     "faq": [
       {
