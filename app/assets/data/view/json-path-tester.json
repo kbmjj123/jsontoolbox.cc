@@ -62,6 +62,12 @@
         "description": "See the matching values and their paths."
       }
     ],
+    "example": {
+      "input": "{\\n  \"store\": {\\n    \"book\": [\\n      { \"title\": \"Book 1\", \"price\": 10 },\\n      { \"title\": \"Book 2\", \"price\": 20 }\\n    ]\\n  }\\n}",
+      "expression": "$.store.book[*].title",
+      "output": "[\"Book 1\", \"Book 2\"]",
+      "useCase": "Test JSONPath expressions to extract specific data from API responses."
+    },
     "faq": [
       {
         "question": "Is my JSON data uploaded to a server?",
@@ -140,6 +146,12 @@
         "description": "查看匹配的值及其路径。"
       }
     ],
+    "example": {
+      "input": "{\\n  \"store\": {\\n    \"book\": [\\n      { \"title\": \"Book 1\", \"price\": 10 },\\n      { \"title\": \"Book 2\", \"price\": 20 }\\n    ]\\n  }\\n}",
+      "expression": "$.store.book[*].title",
+      "output": "[\"Book 1\", \"Book 2\"]",
+      "useCase": "测试 JSONPath 表达式，从 API 响应中提取特定数据。"
+    },
     "faq": [
       {
         "question": "我的 JSON 数据会上传到服务器吗？",

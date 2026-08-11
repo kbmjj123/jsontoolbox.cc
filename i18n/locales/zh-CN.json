@@ -63,7 +63,17 @@
   },
   "tools": {
     "page_title": "所有 JSON 工具 — 免费在线 JSON 工具",
-    "page_description": "浏览所有可用的 JSON 工具。格式化、验证、转换和探索 JSON 数据。"
+    "page_description": "浏览所有可用的 JSON 工具。格式化、验证、转换和探索 JSON 数据。",
+    "example": {
+      "title": "示例",
+      "input": "输入",
+      "inputLeft": "左侧输入",
+      "inputRight": "右侧输入",
+      "output": "输出",
+      "schema": "Schema",
+      "expression": "JSONPath 表达式",
+      "useCase": "使用场景"
+    }
   },
   "error": {
     "not_found": {

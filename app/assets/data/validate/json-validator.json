@@ -49,6 +49,11 @@
         "description": "See if your JSON is valid or get detailed error information."
       }
     ],
+    "example": {
+      "input": "{\\n  \"name\": \"Alice\",\\n  \"age\": 30,\\n  \"email\": \"alice@example.com\"\\n}",
+      "output": "✅ Valid JSON",
+      "useCase": "Validate JSON syntax before sending API requests or processing data."
+    },
     "faq": [
       {
         "question": "What errors can the JSON validator detect?",
@@ -128,6 +133,11 @@
         "description": "查看 JSON 是否有效或获取详细错误信息。"
       }
     ],
+    "example": {
+      "input": "{\\n  \"name\": \"Alice\",\\n  \"age\": 30,\\n  \"email\": \"alice@example.com\"\\n}",
+      "output": "✅ 有效的 JSON",
+      "useCase": "在发送 API 请求或处理数据前验证 JSON 语法是否正确。"
+    },
     "faq": [
       {
         "question": "能检测哪些错误？",

@@ -58,6 +58,11 @@
         "description": "Copy the JSON output or download it as a file."
       }
     ],
+    "example": {
+      "input": "<user>\\n  <name>Alice</name>\\n  <age>30</age>\\n</user>",
+      "output": "{\\n  \"user\": {\\n    \"name\": \"Alice\",\\n    \"age\": 30\\n  }\\n}",
+      "useCase": "Convert XML API responses to JSON for frontend processing."
+    },
     "faq": [
       {
         "question": "Is my XML data uploaded to a server?",
@@ -132,6 +137,11 @@
         "description": "复制 JSON 输出或下载为文件。"
       }
     ],
+    "example": {
+      "input": "<user>\\n  <name>Alice</name>\\n  <age>30</age>\\n</user>",
+      "output": "{\\n  \"user\": {\\n    \"name\": \"Alice\",\\n    \"age\": 30\\n  }\\n}",
+      "useCase": "将 XML 格式的 API 响应转换为 JSON 供前端使用。"
+    },
     "faq": [
       {
         "question": "我的 XML 数据会上传到服务器吗？",

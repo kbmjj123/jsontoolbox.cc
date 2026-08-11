@@ -49,6 +49,11 @@
         "description": "Copy the processed string to clipboard."
       }
     ],
+    "example": {
+      "input": "He said \"hello\" and she replied: OK",
+      "output": "He said \\\"hello\\\" and she replied: OK",
+      "useCase": "Escape special characters in strings to make them valid JSON string values."
+    },
     "faq": [
       {
         "question": "Is my JSON data uploaded to a server?",
@@ -120,6 +125,11 @@
         "description": "复制处理后的字符串到剪贴板。"
       }
     ],
+    "example": {
+      "input": "He said \"hello\" and she replied: OK",
+      "output": "He said \\\"hello\\\" and she replied: OK",
+      "useCase": "转义字符串中的特殊字符，使其成为合法的 JSON 字符串值。"
+    },
     "faq": [
       {
         "question": "我的 JSON 数据会上传到服务器吗？",

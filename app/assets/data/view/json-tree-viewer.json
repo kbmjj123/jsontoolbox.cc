@@ -57,6 +57,11 @@
         "description": "Use the search box to find specific keys or values."
       }
     ],
+    "example": {
+      "input": "{\\n  \"user\": {\\n    \"name\": \"Alice\",\\n    \"address\": {\\n      \"city\": \"New York\",\\n      \"zip\": \"10001\"\\n    }\\n  }\\n}",
+      "output": "▼ user\\n  ▼ name: \"Alice\"\\n  ▼ address\\n    ▼ city: \"New York\"\\n    ▼ zip: \"10001\"",
+      "useCase": "Visualize and explore complex nested JSON structures with an interactive tree."
+    },
     "faq": [
       {
         "question": "Can I copy the path to a specific value?",
@@ -134,6 +139,11 @@
         "description": "使用搜索框查找特定的键或值。"
       }
     ],
+    "example": {
+      "input": "{\\n  \"user\": {\\n    \"name\": \"Alice\",\\n    \"address\": {\\n      \"city\": \"New York\",\\n      \"zip\": \"10001\"\\n    }\\n  }\\n}",
+      "output": "▼ user\\n  ▼ name: \"Alice\"\\n  ▼ address\\n    ▼ city: \"New York\"\\n    ▼ zip: \"10001\"",
+      "useCase": "可视化探索复杂的嵌套 JSON 结构。"
+    },
     "faq": [
       {
         "question": "可以复制特定值的路径吗？",

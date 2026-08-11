@@ -57,6 +57,11 @@
         "description": "Copy the HTML table code for use in your projects."
       }
     ],
+    "example": {
+      "input": "[\\n  { \"name\": \"Alice\", \"age\": 30, \"city\": \"New York\" },\\n  { \"name\": \"Bob\", \"age\": 25, \"city\": \"London\" }\\n]",
+      "output": "<table>\\n  <thead>\\n    <tr><th>name</th><th>age</th><th>city</th></tr>\\n  </thead>\\n  <tbody>\\n    <tr><td>Alice</td><td>30</td><td>New York</td></tr>\\n    <tr><td>Bob</td><td>25</td><td>London</td></tr>\\n  </tbody>\\n</table>",
+      "useCase": "Quickly convert JSON data to HTML tables for web page display."
+    },
     "faq": [
       {
         "question": "Is my JSON data uploaded to a server?",
@@ -134,6 +139,11 @@
         "description": "复制 HTML 表格代码用于你的项目。"
       }
     ],
+    "example": {
+      "input": "[\\n  { \"name\": \"Alice\", \"age\": 30, \"city\": \"New York\" },\\n  { \"name\": \"Bob\", \"age\": 25, \"city\": \"London\" }\\n]",
+      "output": "<table>\\n  <thead>\\n    <tr><th>name</th><th>age</th><th>city</th></tr>\\n  </thead>\\n  <tbody>\\n    <tr><td>Alice</td><td>30</td><td>New York</td></tr>\\n    <tr><td>Bob</td><td>25</td><td>London</td></tr>\\n  </tbody>\\n</table>",
+      "useCase": "将 JSON 数据快速转换为 HTML 表格用于网页展示。"
+    },
     "faq": [
       {
         "question": "我的 JSON 数据会上传到服务器吗？",

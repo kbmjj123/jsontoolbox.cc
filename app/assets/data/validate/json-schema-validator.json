@@ -74,6 +74,12 @@
         "description": "Click Validate to check if your JSON conforms to the schema."
       }
     ],
+    "example": {
+      "input": "{\\n  \"name\": \"Alice\",\\n  \"age\": 30,\\n  \"email\": \"alice@example.com\"\\n}",
+      "schema": "{\\n  \"type\": \"object\",\\n  \"properties\": {\\n    \"name\": { \"type\": \"string\" },\\n    \"age\": { \"type\": \"number\" },\\n    \"email\": { \"type\": \"string\", \"format\": \"email\" }\\n  },\\n  \"required\": [\"name\", \"email\"]\\n}",
+      "output": "✅ Valid — matches schema",
+      "useCase": "Validate API requests/responses against a predefined JSON Schema."
+    },
     "faq": [
       {
         "question": "Is my JSON data uploaded to a server?",
@@ -168,6 +174,12 @@
         "description": "点击验证按钮检查 JSON 是否符合 Schema。"
       }
     ],
+    "example": {
+      "input": "{\\n  \"name\": \"Alice\",\\n  \"age\": 30,\\n  \"email\": \"alice@example.com\"\\n}",
+      "schema": "{\\n  \"type\": \"object\",\\n  \"properties\": {\\n    \"name\": { \"type\": \"string\" },\\n    \"age\": { \"type\": \"number\" },\\n    \"email\": { \"type\": \"string\", \"format\": \"email\" }\\n  },\\n  \"required\": [\"name\", \"email\"]\\n}",
+      "output": "✅ 有效 — 符合 Schema",
+      "useCase": "验证 API 请求/响应是否符合预定义的 JSON Schema。"
+    },
     "faq": [
       {
         "question": "我的 JSON 数据会上传到服务器吗？",

@@ -29,6 +29,78 @@
 
         <!-- SEO Content Sections -->
         <ToolSeoContent :tool="tool" class="mt-12" />
+
+        <!-- Example Section -->
+        <div v-if="tool.example" class="mt-8 rounded-2xl border border-surface-200 bg-white p-6 dark:border-surface-700 dark:bg-surface-900">
+          <h2 class="mb-6 text-xl font-bold text-surface-900 dark:text-surface-100">
+            {{ t('tools.example.title') }}
+          </h2>
+
+          <div class="space-y-6">
+            <!-- Single Input (most tools) -->
+            <div v-if="tool.example.input">
+              <h3 class="mb-2 text-sm font-semibold text-surface-700 dark:text-surface-300">
+                {{ t('tools.example.input') }}
+              </h3>
+              <pre class="overflow-x-auto rounded-lg bg-surface-50 p-4 text-sm text-surface-800 dark:bg-surface-800 dark:text-surface-200"><code>{{ tool.example.input }}</code></pre>
+            </div>
+
+            <!-- Dual Input (JSON Compare) -->
+            <div v-if="tool.example.inputLeft && tool.example.inputRight" class="grid gap-4 md:grid-cols-2">
+              <div>
+                <h3 class="mb-2 text-sm font-semibold text-surface-700 dark:text-surface-300">
+                  {{ t('tools.example.inputLeft') }}
+                </h3>
+                <pre class="overflow-x-auto rounded-lg bg-surface-50 p-4 text-sm text-surface-800 dark:bg-surface-800 dark:text-surface-200"><code>{{ tool.example.inputLeft }}</code></pre>
+              </div>
+              <div>
+                <h3 class="mb-2 text-sm font-semibold text-surface-700 dark:text-surface-300">
+                  {{ t('tools.example.inputRight') }}
+                </h3>
+                <pre class="overflow-x-auto rounded-lg bg-surface-50 p-4 text-sm text-surface-800 dark:bg-surface-800 dark:text-surface-200"><code>{{ tool.example.inputRight }}</code></pre>
+              </div>
+            </div>
+
+            <!-- Schema (JSON Schema Validator) -->
+            <div v-if="tool.example.schema">
+              <h3 class="mb-2 text-sm font-semibold text-surface-700 dark:text-surface-300">
+                {{ t('tools.example.schema') }}
+              </h3>
+              <pre class="overflow-x-auto rounded-lg bg-surface-50 p-4 text-sm text-surface-800 dark:bg-surface-800 dark:text-surface-200"><code>{{ tool.example.schema }}</code></pre>
+            </div>
+
+            <!-- Expression (JSONPath Tester) -->
+            <div v-if="tool.example.expression">
+              <h3 class="mb-2 text-sm font-semibold text-surface-700 dark:text-surface-300">
+                {{ t('tools.example.expression') }}
+              </h3>
+              <pre class="overflow-x-auto rounded-lg bg-surface-50 p-4 text-sm text-surface-800 dark:bg-surface-800 dark:text-surface-200"><code>{{ tool.example.expression }}</code></pre>
+            </div>
+
+            <!-- Output -->
+            <div v-if="tool.example.output">
+              <h3 class="mb-2 text-sm font-semibold text-surface-700 dark:text-surface-300">
+                {{ t('tools.example.output') }}
+              </h3>
+              <pre class="overflow-x-auto rounded-lg bg-surface-50 p-4 text-sm text-surface-800 dark:bg-surface-800 dark:text-surface-200"><code>{{ tool.example.output }}</code></pre>
+            </div>
+
+            <!-- Use Case -->
+            <div v-if="tool.example.useCase" class="rounded-lg bg-primary-50 p-4 dark:bg-primary-900/20">
+              <div class="flex items-start gap-3">
+                <Icon name="lucide:lightbulb" class="mt-0.5 h-5 w-5 text-primary-600 dark:text-primary-400" />
+                <div>
+                  <h3 class="mb-1 text-sm font-semibold text-primary-700 dark:text-primary-300">
+                    {{ t('tools.example.useCase') }}
+                  </h3>
+                  <p class="text-sm text-primary-600 dark:text-primary-400">
+                    {{ tool.example.useCase }}
+                  </p>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
       </div>
 
       <!-- 404 -->

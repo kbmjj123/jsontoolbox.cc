@@ -49,6 +49,11 @@
         "description": "Copy the formatted JSON or download it as a file."
       }
     ],
+    "example": {
+      "input": "{\\n  \"users\": [\\n    { \"id\": 1, \"name\": \"Alice\", \"email\": \"alice@example.com\", \"age\": 30 },\\n    { \"id\": 2, \"name\": \"Bob\", \"email\": \"bob@example.com\", \"age\": 25 }\\n  ]\\n}",
+      "output": "{\\n  \"users\": [\\n    {\\n      \"id\": 1,\\n      \"name\": \"Alice\",\\n      \"email\": \"alice@example.com\",\\n      \"age\": 30\\n    },\\n    {\\n      \"id\": 2,\\n      \"name\": \"Bob\",\\n      \"email\": \"bob@example.com\",\\n      \"age\": 25\\n    }\\n  ]\\n}",
+      "useCase": "Format minified JSON from API responses to make it readable for debugging and inspection."
+    },
     "faq": [
       {
         "question": "Is my JSON data uploaded to a server?",
@@ -127,6 +132,11 @@
         "description": "复制格式化后的 JSON 或下载为文件。"
       }
     ],
+    "example": {
+      "input": "{\\n  \"users\": [\\n    { \"id\": 1, \"name\": \"Alice\", \"email\": \"alice@example.com\", \"age\": 30 },\\n    { \"id\": 2, \"name\": \"Bob\", \"email\": \"bob@example.com\", \"age\": 25 }\\n  ]\\n}",
+      "output": "{\\n  \"users\": [\\n    {\\n      \"id\": 1,\\n      \"name\": \"Alice\",\\n      \"email\": \"alice@example.com\",\\n      \"age\": 30\\n    },\\n    {\\n      \"id\": 2,\\n      \"name\": \"Bob\",\\n      \"email\": \"bob@example.com\",\\n      \"age\": 25\\n    }\\n  ]\\n}",
+      "useCase": "格式化 API 响应中的压缩 JSON，便于调试和检查。"
+    },
     "faq": [
       {
         "question": "我的 JSON 数据会上传到服务器吗？",

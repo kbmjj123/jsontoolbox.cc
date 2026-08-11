@@ -49,6 +49,11 @@
         "description": "Download the CSV file or copy the output."
       }
     ],
+    "example": {
+      "input": "[\\n  { \"name\": \"Alice\", \"age\": 30, \"city\": \"New York\" },\\n  { \"name\": \"Bob\", \"age\": 25, \"city\": \"London\" }\\n]",
+      "output": "name,age,city\\nAlice,30,New York\\nBob,25,London",
+      "useCase": "Export API user lists to CSV for analysis in Excel or Google Sheets."
+    },
     "faq": [
       {
         "question": "Does it support nested JSON objects?",
@@ -125,6 +130,11 @@
         "description": "下载 CSV 文件或复制输出。"
       }
     ],
+    "example": {
+      "input": "[\\n  { \"name\": \"Alice\", \"age\": 30, \"city\": \"New York\" },\\n  { \"name\": \"Bob\", \"age\": 25, \"city\": \"London\" }\\n]",
+      "output": "name,age,city\\nAlice,30,New York\\nBob,25,London",
+      "useCase": "将 API 返回的用户列表导出为 CSV，用于 Excel 分析。"
+    },
     "faq": [
       {
         "question": "支持嵌套 JSON 对象吗？",

@@ -49,6 +49,12 @@
         "description": "Click Compare to see all differences highlighted."
       }
     ],
+    "example": {
+      "inputLeft": "{\\n  \"name\": \"Alice\",\\n  \"age\": 30,\\n  \"city\": \"New York\"\\n}",
+      "inputRight": "{\\n  \"name\": \"Alice\",\\n  \"age\": 31,\\n  \"email\": \"alice@example.com\"\\n}",
+      "output": "Differences:\\n- .age: 30 → 31 (modified)\\n- .city: \"New York\" → removed\\n- .email: added \"alice@example.com\"",
+      "useCase": "Compare two versions of an API response to quickly identify changes."
+    },
     "faq": [
       {
         "question": "Is my JSON data uploaded to a server?",
@@ -130,6 +136,12 @@
         "description": "点击比较按钮查看所有高亮的差异。"
       }
     ],
+    "example": {
+      "inputLeft": "{\\n  \"name\": \"Alice\",\\n  \"age\": 30,\\n  \"city\": \"New York\"\\n}",
+      "inputRight": "{\\n  \"name\": \"Alice\",\\n  \"age\": 31,\\n  \"email\": \"alice@example.com\"\\n}",
+      "output": "差异：\\n- .age: 30 → 31 (已修改)\\n- .city: \"New York\" → 已删除\\n- .email: 已添加 \"alice@example.com\"",
+      "useCase": "比较两个版本的 API 响应，快速找出差异。"
+    },
     "faq": [
       {
         "question": "我的 JSON 数据会上传到服务器吗？",
