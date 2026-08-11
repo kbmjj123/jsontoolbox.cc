@@ -1,5 +1,5 @@
 <template>
-  <div class="space-y-2 max-w-3xl">
+  <div class="mx-auto space-y-2 max-w-3xl">
     <details
       v-for="(item, index) in faq"
       :key="index"
