@@ -266,4 +266,63 @@ defineOgImage({
     variant: ogVariant.value,
     accent: ogAccent.value,
   },
-})</script>
+})
+
+// JSON-LD Schema
+const config = useRuntimeConfig()
+const siteUrl = config.public.baseUrl || 'https://jsontoolbox.cc'
+
+if (tool.value) {
+  useSchemaOrg([
+    // SoftwareApplication Schema
+    defineSoftwareApp({
+      name: tool.value.name,
+      description: tool.value.description,
+      url: `${siteUrl}${tool.value.path}`,
+      applicationCategory: 'DeveloperApplication',
+      operatingSystem: 'Web Browser',
+      offers: {
+        '@type': 'Offer',
+        price: '0',
+        priceCurrency: 'USD',
+      },
+    }),
+
+    // Breadcrumb Schema
+    defineBreadcrumb({
+      itemListElement: [
+        { name: 'Home', item: siteUrl },
+        { name: 'Tools', item: `${siteUrl}/tools` },
+        { name: tool.value.name },
+      ],
+    }),
+
+    // HowTo Schema (from guide)
+    ...(tool.value.guide?.length
+      ? [
+          defineHowTo({
+            name: `How to use ${tool.value.name}`,
+            step: tool.value.guide.map((step: any, index: number) => ({
+              '@type': 'HowToStep',
+              name: step.title,
+              text: step.description,
+              position: index + 1,
+            })),
+          }),
+        ]
+      : []),
+
+    // FAQ Schema
+    ...(tool.value.faq?.length
+      ? tool.value.faq.map((item: any) =>
+          defineQuestion({
+            name: item.question,
+            acceptedAnswer: {
+              '@type': 'Answer',
+              text: item.answer,
+            },
+          })
+        )
+      : []),
+  ])
+}
