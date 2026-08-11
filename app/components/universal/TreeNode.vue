@@ -25,7 +25,7 @@
         </div>
 
         <div v-if="isExpanded(key) && (isObject(value) || isArray(value))" class="ml-4 border-l border-surface-200 dark:border-surface-700 pl-2">
-          <TreeNode :data="value" :path="getFullPath(key)" :search="search" @copy="$emit('copy', $event)" />
+          <UniversalTreeNode :data="value" :path="getFullPath(key)" :search="search" @copy="$emit('copy', $event)" />
         </div>
       </div>
     </template>
@@ -54,7 +54,7 @@
         </div>
 
         <div v-if="isExpanded(index) && (isObject(item) || isArray(item))" class="ml-4 border-l border-surface-200 dark:border-surface-700 pl-2">
-          <TreeNode :data="item" :path="getFullPath(index)" :search="search" @copy="$emit('copy', $event)" />
+          <UniversalTreeNode :data="item" :path="getFullPath(index)" :search="search" @copy="$emit('copy', $event)" />
         </div>
       </div>
     </template>

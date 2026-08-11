@@ -35,7 +35,7 @@
         <div class="h-64 rounded-xl border border-surface-200 bg-surface-50 p-4 overflow-auto dark:border-surface-700 dark:bg-surface-800">
           <div v-if="error" class="text-red-600 dark:text-red-400 text-sm">{{ error }}</div>
           <div v-else-if="treeData">
-            <TreeNode :data="treeData" :path="''" :search="searchQuery" @copy="copyPath" />
+            <UniversalTreeNode :data="treeData" :path="''" :search="searchQuery" @copy="copyPath" />
           </div>
           <div v-else class="flex items-center justify-center h-full text-surface-400 text-sm">
             {{ ui?.emptyState ?? 'Paste JSON and click "View Tree"' }}
