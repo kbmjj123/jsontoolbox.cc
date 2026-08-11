@@ -24,11 +24,13 @@
       <ToolFaq :faq="tool.faq" />
     </section>
 
-    <!-- Related Tools -->
-    <section v-if="tool.nextSteps?.length || tool.recommends?.length">
+    <!-- Related Tools (推荐工具) -->
+    <section v-if="tool.nextSteps?.length">
+      <h2 class="mb-4 text-lg font-bold text-surface-900 dark:text-surface-100">
+        {{ $t('tool.related_title') }}
+      </h2>
       <ToolRelated
-        :next-steps="tool.nextSteps"
-        :recommends="tool.recommends"
+        :tools="tool.nextSteps"
         :current-slug="tool.slug"
       />
     </section>

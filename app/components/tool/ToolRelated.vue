@@ -1,8 +1,5 @@
 <template>
   <div v-if="relatedTools.length > 0">
-    <h3 class="mb-3 text-xs font-semibold uppercase tracking-wider text-surface-400 dark:text-surface-500">
-      {{ $t('tool.related_title') }}
-    </h3>
     <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
       <NuxtLinkLocale
         v-for="item in relatedTools"
@@ -28,18 +25,14 @@
 
 <script setup lang="ts">
 const props = defineProps<{
-  nextSteps?: string[]
-  recommends?: string[]
+  tools?: string[]
   currentSlug: string
 }>()
 
 const { getToolBySingleSlug } = useTools()
 
 const relatedTools = computed(() => {
-  const all = [
-    ...(props.nextSteps || []),
-    ...(props.recommends || []),
-  ]
+  const all = props.tools || []
   const seen = new Set<string>()
   return all
     .filter(s => {
