@@ -36,49 +36,103 @@
           <div class="space-y-6">
             <!-- Single Input (most tools) -->
             <div v-if="tool.example.input">
-              <h3 class="mb-2 text-sm font-semibold text-surface-700 dark:text-surface-300">
-                {{ t('tools.example.input') }}
-              </h3>
+              <div class="mb-2 flex items-center justify-between">
+                <h3 class="text-sm font-semibold text-surface-700 dark:text-surface-300">
+                  {{ t('tools.example.input') }}
+                </h3>
+                <button
+                  @click="copyExample(tool.example.input)"
+                  class="flex items-center gap-1.5 rounded-md px-2 py-1 text-xs text-surface-500 hover:bg-surface-100 hover:text-surface-700 dark:text-surface-400 dark:hover:bg-surface-700 dark:hover:text-surface-300"
+                >
+                  <Icon :name="copied ? 'lucide:check' : 'lucide:copy'" class="h-3.5 w-3.5" />
+                  {{ copied ? t('system.copied') : t('system.copy') }}
+                </button>
+              </div>
               <pre class="overflow-x-auto rounded-lg bg-surface-50 p-4 text-sm text-surface-800 dark:bg-surface-800 dark:text-surface-200"><code>{{ formatExampleText(tool.example.input) }}</code></pre>
             </div>
 
             <!-- Dual Input (JSON Compare) -->
             <div v-if="tool.example.inputLeft && tool.example.inputRight" class="grid gap-4 md:grid-cols-2">
               <div>
-                <h3 class="mb-2 text-sm font-semibold text-surface-700 dark:text-surface-300">
-                  {{ t('tools.example.inputLeft') }}
-                </h3>
+                <div class="mb-2 flex items-center justify-between">
+                  <h3 class="text-sm font-semibold text-surface-700 dark:text-surface-300">
+                    {{ t('tools.example.inputLeft') }}
+                  </h3>
+                  <button
+                    @click="copyExample(tool.example.inputLeft)"
+                    class="flex items-center gap-1.5 rounded-md px-2 py-1 text-xs text-surface-500 hover:bg-surface-100 hover:text-surface-700 dark:text-surface-400 dark:hover:bg-surface-700 dark:hover:text-surface-300"
+                  >
+                    <Icon :name="copied ? 'lucide:check' : 'lucide:copy'" class="h-3.5 w-3.5" />
+                    {{ copied ? t('system.copied') : t('system.copy') }}
+                  </button>
+                </div>
                 <pre class="overflow-x-auto rounded-lg bg-surface-50 p-4 text-sm text-surface-800 dark:bg-surface-800 dark:text-surface-200"><code>{{ formatExampleText(tool.example.inputLeft) }}</code></pre>
               </div>
               <div>
-                <h3 class="mb-2 text-sm font-semibold text-surface-700 dark:text-surface-300">
-                  {{ t('tools.example.inputRight') }}
-                </h3>
+                <div class="mb-2 flex items-center justify-between">
+                  <h3 class="text-sm font-semibold text-surface-700 dark:text-surface-300">
+                    {{ t('tools.example.inputRight') }}
+                  </h3>
+                  <button
+                    @click="copyExample(tool.example.inputRight)"
+                    class="flex items-center gap-1.5 rounded-md px-2 py-1 text-xs text-surface-500 hover:bg-surface-100 hover:text-surface-700 dark:text-surface-400 dark:hover:bg-surface-700 dark:hover:text-surface-300"
+                  >
+                    <Icon :name="copied ? 'lucide:check' : 'lucide:copy'" class="h-3.5 w-3.5" />
+                    {{ copied ? t('system.copied') : t('system.copy') }}
+                  </button>
+                </div>
                 <pre class="overflow-x-auto rounded-lg bg-surface-50 p-4 text-sm text-surface-800 dark:bg-surface-800 dark:text-surface-200"><code>{{ formatExampleText(tool.example.inputRight) }}</code></pre>
               </div>
             </div>
 
             <!-- Schema (JSON Schema Validator) -->
             <div v-if="tool.example.schema">
-              <h3 class="mb-2 text-sm font-semibold text-surface-700 dark:text-surface-300">
-                {{ t('tools.example.schema') }}
-              </h3>
+              <div class="mb-2 flex items-center justify-between">
+                <h3 class="text-sm font-semibold text-surface-700 dark:text-surface-300">
+                  {{ t('tools.example.schema') }}
+                </h3>
+                <button
+                  @click="copyExample(tool.example.schema)"
+                  class="flex items-center gap-1.5 rounded-md px-2 py-1 text-xs text-surface-500 hover:bg-surface-100 hover:text-surface-700 dark:text-surface-400 dark:hover:bg-surface-700 dark:hover:text-surface-300"
+                >
+                  <Icon :name="copied ? 'lucide:check' : 'lucide:copy'" class="h-3.5 w-3.5" />
+                  {{ copied ? t('system.copied') : t('system.copy') }}
+                </button>
+              </div>
               <pre class="overflow-x-auto rounded-lg bg-surface-50 p-4 text-sm text-surface-800 dark:bg-surface-800 dark:text-surface-200"><code>{{ formatExampleText(tool.example.schema) }}</code></pre>
             </div>
 
             <!-- Expression (JSONPath Tester) -->
             <div v-if="tool.example.expression">
-              <h3 class="mb-2 text-sm font-semibold text-surface-700 dark:text-surface-300">
-                {{ t('tools.example.expression') }}
-              </h3>
+              <div class="mb-2 flex items-center justify-between">
+                <h3 class="text-sm font-semibold text-surface-700 dark:text-surface-300">
+                  {{ t('tools.example.expression') }}
+                </h3>
+                <button
+                  @click="copyExample(tool.example.expression)"
+                  class="flex items-center gap-1.5 rounded-md px-2 py-1 text-xs text-surface-500 hover:bg-surface-100 hover:text-surface-700 dark:text-surface-400 dark:hover:bg-surface-700 dark:hover:text-surface-300"
+                >
+                  <Icon :name="copied ? 'lucide:check' : 'lucide:copy'" class="h-3.5 w-3.5" />
+                  {{ copied ? t('system.copied') : t('system.copy') }}
+                </button>
+              </div>
               <pre class="overflow-x-auto rounded-lg bg-surface-50 p-4 text-sm text-surface-800 dark:bg-surface-800 dark:text-surface-200"><code>{{ formatExampleText(tool.example.expression) }}</code></pre>
             </div>
 
             <!-- Output -->
             <div v-if="tool.example.output">
-              <h3 class="mb-2 text-sm font-semibold text-surface-700 dark:text-surface-300">
-                {{ t('tools.example.output') }}
-              </h3>
+              <div class="mb-2 flex items-center justify-between">
+                <h3 class="text-sm font-semibold text-surface-700 dark:text-surface-300">
+                  {{ t('tools.example.output') }}
+                </h3>
+                <button
+                  @click="copyExample(tool.example.output)"
+                  class="flex items-center gap-1.5 rounded-md px-2 py-1 text-xs text-surface-500 hover:bg-surface-100 hover:text-surface-700 dark:text-surface-400 dark:hover:bg-surface-700 dark:hover:text-surface-300"
+                >
+                  <Icon :name="copied ? 'lucide:check' : 'lucide:copy'" class="h-3.5 w-3.5" />
+                  {{ copied ? t('system.copied') : t('system.copy') }}
+                </button>
+              </div>
               <pre class="overflow-x-auto rounded-lg bg-surface-50 p-4 text-sm text-surface-800 dark:bg-surface-800 dark:text-surface-200"><code>{{ formatExampleText(tool.example.output) }}</code></pre>
             </div>
 
@@ -119,11 +173,18 @@
 const route = useRoute()
 const { getToolDetail } = useTools()
 const { t } = useI18n()
+const { copy, copied } = useClipboard()
 
 // 处理示例文本，将 \n 转换为真正的换行
 const formatExampleText = (text: string | undefined): string => {
   if (!text) return ''
   return text.replace(/\\n/g, '\n')
+}
+
+// 复制示例文本
+const copyExample = (text: string | undefined) => {
+  if (!text) return
+  copy(formatExampleText(text))
 }
 
 const category = computed(() => route.params.category as string)
