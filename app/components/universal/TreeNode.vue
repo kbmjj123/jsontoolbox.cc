@@ -73,7 +73,7 @@ const props = defineProps<{
   search: string
 }>()
 
-defineEmits<{
+const emit = defineEmits<{
   copy: [path: string]
 }>()
 
