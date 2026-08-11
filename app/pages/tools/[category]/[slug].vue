@@ -27,9 +27,6 @@
           </div>
         </div>
 
-        <!-- SEO Content Sections -->
-        <ToolSeoContent :tool="tool" class="mt-12" />
-
         <!-- Example Section -->
         <div v-if="tool.example" class="mt-8 rounded-2xl border border-surface-200 bg-white p-6 dark:border-surface-700 dark:bg-surface-900">
           <h2 class="mb-6 text-xl font-bold text-surface-900 dark:text-surface-100">
@@ -101,6 +98,9 @@
             </div>
           </div>
         </div>
+
+        <!-- SEO Content Sections -->
+        <ToolSeoContent :tool="tool" class="mt-12" />
       </div>
 
       <!-- 404 -->
