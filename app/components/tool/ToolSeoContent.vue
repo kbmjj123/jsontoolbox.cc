@@ -1,5 +1,16 @@
 <template>
   <div class="space-y-10">
+		<!-- Related Tools (推荐工具) -->
+    <section v-if="tool.nextSteps?.length">
+      <h2 class="mb-4 text-lg font-bold text-surface-900 dark:text-surface-100">
+        {{ $t('tool.related_title') }}
+      </h2>
+      <ToolRelated
+        :tools="tool.nextSteps"
+        :current-slug="tool.slug"
+      />
+    </section>
+
     <!-- Features -->
     <section v-if="tool.features?.length">
       <h2 class="mb-4 text-lg font-bold text-surface-900 dark:text-surface-100">
@@ -16,23 +27,12 @@
       <ToolGuide :guide="tool.guide" />
     </section>
 
-    <!-- FAQ -->
+		<!-- FAQ -->
     <section v-if="tool.faq?.length">
       <h2 class="mb-4 text-lg font-bold text-surface-900 dark:text-surface-100">
         {{ $t('tool.faq_title') }}
       </h2>
       <ToolFaq :faq="tool.faq" />
-    </section>
-
-    <!-- Related Tools (推荐工具) -->
-    <section v-if="tool.nextSteps?.length">
-      <h2 class="mb-4 text-lg font-bold text-surface-900 dark:text-surface-100">
-        {{ $t('tool.related_title') }}
-      </h2>
-      <ToolRelated
-        :tools="tool.nextSteps"
-        :current-slug="tool.slug"
-      />
     </section>
   </div>
 </template>

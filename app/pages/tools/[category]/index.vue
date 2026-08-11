@@ -1,14 +1,14 @@
 <template>
   <div class="py-12">
     <div class="mx-auto max-w-[1200px] px-5">
-      <div v-if="categoryData">
+      <div v-if="categoryLangData">
         <!-- Category Header -->
         <div class="mb-10">
           <h1 class="text-3xl font-bold text-surface-900 dark:text-surface-100">
-            {{ categoryData.h2 || categoryData.title }}
+            {{ categoryLangData.h2 || categoryLangData.title }}
           </h1>
           <p class="mt-3 text-surface-600 dark:text-surface-400">
-            {{ categoryData.pdesc || categoryData.description }}
+            {{ categoryLangData.pdesc || categoryLangData.description }}
           </p>
         </div>
 
