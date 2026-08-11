@@ -50,9 +50,9 @@
       }
     ],
     "example": {
-      "input": "He said \"hello\"\nShe replied: \"OK\"\tThanks",
-      "output": "He said \\\"hello\\\"\\nShe replied: \\\"OK\\\"\\tThanks",
-      "useCase": "Escape special characters (quotes, newlines, tabs) so the string can be safely embedded in JSON."
+      "input": "{\"message\": \"User said: \"hello\" and left\"}",
+      "output": "{\"message\": \"User said: \\\"hello\\\" and left\"}",
+      "useCase": "Escape unquoted strings in JSON to make them valid. Fixes invalid JSON with unescaped special characters."
     },
     "faq": [
       {
@@ -126,9 +126,9 @@
       }
     ],
     "example": {
-      "input": "He said \"hello\"\nShe replied: \"OK\"\tThanks",
-      "output": "He said \\\"hello\\\"\\nShe replied: \\\"OK\\\"\\tThanks",
-      "useCase": "转义特殊字符（引号、换行、制表符），使字符串可以安全地嵌入 JSON 中。"
+      "input": "{\"message\": \"User said: \"hello\" and left\"}",
+      "output": "{\"message\": \"User said: \\\"hello\\\" and left\"}",
+      "useCase": "转义 JSON 中未转引号的字符串，使其成为有效的 JSON。修复包含未转义特殊字符的无效 JSON。"
     },
     "faq": [
       {
