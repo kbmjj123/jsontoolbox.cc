@@ -272,8 +272,8 @@ if (tool.value) {
     // Breadcrumb Schema
     defineBreadcrumb({
       itemListElement: [
-        { name: 'Home', item: siteUrl },
-        { name: 'Tools', item: `${siteUrl}/tools` },
+        { name: t('app.nav.home'), item: siteUrl },
+        { name: t('app.nav.tools'), item: `${siteUrl}/tools` },
         { name: tool.value.name },
       ],
     }),
