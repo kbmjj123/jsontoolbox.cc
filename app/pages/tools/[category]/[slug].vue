@@ -191,34 +191,15 @@ const category = computed(() => route.params.category as string)
 const slug = computed(() => route.params.slug as string)
 const tool = computed(() => getToolDetail(category.value, slug.value))
 
-// 可用的工具组件映射（避免 SSR 时动态 import 失败导致 500）
-const componentMap: Record<string, ReturnType<typeof defineAsyncComponent>> = {
-  JsonFormatter: defineAsyncComponent(() => import('~/components/universal/JsonFormatter.vue')),
-  JsonValidator: defineAsyncComponent(() => import('~/components/universal/JsonValidator.vue')),
-  JsonToCsv: defineAsyncComponent(() => import('~/components/universal/JsonToCsv.vue')),
-  JsonTreeViewer: defineAsyncComponent(() => import('~/components/universal/JsonTreeViewer.vue')),
-  JsonCompare: defineAsyncComponent(() => import('~/components/universal/JsonCompare.vue')),
-  JsonMinifier: defineAsyncComponent(() => import('~/components/universal/JsonMinifier.vue')),
-  JsonToYaml: defineAsyncComponent(() => import('~/components/universal/JsonToYaml.vue')),
-  YamlToJson: defineAsyncComponent(() => import('~/components/universal/YamlToJson.vue')),
-  JsonToTypescript: defineAsyncComponent(() => import('~/components/universal/JsonToTypescript.vue')),
-  JsonPathTester: defineAsyncComponent(() => import('~/components/universal/JsonPathTester.vue')),
-  JsonToXml: defineAsyncComponent(() => import('~/components/universal/JsonToXml.vue')),
-  XmlToJson: defineAsyncComponent(() => import('~/components/universal/XmlToJson.vue')),
-  CsvToJson: defineAsyncComponent(() => import('~/components/universal/CsvToJson.vue')),
-  JsonEscape: defineAsyncComponent(() => import('~/components/universal/JsonEscape.vue')),
-  JsonSchemaValidator: defineAsyncComponent(() => import('~/components/universal/JsonSchemaValidator.vue')),
-  JsonEditor: defineAsyncComponent(() => import('~/components/universal/JsonEditor.vue')),
-  JsonToCode: defineAsyncComponent(() => import('~/components/universal/JsonToCode.vue')),
-  JsonToExcel: defineAsyncComponent(() => import('~/components/universal/JsonToExcel.vue')),
-  JsonToPdf: defineAsyncComponent(() => import('~/components/universal/JsonToPdf.vue')),
-  JsonToTable: defineAsyncComponent(() => import('~/components/universal/JsonToTable.vue')),
-  JsonSchemaGenerator: defineAsyncComponent(() => import('~/components/universal/JsonSchemaGenerator.vue')),
-}
+// 动态加载工具组件
+const componentModules = import.meta.glob('~/components/universal/*.vue')
 
 const toolComponent = computed(() => {
   if (!tool.value?.component) return null
-  return componentMap[tool.value.component] || null
+  const path = `/components/universal/${tool.value.component}.vue`
+  const moduleLoader = componentModules[path]
+  if (!moduleLoader) return null
+  return defineAsyncComponent(moduleLoader as () => Promise<any>)
 })
 
 useSeoMeta({
