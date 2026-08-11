@@ -1,7 +1,7 @@
 {
   "app": {
     "name": "JSON 工具箱",
-    "title": "免费在线 JSON 开发者工具",
+    "title": "JSON 工具箱 — 免费在线 JSON 开发者工具",
     "keywords": "json工具, json格式化, json验证, json转csv, json查看器, 在线json工具, 免费json工具, json转换器, json解析器, 客户端json工具",
     "description": "免费、纯前端的 JSON 开发者工具。直接在浏览器中格式化、验证、比较和转换 JSON 数据。无需上传，无追踪 — 100% 本地处理。",
     "og_title": "JSON 工具箱 — 免费、纯前端的 JSON 开发者工具",

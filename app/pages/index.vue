@@ -226,6 +226,7 @@ const downloadOutput = () => {
 
 // SEO
 useSeoMeta({
+  titleTemplate: false as any,
   title: t('app.title'),
   description: t('app.description'),
   keywords: t('app.keywords'),

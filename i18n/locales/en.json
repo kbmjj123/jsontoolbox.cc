@@ -1,7 +1,7 @@
 {
   "app": {
     "name": "JSON Toolbox",
-    "title": "Free Online JSON Tools for Developers",
+    "title": "JSON Toolbox — Free Online JSON Tools for Developers",
     "keywords": "json tools, json formatter, json validator, json to csv, json viewer, online json tools, free json tools, json converter, json parser, client-side json tools",
     "description": "Free, client-side JSON tools for developers. Format, validate, compare, convert JSON data directly in your browser. No upload, no tracking — 100% local processing.",
     "og_title": "JSON Toolbox — Free, Client-Side JSON Tools for Developers",
