@@ -39,7 +39,7 @@
               <h3 class="mb-2 text-sm font-semibold text-surface-700 dark:text-surface-300">
                 {{ t('tools.example.input') }}
               </h3>
-              <pre class="overflow-x-auto rounded-lg bg-surface-50 p-4 text-sm text-surface-800 dark:bg-surface-800 dark:text-surface-200"><code>{{ tool.example.input }}</code></pre>
+              <pre class="overflow-x-auto rounded-lg bg-surface-50 p-4 text-sm text-surface-800 dark:bg-surface-800 dark:text-surface-200"><code>{{ formatExampleText(tool.example.input) }}</code></pre>
             </div>
 
             <!-- Dual Input (JSON Compare) -->
@@ -48,13 +48,13 @@
                 <h3 class="mb-2 text-sm font-semibold text-surface-700 dark:text-surface-300">
                   {{ t('tools.example.inputLeft') }}
                 </h3>
-                <pre class="overflow-x-auto rounded-lg bg-surface-50 p-4 text-sm text-surface-800 dark:bg-surface-800 dark:text-surface-200"><code>{{ tool.example.inputLeft }}</code></pre>
+                <pre class="overflow-x-auto rounded-lg bg-surface-50 p-4 text-sm text-surface-800 dark:bg-surface-800 dark:text-surface-200"><code>{{ formatExampleText(tool.example.inputLeft) }}</code></pre>
               </div>
               <div>
                 <h3 class="mb-2 text-sm font-semibold text-surface-700 dark:text-surface-300">
                   {{ t('tools.example.inputRight') }}
                 </h3>
-                <pre class="overflow-x-auto rounded-lg bg-surface-50 p-4 text-sm text-surface-800 dark:bg-surface-800 dark:text-surface-200"><code>{{ tool.example.inputRight }}</code></pre>
+                <pre class="overflow-x-auto rounded-lg bg-surface-50 p-4 text-sm text-surface-800 dark:bg-surface-800 dark:text-surface-200"><code>{{ formatExampleText(tool.example.inputRight) }}</code></pre>
               </div>
             </div>
 
@@ -63,7 +63,7 @@
               <h3 class="mb-2 text-sm font-semibold text-surface-700 dark:text-surface-300">
                 {{ t('tools.example.schema') }}
               </h3>
-              <pre class="overflow-x-auto rounded-lg bg-surface-50 p-4 text-sm text-surface-800 dark:bg-surface-800 dark:text-surface-200"><code>{{ tool.example.schema }}</code></pre>
+              <pre class="overflow-x-auto rounded-lg bg-surface-50 p-4 text-sm text-surface-800 dark:bg-surface-800 dark:text-surface-200"><code>{{ formatExampleText(tool.example.schema) }}</code></pre>
             </div>
 
             <!-- Expression (JSONPath Tester) -->
@@ -71,7 +71,7 @@
               <h3 class="mb-2 text-sm font-semibold text-surface-700 dark:text-surface-300">
                 {{ t('tools.example.expression') }}
               </h3>
-              <pre class="overflow-x-auto rounded-lg bg-surface-50 p-4 text-sm text-surface-800 dark:bg-surface-800 dark:text-surface-200"><code>{{ tool.example.expression }}</code></pre>
+              <pre class="overflow-x-auto rounded-lg bg-surface-50 p-4 text-sm text-surface-800 dark:bg-surface-800 dark:text-surface-200"><code>{{ formatExampleText(tool.example.expression) }}</code></pre>
             </div>
 
             <!-- Output -->
@@ -79,7 +79,7 @@
               <h3 class="mb-2 text-sm font-semibold text-surface-700 dark:text-surface-300">
                 {{ t('tools.example.output') }}
               </h3>
-              <pre class="overflow-x-auto rounded-lg bg-surface-50 p-4 text-sm text-surface-800 dark:bg-surface-800 dark:text-surface-200"><code>{{ tool.example.output }}</code></pre>
+              <pre class="overflow-x-auto rounded-lg bg-surface-50 p-4 text-sm text-surface-800 dark:bg-surface-800 dark:text-surface-200"><code>{{ formatExampleText(tool.example.output) }}</code></pre>
             </div>
 
             <!-- Use Case -->
@@ -119,6 +119,12 @@
 const route = useRoute()
 const { getToolDetail } = useTools()
 const { t } = useI18n()
+
+// 处理示例文本，将 \n 转换为真正的换行
+const formatExampleText = (text: string | undefined): string => {
+  if (!text) return ''
+  return text.replace(/\\n/g, '\n')
+}
 
 const category = computed(() => route.params.category as string)
 const slug = computed(() => route.params.slug as string)
