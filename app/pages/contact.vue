@@ -35,7 +35,7 @@
 const { t } = useI18n()
 
 useSeoMeta({
-  title: `Contact | ${t('app.name')}`,
+  title: 'Contact — Get Support',
   description: 'Get in touch with JSON Toolbox team.',
 })
 </script>

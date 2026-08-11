@@ -74,7 +74,16 @@
         "question": "Is this a free online JSON prettifier and beautifier?",
         "answer": "Yes. This is a free online JSON formatter, beautifier, and prettifier. You can use it as a json pretty print tool to prettify minified data, make pretty json output, and beautify any JSON string directly in your browser. Format JSON online with no sign-up, no upload — paste and format instantly."
       }
-    ]
+    ],
+    "ui": {
+      "label_input": "Input JSON",
+      "label_output": "Output",
+      "option_indent": "Indent:",
+      "option_2_spaces": "2 spaces",
+      "option_4_spaces": "4 spaces",
+      "option_minified": "Minified",
+      "status_valid": "✅ Valid JSON"
+    }
   },
   "zh": {
     "name": "JSON 格式化",
@@ -143,6 +152,15 @@
         "question": "这是一个免费的在线json美化工具吗？",
         "answer": "是的。这是一个免费的在线json格式化和json美化工具，支持格式化、压缩和验证 JSON。无需注册，无需上传数据——粘贴即可在线格式化json。"
       }
-    ]
+    ],
+    "ui": {
+      "label_input": "输入 JSON",
+      "label_output": "输出",
+      "option_indent": "缩进:",
+      "option_2_spaces": "2 空格",
+      "option_4_spaces": "4 空格",
+      "option_minified": "压缩",
+      "status_valid": "✅ 有效 JSON"
+    }
   }
 }

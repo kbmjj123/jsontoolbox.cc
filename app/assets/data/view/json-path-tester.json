@@ -9,6 +9,19 @@
   "recommends": ["json-validator", "json-compare"],
   "en": {
     "name": "JSONPath Tester",
+    "ui": {
+      "labelInputJson": "Input JSON",
+      "labelResults": "Results",
+      "labelExpression": "JSONPath Expression",
+      "labelCommonPaths": "Common Paths:",
+      "btnEvaluate": "Evaluate",
+      "placeholderExpression": "$.store.book[0].title",
+      "statusMatches": "{count} match(es)",
+      "placeholderResults": "Results will appear here...",
+      "errorNoJson": "Please enter JSON data",
+      "errorNoExpression": "Please enter a JSONPath expression",
+      "errorNoMatches": "No matches found"
+    },
     "description": "Test JSONPath expressions against your JSON data. This jsonpath tester, json path finder, and jsonpath online tool helps you find and extract values using JSONPath syntax.",
     "hero": {
       "trustHtml": "100% client-side processing. Your JSON data never leaves your browser."
@@ -74,6 +87,19 @@
   },
   "zh": {
     "name": "JSONPath 测试器",
+    "ui": {
+      "labelInputJson": "输入 JSON",
+      "labelResults": "结果",
+      "labelExpression": "JSONPath 表达式",
+      "labelCommonPaths": "常用路径：",
+      "btnEvaluate": "执行",
+      "placeholderExpression": "$.store.book[0].title",
+      "statusMatches": "{count} 个匹配",
+      "placeholderResults": "结果将显示在此处...",
+      "errorNoJson": "请输入 JSON 数据",
+      "errorNoExpression": "请输入 JSONPath 表达式",
+      "errorNoMatches": "未找到匹配结果"
+    },
     "description": "对你的json路径表达式进行jsonpath测试。这是一个jsonpath在线工具，使用 JSONPath 语法查找和提取值。",
     "hero": {
       "trustHtml": "100% 本地处理，JSON 数据不会离开浏览器。"

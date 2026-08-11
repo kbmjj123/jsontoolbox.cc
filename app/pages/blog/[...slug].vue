@@ -44,7 +44,7 @@ const { data: post } = await useAsyncData(`blog-${route.path}`, () =>
 )
 
 useSeoMeta({
-  title: () => post.value ? `${post.value.title} | ${t('app.name')}` : `Blog | ${t('app.name')}`,
+  title: () => post.value?.title || 'JSON Blog',
   description: () => post.value?.description || '',
 })
 </script>

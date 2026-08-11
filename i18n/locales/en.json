@@ -1,7 +1,7 @@
 {
   "app": {
     "name": "JSON Toolbox",
-    "title": "JSON Toolbox — Free Online JSON Tools for Developers | Format, Validate, Convert",
+    "title": "Free Online JSON Tools for Developers",
     "keywords": "json tools, json formatter, json validator, json to csv, json viewer, online json tools, free json tools, json converter, json parser, client-side json tools",
     "description": "Free, client-side JSON tools for developers. Format, validate, compare, convert JSON data directly in your browser. No upload, no tracking — 100% local processing.",
     "og_title": "JSON Toolbox — Free, Client-Side JSON Tools for Developers",
@@ -62,7 +62,7 @@
     }
   },
   "tools": {
-    "page_title": "All JSON Tools",
+    "page_title": "All JSON Tools — Free Online JSON Tools",
     "page_description": "Browse all available JSON tools. Format, validate, convert, and explore JSON data."
   },
   "error": {
@@ -79,19 +79,23 @@
     "features_title": "Key Features",
     "guide_title": "How to Use",
     "faq_title": "Frequently Asked Questions",
-    "related_title": "Related Tools",
-    "next_steps_title": "What's Next"
+    "related_title": "Related Tools"
   },
   "system": {
     "backToHome": "Back to Home",
     "copy": "Copy",
     "copied": "Copied!",
     "download": "Download",
+    "downloadFile": "Download File",
     "clear": "Clear",
+    "clearAll": "Clear All",
     "format": "Format",
     "minify": "Minify",
     "validate": "Validate",
     "paste": "Paste",
-    "upload": "Upload File"
+    "upload": "Upload File",
+    "input": "Input",
+    "output": "Output",
+    "close": "Close"
   }
 }

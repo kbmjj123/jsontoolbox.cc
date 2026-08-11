@@ -9,6 +9,15 @@
   "recommends": ["json-schema-generator", "json-validator"],
   "en": {
     "name": "JSON to Code Generator",
+    "ui": {
+      "labelInputJson": "Input JSON",
+      "labelOutput": "Code Output",
+      "labelLanguage": "Language:",
+      "labelTypeName": "Type Name:",
+      "btnGenerate": "Generate",
+      "placeholderOutput": "Code output will appear here...",
+      "placeholderName": "RootObject"
+    },
     "description": "Convert JSON data to Go structs, C# classes, and Python dataclasses. This json to code tool helps you json to struct and generate type definitions from JSON examples.",
     "hero": {
       "trustHtml": "100% client-side generation. Your JSON data never leaves your browser."
@@ -74,6 +83,15 @@
   },
   "zh": {
     "name": "JSON 转代码生成器",
+    "ui": {
+      "labelInputJson": "输入 JSON",
+      "labelOutput": "代码输出",
+      "labelLanguage": "语言：",
+      "labelTypeName": "类型名称：",
+      "btnGenerate": "生成",
+      "placeholderOutput": "代码输出将显示在此处...",
+      "placeholderName": "RootObject"
+    },
     "description": "将json转代码，支持json转go结构体、json转c#类和json转python dataclass。从json生成类型定义，也支持json转结构体。",
     "hero": {
       "trustHtml": "100% 本地生成，JSON 数据不会离开浏览器。"

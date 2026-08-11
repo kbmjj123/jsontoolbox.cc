@@ -70,7 +70,15 @@
         "question": "What is the difference between JSON minifier and JSON formatter?",
         "answer": "A JSON minifier removes all whitespace to create compact JSON. A JSON formatter adds indentation and line breaks to make JSON readable. They are opposite operations."
       }
-    ]
+    ],
+    "ui": {
+      "label_input": "Input JSON",
+      "label_output": "Minified Output",
+      "placeholder_output": "Minified output will appear here...",
+      "unit_chars": "chars",
+      "unit_smaller": "smaller",
+      "btn_beautify": "Beautify First"
+    }
   },
   "zh": {
     "name": "JSON 压缩器",
@@ -135,6 +143,14 @@
         "question": "JSON 压缩器和 JSON 格式化有什么区别？",
         "answer": "JSON 压缩器移除所有空白，生成紧凑的 JSON。JSON 格式化添加缩进和换行，让 JSON 更易读。它们是相反的操作。"
       }
-    ]
+    ],
+    "ui": {
+      "label_input": "输入 JSON",
+      "label_output": "压缩输出",
+      "placeholder_output": "压缩后的输出将显示在这里...",
+      "unit_chars": "字符",
+      "unit_smaller": "更小",
+      "btn_beautify": "先美化"
+    }
   }
 }

@@ -4,13 +4,13 @@
       <!-- Input -->
       <div>
         <div class="flex items-center justify-between mb-2">
-          <label class="text-sm font-bold text-surface-700 dark:text-surface-300">Input JSON</label>
+          <label class="text-sm font-bold text-surface-700 dark:text-surface-300">{{ ui?.labelInputJson ?? 'Input JSON' }}</label>
           <div class="flex gap-2">
             <button @click="pasteFromClipboard" class="text-xs text-primary-600 hover:text-primary-700 dark:text-primary-400">
-              Paste
+              {{ $t('system.paste') }}
             </button>
             <button @click="clearInput" class="text-xs text-surface-500 hover:text-surface-700 dark:text-surface-400">
-              Clear
+              {{ $t('system.clear') }}
             </button>
           </div>
         </div>
@@ -24,11 +24,11 @@
       <!-- Tree View -->
       <div>
         <div class="flex items-center justify-between mb-2">
-          <label class="text-sm font-bold text-surface-700 dark:text-surface-300">Tree View</label>
+          <label class="text-sm font-bold text-surface-700 dark:text-surface-300">{{ ui?.labelTreeView ?? 'Tree View' }}</label>
           <input
             v-model="searchQuery"
             type="text"
-            placeholder="Search..."
+            :placeholder="ui?.placeholderSearch ?? 'Search...'"
             class="w-40 rounded-lg border border-surface-200 bg-white px-2 py-1 text-xs dark:border-surface-700 dark:bg-surface-800"
           />
         </div>
@@ -38,7 +38,7 @@
             <TreeNode :data="treeData" :path="''" :search="searchQuery" @copy="copyPath" />
           </div>
           <div v-else class="flex items-center justify-center h-full text-surface-400 text-sm">
-            Paste JSON and click "View Tree"
+            {{ ui?.emptyState ?? 'Paste JSON and click "View Tree"' }}
           </div>
         </div>
       </div>
@@ -47,20 +47,23 @@
     <!-- View Button -->
     <div class="mt-4">
       <button @click="parseJson" class="btn-primary px-6 py-2.5 text-sm">
-        View Tree
+        {{ ui?.btnViewTree ?? 'View Tree' }}
       </button>
     </div>
 
     <!-- Copied toast -->
     <Transition name="fade">
       <div v-if="showCopied" class="fixed bottom-4 right-4 rounded-lg bg-green-600 px-4 py-2 text-sm text-white shadow-lg">
-        Path copied!
+        {{ ui?.toastPathCopied ?? 'Path copied!' }}
       </div>
     </Transition>
   </div>
 </template>
 
 <script setup lang="ts">
+const props = defineProps<{ tool: any }>()
+const ui = computed(() => props.tool?.ui)
+
 const inputJson = ref('')
 const treeData = ref<any>(null)
 const error = ref('')

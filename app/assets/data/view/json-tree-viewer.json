@@ -9,6 +9,14 @@
   "recommends": ["json-validator", "json-diff"],
   "en": {
     "name": "JSON Tree Viewer",
+    "ui": {
+      "labelInputJson": "Input JSON",
+      "labelTreeView": "Tree View",
+      "btnViewTree": "View Tree",
+      "placeholderSearch": "Search...",
+      "emptyState": "Paste JSON and click \"View Tree\"",
+      "toastPathCopied": "Path copied!"
+    },
     "description": "View JSON data as an interactive tree structure. This free json viewer online also works as a json visualizer, json document viewer, and json file viewer — expand, collapse, and search through your JSON.",
     "hero": {
       "trustHtml": "100% client-side. Your JSON data stays in your browser."
@@ -78,6 +86,14 @@
   },
   "zh": {
     "name": "JSON 树形查看器",
+    "ui": {
+      "labelInputJson": "输入 JSON",
+      "labelTreeView": "树形视图",
+      "btnViewTree": "查看树形",
+      "placeholderSearch": "搜索...",
+      "emptyState": "粘贴 JSON 后点击\"查看树形\"",
+      "toastPathCopied": "路径已复制！"
+    },
     "description": "将json树形查看器用于 JSON 数据可视化为交互式树结构。这是一个免费的json查看器在线工具，也支持查看json树。支持展开、折叠和搜索。",
     "hero": {
       "trustHtml": "100% 本地处理，JSON 数据保留在浏览器中。"

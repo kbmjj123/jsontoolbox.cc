@@ -2,13 +2,13 @@
   <div>
     <div class="mb-4">
       <div class="flex items-center justify-between mb-2">
-        <label class="text-sm font-bold text-surface-700 dark:text-surface-300">Input JSON Array</label>
+        <label class="text-sm font-bold text-surface-700 dark:text-surface-300">{{ ui?.labelInputJson ?? 'Input JSON Array' }}</label>
         <div class="flex gap-2">
           <button @click="pasteFromClipboard" class="text-xs text-primary-600 hover:text-primary-700 dark:text-primary-400">
-            Paste
+            {{ $t('system.paste') }}
           </button>
           <button @click="clearInput" class="text-xs text-surface-500 hover:text-surface-700 dark:text-surface-400">
-            Clear
+            {{ $t('system.clear') }}
           </button>
         </div>
       </div>
@@ -23,10 +23,10 @@
     <div class="mb-4 flex flex-wrap gap-3">
       <button @click="renderTable" class="btn-primary px-5 py-2 text-xs">
         <Icon name="lucide:table" class="h-4 w-4 mr-1.5" />
-        Render Table
+        {{ ui?.btnRender ?? 'Render Table' }}
       </button>
       <button @click="clearAll" class="rounded-xl border border-surface-200 bg-white px-4 py-2 text-xs font-bold text-surface-700 hover:bg-surface-50 dark:border-surface-700 dark:bg-surface-800 dark:text-surface-300 dark:hover:bg-surface-700">
-        Clear All
+        {{ $t('system.clearAll') }}
       </button>
     </div>
 
@@ -68,11 +68,11 @@
     <div v-if="rows.length > 0" class="mt-4 flex flex-wrap gap-3">
       <div class="stat-chip">
         <Icon name="lucide:rows" class="h-3 w-3" />
-        {{ rows.length }} rows
+        {{ (ui?.statusRows ?? '{count} rows').replace('{count}', String(rows.length)) }}
       </div>
       <div class="stat-chip">
         <Icon name="lucide:columns" class="h-3 w-3" />
-        {{ headers.length }} columns
+        {{ (ui?.statusColumns ?? '{count} columns').replace('{count}', String(headers.length)) }}
       </div>
     </div>
 
@@ -84,6 +84,9 @@
 </template>
 
 <script setup lang="ts">
+const props = defineProps<{ tool: any }>()
+const ui = computed(() => props.tool?.ui)
+
 const inputJson = ref('')
 const error = ref('')
 const headers = ref<string[]>([])
@@ -103,11 +106,11 @@ const renderTable = () => {
   try {
     const data = JSON.parse(inputJson.value)
     if (!Array.isArray(data)) {
-      error.value = 'Input must be a JSON array'
+      error.value = ui.value?.errorInvalidInput ?? 'Input must be a JSON array'
       return
     }
     if (data.length === 0) {
-      error.value = 'Array is empty'
+      error.value = ui.value?.errorEmptyArray ?? 'Array is empty'
       return
     }
 

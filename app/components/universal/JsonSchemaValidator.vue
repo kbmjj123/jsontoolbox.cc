@@ -4,13 +4,13 @@
       <!-- JSON Input -->
       <div>
         <div class="flex items-center justify-between mb-2">
-          <label class="text-sm font-bold text-surface-700 dark:text-surface-300">JSON Data</label>
+          <label class="text-sm font-bold text-surface-700 dark:text-surface-300">{{ tool.ui?.label_json_data || 'JSON Data' }}</label>
           <div class="flex gap-2">
             <button @click="pasteJson" class="text-xs text-primary-600 hover:text-primary-700 dark:text-primary-400">
-              Paste
+              {{ $t('system.paste') }}
             </button>
             <button @click="clearJson" class="text-xs text-surface-500 hover:text-surface-700 dark:text-surface-400">
-              Clear
+              {{ $t('system.clear') }}
             </button>
           </div>
         </div>
@@ -24,13 +24,13 @@
       <!-- Schema Input -->
       <div>
         <div class="flex items-center justify-between mb-2">
-          <label class="text-sm font-bold text-surface-700 dark:text-surface-300">JSON Schema</label>
+          <label class="text-sm font-bold text-surface-700 dark:text-surface-300">{{ tool.ui?.label_json_schema || 'JSON Schema' }}</label>
           <div class="flex gap-2">
             <button @click="pasteSchema" class="text-xs text-primary-600 hover:text-primary-700 dark:text-primary-400">
-              Paste
+              {{ $t('system.paste') }}
             </button>
             <button @click="clearSchema" class="text-xs text-surface-500 hover:text-surface-700 dark:text-surface-400">
-              Clear
+              {{ $t('system.clear') }}
             </button>
           </div>
         </div>
@@ -46,13 +46,13 @@
     <div class="mt-4 flex flex-wrap gap-3">
       <button @click="validate" class="btn-primary px-5 py-2 text-xs">
         <Icon name="lucide:check-circle" class="h-4 w-4 mr-1.5" />
-        Validate
+        {{ $t('system.validate') }}
       </button>
       <button @click="loadSample" class="rounded-xl border border-surface-200 bg-white px-4 py-2 text-xs font-bold text-surface-700 hover:bg-surface-50 dark:border-surface-700 dark:bg-surface-800 dark:text-surface-300 dark:hover:bg-surface-700">
-        Load Sample
+        {{ tool.ui?.btn_load_sample || 'Load Sample' }}
       </button>
       <button @click="clearAll" class="rounded-xl border border-surface-200 bg-white px-4 py-2 text-xs font-bold text-surface-700 hover:bg-surface-50 dark:border-surface-700 dark:bg-surface-800 dark:text-surface-300 dark:hover:bg-surface-700">
-        Clear All
+        {{ $t('system.clearAll') }}
       </button>
     </div>
 
@@ -64,9 +64,9 @@
       >
         <div class="flex items-center gap-2">
           <Icon name="lucide:check-circle" class="h-5 w-5 text-green-500" />
-          <span class="text-sm font-bold text-green-700 dark:text-green-400">Valid JSON</span>
+          <span class="text-sm font-bold text-green-700 dark:text-green-400">{{ tool.ui?.status_valid || 'Valid JSON' }}</span>
         </div>
-        <p class="mt-2 text-xs text-green-600 dark:text-green-400">The JSON data matches the schema.</p>
+        <p class="mt-2 text-xs text-green-600 dark:text-green-400">{{ tool.ui?.status_matches || 'The JSON data matches the schema.' }}</p>
       </div>
 
       <div
@@ -75,15 +75,15 @@
       >
         <div class="flex items-center gap-2">
           <Icon name="lucide:x-circle" class="h-5 w-5 text-red-500" />
-          <span class="text-sm font-bold text-red-700 dark:text-red-400">Invalid JSON</span>
+          <span class="text-sm font-bold text-red-700 dark:text-red-400">{{ tool.ui?.status_invalid || 'Invalid JSON' }}</span>
         </div>
         <div class="mt-3 space-y-2">
           <div
-            v-for="(error, index) in result.errors"
+            v-for="(err, index) in result.errors"
             :key="index"
             class="text-xs text-red-600 dark:text-red-400"
           >
-            <span class="font-mono">{{ error.path || '/' }}</span>: {{ error.message }}
+            <span class="font-mono">{{ err.path || '/' }}</span>: {{ err.message }}
           </div>
         </div>
       </div>
@@ -97,10 +97,14 @@
 </template>
 
 <script setup lang="ts">
+const props = defineProps<{ tool: any }>()
+
 const jsonData = ref('')
 const schemaData = ref('')
 const error = ref('')
 const result = ref<{ valid: boolean; errors: Array<{ path: string; message: string }> } | null>(null)
+
+const ui = computed(() => props.tool?.ui || {})
 
 const validateValue = (value: any, schema: any, path: string = ''): Array<{ path: string; message: string }> => {
   const errors: Array<{ path: string; message: string }> = []
@@ -112,10 +116,10 @@ const validateValue = (value: any, schema: any, path: string = ''): Array<{ path
     const actualType = Array.isArray(value) ? 'array' : typeof value
     if (value === null) {
       if (schema.type !== 'null') {
-        errors.push({ path, message: `Expected ${schema.type}, got null` })
+        errors.push({ path, message: `${ui.value.error_expected_type || 'Expected'} ${schema.type}, ${ui.value.error_got_null || 'got null'}` })
       }
     } else if (actualType !== schema.type) {
-      errors.push({ path, message: `Expected ${schema.type}, got ${actualType}` })
+      errors.push({ path, message: `${ui.value.error_expected_type || 'Expected'} ${schema.type}, ${ui.value.error_got_type || 'got'} ${actualType}` })
     }
   }
 
@@ -123,7 +127,7 @@ const validateValue = (value: any, schema: any, path: string = ''): Array<{ path
   if (schema.required && typeof value === 'object' && !Array.isArray(value)) {
     for (const key of schema.required) {
       if (!(key in value)) {
-        errors.push({ path: path ? `${path}.${key}` : key, message: `Missing required property` })
+        errors.push({ path: path ? `${path}.${key}` : key, message: ui.value.error_missing_required || 'Missing required property' })
       }
     }
   }
@@ -149,39 +153,39 @@ const validateValue = (value: any, schema: any, path: string = ''): Array<{ path
   // String constraints
   if (typeof value === 'string') {
     if (schema.minLength !== undefined && value.length < schema.minLength) {
-      errors.push({ path, message: `String length ${value.length} is less than minimum ${schema.minLength}` })
+      errors.push({ path, message: `${ui.value.error_string_too_short || 'String length'} ${value.length} ${ui.value.error_string_less_min || 'is less than minimum'} ${schema.minLength}` })
     }
     if (schema.maxLength !== undefined && value.length > schema.maxLength) {
-      errors.push({ path, message: `String length ${value.length} is greater than maximum ${schema.maxLength}` })
+      errors.push({ path, message: `${ui.value.error_string_too_long || 'String length'} ${value.length} ${ui.value.error_string_greater_max || 'is greater than maximum'} ${schema.maxLength}` })
     }
     if (schema.pattern && !new RegExp(schema.pattern).test(value)) {
-      errors.push({ path, message: `String does not match pattern ${schema.pattern}` })
+      errors.push({ path, message: `${ui.value.error_string_no_match || 'String does not match pattern'} ${schema.pattern}` })
     }
   }
 
   // Number constraints
   if (typeof value === 'number') {
     if (schema.minimum !== undefined && value < schema.minimum) {
-      errors.push({ path, message: `Value ${value} is less than minimum ${schema.minimum}` })
+      errors.push({ path, message: `${ui.value.error_value_too_small || 'Value'} ${value} ${ui.value.error_number_less_min || 'is less than minimum'} ${schema.minimum}` })
     }
     if (schema.maximum !== undefined && value > schema.maximum) {
-      errors.push({ path, message: `Value ${value} is greater than maximum ${schema.maximum}` })
+      errors.push({ path, message: `${ui.value.error_value_too_large || 'Value'} ${value} ${ui.value.error_number_greater_max || 'is greater than maximum'} ${schema.maximum}` })
     }
   }
 
   // Array constraints
   if (Array.isArray(value)) {
     if (schema.minItems !== undefined && value.length < schema.minItems) {
-      errors.push({ path, message: `Array length ${value.length} is less than minimum ${schema.minItems}` })
+      errors.push({ path, message: `${ui.value.error_array_too_short || 'Array length'} ${value.length} ${ui.value.error_array_less_min || 'is less than minimum'} ${schema.minItems}` })
     }
     if (schema.maxItems !== undefined && value.length > schema.maxItems) {
-      errors.push({ path, message: `Array length ${value.length} is greater than maximum ${schema.maxItems}` })
+      errors.push({ path, message: `${ui.value.error_array_too_long || 'Array length'} ${value.length} ${ui.value.error_array_greater_max || 'is greater than maximum'} ${schema.maxItems}` })
     }
   }
 
   // Enum validation
   if (schema.enum && !schema.enum.includes(value)) {
-    errors.push({ path, message: `Value must be one of: ${schema.enum.join(', ')}` })
+    errors.push({ path, message: `${ui.value.error_enum_invalid || 'Value must be one of:'} ${schema.enum.join(', ')}` })
   }
 
   return errors

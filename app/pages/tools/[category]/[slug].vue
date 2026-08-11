@@ -83,11 +83,7 @@ const toolComponent = computed(() => {
 })
 
 useSeoMeta({
-  title: () => tool.value?.meta?.title
-    ? `${tool.value.meta.title} | ${t('app.name')}`
-    : tool.value
-      ? `${tool.value.name} | ${t('app.name')}`
-      : t('tools.page_title'),
+  title: () => tool.value?.meta?.title || tool.value?.name || t('tools.page_title'),
   description: () => tool.value?.meta?.description || tool.value?.description || t('tools.page_description'),
 })
 

@@ -4,13 +4,13 @@
       <!-- Input -->
       <div>
         <div class="flex items-center justify-between mb-2">
-          <label class="text-sm font-bold text-surface-700 dark:text-surface-300">Input JSON Array</label>
+          <label class="text-sm font-bold text-surface-700 dark:text-surface-300">{{ tool.ui?.label_input || 'Input JSON Array' }}</label>
           <div class="flex gap-2">
             <button @click="pasteFromClipboard" class="text-xs text-primary-600 hover:text-primary-700 dark:text-primary-400">
-              Paste
+              {{ $t('system.paste') }}
             </button>
             <button @click="clearInput" class="text-xs text-surface-500 hover:text-surface-700 dark:text-surface-400">
-              Clear
+              {{ $t('system.clear') }}
             </button>
           </div>
         </div>
@@ -24,13 +24,13 @@
       <!-- Output -->
       <div>
         <div class="flex items-center justify-between mb-2">
-          <label class="text-sm font-bold text-surface-700 dark:text-surface-300">CSV Output</label>
+          <label class="text-sm font-bold text-surface-700 dark:text-surface-300">{{ tool.ui?.label_output || 'CSV Output' }}</label>
           <div class="flex gap-2">
             <button @click="copyOutput" class="text-xs text-primary-600 hover:text-primary-700 dark:text-primary-400">
-              Copy
+              {{ $t('system.copy') }}
             </button>
             <button @click="downloadCsv" class="text-xs text-surface-500 hover:text-surface-700 dark:text-surface-400">
-              Download .csv
+              {{ tool.ui?.btn_download || 'Download .csv' }}
             </button>
           </div>
         </div>
@@ -46,13 +46,15 @@
     <!-- Convert Button -->
     <div class="mt-4">
       <button @click="convert" class="btn-primary px-6 py-2.5 text-sm">
-        Convert to CSV
+        {{ tool.ui?.btn_convert || 'Convert to CSV' }}
       </button>
     </div>
   </div>
 </template>
 
 <script setup lang="ts">
+const props = defineProps<{ tool: any }>()
+
 const inputJson = ref('')
 const outputCsv = ref('')
 const error = ref('')
@@ -62,7 +64,7 @@ const convert = () => {
     const data = JSON.parse(inputJson.value)
 
     if (!Array.isArray(data)) {
-      error.value = 'Input must be a JSON array'
+      error.value = props.tool.ui?.error_not_array || 'Input must be a JSON array'
       outputCsv.value = ''
       return
     }

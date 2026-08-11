@@ -9,6 +9,15 @@
   "recommends": ["json-validator", "json-tree-viewer"],
   "en": {
     "name": "XML to JSON Converter",
+    "ui": {
+      "labelInputXml": "Input XML",
+      "labelOutput": "JSON Output",
+      "labelIndent": "Indent:",
+      "btnConvert": "Convert to JSON",
+      "optionSpaces2": "2 spaces",
+      "optionSpaces4": "4 spaces",
+      "errorInvalidXml": "Invalid XML: "
+    },
     "description": "Convert XML data to JSON format online. This xml to json converter lets you convert xml to json and transform XML documents into structured JSON objects — works as an xml to json online tool.",
     "hero": {
       "trustHtml": "100% client-side conversion. Your data never leaves your browser."
@@ -74,6 +83,15 @@
   },
   "zh": {
     "name": "XML 转 JSON",
+    "ui": {
+      "labelInputXml": "输入 XML",
+      "labelOutput": "JSON 输出",
+      "labelIndent": "缩进：",
+      "btnConvert": "转换为 JSON",
+      "optionSpaces2": "2 空格",
+      "optionSpaces4": "4 空格",
+      "errorInvalidXml": "无效的 XML："
+    },
     "description": "在线xml转json，将xml数据转换为json格式。免费的xml json转换器，支持转换xml为json，将 XML 文档转换为结构化 JSON 对象。",
     "hero": {
       "trustHtml": "100% 本地转换，数据不会离开浏览器。"

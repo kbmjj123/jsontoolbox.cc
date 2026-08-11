@@ -40,7 +40,7 @@ const { data: posts } = await useAsyncData('blog-posts', () =>
 )
 
 useSeoMeta({
-  title: `Blog | ${t('app.name')}`,
+  title: 'JSON Blog — Tutorials & Guides',
   description: 'Articles and tutorials about JSON, data processing, and developer tools.',
 })
 </script>

@@ -10,6 +10,31 @@
   "en": {
     "name": "JSON Schema Validator",
     "description": "Validate JSON data against a JSON Schema. This json schema validator online lets you validate json against schema and check if your JSON conforms to the expected structure and data types.",
+    "ui": {
+      "label_json_data": "JSON Data",
+      "label_json_schema": "JSON Schema",
+      "status_valid": "Valid JSON",
+      "status_invalid": "Invalid JSON",
+      "status_matches": "The JSON data matches the schema.",
+      "error_expected_type": "Expected",
+      "error_got_null": "got null",
+      "error_got_type": "got",
+      "error_missing_required": "Missing required property",
+      "error_string_too_short": "String length",
+      "error_string_too_long": "String length",
+      "error_string_less_min": "is less than minimum",
+      "error_string_greater_max": "is greater than maximum",
+      "error_string_no_match": "String does not match pattern",
+      "error_value_too_small": "Value",
+      "error_value_too_large": "Value",
+      "error_number_less_min": "is less than minimum",
+      "error_number_greater_max": "is greater than maximum",
+      "error_array_too_short": "Array length",
+      "error_array_too_long": "Array length",
+      "error_array_less_min": "is less than minimum",
+      "error_array_greater_max": "is greater than maximum",
+      "error_enum_invalid": "Value must be one of:"
+    },
     "hero": {
       "trustHtml": "100% client-side validation. Your JSON data never leaves your browser."
     },
@@ -79,6 +104,31 @@
   "zh": {
     "name": "JSON Schema 验证器",
     "description": "根据schema验证json数据。这是一个在线json schema验证工具，检查你的 JSON 是否符合预期的结构和数据类型。",
+    "ui": {
+      "label_json_data": "JSON 数据",
+      "label_json_schema": "JSON Schema",
+      "status_valid": "JSON 有效",
+      "status_invalid": "JSON 无效",
+      "status_matches": "JSON 数据符合 Schema。",
+      "error_expected_type": "期望类型",
+      "error_got_null": "实际为 null",
+      "error_got_type": "实际类型",
+      "error_missing_required": "缺少必填属性",
+      "error_string_too_short": "字符串长度",
+      "error_string_too_long": "字符串长度",
+      "error_string_less_min": "小于最小值",
+      "error_string_greater_max": "大于最大值",
+      "error_string_no_match": "字符串不匹配模式",
+      "error_value_too_small": "值",
+      "error_value_too_large": "值",
+      "error_number_less_min": "小于最小值",
+      "error_number_greater_max": "大于最大值",
+      "error_array_too_short": "数组长度",
+      "error_array_too_long": "数组长度",
+      "error_array_less_min": "小于最小值",
+      "error_array_greater_max": "大于最大值",
+      "error_enum_invalid": "值必须为以下之一："
+    },
     "hero": {
       "trustHtml": "100% 本地验证，JSON 数据不会离开浏览器。"
     },

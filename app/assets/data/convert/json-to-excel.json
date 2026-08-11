@@ -10,6 +10,21 @@
   "en": {
     "name": "JSON to Excel Converter",
     "description": "Convert JSON data to Excel-compatible format. This json to excel converter lets you export JSON arrays to CSV for spreadsheet use — works entirely online.",
+    "ui": {
+      "label_input": "Input JSON Array",
+      "label_preview": "Preview",
+      "option_delimiter": "Delimiter:",
+      "option_delimiter_comma": "Comma (,)",
+      "option_delimiter_semicolon": "Semicolon (;)",
+      "option_delimiter_tab": "Tab",
+      "option_include_header": "Include header",
+      "btn_convert": "Convert to CSV",
+      "btn_download": "Download CSV",
+      "status_rows": "rows",
+      "placeholder_preview": "Preview will appear here...",
+      "error_not_array": "Input must be a JSON array",
+      "error_empty": "Array is empty"
+    },
     "hero": {
       "trustHtml": "100% client-side conversion. Your data never leaves your browser."
     },
@@ -79,6 +94,21 @@
   "zh": {
     "name": "JSON 转 Excel",
     "description": "在线json转excel，将json数据转换为excel兼容格式。免费的json excel转换器，支持转换json为excel，将 JSON 数组导出为 CSV 用于电子表格。",
+    "ui": {
+      "label_input": "输入 JSON 数组",
+      "label_preview": "预览",
+      "option_delimiter": "分隔符：",
+      "option_delimiter_comma": "逗号 (,)",
+      "option_delimiter_semicolon": "分号 (;)",
+      "option_delimiter_tab": "制表符",
+      "option_include_header": "包含表头",
+      "btn_convert": "转换为 CSV",
+      "btn_download": "下载 CSV",
+      "status_rows": "行",
+      "placeholder_preview": "预览将在此显示...",
+      "error_not_array": "输入必须是 JSON 数组",
+      "error_empty": "数组为空"
+    },
     "hero": {
       "trustHtml": "100% 本地转换，数据不会离开浏览器。"
     },

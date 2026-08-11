@@ -4,13 +4,13 @@
       <!-- Left Input -->
       <div>
         <div class="flex items-center justify-between mb-2">
-          <label class="text-sm font-bold text-surface-700 dark:text-surface-300">JSON A (Original)</label>
+          <label class="text-sm font-bold text-surface-700 dark:text-surface-300">{{ tool.ui?.label_json_a || 'JSON A (Original)' }}</label>
           <div class="flex gap-2">
             <button @click="pasteLeft" class="text-xs text-primary-600 hover:text-primary-700 dark:text-primary-400">
-              Paste
+              {{ $t('system.paste') }}
             </button>
             <button @click="clearLeft" class="text-xs text-surface-500 hover:text-surface-700 dark:text-surface-400">
-              Clear
+              {{ $t('system.clear') }}
             </button>
           </div>
         </div>
@@ -24,13 +24,13 @@
       <!-- Right Input -->
       <div>
         <div class="flex items-center justify-between mb-2">
-          <label class="text-sm font-bold text-surface-700 dark:text-surface-300">JSON B (Modified)</label>
+          <label class="text-sm font-bold text-surface-700 dark:text-surface-300">{{ tool.ui?.label_json_b || 'JSON B (Modified)' }}</label>
           <div class="flex gap-2">
             <button @click="pasteRight" class="text-xs text-primary-600 hover:text-primary-700 dark:text-primary-400">
-              Paste
+              {{ $t('system.paste') }}
             </button>
             <button @click="clearRight" class="text-xs text-surface-500 hover:text-surface-700 dark:text-surface-400">
-              Clear
+              {{ $t('system.clear') }}
             </button>
           </div>
         </div>
@@ -46,14 +46,14 @@
     <div class="mt-4 flex flex-wrap items-center gap-3">
       <button @click="compare" class="btn-primary px-5 py-2 text-xs">
         <Icon name="lucide:git-compare" class="h-4 w-4 mr-1.5" />
-        Compare
+        {{ tool.ui?.btn_compare || 'Compare' }}
       </button>
       <button @click="swapInputs" class="rounded-xl border border-surface-200 bg-white px-4 py-2 text-xs font-bold text-surface-700 hover:bg-surface-50 dark:border-surface-700 dark:bg-surface-800 dark:text-surface-300 dark:hover:bg-surface-700">
         <Icon name="lucide:arrow-left-right" class="h-4 w-4 mr-1.5" />
-        Swap
+        {{ tool.ui?.btn_swap || 'Swap' }}
       </button>
       <button @click="clearAll" class="rounded-xl border border-surface-200 bg-white px-4 py-2 text-xs font-bold text-surface-700 hover:bg-surface-50 dark:border-surface-700 dark:bg-surface-800 dark:text-surface-300 dark:hover:bg-surface-700">
-        Clear All
+        {{ $t('system.clearAll') }}
       </button>
 
       <!-- Error -->
@@ -66,19 +66,19 @@
     <div v-if="diffs.length > 0" class="mt-4 flex flex-wrap gap-3">
       <div class="stat-chip">
         <span class="h-2 w-2 rounded-full bg-red-500"></span>
-        {{ removedCount }} removed
+        {{ removedCount }} {{ tool.ui?.status_removed || 'removed' }}
       </div>
       <div class="stat-chip">
         <span class="h-2 w-2 rounded-full bg-green-500"></span>
-        {{ addedCount }} added
+        {{ addedCount }} {{ tool.ui?.status_added || 'added' }}
       </div>
       <div class="stat-chip">
         <span class="h-2 w-2 rounded-full bg-yellow-500"></span>
-        {{ changedCount }} changed
+        {{ changedCount }} {{ tool.ui?.status_changed || 'changed' }}
       </div>
       <div class="stat-chip">
         <span class="h-2 w-2 rounded-full bg-surface-400"></span>
-        {{ totalDiffs }} total differences
+        {{ totalDiffs }} {{ tool.ui?.status_total || 'total differences' }}
       </div>
     </div>
 
@@ -87,7 +87,7 @@
       <div class="px-4 py-3 border-b border-surface-200 dark:border-surface-700 bg-surface-50 dark:bg-surface-800">
         <div class="flex items-center gap-2 text-sm font-bold text-surface-700 dark:text-surface-300">
           <Icon name="lucide:list" class="h-4 w-4" />
-          Differences
+          {{ tool.ui?.label_differences || 'Differences' }}
         </div>
       </div>
       <div class="max-h-96 overflow-y-auto">
@@ -105,7 +105,7 @@
               'bg-yellow-50 text-yellow-700 dark:bg-yellow-900/30 dark:text-yellow-400': diff.type === 'changed',
             }"
           >
-            {{ diff.type }}
+            {{ diffTypeLabel(diff.type) }}
           </span>
 
           <!-- Path -->
@@ -132,12 +132,14 @@
     <!-- No Diff -->
     <div v-else-if="compared && diffs.length === 0" class="mt-4 rounded-xl border border-green-200 bg-green-50 p-6 text-center dark:border-green-800 dark:bg-green-900/20">
       <Icon name="lucide:check-circle" class="h-8 w-8 mx-auto text-green-500 mb-2" />
-      <p class="text-sm font-bold text-green-700 dark:text-green-400">JSON documents are identical!</p>
+      <p class="text-sm font-bold text-green-700 dark:text-green-400">{{ tool.ui?.status_identical || 'JSON documents are identical!' }}</p>
     </div>
   </div>
 </template>
 
 <script setup lang="ts">
+const props = defineProps<{ tool: any }>()
+
 interface Diff {
   path: string
   type: 'added' | 'removed' | 'changed'
@@ -156,6 +158,17 @@ const addedCount = computed(() => diffs.value.filter(d => d.type === 'added').le
 const removedCount = computed(() => diffs.value.filter(d => d.type === 'removed').length)
 const changedCount = computed(() => diffs.value.filter(d => d.type === 'changed').length)
 const totalDiffs = computed(() => diffs.value.length)
+
+const diffTypeLabel = (type: string): string => {
+  const ui = props.tool?.ui
+  if (!ui) return type
+  const map: Record<string, string> = {
+    added: ui.status_added || type,
+    removed: ui.status_removed || type,
+    changed: ui.status_changed || type,
+  }
+  return map[type] || type
+}
 
 const formatValue = (val: any): string => {
   if (val === undefined) return 'undefined'

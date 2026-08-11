@@ -43,7 +43,7 @@
             class="group rounded-xl border border-surface-200 bg-white p-4 transition-all hover:border-primary-200 hover:shadow-md dark:border-surface-700 dark:bg-surface-900 dark:hover:border-primary-800"
           >
             <div class="flex items-start gap-3">
-              <div class="flex h-9 w-9 items-center justify-center rounded-lg bg-surface-100 text-surface-600 dark:bg-surface-800 dark:text-surface-400">
+              <div class="flex h-9 w-9 shrink-0 items-center justify-center rounded-lg bg-surface-100 text-surface-600 dark:bg-surface-800 dark:text-surface-400">
                 <Icon :name="tool.icon" class="h-5 w-5" />
               </div>
               <div>

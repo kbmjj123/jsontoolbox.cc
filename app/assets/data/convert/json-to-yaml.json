@@ -74,7 +74,13 @@
         "question": "How do I convert JSON to YAML?",
         "answer": "Paste your JSON and click Convert. This free json to yaml converter lets you convert json to yaml instantly in your browser — no upload needed."
       }
-    ]
+    ],
+    "ui": {
+      "label_input": "Input JSON",
+      "label_output": "YAML Output",
+      "btn_convert": "Convert to YAML",
+      "placeholder_output": "YAML output will appear here..."
+    }
   },
   "zh": {
     "name": "JSON 转 YAML",
@@ -139,6 +145,12 @@
         "question": "可以转换大型 JSON 文件吗？",
         "answer": "可以。所有处理在本地完成，文件大小仅受浏览器内存限制。"
       }
-    ]
+    ],
+    "ui": {
+      "label_input": "输入 JSON",
+      "label_output": "YAML 输出",
+      "btn_convert": "转换为 YAML",
+      "placeholder_output": "YAML 输出将显示在这里..."
+    }
   }
 }

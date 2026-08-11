@@ -74,7 +74,17 @@
         "question": "Is this an online JSON linter and checker?",
         "answer": "Yes. This is a free online json validator that also works as a json lint and json checker tool. You can json verify any JSON string directly in your browser — paste your data and get instant results. The json validator online tool requires no sign-up or upload."
       }
-    ]
+    ],
+    "ui": {
+      "label_input": "Input JSON",
+      "label_result": "Validation Result",
+      "btn_validate": "Validate JSON",
+      "placeholder_hint": "Click \"Validate\" to check your JSON",
+      "status_valid": "Valid JSON",
+      "status_invalid": "Invalid JSON",
+      "label_line": "Line:",
+      "label_column": "Column:"
+    }
   },
   "zh": {
     "name": "JSON 验证器",
@@ -143,6 +153,16 @@
         "question": "这是一个在线验证json的工具吗？",
         "answer": "是的。这是一个免费的在线验证json工具，同时也支持json语法检查。你可以直接在浏览器中粘贴 JSON 并验证，无需注册，无需上传数据。"
       }
-    ]
+    ],
+    "ui": {
+      "label_input": "输入 JSON",
+      "label_result": "验证结果",
+      "btn_validate": "验证 JSON",
+      "placeholder_hint": "点击「验证」检查你的 JSON",
+      "status_valid": "有效 JSON",
+      "status_invalid": "无效 JSON",
+      "label_line": "行:",
+      "label_column": "列:"
+    }
   }
 }

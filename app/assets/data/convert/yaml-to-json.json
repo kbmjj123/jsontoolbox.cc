@@ -70,7 +70,14 @@
         "question": "What YAML features are supported?",
         "answer": "The converter supports standard YAML features including anchors, aliases, multi-line strings, and nested structures."
       }
-    ]
+    ],
+    "ui": {
+      "label_input": "Input YAML",
+      "label_output": "JSON Output",
+      "btn_convert": "Convert to JSON",
+      "option_indent": "Indent:",
+      "placeholder_output": "JSON output will appear here..."
+    }
   },
   "zh": {
     "name": "YAML 转 JSON",
@@ -135,6 +142,13 @@
         "question": "支持哪些 YAML 特性？",
         "answer": "支持标准 YAML 特性，包括锚点、别名、多行字符串和嵌套结构。"
       }
-    ]
+    ],
+    "ui": {
+      "label_input": "输入 YAML",
+      "label_output": "JSON 输出",
+      "btn_convert": "转换为 JSON",
+      "option_indent": "缩进：",
+      "placeholder_output": "JSON 输出将显示在这里..."
+    }
   }
 }

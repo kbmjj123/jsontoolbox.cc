@@ -73,7 +73,12 @@ export default defineNuxtConfig({
     enabled: true,
     url: process.env.NUXT_PUBLIC_SITE_URL,
     defaultLocale: 'en',
-    trailingSlash: false
+    trailingSlash: false,
+  },
+  app: {
+    head: {
+      titleTemplate: '%s | JSON Toolbox',
+    },
   },
   features: {
     inlineStyles: true

@@ -50,7 +50,7 @@
 const { t } = useI18n()
 
 useSeoMeta({
-  title: `Privacy Policy | ${t('app.name')}`,
+  title: 'Privacy Policy',
   description: 'JSON Toolbox privacy policy — your data never leaves your browser.',
 })
 </script>

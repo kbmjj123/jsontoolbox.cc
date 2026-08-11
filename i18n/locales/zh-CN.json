@@ -1,7 +1,7 @@
 {
   "app": {
     "name": "JSON 工具箱",
-    "title": "JSON 工具箱 — 免费在线 JSON 开发者工具 | 格式化、验证、转换",
+    "title": "免费在线 JSON 开发者工具",
     "keywords": "json工具, json格式化, json验证, json转csv, json查看器, 在线json工具, 免费json工具, json转换器, json解析器, 客户端json工具",
     "description": "免费、纯前端的 JSON 开发者工具。直接在浏览器中格式化、验证、比较和转换 JSON 数据。无需上传，无追踪 — 100% 本地处理。",
     "og_title": "JSON 工具箱 — 免费、纯前端的 JSON 开发者工具",
@@ -62,7 +62,7 @@
     }
   },
   "tools": {
-    "page_title": "所有 JSON 工具",
+    "page_title": "所有 JSON 工具 — 免费在线 JSON 工具",
     "page_description": "浏览所有可用的 JSON 工具。格式化、验证、转换和探索 JSON 数据。"
   },
   "error": {
@@ -79,19 +79,23 @@
     "features_title": "核心功能",
     "guide_title": "使用方法",
     "faq_title": "常见问题",
-    "related_title": "相关工具",
-    "next_steps_title": "下一步"
+    "related_title": "相关工具"
   },
   "system": {
     "backToHome": "返回首页",
     "copy": "复制",
     "copied": "已复制！",
     "download": "下载",
+    "downloadFile": "下载文件",
     "clear": "清除",
+    "clearAll": "清除全部",
     "format": "格式化",
     "minify": "压缩",
     "validate": "验证",
     "paste": "粘贴",
-    "upload": "上传文件"
+    "upload": "上传文件",
+    "input": "输入",
+    "output": "输出",
+    "close": "关闭"
   }
 }

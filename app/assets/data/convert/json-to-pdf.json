@@ -10,6 +10,14 @@
   "en": {
     "name": "JSON to PDF Converter",
     "description": "Convert JSON data to PDF format. This json to pdf converter lets you generate printable PDF documents from your JSON data — works as a json to pdf online tool.",
+    "ui": {
+      "label_input": "Input JSON",
+      "label_preview": "Formatted Preview",
+      "btn_preview": "Preview",
+      "btn_download": "Download TXT",
+      "note_pdf": "PDF generation requires a client-side library. This tool provides a formatted text preview and download option.",
+      "placeholder_preview": "Preview will appear here..."
+    },
     "hero": {
       "trustHtml": "100% client-side conversion. Your data never leaves your browser."
     },
@@ -75,6 +83,14 @@
   "zh": {
     "name": "JSON 转 PDF",
     "description": "在线json转pdf，将json数据转换为pdf格式。免费的json pdf转换器，支持转换json为pdf，从你的 JSON 数据生成可打印的 PDF 文档。",
+    "ui": {
+      "label_input": "输入 JSON",
+      "label_preview": "格式化预览",
+      "btn_preview": "预览",
+      "btn_download": "下载 TXT",
+      "note_pdf": "PDF 生成需要客户端库。此工具提供格式化文本预览和下载选项。",
+      "placeholder_preview": "预览将在此显示..."
+    },
     "hero": {
       "trustHtml": "100% 本地转换，数据不会离开浏览器。"
     },

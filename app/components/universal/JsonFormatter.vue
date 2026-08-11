@@ -4,13 +4,13 @@
       <!-- Input -->
       <div>
         <div class="flex items-center justify-between mb-2">
-          <label class="text-sm font-bold text-surface-700 dark:text-surface-300">Input JSON</label>
+          <label class="text-sm font-bold text-surface-700 dark:text-surface-300">{{ tool.ui?.label_input || 'Input JSON' }}</label>
           <div class="flex gap-2">
             <button @click="pasteFromClipboard" class="text-xs text-primary-600 hover:text-primary-700 dark:text-primary-400">
-              Paste
+              {{ $t('system.paste') }}
             </button>
             <button @click="clearInput" class="text-xs text-surface-500 hover:text-surface-700 dark:text-surface-400">
-              Clear
+              {{ $t('system.clear') }}
             </button>
           </div>
         </div>
@@ -24,13 +24,13 @@
       <!-- Output -->
       <div>
         <div class="flex items-center justify-between mb-2">
-          <label class="text-sm font-bold text-surface-700 dark:text-surface-300">Output</label>
+          <label class="text-sm font-bold text-surface-700 dark:text-surface-300">{{ tool.ui?.label_output || 'Output' }}</label>
           <div class="flex gap-2">
             <button @click="copyOutput" class="text-xs text-primary-600 hover:text-primary-700 dark:text-primary-400">
-              Copy
+              {{ $t('system.copy') }}
             </button>
             <button @click="downloadOutput" class="text-xs text-surface-500 hover:text-surface-700 dark:text-surface-400">
-              Download
+              {{ $t('system.download') }}
             </button>
           </div>
         </div>
@@ -46,28 +46,30 @@
     <!-- Options -->
     <div class="mt-4 flex flex-wrap items-center gap-4">
       <div class="flex items-center gap-2">
-        <label class="text-xs font-bold text-surface-600 dark:text-surface-400">Indent:</label>
+        <label class="text-xs font-bold text-surface-600 dark:text-surface-400">{{ tool.ui?.option_indent || 'Indent:' }}</label>
         <select v-model="indent" class="rounded-lg border border-surface-200 bg-white px-2 py-1 text-xs dark:border-surface-700 dark:bg-surface-800">
-          <option :value="2">2 spaces</option>
-          <option :value="4">4 spaces</option>
-          <option :value="0">Minified</option>
+          <option :value="2">{{ tool.ui?.option_2_spaces || '2 spaces' }}</option>
+          <option :value="4">{{ tool.ui?.option_4_spaces || '4 spaces' }}</option>
+          <option :value="0">{{ tool.ui?.option_minified || 'Minified' }}</option>
         </select>
       </div>
 
       <button @click="formatJson" class="btn-primary px-4 py-2 text-xs">
-        Format
+        {{ $t('system.format') }}
       </button>
       <button @click="minifyJson" class="rounded-xl border border-surface-200 bg-white px-4 py-2 text-xs font-bold text-surface-700 hover:bg-surface-50 dark:border-surface-700 dark:bg-surface-800 dark:text-surface-300">
-        Minify
+        {{ $t('system.minify') }}
       </button>
       <button @click="validateJson" class="rounded-xl border border-surface-200 bg-white px-4 py-2 text-xs font-bold text-surface-700 hover:bg-surface-50 dark:border-surface-700 dark:bg-surface-800 dark:text-surface-300">
-        Validate
+        {{ $t('system.validate') }}
       </button>
     </div>
   </div>
 </template>
 
 <script setup lang="ts">
+defineProps<{ tool: any }>()
+
 const inputJson = ref('')
 const outputJson = ref('')
 const error = ref('')

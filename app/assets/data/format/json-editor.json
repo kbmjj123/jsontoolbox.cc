@@ -10,6 +10,17 @@
   "en": {
     "name": "JSON Editor",
     "description": "Edit JSON data online with syntax highlighting and validation. This free json editor online works as a .json editor and json online editor — right in your browser.",
+    "ui": {
+      "label_input": "Input JSON",
+      "label_output": "Formatted Output",
+      "option_indent": "Indent:",
+      "option_indent_2": "2 spaces",
+      "option_indent_4": "4 spaces",
+      "option_indent_minified": "Minified",
+      "option_sort_keys": "Sort keys",
+      "status_valid": "✅ Valid JSON",
+      "placeholder_output": "Formatted output will appear here..."
+    },
     "hero": {
       "trustHtml": "100% client-side editing. Your JSON data never leaves your browser."
     },
@@ -79,6 +90,17 @@
   "zh": {
     "name": "JSON 编辑器",
     "description": "在线编辑json数据，支持语法高亮和验证。免费的在线json编辑器，支持json编辑和编辑json。",
+    "ui": {
+      "label_input": "输入 JSON",
+      "label_output": "格式化输出",
+      "option_indent": "缩进：",
+      "option_indent_2": "2 空格",
+      "option_indent_4": "4 空格",
+      "option_indent_minified": "压缩",
+      "option_sort_keys": "按键排序",
+      "status_valid": "✅ JSON 有效",
+      "placeholder_output": "格式化结果将在此显示..."
+    },
     "hero": {
       "trustHtml": "100% 本地编辑，JSON 数据不会离开浏览器。"
     },

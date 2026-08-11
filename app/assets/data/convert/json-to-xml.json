@@ -74,7 +74,15 @@
         "question": "How do I convert JSON to XML?",
         "answer": "Simply paste your JSON data and click Convert. This free online tool lets you convert json to xml instantly — no upload required."
       }
-    ]
+    ],
+    "ui": {
+      "label_input": "Input JSON",
+      "label_output": "XML Output",
+      "btn_convert": "Convert to XML",
+      "option_root_element": "Root Element:",
+      "placeholder_root": "root",
+      "placeholder_output": "XML output will appear here..."
+    }
   },
   "zh": {
     "name": "JSON 转 XML",
@@ -139,6 +147,14 @@
         "question": "可以转换大型 JSON 文件吗？",
         "answer": "可以。所有处理在本地完成，文件大小仅受浏览器内存限制。"
       }
-    ]
+    ],
+    "ui": {
+      "label_input": "输入 JSON",
+      "label_output": "XML 输出",
+      "btn_convert": "转换为 XML",
+      "option_root_element": "根元素：",
+      "placeholder_root": "root",
+      "placeholder_output": "XML 输出将显示在这里..."
+    }
   }
 }

@@ -74,7 +74,19 @@
         "question": "Is this a free online JSON compare and diff tool?",
         "answer": "Yes. This is a free json compare online and json diff online tool. You can compare json, spot every difference json has between two versions, and use it as an online json compare tool — all in your browser with no upload."
       }
-    ]
+    ],
+    "ui": {
+      "label_json_a": "JSON A (Original)",
+      "label_json_b": "JSON B (Modified)",
+      "btn_compare": "Compare",
+      "btn_swap": "Swap",
+      "status_removed": "removed",
+      "status_added": "added",
+      "status_changed": "changed",
+      "status_total": "total differences",
+      "label_differences": "Differences",
+      "status_identical": "JSON documents are identical!"
+    }
   },
   "zh": {
     "name": "JSON 比较",
@@ -143,6 +155,18 @@
         "question": "这是一个在线json比较工具吗？",
         "answer": "是的。这是一个免费的在线json比较工具，支持比较json并高亮显示差异。无需上传数据，在浏览器中即可完成所有比较。"
       }
-    ]
+    ],
+    "ui": {
+      "label_json_a": "JSON A（原始）",
+      "label_json_b": "JSON B（修改后）",
+      "btn_compare": "比较",
+      "btn_swap": "交换",
+      "status_removed": "已删除",
+      "status_added": "已新增",
+      "status_changed": "已修改",
+      "status_total": "个差异",
+      "label_differences": "差异",
+      "status_identical": "JSON 文档完全一致！"
+    }
   }
 }

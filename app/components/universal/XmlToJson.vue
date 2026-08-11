@@ -4,13 +4,13 @@
       <!-- Input -->
       <div>
         <div class="flex items-center justify-between mb-2">
-          <label class="text-sm font-bold text-surface-700 dark:text-surface-300">Input XML</label>
+          <label class="text-sm font-bold text-surface-700 dark:text-surface-300">{{ ui?.labelInputXml ?? 'Input XML' }}</label>
           <div class="flex gap-2">
             <button @click="pasteFromClipboard" class="text-xs text-primary-600 hover:text-primary-700 dark:text-primary-400">
-              Paste
+              {{ $t('system.paste') }}
             </button>
             <button @click="clearInput" class="text-xs text-surface-500 hover:text-surface-700 dark:text-surface-400">
-              Clear
+              {{ $t('system.clear') }}
             </button>
           </div>
         </div>
@@ -24,13 +24,13 @@
       <!-- Output -->
       <div>
         <div class="flex items-center justify-between mb-2">
-          <label class="text-sm font-bold text-surface-700 dark:text-surface-300">JSON Output</label>
+          <label class="text-sm font-bold text-surface-700 dark:text-surface-300">{{ ui?.labelOutput ?? 'JSON Output' }}</label>
           <div class="flex gap-2">
             <button @click="copyOutput" class="text-xs text-primary-600 hover:text-primary-700 dark:text-primary-400">
-              Copy
+              {{ $t('system.copy') }}
             </button>
             <button @click="downloadOutput" class="text-xs text-surface-500 hover:text-surface-700 dark:text-surface-400">
-              Download
+              {{ $t('system.download') }}
             </button>
           </div>
         </div>
@@ -51,10 +51,10 @@
     <!-- Options -->
     <div class="mt-4 flex flex-wrap items-center gap-4">
       <div class="flex items-center gap-2">
-        <label class="text-xs font-bold text-surface-600 dark:text-surface-400">Indent:</label>
+        <label class="text-xs font-bold text-surface-600 dark:text-surface-400">{{ ui?.labelIndent ?? 'Indent:' }}</label>
         <select v-model="indent" class="rounded-lg border border-surface-200 bg-white px-2 py-1 text-xs dark:border-surface-700 dark:bg-surface-800">
-          <option :value="2">2 spaces</option>
-          <option :value="4">4 spaces</option>
+          <option :value="2">{{ ui?.optionSpaces2 ?? '2 spaces' }}</option>
+          <option :value="4">{{ ui?.optionSpaces4 ?? '4 spaces' }}</option>
         </select>
       </div>
     </div>
@@ -63,16 +63,19 @@
     <div class="mt-4 flex flex-wrap gap-3">
       <button @click="convertToJson" class="btn-primary px-5 py-2 text-xs">
         <Icon name="lucide:arrow-right" class="h-4 w-4 mr-1.5" />
-        Convert to JSON
+        {{ ui?.btnConvert ?? 'Convert to JSON' }}
       </button>
       <button @click="clearAll" class="rounded-xl border border-surface-200 bg-white px-4 py-2 text-xs font-bold text-surface-700 hover:bg-surface-50 dark:border-surface-700 dark:bg-surface-800 dark:text-surface-300 dark:hover:bg-surface-700">
-        Clear All
+        {{ $t('system.clearAll') }}
       </button>
     </div>
   </div>
 </template>
 
 <script setup lang="ts">
+const props = defineProps<{ tool: any }>()
+const ui = computed(() => props.tool?.ui)
+
 const inputXml = ref('')
 const outputJson = ref('')
 const error = ref('')
@@ -111,7 +114,7 @@ const convertToJson = () => {
 
     const parserError = doc.querySelector('parsererror')
     if (parserError) {
-      error.value = 'Invalid XML: ' + parserError.textContent
+      error.value = (ui.value?.errorInvalidXml ?? 'Invalid XML: ') + parserError.textContent
       return
     }
 

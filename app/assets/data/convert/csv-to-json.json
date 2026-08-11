@@ -74,7 +74,17 @@
         "question": "How do I convert CSV to JSON online?",
         "answer": "Paste your CSV data and click Convert. This free csv to json online tool lets you convert csv to json instantly in your browser — no upload required."
       }
-    ]
+    ],
+    "ui": {
+      "label_input": "Input CSV",
+      "label_output": "JSON Output",
+      "btn_convert": "Convert to JSON",
+      "option_delimiter": "Delimiter:",
+      "option_has_header": "First row is header",
+      "option_indent": "Indent:",
+      "placeholder_output": "JSON output will appear here...",
+      "error_no_data": "No data to convert"
+    }
   },
   "zh": {
     "name": "CSV 转 JSON",
@@ -139,6 +149,16 @@
         "question": "支持不同的分隔符吗？",
         "answer": "转换器自动检测常见分隔符，如逗号、制表符和分号。"
       }
-    ]
+    ],
+    "ui": {
+      "label_input": "输入 CSV",
+      "label_output": "JSON 输出",
+      "btn_convert": "转换为 JSON",
+      "option_delimiter": "分隔符：",
+      "option_has_header": "第一行是表头",
+      "option_indent": "缩进：",
+      "placeholder_output": "JSON 输出将显示在这里...",
+      "error_no_data": "没有数据可转换"
+    }
   }
 }

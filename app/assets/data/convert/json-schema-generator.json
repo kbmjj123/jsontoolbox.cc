@@ -10,6 +10,12 @@
   "en": {
     "name": "JSON Schema Generator",
     "description": "Generate JSON Schema from JSON data automatically. This json schema generator helps with generating json schema and json to schema conversion from your JSON examples.",
+    "ui": {
+      "label_input": "Input JSON",
+      "label_output": "JSON Schema",
+      "btn_generate": "Generate Schema",
+      "placeholder_output": "JSON Schema will appear here..."
+    },
     "hero": {
       "trustHtml": "100% client-side generation. Your JSON data never leaves your browser."
     },
@@ -75,6 +81,12 @@
   "zh": {
     "name": "JSON Schema 生成器",
     "description": "从json生成schema，自动从json数据生成json schema。这是一个json schema生成器，支持json转schema，从你的 JSON 示例创建验证 Schema。",
+    "ui": {
+      "label_input": "输入 JSON",
+      "label_output": "JSON Schema",
+      "btn_generate": "生成 Schema",
+      "placeholder_output": "JSON Schema 将在此显示..."
+    },
     "hero": {
       "trustHtml": "100% 本地生成，JSON 数据不会离开浏览器。"
     },

@@ -4,13 +4,13 @@
       <!-- Input JSON -->
       <div>
         <div class="flex items-center justify-between mb-2">
-          <label class="text-sm font-bold text-surface-700 dark:text-surface-300">Input JSON</label>
+          <label class="text-sm font-bold text-surface-700 dark:text-surface-300">{{ ui?.labelInputJson ?? 'Input JSON' }}</label>
           <div class="flex gap-2">
             <button @click="pasteFromClipboard" class="text-xs text-primary-600 hover:text-primary-700 dark:text-primary-400">
-              Paste
+              {{ $t('system.paste') }}
             </button>
             <button @click="clearInput" class="text-xs text-surface-500 hover:text-surface-700 dark:text-surface-400">
-              Clear
+              {{ $t('system.clear') }}
             </button>
           </div>
         </div>
@@ -24,14 +24,14 @@
       <!-- Results -->
       <div>
         <div class="flex items-center justify-between mb-2">
-          <label class="text-sm font-bold text-surface-700 dark:text-surface-300">Results</label>
+          <label class="text-sm font-bold text-surface-700 dark:text-surface-300">{{ ui?.labelResults ?? 'Results' }}</label>
           <span v-if="results.length > 0" class="text-xs text-surface-500 dark:text-surface-400">
-            {{ results.length }} match(es)
+            {{ (ui?.statusMatches ?? '{count} match(es)').replace('{count}', String(results.length)) }}
           </span>
         </div>
         <div class="w-full h-64 rounded-xl border border-surface-200 bg-surface-50 p-4 font-mono text-sm overflow-auto dark:border-surface-700 dark:bg-surface-800">
           <div v-if="results.length === 0 && !error" class="text-surface-400 dark:text-surface-500">
-            Results will appear here...
+            {{ ui?.placeholderResults ?? 'Results will appear here...' }}
           </div>
           <div v-for="(result, index) in results" :key="index" class="mb-2 last:mb-0">
             <div class="text-xs text-surface-500 dark:text-surface-400 mb-1">{{ result.path }}</div>
@@ -43,24 +43,24 @@
 
     <!-- JSONPath Input -->
     <div class="mt-4">
-      <label class="text-sm font-bold text-surface-700 dark:text-surface-300 mb-2 block">JSONPath Expression</label>
+      <label class="text-sm font-bold text-surface-700 dark:text-surface-300 mb-2 block">{{ ui?.labelExpression ?? 'JSONPath Expression' }}</label>
       <div class="flex gap-3">
         <input
           v-model="jsonPath"
           @keyup.enter="evaluate"
           class="flex-1 rounded-xl border border-surface-200 bg-white px-4 py-2.5 font-mono text-sm text-surface-900 focus:border-primary-500 focus:ring-2 focus:ring-primary-500/20 dark:border-surface-700 dark:bg-surface-800 dark:text-surface-100"
-          placeholder="$.store.book[0].title"
+          :placeholder="ui?.placeholderExpression ?? '$.store.book[0].title'"
         />
         <button @click="evaluate" class="btn-primary px-5 py-2 text-xs">
           <Icon name="lucide:play" class="h-4 w-4 mr-1.5" />
-          Evaluate
+          {{ ui?.btnEvaluate ?? 'Evaluate' }}
         </button>
       </div>
     </div>
 
     <!-- Common Paths -->
     <div class="mt-4">
-      <label class="text-xs font-bold text-surface-600 dark:text-surface-400 mb-2 block">Common Paths:</label>
+      <label class="text-xs font-bold text-surface-600 dark:text-surface-400 mb-2 block">{{ ui?.labelCommonPaths ?? 'Common Paths:' }}</label>
       <div class="flex flex-wrap gap-2">
         <button
           v-for="path in commonPaths"
@@ -81,6 +81,9 @@
 </template>
 
 <script setup lang="ts">
+const props = defineProps<{ tool: any }>()
+const ui = computed(() => props.tool?.ui)
+
 const inputJson = ref('')
 const jsonPath = ref('')
 const error = ref('')
@@ -150,12 +153,12 @@ const evaluate = () => {
   results.value = []
 
   if (!inputJson.value.trim()) {
-    error.value = 'Please enter JSON data'
+    error.value = ui.value?.errorNoJson ?? 'Please enter JSON data'
     return
   }
 
   if (!jsonPath.value.trim()) {
-    error.value = 'Please enter a JSONPath expression'
+    error.value = ui.value?.errorNoExpression ?? 'Please enter a JSONPath expression'
     return
   }
 
@@ -163,7 +166,7 @@ const evaluate = () => {
     const parsed = JSON.parse(inputJson.value)
     results.value = getByPath(parsed, jsonPath.value)
     if (results.value.length === 0) {
-      error.value = 'No matches found'
+      error.value = ui.value?.errorNoMatches ?? 'No matches found'
     }
   } catch (e) {
     error.value = (e as Error).message
