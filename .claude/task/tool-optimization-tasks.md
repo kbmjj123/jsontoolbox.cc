@@ -297,7 +297,7 @@
 | 6 | json-to-typescript | ✅ 已完成 | 2026-08-13 |
 | 7 | json-tree-viewer | ✅ 已完成 | 2026-08-13 |
 | 8 | json-path-tester | ✅ 已完成 | 2026-08-13 |
-| 9 | json-minifier | ⬜ 待开始 | - |
+| 9 | json-minifier | ✅ 已完成 | 2026-08-13 |
 | 10 | json-escape | ⬜ 待开始 | - |
 | 11 | json-editor | ⬜ 待开始 | - |
 | 12 | json-schema-generator | ⬜ 待开始 | - |

@@ -15,8 +15,8 @@
     },
     "meta": {
       "title": "JSON Minifier — Compress JSON to One Line Online Free",
-      "description": "Minify and compress JSON data online. Remove all whitespace and formatting to create compact, single-line JSON. No upload required. 100% client-side.",
-      "keywords": ["json minifier", "json minify", "minify json", "json compressor", "json minification", "compress json online"]
+      "description": "Minify and compress JSON data online. Remove all whitespace and formatting to create compact, single-line JSON. Compare size before/after. No upload required.",
+      "keywords": ["json minifier", "json minify", "minify json", "json compressor", "json minification", "compress json online", "json size reducer", "json compact", "json optimizer", "minify json online"]
     },
     "features": [
       {
@@ -28,6 +28,21 @@
         "icon": "lucide:copy",
         "title": "One-Click Copy",
         "description": "Copy the minified JSON to clipboard with one click."
+      },
+      {
+        "icon": "lucide:download",
+        "title": "Download",
+        "description": "Download the minified JSON as a file."
+      },
+      {
+        "icon": "lucide:bar-chart",
+        "title": "Size Comparison",
+        "description": "See the original and minified sizes to understand compression ratio."
+      },
+      {
+        "icon": "lucide:link",
+        "title": "URL Input",
+        "description": "Load JSON from URL using ?url= parameter."
       },
       {
         "icon": "lucide:shield-check",
@@ -63,6 +78,10 @@
         "answer": "Minify JSON when sending data over a network, storing in a database, or embedding in URLs. Minified JSON takes less space and transfers faster."
       },
       {
+        "question": "How much smaller does minified JSON get?",
+        "answer": "The size reduction depends on the original formatting. Typically, minified JSON is 30-70% smaller than pretty-printed JSON. The tool shows the exact compression ratio."
+      },
+      {
         "question": "Can I minify large JSON files?",
         "answer": "Yes. Since all processing happens locally in your browser, you can minify JSON files as large as your browser's memory allows."
       },
@@ -71,6 +90,15 @@
         "answer": "A JSON minifier removes all whitespace to create compact JSON. A JSON formatter adds indentation and line breaks to make JSON readable. They are opposite operations."
       }
     ],
+    "article": {
+      "title": "How to Minify JSON Online & Reduce File Size",
+      "content": "<h2>Why Minify JSON?</h2><p>JSON minification removes all unnecessary whitespace, line breaks, and indentation from JSON data. This creates compact, single-line JSON that's ideal for production environments where file size matters.</p><h2>When to Minify JSON</h2><ul><li><strong>Production Deployments:</strong> Reduce payload size for faster loading</li><li><strong>API Responses:</strong> Minimize network transfer time</li><li><strong>Database Storage:</strong> Save storage space for large JSON documents</li><li><strong>URL Parameters:</strong> Fit more data in query strings</li></ul><h2>How to Minify</h2><ol><li><strong>Paste JSON</strong> into the input field</li><li><strong>Click Minify</strong> to compress</li><li><strong>Compare sizes</strong> to see compression ratio</li><li><strong>Copy or Download</strong> the minified output</li></ol><h2>JSON Minify vs Format</h2><ul><li><strong>Minify:</strong> Remove whitespace → compact JSON</li><li><strong>Format:</strong> Add indentation → readable JSON</li></ul><p>Use minify for production, format for development.</p><h2>Best Practices</h2><ul><li><strong>Always validate first:</strong> Ensure JSON is valid before minifying</li><li><strong>Compare sizes:</strong> Check compression ratio</li><li><strong>Test output:</strong> Verify minified JSON is still valid</li><li><strong>Use in build process:</strong> Automate minification in CI/CD</li></ul>",
+      "links": [
+        {"text": "JSON Formatter", "url": "/tools/format/json-formatter"},
+        {"text": "JSON Validator", "url": "/tools/validate/json-validator"},
+        {"text": "JSON to CSV", "url": "/tools/convert/json-to-csv"}
+      ]
+    }
     "ui": {
       "label_input": "Input JSON",
       "label_output": "Minified Output",
@@ -88,8 +116,8 @@
     },
     "meta": {
       "title": "JSON 压缩器 — 在线压缩 JSON 为单行",
-      "description": "在线压缩和最小化 JSON 数据。移除所有空白和格式，生成紧凑的单行 JSON。无需上传，100% 客户端处理。",
-      "keywords": ["json压缩", "json压缩器", "压缩json", "json最小化", "在线压缩json"]
+      "description": "在线压缩和最小化 JSON 数据。移除所有空白和格式，生成紧凑的单行 JSON。比较压缩前后大小。无需上传，100% 客户端处理。",
+      "keywords": ["json压缩", "json压缩器", "压缩json", "json最小化", "在线压缩json", "json大小缩减器", "json紧凑化", "json优化器", "在线minify json", "json压缩工具"]
     },
     "features": [
       {
@@ -101,6 +129,21 @@
         "icon": "lucide:copy",
         "title": "一键复制",
         "description": "一键复制压缩后的 JSON 到剪贴板。"
+      },
+      {
+        "icon": "lucide:download",
+        "title": "下载",
+        "description": "下载压缩后的 JSON 文件。"
+      },
+      {
+        "icon": "lucide:bar-chart",
+        "title": "大小对比",
+        "description": "查看原始和压缩后的大小，了解压缩比率。"
+      },
+      {
+        "icon": "lucide:link",
+        "title": "URL 输入",
+        "description": "使用 ?url= 参数从 URL 加载 JSON。"
       },
       {
         "icon": "lucide:shield-check",
@@ -136,6 +179,10 @@
         "answer": "在网络传输、数据库存储或嵌入 URL 时压缩json。压缩json后的数据占用更少空间，传输更快。"
       },
       {
+        "question": "压缩后能缩小多少？",
+        "answer": "缩小幅度取决于原始格式。通常压缩后的 JSON 比格式化的小 30-70%。工具会显示确切的压缩比率。"
+      },
+      {
         "question": "可以压缩大型 JSON 文件吗？",
         "answer": "可以。所有处理在浏览器本地完成，只要浏览器内存允许，你可以压缩任意大小的 JSON 文件。"
       },
@@ -151,6 +198,15 @@
       "unit_chars": "字符",
       "unit_smaller": "更小",
       "btn_beautify": "先美化"
+    },
+    "article": {
+      "title": "如何在线压缩 JSON 并减小文件大小",
+      "content": "<h2>为什么要压缩 JSON？</h2><p>JSON 压缩会移除所有不必要的空白、换行和缩进，创建紧凑的单行 JSON。这非常适合文件大小很重要的生产环境。</p><h2>何时压缩 JSON</h2><ul><li><strong>生产部署：</strong>减小负载大小以加快加载速度</li><li><strong>API 响应：</strong>最小化网络传输时间</li><li><strong>数据库存储：</strong>为大型 JSON 文档节省存储空间</li><li><strong>URL 参数：</strong>在查询字符串中放入更多数据</li></ul><h2>如何压缩</h2><ol><li><strong>粘贴 JSON</strong> 到输入框</li><li><strong>点击压缩</strong> 压缩数据</li><li><strong>比较大小</strong> 查看压缩比率</li><li><strong>复制或下载</strong> 压缩后的输出</li></ol><h2>JSON 压缩 vs 格式化</h2><ul><li><strong>压缩：</strong>移除空白 → 紧凑 JSON</li><li><strong>格式化：</strong>添加缩进 → 可读 JSON</li></ul><p>生产环境用压缩，开发环境用格式化。</p><h2>最佳实践</h2><ul><li><strong>先验证：</strong>确保 JSON 有效再压缩</li><li><strong>比较大小：</strong>检查压缩比率</li><li><strong>测试输出：</strong>验证压缩后的 JSON 仍然有效</li><li><strong>在构建流程中使用：</strong>在 CI/CD 中自动化压缩</li></ul>",
+      "links": [
+        {"text": "JSON 格式化工具", "url": "/tools/format/json-formatter"},
+        {"text": "JSON 验证器", "url": "/tools/validate/json-validator"},
+        {"text": "JSON 转 CSV", "url": "/tools/convert/json-to-csv"}
+      ]
     }
   }
 }
