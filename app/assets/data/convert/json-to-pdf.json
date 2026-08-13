@@ -14,8 +14,13 @@
       "label_input": "Input JSON",
       "label_preview": "Formatted Preview",
       "btn_preview": "Preview",
-      "btn_download": "Download TXT",
-      "note_pdf": "PDF generation requires a client-side library. This tool provides a formatted text preview and download option.",
+      "btn_example": "Load Example",
+      "btn_download_pdf": "Download PDF",
+      "btn_download_txt": "Download TXT",
+      "option_font_size": "Font size:",
+      "option_orientation": "Orientation:",
+      "option_portrait": "Portrait",
+      "option_landscape": "Landscape",
       "placeholder_preview": "Preview will appear here..."
     },
     "hero": {
@@ -30,12 +35,27 @@
       {
         "icon": "lucide:file-text",
         "title": "PDF Export",
-        "description": "Convert JSON data to formatted PDF documents."
+        "description": "Generate real PDF documents from JSON data."
+      },
+      {
+        "icon": "lucide:copy",
+        "title": "Copy Output",
+        "description": "Copy formatted JSON to clipboard."
       },
       {
         "icon": "lucide:download",
-        "title": "Download",
-        "description": "Download the PDF file directly."
+        "title": "Multiple Formats",
+        "description": "Download as PDF or plain text file."
+      },
+      {
+        "icon": "lucide:settings",
+        "title": "Customizable",
+        "description": "Adjust font size and page orientation."
+      },
+      {
+        "icon": "lucide:upload",
+        "title": "File Upload",
+        "description": "Upload .json files directly for conversion."
       },
       {
         "icon": "lucide:shield-check",
@@ -46,11 +66,11 @@
     "guide": [
       {
         "title": "Paste your JSON",
-        "description": "Paste your JSON data into the input field."
+        "description": "Paste your JSON data into the input field or upload a file."
       },
       {
-        "title": "Click Convert",
-        "description": "Click Convert to PDF to generate the document."
+        "title": "Preview & Configure",
+        "description": "Preview the formatted JSON and adjust font size or orientation."
       },
       {
         "title": "Download PDF",
@@ -64,11 +84,11 @@
       },
       {
         "question": "What does the PDF look like?",
-        "answer": "The PDF contains your JSON data formatted with proper indentation and syntax highlighting for readability."
+        "answer": "The PDF contains your JSON data formatted with proper indentation using a monospace font for readability."
       },
       {
         "question": "Can I customize the PDF layout?",
-        "answer": "The PDF uses a clean, readable layout optimized for JSON data display."
+        "answer": "Yes. You can adjust the font size (8-14pt) and page orientation (portrait or landscape)."
       },
       {
         "question": "Can I convert large JSON files?",
@@ -77,6 +97,10 @@
       {
         "question": "Why would I convert JSON to PDF?",
         "answer": "Converting JSON to PDF is useful for documentation, sharing with non-technical users, printing, or archiving JSON data in a readable format."
+      },
+      {
+        "question": "Can I also download as text?",
+        "answer": "Yes. Use the 'Download TXT' button to get a plain text version of your formatted JSON."
       }
     ]
   },
@@ -87,8 +111,13 @@
       "label_input": "输入 JSON",
       "label_preview": "格式化预览",
       "btn_preview": "预览",
-      "btn_download": "下载 TXT",
-      "note_pdf": "PDF 生成需要客户端库。此工具提供格式化文本预览和下载选项。",
+      "btn_example": "加载示例",
+      "btn_download_pdf": "下载 PDF",
+      "btn_download_txt": "下载 TXT",
+      "option_font_size": "字体大小：",
+      "option_orientation": "方向：",
+      "option_portrait": "纵向",
+      "option_landscape": "横向",
       "placeholder_preview": "预览将在此显示..."
     },
     "hero": {
@@ -103,12 +132,27 @@
       {
         "icon": "lucide:file-text",
         "title": "PDF 导出",
-        "description": "将 JSON 数据转换为格式化的 PDF 文档。"
+        "description": "从 JSON 数据生成真正的 PDF 文档。"
+      },
+      {
+        "icon": "lucide:copy",
+        "title": "复制输出",
+        "description": "复制格式化 JSON 到剪贴板。"
       },
       {
         "icon": "lucide:download",
-        "title": "下载",
-        "description": "直接下载 PDF 文件。"
+        "title": "多种格式",
+        "description": "下载为 PDF 或纯文本文件。"
+      },
+      {
+        "icon": "lucide:settings",
+        "title": "可配置",
+        "description": "调整字体大小和页面方向。"
+      },
+      {
+        "icon": "lucide:upload",
+        "title": "文件上传",
+        "description": "直接上传 .json 文件进行转换。"
       },
       {
         "icon": "lucide:shield-check",
@@ -119,11 +163,11 @@
     "guide": [
       {
         "title": "粘贴 JSON",
-        "description": "将 JSON 数据粘贴到输入框中。"
+        "description": "将 JSON 数据粘贴到输入框中或上传文件。"
       },
       {
-        "title": "点击转换",
-        "description": "点击转换为 PDF 生成文档。"
+        "title": "预览和配置",
+        "description": "预览格式化 JSON 并调整字体大小或方向。"
       },
       {
         "title": "下载 PDF",
@@ -137,11 +181,11 @@
       },
       {
         "question": "PDF 是什么样子的？",
-        "answer": "PDF 包含格式化的 JSON 数据，带有正确的缩进和语法高亮，便于阅读。"
+        "answer": "PDF 包含使用等宽字体格式化的 JSON 数据，带有正确的缩进，便于阅读。"
       },
       {
         "question": "可以自定义 PDF 布局吗？",
-        "answer": "PDF 使用针对 JSON 数据显示优化的简洁、可读布局。"
+        "answer": "可以。你可以调整字体大小（8-14pt）和页面方向（纵向或横向）。"
       },
       {
         "question": "可以转换大型 JSON 文件吗？",
@@ -150,6 +194,10 @@
       {
         "question": "为什么要将 JSON 转换为 PDF？",
         "answer": "将 JSON 转为 PDF 适用于文档编写、与非技术用户共享、打印或以可读格式存档 JSON 数据。"
+      },
+      {
+        "question": "可以下载为文本格式吗？",
+        "answer": "可以。使用"下载 TXT"按钮获取格式化 JSON 的纯文本版本。"
       }
     ]
   }
