@@ -15,19 +15,34 @@
     },
     "meta": {
       "title": "JSON Escape Unescape — Free Online Tool",
-      "description": "Escape and unescape JSON strings online. Handle special characters, quotes, and backslashes. Free, fast, and runs in your browser. No upload required.",
-      "keywords": ["json unescape", "unescape json", "json escape", "escape json", "json string escape", "json string unescape"]
+      "description": "Escape and unescape JSON strings online. Handle special characters, quotes, backslashes, and newlines. Free, fast, and runs in your browser. No upload required.",
+      "keywords": ["json unescape", "unescape json", "json escape", "escape json", "json string escape", "json string unescape", "json special characters", "escape special characters json", "json string formatter", "json escape tool"]
     },
     "features": [
       {
         "icon": "lucide:shield",
         "title": "Escape & Unescape",
-        "description": "Convert between escaped and unescaped JSON strings."
+        "description": "Convert between escaped and unescaped JSON strings instantly."
       },
       {
         "icon": "lucide:copy",
         "title": "One-Click Copy",
         "description": "Copy the result to clipboard instantly."
+      },
+      {
+        "icon": "lucide:download",
+        "title": "Download",
+        "description": "Download the processed string as a file."
+      },
+      {
+        "icon": "lucide:refresh-cw",
+        "title": "Swap",
+        "description": "Quickly swap input and output for repeated operations."
+      },
+      {
+        "icon": "lucide:link",
+        "title": "URL Input",
+        "description": "Load JSON from URL using ?url= parameter."
       },
       {
         "icon": "lucide:shield-check",
@@ -69,8 +84,21 @@
       {
         "question": "When should I unescape JSON?",
         "answer": "Unescape JSON when you have an escaped JSON string (from logs, API responses, or code) and need to read the actual JSON content."
+      },
+      {
+        "question": "What special characters are escaped?",
+        "answer": "Common escaped characters include: quotes (\\\"), backslashes (\\\\), newlines (\\n), tabs (\\t), carriage returns (\\r), and unicode characters (\\uXXXX)."
       }
     ],
+    "article": {
+      "title": "How to Escape & Unescape JSON Strings Online",
+      "content": "<h2>What is JSON Escaping?</h2><p>JSON escaping adds backslash characters before special characters so they can be safely included in JSON strings. This is essential when embedding one JSON string inside another.</p><h2>Common Escaped Characters</h2><ul><li><strong>\\\"</strong> — Double quote</li><li><strong>\\\\</strong> — Backslash</li><li><strong>\\n</strong> — Newline</li><li><strong>\\t</strong> — Tab</li><li><strong>\\r</strong> — Carriage return</li><li><strong>\\uXXXX</strong> — Unicode character</li></ul><h2>When to Escape</h2><ul><li><strong>Nesting JSON:</strong> Embedding a JSON string inside another JSON</li><li><strong>Code Generation:</strong> Including JSON in JavaScript strings</li><li><strong>Logs:</strong> Writing JSON to log files</li><li><strong>Configuration:</strong> Including JSON in config files</li></ul><h2>When to Unescape</h2><ul><li><strong>Reading Logs:</strong> Parsing escaped JSON from log files</li><li><strong>API Responses:</strong> Handling escaped strings from APIs</li><li><strong>Debugging:</strong> Viewing escaped JSON content</li></ul><h2>How to Use</h2><ol><li><strong>Paste</strong> your escaped or unescaped string</li><li><strong>Click Escape</strong> to add escape characters</li><li><strong>Or click Unescape</strong> to remove them</li><li><strong>Copy</strong> the result</li></ol>",
+      "links": [
+        {"text": "JSON Formatter", "url": "/tools/format/json-formatter"},
+        {"text": "JSON Validator", "url": "/tools/validate/json-validator"},
+        {"text": "JSON Minifier", "url": "/tools/format/json-minifier"}
+      ]
+    }
     "ui": {
       "placeholder_output": "Output will appear here...",
       "btn_escape": "Escape",
@@ -80,25 +108,40 @@
   },
   "zh": {
     "name": "JSON 转义/反转义",
-    "description": "在线json转义或json反转义字符串。处理json特殊字符处理，包括引号和反斜杠。",
+    "description": "在线json转义或json反转义字符串。处理json特殊字符处理，包括引号、反斜杠和换行符。",
     "hero": {
       "trustHtml": "100% 本地处理，你的 JSON 数据永远不会离开浏览器。"
     },
     "meta": {
       "title": "JSON 转义反转义 — 免费在线工具",
-      "description": "在线转义和反转义 JSON 字符串。处理特殊字符、引号和反斜杠。免费、快速，浏览器中运行。无需上传。",
-      "keywords": ["json转义", "json反转义", "转义json", "反转义json", "json特殊字符处理"]
+      "description": "在线转义和反转义 JSON 字符串。处理特殊字符、引号、反斜杠和换行符。免费、快速，浏览器中运行。无需上传。",
+      "keywords": ["json转义", "json反转义", "转义json", "反转义json", "json特殊字符处理", "转义特殊字符json", "json字符串格式化", "json转义工具", "json字符串转义", "json字符串反转义"]
     },
     "features": [
       {
         "icon": "lucide:shield",
         "title": "转义与反转义",
-        "description": "在转义和反转义的 JSON 字符串之间转换。"
+        "description": "在转义和反转义的 JSON 字符串之间即时转换。"
       },
       {
         "icon": "lucide:copy",
         "title": "一键复制",
         "description": "一键复制结果到剪贴板。"
+      },
+      {
+        "icon": "lucide:download",
+        "title": "下载",
+        "description": "下载处理后的字符串文件。"
+      },
+      {
+        "icon": "lucide:refresh-cw",
+        "title": "交换",
+        "description": "快速交换输入和输出以进行重复操作。"
+      },
+      {
+        "icon": "lucide:link",
+        "title": "URL 输入",
+        "description": "使用 ?url= 参数从 URL 加载 JSON。"
       },
       {
         "icon": "lucide:shield-check",
@@ -140,6 +183,10 @@
       {
         "question": "什么时候应该反转义json？",
         "answer": "当你有一个转义的 JSON 字符串（来自日志、API 响应或代码），需要读取实际的 JSON 内容时反转义json。"
+      },
+      {
+        "question": "哪些特殊字符会被转义？",
+        "answer": "常见的转义字符包括：引号（\\\"）、反斜杠（\\\\）、换行符（\\n）、制表符（\\t）、回车符（\\r）和 Unicode 字符（\\uXXXX）。"
       }
     ],
     "ui": {
@@ -147,6 +194,15 @@
       "btn_escape": "转义",
       "btn_unescape": "反转义",
       "btn_swap": "交换"
+    },
+    "article": {
+      "title": "如何在线转义和反转义 JSON 字符串",
+      "content": "<h2>什么是 JSON 转义？</h2><p>JSON 转义在特殊字符前添加反斜杠，使其可以安全地包含在 JSON 字符串中。当在另一个 JSON 字符串中嵌入 JSON 字符串时，这是必不可少的。</p><h2>常见转义字符</h2><ul><li><strong>\\\"</strong> — 双引号</li><li><strong>\\\\</strong> — 反斜杠</li><li><strong>\\n</strong> — 换行符</li><li><strong>\\t</strong> — 制表符</li><li><strong>\\r</strong> — 回车符</li><li><strong>\\uXXXX</strong> — Unicode 字符</li></ul><h2>何时转义</h2><ul><li><strong>嵌套 JSON：</strong>在另一个 JSON 中嵌入 JSON 字符串</li><li><strong>代码生成：</strong>在 JavaScript 字符串中包含 JSON</li><li><strong>日志：</strong>将 JSON 写入日志文件</li><li><strong>配置：</strong>在配置文件中包含 JSON</li></ul><h2>何时反转义</h2><ul><li><strong>读取日志：</strong>解析日志文件中的转义 JSON</li><li><strong>API 响应：</strong>处理来自 API 的转义字符串</li><li><strong>调试：</strong>查看转义的 JSON 内容</li></ul><h2>如何使用</h2><ol><li><strong>粘贴</strong> 你的转义或未转义字符串</li><li><strong>点击转义</strong> 添加转义字符</li><li><strong>或点击反转义</strong> 移除它们</li><li><strong>复制</strong> 结果</li></ol>",
+      "links": [
+        {"text": "JSON 格式化工具", "url": "/tools/format/json-formatter"},
+        {"text": "JSON 验证器", "url": "/tools/validate/json-validator"},
+        {"text": "JSON 压缩器", "url": "/tools/format/json-minifier"}
+      ]
     }
   }
 }
