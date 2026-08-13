@@ -31,8 +31,8 @@
       },
       {
         "icon": "lucide:settings",
-        "title": "Root Element",
-        "description": "Customize the root element name for your XML output."
+        "title": "Customizable",
+        "description": "Customize root element, indentation, and encoding."
       },
       {
         "icon": "lucide:copy",
@@ -107,7 +107,12 @@
       "label_input": "Input JSON",
       "label_output": "XML Output",
       "btn_convert": "Convert to XML",
+      "btn_example": "Load Example",
       "option_root_element": "Root Element:",
+      "option_indent": "Indent:",
+      "option_indent_2": "2 spaces",
+      "option_indent_4": "4 spaces",
+      "option_encoding": "Encoding:",
       "placeholder_root": "root",
       "placeholder_output": "XML output will appear here..."
     }
@@ -136,8 +141,8 @@
       },
       {
         "icon": "lucide:settings",
-        "title": "根元素",
-        "description": "自定义 XML 输出的根元素名称。"
+        "title": "可配置",
+        "description": "自定义根元素、缩进格式和编码。"
       },
       {
         "icon": "lucide:copy",
@@ -199,7 +204,12 @@
       "label_input": "输入 JSON",
       "label_output": "XML 输出",
       "btn_convert": "转换为 XML",
+      "btn_example": "加载示例",
       "option_root_element": "根元素：",
+      "option_indent": "缩进：",
+      "option_indent_2": "2 空格",
+      "option_indent_4": "4 空格",
+      "option_encoding": "编码：",
       "placeholder_root": "root",
       "placeholder_output": "XML 输出将显示在这里..."
     },
