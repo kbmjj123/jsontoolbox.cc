@@ -9,30 +9,45 @@
   "recommends": ["json-formatter", "json-tree-viewer"],
   "en": {
     "name": "JSON to CSV Converter",
-    "description": "Convert JSON arrays to CSV format online. This free json to csv converter is perfect for exporting data to Excel or Google Sheets.",
+    "description": "Convert JSON arrays to CSV format for Excel and Google Sheets. This free JSON to CSV converter flattens nested objects, supports field selection, and runs entirely in your browser — no upload needed.",
     "hero": {
       "trustHtml": "100% client-side conversion. Your data never leaves your browser."
     },
     "meta": {
-      "title": "JSON to CSV — Free Online Converter",
-      "description": "Convert JSON arrays to CSV format online. Export to Excel, Google Sheets. No upload required.",
-      "keywords": ["json to csv", "convert json to csv", "json to csv converter", "json format to csv", "json to csv online", "online json to csv converter", "json to csv converter online", "transform json to csv", "how to convert json to csv"]
+      "title": "JSON to CSV Converter — Free Online for Excel & Google Sheets",
+      "description": "Convert JSON arrays to CSV for Excel and Google Sheets. Flatten nested objects, select fields, and preview table before download. Free, no upload required.",
+      "keywords": ["json to csv", "convert json to csv", "json to csv converter", "json to excel", "json to google sheets", "json array to csv", "flatten json to csv", "json csv converter online", "how to convert json to csv", "json to csv for excel", "nested json to csv", "json to spreadsheet"]
     },
     "features": [
       {
         "icon": "lucide:table",
         "title": "CSV Export",
-        "description": "Convert JSON arrays to CSV with proper escaping. This json to csv converter online handles any JSON format to csv conversion."
+        "description": "Convert JSON arrays to CSV with proper escaping. Handles any JSON format including nested objects."
+      },
+      {
+        "icon": "lucide:layers",
+        "title": "Flatten Nested Objects",
+        "description": "Automatically flatten nested JSON objects into CSV columns with dot notation (e.g., user.name, address.city)."
+      },
+      {
+        "icon": "lucide:eye",
+        "title": "Table Preview",
+        "description": "Preview your data as a table before downloading. Verify the conversion looks correct."
+      },
+      {
+        "icon": "lucide:list-checks",
+        "title": "Field Selection",
+        "description": "Choose which fields to export. Avoid exporting unnecessary data."
       },
       {
         "icon": "lucide:download",
-        "title": "Download",
-        "description": "Download the CSV file directly."
+        "title": "Excel Compatible",
+        "description": "Download CSV with UTF-8 BOM for proper Excel compatibility. Also supports GBK encoding for Chinese characters."
       },
       {
         "icon": "lucide:shield-check",
         "title": "Private",
-        "description": "All conversion happens in your browser."
+        "description": "All conversion happens in your browser. No data upload."
       }
     ],
     "guide": [
@@ -41,22 +56,34 @@
         "description": "Paste your JSON array into the input field."
       },
       {
+        "title": "Configure options",
+        "description": "Toggle 'Flatten nested objects' and select encoding if needed."
+      },
+      {
         "title": "Click Convert",
         "description": "Click Convert to CSV to generate the output."
       },
       {
-        "title": "Download CSV",
-        "description": "Download the CSV file or copy the output."
+        "title": "Preview and Download",
+        "description": "Preview the table, select fields if needed, then download the CSV file."
       }
     ],
     "faq": [
       {
-        "question": "Does it support nested JSON objects?",
-        "answer": "It works best with flat JSON arrays where each object has the same keys. Nested objects will be converted to JSON strings in the CSV cell. For deeply nested JSON, consider flattening it first."
+        "question": "How to convert JSON to CSV for Excel?",
+        "answer": "Paste your JSON array, click Convert to CSV, and download the file. The converter automatically adds UTF-8 BOM for proper Excel compatibility. You can also select GBK encoding for Chinese characters."
       },
       {
-        "question": "How to convert JSON to CSV for Excel?",
-        "answer": "Yes. This online json to csv converter lets you convert json to csv and open the output directly in Excel, Google Sheets, or any spreadsheet application. The converter handles special characters and proper escaping for Excel compatibility."
+        "question": "Does it support nested JSON objects?",
+        "answer": "Yes! Enable the 'Flatten nested objects' option to automatically flatten nested objects into CSV columns. For example, {\"user\": {\"name\": \"Alice\"}} becomes a column named 'user.name'."
+      },
+      {
+        "question": "Can I select which fields to export?",
+        "answer": "Yes. After pasting your JSON, click 'Select Fields' to choose which columns to include in the CSV. This is useful when you only need specific data."
+      },
+      {
+        "question": "How to preview the CSV before downloading?",
+        "answer": "After converting, the table preview automatically appears. You can also toggle it using the 'Show Table Preview' button. This helps verify the conversion looks correct."
       },
       {
         "question": "Is there a limit on the number of records?",
@@ -71,8 +98,8 @@
         "answer": "No. All conversion happens in your browser. Your JSON data never leaves your device. No data is stored or transmitted."
       },
       {
-        "question": "Can I transform JSON to CSV online without uploading?",
-        "answer": "Yes. This is a free online json to csv converter that runs entirely in your browser. As a json to csv converter online tool, you can transform json to csv, convert json format to csv, and download the result — all without uploading your data to any server."
+        "question": "What is the difference between UTF-8 and GBK encoding?",
+        "answer": "UTF-8 is the standard encoding for web and modern applications. GBK is used for older Excel versions and Chinese locale systems. Choose GBK if your CSV shows garbled Chinese characters in Excel."
       }
     ],
     "ui": {
@@ -81,34 +108,58 @@
       "btn_convert": "Convert to CSV",
       "btn_download": "Download .csv",
       "error_not_array": "Input must be a JSON array"
+    },
+    "article": {
+      "title": "How to Convert JSON to CSV for Excel & Google Sheets",
+      "content": "<h2>Why Convert JSON to CSV?</h2><p>JSON (JavaScript Object Notation) is widely used for data exchange between servers and applications. However, when you need to analyze this data, create reports, or share it with non-technical team members, CSV (Comma-Separated Values) is the preferred format. CSV files can be opened directly in Excel, Google Sheets, and any spreadsheet application.</p><h2>Common Use Cases</h2><ul><li><strong>API Data Export:</strong> Convert API responses (JSON) to CSV for analysis in Excel</li><li><strong>Database Backups:</strong> Export database records stored as JSON to spreadsheet format</li><li><strong>Data Migration:</strong> Move data between systems that use different formats</li><li><strong>Reporting:</strong> Create charts and pivot tables from JSON data in Excel</li></ul><h2>Handling Nested JSON Objects</h2><p>Real-world JSON data is often nested. For example:</p><pre>{\"user\": {\"name\": \"Alice\", \"address\": {\"city\": \"NYC\"}}, \"status\": \"active\"}</pre><p>Our converter automatically flattens this into CSV columns:</p><ul><li>user.name → Alice</li><li>user.address.city → NYC</li><li>status → active</li></ul><h2>Excel Compatibility Tips</h2><ol><li><strong>Use UTF-8 BOM:</strong> Our converter adds a Byte Order Mark (BOM) to ensure Excel correctly reads UTF-8 characters</li><li><strong>GBK Encoding:</strong> For older Excel versions or Chinese locale, select GBK encoding</li><li><strong>Field Selection:</strong> Only export the fields you need to keep your spreadsheet clean</li></ol><h2>Best Practices</h2><ul><li><strong>Preview First:</strong> Always check the table preview before downloading</li><li><strong>Validate Data:</strong> Ensure your JSON array contains objects with consistent structure</li><li><strong>Large Files:</strong> For very large JSON files (100MB+), consider splitting into chunks</li></ul>",
+      "links": [
+        {"text": "JSON Formatter", "url": "/tools/format/json-formatter"},
+        {"text": "JSON to Excel", "url": "/tools/convert/json-to-excel"},
+        {"text": "CSV to JSON", "url": "/tools/convert/csv-to-json"}
+      ]
     }
   },
   "zh": {
     "name": "JSON 转 CSV",
-    "description": "在线json转csv，将 JSON 数组转换为 CSV 格式。免费的json csv转换器，适合导出数据到 Excel 或 Google Sheets。",
+    "description": "在线json转csv，将 JSON 数组转换为 CSV 格式，支持导出到 Excel 和 Google Sheets。免费的json csv转换器，支持嵌套对象展平、字段选择，完全在浏览器中运行。",
     "hero": {
       "trustHtml": "100% 本地转换，数据不会离开浏览器。"
     },
     "meta": {
-      "title": "JSON 转 CSV — 免费在线转换器",
-      "description": "在线将 JSON 数组转换为 CSV 格式。导出到 Excel、Google Sheets。无需上传。",
-      "keywords": ["json转csv", "json csv转换器", "在线json转csv", "json转excel"]
+      "title": "JSON 转 CSV 转换器 — 免费在线工具，支持 Excel 和 Google Sheets",
+      "description": "在线将 JSON 数组转换为 CSV 格式，支持 Excel 和 Google Sheets。展平嵌套对象、选择字段、预览表格。免费、无需上传。",
+      "keywords": ["json转csv", "json csv转换器", "在线json转csv", "json转excel", "json转google sheets", "json数组转csv", "嵌套json转csv", "json csv转换工具", "如何将json转csv", "json转csv在线"]
     },
     "features": [
       {
         "icon": "lucide:table",
         "title": "CSV 导出",
-        "description": "将 JSON 数组转换为带正确转义的 CSV。"
+        "description": "将 JSON 数组转换为带正确转义的 CSV。支持任何 JSON 格式，包括嵌套对象。"
+      },
+      {
+        "icon": "lucide:layers",
+        "title": "展平嵌套对象",
+        "description": "自动将嵌套的 JSON 对象展平为 CSV 列，使用点号连接（如 user.name、address.city）。"
+      },
+      {
+        "icon": "lucide:eye",
+        "title": "表格预览",
+        "description": "下载前以表格形式预览数据，验证转换结果是否正确。"
+      },
+      {
+        "icon": "lucide:list-checks",
+        "title": "字段选择",
+        "description": "选择要导出的字段，避免导出不需要的数据。"
       },
       {
         "icon": "lucide:download",
-        "title": "下载",
-        "description": "直接下载 CSV 文件。"
+        "title": "Excel 兼容",
+        "description": "下载带有 UTF-8 BOM 的 CSV，确保 Excel 正确显示。还支持 GBK 编码以兼容中文字符。"
       },
       {
         "icon": "lucide:shield-check",
         "title": "私密安全",
-        "description": "所有转换在浏览器中完成。"
+        "description": "所有转换在浏览器中完成，不上传数据。"
       }
     ],
     "guide": [
@@ -117,22 +168,34 @@
         "description": "将 JSON 数组粘贴到输入框中。"
       },
       {
+        "title": "配置选项",
+        "description": "切换"展平嵌套对象"选项，需要时选择编码格式。"
+      },
+      {
         "title": "点击转换",
         "description": "点击转换为 CSV 生成输出。"
       },
       {
-        "title": "下载 CSV",
-        "description": "下载 CSV 文件或复制输出。"
+        "title": "预览并下载",
+        "description": "预览表格，需要时选择字段，然后下载 CSV 文件。"
       }
     ],
     "faq": [
       {
-        "question": "支持嵌套 JSON 对象吗？",
-        "answer": "最适合扁平的 JSON 数组（每个对象的键相同）。嵌套对象会被转换为 JSON 字符串放入 CSV 单元格。如果 JSON 深度嵌套，建议先展平。"
+        "question": "如何将 JSON 转换为 Excel 可用的 CSV？",
+        "answer": "粘贴 JSON 数组，点击转换为 CSV，然后下载文件。转换器会自动添加 UTF-8 BOM 以确保 Excel 正确兼容。你也可以选择 GBK 编码以支持中文字符。"
       },
       {
-        "question": "可以将 JSON 转换为 Excel 使用的 CSV 吗？",
-        "answer": "可以。这个在线json转csv工具支持json转excel，输出的 CSV 文件可以直接在 Excel、Google Sheets 或任何电子表格软件中打开。转换器会处理特殊字符和正确的转义，确保 Excel 兼容。"
+        "question": "支持嵌套 JSON 对象吗？",
+        "answer": "支持！启用"展平嵌套对象"选项，可以自动将嵌套对象展平为 CSV 列。例如，{\"user\": {\"name\": \"Alice\"}} 会变成名为 'user.name' 的列。"
+      },
+      {
+        "question": "可以选择要导出的字段吗？",
+        "answer": "可以。粘贴 JSON 后，点击"选择字段"来选择 CSV 中要包含的列。当你只需要特定数据时非常有用。"
+      },
+      {
+        "question": "如何在下载前预览 CSV？",
+        "answer": "转换后，表格预览会自动显示。你也可以使用"显示表格预览"按钮来切换显示。这有助于验证转换结果是否正确。"
       },
       {
         "question": "有记录数量限制吗？",
@@ -145,6 +208,10 @@
       {
         "question": "我的数据会上传到服务器吗？",
         "answer": "不会。所有转换在浏览器中完成，JSON 数据不会离开你的设备，不会被存储或传输。"
+      },
+      {
+        "question": "UTF-8 和 GBK 编码有什么区别？",
+        "answer": "UTF-8 是 Web 和现代应用的标准编码。GBK 用于旧版 Excel 和中文 locale 系统。如果 CSV 在 Excel 中显示乱码，请选择 GBK 编码。"
       }
     ],
     "ui": {
@@ -153,6 +220,15 @@
       "btn_convert": "转换为 CSV",
       "btn_download": "下载 .csv",
       "error_not_array": "输入必须是 JSON 数组"
+    },
+    "article": {
+      "title": "如何将 JSON 转换为 Excel 和 Google Sheets 可用的 CSV",
+      "content": "<h2>为什么要将 JSON 转换为 CSV？</h2><p>JSON（JavaScript Object Notation）广泛用于服务器和应用程序之间的数据交换。然而，当你需要分析这些数据、创建报表或与非技术人员共享时，CSV（逗号分隔值）是首选格式。CSV 文件可以直接在 Excel、Google Sheets 和任何电子表格应用程序中打开。</p><h2>常见使用场景</h2><ul><li><strong>API 数据导出：</strong>将 API 响应（JSON）转换为 CSV 以便在 Excel 中分析</li><li><strong>数据库备份：</strong>将以 JSON 格式存储的数据库记录导出为电子表格格式</li><li><strong>数据迁移：</strong>在使用不同格式的系统之间迁移数据</li><li><strong>报表生成：</strong>在 Excel 中基于 JSON 数据创建图表和数据透视表</li></ul><h2>处理嵌套 JSON 对象</h2><p>现实世界中的 JSON 数据通常是嵌套的。例如：</p><pre>{\"user\": {\"name\": \"Alice\", \"address\": {\"city\": \"NYC\"}}, \"status\": \"active\"}</pre><p>我们的转换器会自动将其展平为 CSV 列：</p><ul><li>user.name → Alice</li><li>user.address.city → NYC</li><li>status → active</li></ul><h2>Excel 兼容性技巧</h2><ol><li><strong>使用 UTF-8 BOM：</strong>我们的转换器添加字节顺序标记（BOM），确保 Excel 正确读取 UTF-8 字符</li><li><strong>GBK 编码：</strong>对于旧版 Excel 或中文 locale，选择 GBK 编码</li><li><strong>字段选择：</strong>只导出需要的字段，保持电子表格整洁</li></ol><h2>最佳实践</h2><ul><li><strong>先预览：</strong>下载前务必检查表格预览</li><li><strong>验证数据：</strong>确保 JSON 数组包含结构一致的对象</li><li><strong>大文件处理：</strong>对于非常大的 JSON 文件（100MB+），考虑分块处理</li></ul>",
+      "links": [
+        {"text": "JSON 格式化工具", "url": "/tools/format/json-formatter"},
+        {"text": "JSON 转 Excel", "url": "/tools/convert/json-to-excel"},
+        {"text": "CSV 转 JSON", "url": "/tools/convert/csv-to-json"}
+      ]
     }
   }
 }
