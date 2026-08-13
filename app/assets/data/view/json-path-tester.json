@@ -53,9 +53,9 @@
         "description": "Quick access to common JSONPath expressions."
       },
       {
-        "icon": "lucide:link",
-        "title": "URL Input",
-        "description": "Load JSON from URL using ?url= parameter."
+        "icon": "lucide:book-open",
+        "title": "Built-in Reference",
+        "description": "Operators, functions, and filter reference tables."
       },
       {
         "icon": "lucide:shield-check",

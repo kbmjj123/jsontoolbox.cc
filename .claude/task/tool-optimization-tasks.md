@@ -270,6 +270,7 @@
   - [ ] Keywords 补充
   - [ ] Article 段落
   - [ ] FAQ 检查
+  - [ ] **扩展支持语言**（参考 transform.tools）：Go Struct、Kotlin、MySQL、Protobuf 等
 
 ---
 
