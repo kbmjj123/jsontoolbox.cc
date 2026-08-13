@@ -5,7 +5,8 @@
       <JsonInputEditor
         v-model="inputJson"
         :label="tool.ui?.label_input || 'Input JSON Array'"
-        placeholder='[{"name": "Alice", "age": 30}, {"name": "Bob", "age": 25}]'
+        placeholder='[{"name": "Alice", "age": 30, "address": {"city": "NYC"}}, {"name": "Bob", "age": 25, "address": {"city": "LA"}}]'
+        show-upload
         @clear="clearAll"
       />
 
@@ -13,9 +14,14 @@
       <div>
         <div class="flex items-center justify-between mb-2">
           <label class="text-sm font-bold text-surface-700 dark:text-surface-300">{{ tool.ui?.label_preview || 'Preview' }}</label>
-          <span v-if="csvContent" class="text-xs text-surface-500 dark:text-surface-400">
-            {{ rowCount }} {{ tool.ui?.status_rows || 'rows' }}
-          </span>
+          <div class="flex gap-2">
+            <span v-if="csvContent" class="text-xs text-surface-500 dark:text-surface-400">
+              {{ rowCount }} {{ tool.ui?.status_rows || 'rows' }}
+            </span>
+            <button v-if="csvContent" @click="copyCsv" class="text-xs text-primary-600 hover:text-primary-700 dark:text-primary-400">
+              {{ $t('system.copy') }}
+            </button>
+          </div>
         </div>
         <div class="w-full h-64 rounded-xl border border-surface-200 bg-surface-50 p-4 font-mono text-sm overflow-auto dark:border-surface-700 dark:bg-surface-800">
           <div v-if="!csvContent" class="text-surface-400 dark:text-surface-500">
@@ -40,13 +46,20 @@
         <input type="checkbox" v-model="includeHeader" id="header" class="rounded border-surface-300">
         <label for="header" class="text-xs font-bold text-surface-600 dark:text-surface-400">{{ tool.ui?.option_include_header || 'Include header' }}</label>
       </div>
+      <label class="flex items-center gap-1.5 cursor-pointer select-none">
+        <input type="checkbox" v-model="flattenNested" class="rounded border-surface-300">
+        <span class="text-xs font-bold text-surface-600 dark:text-surface-400">{{ tool.ui?.option_flatten || 'Flatten nested' }}</span>
+      </label>
     </div>
 
     <!-- Actions -->
-    <div class="mt-4 flex flex-wrap gap-3">
+    <div class="mt-3 flex flex-wrap gap-3">
       <button @click="convert" class="btn-primary px-5 py-2 text-xs">
         <Icon name="lucide:file-spreadsheet" class="h-4 w-4 mr-1.5" />
         {{ tool.ui?.btn_convert || 'Convert to CSV' }}
+      </button>
+      <button @click="loadExample" class="text-xs text-primary-600 hover:text-primary-700 dark:text-primary-400">
+        {{ tool.ui?.btn_example || 'Load Example' }}
       </button>
       <button @click="downloadCsv" :disabled="!csvContent" class="rounded-xl border border-surface-200 bg-white px-4 py-2 text-xs font-bold text-surface-700 hover:bg-surface-50 dark:border-surface-700 dark:bg-surface-800 dark:text-surface-300 dark:hover:bg-surface-700 disabled:opacity-50">
         <Icon name="lucide:download" class="h-4 w-4 mr-1.5" />
@@ -72,13 +85,30 @@ const csvContent = ref('')
 const error = ref('')
 const delimiter = ref(',')
 const includeHeader = ref(true)
+const flattenNested = ref(false)
 const rowCount = ref(0)
 
 const ui = computed(() => props.tool?.ui || {})
 
-const escapeCsvField = (field: any, delimiter: string): string => {
+// Example data
+const exampleData = [
+  { name: "Alice", age: 30, email: "alice@example.com", address: { city: "New York", country: "USA" } },
+  { name: "Bob", age: 25, email: "bob@example.com", address: { city: "San Francisco", country: "USA" } },
+  { name: "Charlie", age: 35, email: "charlie@example.com", address: { city: "London", country: "UK" } }
+]
+
+// Composables
+const { flatten } = useJsonFlatten()
+const { exportToCsv } = useExcelCompat()
+
+const loadExample = () => {
+  inputJson.value = JSON.stringify(exampleData, null, 2)
+  convert()
+}
+
+const escapeCsvField = (field: any, delim: string): string => {
   const str = String(field ?? '')
-  if (str.includes(delimiter) || str.includes('"') || str.includes('\n')) {
+  if (str.includes(delim) || str.includes('"') || str.includes('\n')) {
     return `"${str.replace(/"/g, '""')}"`
   }
   return str
@@ -89,7 +119,7 @@ const convert = () => {
   csvContent.value = ''
 
   try {
-    const data = JSON.parse(inputJson.value)
+    let data = JSON.parse(inputJson.value)
     if (!Array.isArray(data)) {
       error.value = ui.value.error_not_array || 'Input must be a JSON array'
       return
@@ -97,6 +127,11 @@ const convert = () => {
     if (data.length === 0) {
       error.value = ui.value.error_empty || 'Array is empty'
       return
+    }
+
+    // Flatten nested objects if enabled
+    if (flattenNested.value) {
+      data = data.map(item => flatten(item))
     }
 
     const headers = Object.keys(data[0])
@@ -118,16 +153,22 @@ const convert = () => {
   }
 }
 
+const copyCsv = async () => {
+  try {
+    await navigator.clipboard.writeText(csvContent.value)
+  } catch (e) {
+    console.error('Failed to copy:', e)
+  }
+}
+
 const downloadCsv = () => {
-  const blob = new Blob([csvContent.value], { type: 'text/csv;charset=utf-8;' })
-  const url = URL.createObjectURL(blob)
-  const link = document.createElement('a')
-  link.href = url
-  link.download = 'data.csv'
-  document.body.appendChild(link)
-  link.click()
-  document.body.removeChild(link)
-  URL.revokeObjectURL(url)
+  // Use ExcelCompat composable for UTF-8 BOM support
+  let data = JSON.parse(inputJson.value)
+  if (flattenNested.value) {
+    data = data.map((item: any) => flatten(item))
+  }
+  const headers = Object.keys(data[0])
+  exportToCsv(data, headers, 'data.csv')
 }
 
 const clearAll = () => {
