@@ -141,71 +141,21 @@ const exampleJson = {
   }
 }
 
-// Smart type detection patterns
-const typePatterns = {
-  url: /^https?:\/\/[^\s]+$/i,
-  image: /\.(jpg|jpeg|png|gif|webp|svg|bmp)(\?.*)?$/i,
-  email: /^[^\s@]+@[^\s@]+\.[^\s@]+$/,
-  date: /^\d{4}-\d{2}-\d{2}/,
-  color: /^#([0-9a-f]{3}|[0-9a-f]{6})$/i,
-}
-
-const detectType = (value: string): string | null => {
-  if (typeof value !== 'string') return null
-  for (const [type, pattern] of Object.entries(typePatterns)) {
-    if (pattern.test(value)) return type
+// Use smart JSON value detection composable
+const parsedOutput = computed(() => {
+  if (!outputJson.value) return null
+  try {
+    return JSON.parse(outputJson.value)
+  } catch {
+    return null
   }
-  return null
-}
+})
+
+const { detectedTypes, getTypeIcon } = useSmartJsonValue(parsedOutput)
 
 const loadExample = () => {
   inputJson.value = JSON.stringify(exampleJson, null, 2)
   formatJson()
-}
-
-// Detected types for smart visualization
-interface DetectedType {
-  path: string
-  type: string
-  value: string
-}
-
-const detectedTypes = computed<DetectedType[]>(() => {
-  if (!outputJson.value) return []
-
-  try {
-    const parsed = JSON.parse(outputJson.value)
-    const types: DetectedType[] = []
-
-    const traverse = (obj: any, path: string) => {
-      if (typeof obj === 'string') {
-        const type = detectType(obj)
-        if (type) {
-          types.push({ path, type, value: obj })
-        }
-      } else if (Array.isArray(obj)) {
-        obj.forEach((item, i) => traverse(item, `${path}[${i}]`))
-      } else if (typeof obj === 'object' && obj !== null) {
-        Object.keys(obj).forEach(key => traverse(obj[key], `${path}.${key}`))
-      }
-    }
-
-    traverse(parsed, '$')
-    return types
-  } catch {
-    return []
-  }
-})
-
-const getTypeIcon = (type: string): string => {
-  const icons: Record<string, string> = {
-    url: 'lucide:link',
-    image: 'lucide:image',
-    email: 'lucide:mail',
-    date: 'lucide:calendar',
-    color: 'lucide:palette',
-  }
-  return icons[type] || 'lucide:tag'
 }
 
 const sortObjectKeys = (obj: any): any => {
