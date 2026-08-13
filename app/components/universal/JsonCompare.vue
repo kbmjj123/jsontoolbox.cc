@@ -56,6 +56,24 @@
         {{ $t('system.clearAll') }}
       </button>
 
+      <!-- Copy Results -->
+      <button
+        v-if="diffs.length > 0"
+        @click="copyResults"
+        class="text-xs text-primary-600 hover:text-primary-700 dark:text-primary-400"
+      >
+        {{ copied ? '✓ Copied!' : 'Copy Results' }}
+      </button>
+
+      <!-- Download Report -->
+      <button
+        v-if="diffs.length > 0"
+        @click="downloadReport"
+        class="text-xs text-surface-500 hover:text-surface-700 dark:text-surface-400"
+      >
+        Download Report
+      </button>
+
       <!-- Error -->
       <div v-if="error" class="flex-1 rounded-lg bg-red-50 border border-red-200 p-2 text-xs text-red-700 dark:bg-red-900/30 dark:border-red-800 dark:text-red-400">
         {{ error }}
@@ -153,6 +171,22 @@ const rightJson = ref('')
 const error = ref('')
 const diffs = ref<Diff[]>([])
 const compared = ref(false)
+const copied = ref(false)
+
+// Composables
+const { copied: clipboardCopied, copyToClipboard } = useClipboard()
+const { loadDataFromUrl } = useUrlParams()
+
+// Load from URL on mount
+onMounted(() => {
+  const leftUrl = loadDataFromUrl('left')
+  const rightUrl = loadDataFromUrl('right')
+  if (leftUrl) leftJson.value = leftUrl
+  if (rightUrl) rightJson.value = rightUrl
+  if (leftUrl && rightUrl) {
+    nextTick(() => compare())
+  }
+})
 
 const addedCount = computed(() => diffs.value.filter(d => d.type === 'added').length)
 const removedCount = computed(() => diffs.value.filter(d => d.type === 'removed').length)
@@ -285,5 +319,48 @@ const clearAll = () => {
   error.value = ''
   diffs.value = []
   compared.value = false
+}
+
+const copyResults = async () => {
+  const text = diffs.value.map(d => {
+    const label = d.type === 'added' ? '+ ADDED' : d.type === 'removed' ? '- REMOVED' : '~ CHANGED'
+    const value = d.type === 'changed'
+      ? `${formatValue(d.oldValue)} → ${formatValue(d.newValue)}`
+      : formatValue(d.value)
+    return `${label} ${d.path}: ${value}`
+  }).join('\n')
+
+  await copyToClipboard(text)
+  copied.value = true
+  setTimeout(() => {
+    copied.value = false
+  }, 2000)
+}
+
+const downloadReport = () => {
+  const report = {
+    timestamp: new Date().toISOString(),
+    summary: {
+      total: totalDiffs.value,
+      added: addedCount.value,
+      removed: removedCount.value,
+      changed: changedCount.value
+    },
+    differences: diffs.value.map(d => ({
+      path: d.path,
+      type: d.type,
+      ...(d.type === 'changed' ? { oldValue: d.oldValue, newValue: d.newValue } : { value: d.value })
+    }))
+  }
+
+  const blob = new Blob([JSON.stringify(report, null, 2)], { type: 'application/json' })
+  const url = URL.createObjectURL(blob)
+  const link = document.createElement('a')
+  link.href = url
+  link.download = 'json-diff-report.json'
+  document.body.appendChild(link)
+  link.click()
+  document.body.removeChild(link)
+  URL.revokeObjectURL(url)
 }
 </script>
