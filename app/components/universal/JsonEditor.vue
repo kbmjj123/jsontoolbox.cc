@@ -45,6 +45,12 @@
         <Icon name="lucide:check" class="h-4 w-4 mr-1.5" />
         {{ $t('system.validate') }}
       </button>
+      <button @click="loadExample" class="text-xs text-primary-600 hover:text-primary-700 dark:text-primary-400">
+        Load Example
+      </button>
+      <NuxtLinkLocale to="/tools/convert/json-schema-generator" class="text-xs text-primary-600 hover:text-primary-700 dark:text-primary-400">
+        Generate Schema
+      </NuxtLinkLocale>
       <button @click="clearAll" class="rounded-xl border border-surface-200 bg-white px-4 py-2 text-xs font-bold text-surface-700 hover:bg-surface-50 dark:border-surface-700 dark:bg-surface-800 dark:text-surface-300 dark:hover:bg-surface-700">
         {{ $t('system.clearAll') }}
       </button>
@@ -75,7 +81,31 @@
       </div>
 
       <!-- Output content -->
-      <pre v-else-if="outputJson" class="rounded-xl border border-surface-200 bg-surface-50 p-4 font-mono text-sm text-surface-900 overflow-auto max-h-80 dark:border-surface-700 dark:bg-surface-800 dark:text-surface-100">{{ outputJson }}</pre>
+      <div v-else-if="outputJson" class="rounded-xl border border-surface-200 bg-surface-50 p-4 font-mono text-sm text-surface-900 overflow-auto max-h-80 dark:border-surface-700 dark:bg-surface-800 dark:text-surface-100">
+        <pre class="whitespace-pre-wrap">{{ outputJson }}</pre>
+
+        <!-- Smart Type Detection Summary -->
+        <div v-if="detectedTypes.length > 0" class="mt-4 pt-4 border-t border-surface-200 dark:border-surface-700">
+          <p class="text-xs font-bold text-surface-600 dark:text-surface-400 mb-2">Detected Types:</p>
+          <div class="flex flex-wrap gap-2">
+            <span
+              v-for="item in detectedTypes"
+              :key="item.path"
+              class="inline-flex items-center gap-1 px-2 py-1 rounded-lg text-xs"
+              :class="{
+                'bg-blue-100 text-blue-700 dark:bg-blue-900/30 dark:text-blue-400': item.type === 'url',
+                'bg-purple-100 text-purple-700 dark:bg-purple-900/30 dark:text-purple-400': item.type === 'image',
+                'bg-green-100 text-green-700 dark:bg-green-900/30 dark:text-green-400': item.type === 'email',
+                'bg-yellow-100 text-yellow-700 dark:bg-yellow-900/30 dark:text-yellow-400': item.type === 'date',
+                'bg-pink-100 text-pink-700 dark:bg-pink-900/30 dark:text-pink-400': item.type === 'color',
+              }"
+            >
+              <Icon :name="getTypeIcon(item.type)" class="h-3 w-3" />
+              {{ item.path }}
+            </span>
+          </div>
+        </div>
+      </div>
     </div>
   </div>
 </template>
@@ -91,6 +121,92 @@ const indent = ref<number | string>(2)
 const sortKeys = ref(false)
 
 const ui = computed(() => props.tool?.ui || {})
+
+// Example data
+const exampleJson = {
+  user: {
+    id: 1234567890123456789,
+    name: "John Doe",
+    email: "john@example.com",
+    avatar: "https://example.com/avatar.jpg",
+    website: "https://example.com",
+    birthday: "1990-01-15",
+    favoriteColor: "#3498db",
+    isActive: true,
+    tags: ["developer", "designer"],
+    address: {
+      city: "New York",
+      country: "USA"
+    }
+  }
+}
+
+// Smart type detection patterns
+const typePatterns = {
+  url: /^https?:\/\/[^\s]+$/i,
+  image: /\.(jpg|jpeg|png|gif|webp|svg|bmp)(\?.*)?$/i,
+  email: /^[^\s@]+@[^\s@]+\.[^\s@]+$/,
+  date: /^\d{4}-\d{2}-\d{2}/,
+  color: /^#([0-9a-f]{3}|[0-9a-f]{6})$/i,
+}
+
+const detectType = (value: string): string | null => {
+  if (typeof value !== 'string') return null
+  for (const [type, pattern] of Object.entries(typePatterns)) {
+    if (pattern.test(value)) return type
+  }
+  return null
+}
+
+const loadExample = () => {
+  inputJson.value = JSON.stringify(exampleJson, null, 2)
+  formatJson()
+}
+
+// Detected types for smart visualization
+interface DetectedType {
+  path: string
+  type: string
+  value: string
+}
+
+const detectedTypes = computed<DetectedType[]>(() => {
+  if (!outputJson.value) return []
+
+  try {
+    const parsed = JSON.parse(outputJson.value)
+    const types: DetectedType[] = []
+
+    const traverse = (obj: any, path: string) => {
+      if (typeof obj === 'string') {
+        const type = detectType(obj)
+        if (type) {
+          types.push({ path, type, value: obj })
+        }
+      } else if (Array.isArray(obj)) {
+        obj.forEach((item, i) => traverse(item, `${path}[${i}]`))
+      } else if (typeof obj === 'object' && obj !== null) {
+        Object.keys(obj).forEach(key => traverse(obj[key], `${path}.${key}`))
+      }
+    }
+
+    traverse(parsed, '$')
+    return types
+  } catch {
+    return []
+  }
+})
+
+const getTypeIcon = (type: string): string => {
+  const icons: Record<string, string> = {
+    url: 'lucide:link',
+    image: 'lucide:image',
+    email: 'lucide:mail',
+    date: 'lucide:calendar',
+    color: 'lucide:palette',
+  }
+  return icons[type] || 'lucide:tag'
+}
 
 const sortObjectKeys = (obj: any): any => {
   if (Array.isArray(obj)) {

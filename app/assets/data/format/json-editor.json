@@ -41,6 +41,11 @@
         "description": "Get instant feedback on JSON syntax errors."
       },
       {
+        "icon": "lucide:sparkles",
+        "title": "Smart Type Detection",
+        "description": "Automatically detects URLs, images, emails, dates, and colors."
+      },
+      {
         "icon": "lucide:copy",
         "title": "Copy & Download",
         "description": "Copy edited JSON or download as a file."
@@ -49,11 +54,6 @@
         "icon": "lucide:settings",
         "title": "Format Options",
         "description": "Choose indentation and sort keys."
-      },
-      {
-        "icon": "lucide:link",
-        "title": "URL Input",
-        "description": "Load JSON from URL using ?url= parameter."
       },
       {
         "icon": "lucide:shield-check",
@@ -149,6 +149,11 @@
         "description": "即时获取 JSON 语法错误的反馈。"
       },
       {
+        "icon": "lucide:sparkles",
+        "title": "智能类型识别",
+        "description": "自动识别 URL、图片、邮箱、日期和颜色。"
+      },
+      {
         "icon": "lucide:copy",
         "title": "复制与下载",
         "description": "复制编辑后的 JSON 或下载为文件。"
@@ -157,11 +162,6 @@
         "icon": "lucide:settings",
         "title": "格式化选项",
         "description": "选择缩进格式和按键排序。"
-      },
-      {
-        "icon": "lucide:link",
-        "title": "URL 输入",
-        "description": "使用 ?url= 参数从 URL 加载 JSON。"
       },
       {
         "icon": "lucide:shield-check",
