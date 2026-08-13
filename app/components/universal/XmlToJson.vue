@@ -5,7 +5,9 @@
       <JsonInputEditor
         v-model="inputXml"
         :label="ui?.labelInputXml ?? 'Input XML'"
-        placeholder='<?xml version="1.0"?>&#10;<root>&#10;  <name>JSON Toolbox</name>&#10;</root>'
+        placeholder='<?xml version="1.0"?>&#10;<catalog>&#10;  <book id="bk101">&#10;    <title>XML Developer Guide</title>&#10;    <price>44.95</price>&#10;  </book>&#10;</catalog>'
+        show-upload
+        accept=".xml"
         @clear="clearAll"
       />
 
@@ -45,13 +47,28 @@
           <option :value="4">{{ ui?.optionSpaces4 ?? '4 spaces' }}</option>
         </select>
       </div>
+      <div class="flex items-center gap-2">
+        <label class="text-xs font-bold text-surface-600 dark:text-surface-400">{{ ui?.labelAttrPrefix ?? 'Attribute prefix:' }}</label>
+        <input
+          v-model="attrPrefix"
+          class="w-16 rounded-lg border border-surface-200 bg-white px-2 py-1 text-xs dark:border-surface-700 dark:bg-surface-800"
+          placeholder="@"
+        />
+      </div>
+      <label class="flex items-center gap-1.5 cursor-pointer select-none">
+        <input type="checkbox" v-model="preserveTextNodes" class="rounded border-surface-300">
+        <span class="text-xs font-bold text-surface-600 dark:text-surface-400">{{ ui?.labelPreserveText ?? 'Preserve #text' }}</span>
+      </label>
     </div>
 
     <!-- Actions -->
-    <div class="mt-4 flex flex-wrap gap-3">
+    <div class="mt-3 flex flex-wrap gap-3">
       <button @click="convertToJson" class="btn-primary px-5 py-2 text-xs">
         <Icon name="lucide:arrow-right" class="h-4 w-4 mr-1.5" />
         {{ ui?.btnConvert ?? 'Convert to JSON' }}
+      </button>
+      <button @click="loadExample" class="text-xs text-primary-600 hover:text-primary-700 dark:text-primary-400">
+        {{ ui?.btnExample ?? 'Load Example' }}
       </button>
       <button @click="clearAll" class="rounded-xl border border-surface-200 bg-white px-4 py-2 text-xs font-bold text-surface-700 hover:bg-surface-50 dark:border-surface-700 dark:bg-surface-800 dark:text-surface-300 dark:hover:bg-surface-700">
         {{ $t('system.clearAll') }}
@@ -68,15 +85,50 @@ const inputXml = ref('')
 const outputJson = ref('')
 const error = ref('')
 const indent = ref(2)
+const attrPrefix = ref('@')
+const preserveTextNodes = ref(false)
+
+// Example data
+const exampleXml = `<?xml version="1.0" encoding="UTF-8"?>
+<catalog>
+  <book id="bk101">
+    <title>XML Developer's Guide</title>
+    <author>Gambardella, Matthew</author>
+    <genre>Computer</genre>
+    <price>44.95</price>
+    <publishDate>2000-10-01</publishDate>
+  </book>
+  <book id="bk102">
+    <title>Midnight Rain</title>
+    <author>Ralls, Kim</author>
+    <genre>Fantasy</genre>
+    <price>5.95</price>
+    <publishDate>2000-12-16</publishDate>
+  </book>
+</catalog>`
+
+const loadExample = () => {
+  inputXml.value = exampleXml
+  convertToJson()
+}
 
 const parseXmlNode = (node: Element): any => {
   const children = Array.from(node.children)
 
+  // If no children, return text content
   if (children.length === 0) {
-    return node.textContent?.trim() || ''
+    const text = node.textContent?.trim() || ''
+    return text
   }
 
   const result: any = {}
+
+  // Handle attributes
+  for (const attr of Array.from(node.attributes)) {
+    result[attrPrefix.value + attr.name] = attr.value
+  }
+
+  // Handle child elements
   for (const child of children) {
     const key = child.tagName
     const value = parseXmlNode(child)
@@ -88,6 +140,18 @@ const parseXmlNode = (node: Element): any => {
       result[key].push(value)
     } else {
       result[key] = value
+    }
+  }
+
+  // Handle text nodes if preserveTextNodes is enabled
+  if (preserveTextNodes.value) {
+    const directText = Array.from(node.childNodes)
+      .filter(n => n.nodeType === Node.TEXT_NODE)
+      .map(n => n.textContent?.trim())
+      .filter(t => t)
+      .join(' ')
+    if (directText) {
+      result['#text'] = directText
     }
   }
 

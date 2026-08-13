@@ -13,7 +13,10 @@
       "labelInputXml": "Input XML",
       "labelOutput": "JSON Output",
       "labelIndent": "Indent:",
+      "labelAttrPrefix": "Attribute prefix:",
+      "labelPreserveText": "Preserve #text",
       "btnConvert": "Convert to JSON",
+      "btnExample": "Load Example",
       "optionSpaces2": "2 spaces",
       "optionSpaces4": "4 spaces",
       "errorInvalidXml": "Invalid XML: "
@@ -31,12 +34,27 @@
       {
         "icon": "lucide:file-input",
         "title": "XML Import",
-        "description": "Paste XML data and convert to JSON instantly."
+        "description": "Paste XML data or upload .xml files to convert."
       },
       {
         "icon": "lucide:download",
         "title": "JSON Export",
         "description": "Download the JSON output or copy to clipboard."
+      },
+      {
+        "icon": "lucide:settings",
+        "title": "Customizable",
+        "description": "Configure attribute prefix, text nodes, and indentation."
+      },
+      {
+        "icon": "lucide:tag",
+        "title": "Attribute Handling",
+        "description": "XML attributes converted with customizable prefix (default: @)."
+      },
+      {
+        "icon": "lucide:layers",
+        "title": "Array Detection",
+        "description": "Automatically detects repeated elements as JSON arrays."
       },
       {
         "icon": "lucide:shield-check",
@@ -47,7 +65,7 @@
     "guide": [
       {
         "title": "Paste your XML",
-        "description": "Paste your XML data into the input field."
+        "description": "Paste your XML data into the input field or upload a file."
       },
       {
         "title": "Click Convert",
@@ -65,7 +83,7 @@
       },
       {
         "question": "How are XML attributes handled?",
-        "answer": "XML attributes are converted to JSON properties with an @ prefix to distinguish them from child elements."
+        "answer": "XML attributes are converted to JSON properties with a customizable prefix (default: @) to distinguish them from child elements."
       },
       {
         "question": "Can I convert JSON back to XML?",
@@ -78,6 +96,10 @@
       {
         "question": "Can I convert large XML files?",
         "answer": "Yes. Since all processing happens locally, file size is limited only by your browser's memory."
+      },
+      {
+        "question": "How are repeated XML elements handled?",
+        "answer": "When multiple elements share the same tag name, they are automatically grouped into a JSON array."
       }
     ]
   },
@@ -87,7 +109,10 @@
       "labelInputXml": "输入 XML",
       "labelOutput": "JSON 输出",
       "labelIndent": "缩进：",
+      "labelAttrPrefix": "属性前缀：",
+      "labelPreserveText": "保留 #text",
       "btnConvert": "转换为 JSON",
+      "btnExample": "加载示例",
       "optionSpaces2": "2 空格",
       "optionSpaces4": "4 空格",
       "errorInvalidXml": "无效的 XML："
@@ -105,12 +130,27 @@
       {
         "icon": "lucide:file-input",
         "title": "XML 导入",
-        "description": "粘贴 XML 数据并即时转换为 JSON。"
+        "description": "粘贴 XML 数据或上传 .xml 文件进行转换。"
       },
       {
         "icon": "lucide:download",
         "title": "JSON 导出",
         "description": "下载 JSON 输出或复制到剪贴板。"
+      },
+      {
+        "icon": "lucide:settings",
+        "title": "可配置",
+        "description": "配置属性前缀、文本节点和缩进格式。"
+      },
+      {
+        "icon": "lucide:tag",
+        "title": "属性处理",
+        "description": "XML 属性使用可自定义前缀（默认 @）转换。"
+      },
+      {
+        "icon": "lucide:layers",
+        "title": "数组检测",
+        "description": "自动检测重复元素并转换为 JSON 数组。"
       },
       {
         "icon": "lucide:shield-check",
@@ -121,7 +161,7 @@
     "guide": [
       {
         "title": "粘贴 XML",
-        "description": "将 XML 数据粘贴到输入框中。"
+        "description": "将 XML 数据粘贴到输入框中或上传文件。"
       },
       {
         "title": "点击转换",
@@ -139,7 +179,7 @@
       },
       {
         "question": "XML 属性怎么处理？",
-        "answer": "XML 属性转换为带 @ 前缀的 JSON 属性，以区分子元素。"
+        "answer": "XML 属性转换为带可自定义前缀（默认 @）的 JSON 属性，以区分子元素。"
       },
       {
         "question": "可以把 JSON 转回 XML 吗？",
@@ -152,6 +192,10 @@
       {
         "question": "可以转换大型 XML 文件吗？",
         "answer": "可以。所有处理在本地完成，文件大小仅受浏览器内存限制。"
+      },
+      {
+        "question": "重复的 XML 元素怎么处理？",
+        "answer": "当多个元素共享相同的标签名时，它们会自动分组为 JSON 数组。"
       }
     ]
   }
