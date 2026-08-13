@@ -129,6 +129,24 @@
       <button @click="validateJson" class="rounded-xl border border-surface-200 bg-white px-4 py-2 text-xs font-bold text-surface-700 hover:bg-surface-50 dark:border-surface-700 dark:bg-surface-800 dark:text-surface-300">
         {{ $t('system.validate') }}
       </button>
+      <button @click="fixJson" class="rounded-xl border border-surface-200 bg-white px-4 py-2 text-xs font-bold text-surface-700 hover:bg-surface-50 dark:border-surface-700 dark:bg-surface-800 dark:text-surface-300">
+        {{ $t('system.fix') || 'Fix' }}
+      </button>
+
+      <!-- Share button -->
+      <div class="relative ml-auto">
+        <button @click="showShareMenu = !showShareMenu" class="text-xs text-primary-600 hover:text-primary-700 dark:text-primary-400">
+          {{ $t('system.share') || 'Share' }}
+        </button>
+        <div v-if="showShareMenu" class="absolute right-0 top-full mt-1 bg-white dark:bg-surface-800 border border-surface-200 dark:border-surface-700 rounded-lg shadow-lg p-2 z-50 min-w-[200px]">
+          <button @click="copyShareLink" class="w-full text-left px-3 py-2 text-xs hover:bg-surface-100 dark:hover:bg-surface-700 rounded">
+            {{ shareCopied ? '✓ Copied!' : 'Copy Share Link' }}
+          </button>
+          <button @click="shareToTwitter" class="w-full text-left px-3 py-2 text-xs hover:bg-surface-100 dark:hover:bg-surface-700 rounded">
+            Share on Twitter
+          </button>
+        </div>
+      </div>
 
       <!-- Auto-format toggle -->
       <label class="flex items-center gap-1.5 ml-auto cursor-pointer select-none">
@@ -161,6 +179,14 @@ const showUrlInput = ref(false)
 const urlToFetch = ref('')
 const urlLoading = ref(false)
 const urlError = ref('')
+
+// 新增状态
+const showShareMenu = ref(false)
+const shareCopied = ref(false)
+
+// 使用 composables
+const { fixJson: fixJsonAuto, getJsonError } = useJsonFixer()
+const { generateShareUrl, copyShareUrl, shareToSocial } = useShareJson()
 
 const fetchFromUrl = async () => {
   const url = urlToFetch.value.trim()
@@ -230,6 +256,21 @@ const validateJson = () => {
   }
 }
 
+// 自动修复 JSON
+const fixJson = () => {
+  const { fixed, fixes } = fixJsonAuto(inputJson.value)
+
+  if (fixed) {
+    inputJson.value = fixed
+    outputJson.value = `✅ Fixed ${fixes.length} issue(s):\n${fixes.map(f => `• ${f}`).join('\n')}`
+    error.value = ''
+    // 自动格式化
+    nextTick(() => formatJson())
+  } else {
+    error.value = 'Unable to auto-fix JSON. Please check the syntax.'
+  }
+}
+
 const clearAll = () => {
   outputJson.value = ''
   error.value = ''
@@ -260,4 +301,42 @@ const downloadOutput = () => {
   document.body.removeChild(link)
   URL.revokeObjectURL(url)
 }
+
+// 分享功能
+const copyShareLink = async () => {
+  if (!outputJson.value) return
+
+  const url = generateShareUrl(outputJson.value)
+  const success = await copyShareUrl(url)
+  shareCopied.value = success
+
+  setTimeout(() => {
+    shareCopied.value = false
+    showShareMenu.value = false
+  }, 2000)
+}
+
+const shareToTwitter = () => {
+  if (!outputJson.value) return
+
+  const url = generateShareUrl(outputJson.value)
+  shareToSocial(url, 'Check out this formatted JSON', 'twitter')
+  showShareMenu.value = false
+}
+
+// 点击外部关闭分享菜单
+const handleClickOutside = (e: MouseEvent) => {
+  const target = e.target as HTMLElement
+  if (!target.closest('.relative')) {
+    showShareMenu.value = false
+  }
+}
+
+onMounted(() => {
+  document.addEventListener('click', handleClickOutside)
+})
+
+onUnmounted(() => {
+  document.removeEventListener('click', handleClickOutside)
+})
 </script>

@@ -8,21 +8,21 @@
   "nextSteps": ["json-validator", "json-minifier"],
   "recommends": ["json-tree-viewer", "json-diff"],
   "en": {
-    "name": "JSON Formatter",
-    "description": "Format, beautify, and pretty print JSON data with proper indentation. This free JSON formatter online, json beautifier, and json prettier runs entirely in your browser — no upload needed.",
+    "name": "JSON Formatter & Validator",
+    "description": "Format, beautify, validate, and fix JSON data with proper indentation. This free JSON formatter, JSON validator, and JSON prettifier runs entirely in your browser — no upload needed. Supports auto-fix for common errors.",
     "hero": {
       "trustHtml": "100% client-side processing. Your JSON data never leaves your browser."
     },
     "meta": {
-      "title": "JSON Formatter — Free Online JSON Beautifier",
-      "description": "Format and beautify JSON data online. Choose indentation, sort keys, and validate JSON. No upload required.",
-      "keywords": ["json formatter", "json beautifier", "json pretty print", "json prettifier", "format json online", "json formatter online", "online json formatter", "json prettier", "pretty json", "json beautify"]
+      "title": "JSON Formatter & Validator — Free Online JSON Beautifier & Prettifier",
+      "description": "Format, validate, and auto-fix JSON data online. This online JSON formatter supports pretty print, beautify, and JSON lint. Free, no upload required.",
+      "keywords": ["json formatter", "json validator", "json beautifier", "json pretty print", "json prettifier", "format json online", "json formatter online", "online json formatter", "json prettier", "pretty json", "json beautify", "validate json", "json error fix", "json lint", "json repair"]
     },
     "features": [
       {
         "icon": "lucide:sparkles",
         "title": "Instant Formatting",
-        "description": "Paste your JSON and get formatted, pretty printed output instantly. This JSON prettier and json beautifier makes any data beautify-ready in one click."
+        "description": "Paste your JSON and get formatted, pretty printed output instantly. This online JSON formatter and JSON prettifier makes any data beautify-ready in one click."
       },
       {
         "icon": "lucide:settings",
@@ -33,6 +33,21 @@
         "icon": "lucide:shield-check",
         "title": "Private",
         "description": "All processing happens in your browser. No data upload."
+      },
+      {
+        "icon": "lucide:wrench",
+        "title": "Auto-Fix Errors",
+        "description": "Automatically fix common JSON errors like missing quotes, trailing commas, and unclosed brackets."
+      },
+      {
+        "icon": "lucide:share-2",
+        "title": "Share Links",
+        "description": "Generate shareable URLs to send JSON data to colleagues or save for later."
+      },
+      {
+        "icon": "lucide:image",
+        "title": "Image Preview",
+        "description": "Hover over image URLs in tree view to see instant previews."
       }
     ],
     "guide": [
@@ -67,12 +82,20 @@
         "answer": "Yes. If your JSON has syntax errors, the formatter will show the exact error message with line and column numbers so you can quickly fix it."
       },
       {
-        "question": "What is the difference between JSON formatter and JSON minifier?",
-        "answer": "A JSON formatter adds indentation and line breaks to make JSON readable and pretty. A JSON minifier removes all whitespace to make JSON as compact as possible. This online JSON formatter supports both — use Format to json beautify your data for readability and Minify for production."
+        "question": "Can the formatter automatically fix JSON errors?",
+        "answer": "Yes. Our JSON formatter includes an auto-fix feature that can correct common errors like missing quotes, trailing commas, unclosed brackets, and invalid comments. Click the Fix button to automatically repair your JSON — it's like having a built-in JSON lint and repair tool."
       },
       {
-        "question": "Is this a free online JSON prettifier and beautifier?",
-        "answer": "Yes. This is a free online JSON formatter, beautifier, and prettifier. You can use it as a json pretty print tool to prettify minified data, make pretty json output, and beautify any JSON string directly in your browser. Format JSON online with no sign-up, no upload — paste and format instantly."
+        "question": "What is the difference between JSON formatter and JSON minifier?",
+        "answer": "A JSON formatter adds indentation and line breaks to make JSON readable and pretty. A JSON minifier removes all whitespace to make JSON as compact as possible. This online JSON formatter supports both — use Format to beautify your data for readability and Minify for production."
+      },
+      {
+        "question": "Can I share formatted JSON with others?",
+        "answer": "Yes. Click the Share button to generate a shareable URL. You can send this link to colleagues or save it for later. The link contains the JSON data encoded in the URL — no server storage needed."
+      },
+      {
+        "question": "What is the JSON tree view?",
+        "answer": "The tree view provides an expandable, collapsible visualization of your JSON structure. You can click on any key to copy its path, and hover over image URLs to see instant previews."
       }
     ],
     "ui": {
@@ -83,18 +106,27 @@
       "option_4_spaces": "4 spaces",
       "option_minified": "Minified",
       "status_valid": "✅ Valid JSON"
+    },
+    "article": {
+      "title": "How to Format and Validate JSON Online",
+      "content": "<h2>What is JSON Formatting?</h2><p>JSON (JavaScript Object Notation) formatting is the process of adding proper indentation and line breaks to make JSON data readable and human-friendly. When JSON is minified or compressed, it appears as a single long line that's difficult to read. Our online JSON formatter transforms this into a structured, pretty print format that's easy to understand and debug.</p><h2>Why Format JSON Online?</h2><p>Formatted JSON is essential for developers working with APIs, configuration files, and data storage. Here are common scenarios where JSON formatting helps:</p><ul><li><strong>API Development:</strong> Debug API responses by formatting minified JSON from servers</li><li><strong>Configuration Files:</strong> Read and edit JSON config files like package.json or tsconfig.json</li><li><strong>Data Analysis:</strong> Explore nested JSON structures from databases or analytics</li><li><strong>Logging:</strong> Format JSON logs for better readability during debugging</li></ul><h2>Common JSON Errors and How to Fix Them</h2><p>Our JSON formatter includes auto-fix capabilities for these common issues — think of it as a built-in JSON lint and repair tool:</p><ul><li><strong>Missing Quotes:</strong> Keys and string values must be wrapped in double quotes</li><li><strong>Trailing Commas:</strong> Remove commas after the last item in objects or arrays</li><li><strong>Unclosed Brackets:</strong> Automatically close missing curly braces or square brackets</li><li><strong>Invalid Comments:</strong> Remove // and /* */ comments that aren't valid in JSON</li></ul><h2>Tips for Working with JSON</h2><p>Here are some best practices for working with JSON data:</p><ol><li><strong>Always Validate:</strong> Use the validator to check syntax before processing</li><li><strong>Use Tree View:</strong> Navigate complex nested structures with the expandable tree view</li><li><strong>Share Securely:</strong> Generate shareable links for collaborative debugging</li><li><strong>Minify for Production:</strong> Use minified JSON in production to reduce payload size</li></ol>",
+      "links": [
+        {"text": "JSON Validator", "url": "/tools/validate/json-validator"},
+        {"text": "JSON Minifier", "url": "/tools/format/json-minifier"},
+        {"text": "JSON Tree Viewer", "url": "/tools/view/json-tree-viewer"}
+      ]
     }
   },
   "zh": {
-    "name": "JSON 格式化",
-    "description": "在线格式化json和美化 JSON 数据，支持自定义缩进。免费、快速的json格式化工具，完全在浏览器中运行。",
+    "name": "JSON 格式化与验证",
+    "description": "在线格式化、美化、验证和修复 JSON 数据，支持自定义缩进。免费、快速的json格式化工具，完全在浏览器中运行。",
     "hero": {
       "trustHtml": "100% 本地处理，你的 JSON 数据永远不会离开浏览器。"
     },
     "meta": {
-      "title": "JSON 格式化 — 免费在线 JSON 美化工具",
-      "description": "在线格式化和美化 JSON 数据。支持自定义缩进、排序键值和 JSON 验证。无需上传。",
-      "keywords": ["json格式化", "json美化", "在线格式化json", "json美化工具"]
+      "title": "JSON 格式化与验证 — 免费在线 JSON 美化工具",
+      "description": "在线格式化、验证和自动修复 JSON 数据。支持自定义缩进、排序键值和 JSON 验证，错误定位精准。免费、无需上传，支持大型文件。",
+      "keywords": ["json格式化", "json美化", "在线格式化json", "json美化工具", "json验证", "json校验", "json修复", "json格式化在线", "json美化工具在线", "json lint", "json prettifier", "json pretty print", "pretty json"]
     },
     "features": [
       {
@@ -111,6 +143,21 @@
         "icon": "lucide:shield-check",
         "title": "私密安全",
         "description": "所有处理在浏览器中完成，不上传数据。"
+      },
+      {
+        "icon": "lucide:wrench",
+        "title": "自动修复错误",
+        "description": "自动修复缺失引号、尾随逗号、未闭合括号等常见 JSON 错误。"
+      },
+      {
+        "icon": "lucide:share-2",
+        "title": "分享链接",
+        "description": "生成可分享的 URL，方便与同事协作或保存备用。"
+      },
+      {
+        "icon": "lucide:image",
+        "title": "图片预览",
+        "description": "在树形视图中悬停图片 URL 即可查看即时预览。"
       }
     ],
     "guide": [
@@ -145,12 +192,20 @@
         "answer": "会。如果你的 JSON 有语法错误，格式化工具会显示精确的错误信息和行列号，方便你快速修复。"
       },
       {
+        "question": "可以自动修复 JSON 错误吗？",
+        "answer": "可以。我们的 JSON 格式化工具包含自动修复功能，可以自动修正缺失引号、尾随逗号、未闭合括号和无效注释等常见错误。点击修复按钮即可自动修复你的 JSON。"
+      },
+      {
         "question": "JSON 格式化和 JSON 压缩有什么区别？",
         "answer": "格式化会添加缩进和换行，让 JSON 更易读。压缩会移除所有空白，让 JSON 尽可能紧凑。这个在线 JSON 格式化工具两种都支持——用格式化提升可读性，用压缩用于生产环境。"
       },
       {
-        "question": "这是一个免费的在线json美化工具吗？",
-        "answer": "是的。这是一个免费的在线json格式化和json美化工具，支持格式化、压缩和验证 JSON。无需注册，无需上传数据——粘贴即可在线格式化json。"
+        "question": "可以与他人分享格式化后的 JSON 吗？",
+        "answer": "可以。点击分享按钮生成可分享的 URL。你可以将此链接发送给同事或保存备用。链接中的 JSON 数据编码在 URL 中，无需服务器存储。"
+      },
+      {
+        "question": "JSON 树形视图是什么？",
+        "answer": "树形视图提供可展开、可折叠的 JSON 结构可视化。你可以点击任何键来复制其路径，悬停在图片 URL 上可以查看即时预览。"
       }
     ],
     "ui": {
@@ -161,6 +216,15 @@
       "option_4_spaces": "4 空格",
       "option_minified": "压缩",
       "status_valid": "✅ 有效 JSON"
+    },
+    "article": {
+      "title": "如何在线格式化和验证 JSON",
+      "content": "<h2>什么是 JSON 格式化？</h2><p>JSON（JavaScript Object Notation）格式化是为 JSON 数据添加适当的缩进和换行，使其更易读、更人性化的过程。当 JSON 被压缩或格式化为一行时，很难阅读和调试。格式化可以将其转换为结构化的缩进格式，便于理解和使用。</p><h2>为什么要格式化 JSON？</h2><p>格式化的 JSON 对于处理 API、配置文件和数据存储的开发者来说非常重要。以下是一些常见场景：</p><ul><li><strong>API 开发：</strong>通过格式化服务器返回的压缩 JSON 来调试 API 响应</li><li><strong>配置文件：</strong>读取和编辑 JSON 配置文件，如 package.json 或 tsconfig.json</li><li><strong>数据分析：</strong>探索来自数据库或分析工具的嵌套 JSON 结构</li><li><strong>日志记录：</strong>格式化 JSON 日志以便在调试时更易读</li></ul><h2>常见 JSON 错误及修复方法</h2><p>我们的 JSON 格式化工具包含以下常见问题的自动修复功能：</p><ul><li><strong>缺失引号：</strong>键名和字符串值必须用双引号包裹</li><li><strong>尾随逗号：</strong>移除对象或数组最后一个元素后的逗号</li><li><strong>未闭合括号：</strong>自动关闭缺失的花括号或方括号</li><li><strong>无效注释：</strong>移除 JSON 中不允许的 // 和 /* */ 注释</li></ul><h2>处理 JSON 的技巧</h2><p>以下是一些处理 JSON 数据的最佳实践：</p><ol><li><strong>始终验证：</strong>在处理前使用验证器检查语法</li><li><strong>使用树形视图：</strong>使用可展开的树形视图导航复杂的嵌套结构</li><li><strong>安全分享：</strong>生成可分享的链接进行协作调试</li><li><strong>生产环境压缩：</strong>在生产环境中使用压缩的 JSON 以减少负载大小</li></ol>",
+      "links": [
+        {"text": "JSON 验证器", "url": "/tools/validate/json-validator"},
+        {"text": "JSON 压缩工具", "url": "/tools/format/json-minifier"},
+        {"text": "JSON 树形视图", "url": "/tools/view/json-tree-viewer"}
+      ]
     }
   }
 }

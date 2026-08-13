@@ -24,6 +24,24 @@
       <ToolFaq :faq="tool.faq" />
     </section>
 
+    <!-- Article -->
+    <section v-if="tool.article?.content" class="prose prose-surface dark:prose-invert max-w-none">
+      <h2 v-if="tool.article.title" class="mb-4 text-lg font-bold text-surface-900 dark:text-surface-100">
+        {{ tool.article.title }}
+      </h2>
+      <div v-html="tool.article.content" class="text-surface-700 dark:text-surface-300"></div>
+      <div v-if="tool.article.links?.length" class="mt-6 flex flex-wrap gap-4">
+        <NuxtLinkLocale
+          v-for="link in tool.article.links"
+          :key="link.url"
+          :to="link.url"
+          class="text-primary-600 hover:text-primary-700 dark:text-primary-400 text-sm"
+        >
+          {{ link.text }} →
+        </NuxtLinkLocale>
+      </div>
+    </section>
+
     <!-- Related Tools -->
     <section v-if="tool.nextSteps?.length || tool.recommends?.length">
       <ToolRelated

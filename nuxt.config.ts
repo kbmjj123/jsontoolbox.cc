@@ -103,9 +103,13 @@ export default defineNuxtConfig({
       }
     ]
   },
-  // OG Image 配置（暂时禁用，待修复）
+  // OG Image 配置
   ogImage: {
-    enabled: false,
+    enabled: true,
+    // SSG 模式下使用静态预渲染
+    defaults: {
+      component: 'OgTemplate',
+    },
   },
   schemaOrg: {
     identity: 'Person'

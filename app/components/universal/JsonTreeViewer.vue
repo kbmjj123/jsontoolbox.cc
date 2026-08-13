@@ -19,7 +19,7 @@
       <textarea
         v-model="inputJson"
         class="w-full h-32 rounded-xl border border-surface-200 bg-surface-50 p-4 font-mono text-sm text-surface-900 resize-none dark:border-surface-700 dark:bg-surface-800 dark:text-surface-100"
-        :placeholder="ui?.placeholderInput ?? '{\"name\": \"JSON Toolbox\", \"features\": [\"format\", \"validate\", \"convert\"]}'"
+        :placeholder="ui?.placeholderInput ?? '{&quot;name&quot;: &quot;JSON Toolbox&quot;, &quot;features&quot;: [&quot;format&quot;, &quot;validate&quot;, &quot;convert&quot;]}'"
         spellcheck="false"
       ></textarea>
       <input ref="fileInputRef" type="file" accept=".json,.txt,.jsonl" class="hidden" @change="onFileChange" />
