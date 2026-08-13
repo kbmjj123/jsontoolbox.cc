@@ -22,9 +22,9 @@
       "trustHtml": "100% client-side. Your JSON data stays in your browser."
     },
     "meta": {
-      "title": "JSON Tree Viewer — Free Online JSON Explorer",
-      "description": "View JSON data as an interactive tree. Expand, collapse, search, and copy paths. No upload required.",
-      "keywords": ["json tree viewer", "json viewer", "json viewer online", "json visualizer", "json document viewer", "json file viewer", "json explorer", "view json", "json online viewer"]
+      "title": "JSON Tree Viewer — Free Online JSON Explorer & Visualizer",
+      "description": "View JSON data as an interactive tree structure. Expand, collapse, search, and copy paths. Download tree as text. Free, no upload required.",
+      "keywords": ["json tree viewer", "json viewer", "json viewer online", "json visualizer", "json document viewer", "json file viewer", "json explorer", "view json", "json online viewer", "json tree visualizer"]
     },
     "features": [
       {
@@ -41,6 +41,21 @@
         "icon": "lucide:copy",
         "title": "Copy Paths",
         "description": "Click any node to copy its JSON path."
+      },
+      {
+        "icon": "lucide:download",
+        "title": "Export Tree",
+        "description": "Download the tree structure as a text file."
+      },
+      {
+        "icon": "lucide:image",
+        "title": "Image Preview",
+        "description": "Hover over image URLs to see instant previews in the tree."
+      },
+      {
+        "icon": "lucide:shield-check",
+        "title": "Private",
+        "description": "All processing happens in your browser. No data upload."
       }
     ],
     "guide": [
@@ -67,6 +82,14 @@
         "answer": "Yes, use the search box to filter nodes by key name or value. Matching nodes and their parents are highlighted, making it easy to find specific data in large JSON structures."
       },
       {
+        "question": "Can I export the tree structure?",
+        "answer": "Yes. After viewing the tree, you can download the expanded structure as a text file. This is useful for documentation or sharing the structure with your team."
+      },
+      {
+        "question": "Does it show image previews?",
+        "answer": "Yes. When the tree contains image URLs, hovering over them shows instant previews. This helps verify image links without leaving the viewer."
+      },
+      {
         "question": "Is my JSON data uploaded to a server?",
         "answer": "No. All processing happens in your browser. Your JSON data never leaves your device. The tree viewer runs entirely client-side."
       },
@@ -75,14 +98,19 @@
         "answer": "A JSON formatter displays JSON as indented text. A tree viewer displays JSON as an interactive expandable/collapsible tree structure, making it easier to navigate deeply nested data and understand the overall structure at a glance."
       },
       {
-        "question": "Can I view very large JSON files?",
-        "answer": "Yes, but very large files (over 10MB) may slow down the tree rendering. The tree viewer is best for exploring structure and navigating data. For very large files, consider using the JSON formatter or a command-line tool."
-      },
-      {
         "question": "Is this a free online JSON viewer and explorer?",
         "answer": "Yes. This is a free json online viewer, json viewer online, and json explorer tool. You can view, explore, and visualize any JSON data directly in your browser — no upload required."
       }
-    ]
+    ],
+    "article": {
+      "title": "How to View JSON Data as an Interactive Tree",
+      "content": "<h2>Why Use a JSON Tree Viewer?</h2><p>JSON data can be complex and deeply nested. A tree viewer transforms raw JSON into an interactive, visual structure that's easy to understand and navigate. Instead of scrolling through hundreds of lines of text, you can expand and collapse nodes to focus on the data you need.</p><h2>Key Features</h2><ul><li><strong>Interactive Tree:</strong> Click to expand/collapse any node</li><li><strong>Search:</strong> Find keys or values instantly</li><li><strong>Copy Paths:</strong> Click any node to copy its JSON path</li><li><strong>Image Preview:</strong> Hover over image URLs to see previews</li></ul><h2>How to Use</h2><ol><li><strong>Paste JSON</strong> into the input field</li><li><strong>Click View Tree</strong> to generate the tree</li><li><strong>Explore:</strong> Click nodes to expand/collapse</li><li><strong>Search:</strong> Use the search box to find specific data</li><li><strong>Copy:</strong> Click any node to copy its path</li></ol><h2>Common Use Cases</h2><ul><li><strong>API Exploration:</strong> Understand complex API response structures</li><li><strong>Config Files:</strong> Navigate nested configuration objects</li><li><strong>Data Analysis:</strong> Explore large JSON datasets</li><li><strong>Debugging:</strong> Inspect JSON data structure issues</li></ul><h2>Tips</h2><ul><li><strong>Use search:</strong> For large JSON, search is faster than manual navigation</li><li><strong>Copy paths:</strong> Useful for JSONPath queries or code references</li><li><strong>Check image URLs:</strong> Hover to verify image links</li></ul>",
+      "links": [
+        {"text": "JSON Formatter", "url": "/tools/format/json-formatter"},
+        {"text": "JSON Path Tester", "url": "/tools/view/json-path-tester"},
+        {"text": "JSON Validator", "url": "/tools/validate/json-validator"}
+      ]
+    }
   },
   "zh": {
     "name": "JSON 树形查看器",
@@ -94,14 +122,14 @@
       "emptyState": "粘贴 JSON 后点击\"查看树形\"",
       "toastPathCopied": "路径已复制！"
     },
-    "description": "将json树形查看器用于 JSON 数据可视化为交互式树结构。这是一个免费的json查看器在线工具，也支持查看json树。支持展开、折叠和搜索。",
+    "description": "将 JSON 数据可视化为交互式树结构。这是一个免费的json查看器在线工具，也支持查看json树。支持展开、折叠、搜索和复制路径。",
     "hero": {
       "trustHtml": "100% 本地处理，JSON 数据保留在浏览器中。"
     },
     "meta": {
-      "title": "JSON 树形查看器 — 免费在线 JSON 浏览器",
-      "description": "将 JSON 数据可视化为交互式树。支持展开、折叠、搜索和复制路径。无需上传。",
-      "keywords": ["json树形查看器", "json查看器在线", "json浏览器", "查看json树"]
+      "title": "JSON 树形查看器 — 免费在线 JSON 浏览器与可视化工具",
+      "description": "将 JSON 数据可视化为交互式树结构。支持展开、折叠、搜索、复制路径和导出。免费、无需上传。",
+      "keywords": ["json树形查看器", "json查看器在线", "json浏览器", "查看json树", "json可视化", "json文档查看器", "json文件查看器", "json探索器", "在线json查看器", "json树可视化"]
     },
     "features": [
       {
@@ -118,6 +146,21 @@
         "icon": "lucide:copy",
         "title": "复制路径",
         "description": "点击任意节点复制其 JSON 路径。"
+      },
+      {
+        "icon": "lucide:download",
+        "title": "导出树",
+        "description": "下载树结构为文本文件。"
+      },
+      {
+        "icon": "lucide:image",
+        "title": "图片预览",
+        "description": "悬停在图片 URL 上即可查看即时预览。"
+      },
+      {
+        "icon": "lucide:shield-check",
+        "title": "私密安全",
+        "description": "所有处理在浏览器中完成，不上传数据。"
       }
     ],
     "guide": [
@@ -144,6 +187,14 @@
         "answer": "可以，使用搜索框按键名或值过滤节点。匹配的节点及其父节点会高亮显示，方便在大型 JSON 结构中快速定位数据。"
       },
       {
+        "question": "可以导出树结构吗？",
+        "answer": "可以。查看树后，你可以将展开的结构下载为文本文件。这对文档记录或与团队分享结构很有用。"
+      },
+      {
+        "question": "会显示图片预览吗？",
+        "answer": "会。当树中包含图片 URL 时，悬停在上面会显示即时预览。这有助于在不离开查看器的情况下验证图片链接。"
+      },
+      {
         "question": "我的 JSON 数据会上传到服务器吗？",
         "answer": "不会。所有处理在浏览器中完成，JSON 数据不会离开你的设备。树形查看器完全在客户端运行。"
       },
@@ -152,13 +203,18 @@
         "answer": "JSON 格式化以缩进文本形式显示 JSON。树形查看器以交互式的可展开/折叠树结构显示 JSON，更便于导航深度嵌套的数据，一眼看清整体结构。"
       },
       {
-        "question": "可以查看非常大的 JSON 文件吗？",
-        "answer": "可以，但非常大的文件（超过 10MB）可能会减慢树的渲染速度。树形查看器最适合探索数据结构。对于超大文件，建议使用 JSON 格式化工具或命令行工具。"
-      },
-      {
         "question": "这是一个免费的json浏览器工具吗？",
         "answer": "是的。这是一个免费的在线json浏览器和json查看器在线工具，可以直接在浏览器中查看和探索 JSON 数据，无需上传。"
       }
-    ]
+    ],
+    "article": {
+      "title": "如何以交互式树形查看 JSON 数据",
+      "content": "<h2>为什么使用 JSON 树形查看器？</h2><p>JSON 数据可能复杂且深度嵌套。树形查看器将原始 JSON 转换为易于理解和导航的交互式可视化结构。无需滚动数百行文本，只需展开和折叠节点即可专注于所需数据。</p><h2>主要功能</h2><ul><li><strong>交互式树：</strong>点击展开/折叠任意节点</li><li><strong>搜索：</strong>即时查找键或值</li><li><strong>复制路径：</strong>点击任意节点复制其 JSON 路径</li><li><strong>图片预览：</strong>悬停在图片 URL 上查看预览</li></ul><h2>使用方法</h2><ol><li><strong>粘贴 JSON</strong> 到输入框</li><li><strong>点击查看树</strong> 生成树形视图</li><li><strong>探索：</strong>点击节点展开/折叠</li><li><strong>搜索：</strong>使用搜索框查找特定数据</li><li><strong>复制：</strong>点击任意节点复制其路径</li></ol><h2>常见使用场景</h2><ul><li><strong>API 探索：</strong>理解复杂的 API 响应结构</li><li><strong>配置文件：</strong>导航嵌套的配置对象</li><li><strong>数据分析：</strong>探索大型 JSON 数据集</li><li><strong>调试：</strong>检查 JSON 数据结构问题</li></ul><h2>技巧</h2><ul><li><strong>使用搜索：</strong>对于大型 JSON，搜索比手动导航更快</li><li><strong>复制路径：</strong>对 JSONPath 查询或代码引用很有用</li><li><strong>检查图片 URL：</strong>悬停以验证图片链接</li></ul>",
+      "links": [
+        {"text": "JSON 格式化工具", "url": "/tools/format/json-formatter"},
+        {"text": "JSON Path 测试器", "url": "/tools/view/json-path-tester"},
+        {"text": "JSON 验证器", "url": "/tools/validate/json-validator"}
+      ]
+    }
   }
 }
