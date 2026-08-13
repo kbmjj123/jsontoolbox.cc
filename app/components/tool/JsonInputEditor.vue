@@ -29,7 +29,7 @@
         <input
           ref="fileInputRef"
           type="file"
-          accept=".json,.txt,.jsonl,.geojson,.ndjson"
+          :accept="accept"
           class="hidden"
           @change="onFileChange"
         />
@@ -75,6 +75,7 @@ interface Props {
   showPaste?: boolean
   showClear?: boolean
   showUpload?: boolean
+  accept?: string
 }
 
 const props = withDefaults(defineProps<Props>(), {
@@ -85,6 +86,7 @@ const props = withDefaults(defineProps<Props>(), {
   showPaste: true,
   showClear: true,
   showUpload: false,
+  accept: '.json,.txt,.jsonl,.geojson,.ndjson',
 })
 
 const emit = defineEmits<{
