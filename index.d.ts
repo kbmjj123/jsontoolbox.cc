@@ -75,6 +75,7 @@ declare global {
   interface ProcessedTool {
     slug: string;
     icon: string;
+		component: string;
     category: string;
     name: string;
     description: string;

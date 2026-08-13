@@ -21,7 +21,7 @@
 
         <!-- Tool Component -->
         <div class="rounded-2xl border border-surface-200 bg-white p-6 dark:border-surface-700 dark:bg-surface-900">
-          <component :is="toolComponent" v-if="toolComponent" :tool="tool" />
+          <component :is="resolvedComponent" v-if="resolvedComponent" :tool="tool" />
           <div v-else class="text-center py-12">
             <p class="text-surface-500 dark:text-surface-400">Tool component not found.</p>
           </div>
@@ -45,6 +45,7 @@
 
 <script setup lang="ts">
 const route = useRoute()
+import { computed, defineAsyncComponent } from 'vue'
 const { getToolDetail } = useTools()
 const { t } = useI18n()
 
@@ -52,34 +53,54 @@ const category = computed(() => route.params.category as string)
 const slug = computed(() => route.params.slug as string)
 const tool = computed(() => getToolDetail(category.value, slug.value))
 
-// 可用的工具组件映射（避免 SSR 时动态 import 失败导致 500）
-const componentMap: Record<string, ReturnType<typeof defineAsyncComponent>> = {
-  JsonFormatter: defineAsyncComponent(() => import('~/components/universal/JsonFormatter.vue')),
-  JsonValidator: defineAsyncComponent(() => import('~/components/universal/JsonValidator.vue')),
-  JsonToCsv: defineAsyncComponent(() => import('~/components/universal/JsonToCsv.vue')),
-  JsonTreeViewer: defineAsyncComponent(() => import('~/components/universal/JsonTreeViewer.vue')),
-  JsonCompare: defineAsyncComponent(() => import('~/components/universal/JsonCompare.vue')),
-  JsonMinifier: defineAsyncComponent(() => import('~/components/universal/JsonMinifier.vue')),
-  JsonToYaml: defineAsyncComponent(() => import('~/components/universal/JsonToYaml.vue')),
-  YamlToJson: defineAsyncComponent(() => import('~/components/universal/YamlToJson.vue')),
-  JsonToTypescript: defineAsyncComponent(() => import('~/components/universal/JsonToTypescript.vue')),
-  JsonPathTester: defineAsyncComponent(() => import('~/components/universal/JsonPathTester.vue')),
-  JsonToXml: defineAsyncComponent(() => import('~/components/universal/JsonToXml.vue')),
-  XmlToJson: defineAsyncComponent(() => import('~/components/universal/XmlToJson.vue')),
-  CsvToJson: defineAsyncComponent(() => import('~/components/universal/CsvToJson.vue')),
-  JsonEscape: defineAsyncComponent(() => import('~/components/universal/JsonEscape.vue')),
-  JsonSchemaValidator: defineAsyncComponent(() => import('~/components/universal/JsonSchemaValidator.vue')),
-  JsonEditor: defineAsyncComponent(() => import('~/components/universal/JsonEditor.vue')),
-  JsonToCode: defineAsyncComponent(() => import('~/components/universal/JsonToCode.vue')),
-  JsonToExcel: defineAsyncComponent(() => import('~/components/universal/JsonToExcel.vue')),
-  JsonToPdf: defineAsyncComponent(() => import('~/components/universal/JsonToPdf.vue')),
-  JsonToTable: defineAsyncComponent(() => import('~/components/universal/JsonToTable.vue')),
-  JsonSchemaGenerator: defineAsyncComponent(() => import('~/components/universal/JsonSchemaGenerator.vue')),
-}
+// 1. 扫描组件 (使用 eager: false 进行懒加载)
+const componentFiles = import.meta.glob('~/components/universal/*.vue')
 
-const toolComponent = computed(() => {
-  if (!tool.value?.component) return null
-  return componentMap[tool.value.component] || null
+// 2. 动态组件解析 (带调试日志)
+const resolvedComponent = computed(() => {
+	const component = tool.value && tool.value.component
+	if (!component) return null
+
+	// 1. 预处理目标名称
+	// JSON配置: "UniversalGifCompressor" -> 转小写: "universalgifcompressor"
+	const targetName = component.toLowerCase()
+	// 2. 剥离 "universal" 前缀，得到预期的文件名
+	// "universalgifcompressor" -> "gifcompressor"
+	// 这一步非常关键，它让我们从“组件名”还原回了“文件名”
+	const expectedFileName = targetName.replace(/^universal/, '')
+
+	// 3. 遍历文件列表寻找匹配
+	for (const [path, loader] of Object.entries(componentFiles)) {
+		// path 示例: "/components/universal/GifCompressor.vue"
+
+		// 获取实际文件名 (转小写): "GifCompressor.vue" -> "gifcompressor"
+		const actualFileName = path.split('/').pop()?.replace(/\.\w+$/, '').toLowerCase()
+
+		// 获取所在目录名 (转小写): "universal"
+		const parts = path.split('/')
+		const dirName = parts[parts.length - 2]?.toLowerCase()
+
+		// 🕵️ 精准匹配逻辑 (必须同时满足两个条件):
+		// 1. 文件必须在 'universal' 目录下 (防止匹配到其他目录的同名文件)
+		// 2. 文件名必须等于剥离前缀后的名称 (全等匹配，杜绝包含关系错误)
+		if (dirName === 'universal' && actualFileName === expectedFileName) {
+			return defineAsyncComponent(loader as any)
+		}
+	}
+
+	// 备用逻辑：兼容没有 Universal 前缀的旧配置 (可选)
+	// 如果 JSON 里直接写了 "GifCompressor"，也尝试去 universal 目录找
+	for (const [path, loader] of Object.entries(componentFiles)) {
+		const actualFileName = path.split('/').pop()?.replace(/\.\w+$/, '').toLowerCase()
+		const dirName = path.split('/')[path.split('/').length - 2]?.toLowerCase()
+
+		if (dirName === 'universal' && actualFileName === targetName) {
+			return defineAsyncComponent(loader as any)
+		}
+	}
+
+	console.warn(`[Loader] 404: Cannot find ${component} in /components/universal/`)
+	return null
 })
 
 useSeoMeta({

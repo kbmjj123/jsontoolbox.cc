@@ -102,7 +102,7 @@
         {"text": "JSON Formatter", "url": "/tools/format/json-formatter"},
         {"text": "JSON to YAML", "url": "/tools/convert/json-to-yaml"}
       ]
-    }
+    },
     "ui": {
       "label_input": "Input JSON",
       "label_output": "XML Output",

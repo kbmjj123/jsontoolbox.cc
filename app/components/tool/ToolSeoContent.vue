@@ -16,14 +16,6 @@
       <ToolGuide :guide="tool.guide" />
     </section>
 
-    <!-- FAQ -->
-    <section v-if="tool.faq?.length">
-      <h2 class="mb-4 text-lg font-bold text-surface-900 dark:text-surface-100">
-        {{ $t('tool.faq_title') }}
-      </h2>
-      <ToolFaq :faq="tool.faq" />
-    </section>
-
     <!-- Article -->
     <section v-if="tool.article?.content" class="prose prose-surface dark:prose-invert max-w-none">
       <h2 v-if="tool.article.title" class="mb-4 text-lg font-bold text-surface-900 dark:text-surface-100">
@@ -49,6 +41,14 @@
         :recommends="tool.recommends"
         :current-slug="tool.slug"
       />
+    </section>
+
+		<!-- FAQ -->
+    <section v-if="tool.faq?.length">
+      <h2 class="mb-4 text-lg font-bold text-surface-900 dark:text-surface-100">
+        {{ $t('tool.faq_title') }}
+      </h2>
+      <ToolFaq :faq="tool.faq" />
     </section>
   </div>
 </template>

@@ -86,7 +86,7 @@ export const useTools = () => {
     })
 
   // 将原始工具数据转为 ProcessedTool
-  const toProcessedTool = (tool: any, currentLang: string) => {
+  const toProcessedTool = (tool: any, currentLang: string): ProcessedTool => {
     const content = tool[currentLang] || tool['en'] || {}
     return {
       ...tool,

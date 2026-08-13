@@ -14,12 +14,12 @@
       <div class="absolute left-0 right-0 top-0 -z-10 m-auto h-[310px] w-[310px] rounded-full bg-primary-500 opacity-20 blur-[100px] dark:opacity-30"></div>
     </div>
 		<div class="relative z-10 flex flex-col min-h-screen">
-			<AppHeader />
+			<Header />
 			<section class="flex flex-col flex-1">
-				<AppBreadcrumb />
+				<Breadcrumb />
 				<slot></slot>
 			</section>
-			<AppFooter />
+			<Footer />
 		</div>
 	</div>
 </template>

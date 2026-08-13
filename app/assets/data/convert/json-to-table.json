@@ -183,7 +183,7 @@
       },
       {
         "question": "支持嵌套 JSON 对象吗？",
-        "answer": "支持。启用"展平嵌套对象"可以将嵌套结构展开为点号表示的列（如 address.city）。"
+        "answer": "支持。启用\"展平嵌套对象\"可以将嵌套结构展开为点号表示的列（如 address.city）。"
       },
       {
         "question": "可以转换大型 JSON 文件吗？",
@@ -195,7 +195,7 @@
       },
       {
         "question": "可以下载表格为 CSV 吗？",
-        "answer": "可以。点击"下载 CSV"将表格数据导出为 CSV 文件，兼容 Excel 和 Google Sheets。"
+        "answer": "可以。点击\"下载 CSV\"将表格数据导出为 CSV 文件，兼容 Excel 和 Google Sheets。"
       }
     ]
   }

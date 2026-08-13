@@ -98,7 +98,7 @@
         {"text": "JSON Validator", "url": "/tools/validate/json-validator"},
         {"text": "JSON Minifier", "url": "/tools/format/json-minifier"}
       ]
-    }
+    },
     "ui": {
       "placeholder_output": "Output will appear here...",
       "btn_escape": "Escape",

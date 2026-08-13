@@ -183,7 +183,7 @@
       },
       {
         "question": "可以自定义类型名称吗？",
-        "answer": "可以。在"类型名称"字段中输入自定义名称。默认是 'RootObject'。"
+        "answer": "可以。在\"类型名称\"字段中输入自定义名称。默认是 'RootObject'。"
       },
       {
         "question": "MySQL 输出有什么用？",

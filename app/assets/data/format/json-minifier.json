@@ -98,7 +98,7 @@
         {"text": "JSON Validator", "url": "/tools/validate/json-validator"},
         {"text": "JSON to CSV", "url": "/tools/convert/json-to-csv"}
       ]
-    }
+    },
     "ui": {
       "label_input": "Input JSON",
       "label_output": "Minified Output",

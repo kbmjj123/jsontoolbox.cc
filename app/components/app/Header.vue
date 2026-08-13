@@ -56,10 +56,10 @@
         </div>
 
         <!-- 语言切换 -->
-        <NavLangSwitcher class="hidden md:flex" />
+        <LangSwitcher class="hidden md:flex" />
 
         <!-- 暗色模式 -->
-        <NavThemeToggle />
+        <ThemeToggle />
 
         <!-- GitHub -->
         <a
@@ -85,7 +85,7 @@
     </div>
 
     <!-- 移动端抽屉 -->
-    <NavDrawer :open="drawerOpen" @close="drawerOpen = false" />
+    <Drawer :open="drawerOpen" @close="drawerOpen = false" />
   </header>
 </template>
 

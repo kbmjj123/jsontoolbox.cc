@@ -18,7 +18,7 @@
           class="flex w-full items-center gap-2.5 rounded-lg px-3 py-2 text-sm transition-colors"
           :class="loc.code === locale ? 'bg-primary-50 text-primary-700 dark:bg-primary-900/30 dark:text-primary-400' : 'text-surface-600 hover:bg-surface-50 dark:text-surface-400 dark:hover:bg-surface-700'"
         >
-          <span class="text-base">{{ loc.flag }}</span>
+					<Icon :name="loc.flag" class="w-4 h-4"></Icon>
           <span>{{ loc.name }}</span>
         </button>
       </div>
