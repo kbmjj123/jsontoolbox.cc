@@ -6,6 +6,7 @@
         v-model="inputText"
         :label="$t('system.input')"
         placeholder='{"message": "Hello \"World\""}'
+        show-upload
         @clear="clearAll"
       />
 
@@ -50,6 +51,9 @@
         <Icon name="lucide:arrow-left-right" class="h-4 w-4 mr-1.5" />
         {{ tool.ui?.btn_swap || 'Swap' }}
       </button>
+      <button @click="loadExample" class="text-xs text-primary-600 hover:text-primary-700 dark:text-primary-400">
+        Load Example
+      </button>
       <button @click="clearAll" class="rounded-xl border border-surface-200 bg-white px-4 py-2 text-xs font-bold text-surface-700 hover:bg-surface-50 dark:border-surface-700 dark:bg-surface-800 dark:text-surface-300 dark:hover:bg-surface-700">
         {{ $t('system.clearAll') }}
       </button>
@@ -93,6 +97,11 @@ const swap = () => {
 const clearAll = () => {
   outputText.value = ''
   error.value = ''
+}
+
+const loadExample = () => {
+  inputText.value = '{"message": "Hello \\"World\\"", "path": "C:\\\\Users\\\\file.txt", "newline": "line1\\nline2"}'
+  escapeJson()
 }
 
 const copyOutput = async () => {
