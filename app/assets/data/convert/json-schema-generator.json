@@ -14,7 +14,13 @@
       "label_input": "Input JSON",
       "label_output": "JSON Schema",
       "btn_generate": "Generate Schema",
-      "placeholder_output": "JSON Schema will appear here..."
+      "btn_example": "Load Example",
+      "placeholder_output": "JSON Schema will appear here...",
+      "option_indent": "Indent:",
+      "option_indent_2": "2 spaces",
+      "option_indent_4": "4 spaces",
+      "option_required": "Include required",
+      "option_additional": "Additional properties"
     },
     "hero": {
       "trustHtml": "100% client-side generation. Your JSON data never leaves your browser."
@@ -33,7 +39,7 @@
       {
         "icon": "lucide:settings",
         "title": "Customizable",
-        "description": "Configure required fields, additional properties, and more."
+        "description": "Configure required fields, additional properties, and indentation."
       },
       {
         "icon": "lucide:copy",
@@ -47,8 +53,8 @@
       },
       {
         "icon": "lucide:link",
-        "title": "URL Input",
-        "description": "Load JSON from URL using ?url= parameter."
+        "title": "Smart Format Detection",
+        "description": "Auto-detect date, email, URI, UUID, IPv4, and hostname formats."
       },
       {
         "icon": "lucide:shield-check",
@@ -81,7 +87,7 @@
       },
       {
         "question": "Can I customize the generated schema?",
-        "answer": "Yes. You can configure options like required fields, additional properties, and description generation."
+        "answer": "Yes. You can configure options like required fields, additional properties, and indentation format."
       },
       {
         "question": "Can I download the generated schema?",
@@ -92,8 +98,16 @@
         "answer": "Yes. The generator recursively processes nested objects and arrays to create complete schemas."
       },
       {
+        "question": "What formats does it detect automatically?",
+        "answer": "The generator auto-detects date, date-time, email, URI, UUID, IPv4, and hostname formats in string values."
+      },
+      {
         "question": "What is JSON Schema used for?",
         "answer": "JSON Schema is used to validate the structure and data types of JSON data. It is commonly used in API documentation, data validation, and form generation."
+      },
+      {
+        "question": "Can I generate schema from JSON array?",
+        "answer": "Yes. Paste a JSON array and the generator will infer the item schema from the first element."
       }
     ],
     "article": {
@@ -113,7 +127,13 @@
       "label_input": "输入 JSON",
       "label_output": "JSON Schema",
       "btn_generate": "生成 Schema",
-      "placeholder_output": "JSON Schema 将在此显示..."
+      "btn_example": "加载示例",
+      "placeholder_output": "JSON Schema 将在此显示...",
+      "option_indent": "缩进:",
+      "option_indent_2": "2 空格",
+      "option_indent_4": "4 空格",
+      "option_required": "包含 required",
+      "option_additional": "允许额外属性"
     },
     "hero": {
       "trustHtml": "100% 本地生成，JSON 数据不会离开浏览器。"
@@ -132,7 +152,7 @@
       {
         "icon": "lucide:settings",
         "title": "可配置",
-        "description": "配置必填字段、额外属性等选项。"
+        "description": "配置必填字段、额外属性和缩进格式。"
       },
       {
         "icon": "lucide:copy",
@@ -146,8 +166,8 @@
       },
       {
         "icon": "lucide:link",
-        "title": "URL 输入",
-        "description": "使用 ?url= 参数从 URL 加载 JSON。"
+        "title": "智能格式检测",
+        "description": "自动识别日期、邮箱、URI、UUID、IPv4 和主机名格式。"
       },
       {
         "icon": "lucide:shield-check",
@@ -180,7 +200,7 @@
       },
       {
         "question": "可以自定义生成的 Schema 吗？",
-        "answer": "可以。你可以配置必填字段、额外属性和描述生成等选项。"
+        "answer": "可以。你可以配置必填字段、额外属性和缩进格式等选项。"
       },
       {
         "question": "可以下载生成的 Schema 吗？",
@@ -191,8 +211,16 @@
         "answer": "能。生成器递归处理嵌套对象和数组，创建完整的 Schema。"
       },
       {
+        "question": "能自动识别哪些格式？",
+        "answer": "生成器自动识别日期、日期时间、邮箱、URI、UUID、IPv4 和主机名等格式。"
+      },
+      {
         "question": "JSON Schema 有什么用？",
         "answer": "JSON Schema 用于验证 JSON 数据的结构和数据类型。常用于 API 文档、数据验证和表单生成。"
+      },
+      {
+        "question": "可以从 JSON 数组生成 Schema 吗？",
+        "answer": "可以。粘贴 JSON 数组，生成器会从第一个元素推断项目 Schema。"
       }
     ],
     "article": {
