@@ -291,7 +291,7 @@
 |---|------|------|---------|
 | 1 | json-formatter | ✅ 已完成 | 2026-08-13 |
 | 2 | json-to-csv | ✅ 已完成 | 2026-08-13 |
-| 3 | json-validator | ⬜ 待开始 | - |
+| 3 | json-validator | ✅ 已完成 | 2026-08-13 |
 | 4 | json-compare | ⬜ 待开始 | - |
 | 5 | json-to-yaml | ⬜ 待开始 | - |
 | 6 | json-to-typescript | ⬜ 待开始 | - |

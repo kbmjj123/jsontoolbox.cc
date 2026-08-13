@@ -7,13 +7,42 @@
       placeholder='Paste your JSON here...'
       show-upload
       @clear="clearAll"
+      @paste="onInputPaste"
     />
 
-    <!-- Validate Button -->
-    <div class="mt-4">
+    <!-- Action Buttons -->
+    <div class="mt-4 flex flex-wrap items-center gap-3">
       <button @click="validate" class="btn-primary px-6 py-2.5 text-sm">
         <Icon name="lucide:check-circle" class="h-4 w-4 mr-1.5" />
         {{ tool.ui?.btn_validate || 'Validate JSON' }}
+      </button>
+
+      <!-- Fix button (only show when invalid) -->
+      <button
+        v-if="result && !result.valid"
+        @click="fixJson"
+        class="rounded-xl border border-surface-200 bg-white px-4 py-2 text-sm font-bold text-surface-700 hover:bg-surface-50 dark:border-surface-700 dark:bg-surface-800 dark:text-surface-300"
+      >
+        <Icon name="lucide:wrench" class="h-4 w-4 mr-1.5" />
+        {{ tool.ui?.btn_fix || 'Fix JSON' }}
+      </button>
+
+      <!-- Copy Input -->
+      <button
+        v-if="inputJson"
+        @click="copyInput"
+        class="text-xs text-primary-600 hover:text-primary-700 dark:text-primary-400"
+      >
+        {{ copied ? '✓ Copied!' : 'Copy Input' }}
+      </button>
+
+      <!-- Copy Result -->
+      <button
+        v-if="result && !result.valid && result.error"
+        @click="copyError"
+        class="text-xs text-primary-600 hover:text-primary-700 dark:text-primary-400"
+      >
+        {{ copyErrorCopied ? '✓ Copied!' : 'Copy Error' }}
       </button>
     </div>
 
@@ -45,17 +74,54 @@
               {{ tool.ui?.label_line || 'Line:' }} {{ result.line }}, {{ tool.ui?.label_column || 'Column:' }} {{ result.column }}
             </p>
           </div>
+
+          <!-- Fix suggestions -->
+          <div v-if="result.fixes && result.fixes.length > 0" class="mt-3 rounded-lg bg-yellow-50 border border-yellow-200 p-3 dark:bg-yellow-900/20 dark:border-yellow-800">
+            <p class="text-xs font-bold text-yellow-700 dark:text-yellow-400 mb-1">Applied fixes:</p>
+            <ul class="text-xs text-yellow-600 dark:text-yellow-500 list-disc list-inside">
+              <li v-for="fix in result.fixes" :key="fix">{{ fix }}</li>
+            </ul>
+          </div>
         </div>
       </div>
     </Transition>
+
+    <!-- Auto-load from URL -->
+    <div v-if="urlLoaded" class="mt-3 text-xs text-primary-600 dark:text-primary-400">
+      Data loaded from URL. <button @click="clearUrlData" class="underline">Clear</button>
+    </div>
   </div>
 </template>
 
 <script setup lang="ts">
-defineProps<{ tool: any }>()
+const props = defineProps<{ tool: any }>()
 
 const inputJson = ref('')
-const result = ref<{ valid: boolean; error?: string; line?: number; column?: number } | null>(null)
+const result = ref<{
+  valid: boolean
+  error?: string
+  line?: number
+  column?: number
+  fixes?: string[]
+} | null>(null)
+const urlLoaded = ref(false)
+
+// Composables
+const { fixJson: fixJsonAuto } = useJsonFixer()
+const { copied, copyToClipboard } = useClipboard()
+const { loadDataFromUrl, clearAllParams } = useUrlParams()
+
+const copyErrorCopied = ref(false)
+
+// Load data from URL on mount
+onMounted(() => {
+  const urlData = loadDataFromUrl('json') || loadDataFromUrl('data')
+  if (urlData) {
+    inputJson.value = urlData
+    urlLoaded.value = true
+    nextTick(() => validate())
+  }
+})
 
 const validate = () => {
   try {
@@ -83,7 +149,44 @@ const validate = () => {
   }
 }
 
+const fixJson = () => {
+  const { fixed, fixes } = fixJsonAuto(inputJson.value)
+
+  if (fixed) {
+    inputJson.value = fixed
+    result.value = {
+      valid: true,
+      fixes
+    }
+  }
+}
+
 const clearAll = () => {
   result.value = null
+  urlLoaded.value = false
+}
+
+const clearUrlData = () => {
+  clearAllParams()
+  urlLoaded.value = false
+}
+
+const onInputPaste = () => {
+  nextTick(() => validate())
+}
+
+const copyInput = async () => {
+  await copyToClipboard(inputJson.value)
+}
+
+const copyError = async () => {
+  if (result.value?.error) {
+    const errorText = `Error: ${result.value.error}\nLine: ${result.value.line}, Column: ${result.value.column}`
+    await copyToClipboard(errorText)
+    copyErrorCopied.value = true
+    setTimeout(() => {
+      copyErrorCopied.value = false
+    }, 2000)
+  }
 }
 </script>
