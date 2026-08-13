@@ -15,28 +15,44 @@
       "labelLanguage": "Language:",
       "labelTypeName": "Type Name:",
       "btnGenerate": "Generate",
+      "btnExample": "Load Example",
       "placeholderOutput": "Code output will appear here...",
       "placeholderName": "RootObject"
     },
-    "description": "Convert JSON data to Go structs, C# classes, and Python dataclasses. This json to code tool helps you json to struct and generate type definitions from JSON examples.",
+    "description": "Convert JSON data to code in 10 languages: TypeScript, Python, Go, Rust, Java, Kotlin, C#, Swift, MySQL, and Protobuf. This json to code tool helps you generate type definitions from JSON examples.",
     "hero": {
       "trustHtml": "100% client-side generation. Your JSON data never leaves your browser."
     },
     "meta": {
-      "title": "JSON to Go Struct, C# Class, Python Dataclass — Free Online Converter",
-      "description": "Convert JSON to Go structs, C# classes, or Python dataclasses online. Generate type definitions from JSON data automatically. Free, 100% client-side.",
-      "keywords": ["json to c#", "json to c# class", "json to csharp", "json to go", "json to go struct", "json to python", "json to struct", "json to code"]
+      "title": "JSON to Code — TypeScript, Python, Go, Kotlin, C#, Swift — Free Online",
+      "description": "Convert JSON to TypeScript, Python, Go, Rust, Java, Kotlin, C#, Swift, MySQL, or Protobuf online. Generate type definitions from JSON data automatically. Free, 100% client-side.",
+      "keywords": ["json to code", "json to go", "json to python", "json to c#", "json to kotlin", "json to swift", "json to mysql", "json to protobuf", "json to struct"]
     },
     "features": [
       {
         "icon": "lucide:code-2",
-        "title": "Multiple Languages",
-        "description": "Generate Go structs, C# classes, or Python dataclasses from JSON."
+        "title": "10 Languages",
+        "description": "TypeScript, Python, Go, Rust, Java, Kotlin, C#, Swift, MySQL, Protobuf."
+      },
+      {
+        "icon": "lucide:copy",
+        "title": "Copy & Download",
+        "description": "Copy code to clipboard or download as source file."
       },
       {
         "icon": "lucide:settings",
         "title": "Customizable",
-        "description": "Configure naming conventions, optional fields, and null handling."
+        "description": "Configure type name and naming conventions."
+      },
+      {
+        "icon": "lucide:layers",
+        "title": "Nested Support",
+        "description": "Creates separate type definitions for nested objects."
+      },
+      {
+        "icon": "lucide:upload",
+        "title": "File Upload",
+        "description": "Upload .json files directly for conversion."
       },
       {
         "icon": "lucide:shield-check",
@@ -47,11 +63,11 @@
     "guide": [
       {
         "title": "Paste your JSON",
-        "description": "Paste your JSON data into the input field."
+        "description": "Paste your JSON data into the input field or upload a file."
       },
       {
         "title": "Select language",
-        "description": "Choose Go, C#, or Python as the target language."
+        "description": "Choose your target language from 10 options."
       },
       {
         "title": "Copy or download",
@@ -65,19 +81,23 @@
       },
       {
         "question": "Which languages are supported?",
-        "answer": "Currently supported: Go (json to go struct), C# (json to c# class), and Python (json to python dataclasses). Also supports json to csharp classes. TypeScript is available as a separate tool."
+        "answer": "10 languages: TypeScript, Python, Go, Rust, Java, Kotlin, C#, Swift, MySQL (CREATE TABLE), and Protobuf."
       },
       {
         "question": "Does it handle nested objects?",
-        "answer": "Yes. The generator creates separate type definitions for nested objects."
+        "answer": "Yes. The generator creates separate type definitions for nested objects in all supported languages."
       },
       {
-        "question": "Can I configure naming conventions?",
-        "answer": "Yes. You can choose between PascalCase, camelCase, and snake_case for field names."
+        "question": "Can I customize the type name?",
+        "answer": "Yes. Enter a custom type name in the 'Type Name' field. Default is 'RootObject'."
       },
       {
-        "question": "What is the difference between this and JSON to TypeScript?",
-        "answer": "This tool supports Go, C#, and Python. JSON to TypeScript is a dedicated tool for TypeScript with additional options like interface vs type."
+        "question": "What is MySQL output used for?",
+        "answer": "The MySQL option generates a CREATE TABLE statement from your JSON data, useful for database schema design."
+      },
+      {
+        "question": "What is Protobuf output?",
+        "answer": "Protobuf (Protocol Buffers) generates .proto message definitions for use with gRPC and Google services."
       }
     ]
   },
@@ -89,28 +109,44 @@
       "labelLanguage": "语言：",
       "labelTypeName": "类型名称：",
       "btnGenerate": "生成",
+      "btnExample": "加载示例",
       "placeholderOutput": "代码输出将显示在此处...",
       "placeholderName": "RootObject"
     },
-    "description": "将json转代码，支持json转go结构体、json转c#类和json转python dataclass。从json生成类型定义，也支持json转结构体。",
+    "description": "将json转为10种语言代码：TypeScript、Python、Go、Rust、Java、Kotlin、C#、Swift、MySQL 和 Protobuf。从json生成类型定义。",
     "hero": {
       "trustHtml": "100% 本地生成，JSON 数据不会离开浏览器。"
     },
     "meta": {
-      "title": "JSON 转 Go 结构体、C# 类、Python Dataclass — 免费在线转换器",
-      "description": "在线将 JSON 转换为 Go 结构体、C# 类或 Python dataclass。从 JSON 数据自动生成类型定义。免费、100% 客户端处理。",
-      "keywords": ["json转c#", "json转go", "json转python", "json转结构体", "json转代码"]
+      "title": "JSON 转代码 — TypeScript、Python、Go、Kotlin、C#、Swift — 免费在线",
+      "description": "在线将 JSON 转换为 TypeScript、Python、Go、Rust、Java、Kotlin、C#、Swift、MySQL 或 Protobuf。从 JSON 数据自动生成类型定义。免费、100% 客户端处理。",
+      "keywords": ["json转代码", "json转go", "json转python", "json转c#", "json转kotlin", "json转swift", "json转mysql", "json转protobuf", "json转结构体"]
     },
     "features": [
       {
         "icon": "lucide:code-2",
-        "title": "多语言支持",
-        "description": "从 JSON 生成 Go 结构体、C# 类或 Python dataclass。"
+        "title": "10 种语言",
+        "description": "TypeScript、Python、Go、Rust、Java、Kotlin、C#、Swift、MySQL、Protobuf。"
+      },
+      {
+        "icon": "lucide:copy",
+        "title": "复制与下载",
+        "description": "复制代码到剪贴板或下载为源文件。"
       },
       {
         "icon": "lucide:settings",
         "title": "可配置",
-        "description": "配置命名约定、可选字段和 null 处理。"
+        "description": "配置类型名称和命名约定。"
+      },
+      {
+        "icon": "lucide:layers",
+        "title": "嵌套支持",
+        "description": "为嵌套对象创建单独的类型定义。"
+      },
+      {
+        "icon": "lucide:upload",
+        "title": "文件上传",
+        "description": "直接上传 .json 文件进行转换。"
       },
       {
         "icon": "lucide:shield-check",
@@ -121,11 +157,11 @@
     "guide": [
       {
         "title": "粘贴 JSON",
-        "description": "将 JSON 数据粘贴到输入框中。"
+        "description": "将 JSON 数据粘贴到输入框中或上传文件。"
       },
       {
         "title": "选择语言",
-        "description": "选择 Go、C# 或 Python 作为目标语言。"
+        "description": "从 10 种语言中选择目标语言。"
       },
       {
         "title": "复制或下载",
@@ -139,19 +175,23 @@
       },
       {
         "question": "支持哪些语言？",
-        "answer": "目前支持json转go（结构体）、json转c#（类）和json转python（dataclass）。这个json转代码工具覆盖了主流后端语言。TypeScript 有独立工具。"
+        "answer": "10 种语言：TypeScript、Python、Go、Rust、Java、Kotlin、C#、Swift、MySQL（CREATE TABLE）和 Protobuf。"
       },
       {
         "question": "能处理嵌套对象吗？",
-        "answer": "能。生成器会为嵌套对象创建单独的类型定义。"
+        "answer": "能。生成器会为所有支持的语言创建嵌套对象的单独类型定义。"
       },
       {
-        "question": "可以配置命名约定吗？",
-        "answer": "可以。你可以选择 PascalCase、camelCase 或 snake_case 作为字段命名风格。"
+        "question": "可以自定义类型名称吗？",
+        "answer": "可以。在"类型名称"字段中输入自定义名称。默认是 'RootObject'。"
       },
       {
-        "question": "这个工具和 JSON 转 TypeScript 有什么区别？",
-        "answer": "这个工具支持 Go、C# 和 Python。JSON 转 TypeScript 是专门的 TypeScript 工具，有更多选项如 interface 和 type 的选择。"
+        "question": "MySQL 输出有什么用？",
+        "answer": "MySQL 选项从 JSON 数据生成 CREATE TABLE 语句，适用于数据库 schema 设计。"
+      },
+      {
+        "question": "Protobuf 输出是什么？",
+        "answer": "Protobuf（Protocol Buffers）生成 .proto 消息定义，用于 gRPC 和 Google 服务。"
       }
     ]
   }
