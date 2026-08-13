@@ -5,7 +5,9 @@
       <JsonInputEditor
         v-model="inputYaml"
         :label="tool.ui?.label_input || 'Input YAML'"
-        placeholder="name: JSON Toolbox&#10;version: '1.0'"
+        placeholder='name: JSON Toolbox&#10;version: "1.0"&#10;features:&#10;  - format&#10;  - validate&#10;  - convert'
+        show-upload
+        accept=".yaml,.yml"
         @clear="clearAll"
       />
 
@@ -48,10 +50,13 @@
     </div>
 
     <!-- Actions -->
-    <div class="mt-4 flex flex-wrap gap-3">
+    <div class="mt-3 flex flex-wrap gap-3">
       <button @click="convertToJson" class="btn-primary px-5 py-2 text-xs">
         <Icon name="lucide:arrow-right" class="h-4 w-4 mr-1.5" />
         {{ tool.ui?.btn_convert || 'Convert to JSON' }}
+      </button>
+      <button @click="loadExample" class="text-xs text-primary-600 hover:text-primary-700 dark:text-primary-400">
+        {{ tool.ui?.btn_example || 'Load Example' }}
       </button>
       <button @click="clearAll" class="rounded-xl border border-surface-200 bg-white px-4 py-2 text-xs font-bold text-surface-700 hover:bg-surface-50 dark:border-surface-700 dark:bg-surface-800 dark:text-surface-300 dark:hover:bg-surface-700">
         {{ $t('system.clearAll') }}
@@ -69,6 +74,39 @@ const inputYaml = ref('')
 const outputJson = ref('')
 const error = ref('')
 const indent = ref(2)
+
+// Example data
+const exampleYaml = `# Kubernetes Deployment Example
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: nginx-deployment
+  labels:
+    app: nginx
+spec:
+  replicas: 3
+  selector:
+    matchLabels:
+      app: nginx
+  template:
+    metadata:
+      labels:
+        app: nginx
+    spec:
+      containers:
+        - name: nginx
+          image: nginx:1.21
+          ports:
+            - containerPort: 80
+          resources:
+            limits:
+              memory: "128Mi"
+              cpu: "500m"`
+
+const loadExample = () => {
+  inputYaml.value = exampleYaml
+  convertToJson()
+}
 
 const convertToJson = () => {
   error.value = ''

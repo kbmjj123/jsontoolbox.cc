@@ -18,16 +18,39 @@
       "description": "Convert YAML to JSON format online. Transform YAML config files into JSON objects. Free, fast, and 100% client-side. No upload required.",
       "keywords": ["yaml to json", "convert yaml to json", "yaml to json converter", "yaml to json online"]
     },
+    "ui": {
+      "label_input": "Input YAML",
+      "label_output": "JSON Output",
+      "btn_convert": "Convert to JSON",
+      "btn_example": "Load Example",
+      "option_indent": "Indent:",
+      "placeholder_output": "JSON output will appear here..."
+    },
     "features": [
       {
         "icon": "lucide:file-input",
         "title": "YAML Import",
-        "description": "Paste YAML data and convert to JSON instantly."
+        "description": "Paste YAML data or upload .yaml/.yml files to convert."
       },
       {
         "icon": "lucide:download",
         "title": "JSON Export",
         "description": "Download the JSON output or copy to clipboard."
+      },
+      {
+        "icon": "lucide:settings",
+        "title": "Indentation Options",
+        "description": "Choose 2 or 4 spaces for JSON output formatting."
+      },
+      {
+        "icon": "lucide:layers",
+        "title": "Full YAML Support",
+        "description": "Supports anchors, aliases, multi-line strings, and nested structures."
+      },
+      {
+        "icon": "lucide:upload",
+        "title": "File Upload",
+        "description": "Upload .yaml or .yml files directly for conversion."
       },
       {
         "icon": "lucide:shield-check",
@@ -38,7 +61,7 @@
     "guide": [
       {
         "title": "Paste your YAML",
-        "description": "Paste your YAML data into the input field."
+        "description": "Paste your YAML data into the input field or upload a file."
       },
       {
         "title": "Click Convert",
@@ -60,7 +83,7 @@
       },
       {
         "question": "Does it support multi-document YAML?",
-        "answer": "The converter processes single YAML documents. For multi-document YAML, convert each document separately."
+        "answer": "The converter processes single YAML documents. For multi-document YAML (using ---), convert each document separately."
       },
       {
         "question": "Can I convert large YAML files?",
@@ -68,16 +91,13 @@
       },
       {
         "question": "What YAML features are supported?",
-        "answer": "The converter supports standard YAML features including anchors, aliases, multi-line strings, and nested structures."
+        "answer": "The converter supports standard YAML features including anchors (&), aliases (*), multi-line strings (|, >), and nested structures."
+      },
+      {
+        "question": "What is YAML commonly used for?",
+        "answer": "YAML is widely used for configuration files (Kubernetes, Docker, CI/CD), data serialization, and human-readable data exchange."
       }
-    ],
-    "ui": {
-      "label_input": "Input YAML",
-      "label_output": "JSON Output",
-      "btn_convert": "Convert to JSON",
-      "option_indent": "Indent:",
-      "placeholder_output": "JSON output will appear here..."
-    }
+    ]
   },
   "zh": {
     "name": "YAML 转 JSON",
@@ -90,16 +110,39 @@
       "description": "在线将 YAML 转换为 JSON 格式。将 YAML 配置文件转换为 JSON 对象。免费、快速、100% 客户端处理。无需上传。",
       "keywords": ["yaml转json", "转换yaml为json", "yaml json转换器"]
     },
+    "ui": {
+      "label_input": "输入 YAML",
+      "label_output": "JSON 输出",
+      "btn_convert": "转换为 JSON",
+      "btn_example": "加载示例",
+      "option_indent": "缩进：",
+      "placeholder_output": "JSON 输出将显示在这里..."
+    },
     "features": [
       {
         "icon": "lucide:file-input",
         "title": "YAML 导入",
-        "description": "粘贴 YAML 数据并即时转换为 JSON。"
+        "description": "粘贴 YAML 数据或上传 .yaml/.yml 文件进行转换。"
       },
       {
         "icon": "lucide:download",
         "title": "JSON 导出",
         "description": "下载 JSON 输出或复制到剪贴板。"
+      },
+      {
+        "icon": "lucide:settings",
+        "title": "缩进选项",
+        "description": "选择 2 或 4 空格格式化 JSON 输出。"
+      },
+      {
+        "icon": "lucide:layers",
+        "title": "完整 YAML 支持",
+        "description": "支持锚点、别名、多行字符串和嵌套结构。"
+      },
+      {
+        "icon": "lucide:upload",
+        "title": "文件上传",
+        "description": "直接上传 .yaml 或 .yml 文件进行转换。"
       },
       {
         "icon": "lucide:shield-check",
@@ -110,7 +153,7 @@
     "guide": [
       {
         "title": "粘贴 YAML",
-        "description": "将 YAML 数据粘贴到输入框中。"
+        "description": "将 YAML 数据粘贴到输入框中或上传文件。"
       },
       {
         "title": "点击转换",
@@ -132,7 +175,7 @@
       },
       {
         "question": "支持多文档 YAML 吗？",
-        "answer": "转换器处理单个 YAML 文档。对于多文档 YAML，请分别转换每个文档。"
+        "answer": "转换器处理单个 YAML 文档。对于多文档 YAML（使用 ---），请分别转换每个文档。"
       },
       {
         "question": "可以转换大型 YAML 文件吗？",
@@ -140,15 +183,12 @@
       },
       {
         "question": "支持哪些 YAML 特性？",
-        "answer": "支持标准 YAML 特性，包括锚点、别名、多行字符串和嵌套结构。"
+        "answer": "支持标准 YAML 特性，包括锚点（&）、别名（*）、多行字符串（|、>）和嵌套结构。"
+      },
+      {
+        "question": "YAML 常用于什么场景？",
+        "answer": "YAML 广泛用于配置文件（Kubernetes、Docker、CI/CD）、数据序列化和人类可读的数据交换。"
       }
-    ],
-    "ui": {
-      "label_input": "输入 YAML",
-      "label_output": "JSON 输出",
-      "btn_convert": "转换为 JSON",
-      "option_indent": "缩进：",
-      "placeholder_output": "JSON 输出将显示在这里..."
-    }
+    ]
   }
 }
