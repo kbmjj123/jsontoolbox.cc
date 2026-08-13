@@ -28,19 +28,34 @@
     },
     "meta": {
       "title": "JSONPath Tester — Free Online JSONPath Query Tool",
-      "description": "Test JSONPath expressions online against your JSON data. Find paths, extract values, and validate expressions. Free, 100% client-side.",
-      "keywords": ["json path", "json path finder", "jsonpath tester", "jsonpath online", "test jsonpath"]
+      "description": "Test JSONPath expressions online against your JSON data. Find paths, extract values, validate expressions, and copy results. Free, 100% client-side.",
+      "keywords": ["json path", "json path finder", "jsonpath tester", "jsonpath online", "test jsonpath", "jsonpath query tool", "json path expression", "jsonpath evaluator", "json path tester online", "jsonpath playground"]
     },
     "features": [
       {
         "icon": "lucide:route",
         "title": "Path Testing",
-        "description": "Test JSONPath expressions and see matching results."
+        "description": "Test JSONPath expressions and see matching results instantly."
       },
       {
         "icon": "lucide:search",
         "title": "Value Extraction",
         "description": "Extract values from JSON using JSONPath syntax."
+      },
+      {
+        "icon": "lucide:copy",
+        "title": "Copy Results",
+        "description": "Copy extracted values or paths to clipboard."
+      },
+      {
+        "icon": "lucide:bookmark",
+        "title": "Common Paths",
+        "description": "Quick access to common JSONPath expressions."
+      },
+      {
+        "icon": "lucide:link",
+        "title": "URL Input",
+        "description": "Load JSON from URL using ?url= parameter."
       },
       {
         "icon": "lucide:shield-check",
@@ -80,10 +95,27 @@
         "answer": "JSONPath is used to extract specific values from JSON data, similar to how XPath works for XML. It is commonly used in API testing, data processing, and configuration management."
       },
       {
+        "question": "Can I copy the results?",
+        "answer": "Yes. You can copy extracted values or the full results to clipboard. This is useful for using the results in your code or documentation."
+      },
+      {
+        "question": "What are common JSONPath expressions?",
+        "answer": "Common expressions include $.key (root key), $.array[0] (first element), $.array[*] (all elements), and $..key (recursive search). The tool provides quick access to these common paths."
+      },
+      {
         "question": "Can I test JSONPath on large files?",
         "answer": "Yes. Since all processing happens locally, file size is limited only by your browser's memory."
       }
-    ]
+    ],
+    "article": {
+      "title": "How to Test JSONPath Expressions Online",
+      "content": "<h2>What is JSONPath?</h2><p>JSONPath is a query language for JSON, similar to XPath for XML. It allows you to navigate and extract specific values from JSON data using a simple syntax.</p><h2>Common JSONPath Expressions</h2><ul><li><strong>$.store.book[0].title</strong> — Get the title of the first book</li><li><strong>$.store.book[*].author</strong> — Get all book authors</li><li><strong>$..price</strong> — Get all prices (recursive search)</li><li><strong>$.store.book[?(@.price < 10)]</strong> — Filter books under $10</li></ul><h2>How to Use the Tester</h2><ol><li><strong>Paste JSON</strong> into the input field</li><li><strong>Enter JSONPath expression</strong> (e.g., $.users[0].name)</li><li><strong>Click Evaluate</strong> to see results</li><li><strong>Copy results</strong> for use in your code</li></ol><h2>JSONPath Syntax Guide</h2><ul><li><strong>$</strong> — Root object</li><li><strong>.key</strong> — Child key access</li><li><strong>[n]</strong> — Array index</li><li><strong>[*]</strong> — Wildcard (all elements)</li><li><strong>..</strong> — Recursive descent</li><li><strong>[?(expr)]</strong> — Filter expression</li></ul><h2>Use Cases</h2><ul><li><strong>API Testing:</strong> Extract values from API responses</li><li><strong>Data Processing:</strong> Transform JSON data structures</li><li><strong>Configuration:</strong> Navigate nested config objects</li><li><strong>Debugging:</strong> Inspect specific JSON values</li></ul>",
+      "links": [
+        {"text": "JSON Tree Viewer", "url": "/tools/view/json-tree-viewer"},
+        {"text": "JSON Formatter", "url": "/tools/format/json-formatter"},
+        {"text": "JSON Validator", "url": "/tools/validate/json-validator"}
+      ]
+    }
   },
   "zh": {
     "name": "JSONPath 测试器",
@@ -100,25 +132,40 @@
       "errorNoExpression": "请输入 JSONPath 表达式",
       "errorNoMatches": "未找到匹配结果"
     },
-    "description": "对你的json路径表达式进行jsonpath测试。这是一个jsonpath在线工具，使用 JSONPath 语法查找和提取值。",
+    "description": "对你的json路径表达式进行jsonpath测试。这是一个jsonpath在线工具，使用 JSONPath 语法查找和提取值。支持复制结果和URL输入。",
     "hero": {
       "trustHtml": "100% 本地处理，JSON 数据不会离开浏览器。"
     },
     "meta": {
       "title": "JSONPath 测试器 — 免费在线 JSONPath 查询工具",
-      "description": "在线对 JSON 数据测试 JSONPath 表达式。查找路径、提取值和验证表达式。免费、100% 客户端处理。",
-      "keywords": ["jsonpath", "jsonpath测试", "json路径", "jsonpath在线", "测试jsonpath"]
+      "description": "在线对 JSON 数据测试 JSONPath 表达式。查找路径、提取值、验证表达式和复制结果。免费、100% 客户端处理。",
+      "keywords": ["jsonpath", "jsonpath测试", "json路径", "jsonpath在线", "测试jsonpath", "jsonpath查询工具", "json路径表达式", "jsonpath评估器", "在线jsonpath测试", "jsonpath练习场"]
     },
     "features": [
       {
         "icon": "lucide:route",
         "title": "路径测试",
-        "description": "测试 JSONPath 表达式并查看匹配结果。"
+        "description": "测试 JSONPath 表达式并即时查看匹配结果。"
       },
       {
         "icon": "lucide:search",
         "title": "值提取",
         "description": "使用 JSONPath 语法从 JSON 中提取值。"
+      },
+      {
+        "icon": "lucide:copy",
+        "title": "复制结果",
+        "description": "复制提取的值或路径到剪贴板。"
+      },
+      {
+        "icon": "lucide:bookmark",
+        "title": "常用路径",
+        "description": "快速访问常见的 JSONPath 表达式。"
+      },
+      {
+        "icon": "lucide:link",
+        "title": "URL 输入",
+        "description": "使用 ?url= 参数从 URL 加载 JSON。"
       },
       {
         "icon": "lucide:shield-check",
@@ -158,9 +205,26 @@
         "answer": "JSONPath 用于从 JSON 数据中提取特定值，类似于 XPath 对 XML 的作用。常用于 API 测试、数据处理和配置管理。"
       },
       {
+        "question": "可以复制结果吗？",
+        "answer": "可以。你可以复制提取的值或完整结果到剪贴板。这对在代码或文档中使用结果很有用。"
+      },
+      {
+        "question": "什么是常见的 JSONPath 表达式？",
+        "answer": "常见表达式包括 $.key（根键）、$.array[0]（第一个元素）、$.array[*]（所有元素）和 $..key（递归搜索）。工具提供对这些常用路径的快速访问。"
+      },
+      {
         "question": "可以在大文件上测试 JSONPath 吗？",
         "answer": "可以。所有处理在本地完成，文件大小仅受浏览器内存限制。这个工具可以轻松测试jsonpath表达式。"
       }
-    ]
+    ],
+    "article": {
+      "title": "如何在线测试 JSONPath 表达式",
+      "content": "<h2>什么是 JSONPath？</h2><p>JSONPath 是 JSON 的查询语言，类似于 XML 的 XPath。它允许你使用简单的语法从 JSON 数据中导航和提取特定值。</p><h2>常见 JSONPath 表达式</h2><ul><li><strong>$.store.book[0].title</strong> — 获取第一本书的标题</li><li><strong>$.store.book[*].author</strong> — 获取所有书籍的作者</li><li><strong>$..price</strong> — 获取所有价格（递归搜索）</li><li><strong>$.store.book[?(@.price < 10)]</strong> — 过滤价格低于 $10 的书</li></ul><h2>如何使用测试器</h2><ol><li><strong>粘贴 JSON</strong> 到输入框</li><li><strong>输入 JSONPath 表达式</strong>（如 $.users[0].name）</li><li><strong>点击执行</strong> 查看结果</li><li><strong>复制结果</strong> 用于代码</li></ol><h2>JSONPath 语法指南</h2><ul><li><strong>$</strong> — 根对象</li><li><strong>.key</strong> — 子键访问</li><li><strong>[n]</strong> — 数组索引</li><li><strong>[*]</strong> — 通配符（所有元素）</li><li><strong>..</strong> — 递归下降</li><li><strong>[?(expr)]</strong> — 过滤表达式</li></ul><h2>使用场景</h2><ul><li><strong>API 测试：</strong>从 API 响应中提取值</li><li><strong>数据处理：</strong>转换 JSON 数据结构</li><li><strong>配置管理：</strong>导航嵌套的配置对象</li><li><strong>调试：</strong>检查特定的 JSON 值</li></ul>",
+      "links": [
+        {"text": "JSON 树形查看器", "url": "/tools/view/json-tree-viewer"},
+        {"text": "JSON 格式化工具", "url": "/tools/format/json-formatter"},
+        {"text": "JSON 验证器", "url": "/tools/validate/json-validator"}
+      ]
+    }
   }
 }
