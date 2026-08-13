@@ -13,6 +13,7 @@
     "ui": {
       "label_json_data": "JSON Data",
       "label_json_schema": "JSON Schema",
+      "label_result": "Validation Result",
       "status_valid": "Valid JSON",
       "status_invalid": "Invalid JSON",
       "status_matches": "The JSON data matches the schema.",
@@ -135,6 +136,7 @@
     "ui": {
       "label_json_data": "JSON 数据",
       "label_json_schema": "JSON Schema",
+      "label_result": "验证结果",
       "status_valid": "JSON 有效",
       "status_invalid": "JSON 无效",
       "status_matches": "JSON 数据符合 Schema。",

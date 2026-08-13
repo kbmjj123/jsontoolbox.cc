@@ -7,6 +7,7 @@
         :label="tool.ui?.label_json_data || 'JSON Data'"
         height="h-40"
         placeholder='{"name": "Alice", "age": 30}'
+        show-upload
         @clear="clearJsonData"
       />
 
@@ -16,6 +17,8 @@
         :label="tool.ui?.label_json_schema || 'JSON Schema'"
         height="h-40"
         placeholder='{"type": "object", "properties": {"name": {"type": "string"}, "age": {"type": "number"}}, "required": ["name"]}'
+        show-upload
+        accept=".json"
         @clear="clearSchemaData"
       />
     </div>
@@ -36,6 +39,18 @@
 
     <!-- Results -->
     <div v-if="result !== null" class="mt-4">
+      <div class="flex items-center justify-between mb-2">
+        <label class="text-sm font-bold text-surface-700 dark:text-surface-300">{{ tool.ui?.label_result || 'Validation Result' }}</label>
+        <div class="flex gap-2">
+          <button @click="copyResult" class="text-xs text-primary-600 hover:text-primary-700 dark:text-primary-400">
+            {{ $t('system.copy') }}
+          </button>
+          <button @click="downloadResult" class="text-xs text-surface-500 hover:text-surface-700 dark:text-surface-400">
+            {{ $t('system.download') }}
+          </button>
+        </div>
+      </div>
+
       <div
         v-if="result.valid"
         class="rounded-xl border border-green-200 bg-green-50 p-4 dark:border-green-800 dark:bg-green-900/20"
@@ -207,5 +222,42 @@ const clearSchemaData = () => {
 const clearAll = () => {
   error.value = ''
   result.value = null
+}
+
+const copyResult = async () => {
+  if (!result.value) return
+
+  const report = {
+    valid: result.value.valid,
+    errors: result.value.errors,
+    timestamp: new Date().toISOString(),
+  }
+
+  try {
+    await navigator.clipboard.writeText(JSON.stringify(report, null, 2))
+  } catch (e) {
+    console.error('Failed to copy:', e)
+  }
+}
+
+const downloadResult = () => {
+  if (!result.value) return
+
+  const report = {
+    valid: result.value.valid,
+    errors: result.value.errors,
+    timestamp: new Date().toISOString(),
+  }
+
+  const content = JSON.stringify(report, null, 2)
+  const blob = new Blob([content], { type: 'application/json' })
+  const url = URL.createObjectURL(blob)
+  const link = document.createElement('a')
+  link.href = url
+  link.download = 'validation-report.json'
+  document.body.appendChild(link)
+  link.click()
+  document.body.removeChild(link)
+  URL.revokeObjectURL(url)
 }
 </script>
