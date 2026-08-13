@@ -15,7 +15,7 @@
           <label class="text-sm font-bold text-surface-700 dark:text-surface-300">{{ tool.ui?.label_output || 'YAML Output' }}</label>
           <div class="flex gap-2">
             <button @click="copyOutput" class="text-xs text-primary-600 hover:text-primary-700 dark:text-primary-400">
-              {{ $t('system.copy') }}
+              {{ copied ? '✓ Copied!' : $t('system.copy') }}
             </button>
             <button @click="downloadOutput" class="text-xs text-surface-500 hover:text-surface-700 dark:text-surface-400">
               {{ $t('system.download') }}
@@ -36,8 +36,8 @@
       </div>
     </div>
 
-    <!-- Actions -->
-    <div class="mt-4 flex flex-wrap gap-3">
+    <!-- Options -->
+    <div class="mt-4 flex flex-wrap items-center gap-4">
       <button @click="convertToYaml" class="btn-primary px-5 py-2 text-xs">
         <Icon name="lucide:arrow-right" class="h-4 w-4 mr-1.5" />
         {{ tool.ui?.btn_convert || 'Convert to YAML' }}
@@ -45,6 +45,15 @@
       <button @click="clearAll" class="rounded-xl border border-surface-200 bg-white px-4 py-2 text-xs font-bold text-surface-700 hover:bg-surface-50 dark:border-surface-700 dark:bg-surface-800 dark:text-surface-300 dark:hover:bg-surface-700">
         {{ $t('system.clearAll') }}
       </button>
+
+      <!-- Indent options -->
+      <div class="flex items-center gap-2">
+        <label class="text-xs text-surface-600 dark:text-surface-400">Indent:</label>
+        <select v-model="indent" class="rounded-lg border border-surface-200 bg-white px-2 py-1 text-xs dark:border-surface-700 dark:bg-surface-800">
+          <option :value="2">2 spaces</option>
+          <option :value="4">4 spaces</option>
+        </select>
+      </div>
     </div>
   </div>
 </template>
@@ -57,13 +66,27 @@ const props = defineProps<{ tool: any }>()
 const inputJson = ref('')
 const outputYaml = ref('')
 const error = ref('')
+const indent = ref(2)
+
+// Composables
+const { copied, copyToClipboard } = useClipboard()
+const { loadDataFromUrl } = useUrlParams()
+
+// Load from URL on mount
+onMounted(() => {
+  const urlData = loadDataFromUrl('json') || loadDataFromUrl('data')
+  if (urlData) {
+    inputJson.value = urlData
+    nextTick(() => convertToYaml())
+  }
+})
 
 const convertToYaml = () => {
   error.value = ''
   try {
     const parsed = JSON.parse(inputJson.value)
     outputYaml.value = yaml.dump(parsed, {
-      indent: 2,
+      indent: indent.value,
       lineWidth: -1,
       noRefs: true,
     })
@@ -79,11 +102,7 @@ const clearAll = () => {
 }
 
 const copyOutput = async () => {
-  try {
-    await navigator.clipboard.writeText(outputYaml.value)
-  } catch (e) {
-    console.error('Failed to copy:', e)
-  }
+  await copyToClipboard(outputYaml.value)
 }
 
 const downloadOutput = () => {
