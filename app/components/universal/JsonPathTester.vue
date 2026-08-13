@@ -1,48 +1,18 @@
 <template>
   <div>
-    <div class="grid grid-cols-1 lg:grid-cols-2 gap-4">
-      <!-- Input JSON -->
-      <div>
-        <div class="flex items-center justify-between mb-2">
-          <label class="text-sm font-bold text-surface-700 dark:text-surface-300">{{ ui?.labelInputJson ?? 'Input JSON' }}</label>
-          <div class="flex gap-2">
-            <button @click="pasteFromClipboard" class="text-xs text-primary-600 hover:text-primary-700 dark:text-primary-400">
-              {{ $t('system.paste') }}
-            </button>
-            <button @click="clearInput" class="text-xs text-surface-500 hover:text-surface-700 dark:text-surface-400">
-              {{ $t('system.clear') }}
-            </button>
-          </div>
-        </div>
-        <textarea
-          v-model="inputJson"
-          class="w-full h-64 rounded-xl border border-surface-200 bg-surface-50 p-4 font-mono text-sm text-surface-900 focus:border-primary-500 focus:ring-2 focus:ring-primary-500/20 dark:border-surface-700 dark:bg-surface-800 dark:text-surface-100 resize-none"
-          placeholder='{"store": {"book": [{"title": "Sayings of the Century"}]}}'
-        ></textarea>
-      </div>
-
-      <!-- Results -->
-      <div>
-        <div class="flex items-center justify-between mb-2">
-          <label class="text-sm font-bold text-surface-700 dark:text-surface-300">{{ ui?.labelResults ?? 'Results' }}</label>
-          <span v-if="results.length > 0" class="text-xs text-surface-500 dark:text-surface-400">
-            {{ (ui?.statusMatches ?? '{count} match(es)').replace('{count}', String(results.length)) }}
-          </span>
-        </div>
-        <div class="w-full h-64 rounded-xl border border-surface-200 bg-surface-50 p-4 font-mono text-sm overflow-auto dark:border-surface-700 dark:bg-surface-800">
-          <div v-if="results.length === 0 && !error" class="text-surface-400 dark:text-surface-500">
-            {{ ui?.placeholderResults ?? 'Results will appear here...' }}
-          </div>
-          <div v-for="(result, index) in results" :key="index" class="mb-2 last:mb-0">
-            <div class="text-xs text-surface-500 dark:text-surface-400 mb-1">{{ result.path }}</div>
-            <div class="text-surface-900 dark:text-surface-100 break-all">{{ formatValue(result.value) }}</div>
-          </div>
-        </div>
-      </div>
+    <!-- JSON Input (compact) -->
+    <div class="mb-4">
+      <JsonInputEditor
+        v-model="inputJson"
+        :label="ui?.labelInputJson ?? 'Input JSON'"
+        height="h-40"
+        placeholder='{"store": {"book": [{"title": "Sayings of the Century", "price": 8.95}]}}'
+        @clear="clearAll"
+      />
     </div>
 
-    <!-- JSONPath Input -->
-    <div class="mt-4">
+    <!-- JSONPath Expression -->
+    <div class="mb-4">
       <label class="text-sm font-bold text-surface-700 dark:text-surface-300 mb-2 block">{{ ui?.labelExpression ?? 'JSONPath Expression' }}</label>
       <div class="flex gap-3">
         <input
@@ -56,17 +26,14 @@
           {{ ui?.btnEvaluate ?? 'Evaluate' }}
         </button>
       </div>
-    </div>
 
-    <!-- Common Paths -->
-    <div class="mt-4">
-      <label class="text-xs font-bold text-surface-600 dark:text-surface-400 mb-2 block">{{ ui?.labelCommonPaths ?? 'Common Paths:' }}</label>
-      <div class="flex flex-wrap gap-2">
+      <!-- Common Paths -->
+      <div class="mt-2 flex flex-wrap gap-2">
         <button
           v-for="path in commonPaths"
           :key="path"
           @click="jsonPath = path; evaluate()"
-          class="rounded-lg border border-surface-200 bg-white px-3 py-1 text-xs text-surface-700 hover:bg-surface-50 dark:border-surface-700 dark:bg-surface-800 dark:text-surface-300 dark:hover:bg-surface-700"
+          class="rounded-lg border border-surface-200 bg-white px-2.5 py-1 text-xs text-surface-600 hover:bg-surface-50 dark:border-surface-700 dark:bg-surface-800 dark:text-surface-400 dark:hover:bg-surface-700"
         >
           {{ path }}
         </button>
@@ -74,8 +41,32 @@
     </div>
 
     <!-- Error -->
-    <div v-if="error" class="mt-4 rounded-lg bg-red-50 border border-red-200 p-3 text-xs text-red-700 dark:bg-red-900/30 dark:border-red-800 dark:text-red-400">
+    <div v-if="error" class="mb-4 rounded-lg bg-red-50 border border-red-200 p-3 text-xs text-red-700 dark:bg-red-900/30 dark:border-red-800 dark:text-red-400">
       {{ error }}
+    </div>
+
+    <!-- Results (full width) -->
+    <div>
+      <div class="flex items-center justify-between mb-2">
+        <label class="text-sm font-bold text-surface-700 dark:text-surface-300">{{ ui?.labelResults ?? 'Results' }}</label>
+        <span v-if="results.length > 0" class="text-xs text-surface-500 dark:text-surface-400">
+          {{ (ui?.statusMatches ?? '{count} match(es)').replace('{count}', String(results.length)) }}
+        </span>
+      </div>
+      <div class="min-h-[12rem] max-h-[30rem] rounded-xl border border-surface-200 bg-surface-50 p-4 font-mono text-sm overflow-auto dark:border-surface-700 dark:bg-surface-800">
+        <div v-if="results.length === 0 && !error" class="flex items-center justify-center h-full text-surface-400 dark:text-surface-500 text-sm">
+          {{ ui?.placeholderResults ?? 'Enter a JSONPath expression and click Evaluate' }}
+        </div>
+        <div v-for="(item, index) in results" :key="index" class="mb-3 last:mb-0">
+          <div class="flex items-center gap-2 mb-1">
+            <span class="text-xs text-primary-600 dark:text-primary-400">{{ item.path }}</span>
+            <button @click="copyPath(item.path)" class="text-xs text-surface-400 hover:text-surface-600 dark:hover:text-surface-300">
+              <Icon name="lucide:copy" class="h-3 w-3" />
+            </button>
+          </div>
+          <pre class="text-surface-900 dark:text-surface-100 whitespace-pre-wrap break-all">{{ formatValue(item.value) }}</pre>
+        </div>
+      </div>
     </div>
   </div>
 </template>
@@ -104,6 +95,12 @@ const formatValue = (val: any): string => {
   if (val === null) return 'null'
   if (typeof val === 'object') return JSON.stringify(val, null, 2)
   return String(val)
+}
+
+const copyPath = async (path: string) => {
+  try {
+    await navigator.clipboard.writeText(path)
+  } catch {}
 }
 
 const getByPath = (obj: any, path: string): any[] => {
@@ -173,16 +170,7 @@ const evaluate = () => {
   }
 }
 
-const pasteFromClipboard = async () => {
-  try {
-    inputJson.value = await navigator.clipboard.readText()
-  } catch (e) {
-    console.error('Failed to read clipboard:', e)
-  }
-}
-
-const clearInput = () => {
-  inputJson.value = ''
+const clearAll = () => {
   error.value = ''
   results.value = []
 }

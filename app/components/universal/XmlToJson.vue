@@ -2,24 +2,12 @@
   <div>
     <div class="grid grid-cols-1 lg:grid-cols-2 gap-4">
       <!-- Input -->
-      <div>
-        <div class="flex items-center justify-between mb-2">
-          <label class="text-sm font-bold text-surface-700 dark:text-surface-300">{{ ui?.labelInputXml ?? 'Input XML' }}</label>
-          <div class="flex gap-2">
-            <button @click="pasteFromClipboard" class="text-xs text-primary-600 hover:text-primary-700 dark:text-primary-400">
-              {{ $t('system.paste') }}
-            </button>
-            <button @click="clearInput" class="text-xs text-surface-500 hover:text-surface-700 dark:text-surface-400">
-              {{ $t('system.clear') }}
-            </button>
-          </div>
-        </div>
-        <textarea
-          v-model="inputXml"
-          class="w-full h-64 rounded-xl border border-surface-200 bg-surface-50 p-4 font-mono text-sm text-surface-900 focus:border-primary-500 focus:ring-2 focus:ring-primary-500/20 dark:border-surface-700 dark:bg-surface-800 dark:text-surface-100 resize-none"
-          placeholder='<?xml version="1.0"?>&#10;<root>&#10;  <name>JSON Toolbox</name>&#10;</root>'
-        ></textarea>
-      </div>
+      <JsonInputEditor
+        v-model="inputXml"
+        :label="ui?.labelInputXml ?? 'Input XML'"
+        placeholder='<?xml version="1.0"?>&#10;<root>&#10;  <name>JSON Toolbox</name>&#10;</root>'
+        @clear="clearAll"
+      />
 
       <!-- Output -->
       <div>
@@ -127,21 +115,7 @@ const convertToJson = () => {
   }
 }
 
-const pasteFromClipboard = async () => {
-  try {
-    inputXml.value = await navigator.clipboard.readText()
-  } catch (e) {
-    console.error('Failed to read clipboard:', e)
-  }
-}
-
-const clearInput = () => {
-  inputXml.value = ''
-  error.value = ''
-}
-
 const clearAll = () => {
-  inputXml.value = ''
   outputJson.value = ''
   error.value = ''
 }

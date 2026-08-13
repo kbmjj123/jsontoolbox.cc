@@ -96,6 +96,9 @@
     "upload": "Upload File",
     "input": "Input",
     "output": "Output",
-    "close": "Close"
+    "close": "Close",
+    "loadUrl": "Load from URL",
+    "fetch": "Fetch",
+    "autoFormat": "Auto Format"
   }
 }

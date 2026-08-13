@@ -1,45 +1,45 @@
 <template>
   <div>
-    <div class="grid grid-cols-1 lg:grid-cols-2 gap-4">
-      <!-- Left Input -->
-      <div>
-        <div class="flex items-center justify-between mb-2">
-          <label class="text-sm font-bold text-surface-700 dark:text-surface-300">{{ tool.ui?.label_json_a || 'JSON A (Original)' }}</label>
-          <div class="flex gap-2">
-            <button @click="pasteLeft" class="text-xs text-primary-600 hover:text-primary-700 dark:text-primary-400">
-              {{ $t('system.paste') }}
-            </button>
-            <button @click="clearLeft" class="text-xs text-surface-500 hover:text-surface-700 dark:text-surface-400">
-              {{ $t('system.clear') }}
-            </button>
-          </div>
-        </div>
-        <textarea
-          v-model="leftJson"
-          class="w-full h-64 rounded-xl border border-surface-200 bg-surface-50 p-4 font-mono text-sm text-surface-900 focus:border-primary-500 focus:ring-2 focus:ring-primary-500/20 dark:border-surface-700 dark:bg-surface-800 dark:text-surface-100 resize-none"
-          placeholder='{"name": "Alice", "age": 30}'
-        ></textarea>
-      </div>
+    <!-- Mobile: stacked layout -->
+    <div class="grid grid-cols-1 gap-4 lg:hidden">
+      <JsonInputEditor
+        v-model="leftJson"
+        :label="tool.ui?.label_json_a || 'JSON A (Original)'"
+        placeholder='{"name": "Alice", "age": 30}'
+        @clear="onClearLeft"
+      />
+      <JsonInputEditor
+        v-model="rightJson"
+        :label="tool.ui?.label_json_b || 'JSON B (Modified)'"
+        placeholder='{"name": "Alice", "age": 31, "email": "alice@example.com"}'
+        @clear="onClearRight"
+      />
+    </div>
 
-      <!-- Right Input -->
-      <div>
-        <div class="flex items-center justify-between mb-2">
-          <label class="text-sm font-bold text-surface-700 dark:text-surface-300">{{ tool.ui?.label_json_b || 'JSON B (Modified)' }}</label>
-          <div class="flex gap-2">
-            <button @click="pasteRight" class="text-xs text-primary-600 hover:text-primary-700 dark:text-primary-400">
-              {{ $t('system.paste') }}
-            </button>
-            <button @click="clearRight" class="text-xs text-surface-500 hover:text-surface-700 dark:text-surface-400">
-              {{ $t('system.clear') }}
-            </button>
+    <!-- Desktop: resizable split -->
+    <div class="hidden lg:block">
+      <ResizablePanel :initial-ratio="0.5">
+        <template #first>
+          <div class="pr-2">
+            <JsonInputEditor
+              v-model="leftJson"
+              :label="tool.ui?.label_json_a || 'JSON A (Original)'"
+              placeholder='{"name": "Alice", "age": 30}'
+              @clear="onClearLeft"
+            />
           </div>
-        </div>
-        <textarea
-          v-model="rightJson"
-          class="w-full h-64 rounded-xl border border-surface-200 bg-surface-50 p-4 font-mono text-sm text-surface-900 focus:border-primary-500 focus:ring-2 focus:ring-primary-500/20 dark:border-surface-700 dark:bg-surface-800 dark:text-surface-100 resize-none"
-          placeholder='{"name": "Alice", "age": 31, "email": "alice@example.com"}'
-        ></textarea>
-      </div>
+        </template>
+        <template #second>
+          <div class="pl-2">
+            <JsonInputEditor
+              v-model="rightJson"
+              :label="tool.ui?.label_json_b || 'JSON B (Modified)'"
+              placeholder='{"name": "Alice", "age": 31, "email": "alice@example.com"}'
+              @clear="onClearRight"
+            />
+          </div>
+        </template>
+      </ResizablePanel>
     </div>
 
     <!-- Actions -->
@@ -271,29 +271,11 @@ const swapInputs = () => {
   rightJson.value = temp
 }
 
-const pasteLeft = async () => {
-  try {
-    leftJson.value = await navigator.clipboard.readText()
-  } catch (e) {
-    console.error('Failed to read clipboard:', e)
-  }
-}
-
-const pasteRight = async () => {
-  try {
-    rightJson.value = await navigator.clipboard.readText()
-  } catch (e) {
-    console.error('Failed to read clipboard:', e)
-  }
-}
-
-const clearLeft = () => {
-  leftJson.value = ''
+const onClearLeft = () => {
   error.value = ''
 }
 
-const clearRight = () => {
-  rightJson.value = ''
+const onClearRight = () => {
   error.value = ''
 }
 

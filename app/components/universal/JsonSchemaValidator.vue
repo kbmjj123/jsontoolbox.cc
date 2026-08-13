@@ -2,44 +2,22 @@
   <div>
     <div class="grid grid-cols-1 lg:grid-cols-2 gap-4">
       <!-- JSON Input -->
-      <div>
-        <div class="flex items-center justify-between mb-2">
-          <label class="text-sm font-bold text-surface-700 dark:text-surface-300">{{ tool.ui?.label_json_data || 'JSON Data' }}</label>
-          <div class="flex gap-2">
-            <button @click="pasteJson" class="text-xs text-primary-600 hover:text-primary-700 dark:text-primary-400">
-              {{ $t('system.paste') }}
-            </button>
-            <button @click="clearJson" class="text-xs text-surface-500 hover:text-surface-700 dark:text-surface-400">
-              {{ $t('system.clear') }}
-            </button>
-          </div>
-        </div>
-        <textarea
-          v-model="jsonData"
-          class="w-full h-64 rounded-xl border border-surface-200 bg-surface-50 p-4 font-mono text-sm text-surface-900 focus:border-primary-500 focus:ring-2 focus:ring-primary-500/20 dark:border-surface-700 dark:bg-surface-800 dark:text-surface-100 resize-none"
-          placeholder='{"name": "Alice", "age": 30}'
-        ></textarea>
-      </div>
+      <JsonInputEditor
+        v-model="jsonData"
+        :label="tool.ui?.label_json_data || 'JSON Data'"
+        height="h-40"
+        placeholder='{"name": "Alice", "age": 30}'
+        @clear="clearJsonData"
+      />
 
       <!-- Schema Input -->
-      <div>
-        <div class="flex items-center justify-between mb-2">
-          <label class="text-sm font-bold text-surface-700 dark:text-surface-300">{{ tool.ui?.label_json_schema || 'JSON Schema' }}</label>
-          <div class="flex gap-2">
-            <button @click="pasteSchema" class="text-xs text-primary-600 hover:text-primary-700 dark:text-primary-400">
-              {{ $t('system.paste') }}
-            </button>
-            <button @click="clearSchema" class="text-xs text-surface-500 hover:text-surface-700 dark:text-surface-400">
-              {{ $t('system.clear') }}
-            </button>
-          </div>
-        </div>
-        <textarea
-          v-model="schemaData"
-          class="w-full h-64 rounded-xl border border-surface-200 bg-surface-50 p-4 font-mono text-sm text-surface-900 focus:border-primary-500 focus:ring-2 focus:ring-primary-500/20 dark:border-surface-700 dark:bg-surface-800 dark:text-surface-100 resize-none"
-          placeholder='{"type": "object", "properties": {"name": {"type": "string"}, "age": {"type": "number"}}, "required": ["name"]}'
-        ></textarea>
-      </div>
+      <JsonInputEditor
+        v-model="schemaData"
+        :label="tool.ui?.label_json_schema || 'JSON Schema'"
+        height="h-40"
+        placeholder='{"type": "object", "properties": {"name": {"type": "string"}, "age": {"type": "number"}}, "required": ["name"]}'
+        @clear="clearSchemaData"
+      />
     </div>
 
     <!-- Actions -->
@@ -218,35 +196,15 @@ const loadSample = () => {
   }, null, 2)
 }
 
-const pasteJson = async () => {
-  try {
-    jsonData.value = await navigator.clipboard.readText()
-  } catch (e) {
-    console.error('Failed to read clipboard:', e)
-  }
-}
-
-const pasteSchema = async () => {
-  try {
-    schemaData.value = await navigator.clipboard.readText()
-  } catch (e) {
-    console.error('Failed to read clipboard:', e)
-  }
-}
-
-const clearJson = () => {
-  jsonData.value = ''
+const clearJsonData = () => {
   error.value = ''
 }
 
-const clearSchema = () => {
-  schemaData.value = ''
+const clearSchemaData = () => {
   error.value = ''
 }
 
 const clearAll = () => {
-  jsonData.value = ''
-  schemaData.value = ''
   error.value = ''
   result.value = null
 }

@@ -1,22 +1,13 @@
 <template>
   <div>
     <div class="mb-4">
-      <div class="flex items-center justify-between mb-2">
-        <label class="text-sm font-bold text-surface-700 dark:text-surface-300">{{ ui?.labelInputJson ?? 'Input JSON Array' }}</label>
-        <div class="flex gap-2">
-          <button @click="pasteFromClipboard" class="text-xs text-primary-600 hover:text-primary-700 dark:text-primary-400">
-            {{ $t('system.paste') }}
-          </button>
-          <button @click="clearInput" class="text-xs text-surface-500 hover:text-surface-700 dark:text-surface-400">
-            {{ $t('system.clear') }}
-          </button>
-        </div>
-      </div>
-      <textarea
+      <JsonInputEditor
         v-model="inputJson"
-        class="w-full h-40 rounded-xl border border-surface-200 bg-surface-50 p-4 font-mono text-sm text-surface-900 focus:border-primary-500 focus:ring-2 focus:ring-primary-500/20 dark:border-surface-700 dark:bg-surface-800 dark:text-surface-100 resize-none"
+        :label="ui?.labelInputJson ?? 'Input JSON Array'"
+        height="h-40"
         placeholder='[{"name": "Alice", "age": 30, "city": "New York"}, {"name": "Bob", "age": 25, "city": "San Francisco"}]'
-      ></textarea>
+        @clear="clearAll"
+      />
     </div>
 
     <!-- Actions -->
@@ -128,23 +119,7 @@ const renderTable = () => {
   }
 }
 
-const pasteFromClipboard = async () => {
-  try {
-    inputJson.value = await navigator.clipboard.readText()
-  } catch (e) {
-    console.error('Failed to read clipboard:', e)
-  }
-}
-
-const clearInput = () => {
-  inputJson.value = ''
-  error.value = ''
-  headers.value = []
-  rows.value = []
-}
-
 const clearAll = () => {
-  inputJson.value = ''
   error.value = ''
   headers.value = []
   rows.value = []

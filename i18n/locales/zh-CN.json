@@ -96,6 +96,9 @@
     "upload": "上传文件",
     "input": "输入",
     "output": "输出",
-    "close": "关闭"
+    "close": "关闭",
+    "loadUrl": "从 URL 加载",
+    "fetch": "获取",
+    "autoFormat": "自动格式化"
   }
 }
