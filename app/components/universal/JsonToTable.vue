@@ -5,9 +5,22 @@
         v-model="inputJson"
         :label="ui?.labelInputJson ?? 'Input JSON Array'"
         height="h-40"
-        placeholder='[{"name": "Alice", "age": 30, "city": "New York"}, {"name": "Bob", "age": 25, "city": "San Francisco"}]'
+        placeholder='[{"name": "Alice", "age": 30, "address": {"city": "NYC"}}, {"name": "Bob", "age": 25, "address": {"city": "LA"}}]'
+        show-upload
         @clear="clearAll"
       />
+    </div>
+
+    <!-- Options -->
+    <div class="mb-4 flex flex-wrap items-center gap-4">
+      <label class="flex items-center gap-1.5 cursor-pointer select-none">
+        <input
+          type="checkbox"
+          v-model="flattenNested"
+          class="w-4 h-4 rounded border-surface-300 text-primary-600 focus:ring-primary-500"
+        />
+        <span class="text-xs text-surface-600 dark:text-surface-400">{{ ui?.option_flatten ?? 'Flatten nested objects' }}</span>
+      </label>
     </div>
 
     <!-- Actions -->
@@ -15,6 +28,15 @@
       <button @click="renderTable" class="btn-primary px-5 py-2 text-xs">
         <Icon name="lucide:table" class="h-4 w-4 mr-1.5" />
         {{ ui?.btnRender ?? 'Render Table' }}
+      </button>
+      <button @click="loadExample" class="text-xs text-primary-600 hover:text-primary-700 dark:text-primary-400">
+        {{ ui?.btnExample ?? 'Load Example' }}
+      </button>
+      <button @click="copyHtml" class="text-xs text-primary-600 hover:text-primary-700 dark:text-primary-400">
+        {{ ui?.btnCopyHtml ?? 'Copy HTML' }}
+      </button>
+      <button @click="downloadCsv" class="text-xs text-surface-500 hover:text-surface-700 dark:text-surface-400">
+        {{ ui?.btnDownloadCsv ?? 'Download CSV' }}
       </button>
       <button @click="clearAll" class="rounded-xl border border-surface-200 bg-white px-4 py-2 text-xs font-bold text-surface-700 hover:bg-surface-50 dark:border-surface-700 dark:bg-surface-800 dark:text-surface-300 dark:hover:bg-surface-700">
         {{ $t('system.clearAll') }}
@@ -40,7 +62,7 @@
             <tr
               v-for="(row, index) in rows"
               :key="index"
-              class="border-b border-surface-100 dark:border-surface-800 last:border-0"
+              class="border-b border-surface-100 dark:border-surface-800 last:border-0 hover:bg-surface-50 dark:hover:bg-surface-800"
             >
               <td
                 v-for="header in headers"
@@ -82,6 +104,24 @@ const inputJson = ref('')
 const error = ref('')
 const headers = ref<string[]>([])
 const rows = ref<any[]>([])
+const flattenNested = ref(false)
+
+// Example data
+const exampleData = [
+  { name: "Alice", age: 30, email: "alice@example.com", address: { city: "New York", country: "USA" } },
+  { name: "Bob", age: 25, email: "bob@example.com", address: { city: "San Francisco", country: "USA" } },
+  { name: "Charlie", age: 35, email: "charlie@example.com", address: { city: "London", country: "UK" } }
+]
+
+// Composables
+const { flatten } = useJsonFlatten()
+const { toTableData } = useTablePreview()
+const { exportToCsv } = useExcelCompat()
+
+const loadExample = () => {
+  inputJson.value = JSON.stringify(exampleData, null, 2)
+  renderTable()
+}
 
 const formatCell = (value: any): string => {
   if (value === null || value === undefined) return ''
@@ -95,7 +135,7 @@ const renderTable = () => {
   rows.value = []
 
   try {
-    const data = JSON.parse(inputJson.value)
+    let data = JSON.parse(inputJson.value)
     if (!Array.isArray(data)) {
       error.value = ui.value?.errorInvalidInput ?? 'Input must be a JSON array'
       return
@@ -105,18 +145,55 @@ const renderTable = () => {
       return
     }
 
-    const allHeaders = new Set<string>()
-    data.forEach(item => {
-      if (typeof item === 'object' && item !== null) {
-        Object.keys(item).forEach(key => allHeaders.add(key))
-      }
-    })
+    // Flatten nested objects if enabled
+    if (flattenNested.value) {
+      data = data.map(item => flatten(item))
+    }
 
-    headers.value = Array.from(allHeaders)
-    rows.value = data
+    // Use table preview composable
+    const tableData = toTableData(data)
+    headers.value = tableData.headers
+    rows.value = tableData.rows
   } catch (e) {
     error.value = (e as Error).message
   }
+}
+
+const generateHtmlTable = (): string => {
+  let html = '<table border="1" cellpadding="5" cellspacing="0">\n<thead>\n<tr>\n'
+  headers.value.forEach(header => {
+    html += `  <th>${header}</th>\n`
+  })
+  html += '</tr>\n</thead>\n<tbody>\n'
+  rows.value.forEach(row => {
+    html += '<tr>\n'
+    headers.value.forEach(header => {
+      html += `  <td>${formatCell(row[header])}</td>\n`
+    })
+    html += '</tr>\n'
+  })
+  html += '</tbody>\n</table>'
+  return html
+}
+
+const copyHtml = async () => {
+  const html = generateHtmlTable()
+  try {
+    await navigator.clipboard.writeText(html)
+  } catch (e) {
+    console.error('Failed to copy:', e)
+  }
+}
+
+const downloadCsv = () => {
+  const csvData = rows.value.map(row => {
+    const csvRow: Record<string, any> = {}
+    headers.value.forEach(header => {
+      csvRow[header] = row[header]
+    })
+    return csvRow
+  })
+  exportToCsv(csvData, headers.value, 'table-data.csv')
 }
 
 const clearAll = () => {
