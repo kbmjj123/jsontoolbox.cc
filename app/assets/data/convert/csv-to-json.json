@@ -18,6 +18,17 @@
       "description": "Convert CSV to JSON format online. Transform CSV files into JSON arrays. Free, fast, and runs in your browser. No upload required.",
       "keywords": ["csv to json", "csv to json converter", "convert csv to json", "csv to json online", "csv to json format", "csv to json formatter"]
     },
+    "ui": {
+      "label_input": "Input CSV",
+      "label_output": "JSON Output",
+      "btn_convert": "Convert to JSON",
+      "btn_example": "Load Example",
+      "option_delimiter": "Delimiter:",
+      "option_has_header": "First row is header",
+      "option_indent": "Indent:",
+      "placeholder_output": "JSON output will appear here...",
+      "error_no_data": "No data to convert"
+    },
     "features": [
       {
         "icon": "lucide:file-spreadsheet",
@@ -28,6 +39,21 @@
         "icon": "lucide:download",
         "title": "JSON Export",
         "description": "Download the JSON output or copy to clipboard."
+      },
+      {
+        "icon": "lucide:settings",
+        "title": "Smart Options",
+        "description": "Auto-detect delimiters, infer types (numbers, booleans)."
+      },
+      {
+        "icon": "lucide:upload",
+        "title": "File Upload",
+        "description": "Upload .csv, .tsv, or .txt files directly."
+      },
+      {
+        "icon": "lucide:code",
+        "title": "Type Inference",
+        "description": "Automatically convert numbers, booleans, and null values."
       },
       {
         "icon": "lucide:shield-check",
@@ -68,23 +94,13 @@
       },
       {
         "question": "Does it support different delimiters?",
-        "answer": "The converter auto-detects common delimiters like commas, tabs, and semicolons."
+        "answer": "Yes. Choose from comma, semicolon, tab, pipe, or let the tool auto-detect the delimiter."
       },
       {
-        "question": "How do I convert CSV to JSON online?",
-        "answer": "Paste your CSV data and click Convert. This free csv to json online tool lets you convert csv to json instantly in your browser — no upload required."
+        "question": "Does it infer data types?",
+        "answer": "Yes. Numbers are converted to numeric values, 'true'/'false' to booleans, and empty cells to null."
       }
-    ],
-    "ui": {
-      "label_input": "Input CSV",
-      "label_output": "JSON Output",
-      "btn_convert": "Convert to JSON",
-      "option_delimiter": "Delimiter:",
-      "option_has_header": "First row is header",
-      "option_indent": "Indent:",
-      "placeholder_output": "JSON output will appear here...",
-      "error_no_data": "No data to convert"
-    }
+    ]
   },
   "zh": {
     "name": "CSV 转 JSON",
@@ -97,6 +113,17 @@
       "description": "在线将 CSV 转换为 JSON 格式。将 CSV 文件转换为 JSON 数组。免费、快速，在浏览器中运行。无需上传。",
       "keywords": ["csv转json", "csv json转换器", "转换csv为json", "在线csv转json"]
     },
+    "ui": {
+      "label_input": "输入 CSV",
+      "label_output": "JSON 输出",
+      "btn_convert": "转换为 JSON",
+      "btn_example": "加载示例",
+      "option_delimiter": "分隔符：",
+      "option_has_header": "第一行是表头",
+      "option_indent": "缩进：",
+      "placeholder_output": "JSON 输出将显示在这里...",
+      "error_no_data": "没有数据可转换"
+    },
     "features": [
       {
         "icon": "lucide:file-spreadsheet",
@@ -107,6 +134,21 @@
         "icon": "lucide:download",
         "title": "JSON 导出",
         "description": "下载 JSON 输出或复制到剪贴板。"
+      },
+      {
+        "icon": "lucide:settings",
+        "title": "智能选项",
+        "description": "自动检测分隔符，推断类型（数字、布尔值）。"
+      },
+      {
+        "icon": "lucide:upload",
+        "title": "文件上传",
+        "description": "直接上传 .csv、.tsv 或 .txt 文件。"
+      },
+      {
+        "icon": "lucide:code",
+        "title": "类型推断",
+        "description": "自动转换数字、布尔值和空值。"
       },
       {
         "icon": "lucide:shield-check",
@@ -147,18 +189,12 @@
       },
       {
         "question": "支持不同的分隔符吗？",
-        "answer": "转换器自动检测常见分隔符，如逗号、制表符和分号。"
+        "answer": "支持。可以选择逗号、分号、制表符、竖线，或让工具自动检测。"
+      },
+      {
+        "question": "会自动推断数据类型吗？",
+        "answer": "会。数字转换为数值，'true'/'false' 转换为布尔值，空单元格转换为 null。"
       }
-    ],
-    "ui": {
-      "label_input": "输入 CSV",
-      "label_output": "JSON 输出",
-      "btn_convert": "转换为 JSON",
-      "option_delimiter": "分隔符：",
-      "option_has_header": "第一行是表头",
-      "option_indent": "缩进：",
-      "placeholder_output": "JSON 输出将显示在这里...",
-      "error_no_data": "没有数据可转换"
-    }
+    ]
   }
 }

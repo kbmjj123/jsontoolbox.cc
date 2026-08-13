@@ -6,6 +6,8 @@
         v-model="inputCsv"
         :label="tool.ui?.label_input || 'Input CSV'"
         placeholder="name,age,city&#10;Alice,30,New York&#10;Bob,25,San Francisco"
+        show-upload
+        accept=".csv,.tsv,.txt"
         @clear="clearAll"
       />
 
@@ -45,6 +47,7 @@
           <option value=";">Semicolon (;)</option>
           <option value="&#9;">Tab</option>
           <option value="|">Pipe (|)</option>
+          <option value="auto">Auto-detect</option>
         </select>
       </div>
       <div class="flex items-center gap-2">
@@ -61,10 +64,13 @@
     </div>
 
     <!-- Actions -->
-    <div class="mt-4 flex flex-wrap gap-3">
+    <div class="mt-3 flex flex-wrap gap-3">
       <button @click="convert" class="btn-primary px-5 py-2 text-xs">
         <Icon name="lucide:arrow-right" class="h-4 w-4 mr-1.5" />
         {{ tool.ui?.btn_convert || 'Convert to JSON' }}
+      </button>
+      <button @click="loadExample" class="text-xs text-primary-600 hover:text-primary-700 dark:text-primary-400">
+        {{ tool.ui?.btn_example || 'Load Example' }}
       </button>
       <button @click="clearAll" class="rounded-xl border border-surface-200 bg-white px-4 py-2 text-xs font-bold text-surface-700 hover:bg-surface-50 dark:border-surface-700 dark:bg-surface-800 dark:text-surface-300 dark:hover:bg-surface-700">
         {{ $t('system.clearAll') }}
@@ -83,7 +89,35 @@ const delimiter = ref(',')
 const hasHeader = ref(true)
 const indent = ref(2)
 
-const parseCsvLine = (line: string, delimiter: string): string[] => {
+// Example data
+const exampleCsv = `name,age,city,active
+Alice,30,New York,true
+Bob,25,San Francisco,false
+Charlie,35,London,true`
+
+const loadExample = () => {
+  inputCsv.value = exampleCsv
+  convert()
+}
+
+const detectDelimiter = (csv: string): string => {
+  const firstLine = csv.split('\n')[0]
+  const delimiters = [',', ';', '\t', '|']
+  let maxCount = 0
+  let detected = ','
+
+  for (const d of delimiters) {
+    const count = (firstLine.match(new RegExp(d === '|' ? '\\|' : d === '\t' ? '\t' : d, 'g')) || []).length
+    if (count > maxCount) {
+      maxCount = count
+      detected = d
+    }
+  }
+
+  return detected
+}
+
+const parseCsvLine = (line: string, delim: string): string[] => {
   const result: string[] = []
   let current = ''
   let inQuotes = false
@@ -127,7 +161,10 @@ const convert = () => {
       return
     }
 
-    const rows = lines.map(line => parseCsvLine(line, delimiter.value))
+    // Auto-detect delimiter if needed
+    const effectiveDelimiter = delimiter.value === 'auto' ? detectDelimiter(inputCsv.value) : delimiter.value
+
+    const rows = lines.map(line => parseCsvLine(line, effectiveDelimiter))
 
     if (hasHeader.value) {
       const headers = rows[0]
@@ -135,8 +172,17 @@ const convert = () => {
         const obj: any = {}
         headers.forEach((header, index) => {
           const value = row[index] || ''
-          const num = Number(value)
-          obj[header] = value !== '' && !isNaN(num) ? num : value
+          // Enhanced type inference
+          if (value === '' || value === 'null') {
+            obj[header] = null
+          } else if (value === 'true') {
+            obj[header] = true
+          } else if (value === 'false') {
+            obj[header] = false
+          } else {
+            const num = Number(value)
+            obj[header] = value !== '' && !isNaN(num) ? num : value
+          }
         })
         return obj
       })
