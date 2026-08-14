@@ -2,7 +2,7 @@
   "slug": "json-tree-viewer",
   "category": "view",
   "component": "JsonTreeViewer",
-  "icon": "lucide:tree",
+  "icon": "lucide:list-tree",
   "sort": 1,
   "applicationCategory": "DeveloperApplication",
   "nextSteps": ["json-formatter", "json-path-tester"],
@@ -28,7 +28,7 @@
     },
     "features": [
       {
-        "icon": "lucide:tree",
+        "icon": "lucide:list-tree",
         "title": "Interactive Tree",
         "description": "Expand and collapse nodes to explore your JSON structure."
       },
@@ -133,7 +133,7 @@
     },
     "features": [
       {
-        "icon": "lucide:tree",
+        "icon": "lucide:list-tree",
         "title": "交互式树",
         "description": "展开和折叠节点以探索 JSON 结构。"
       },

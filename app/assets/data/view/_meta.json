@@ -23,7 +23,7 @@
     "pdesc": "View and explore JSON data with interactive tree view and path testing.",
     "highlights": [
       {
-        "icon": "lucide:tree",
+        "icon": "lucide:list-tree",
         "title": "Tree View",
         "description": "Visualize JSON as an interactive tree structure."
       },
@@ -61,7 +61,7 @@
     "pdesc": "使用交互式树形视图和路径测试查看和探索 JSON 数据。",
     "highlights": [
       {
-        "icon": "lucide:tree",
+        "icon": "lucide:list-tree",
         "title": "树形视图",
         "description": "将 JSON 可视化为交互式树结构。"
       },

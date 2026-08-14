@@ -59,6 +59,75 @@
       "title": "JSON Toolbox — All the Tools You Need",
       "subtitle": "A complete set of JSON tools for developers, data analysts, and anyone working with JSON.",
       "view_all": "View All Tools"
+    },
+    "about": {
+      "title": "What is JSON Toolbox?",
+      "description": "JSON Toolbox is a free, open-source collection of JSON tools built for developers, data analysts, and anyone who works with JSON. Every tool runs entirely in your browser — no data is ever uploaded to any server.",
+      "features": {
+        "client_side": {
+          "title": "100% Client-Side",
+          "description": "All processing happens locally in your browser. Your JSON data never leaves your device."
+        },
+        "free": {
+          "title": "Fast & Free",
+          "description": "No sign-up, no limits. Open any tool and start working instantly."
+        },
+        "multi_lang": {
+          "title": "Multi-Language",
+          "description": "Available in English and Chinese, with more languages coming soon."
+        }
+      }
+    },
+    "privacy": {
+      "title": "Your Data Stays Private",
+      "description": "We take your privacy seriously. Every JSON operation — formatting, validating, converting — happens entirely in your browser using JavaScript. Your data is never transmitted to our servers or any third party. You can even disconnect from the internet after loading the page, and all tools will continue to work.",
+      "link_text": "Read our full Privacy Policy"
+    },
+    "faq": {
+      "title": "Frequently Asked Questions",
+      "items": [
+        {
+          "question": "Is my JSON data uploaded to a server?",
+          "answer": "No. All JSON processing happens locally in your browser. Your data never leaves your device — we have no servers that receive or store your JSON content."
+        },
+        {
+          "question": "What are the file size limits?",
+          "answer": "There are no hard limits from our side. Performance depends on your device and browser. For most tools, files up to several MB work smoothly. Very large files (50MB+) may slow down depending on your hardware."
+        },
+        {
+          "question": "Which browsers are supported?",
+          "answer": "JSON Toolbox works on all modern browsers including Chrome, Firefox, Safari, and Edge. We recommend using the latest version for the best experience."
+        },
+        {
+          "question": "Is JSON Toolbox free to use?",
+          "answer": "Yes, completely free. No sign-up required, no hidden fees, no usage limits. JSON Toolbox is open-source and will always remain free."
+        },
+        {
+          "question": "Can I use it for commercial projects?",
+          "answer": "Absolutely. JSON Toolbox is licensed under MIT and can be used for personal and commercial projects without any restrictions."
+        }
+      ]
+    },
+    "blog": {
+      "title": "Learn More About JSON",
+      "description": "Explore guides, tips, and best practices for working with JSON data.",
+      "items": [
+        {
+          "title": "What is JSON?",
+          "description": "A beginner-friendly guide to JSON format, syntax, and common use cases.",
+          "link_text": "Learn more"
+        },
+        {
+          "title": "JSON vs YAML vs XML",
+          "description": "Compare the most popular data formats and when to use each one.",
+          "link_text": "Compare formats"
+        },
+        {
+          "title": "Common JSON Mistakes",
+          "description": "Frequent JSON errors and how to fix them quickly with our tools.",
+          "link_text": "See mistakes"
+        }
+      ]
     }
   },
   "tools": {

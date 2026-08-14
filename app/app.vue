@@ -114,6 +114,6 @@
     <NuxtPage />
 
     <!-- Global quick tool search modal -->
-    <HomeToolSelectorModal :is-open="isOpen" :files="contextualFiles" @close="close" />
+    <ToolSelectorModal :is-open="isOpen" :files="contextualFiles" @close="close" />
   </NuxtLayout>
 </template>
