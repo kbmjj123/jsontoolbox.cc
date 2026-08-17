@@ -5,8 +5,8 @@
       :key="index"
       class="group rounded-xl border border-surface-200 bg-white dark:border-surface-700 dark:bg-surface-900"
     >
-      <summary class="flex cursor-pointer items-center justify-between gap-3 px-5 py-4 text-sm font-medium text-surface-800 dark:text-surface-200">
-        <span>{{ item.question }}</span>
+      <summary class="flex cursor-pointer items-center justify-between gap-3 px-5 py-4">
+        <h3 class="text-sm font-medium text-surface-800 dark:text-surface-200">{{ item.question }}</h3>
         <Icon
           name="lucide:chevron-down"
           class="h-4 w-4 shrink-0 text-surface-400 transition-transform duration-200 group-open:rotate-180"
