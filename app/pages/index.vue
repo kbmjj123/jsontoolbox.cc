@@ -4,11 +4,6 @@
     <section class="relative overflow-hidden py-16 sm:py-24">
       <div class="mx-auto max-w-[1200px] px-5">
         <div class="text-center">
-          <!-- Badge -->
-          <div class="mb-6 inline-flex items-center gap-2 rounded-full border border-primary-200 bg-primary-50 px-4 py-1.5 text-xs font-medium text-primary-700 dark:border-primary-800 dark:bg-primary-900/30 dark:text-primary-400">
-            <span class="h-1.5 w-1.5 rounded-full bg-primary-500"></span>
-            {{ $t('home.hero.badge') }}
-          </div>
 
           <!-- Title -->
           <h1 class="text-4xl font-black tracking-tight text-surface-900 dark:text-surface-100 sm:text-5xl lg:text-6xl">
@@ -120,7 +115,7 @@
             class="group rounded-xl border border-surface-200 bg-white p-5 transition-all hover:border-primary-200 hover:shadow-md dark:border-surface-700 dark:bg-surface-900 dark:hover:border-primary-800"
           >
             <div class="flex items-start gap-3">
-              <div class="flex h-10 w-10 items-center justify-center rounded-lg bg-primary-50 text-primary-600 dark:bg-primary-900/30 dark:text-primary-400">
+              <div class="flex h-10 w-10 shrink-0 items-center justify-center rounded-lg bg-primary-50 text-primary-600 dark:bg-primary-900/30 dark:text-primary-400">
                 <Icon :name="tool.icon" class="h-5 w-5" />
               </div>
               <div>
