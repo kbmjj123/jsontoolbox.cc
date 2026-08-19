@@ -19,7 +19,7 @@
 
           <span class="text-purple-600 dark:text-purple-400">"{{ key }}"</span>
           <span class="text-surface-400">:</span>
-          <span v-if="!isObject(value) && !isArray(value)" class="text-surface-700 dark:text-surface-300">{{ formatValue(value) }}</span>
+          <span v-if="!isObject(value) && !isArray(value)" :class="valueColorClass(value)">{{ formatValue(value) }}</span>
           <span v-else-if="isArray(value)" class="text-surface-400">[{{ value.length }}]</span>
           <span v-else class="text-surface-400">{...}</span>
 
@@ -61,7 +61,7 @@
           <span v-else class="w-4"></span>
 
           <span class="text-surface-400">[{{ index }}]</span>
-          <span v-if="!isObject(item) && !isArray(item)" class="text-surface-700 dark:text-surface-300 ml-1">{{ formatValue(item) }}</span>
+          <span v-if="!isObject(item) && !isArray(item)" :class="['ml-1', valueColorClass(item)]">{{ formatValue(item) }}</span>
           <span v-else-if="isArray(item)" class="text-surface-400 ml-1">[{{ item.length }}]</span>
           <span v-else class="text-surface-400 ml-1">{...}</span>
         </div>
@@ -74,14 +74,14 @@
 
     <!-- Primitive -->
     <template v-else>
-      <span class="text-surface-700 dark:text-surface-300">{{ formatValue(data) }}</span>
+      <span :class="valueColorClass(data)">{{ formatValue(data) }}</span>
     </template>
   </div>
 </template>
 
 <script setup lang="ts">
 const props = defineProps<{
-  data: any
+  data: unknown
   path: string
   search: string
 }>()
@@ -92,12 +92,49 @@ defineEmits<{
 
 const expanded = ref<Set<string | number>>(new Set())
 
-// 支持的图片格式
+// Support expand/collapse all via provide/inject
+const expandAllSignal = inject<Ref<number> | null>('treeExpandAll', null)
+const collapseAllSignal = inject<Ref<number> | null>('treeCollapseAll', null)
+
+watch(expandAllSignal, (val) => {
+  if (val === undefined || val === null) return
+  // Collect all expandable keys
+  const keys = getAllExpandableKeys(props.data)
+  expanded.value = new Set(keys)
+})
+
+watch(collapseAllSignal, () => {
+  expanded.value = new Set()
+})
+
+const getAllExpandableKeys = (data: unknown): (string | number)[] => {
+  const keys: (string | number)[] = []
+  if (isObject(data)) {
+    for (const [key, value] of Object.entries(data as Record<string, unknown>)) {
+      if (isObject(value) || isArray(value)) {
+        keys.push(key)
+        keys.push(...getAllExpandableKeys(value).map(k => `${key}.${k}`))
+      }
+    }
+  } else if (isArray(data)) {
+    for (const [index, item] of (data as unknown[]).entries()) {
+      if (isObject(item) || isArray(item)) {
+        keys.push(index)
+        keys.push(...getAllExpandableKeys(item).map(k => `${index}.${k}`))
+      }
+    }
+  }
+  return keys
+}
+
+// Image detection
 const IMAGE_EXTENSIONS = /\.(jpg|jpeg|png|gif|webp|svg|bmp|ico)(\?.*)?$/i
 const IMAGE_HOSTS = /cdn\.|img\.|image\.|media\./i
 
-const isObject = (val: any) => val !== null && typeof val === 'object' && !Array.isArray(val)
-const isArray = (val: any) => Array.isArray(val)
+const isObject = (val: unknown): val is Record<string, unknown> =>
+  val !== null && typeof val === 'object' && !Array.isArray(val)
+
+const isArray = (val: unknown): val is unknown[] => Array.isArray(val)
 
 const toggle = (key: string | number) => {
   if (expanded.value.has(key)) {
@@ -116,14 +153,31 @@ const getFullPath = (key: string | number) => {
   return String(key)
 }
 
-const formatValue = (val: any) => {
+const formatValue = (val: unknown): string => {
   if (val === null) return 'null'
   if (val === undefined) return 'undefined'
   if (typeof val === 'string') return `"${val}"`
   return String(val)
 }
 
-const matchesSearch = (key: any, value: any) => {
+/**
+ * Color class based on value type
+ */
+const valueColorClass = (val: unknown): string => {
+  if (val === null || val === undefined) return 'text-surface-400 italic'
+  switch (typeof val) {
+    case 'string':
+      return 'text-emerald-600 dark:text-emerald-400'
+    case 'number':
+      return 'text-blue-600 dark:text-blue-400'
+    case 'boolean':
+      return 'text-orange-600 dark:text-orange-400'
+    default:
+      return 'text-surface-700 dark:text-surface-300'
+  }
+}
+
+const matchesSearch = (key: unknown, value: unknown) => {
   if (!props.search) return false
   const q = props.search.toLowerCase()
   const keyStr = String(key).toLowerCase()
@@ -132,36 +186,31 @@ const matchesSearch = (key: any, value: any) => {
 }
 
 /**
- * 判断值是否是图片 URL
+ * Check if value is an image URL
  */
-const isImageUrl = (value: any): boolean => {
+const isImageUrl = (value: unknown): boolean => {
   if (typeof value !== 'string') return false
-  if (value.length > 2048) return false // URL 过长不处理
+  if (value.length > 2048) return false
 
-  // 检查文件扩展名
   if (IMAGE_EXTENSIONS.test(value)) return true
 
-  // 检查常见图片 CDN 域名
   try {
     const url = new URL(value)
     if (IMAGE_HOSTS.test(url.hostname)) return true
-    // 检查常见图片服务路径
     if (/\/image[s]?\//i.test(url.pathname)) return true
   } catch {
-    // 不是有效 URL，尝试相对路径
-    if (/^[\/\.]/.test(value) && IMAGE_EXTENSIONS.test(value)) return true
+    if (/^[/.]/.test(value) && IMAGE_EXTENSIONS.test(value)) return true
   }
 
   return false
 }
 
 const copyPath = (path: string) => {
-  emit('copy', path)
+  navigator.clipboard.writeText(path).catch(() => {})
 }
 </script>
 
 <style scoped>
-/* 图片预览容器需要 relative 定位 */
 .group {
   position: relative;
 }

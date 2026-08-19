@@ -1,5 +1,5 @@
 <template>
-  <div ref="containerRef" class="flex overflow-hidden" :class="direction === 'horizontal' ? 'flex-row' : 'flex-col'">
+  <div ref="containerRef" class="flex overflow-hidden" :class="effectiveDirection === 'horizontal' ? 'flex-row' : 'flex-col'">
     <!-- Left / Top panel -->
     <div :style="firstStyle" class="min-w-0 min-h-0 overflow-hidden">
       <slot name="first" />
@@ -8,7 +8,7 @@
     <!-- Drag handle -->
     <div
       class="flex-none flex items-center justify-center group"
-      :class="direction === 'horizontal' ? 'w-3 cursor-col-resize' : 'h-3 cursor-row-resize'"
+      :class="effectiveDirection === 'horizontal' ? 'w-3 cursor-col-resize' : 'h-3 cursor-row-resize'"
       @mousedown="onDragStart"
       @touchstart.passive="onTouchStart"
     >
@@ -16,7 +16,7 @@
         class="rounded-full transition-colors"
         :class="[
           dragging ? 'bg-primary-500' : 'bg-surface-300 group-hover:bg-primary-400 dark:bg-surface-600 dark:group-hover:bg-primary-500',
-          direction === 'horizontal' ? 'w-1 h-8' : 'h-1 w-8'
+          effectiveDirection === 'horizontal' ? 'w-1 h-8' : 'h-1 w-8'
         ]"
       />
     </div>
@@ -34,6 +34,7 @@ interface Props {
   initialRatio?: number
   minFirst?: string
   minSecond?: string
+  responsive?: boolean
 }
 
 const props = withDefaults(defineProps<Props>(), {
@@ -41,15 +42,35 @@ const props = withDefaults(defineProps<Props>(), {
   initialRatio: 0.5,
   minFirst: '200px',
   minSecond: '200px',
+  responsive: false,
+})
+
+const isMobile = ref(false)
+let resizeObserver: ResizeObserver | null = null
+
+onMounted(() => {
+  if (props.responsive && containerRef.value) {
+    const check = () => { isMobile.value = window.innerWidth < 768 }
+    check()
+    window.addEventListener('resize', check)
+    resizeObserver = new ResizeObserver(check)
+    resizeObserver.observe(containerRef.value)
+    onUnmounted(() => {
+      window.removeEventListener('resize', check)
+      resizeObserver?.disconnect()
+    })
+  }
 })
 
 const containerRef = ref<HTMLDivElement>()
 const ratio = ref(props.initialRatio)
 const dragging = ref(false)
 
+const effectiveDirection = computed(() => props.responsive && isMobile.value ? 'vertical' : props.direction)
+
 const firstStyle = computed(() => {
   const size = `${ratio.value * 100}%`
-  return props.direction === 'horizontal'
+  return effectiveDirection.value === 'horizontal'
     ? { width: size, minWidth: props.minFirst }
     : { height: size, minHeight: props.minFirst }
 })
@@ -94,7 +115,7 @@ const updateRatio = (clientX: number, clientY: number) => {
   if (!containerRef.value) return
   const rect = containerRef.value.getBoundingClientRect()
 
-  if (props.direction === 'horizontal') {
+  if (effectiveDirection.value === 'horizontal') {
     const offset = clientX - rect.left
     ratio.value = Math.max(0.15, Math.min(0.85, offset / rect.width))
   } else {

@@ -56,55 +56,43 @@
       </button>
     </div>
 
+    <!-- Validation success info -->
+    <div v-if="info" class="mt-4 rounded-lg bg-blue-50 border border-blue-200 p-3 text-xs text-blue-700 dark:bg-blue-900/30 dark:border-blue-800 dark:text-blue-400">
+      {{ info }}
+    </div>
+
     <!-- Result panel -->
-    <div v-if="outputJson || error || info" class="mt-4">
-      <div class="flex items-center justify-between mb-2">
-        <label class="text-sm font-bold text-surface-700 dark:text-surface-300">{{ tool.ui?.label_output || 'Output' }}</label>
-        <div v-if="outputJson" class="flex gap-2">
-          <button @click="copyOutput" class="text-xs text-primary-600 hover:text-primary-700 dark:text-primary-400">
-            {{ $t('system.copy') }}
-          </button>
-          <button @click="downloadOutput" class="text-xs text-surface-500 hover:text-surface-700 dark:text-surface-400">
-            {{ $t('system.download') }}
-          </button>
-        </div>
-      </div>
+    <JsonOutputPanel
+      v-if="outputJson || error"
+      class="mt-4"
+      :label="tool.ui?.label_output || 'Output'"
+      :content="outputJson"
+      :error="error"
+      height="max-h-80"
+      empty-text="Result will appear here"
+      @copy="copyOutput"
+      @download="downloadOutput"
+    />
 
-      <!-- Success/info -->
-      <div v-if="info" class="rounded-lg bg-blue-50 border border-blue-200 p-3 text-xs text-blue-700 dark:bg-blue-900/30 dark:border-blue-800 dark:text-blue-400">
-        {{ info }}
-      </div>
-
-      <!-- Error -->
-      <div v-else-if="error" class="rounded-lg bg-red-50 border border-red-200 p-3 text-xs text-red-700 dark:bg-red-900/30 dark:border-red-800 dark:text-red-400">
-        {{ error }}
-      </div>
-
-      <!-- Output content -->
-      <div v-else-if="outputJson" class="rounded-xl border border-surface-200 bg-surface-50 p-4 font-mono text-sm text-surface-900 overflow-auto max-h-80 dark:border-surface-700 dark:bg-surface-800 dark:text-surface-100">
-        <pre class="whitespace-pre-wrap">{{ outputJson }}</pre>
-
-        <!-- Smart Type Detection Summary -->
-        <div v-if="detectedTypes.length > 0" class="mt-4 pt-4 border-t border-surface-200 dark:border-surface-700">
-          <p class="text-xs font-bold text-surface-600 dark:text-surface-400 mb-2">Detected Types:</p>
-          <div class="flex flex-wrap gap-2">
-            <span
-              v-for="item in detectedTypes"
-              :key="item.path"
-              class="inline-flex items-center gap-1 px-2 py-1 rounded-lg text-xs"
-              :class="{
-                'bg-blue-100 text-blue-700 dark:bg-blue-900/30 dark:text-blue-400': item.type === 'url',
-                'bg-purple-100 text-purple-700 dark:bg-purple-900/30 dark:text-purple-400': item.type === 'image',
-                'bg-green-100 text-green-700 dark:bg-green-900/30 dark:text-green-400': item.type === 'email',
-                'bg-yellow-100 text-yellow-700 dark:bg-yellow-900/30 dark:text-yellow-400': item.type === 'date',
-                'bg-pink-100 text-pink-700 dark:bg-pink-900/30 dark:text-pink-400': item.type === 'color',
-              }"
-            >
-              <Icon :name="getTypeIcon(item.type)" class="h-3 w-3" />
-              {{ item.path }}
-            </span>
-          </div>
-        </div>
+    <!-- Smart Type Detection Summary -->
+    <div v-if="detectedTypes.length > 0" class="mt-4 rounded-xl border border-surface-200 bg-surface-50 p-4 dark:border-surface-700 dark:bg-surface-800">
+      <p class="text-xs font-bold text-surface-600 dark:text-surface-400 mb-2">Detected Types:</p>
+      <div class="flex flex-wrap gap-2">
+        <span
+          v-for="item in detectedTypes"
+          :key="item.path"
+          class="inline-flex items-center gap-1 px-2 py-1 rounded-lg text-xs"
+          :class="{
+            'bg-blue-100 text-blue-700 dark:bg-blue-900/30 dark:text-blue-400': item.type === 'url',
+            'bg-purple-100 text-purple-700 dark:bg-purple-900/30 dark:text-purple-400': item.type === 'image',
+            'bg-green-100 text-green-700 dark:bg-green-900/30 dark:text-green-400': item.type === 'email',
+            'bg-yellow-100 text-yellow-700 dark:bg-yellow-900/30 dark:text-yellow-400': item.type === 'date',
+            'bg-pink-100 text-pink-700 dark:bg-pink-900/30 dark:text-pink-400': item.type === 'color',
+          }"
+        >
+          <Icon :name="getTypeIcon(item.type)" class="h-3 w-3" />
+          {{ item.path }}
+        </span>
       </div>
     </div>
   </div>

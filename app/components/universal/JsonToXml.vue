@@ -11,30 +11,15 @@
       />
 
       <!-- Output -->
-      <div>
-        <div class="flex items-center justify-between mb-2">
-          <label class="text-sm font-bold text-surface-700 dark:text-surface-300">{{ tool.ui?.label_output || 'XML Output' }}</label>
-          <div class="flex gap-2">
-            <button @click="copyOutput" class="text-xs text-primary-600 hover:text-primary-700 dark:text-primary-400">
-              {{ $t('system.copy') }}
-            </button>
-            <button @click="downloadOutput" class="text-xs text-surface-500 hover:text-surface-700 dark:text-surface-400">
-              {{ $t('system.download') }}
-            </button>
-          </div>
-        </div>
-        <div class="relative">
-          <textarea
-            v-model="outputXml"
-            readonly
-            class="w-full h-64 rounded-xl border border-surface-200 bg-surface-50 p-4 font-mono text-sm text-surface-900 focus:border-primary-500 focus:ring-2 focus:ring-primary-500/20 dark:border-surface-700 dark:bg-surface-800 dark:text-surface-100 resize-none"
-            :placeholder="tool.ui?.placeholder_output || 'XML output will appear here...'"
-          ></textarea>
-          <div v-if="error" class="absolute bottom-2 left-2 right-2 rounded-lg bg-red-50 border border-red-200 p-2 text-xs text-red-700 dark:bg-red-900/30 dark:border-red-800 dark:text-red-400">
-            {{ error }}
-          </div>
-        </div>
-      </div>
+      <JsonOutputPanel
+        :label="tool.ui?.label_output || 'XML Output'"
+        :content="outputXml"
+        :error="error"
+        :empty-text="tool.ui?.placeholder_output || 'XML output will appear here...'"
+        download-filename="output.xml"
+        @copy="copyOutput"
+        @download="downloadOutput"
+      />
     </div>
 
     <!-- Options -->

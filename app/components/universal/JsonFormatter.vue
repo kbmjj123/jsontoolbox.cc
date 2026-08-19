@@ -1,9 +1,9 @@
 <template>
   <div>
     <!-- Input / Output resizable split -->
-    <ResizablePanel :initial-ratio="0.5">
+    <ResizablePanel :initial-ratio="0.5" responsive>
       <template #first>
-        <div class="pr-2">
+        <div class="pr-3">
           <JsonInputEditor
             v-model="inputJson"
             :label="tool.ui?.label_input || 'Input JSON'"
@@ -15,57 +15,20 @@
         </div>
       </template>
       <template #second>
-        <div class="pl-2">
-          <div class="flex items-center justify-between mb-2">
-            <label class="text-sm font-bold text-surface-700 dark:text-surface-300">{{ tool.ui?.label_output || 'Output' }}</label>
-            <div class="flex gap-2">
-              <!-- View mode toggle -->
-              <div class="flex rounded-lg border border-surface-200 dark:border-surface-700 overflow-hidden">
-                <button
-                  @click="viewMode = 'text'"
-                  :class="viewMode === 'text' ? 'bg-primary-600 text-white' : 'bg-white text-surface-600 dark:bg-surface-800 dark:text-surface-400'"
-                  class="px-2 py-0.5 text-xs transition-colors"
-                >
-                  Text
-                </button>
-                <button
-                  @click="viewMode = 'tree'"
-                  :class="viewMode === 'tree' ? 'bg-primary-600 text-white' : 'bg-white text-surface-600 dark:bg-surface-800 dark:text-surface-400'"
-                  class="px-2 py-0.5 text-xs transition-colors"
-                >
-                  Tree
-                </button>
-              </div>
-              <button @click="copyOutput" class="text-xs text-primary-600 hover:text-primary-700 dark:text-primary-400">
-                {{ $t('system.copy') }}
-              </button>
-              <button @click="downloadOutput" class="text-xs text-surface-500 hover:text-surface-700 dark:text-surface-400">
-                {{ $t('system.download') }}
-              </button>
-            </div>
-          </div>
-
-          <!-- Text view -->
-          <div v-if="viewMode === 'text'" class="relative">
-            <pre class="w-full h-64 rounded-xl border border-surface-200 bg-surface-50 p-4 font-mono text-sm text-surface-900 overflow-auto dark:border-surface-700 dark:bg-surface-800 dark:text-surface-100">{{ outputJson }}</pre>
-            <div v-if="error" class="absolute bottom-2 left-2 right-2 rounded-lg bg-red-50 border border-red-200 p-2 text-xs text-red-700 dark:bg-red-900/30 dark:border-red-800 dark:text-red-400">
-              {{ error }}
-            </div>
-          </div>
-
-          <!-- Tree view -->
-          <div v-else class="h-64 overflow-auto rounded-xl border border-surface-200 bg-surface-50 p-4 dark:border-surface-700 dark:bg-surface-800">
-            <TreeNode
-              v-if="parsedData !== null"
-              :data="parsedData"
-              :path="''"
-              :search="''"
-              @copy="copyPath"
-            />
-            <div v-else class="flex items-center justify-center h-full text-surface-400 text-sm">
-              {{ error || 'Paste JSON and click Format' }}
-            </div>
-          </div>
+        <div class="pl-3">
+          <JsonOutputPanel
+            :label="tool.ui?.label_output || 'Output'"
+            :content="outputJson"
+            :error="error"
+            :view-mode="viewMode"
+            show-mode-toggle
+            :parsed-data="parsedData"
+            empty-text="Paste JSON and click Format"
+            @update:view-mode="viewMode = $event"
+            @copy="copyOutput"
+            @download="downloadOutput"
+            @copy-path="copyPath"
+          />
         </div>
       </template>
     </ResizablePanel>
@@ -90,7 +53,7 @@
         <button
           @click="fetchFromUrl"
           :disabled="urlLoading"
-          class="btn-primary px-3 py-1.5 text-xs disabled:opacity-50"
+          class="rounded-lg bg-primary-600 px-3 py-1.5 text-xs text-white hover:bg-primary-700 disabled:opacity-50"
         >
           {{ urlLoading ? '...' : $t('system.fetch') }}
         </button>
@@ -104,8 +67,9 @@
       <p v-if="urlError" class="mt-1 text-xs text-red-600 dark:text-red-400">{{ urlError }}</p>
     </div>
 
-    <!-- Options -->
-    <div class="mt-4 flex flex-wrap items-center gap-4">
+    <!-- Bottom action bar -->
+    <div class="mt-3 flex items-center flex-wrap gap-2">
+      <!-- Indent selector -->
       <div class="flex items-center gap-2">
         <label class="text-xs font-bold text-surface-600 dark:text-surface-400">{{ tool.ui?.option_indent || 'Indent:' }}</label>
         <select v-model="indent" class="rounded-lg border border-surface-200 bg-white px-2 py-1 text-xs dark:border-surface-700 dark:bg-surface-800">
@@ -145,6 +109,9 @@
           <button @click="shareToTwitter" class="w-full text-left px-3 py-2 text-xs hover:bg-surface-100 dark:hover:bg-surface-700 rounded">
             Share on Twitter
           </button>
+          <p class="px-3 pt-1 pb-0.5 text-[10px] text-amber-600 dark:text-amber-400 leading-tight">
+            ⚠️ Share links encode JSON content in the URL. Do not share passwords, tokens, or sensitive data.
+          </p>
         </div>
       </div>
 
@@ -155,11 +122,13 @@
           @click="autoFormat = !autoFormat"
           :class="autoFormat ? 'bg-primary-600' : 'bg-surface-300 dark:bg-surface-600'"
           class="relative inline-flex h-5 w-9 items-center rounded-full transition-colors"
+          role="switch"
+          :aria-checked="autoFormat"
         >
           <span
             :class="autoFormat ? 'translate-x-4' : 'translate-x-0.5'"
             class="inline-block h-4 w-4 rounded-full bg-white transition-transform"
-          ></span>
+          />
         </button>
       </label>
     </div>
@@ -175,16 +144,15 @@ const error = ref('')
 const indent = ref<number | string>(2)
 const autoFormat = ref(false)
 const viewMode = ref<'text' | 'tree'>('text')
+const lastAction = ref<'formatted' | 'minified' | 'validated'>('formatted')
 const showUrlInput = ref(false)
 const urlToFetch = ref('')
 const urlLoading = ref(false)
 const urlError = ref('')
 
-// 新增状态
 const showShareMenu = ref(false)
 const shareCopied = ref(false)
 
-// 使用 composables
 const { fixJson: fixJsonAuto, getJsonError } = useJsonFixer()
 const { generateShareUrl, copyShareUrl, shareToSocial } = useShareJson()
 
@@ -198,7 +166,6 @@ const fetchFromUrl = async () => {
     const res = await fetch(url)
     if (!res.ok) throw new Error(`HTTP ${res.status}`)
     const text = await res.text()
-    // Try to parse to validate it's JSON
     JSON.parse(text)
     inputJson.value = text
     showUrlInput.value = false
@@ -225,38 +192,46 @@ const copyPath = async (path: string) => {
 }
 
 const formatJson = () => {
+  if (!inputJson.value.trim()) { error.value = ''; outputJson.value = ''; return }
   try {
     const parsed = JSON.parse(inputJson.value)
     const space = indent.value === 'tab' ? '\t' : Number(indent.value)
     outputJson.value = JSON.stringify(parsed, null, space)
+    lastAction.value = 'formatted'
     error.value = ''
-  } catch (e) {
-    error.value = (e as Error).message
+  } catch {
+    const err = getJsonError(inputJson.value)
+    error.value = err ? `Line ${err.line}, Column ${err.column}: ${err.message}` : 'Invalid JSON'
   }
 }
 
 const minifyJson = () => {
+  if (!inputJson.value.trim()) { error.value = ''; outputJson.value = ''; return }
   try {
     const parsed = JSON.parse(inputJson.value)
     outputJson.value = JSON.stringify(parsed)
+    lastAction.value = 'minified'
     error.value = ''
-  } catch (e) {
-    error.value = (e as Error).message
+  } catch {
+    const err = getJsonError(inputJson.value)
+    error.value = err ? `Line ${err.line}, Column ${err.column}: ${err.message}` : 'Invalid JSON'
   }
 }
 
 const validateJson = () => {
+  if (!inputJson.value.trim()) { error.value = ''; outputJson.value = ''; return }
   try {
     JSON.parse(inputJson.value)
     outputJson.value = '✅ Valid JSON'
+    lastAction.value = 'validated'
     error.value = ''
-  } catch (e) {
-    error.value = (e as Error).message
+  } catch {
+    const err = getJsonError(inputJson.value)
+    error.value = err ? `Line ${err.line}, Column ${err.column}: ${err.message}` : 'Invalid JSON'
     outputJson.value = ''
   }
 }
 
-// 自动修复 JSON
 const fixJson = () => {
   const { fixed, fixes } = fixJsonAuto(inputJson.value)
 
@@ -264,7 +239,6 @@ const fixJson = () => {
     inputJson.value = fixed
     outputJson.value = `✅ Fixed ${fixes.length} issue(s):\n${fixes.map(f => `• ${f}`).join('\n')}`
     error.value = ''
-    // 自动格式化
     nextTick(() => formatJson())
   } else {
     error.value = 'Unable to auto-fix JSON. Please check the syntax.'
@@ -282,6 +256,16 @@ const onInputPaste = () => {
   }
 }
 
+const debouncedFormat = useDebounceFn(() => { formatJson() }, 300)
+watch(inputJson, () => { if (autoFormat.value) debouncedFormat() })
+
+useEventListener('keydown', (e: KeyboardEvent) => {
+  if ((e.metaKey || e.ctrlKey) && e.key === 'Enter') {
+    e.preventDefault()
+    formatJson()
+  }
+})
+
 const copyOutput = async () => {
   try {
     await navigator.clipboard.writeText(outputJson.value)
@@ -295,14 +279,13 @@ const downloadOutput = () => {
   const url = URL.createObjectURL(blob)
   const link = document.createElement('a')
   link.href = url
-  link.download = 'formatted.json'
+  link.download = `${lastAction.value}.json`
   document.body.appendChild(link)
   link.click()
   document.body.removeChild(link)
   URL.revokeObjectURL(url)
 }
 
-// 分享功能
 const copyShareLink = async () => {
   if (!outputJson.value) return
 
@@ -324,7 +307,6 @@ const shareToTwitter = () => {
   showShareMenu.value = false
 }
 
-// 点击外部关闭分享菜单
 const handleClickOutside = (e: MouseEvent) => {
   const target = e.target as HTMLElement
   if (!target.closest('.relative')) {

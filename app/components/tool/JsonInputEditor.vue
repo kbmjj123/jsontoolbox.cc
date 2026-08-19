@@ -36,10 +36,19 @@
       </div>
     </div>
 
+    <!-- File info -->
+    <div v-if="fileInfo" class="mb-2 flex items-center gap-2 text-xs text-surface-500 dark:text-surface-400">
+      <span>📄 {{ fileInfo.name }} ({{ fileInfo.size }})</span>
+      <button @click="fileInfo = null" class="text-surface-400 hover:text-surface-600 dark:hover:text-surface-300">✕</button>
+    </div>
+
     <!-- Editor: line numbers + textarea -->
     <div
-      class="flex rounded-xl border border-surface-200 bg-surface-50 dark:border-surface-700 dark:bg-surface-800"
-      :class="height"
+      class="relative flex rounded-xl border border-surface-200 bg-surface-50 dark:border-surface-700 dark:bg-surface-800"
+      :class="[height, dragging ? 'border-primary-400 dark:border-primary-500 bg-primary-50/50 dark:bg-primary-900/20' : '']"
+      @dragover.prevent="onDragOver"
+      @dragleave="onDragLeave"
+      @drop.prevent="onDrop"
     >
       <!-- Line numbers gutter -->
       <div
@@ -57,10 +66,18 @@
         @input="onInput"
         @scroll="onScroll"
         @paste="onPaste"
-        class="flex-1 min-w-0 resize-none bg-transparent py-4 pl-3 pr-4 font-mono text-sm leading-[1.5] text-surface-900 outline-none dark:text-surface-100"
+        class="flex-1 min-w-0 resize-none bg-transparent py-4 px-4 font-mono text-sm leading-[1.5] text-surface-900 outline-none dark:text-surface-100"
         :placeholder="placeholder"
         spellcheck="false"
       ></textarea>
+
+      <!-- Drop overlay -->
+      <div
+        v-if="dragging"
+        class="absolute inset-0 flex items-center justify-center rounded-xl bg-primary-50/80 dark:bg-primary-900/40 border-2 border-dashed border-primary-400 dark:border-primary-500 z-10 pointer-events-none"
+      >
+        <span class="text-sm font-medium text-primary-600 dark:text-primary-400">Drop .json file here</span>
+      </div>
     </div>
   </div>
 </template>
@@ -99,6 +116,33 @@ const emit = defineEmits<{
 const gutterRef = ref<HTMLDivElement>()
 const textareaRef = ref<HTMLTextAreaElement>()
 const fileInputRef = ref<HTMLInputElement>()
+const dragging = ref(false)
+const fileInfo = ref<{ name: string; size: string } | null>(null)
+
+const formatFileSize = (bytes: number): string => {
+  if (bytes < 1024) return `${bytes} B`
+  if (bytes < 1024 * 1024) return `${(bytes / 1024).toFixed(1)} KB`
+  return `${(bytes / (1024 * 1024)).toFixed(1)} MB`
+}
+
+const processFile = (file: File) => {
+  const reader = new FileReader()
+  reader.onload = (ev) => {
+    const text = ev.target?.result as string
+    emit('update:modelValue', text)
+    emit('upload', text)
+    fileInfo.value = { name: file.name, size: formatFileSize(file.size) }
+  }
+  reader.readAsText(file)
+}
+
+const onDragOver = () => { dragging.value = true }
+const onDragLeave = () => { dragging.value = false }
+const onDrop = (e: DragEvent) => {
+  dragging.value = false
+  const file = e.dataTransfer?.files?.[0]
+  if (file) processFile(file)
+}
 
 const lineCount = computed(() => {
   const lines = props.modelValue.split('\n').length
@@ -134,6 +178,7 @@ const handlePaste = async () => {
 const handleClear = () => {
   emit('update:modelValue', '')
   emit('clear')
+  fileInfo.value = null
 }
 
 const triggerUpload = () => {
@@ -144,14 +189,7 @@ const onFileChange = (e: Event) => {
   const input = e.target as HTMLInputElement
   const file = input.files?.[0]
   if (!file) return
-
-  const reader = new FileReader()
-  reader.onload = (ev) => {
-    const text = ev.target?.result as string
-    emit('update:modelValue', text)
-    emit('upload', text)
-  }
-  reader.readAsText(file)
+  processFile(file)
   // Reset so the same file can be re-uploaded
   input.value = ''
 }

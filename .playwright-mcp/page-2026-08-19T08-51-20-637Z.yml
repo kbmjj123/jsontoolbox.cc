@@ -1,0 +1,213 @@
+- generic [ref=e4]:
+  - banner [ref=e5]:
+    - generic [ref=e6]:
+      - link "JSON Toolbox Logo JSONToolbox" [ref=e7] [cursor=pointer]:
+        - /url: /zh
+        - img "JSON Toolbox Logo" [ref=e8]
+        - generic [ref=e9]: JSONToolbox
+      - navigation "Main navigation" [ref=e10]:
+        - link "工具" [ref=e11] [cursor=pointer]:
+          - /url: /zh/tools
+        - link "关于" [ref=e12] [cursor=pointer]:
+          - /url: /zh/about
+        - link "联系" [ref=e13] [cursor=pointer]:
+          - /url: /zh/contact
+        - button "⌘K" [ref=e14] [cursor=pointer]
+      - generic [ref=e17]:
+        - generic [ref=e18]: 免费 · 开源
+        - button "简体中文" [ref=e21] [cursor=pointer]
+        - button "切换主题" [ref=e25] [cursor=pointer]
+        - link "GitHub" [ref=e27] [cursor=pointer]:
+          - /url: https://github.com/kbmjj123/jsontoolbox.cc
+  - generic [ref=e30]:
+    - generic [ref=e32]:
+      - generic [ref=e33]:
+        - heading "从JSON到 你需要的任何格式。" [level=1] [ref=e34]:
+          - generic [ref=e35]: 从JSON到
+          - generic [ref=e36]: 你需要的任何格式。
+        - paragraph [ref=e37]: 格式化、校验、转换、对比——浏览器里直接用，不用装任何东西。
+        - generic [ref=e38]:
+          - link "查看所有工具" [ref=e39] [cursor=pointer]:
+            - /url: /zh/tools
+          - link "开始JSON格式化" [ref=e40] [cursor=pointer]:
+            - /url: /zh/tools/format/json-formatter
+      - generic [ref=e42]:
+        - generic [ref=e43]:
+          - generic [ref=e44]:
+            - generic [ref=e45]:
+              - generic [ref=e46]: Input JSON
+              - generic [ref=e47]:
+                - button "粘贴" [ref=e48] [cursor=pointer]
+                - button "清除" [ref=e49] [cursor=pointer]
+            - 'textbox "{\"name\": \"JSON Toolbox\", \"version\": \"1.0\"}" [ref=e50]'
+          - generic [ref=e52]:
+            - generic [ref=e53]: Formatted Output
+            - generic [ref=e54]:
+              - button "复制" [ref=e55] [cursor=pointer]
+              - button "下载" [ref=e56] [cursor=pointer]
+        - generic [ref=e59]:
+          - button "格式化" [ref=e60] [cursor=pointer]
+          - button "压缩" [ref=e61] [cursor=pointer]
+          - button "验证" [ref=e62] [cursor=pointer]
+    - generic [ref=e64]:
+      - generic [ref=e65]:
+        - heading "JSON工具箱 — 你需要的所有工具" [level=2] [ref=e66]
+        - paragraph [ref=e67]: 为开发者、数据分析师和所有处理JSON的人提供完整的JSON工具集。
+      - generic [ref=e68]:
+        - link [ref=e69] [cursor=pointer]:
+          - /url: /zh/tools/format/json-formatter
+          - generic [ref=e73]:
+            - heading "JSON 格式化与验证" [level=3] [ref=e74]
+            - paragraph [ref=e75]: 在线格式化、美化、验证和修复 JSON 数据，支持自定义缩进。免费、快速的json格式化工具，完全在浏览器中运行。
+        - link [ref=e76] [cursor=pointer]:
+          - /url: /zh/tools/validate/json-validator
+          - generic [ref=e80]:
+            - heading "JSON 验证器" [level=3] [ref=e81]
+            - paragraph [ref=e82]: 验证 JSON 语法、检测带行号的错误并自动修复常见问题。免费的在线 JSON 验证器，也是实用的 JSON linter 和检查工具，完全在浏览器中运行。
+        - link [ref=e83] [cursor=pointer]:
+          - /url: /zh/tools/convert/json-to-csv
+          - generic [ref=e87]:
+            - heading "JSON 转 CSV" [level=3] [ref=e88]
+            - paragraph [ref=e89]: 在线json转csv，将 JSON 数组转换为 CSV 格式，支持导出到 Excel 和 Google Sheets。免费的json csv转换器，支持嵌套对象展平、字段选择，完全在浏览器中运行。
+        - link [ref=e90] [cursor=pointer]:
+          - /url: /zh/tools/view/json-tree-viewer
+          - generic [ref=e94]:
+            - heading "JSON 树形查看器" [level=3] [ref=e95]
+            - paragraph [ref=e96]: 将 JSON 数据可视化为交互式树结构。这是一个免费的json查看器在线工具，也支持查看json树。支持展开、折叠、搜索和复制路径。
+      - link "查看所有工具" [ref=e98] [cursor=pointer]:
+        - /url: /zh/tools
+    - generic [ref=e101]:
+      - generic [ref=e102]:
+        - heading "什么是JSON工具箱？" [level=2] [ref=e103]
+        - paragraph [ref=e104]: JSON工具箱是一套免费、开源的JSON工具集合，专为开发者、数据分析师和所有处理JSON的人打造。所有工具完全在浏览器中运行 — 数据不会上传到任何服务器。
+      - generic [ref=e105]:
+        - generic [ref=e106]:
+          - heading "100% 纯前端" [level=3] [ref=e109]
+          - paragraph [ref=e110]: 所有处理在浏览器本地完成，JSON数据不会离开你的设备。
+        - generic [ref=e111]:
+          - heading "快速且免费" [level=3] [ref=e114]
+          - paragraph [ref=e115]: 无需注册，没有限制。打开工具即可开始使用。
+        - generic [ref=e116]:
+          - heading "多语言支持" [level=3] [ref=e119]
+          - paragraph [ref=e120]: 支持英文和中文，更多语言即将推出。
+    - generic [ref=e123]:
+      - heading "你的数据很安全" [level=2] [ref=e126]
+      - paragraph [ref=e127]: 我们非常重视你的隐私。每一项JSON操作 — 格式化、验证、转换 — 都完全在浏览器中通过 JavaScript 完成。你的数据不会传输到我们的服务器或任何第三方。加载页面后即使断网，所有工具也能正常工作。
+      - link "查看完整隐私政策" [ref=e128] [cursor=pointer]:
+        - /url: /zh/privacy
+    - generic [ref=e131]:
+      - heading "常见问题" [level=2] [ref=e133]
+      - generic [ref=e135]:
+        - group [ref=e136]:
+          - heading "我的JSON数据会上传到服务器吗？" [level=3] [ref=e138] [cursor=pointer]
+        - group [ref=e140]:
+          - heading "文件大小有限制吗？" [level=3] [ref=e142] [cursor=pointer]
+        - group [ref=e144]:
+          - heading "支持哪些浏览器？" [level=3] [ref=e146] [cursor=pointer]
+        - group [ref=e148]:
+          - heading "JSON工具箱免费吗？" [level=3] [ref=e150] [cursor=pointer]
+        - group [ref=e152]:
+          - heading "可以用于商业项目吗？" [level=3] [ref=e154] [cursor=pointer]
+    - generic [ref=e158]:
+      - heading "了解更多JSON知识" [level=2] [ref=e159]
+      - paragraph [ref=e160]: 探索JSON数据处理的指南、技巧和最佳实践。
+  - contentinfo [ref=e161]:
+    - generic [ref=e162]:
+      - generic [ref=e163]:
+        - generic [ref=e164]:
+          - link "JSON Toolbox Logo JSONToolbox" [ref=e165] [cursor=pointer]:
+            - /url: /zh
+            - img "JSON Toolbox Logo" [ref=e166]
+            - generic [ref=e167]: JSONToolbox
+          - paragraph [ref=e168]: 免费、纯前端的JSON开发者工具。直接在浏览器中格式化、验证、比较和转换JSON数据。无需上传，无追踪 — 100% 本地处理。
+          - generic [ref=e169]: All Systems Operational
+          - generic [ref=e174]:
+            - link "github" [ref=e175] [cursor=pointer]:
+              - /url: https://github.com/kbmjj123/jsontoolbox.cc
+            - link "twitter" [ref=e177] [cursor=pointer]:
+              - /url: https://twitter.com/jsontoolbox
+        - generic [ref=e180]:
+          - generic [ref=e181]:
+            - strong [ref=e182]:
+              - link "格式化与美化" [ref=e183] [cursor=pointer]:
+                - /url: /zh/tools/format
+            - list [ref=e184]:
+              - listitem [ref=e185]:
+                - link "JSON 格式化与验证" [ref=e186] [cursor=pointer]:
+                  - /url: /zh/tools/format/json-formatter
+              - listitem [ref=e187]:
+                - link "JSON 压缩器" [ref=e188] [cursor=pointer]:
+                  - /url: /zh/tools/format/json-minifier
+              - listitem [ref=e189]:
+                - link "JSON 转义/反转义" [ref=e190] [cursor=pointer]:
+                  - /url: /zh/tools/format/json-escape
+              - listitem [ref=e191]:
+                - link "JSON 编辑器" [ref=e192] [cursor=pointer]:
+                  - /url: /zh/tools/format/json-editor
+          - generic [ref=e193]:
+            - strong [ref=e194]:
+              - link "验证" [ref=e195] [cursor=pointer]:
+                - /url: /zh/tools/validate
+            - list [ref=e196]:
+              - listitem [ref=e197]:
+                - link "JSON 验证器" [ref=e198] [cursor=pointer]:
+                  - /url: /zh/tools/validate/json-validator
+              - listitem [ref=e199]:
+                - link "JSON Schema 验证器" [ref=e200] [cursor=pointer]:
+                  - /url: /zh/tools/validate/json-schema-validator
+          - generic [ref=e201]:
+            - strong [ref=e202]:
+              - link "格式转换" [ref=e203] [cursor=pointer]:
+                - /url: /zh/tools/convert
+            - list [ref=e204]:
+              - listitem [ref=e205]:
+                - link "JSON 转 CSV" [ref=e206] [cursor=pointer]:
+                  - /url: /zh/tools/convert/json-to-csv
+              - listitem [ref=e207]:
+                - link "CSV 转 JSON" [ref=e208] [cursor=pointer]:
+                  - /url: /zh/tools/convert/csv-to-json
+              - listitem [ref=e209]:
+                - link "JSON 转 Excel" [ref=e210] [cursor=pointer]:
+                  - /url: /zh/tools/convert/json-to-excel
+              - listitem [ref=e211]:
+                - link "JSON Schema 生成器" [ref=e212] [cursor=pointer]:
+                  - /url: /zh/tools/convert/json-schema-generator
+              - listitem [ref=e213]:
+                - link "JSON 转代码生成器" [ref=e214] [cursor=pointer]:
+                  - /url: /zh/tools/convert/json-to-code
+              - listitem [ref=e215]:
+                - link "查看全部" [ref=e216] [cursor=pointer]:
+                  - /url: /zh/tools/convert
+          - generic [ref=e218]:
+            - strong [ref=e219]:
+              - link "查看与探索" [ref=e220] [cursor=pointer]:
+                - /url: /zh/tools/view
+            - list [ref=e221]:
+              - listitem [ref=e222]:
+                - link "JSON 树形查看器" [ref=e223] [cursor=pointer]:
+                  - /url: /zh/tools/view/json-tree-viewer
+              - listitem [ref=e224]:
+                - link "JSONPath 测试器" [ref=e225] [cursor=pointer]:
+                  - /url: /zh/tools/view/json-path-tester
+          - generic [ref=e226]:
+            - strong [ref=e227]:
+              - link "比较与差异" [ref=e228] [cursor=pointer]:
+                - /url: /zh/tools/compare
+            - list [ref=e229]:
+              - listitem [ref=e230]:
+                - link "JSON 比较" [ref=e231] [cursor=pointer]:
+                  - /url: /zh/tools/compare/json-compare
+      - generic [ref=e232]:
+        - generic [ref=e233]:
+          - paragraph [ref=e234]: © 2026 JSON工具箱。保留所有权利。
+          - generic [ref=e235]: "|"
+          - generic [ref=e236]: 100% Client-Side
+        - generic [ref=e237]:
+          - link "关于我们" [ref=e238] [cursor=pointer]:
+            - /url: /zh/about
+          - link "联系我们" [ref=e239] [cursor=pointer]:
+            - /url: /zh/contact
+          - link "隐私政策" [ref=e240] [cursor=pointer]:
+            - /url: /zh/privacy
+          - link "服务条款" [ref=e241] [cursor=pointer]:
+            - /url: /zh/terms-of-service

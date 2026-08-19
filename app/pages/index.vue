@@ -310,9 +310,10 @@
 const { featuredTools } = useTools()
 const { t, locale } = useI18n()
 
-// FAQ items from i18n
+// FAQ items from i18n (use tm() for raw message access, avoids SSR returnObjects issues)
+const { tm } = useI18n()
 const faqItems = computed(() => {
-  const items = t('home.faq.items', { returnObjects: true })
+  const items = tm('home.faq.items')
   return Array.isArray(items) ? items : []
 })
 

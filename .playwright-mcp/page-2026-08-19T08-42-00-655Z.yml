@@ -1,0 +1,316 @@
+- generic [ref=e4]:
+  - banner [ref=e5]:
+    - generic [ref=e6]:
+      - link "JSON Toolbox Logo JSONToolbox" [ref=e7] [cursor=pointer]:
+        - /url: /
+        - img "JSON Toolbox Logo" [ref=e8]
+        - generic [ref=e9]: JSONToolbox
+      - navigation "Main navigation" [ref=e10]:
+        - link "Tools" [ref=e11] [cursor=pointer]:
+          - /url: /tools
+        - link "About" [ref=e12] [cursor=pointer]:
+          - /url: /about
+        - link "Contact" [ref=e13] [cursor=pointer]:
+          - /url: /contact
+        - button "⌘K" [ref=e14] [cursor=pointer]
+      - generic [ref=e17]:
+        - generic [ref=e18]: Free · Open Source
+        - button "English" [ref=e21] [cursor=pointer]
+        - button "Toggle theme" [ref=e25] [cursor=pointer]
+        - link "GitHub" [ref=e27] [cursor=pointer]:
+          - /url: https://github.com/kbmjj123/jsontoolbox.cc
+  - generic [ref=e29]:
+    - navigation "Breadcrumb" [ref=e30]:
+      - list [ref=e31]:
+        - listitem [ref=e32]:
+          - link "Home" [ref=e33] [cursor=pointer]:
+            - /url: /
+        - listitem [ref=e34]:
+          - link "Tools" [ref=e36] [cursor=pointer]:
+            - /url: /tools
+        - listitem [ref=e37]:
+          - link "Format & Beautify" [ref=e39] [cursor=pointer]:
+            - /url: /tools/format
+        - listitem [ref=e40]:
+          - generic [ref=e42]: JSON Formatter & Validator
+    - generic [ref=e45]:
+      - generic [ref=e50]:
+        - heading "JSON Formatter & Validator" [level=1] [ref=e51]
+        - paragraph [ref=e52]: Format, beautify, validate, and fix JSON data with proper indentation. This free JSON formatter, JSON validator, and JSON prettifier runs entirely in your browser — no upload needed. Supports auto-fix for common errors.
+      - generic [ref=e54]:
+        - generic [ref=e55]:
+          - generic [ref=e58]:
+            - generic [ref=e59]:
+              - generic [ref=e60]: Input JSON
+              - generic [ref=e61]:
+                - button "Upload File" [ref=e62] [cursor=pointer]
+                - button "Paste" [ref=e63] [cursor=pointer]
+                - button "Clear" [ref=e64] [cursor=pointer]
+            - generic [ref=e65]:
+              - generic [ref=e66]: "1"
+              - 'textbox "{\"name\": \"JSON Toolbox\", \"version\": \"1.0\"}" [ref=e68]'
+          - generic [ref=e73]:
+            - generic [ref=e74]:
+              - generic [ref=e75]: Output
+              - generic [ref=e76]:
+                - generic [ref=e77]:
+                  - button "Text" [ref=e78] [cursor=pointer]
+                  - button "Tree" [ref=e79] [cursor=pointer]
+                - button "Copy" [ref=e80] [cursor=pointer]
+                - button "Download" [ref=e81] [cursor=pointer]
+            - generic [ref=e82]: Paste JSON and click Format
+        - button "Load from URL" [ref=e85] [cursor=pointer]
+        - generic [ref=e86]:
+          - generic [ref=e87]:
+            - generic [ref=e88]: "Indent:"
+            - combobox [ref=e89]:
+              - option "1 space"
+              - option "2 spaces" [selected]
+              - option "3 spaces"
+              - option "4 spaces"
+              - option "6 spaces"
+              - option "8 spaces"
+              - option "Tab"
+              - option "Minified"
+          - button "Format" [ref=e90] [cursor=pointer]
+          - button "Minify" [ref=e91] [cursor=pointer]
+          - button "Validate" [ref=e92] [cursor=pointer]
+          - button "system.fix" [ref=e93] [cursor=pointer]
+          - button "system.share" [ref=e95] [cursor=pointer]
+          - generic [ref=e96] [cursor=pointer]:
+            - generic [ref=e97]: Auto Format
+            - switch "Auto Format" [ref=e98]
+      - generic [ref=e100]:
+        - generic [ref=e101]:
+          - heading "Key Features" [level=2] [ref=e102]
+          - generic [ref=e103]:
+            - generic [ref=e104]:
+              - heading "Instant Formatting" [level=3] [ref=e107]
+              - paragraph [ref=e108]: Paste your JSON and get formatted, pretty printed output instantly. This online JSON formatter and JSON prettifier makes any data beautify-ready in one click.
+            - generic [ref=e109]:
+              - heading "Customizable" [level=3] [ref=e112]
+              - paragraph [ref=e113]: "Choose indentation style: 2 spaces, 4 spaces, or tabs."
+            - generic [ref=e114]:
+              - heading "Private" [level=3] [ref=e117]
+              - paragraph [ref=e118]: All processing happens in your browser. No data upload.
+            - generic [ref=e119]:
+              - heading "Auto-Fix Errors" [level=3] [ref=e122]
+              - paragraph [ref=e123]: Automatically fix common JSON errors like missing quotes, trailing commas, and unclosed brackets.
+            - generic [ref=e124]:
+              - heading "Share Links" [level=3] [ref=e127]
+              - paragraph [ref=e128]: Generate shareable URLs to send JSON data to colleagues or save for later.
+            - generic [ref=e129]:
+              - heading "Image Preview" [level=3] [ref=e132]
+              - paragraph [ref=e133]: Hover over image URLs in tree view to see instant previews.
+        - generic [ref=e134]:
+          - heading "How to Use" [level=2] [ref=e135]
+          - generic [ref=e136]:
+            - generic [ref=e137]:
+              - generic [ref=e138]: "1"
+              - generic [ref=e141]:
+                - heading "Paste your JSON" [level=3] [ref=e142]
+                - paragraph [ref=e143]: Paste your JSON data into the input field.
+            - generic [ref=e144]:
+              - generic [ref=e145]: "2"
+              - generic [ref=e148]:
+                - heading "Click Format" [level=3] [ref=e149]
+                - paragraph [ref=e150]: Click the Format button to beautify your JSON.
+            - generic [ref=e151]:
+              - generic [ref=e152]: "3"
+              - generic [ref=e154]:
+                - heading "Copy or Download" [level=3] [ref=e155]
+                - paragraph [ref=e156]: Copy the formatted JSON or download it as a file.
+        - generic [ref=e157]:
+          - heading "How to Format and Validate JSON Online" [level=2] [ref=e158]
+          - generic [ref=e159]:
+            - heading "What is JSON Formatting?" [level=2] [ref=e160]
+            - paragraph [ref=e161]: JSON (JavaScript Object Notation) formatting is the process of adding proper indentation and line breaks to make JSON data readable and human-friendly. When JSON is minified or compressed, it appears as a single long line that's difficult to read. Our online JSON formatter transforms this into a structured, pretty print format that's easy to understand and debug.
+            - heading "Why Format JSON Online?" [level=2] [ref=e162]
+            - paragraph [ref=e163]: "Formatted JSON is essential for developers working with APIs, configuration files, and data storage. Here are common scenarios where JSON formatting helps:"
+            - list [ref=e164]:
+              - listitem [ref=e165]:
+                - strong [ref=e166]: "API Development:"
+                - text: Debug API responses by formatting minified JSON from servers
+              - listitem [ref=e167]:
+                - strong [ref=e168]: "Configuration Files:"
+                - text: Read and edit JSON config files like package.json or tsconfig.json
+              - listitem [ref=e169]:
+                - strong [ref=e170]: "Data Analysis:"
+                - text: Explore nested JSON structures from databases or analytics
+              - listitem [ref=e171]:
+                - strong [ref=e172]: "Logging:"
+                - text: Format JSON logs for better readability during debugging
+            - heading "Common JSON Errors and How to Fix Them" [level=2] [ref=e173]
+            - paragraph [ref=e174]: "Our JSON formatter includes auto-fix capabilities for these common issues — think of it as a built-in JSON lint and repair tool:"
+            - list [ref=e175]:
+              - listitem [ref=e176]:
+                - strong [ref=e177]: "Missing Quotes:"
+                - text: Keys and string values must be wrapped in double quotes
+              - listitem [ref=e178]:
+                - strong [ref=e179]: "Trailing Commas:"
+                - text: Remove commas after the last item in objects or arrays
+              - listitem [ref=e180]:
+                - strong [ref=e181]: "Unclosed Brackets:"
+                - text: Automatically close missing curly braces or square brackets
+              - listitem [ref=e182]:
+                - strong [ref=e183]: "Invalid Comments:"
+                - text: Remove // and /* */ comments that aren't valid in JSON
+            - heading "Tips for Working with JSON" [level=2] [ref=e184]
+            - paragraph [ref=e185]: "Here are some best practices for working with JSON data:"
+            - list [ref=e186]:
+              - listitem [ref=e187]:
+                - strong [ref=e188]: "Always Validate:"
+                - text: Use the validator to check syntax before processing
+              - listitem [ref=e189]:
+                - strong [ref=e190]: "Use Tree View:"
+                - text: Navigate complex nested structures with the expandable tree view
+              - listitem [ref=e191]:
+                - strong [ref=e192]: "Share Securely:"
+                - text: Generate shareable links for collaborative debugging
+              - listitem [ref=e193]:
+                - strong [ref=e194]: "Minify for Production:"
+                - text: Use minified JSON in production to reduce payload size
+          - generic [ref=e195]:
+            - link "JSON Validator →" [ref=e196] [cursor=pointer]:
+              - /url: /tools/validate/json-validator
+            - link "JSON Minifier →" [ref=e197] [cursor=pointer]:
+              - /url: /tools/format/json-minifier
+            - link "JSON Tree Viewer →" [ref=e198] [cursor=pointer]:
+              - /url: /tools/view/json-tree-viewer
+        - generic [ref=e200]:
+          - heading "Related Tools" [level=3] [ref=e201]
+          - generic [ref=e202]:
+            - link "JSON Validator Validate JSON syntax, detect errors with line numbers, and auto-fix common issues. This free online JSON validator also works as a JSON linter and checker — runs entirely in your browser." [ref=e203] [cursor=pointer]:
+              - /url: /tools/validate/json-validator
+              - generic [ref=e206]:
+                - generic [ref=e207]: JSON Validator
+                - generic [ref=e208]: Validate JSON syntax, detect errors with line numbers, and auto-fix common issues. This free online JSON validator also works as a JSON linter and checker — runs entirely in your browser.
+            - link "JSON Minifier Compress and minify JSON data by removing all whitespace. This json minifier and json compressor lets you compress json online — free, fast, and runs in your browser." [ref=e209] [cursor=pointer]:
+              - /url: /tools/format/json-minifier
+              - generic [ref=e212]:
+                - generic [ref=e213]: JSON Minifier
+                - generic [ref=e214]: Compress and minify JSON data by removing all whitespace. This json minifier and json compressor lets you compress json online — free, fast, and runs in your browser.
+            - link "JSON Tree Viewer View JSON data as an interactive tree structure. This free json viewer online also works as a json visualizer, json document viewer, and json file viewer — expand, collapse, and search through your JSON." [ref=e215] [cursor=pointer]:
+              - /url: /tools/view/json-tree-viewer
+              - generic [ref=e218]:
+                - generic [ref=e219]: JSON Tree Viewer
+                - generic [ref=e220]: View JSON data as an interactive tree structure. This free json viewer online also works as a json visualizer, json document viewer, and json file viewer — expand, collapse, and search through your JSON.
+        - generic [ref=e221]:
+          - heading "Frequently Asked Questions" [level=2] [ref=e222]
+          - generic [ref=e223]:
+            - group [ref=e224]:
+              - heading "Is my JSON data uploaded to a server?" [level=3] [ref=e226] [cursor=pointer]
+            - group [ref=e228]:
+              - heading "What indentation options are available?" [level=3] [ref=e230] [cursor=pointer]
+            - group [ref=e232]:
+              - heading "Can I format large JSON files?" [level=3] [ref=e234] [cursor=pointer]
+            - group [ref=e236]:
+              - heading "Does the formatter also validate JSON?" [level=3] [ref=e238] [cursor=pointer]
+            - group [ref=e240]:
+              - heading "Can the formatter automatically fix JSON errors?" [level=3] [ref=e242] [cursor=pointer]
+            - group [ref=e244]:
+              - heading "What is the difference between JSON formatter and JSON minifier?" [level=3] [ref=e246] [cursor=pointer]
+            - group [ref=e248]:
+              - heading "Can I share formatted JSON with others?" [level=3] [ref=e250] [cursor=pointer]
+            - group [ref=e252]:
+              - heading "What is the JSON tree view?" [level=3] [ref=e254] [cursor=pointer]
+  - contentinfo [ref=e256]:
+    - generic [ref=e257]:
+      - generic [ref=e258]:
+        - generic [ref=e259]:
+          - link "JSON Toolbox Logo JSONToolbox" [ref=e260] [cursor=pointer]:
+            - /url: /
+            - img "JSON Toolbox Logo" [ref=e261]
+            - generic [ref=e262]: JSONToolbox
+          - paragraph [ref=e263]: Free, client-side JSON tools for developers. Format, validate, compare, convert JSON data directly in your browser. No upload, no tracking — 100% local processing.
+          - generic [ref=e264]: All Systems Operational
+          - generic [ref=e269]:
+            - link "github" [ref=e270] [cursor=pointer]:
+              - /url: https://github.com/kbmjj123/jsontoolbox.cc
+            - link "twitter" [ref=e272] [cursor=pointer]:
+              - /url: https://twitter.com/jsontoolbox
+        - generic [ref=e275]:
+          - generic [ref=e276]:
+            - strong [ref=e277]:
+              - link "Format & Beautify" [ref=e278] [cursor=pointer]:
+                - /url: /tools/format
+            - list [ref=e279]:
+              - listitem [ref=e280]:
+                - link "JSON Formatter & Validator" [ref=e281] [cursor=pointer]:
+                  - /url: /tools/format/json-formatter
+              - listitem [ref=e282]:
+                - link "JSON Minifier" [ref=e283] [cursor=pointer]:
+                  - /url: /tools/format/json-minifier
+              - listitem [ref=e284]:
+                - link "JSON Escape & Unescape" [ref=e285] [cursor=pointer]:
+                  - /url: /tools/format/json-escape
+              - listitem [ref=e286]:
+                - link "JSON Editor" [ref=e287] [cursor=pointer]:
+                  - /url: /tools/format/json-editor
+          - generic [ref=e288]:
+            - strong [ref=e289]:
+              - link "Validation" [ref=e290] [cursor=pointer]:
+                - /url: /tools/validate
+            - list [ref=e291]:
+              - listitem [ref=e292]:
+                - link "JSON Validator" [ref=e293] [cursor=pointer]:
+                  - /url: /tools/validate/json-validator
+              - listitem [ref=e294]:
+                - link "JSON Schema Validator" [ref=e295] [cursor=pointer]:
+                  - /url: /tools/validate/json-schema-validator
+          - generic [ref=e296]:
+            - strong [ref=e297]:
+              - link "Conversion" [ref=e298] [cursor=pointer]:
+                - /url: /tools/convert
+            - list [ref=e299]:
+              - listitem [ref=e300]:
+                - link "JSON to CSV Converter" [ref=e301] [cursor=pointer]:
+                  - /url: /tools/convert/json-to-csv
+              - listitem [ref=e302]:
+                - link "CSV to JSON Converter" [ref=e303] [cursor=pointer]:
+                  - /url: /tools/convert/csv-to-json
+              - listitem [ref=e304]:
+                - link "JSON to Excel Converter" [ref=e305] [cursor=pointer]:
+                  - /url: /tools/convert/json-to-excel
+              - listitem [ref=e306]:
+                - link "JSON Schema Generator" [ref=e307] [cursor=pointer]:
+                  - /url: /tools/convert/json-schema-generator
+              - listitem [ref=e308]:
+                - link "JSON to Code Generator" [ref=e309] [cursor=pointer]:
+                  - /url: /tools/convert/json-to-code
+              - listitem [ref=e310]:
+                - link "View All" [ref=e311] [cursor=pointer]:
+                  - /url: /tools/convert
+          - generic [ref=e313]:
+            - strong [ref=e314]:
+              - link "View & Explore" [ref=e315] [cursor=pointer]:
+                - /url: /tools/view
+            - list [ref=e316]:
+              - listitem [ref=e317]:
+                - link "JSON Tree Viewer" [ref=e318] [cursor=pointer]:
+                  - /url: /tools/view/json-tree-viewer
+              - listitem [ref=e319]:
+                - link "JSONPath Tester" [ref=e320] [cursor=pointer]:
+                  - /url: /tools/view/json-path-tester
+          - generic [ref=e321]:
+            - strong [ref=e322]:
+              - link "Compare & Diff" [ref=e323] [cursor=pointer]:
+                - /url: /tools/compare
+            - list [ref=e324]:
+              - listitem [ref=e325]:
+                - link "JSON Compare" [ref=e326] [cursor=pointer]:
+                  - /url: /tools/compare/json-compare
+      - generic [ref=e327]:
+        - generic [ref=e328]:
+          - paragraph [ref=e329]: © 2026 JSON Toolbox. All rights reserved.
+          - generic [ref=e330]: "|"
+          - generic [ref=e331]: 100% Client-Side
+        - generic [ref=e332]:
+          - link "About Us" [ref=e333] [cursor=pointer]:
+            - /url: /about
+          - link "Contact" [ref=e334] [cursor=pointer]:
+            - /url: /contact
+          - link "Privacy Policy" [ref=e335] [cursor=pointer]:
+            - /url: /privacy
+          - link "Terms of Service" [ref=e336] [cursor=pointer]:
+            - /url: /terms-of-service
