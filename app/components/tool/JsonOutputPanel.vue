@@ -46,7 +46,7 @@
           class="text-surface-400 hover:text-surface-600 dark:text-surface-500 dark:hover:text-surface-300"
           :title="fullscreen ? 'Exit fullscreen' : 'Fullscreen'"
         >
-          <Icon :name="fullscreen ? 'lucide:minimize-2' : 'lucide:maximize-2'" class="w-4 h-4" />
+          <Icon :name="fullscreen ? 'lucide:minimize' : 'lucide:maximize'" class="w-4 h-4" />
         </button>
       </div>
     </div>
