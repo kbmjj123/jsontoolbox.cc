@@ -96,7 +96,7 @@
     <template #toolbar-right>
       <div class="flex items-center gap-3 ml-auto">
         <!-- Share button -->
-        <div class="relative">
+        <div class="relative p-0 m-0">
           <button @click="showShareMenu = !showShareMenu" class="text-xs text-primary-600 hover:text-primary-700 dark:text-primary-400">
             {{ $t('system.share') }}
           </button>
