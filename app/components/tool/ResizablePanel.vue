@@ -1,7 +1,7 @@
 <template>
   <div
     ref="containerRef"
-    class="flex overflow-hidden flex-col"
+    class="flex overflow-hidden flex-col transition-all duration-300 ease-in-out"
     :class="[
       isFullscreen ? 'fixed inset-0 z-50 bg-white dark:bg-surface-900 p-4 flex-col' : '',
       containerClass
@@ -10,8 +10,17 @@
     <!-- Header bar -->
     <div class="flex items-center justify-between mb-2">
       <slot name="header-left" />
+      <div class="flex-1 flex justify-center">
+        <Transition name="esc-hint">
+          <span
+            v-if="isFullscreen"
+            class="text-xs text-surface-400 dark:text-surface-500 bg-surface-100 dark:bg-surface-800 px-3 py-1 rounded-full"
+          >
+            Press ESC to exit fullscreen
+          </span>
+        </Transition>
+      </div>
       <slot name="header-right">
-				<!-- Default: fullscreen toggle -->
         <button
           @click="isFullscreen = !isFullscreen"
           class="text-surface-400 hover:text-surface-600 dark:text-surface-500 dark:hover:text-surface-300"
@@ -19,7 +28,7 @@
         >
           <Icon :name="isFullscreen ? 'lucide:minimize' : 'lucide:maximize'" class="w-4 h-4" />
         </button>
-			</slot>
+      </slot>
     </div>
 
     <!-- Resizable panels -->
@@ -180,3 +189,20 @@ const updateRatio = (clientX: number, clientY: number) => {
   }
 }
 </script>
+
+<style scoped>
+.esc-hint-enter-active {
+  transition: opacity 0.3s ease, transform 0.3s ease;
+}
+.esc-hint-leave-active {
+  transition: opacity 0.2s ease, transform 0.2s ease;
+}
+.esc-hint-enter-from {
+  opacity: 0;
+  transform: translateY(-4px);
+}
+.esc-hint-leave-to {
+  opacity: 0;
+  transform: translateY(-4px);
+}
+</style>
