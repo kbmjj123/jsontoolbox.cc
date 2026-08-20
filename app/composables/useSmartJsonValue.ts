@@ -10,12 +10,63 @@ export interface DetectedType {
   value: string
 }
 
+// ── Image detection patterns (merged from TreeNode) ──
+
+const IMAGE_EXTENSIONS = /\.(jpg|jpeg|png|gif|webp|svg|bmp|ico)(\?.*)?$/i
+const IMAGE_HOSTS = /cdn\.|img\.|image\.|media\./i
+const IMAGE_PATHNAME = /\/image[s]?\//i
+
+/**
+ * Check if a string value is likely an image URL
+ */
+export function isImageUrl(value: unknown): boolean {
+  if (typeof value !== 'string') return false
+  if (value.length > 2048) return false
+
+  if (IMAGE_EXTENSIONS.test(value)) return true
+
+  try {
+    const url = new URL(value)
+    if (IMAGE_HOSTS.test(url.hostname)) return true
+    if (IMAGE_PATHNAME.test(url.pathname)) return true
+  } catch {
+    if (/^[/.]/.test(value) && IMAGE_EXTENSIONS.test(value)) return true
+  }
+
+  return false
+}
+
+// ── Color detection patterns ──
+
+const HEX_COLOR = /^#([0-9a-f]{3}|[0-9a-f]{4}|[0-9a-f]{6}|[0-9a-f]{8})$/i
+const RGB_COLOR = /^rgba?\(\s*\d{1,3}\s*,\s*\d{1,3}\s*,\s*\d{1,3}/i
+const HSL_COLOR = /^hsla?\(\s*\d{1,3}\s*,\s*\d{1,3}%?\s*,\s*\d{1,3}%?/i
+
+/**
+ * Check if a string value is a CSS color
+ */
+export function isColorValue(value: unknown): boolean {
+  if (typeof value !== 'string') return false
+  return HEX_COLOR.test(value) || RGB_COLOR.test(value) || HSL_COLOR.test(value)
+}
+
+/**
+ * Get a CSS color string safe for inline style binding.
+ * Returns the value as-is if it looks like a valid CSS color.
+ */
+export function getColorStyle(value: string): string | null {
+  if (!isColorValue(value)) return null
+  return value
+}
+
+// ── General type patterns ──
+
 const typePatterns: Record<string, RegExp> = {
   url: /^https?:\/\/[^\s]+$/i,
-  image: /\.(jpg|jpeg|png|gif|webp|svg|bmp)(\?.*)?$/i,
+  image: /\.(jpg|jpeg|png|gif|webp|svg|bmp|ico)(\?.*)?$/i,
   email: /^[^\s@]+@[^\s@]+\.[^\s@]+$/,
   date: /^\d{4}-\d{2}-\d{2}/,
-  color: /^#([0-9a-f]{3}|[0-9a-f]{6})$/i,
+  color: /^#([0-9a-f]{3}|[0-9a-f]{4}|[0-9a-f]{6}|[0-9a-f]{8})$/i,
 }
 
 const typeIcons: Record<string, string> = {
@@ -28,12 +79,14 @@ const typeIcons: Record<string, string> = {
 
 /**
  * Detect smart type for a string value
- * @param value - String value to detect
- * @returns Detected type or null
  */
 export function detectValueType(value: string): DetectedType['type'] | null {
   if (typeof value !== 'string') return null
+  // Image check first (more specific than url)
+  if (isImageUrl(value)) return 'image'
+  if (isColorValue(value)) return 'color'
   for (const [type, pattern] of Object.entries(typePatterns)) {
+    if (type === 'image' || type === 'color') continue // already checked above
     if (pattern.test(value)) return type as DetectedType['type']
   }
   return null
@@ -41,8 +94,6 @@ export function detectValueType(value: string): DetectedType['type'] | null {
 
 /**
  * Get icon for detected type
- * @param type - Detected type
- * @returns Lucide icon name
  */
 export function getTypeIcon(type: string): string {
   return typeIcons[type] || 'lucide:tag'
@@ -50,9 +101,6 @@ export function getTypeIcon(type: string): string {
 
 /**
  * Traverse JSON and detect smart types in string values
- * @param jsonData - Parsed JSON object
- * @param basePath - Base path prefix (default: '$')
- * @returns Array of detected types with paths
  */
 export function detectJsonTypes(jsonData: any, basePath = '$'): DetectedType[] {
   const types: DetectedType[] = []
@@ -76,8 +124,6 @@ export function detectJsonTypes(jsonData: any, basePath = '$'): DetectedType[] {
 
 /**
  * Vue composable for smart JSON value detection
- * @param jsonData - Ref or getter for parsed JSON data
- * @returns Reactive detected types and helper functions
  */
 export function useSmartJsonValue(jsonData: MaybeRefOrGetter<any>) {
   const detectedTypes = computed<DetectedType[]>(() => {
@@ -94,6 +140,9 @@ export function useSmartJsonValue(jsonData: MaybeRefOrGetter<any>) {
     detectedTypes,
     detectValueType,
     getTypeIcon,
+    isImageUrl,
+    isColorValue,
+    getColorStyle,
     typePatterns,
     typeIcons,
   }

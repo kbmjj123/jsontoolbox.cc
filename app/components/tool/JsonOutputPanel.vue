@@ -23,6 +23,14 @@
           >
             Tree
           </button>
+          <button
+            v-if="parsedData !== null"
+            @click="emit('update:viewMode', 'rich')"
+            :class="viewMode === 'rich' ? 'bg-primary-600 text-white' : 'bg-white text-surface-600 dark:bg-surface-800 dark:text-surface-400'"
+            class="px-2 py-0.5 text-xs transition-colors"
+          >
+            Rich
+          </button>
         </div>
 
         <slot name="actions" />
@@ -68,7 +76,7 @@
 
     <!-- Tree view -->
     <div
-      v-else
+      v-else-if="currentMode === 'tree'"
       class="flex-1 min-h-0 overflow-auto rounded-xl border border-surface-200 bg-surface-50 p-4 dark:border-surface-700 dark:bg-surface-800"
     >
       <TreeNode
@@ -82,6 +90,21 @@
         {{ error || emptyText }}
       </div>
     </div>
+
+    <!-- Rich view -->
+    <div
+      v-else
+      class="flex-1 min-h-0 overflow-auto rounded-xl border border-surface-200 bg-surface-50 p-4 dark:border-surface-700 dark:bg-surface-800"
+    >
+      <RichValueNode
+        v-if="parsedData !== null"
+        :data="parsedData"
+        :path="''"
+      />
+      <div v-else class="flex items-center justify-center h-full text-surface-400 text-sm">
+        {{ error || emptyText }}
+      </div>
+    </div>
   </div>
 </template>
 
@@ -90,7 +113,7 @@ interface Props {
   label?: string
   content?: string
   error?: string
-  viewMode?: 'text' | 'tree'
+  viewMode?: 'text' | 'tree' | 'rich'
   showModeToggle?: boolean
   parsedData?: unknown | null
   showCopy?: boolean
@@ -113,7 +136,7 @@ const props = withDefaults(defineProps<Props>(), {
 })
 
 const emit = defineEmits<{
-  'update:viewMode': [mode: 'text' | 'tree']
+  'update:viewMode': [mode: 'text' | 'tree' | 'rich']
   copy: []
   download: []
   copyPath: [path: string]

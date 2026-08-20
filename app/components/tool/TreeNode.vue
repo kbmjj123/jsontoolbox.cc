@@ -127,10 +127,6 @@ const getAllExpandableKeys = (data: unknown): (string | number)[] => {
   return keys
 }
 
-// Image detection
-const IMAGE_EXTENSIONS = /\.(jpg|jpeg|png|gif|webp|svg|bmp|ico)(\?.*)?$/i
-const IMAGE_HOSTS = /cdn\.|img\.|image\.|media\./i
-
 const isObject = (val: unknown): val is Record<string, unknown> =>
   val !== null && typeof val === 'object' && !Array.isArray(val)
 
@@ -183,26 +179,6 @@ const matchesSearch = (key: unknown, value: unknown) => {
   const keyStr = String(key).toLowerCase()
   const valueStr = String(value).toLowerCase()
   return keyStr.includes(q) || valueStr.includes(q)
-}
-
-/**
- * Check if value is an image URL
- */
-const isImageUrl = (value: unknown): boolean => {
-  if (typeof value !== 'string') return false
-  if (value.length > 2048) return false
-
-  if (IMAGE_EXTENSIONS.test(value)) return true
-
-  try {
-    const url = new URL(value)
-    if (IMAGE_HOSTS.test(url.hostname)) return true
-    if (/\/image[s]?\//i.test(url.pathname)) return true
-  } catch {
-    if (/^[/.]/.test(value) && IMAGE_EXTENSIONS.test(value)) return true
-  }
-
-  return false
 }
 
 const copyPath = (path: string) => {
