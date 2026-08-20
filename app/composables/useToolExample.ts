@@ -13,7 +13,7 @@ interface ToolExample {
 
 // Build-time import of all example JSON files
 const exampleModules = import.meta.glob<{ default: ToolExample[] }>(
-  '../../assets/data/examples/*.json',
+  '~/assets/data/examples/*.json',
   { eager: true }
 )
 

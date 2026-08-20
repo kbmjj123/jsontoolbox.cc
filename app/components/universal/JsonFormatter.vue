@@ -13,7 +13,7 @@
           @paste="onInputPaste"
         >
           <template #actions>
-            <div v-if="hasExamples" class="relative">
+            <template v-if="hasExamples">
               <button
                 @click="showExampleMenu = !showExampleMenu"
                 class="text-xs text-primary-600 hover:text-primary-700 dark:text-primary-400"
@@ -30,7 +30,7 @@
                   {{ getExampleLabel(ex) }}
                 </button>
               </div>
-            </div>
+            </template>
           </template>
         </JsonInputEditor>
       </div>
