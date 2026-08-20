@@ -96,16 +96,18 @@ const expanded = ref<Set<string | number>>(new Set())
 const expandAllSignal = inject<Ref<number> | null>('treeExpandAll', null)
 const collapseAllSignal = inject<Ref<number> | null>('treeCollapseAll', null)
 
-watch(expandAllSignal, (val) => {
-  if (val === undefined || val === null) return
-  // Collect all expandable keys
-  const keys = getAllExpandableKeys(props.data)
-  expanded.value = new Set(keys)
-})
+if (expandAllSignal) {
+  watch(expandAllSignal, () => {
+    const keys = getAllExpandableKeys(props.data)
+    expanded.value = new Set(keys)
+  })
+}
 
-watch(collapseAllSignal, () => {
-  expanded.value = new Set()
-})
+if (collapseAllSignal) {
+  watch(collapseAllSignal, () => {
+    expanded.value = new Set()
+  })
+}
 
 const getAllExpandableKeys = (data: unknown): (string | number)[] => {
   const keys: (string | number)[] = []

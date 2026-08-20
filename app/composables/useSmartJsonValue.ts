@@ -17,7 +17,7 @@ const IMAGE_HOSTS = /cdn\.|img\.|image\.|media\./i
 const IMAGE_PATHNAME = /\/image[s]?\//i
 
 /**
- * Check if a string value is likely an image URL
+ * Check if a string value is a confident image URL (has extension or known host)
  */
 export function isImageUrl(value: unknown): boolean {
   if (typeof value !== 'string') return false
@@ -34,6 +34,16 @@ export function isImageUrl(value: unknown): boolean {
   }
 
   return false
+}
+
+/**
+ * Check if a value could possibly be an image URL (any HTTP/HTTPS URL).
+ * Use with <img @error> to hide failed previews.
+ */
+export function isPossibleImageUrl(value: unknown): boolean {
+  if (typeof value !== 'string') return false
+  if (value.length > 2048) return false
+  return /^https?:\/\/[^\s]+$/i.test(value)
 }
 
 // ── Color detection patterns ──

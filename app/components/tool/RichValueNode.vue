@@ -36,15 +36,15 @@
           <span v-else class="text-surface-400">{...}</span>
         </div>
 
-        <!-- Image preview -->
-        <div v-if="isImageUrl(value)" class="flex">
+        <!-- Image preview (any URL, hidden on load error) -->
+        <div v-if="isPossibleImageUrl(value)" class="flex">
           <span class="flex-none w-8 text-right pr-2 select-none" />
           <span class="w-4 shrink-0" />
           <img
             :src="value"
             :alt="String(key)"
             class="max-w-[160px] max-h-[100px] rounded-lg border border-surface-200 dark:border-surface-700 object-contain mt-1 mb-1"
-            @error="($event.target as HTMLImageElement).style.display = 'none'"
+            @error="(($event.target as HTMLImageElement).parentElement as HTMLElement).style.display = 'none'"
           />
         </div>
 
@@ -90,15 +90,15 @@
           <span v-else class="text-surface-400 ml-1">{...}</span>
         </div>
 
-        <!-- Image preview -->
-        <div v-if="isImageUrl(item)" class="flex">
+        <!-- Image preview (any URL, hidden on load error) -->
+        <div v-if="isPossibleImageUrl(item)" class="flex">
           <span class="flex-none w-8 text-right pr-2 select-none" />
           <span class="w-4 shrink-0" />
           <img
             :src="item"
             :alt="`[${index}]`"
             class="max-w-[160px] max-h-[100px] rounded-lg border border-surface-200 dark:border-surface-700 object-contain mt-1 mb-1"
-            @error="($event.target as HTMLImageElement).style.display = 'none'"
+            @error="(($event.target as HTMLImageElement).parentElement as HTMLElement).style.display = 'none'"
           />
         </div>
 
