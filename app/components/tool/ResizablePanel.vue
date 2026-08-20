@@ -66,7 +66,7 @@ interface Props {
   minSecond?: string
   responsive?: boolean
   class?: string
-  modelValue?: boolean
+  fullscreen?: boolean
 }
 
 const props = withDefaults(defineProps<Props>(), {
@@ -76,14 +76,14 @@ const props = withDefaults(defineProps<Props>(), {
   minSecond: '200px',
   responsive: false,
   class: '',
-  modelValue: false
+  fullscreen: false
 })
 
-const emit = defineEmits<{ 'update:modelValue': [value: boolean] }>()
+const emit = defineEmits<{ 'update:fullscreen': [value: boolean] }>()
 
 const isFullscreen = computed({
-  get: () => props.modelValue,
-  set: v => emit('update:modelValue', v)
+  get: () => props.fullscreen,
+  set: v => emit('update:fullscreen', v)
 })
 
 const containerClass = computed(() => props.class)
