@@ -182,7 +182,7 @@ export default defineNuxtConfig({
     fallback: 'light',
     storageKey: 'nuxt-color-mode'
   },
-  css: ['~/assets/css/tailwind.css'],
+  css: ['~/assets/css/tailwind.css', 'photoswipe/dist/photoswipe.css'],
   tailwindcss: {
     viewer: { endpoint: '/_tailwind', exportViewer: true },
     config: {

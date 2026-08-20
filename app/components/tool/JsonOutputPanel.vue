@@ -62,7 +62,7 @@
           <div class="flex-none select-none text-right pr-3 pl-2 py-4 text-surface-400 dark:text-surface-500 border-r border-surface-200 dark:border-surface-700 leading-[1.5]">
             <div v-for="n in contentLines.length" :key="n">{{ n }}</div>
           </div>
-          <pre class="flex-1 p-4 overflow-x-auto whitespace-pre">{{ content }}</pre>
+          <pre class="flex-1 p-4 m-0 overflow-x-auto whitespace-pre leading-[1.5]">{{ content }}</pre>
         </div>
         <div v-else class="p-4">{{ emptyText }}</div>
       </div>
@@ -146,7 +146,7 @@ const copied = ref(false)
 
 const currentMode = computed(() => props.viewMode)
 const hasContent = computed(() => !!props.content)
-const contentLines = computed(() => (props.content || '').split('\n'))
+const contentLines = computed(() => (props.content || '').replace(/\n$/, '').split('\n'))
 
 const handleCopy = async () => {
   emit('copy')
