@@ -177,6 +177,7 @@
     "cancel": "取消",
     "loading": "加载中...",
     "loadUrlHint": "输入公开的 JSON 链接，内容在浏览器本地获取。",
-    "enterUrl": "输入链接"
+    "enterUrl": "输入链接",
+    "emptyOutput": "结果将在此显示"
   }
 }

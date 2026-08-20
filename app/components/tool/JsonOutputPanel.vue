@@ -53,7 +53,7 @@
     </div>
 
     <!-- Text view -->
-    <div v-if="currentMode === 'text'" class="relative flex-1 min-h-0">
+    <div v-if="currentMode === 'text'" key="text" class="relative flex-1 min-h-0">
       <div
         :class="[hasContent ? 'text-surface-900 dark:text-surface-100' : 'text-surface-400 dark:text-surface-500']"
         class="w-full h-full rounded-xl border border-surface-200 bg-surface-50 font-mono text-sm overflow-auto dark:border-surface-700 dark:bg-surface-800"
@@ -77,6 +77,7 @@
     <!-- Tree view -->
     <div
       v-else-if="currentMode === 'tree'"
+      key="tree"
       class="flex-1 min-h-0 overflow-auto rounded-xl border border-surface-200 bg-surface-50 p-4 dark:border-surface-700 dark:bg-surface-800"
     >
       <TreeNode
@@ -94,6 +95,7 @@
     <!-- Rich view -->
     <div
       v-else
+      key="rich"
       class="flex-1 min-h-0 overflow-auto rounded-xl border border-surface-200 bg-surface-50 p-4 dark:border-surface-700 dark:bg-surface-800"
     >
       <RichValueNode

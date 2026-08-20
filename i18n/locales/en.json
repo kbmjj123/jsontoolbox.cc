@@ -177,6 +177,7 @@
     "cancel": "Cancel",
     "loading": "Loading...",
     "loadUrlHint": "Enter a public JSON URL. Content is fetched directly in your browser.",
-    "enterUrl": "Enter URL"
+    "enterUrl": "Enter URL",
+    "emptyOutput": "Result will appear here"
   }
 }
