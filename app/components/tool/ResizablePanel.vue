@@ -1,7 +1,15 @@
 <template>
-  <div ref="containerRef" class="flex overflow-hidden" :class="effectiveDirection === 'horizontal' ? 'flex-row' : 'flex-col'">
+  <div
+    ref="containerRef"
+    class="flex overflow-hidden"
+    :class="[
+      effectiveDirection === 'horizontal' ? 'flex-row' : 'flex-col',
+      isFullscreen ? 'fixed inset-0 z-50 bg-white dark:bg-surface-900 p-4 flex-col' : '',
+      containerClass
+    ]"
+  >
     <!-- Left / Top panel -->
-    <div :style="firstStyle" class="min-w-0 min-h-0 overflow-hidden">
+    <div :style="firstStyle" class="min-w-0 min-h-0 overflow-hidden" :class="isFullscreen ? 'h-full' : ''">
       <slot name="first" />
     </div>
 
@@ -22,7 +30,7 @@
     </div>
 
     <!-- Right / Bottom panel -->
-    <div class="min-w-0 min-h-0 flex-1 overflow-hidden">
+    <div class="min-w-0 min-h-0 flex-1 overflow-hidden" :class="isFullscreen ? 'h-full' : ''">
       <slot name="second" />
     </div>
   </div>
@@ -35,6 +43,8 @@ interface Props {
   minFirst?: string
   minSecond?: string
   responsive?: boolean
+  class?: string
+  modelValue?: boolean
 }
 
 const props = withDefaults(defineProps<Props>(), {
@@ -43,7 +53,18 @@ const props = withDefaults(defineProps<Props>(), {
   minFirst: '200px',
   minSecond: '200px',
   responsive: false,
+  class: '',
+  modelValue: false
 })
+
+const emit = defineEmits<{ 'update:modelValue': [value: boolean] }>()
+
+const isFullscreen = computed({
+  get: () => props.modelValue,
+  set: v => emit('update:modelValue', v)
+})
+
+const containerClass = computed(() => props.class)
 
 const isMobile = ref(false)
 let resizeObserver: ResizeObserver | null = null
@@ -60,6 +81,18 @@ onMounted(() => {
       resizeObserver?.disconnect()
     })
   }
+})
+
+// Escape to exit fullscreen
+useEventListener('keydown', (e: KeyboardEvent) => {
+  if (e.key === 'Escape' && isFullscreen.value) {
+    isFullscreen.value = false
+  }
+})
+
+// Lock body scroll in fullscreen
+watch(isFullscreen, (v) => {
+  document.body.style.overflow = v ? 'hidden' : ''
 })
 
 const containerRef = ref<HTMLDivElement>()

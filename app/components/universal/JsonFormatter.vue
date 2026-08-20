@@ -1,73 +1,72 @@
 <template>
-  <div :class="fullscreen ? 'fixed inset-0 z-50 bg-white dark:bg-surface-900 p-4 flex flex-col' : ''">
-    <!-- Input / Output resizable split -->
-    <ResizablePanel :initial-ratio="0.5" responsive :class="fullscreen ? 'flex-1 min-h-0' : ''">
-      <template #first>
-        <div :class="fullscreen ? 'h-full pr-3' : 'pr-3'">
-          <JsonInputEditor
-            v-model="inputJson"
-            :label="tool.ui?.label_input || 'Input JSON'"
-            placeholder='{"name": "JSON Toolbox", "version": "1.0"}'
-            :height="fullscreen ? 'h-full' : undefined"
-            show-upload
-            @clear="clearAll"
-            @paste="onInputPaste"
-          >
-            <template #actions>
-              <div v-if="hasExamples" class="relative">
-                <button
-                  @click="showExampleMenu = !showExampleMenu"
-                  class="text-xs text-primary-600 hover:text-primary-700 dark:text-primary-400"
-                >
-                  {{ $t('system.example') }}
-                </button>
-                <div v-if="showExampleMenu" class="absolute left-0 top-full mt-1 bg-white dark:bg-surface-800 border border-surface-200 dark:border-surface-700 rounded-lg shadow-lg p-1 z-50 min-w-[140px]">
-                  <button
-                    v-for="ex in examples"
-                    :key="ex.id"
-                    @click="loadExampleById(ex.id); showExampleMenu = false"
-                    class="w-full text-left px-3 py-1.5 text-xs hover:bg-surface-100 dark:hover:bg-surface-700 rounded"
-                  >
-                    {{ getExampleLabel(ex) }}
-                  </button>
-                </div>
-              </div>
-            </template>
-          </JsonInputEditor>
-        </div>
-      </template>
-      <template #second>
-        <div :class="fullscreen ? 'h-full pl-3' : 'pl-3'">
-          <JsonOutputPanel
-            :label="tool.ui?.label_output || 'Output'"
-            :content="outputJson"
-            :error="error"
-            :view-mode="viewMode"
-            :height="fullscreen ? 'h-full' : undefined"
-            show-mode-toggle
-            :parsed-data="parsedData"
-            :empty-text="$t('system.emptyOutput')"
-            @update:view-mode="viewMode = $event"
-            @copy="copyOutput"
-            @download="downloadOutput"
-            @copy-path="copyPath"
-          >
-            <template #actions>
+  <!-- Input / Output resizable split -->
+  <ResizablePanel v-model:fullscreen="fullscreen" :initial-ratio="0.5" responsive>
+    <template #first>
+      <div class="h-full pr-3">
+        <JsonInputEditor
+          v-model="inputJson"
+          :label="tool.ui?.label_input || 'Input JSON'"
+          placeholder='{"name": "JSON Toolbox", "version": "1.0"}'
+          :height="fullscreen ? 'h-full' : undefined"
+          show-upload
+          @clear="clearAll"
+          @paste="onInputPaste"
+        >
+          <template #actions>
+            <div v-if="hasExamples" class="relative">
               <button
-                @click="fullscreen = !fullscreen"
-                class="text-surface-400 hover:text-surface-600 dark:text-surface-500 dark:hover:text-surface-300"
-                :title="fullscreen ? 'Exit fullscreen' : 'Fullscreen'"
+                @click="showExampleMenu = !showExampleMenu"
+                class="text-xs text-primary-600 hover:text-primary-700 dark:text-primary-400"
               >
-                <Icon :name="fullscreen ? 'lucide:minimize' : 'lucide:maximize'" class="w-4 h-4" />
+                {{ $t('system.example') }}
               </button>
-            </template>
-          </JsonOutputPanel>
-        </div>
-      </template>
-    </ResizablePanel>
+              <div v-if="showExampleMenu" class="absolute left-0 top-full mt-1 bg-white dark:bg-surface-800 border border-surface-200 dark:border-surface-700 rounded-lg shadow-lg p-1 z-50 min-w-[140px]">
+                <button
+                  v-for="ex in examples"
+                  :key="ex.id"
+                  @click="loadExampleById(ex.id); showExampleMenu = false"
+                  class="w-full text-left px-3 py-1.5 text-xs hover:bg-surface-100 dark:hover:bg-surface-700 rounded"
+                >
+                  {{ getExampleLabel(ex) }}
+                </button>
+              </div>
+            </div>
+          </template>
+        </JsonInputEditor>
+      </div>
+    </template>
+    <template #second>
+      <div class="h-full pl-3">
+        <JsonOutputPanel
+          :label="tool.ui?.label_output || 'Output'"
+          :content="outputJson"
+          :error="error"
+          :view-mode="viewMode"
+          :height="fullscreen ? 'h-full' : undefined"
+          show-mode-toggle
+          :parsed-data="parsedData"
+          :empty-text="$t('system.emptyOutput')"
+          @update:view-mode="viewMode = $event"
+          @copy="copyOutput"
+          @download="downloadOutput"
+          @copy-path="copyPath"
+        >
+          <template #actions>
+            <button
+              @click="fullscreen = !fullscreen"
+              class="text-surface-400 hover:text-surface-600 dark:text-surface-500 dark:hover:text-surface-300"
+              :title="fullscreen ? 'Exit fullscreen' : 'Fullscreen'"
+            >
+              <Icon :name="fullscreen ? 'lucide:minimize' : 'lucide:maximize'" class="w-4 h-4" />
+            </button>
+          </template>
+        </JsonOutputPanel>
+      </div>
+    </template>
+  </ResizablePanel>
 
-    <!-- Bottom controls (hidden in fullscreen) -->
-    <div v-if="!fullscreen">
+  <!-- Bottom controls (hidden in fullscreen) -->
+  <div v-if="!fullscreen">
     <!-- Load from URL -->
     <div class="mt-3">
       <button
@@ -166,7 +165,6 @@
           />
         </button>
       </label>
-    </div>
     </div>
   </div>
 </template>
@@ -316,9 +314,6 @@ useEventListener('keydown', (e: KeyboardEvent) => {
   if ((e.metaKey || e.ctrlKey) && e.key === 'Enter') {
     e.preventDefault()
     formatJson()
-  }
-  if (e.key === 'Escape' && fullscreen.value) {
-    fullscreen.value = false
   }
 })
 
