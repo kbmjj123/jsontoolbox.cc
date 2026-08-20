@@ -48,6 +48,6 @@ const relatedTools = computed(() => {
       return true
     })
     .map(s => getToolBySingleSlug(s))
-    .filter(Boolean) as ProcessedTool[]
+    .filter(t => t && t.icon) as ProcessedTool[]
 })
 </script>

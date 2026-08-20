@@ -6,7 +6,7 @@
   "sort": 1,
   "applicationCategory": "DeveloperApplication",
   "nextSteps": ["json-validator", "json-minifier"],
-  "recommends": ["json-tree-viewer", "json-diff"],
+  "recommends": ["json-tree-viewer", "json-compare"],
   "en": {
     "name": "JSON Formatter & Validator",
     "description": "Format, validate, and compress JSON data with proper indentation. This free JSON formatter and validator runs entirely in your browser — no upload needed.",
