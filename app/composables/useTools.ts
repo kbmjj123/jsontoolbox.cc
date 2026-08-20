@@ -69,7 +69,7 @@ export const useTools = () => {
 
   // 初始化原始数据
   const rawToolList = Object.entries(toolFiles)
-    .filter(([path]) => !path.endsWith('_meta.json'))
+    .filter(([path]) => !path.endsWith('_meta.json') && !path.includes('/examples/'))
     .map(([path, module]: [string, any]) => {
       const data = module.default || module
 

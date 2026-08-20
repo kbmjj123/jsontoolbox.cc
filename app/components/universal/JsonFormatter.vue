@@ -3,11 +3,12 @@
     <!-- Input / Output resizable split -->
     <ResizablePanel :initial-ratio="0.5" responsive :class="fullscreen ? 'flex-1 min-h-0' : ''">
       <template #first>
-        <div class="pr-3">
+        <div :class="fullscreen ? 'h-full pr-3' : 'pr-3'">
           <JsonInputEditor
             v-model="inputJson"
             :label="tool.ui?.label_input || 'Input JSON'"
             placeholder='{"name": "JSON Toolbox", "version": "1.0"}'
+            :height="fullscreen ? 'h-full' : undefined"
             show-upload
             @clear="clearAll"
             @paste="onInputPaste"
@@ -36,12 +37,13 @@
         </div>
       </template>
       <template #second>
-        <div class="pl-3">
+        <div :class="fullscreen ? 'h-full pl-3' : 'pl-3'">
           <JsonOutputPanel
             :label="tool.ui?.label_output || 'Output'"
             :content="outputJson"
             :error="error"
             :view-mode="viewMode"
+            :height="fullscreen ? 'h-full' : undefined"
             show-mode-toggle
             :parsed-data="parsedData"
             :empty-text="$t('system.emptyOutput')"
