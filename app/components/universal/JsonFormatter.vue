@@ -140,7 +140,7 @@ const outputJson = ref('')
 const error = ref('')
 const indent = ref<number | string>(2)
 const autoFormat = ref(false)
-const viewMode = ref<'text' | 'tree'>('text')
+const viewMode = ref<'text' | 'tree' | 'rich'>('text')
 const fullscreen = ref(false)
 const lastAction = ref<'formatted' | 'minified' | 'validated'>('formatted')
 
