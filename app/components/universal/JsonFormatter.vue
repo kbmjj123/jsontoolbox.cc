@@ -1,7 +1,7 @@
 <template>
-  <div>
+  <div :class="fullscreen ? 'fixed inset-0 z-50 bg-white dark:bg-surface-900 p-4 flex flex-col' : ''">
     <!-- Input / Output resizable split -->
-    <ResizablePanel :initial-ratio="0.5" responsive>
+    <ResizablePanel :initial-ratio="0.5" responsive :class="fullscreen ? 'flex-1 min-h-0' : ''">
       <template #first>
         <div class="pr-3">
           <JsonInputEditor
@@ -44,16 +44,28 @@
             :view-mode="viewMode"
             show-mode-toggle
             :parsed-data="parsedData"
-            empty-text="Paste JSON and click Format"
+            :empty-text="$t('system.emptyOutput')"
             @update:view-mode="viewMode = $event"
             @copy="copyOutput"
             @download="downloadOutput"
             @copy-path="copyPath"
-          />
+          >
+            <template #actions>
+              <button
+                @click="fullscreen = !fullscreen"
+                class="text-surface-400 hover:text-surface-600 dark:text-surface-500 dark:hover:text-surface-300"
+                :title="fullscreen ? 'Exit fullscreen' : 'Fullscreen'"
+              >
+                <Icon :name="fullscreen ? 'lucide:minimize' : 'lucide:maximize'" class="w-4 h-4" />
+              </button>
+            </template>
+          </JsonOutputPanel>
         </div>
       </template>
     </ResizablePanel>
 
+    <!-- Bottom controls (hidden in fullscreen) -->
+    <div v-if="!fullscreen">
     <!-- Load from URL -->
     <div class="mt-3">
       <button
@@ -153,6 +165,7 @@
         </button>
       </label>
     </div>
+    </div>
   </div>
 </template>
 
@@ -165,6 +178,7 @@ const error = ref('')
 const indent = ref<number | string>(2)
 const autoFormat = ref(false)
 const viewMode = ref<'text' | 'tree'>('text')
+const fullscreen = ref(false)
 const lastAction = ref<'formatted' | 'minified' | 'validated'>('formatted')
 const showUrlInput = ref(false)
 const urlToFetch = ref('')
@@ -300,6 +314,9 @@ useEventListener('keydown', (e: KeyboardEvent) => {
   if ((e.metaKey || e.ctrlKey) && e.key === 'Enter') {
     e.preventDefault()
     formatJson()
+  }
+  if (e.key === 'Escape' && fullscreen.value) {
+    fullscreen.value = false
   }
 })
 

@@ -1,5 +1,5 @@
 <template>
-  <div :class="fullscreen ? 'fixed inset-0 z-50 bg-white dark:bg-surface-900 p-4 flex flex-col' : ''">
+  <div>
     <!-- Header -->
     <div class="flex items-center justify-between mb-2">
       <label class="text-sm font-bold text-surface-700 dark:text-surface-300">{{ label }}</label>
@@ -41,20 +41,13 @@
         >
           {{ $t('system.download') }}
         </button>
-        <button
-          @click="fullscreen = !fullscreen"
-          class="text-surface-400 hover:text-surface-600 dark:text-surface-500 dark:hover:text-surface-300"
-          :title="fullscreen ? 'Exit fullscreen' : 'Fullscreen'"
-        >
-          <Icon :name="fullscreen ? 'lucide:minimize' : 'lucide:maximize'" class="w-4 h-4" />
-        </button>
       </div>
     </div>
 
     <!-- Text view -->
-    <div v-if="currentMode === 'text'" class="relative flex-1 min-h-0">
+    <div v-if="currentMode === 'text'" class="relative">
       <div
-        :class="[fullscreen ? 'h-full' : height, hasContent ? 'text-surface-900 dark:text-surface-100' : 'text-surface-400 dark:text-surface-500']"
+        :class="[height, hasContent ? 'text-surface-900 dark:text-surface-100' : 'text-surface-400 dark:text-surface-500']"
         class="w-full rounded-xl border border-surface-200 bg-surface-50 font-mono text-sm overflow-auto dark:border-surface-700 dark:bg-surface-800"
       >
         <div v-if="hasContent" class="flex">
@@ -76,7 +69,7 @@
     <!-- Tree view -->
     <div
       v-else
-      :class="fullscreen ? 'h-full flex-1 min-h-0' : height"
+      :class="height"
       class="overflow-auto rounded-xl border border-surface-200 bg-surface-50 p-4 dark:border-surface-700 dark:bg-surface-800"
     >
       <TreeNode
@@ -130,15 +123,8 @@ const emit = defineEmits<{
 }>()
 
 const copied = ref(false)
-const fullscreen = ref(false)
 
 const currentMode = computed(() => props.viewMode)
-
-useEventListener('keydown', (e: KeyboardEvent) => {
-  if (e.key === 'Escape' && fullscreen.value) {
-    fullscreen.value = false
-  }
-})
 const hasContent = computed(() => !!props.content)
 const contentLines = computed(() => (props.content || '').split('\n'))
 
