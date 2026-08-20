@@ -1,9 +1,8 @@
 <template>
   <div
     ref="containerRef"
-    class="flex overflow-hidden"
+    class="flex overflow-hidden flex-col"
     :class="[
-      effectiveDirection === 'horizontal' ? 'flex-row' : 'flex-col',
       isFullscreen ? 'fixed inset-0 z-50 bg-white dark:bg-surface-900 p-4 flex-col' : '',
       containerClass
     ]"
