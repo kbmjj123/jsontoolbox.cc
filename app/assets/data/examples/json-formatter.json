@@ -1,0 +1,26 @@
+[
+  {
+    "id": "basic",
+    "label_en": "Basic Object",
+    "label_zh": "基础对象",
+    "input": "{\"name\":\"JSON Toolbox\",\"version\":\"1.0.0\",\"features\":[\"format\",\"validate\",\"minify\"],\"config\":{\"indent\":2,\"localOnly\":true}}"
+  },
+  {
+    "id": "nested",
+    "label_en": "Nested Data",
+    "label_zh": "嵌套数据",
+    "input": "{\"user\":{\"id\":1001,\"name\":\"Alice\",\"roles\":[\"admin\",\"editor\"],\"preferences\":{\"theme\":\"light\",\"language\":\"zh-CN\"}},\"active\":true}"
+  },
+  {
+    "id": "api",
+    "label_en": "API Response",
+    "label_zh": "API 响应",
+    "input": "{\"status\":\"success\",\"data\":{\"items\":[{\"id\":1,\"title\":\"Item A\",\"price\":29.99},{\"id\":2,\"title\":\"Item B\",\"price\":49.99}],\"total\":2,\"page\":1}}"
+  },
+  {
+    "id": "array",
+    "label_en": "Array Data",
+    "label_zh": "数组数据",
+    "input": "[{\"id\":1,\"name\":\"Alice\",\"role\":\"admin\"},{\"id\":2,\"name\":\"Bob\",\"role\":\"user\"},{\"id\":3,\"name\":\"Charlie\",\"role\":\"editor\"}]"
+  }
+]

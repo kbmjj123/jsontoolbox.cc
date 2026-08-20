@@ -1,0 +1,8 @@
+[
+  {
+    "id": "users",
+    "label_en": "User List",
+    "label_zh": "用户列表",
+    "input": "[{\"id\":1,\"name\":\"Alice\",\"role\":\"admin\",\"active\":true},{\"id\":2,\"name\":\"Bob\",\"role\":\"user\",\"active\":false},{\"id\":3,\"name\":\"Charlie\",\"role\":\"editor\",\"active\":true}]"
+  }
+]

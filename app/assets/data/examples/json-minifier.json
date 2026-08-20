@@ -1,0 +1,8 @@
+[
+  {
+    "id": "formatted",
+    "label_en": "Formatted JSON",
+    "label_zh": "格式化 JSON",
+    "input": "{\n  \"name\": \"JSON Toolbox\",\n  \"version\": \"1.0.0\",\n  \"features\": [\n    \"format\",\n    \"validate\",\n    \"minify\"\n  ],\n  \"config\": {\n    \"indent\": 2,\n    \"localOnly\": true\n  }\n}"
+  }
+]

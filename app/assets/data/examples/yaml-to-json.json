@@ -1,0 +1,8 @@
+[
+  {
+    "id": "config",
+    "label_en": "YAML Config",
+    "label_zh": "YAML 配置",
+    "input": "server:\n  host: localhost\n  port: 3000\ndatabase:\n  url: postgres://localhost/mydb\n  pool: 5\nlogging:\n  level: info\n  format: json"
+  }
+]

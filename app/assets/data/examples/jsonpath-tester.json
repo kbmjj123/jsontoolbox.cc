@@ -1,0 +1,8 @@
+[
+  {
+    "id": "store",
+    "label_en": "Store Data",
+    "label_zh": "商店数据",
+    "input": "{\"store\":{\"name\":\"Books\",\"books\":[{\"title\":\"Clean Code\",\"author\":\"Robert C. Martin\",\"price\":35.99},{\"title\":\"Design Patterns\",\"author\":\"GoF\",\"price\":49.99}],\"location\":{\"city\":\"San Francisco\",\"zip\":\"94102\"}}}"
+  }
+]

@@ -1,0 +1,8 @@
+[
+  {
+    "id": "users",
+    "label_en": "User Table",
+    "label_zh": "用户表",
+    "input": "id,name,role,active\n1,Alice,admin,true\n2,Bob,user,false\n3,Charlie,editor,true"
+  }
+]

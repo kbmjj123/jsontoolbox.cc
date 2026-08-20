@@ -148,6 +148,8 @@
     "features_title": "核心功能",
     "guide_title": "使用方法",
     "faq_title": "常见问题",
+    "example_input": "输入",
+    "example_output": "输出",
     "related_title": "相关工具"
   },
   "system": {
@@ -168,6 +170,9 @@
     "close": "关闭",
     "loadUrl": "从 URL 加载",
     "fetch": "获取",
-    "autoFormat": "自动格式化"
+    "autoFormat": "输入时格式化",
+    "fix": "修复",
+    "share": "分享",
+    "example": "示例"
   }
 }

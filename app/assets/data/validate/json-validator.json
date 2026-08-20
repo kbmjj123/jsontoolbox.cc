@@ -94,6 +94,17 @@
         "answer": "Yes. This is a free online JSON validator that also works as a JSON lint, JSON checker, and JSON fixer tool. You can validate any JSON string directly in your browser — paste your data and get instant results."
       }
     ],
+    "example": {
+      "title": "JSON Validation Example",
+      "description": "This example shows how the validator detects a syntax error in JSON and reports the exact location. JSON requires commas between key-value pairs — missing one is a common mistake when editing by hand.",
+      "inputLabel": "Invalid JSON (missing comma)",
+      "input": "{\"name\":\"Alice\" \"age\":28}",
+      "inputExplanation": "Notice there is no comma between \"Alice\" and \"age\". In valid JSON, each key-value pair must be separated by a comma.",
+      "outputLabel": "Validation Result",
+      "output": "❌ Invalid JSON\nLine 1, Column 15: Expected ',' or '}' after property value",
+      "outputExplanation": "The validator identifies the exact position of the error: line 1, column 15 — right where the comma should be. This saves time compared to manually scanning the entire JSON.",
+      "note": "The validator reports precise line and column numbers for every syntax error, making it easy to locate and fix issues in large JSON files."
+    },
     "ui": {
       "label_input": "Input JSON",
       "label_result": "Validation Result",
@@ -202,6 +213,17 @@
         "answer": "是的。这是一个免费的在线 JSON 验证器，同时也支持 JSON lint、JSON 检查和 JSON 修复。你可以直接在浏览器中验证任何 JSON 字符串，无需注册，无需上传数据。"
       }
     ],
+    "example": {
+      "title": "JSON 验证示例",
+      "description": "以下示例展示了验证器如何检测 JSON 中的语法错误并报告精确位置。JSON 要求键值对之间用逗号分隔——手动编辑时漏掉逗号是常见错误。",
+      "inputLabel": "无效 JSON（缺少逗号）",
+      "input": "{\"name\":\"Alice\" \"age\":28}",
+      "inputExplanation": "注意 \"Alice\" 和 \"age\" 之间没有逗号。合法 JSON 中，每个键值对必须用逗号分隔。",
+      "outputLabel": "验证结果",
+      "output": "❌ 无效 JSON\n第 1 行，第 15 列: 属性值后应为 ',' 或 '}'",
+      "outputExplanation": "验证器精确定位了错误位置：第 1 行、第 15 列——正是逗号应该出现的地方。比起手动逐行检查，这大大节省了排查时间。",
+      "note": "验证器会为每个语法错误报告精确的行号和列号，方便在大型 JSON 文件中快速定位和修复问题。"
+    },
     "ui": {
       "label_input": "输入 JSON",
       "label_result": "验证结果",

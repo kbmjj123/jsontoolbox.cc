@@ -1,0 +1,8 @@
+[
+  {
+    "id": "nested",
+    "label_en": "Nested Object",
+    "label_zh": "嵌套对象",
+    "input": "{\"company\":{\"name\":\"Acme Inc\",\"founded\":2020,\"departments\":[{\"name\":\"Engineering\",\"head\":\"Alice\",\"team\":[\"Bob\",\"Charlie\"]},{\"name\":\"Design\",\"head\":\"Diana\",\"tools\":[\"Figma\",\"Sketch\"]}],\"active\":true}}"
+  }
+]

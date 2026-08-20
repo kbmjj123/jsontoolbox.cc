@@ -9,14 +9,14 @@
   "recommends": ["json-tree-viewer", "json-diff"],
   "en": {
     "name": "JSON Formatter & Validator",
-    "description": "Format, beautify, validate, and fix JSON data with proper indentation. This free JSON formatter, JSON validator, and JSON prettifier runs entirely in your browser — no upload needed. Supports auto-fix for common errors.",
+    "description": "Format, validate, and compress JSON data with proper indentation. This free JSON formatter and validator runs entirely in your browser — no upload needed.",
     "hero": {
       "trustHtml": "100% client-side processing. Your JSON data never leaves your browser."
     },
     "meta": {
       "title": "JSON Formatter & Validator — Free Online JSON Beautifier & Prettifier",
-      "description": "Format, validate, and auto-fix JSON data online. This online JSON formatter supports pretty print, beautify, and JSON lint. Free, no upload required.",
-      "keywords": ["json formatter", "json validator", "json beautifier", "json pretty print", "json prettifier", "format json online", "json formatter online", "online json formatter", "json prettier", "pretty json", "json beautify", "validate json", "json error fix", "json lint", "json repair"]
+      "description": "Format, validate, and minify JSON data online. Free JSON formatter with pretty print, error location, and custom indentation. No upload required.",
+      "keywords": ["json formatter", "json validator", "json beautifier", "json pretty print", "json prettifier", "format json online", "json formatter online", "online json formatter", "json prettier", "pretty json", "json beautify", "validate json", "json lint", "json minify", "json compress"]
     },
     "features": [
       {
@@ -36,8 +36,8 @@
       },
       {
         "icon": "lucide:wrench",
-        "title": "Auto-Fix Errors",
-        "description": "Automatically fix common JSON errors like missing quotes, trailing commas, and unclosed brackets."
+        "title": "Error Location",
+        "description": "Pinpoint JSON syntax errors with exact line and column numbers for quick debugging."
       },
       {
         "icon": "lucide:share-2",
@@ -98,6 +98,17 @@
         "answer": "The tree view provides an expandable, collapsible visualization of your JSON structure. You can click on any key to copy its path, and hover over image URLs to see instant previews."
       }
     ],
+    "example": {
+      "title": "JSON Formatting Example",
+      "description": "This example shows how a minified JSON API response becomes easier to read after formatting. Developers often receive compressed JSON from APIs — formatting it helps quickly understand the structure and spot issues.",
+      "inputLabel": "Minified JSON (as received from API)",
+      "input": "{\"user\":{\"id\":1001,\"name\":\"Alice\",\"roles\":[\"admin\",\"editor\"]},\"active\":true}",
+      "inputExplanation": "This single-line JSON is valid but hard to read. Nested objects and arrays are compressed together, making it difficult to understand the data hierarchy at a glance.",
+      "outputLabel": "Formatted JSON (after 2-space indentation)",
+      "output": "{\n  \"user\": {\n    \"id\": 1001,\n    \"name\": \"Alice\",\n    \"roles\": [\n      \"admin\",\n      \"editor\"\n    ]\n  },\n  \"active\": true\n}",
+      "outputExplanation": "After formatting, the JSON structure is clear: the user object contains an id, name, an array of roles, and a boolean flag. Each level is indented, making it easy to navigate and debug.",
+      "note": "Formatted JSON is easier to read, debug, and verify. It's especially useful when working with API responses, configuration files, and nested data structures."
+    },
     "ui": {
       "label_input": "Input JSON",
       "label_output": "Output",
@@ -119,14 +130,14 @@
   },
   "zh": {
     "name": "JSON 格式化与验证",
-    "description": "在线格式化、美化、验证和修复 JSON 数据，支持自定义缩进。免费、快速的json格式化工具，完全在浏览器中运行。",
+    "description": "在线格式化、压缩和验证 JSON 数据，支持自定义缩进。免费、快速，完全在浏览器本地处理。",
     "hero": {
       "trustHtml": "100% 本地处理，你的 JSON 数据永远不会离开浏览器。"
     },
     "meta": {
       "title": "JSON 格式化与验证 — 免费在线 JSON 美化工具",
-      "description": "在线格式化、验证和自动修复 JSON 数据。支持自定义缩进、排序键值和 JSON 验证，错误定位精准。免费、无需上传，支持大型文件。",
-      "keywords": ["json格式化", "json美化", "在线格式化json", "json美化工具", "json验证", "json校验", "json修复", "json格式化在线", "json美化工具在线", "json lint", "json prettifier", "json pretty print", "pretty json"]
+      "description": "在线格式化、压缩和验证 JSON 数据。支持自定义缩进、错误定位，免费、无需上传。",
+      "keywords": ["json格式化", "json美化", "在线格式化json", "json美化工具", "json验证", "json校验", "json压缩", "json格式化在线", "json美化工具在线", "json lint", "json prettifier", "json pretty print", "pretty json"]
     },
     "features": [
       {
@@ -146,8 +157,8 @@
       },
       {
         "icon": "lucide:wrench",
-        "title": "自动修复错误",
-        "description": "自动修复缺失引号、尾随逗号、未闭合括号等常见 JSON 错误。"
+        "title": "错误定位",
+        "description": "精准定位 JSON 语法错误的行号和列号，快速排查问题。"
       },
       {
         "icon": "lucide:share-2",
@@ -208,6 +219,17 @@
         "answer": "树形视图提供可展开、可折叠的 JSON 结构可视化。你可以点击任何键来复制其路径，悬停在图片 URL 上可以查看即时预览。"
       }
     ],
+    "example": {
+      "title": "JSON 格式化示例",
+      "description": "以下示例展示了如何将压缩后的 JSON API 响应转换为带缩进、易于阅读的格式。开发者经常从 API 接收到压缩的 JSON，格式化后可以快速理解数据结构并发现问题。",
+      "inputLabel": "压缩的 JSON（API 返回格式）",
+      "input": "{\"user\":{\"id\":1001,\"name\":\"Alice\",\"roles\":[\"admin\",\"editor\"]},\"active\":true}",
+      "inputExplanation": "这段单行 JSON 是合法的，但很难阅读。嵌套的对象和数组挤在一起，很难一眼看出数据的层级关系。",
+      "outputLabel": "格式化后的 JSON（2 空格缩进）",
+      "output": "{\n  \"user\": {\n    \"id\": 1001,\n    \"name\": \"Alice\",\n    \"roles\": [\n      \"admin\",\n      \"editor\"\n    ]\n  },\n  \"active\": true\n}",
+      "outputExplanation": "格式化后，JSON 结构一目了然：user 对象包含 id、name、roles 数组和一个布尔值。每一层都有缩进，便于导航和调试。",
+      "note": "格式化后的 JSON 更容易阅读、调试和验证，特别适合处理 API 响应、配置文件和嵌套数据结构。"
+    },
     "ui": {
       "label_input": "输入 JSON",
       "label_output": "输出",

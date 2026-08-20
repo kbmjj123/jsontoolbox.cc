@@ -1,0 +1,8 @@
+[
+  {
+    "id": "special",
+    "label_en": "Special Characters",
+    "label_zh": "特殊字符",
+    "input": "She said \"Hello\" and left.\nTab\there.\nBackslash: \\"
+  }
+]

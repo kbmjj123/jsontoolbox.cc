@@ -1,0 +1,9 @@
+[
+  {
+    "id": "basic",
+    "label_en": "Basic Diff",
+    "label_zh": "基础对比",
+    "input": "{\"name\":\"Alice\",\"role\":\"user\",\"active\":true}",
+    "input2": "{\"name\":\"Alice\",\"role\":\"admin\",\"active\":true,\"email\":\"alice@example.com\"}"
+  }
+]

@@ -148,6 +148,8 @@
     "features_title": "Key Features",
     "guide_title": "How to Use",
     "faq_title": "Frequently Asked Questions",
+    "example_input": "Input",
+    "example_output": "Output",
     "related_title": "Related Tools"
   },
   "system": {
@@ -168,6 +170,9 @@
     "close": "Close",
     "loadUrl": "Load from URL",
     "fetch": "Fetch",
-    "autoFormat": "Auto Format"
+    "autoFormat": "Format on type",
+    "fix": "Fix",
+    "share": "Share",
+    "example": "Example"
   }
 }

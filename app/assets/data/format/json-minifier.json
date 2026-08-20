@@ -99,6 +99,17 @@
         {"text": "JSON to CSV", "url": "/tools/convert/json-to-csv"}
       ]
     },
+    "example": {
+      "title": "JSON Minification Example",
+      "description": "This example shows how formatted JSON with indentation and line breaks is compressed into a single line. Minification is commonly used in production to reduce payload size.",
+      "inputLabel": "Formatted JSON (with indentation)",
+      "input": "{\n  \"name\": \"Alice\",\n  \"age\": 28,\n  \"active\": true\n}",
+      "inputExplanation": "This formatted JSON is easy to read during development, but the extra whitespace adds unnecessary bytes when transmitted over a network.",
+      "outputLabel": "Minified JSON (single line)",
+      "output": "{\"name\":\"Alice\",\"age\":28,\"active\":true}",
+      "outputExplanation": "After minification, all whitespace and line breaks are removed. The data is identical — only the formatting is stripped. This reduces file size by ~40% in this example.",
+      "note": "Minified JSON is ideal for production APIs, CDN responses, and storage where every byte counts. Use the formatter to restore readability when needed."
+    },
     "ui": {
       "label_input": "Input JSON",
       "label_output": "Minified Output",
@@ -191,6 +202,17 @@
         "answer": "JSON 压缩器移除所有空白，生成紧凑的 JSON。JSON 格式化添加缩进和换行，让 JSON 更易读。它们是相反的操作。"
       }
     ],
+    "example": {
+      "title": "JSON 压缩示例",
+      "description": "以下示例展示了带缩进和换行的格式化 JSON 如何被压缩为单行。压缩通常用于生产环境，以减少传输体积。",
+      "inputLabel": "格式化 JSON（带缩进）",
+      "input": "{\n  \"name\": \"Alice\",\n  \"age\": 28,\n  \"active\": true\n}",
+      "inputExplanation": "这段格式化 JSON 在开发时易于阅读，但多余的空白字符在网络传输时会增加不必要的字节数。",
+      "outputLabel": "压缩后的 JSON（单行）",
+      "output": "{\"name\":\"Alice\",\"age\":28,\"active\":true}",
+      "outputExplanation": "压缩后，所有空白和换行都被移除。数据完全相同，只是格式被去除。在这个示例中，文件体积减少了约 40%。",
+      "note": "压缩后的 JSON 适合生产 API、CDN 响应和存储场景。需要恢复可读性时，使用格式化工具即可。"
+    },
     "ui": {
       "label_input": "输入 JSON",
       "label_output": "压缩输出",
