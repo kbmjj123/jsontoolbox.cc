@@ -6,7 +6,6 @@
           v-model="inputJson"
           :label="ui?.labelInputJson ?? 'Input JSON'"
           placeholder='{"name": "Alice", "age": 30, "active": true}'
-          :height="fullscreen ? 'h-full' : undefined"
           show-upload
           show-load-url
           @clear="clearAll"
@@ -19,7 +18,6 @@
           :label="ui?.labelOutput ?? 'TypeScript Interface'"
           :content="outputTs"
           :error="error"
-          :height="fullscreen ? 'h-full' : undefined"
           :empty-text="ui?.placeholderOutput ?? 'TypeScript interface will appear here...'"
           download-filename="types.ts"
           @copy="copyOutput"

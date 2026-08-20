@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div class="h-full flex flex-col">
     <!-- Header -->
     <div class="flex items-center justify-between mb-2">
       <label class="text-sm font-bold text-surface-700 dark:text-surface-300">{{ label }}</label>
@@ -45,10 +45,10 @@
     </div>
 
     <!-- Text view -->
-    <div v-if="currentMode === 'text'" class="relative">
+    <div v-if="currentMode === 'text'" class="relative flex-1 min-h-0">
       <div
-        :class="[height, hasContent ? 'text-surface-900 dark:text-surface-100' : 'text-surface-400 dark:text-surface-500']"
-        class="w-full rounded-xl border border-surface-200 bg-surface-50 font-mono text-sm overflow-auto dark:border-surface-700 dark:bg-surface-800"
+        :class="[hasContent ? 'text-surface-900 dark:text-surface-100' : 'text-surface-400 dark:text-surface-500']"
+        class="w-full h-full rounded-xl border border-surface-200 bg-surface-50 font-mono text-sm overflow-auto dark:border-surface-700 dark:bg-surface-800"
       >
         <div v-if="hasContent" class="flex">
           <div class="flex-none select-none text-right pr-3 pl-2 py-4 text-surface-400 dark:text-surface-500 border-r border-surface-200 dark:border-surface-700 leading-[1.5]">
@@ -69,8 +69,7 @@
     <!-- Tree view -->
     <div
       v-else
-      :class="height"
-      class="overflow-auto rounded-xl border border-surface-200 bg-surface-50 p-4 dark:border-surface-700 dark:bg-surface-800"
+      class="flex-1 min-h-0 overflow-auto rounded-xl border border-surface-200 bg-surface-50 p-4 dark:border-surface-700 dark:bg-surface-800"
     >
       <TreeNode
         v-if="parsedData !== null"
@@ -98,7 +97,6 @@ interface Props {
   showDownload?: boolean
   downloadFilename?: string
   emptyText?: string
-  height?: string
 }
 
 const props = withDefaults(defineProps<Props>(), {
@@ -112,7 +110,6 @@ const props = withDefaults(defineProps<Props>(), {
   showDownload: true,
   downloadFilename: 'output.json',
   emptyText: 'Result will appear here',
-  height: 'h-64',
 })
 
 const emit = defineEmits<{

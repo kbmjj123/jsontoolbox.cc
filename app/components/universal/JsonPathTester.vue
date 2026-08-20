@@ -5,7 +5,6 @@
         <JsonInputEditor
           v-model="inputJson"
           :label="ui?.labelInputJson ?? 'Input JSON'"
-          :height="fullscreen ? 'h-full' : 'h-40'"
           placeholder='{"store": {"books": [{"title": "The Great Gatsby", "price": 10.99}]}}'
           show-upload
           show-load-url

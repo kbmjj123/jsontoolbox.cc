@@ -6,7 +6,6 @@
           v-model="inputJson"
           :label="ui?.labelInputJson ?? 'Input JSON'"
           placeholder='{"name": "JSON Toolbox", "features": ["format", "validate"]}'
-          :height="fullscreen ? 'h-full' : 'h-64'"
           show-upload
           show-load-url
           @clear="clearAll"

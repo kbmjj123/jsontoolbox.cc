@@ -12,7 +12,6 @@
           v-model="inputJson"
           :label="tool.ui?.label_input || 'Input JSON'"
           placeholder='{"name": "JSON Toolbox", "version": "1.0"}'
-          :height="fullscreen ? 'h-full' : undefined"
           show-upload
           show-load-url
           @clear="clearAll"
@@ -50,7 +49,6 @@
           :content="outputJson"
           :error="error"
           :view-mode="viewMode"
-          :height="fullscreen ? 'h-full' : undefined"
           show-mode-toggle
           :parsed-data="parsedData"
           :empty-text="$t('system.emptyOutput')"

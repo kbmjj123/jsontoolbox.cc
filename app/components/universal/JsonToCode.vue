@@ -6,7 +6,6 @@
           v-model="inputJson"
           :label="ui?.labelInputJson ?? 'Input JSON'"
           placeholder='{"name": "Alice", "age": 30, "email": "alice@example.com"}'
-          :height="fullscreen ? 'h-full' : undefined"
           show-upload
           show-load-url
           @clear="clearAll"
@@ -19,7 +18,6 @@
           :label="ui?.labelOutput ?? 'Code Output'"
           :content="outputCode"
           :error="error"
-          :height="fullscreen ? 'h-full' : undefined"
           :empty-text="ui?.placeholderOutput ?? 'Code output will appear here...'"
           @copy="copyOutput"
           @download="downloadOutput"

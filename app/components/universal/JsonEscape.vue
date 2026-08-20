@@ -6,7 +6,6 @@
           v-model="inputText"
           :label="$t('system.input')"
           placeholder='{"message": "Hello \"World\""}'
-          :height="fullscreen ? 'h-full' : undefined"
           show-upload
           show-load-url
           @clear="clearAll"
@@ -19,7 +18,6 @@
           :label="tool.ui?.label_output || 'Escaped JSON'"
           :content="outputText"
           :error="error"
-          :height="fullscreen ? 'h-full' : undefined"
           :empty-text="tool.ui?.placeholder_output || 'Output will appear here...'"
           download-filename="output.txt"
           @copy="copyOutput"

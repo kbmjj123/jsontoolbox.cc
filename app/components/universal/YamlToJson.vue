@@ -6,7 +6,6 @@
           v-model="inputYaml"
           :label="tool.ui?.label_input || 'Input YAML'"
           placeholder='name: JSON Toolbox&#10;version: "1.0"&#10;features:&#10;  - format&#10;  - validate&#10;  - convert'
-          :height="fullscreen ? 'h-full' : undefined"
           show-upload
           show-load-url
           accept=".yaml,.yml"
@@ -20,7 +19,6 @@
           :label="tool.ui?.label_output || 'JSON Output'"
           :content="outputJson"
           :error="error"
-          :height="fullscreen ? 'h-full' : undefined"
           :empty-text="tool.ui?.placeholder_output || 'JSON output will appear here...'"
           download-filename="output.json"
           @copy="copyOutput"

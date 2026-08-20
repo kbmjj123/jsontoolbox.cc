@@ -6,7 +6,6 @@
           v-model="inputJson"
           :label="tool.ui?.label_input || 'JSON Editor'"
           placeholder='{"name": "JSON Toolbox", "version": "1.0"}'
-          :height="fullscreen ? 'h-full' : 'h-80'"
           show-upload
           show-load-url
           @clear="clearAll"
@@ -19,7 +18,6 @@
           :label="tool.ui?.label_output || 'Output'"
           :content="outputJson"
           :error="error"
-          :height="fullscreen ? 'h-full' : 'max-h-80'"
           empty-text="Result will appear here"
           @copy="copyOutput"
           @download="downloadOutput"

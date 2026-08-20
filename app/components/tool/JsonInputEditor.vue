@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div class="h-full flex flex-col">
     <!-- Header -->
     <div v-if="showHeader" class="flex items-center justify-between mb-2">
       <label class="text-sm font-bold text-surface-700 dark:text-surface-300">{{ label }}</label>
@@ -51,8 +51,8 @@
 
     <!-- Editor: line numbers + textarea -->
     <div
-      class="relative flex rounded-xl border border-surface-200 bg-surface-50 dark:border-surface-700 dark:bg-surface-800"
-      :class="[height, dragging ? 'border-primary-400 dark:border-primary-500 bg-primary-50/50 dark:bg-primary-900/20' : '']"
+      class="relative flex flex-1 min-h-0 rounded-xl border border-surface-200 bg-surface-50 dark:border-surface-700 dark:bg-surface-800"
+      :class="[dragging ? 'border-primary-400 dark:border-primary-500 bg-primary-50/50 dark:bg-primary-900/20' : '']"
       @dragover.prevent="onDragOver"
       @dragleave="onDragLeave"
       @drop.prevent="onDrop"
@@ -101,7 +101,6 @@ interface Props {
   modelValue: string
   label?: string
   placeholder?: string
-  height?: string
   showHeader?: boolean
   showPaste?: boolean
   showClear?: boolean
@@ -113,7 +112,6 @@ interface Props {
 const props = withDefaults(defineProps<Props>(), {
   label: 'Input JSON',
   placeholder: '{\n  "key": "value"\n}',
-  height: 'h-64',
   showHeader: true,
   showPaste: true,
   showClear: true,

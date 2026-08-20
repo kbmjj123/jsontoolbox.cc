@@ -39,7 +39,6 @@
             v-model="leftJson"
             :label="tool.ui?.label_json_a || 'JSON A (Original)'"
             placeholder='{"name": "Alice", "age": 30}'
-            :height="fullscreen ? 'h-full' : undefined"
             show-upload
             show-load-url
             @clear="onClearLeft"
@@ -52,7 +51,6 @@
             v-model="rightJson"
             :label="tool.ui?.label_json_b || 'JSON B (Modified)'"
             placeholder='{"name": "Alice", "age": 31, "email": "alice@example.com"}'
-            :height="fullscreen ? 'h-full' : undefined"
             show-upload
             show-load-url
             @clear="onClearRight"

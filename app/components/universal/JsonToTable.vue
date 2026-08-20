@@ -5,7 +5,6 @@
         <JsonInputEditor
           v-model="inputJson"
           :label="ui?.labelInputJson ?? 'Input JSON Array'"
-          :height="fullscreen ? 'h-full' : 'h-40'"
           placeholder='[{"name": "Alice", "age": 30}, {"name": "Bob", "age": 25}]'
           show-upload
           show-load-url

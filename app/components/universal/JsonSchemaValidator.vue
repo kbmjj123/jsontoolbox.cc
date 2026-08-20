@@ -5,7 +5,6 @@
         <JsonInputEditor
           v-model="jsonData"
           :label="tool.ui?.label_json_data || 'JSON Data'"
-          :height="fullscreen ? 'h-full' : 'h-40'"
           placeholder='{"name": "Alice", "age": 30}'
           show-upload
           show-load-url
@@ -18,7 +17,6 @@
         <JsonInputEditor
           v-model="schemaData"
           :label="tool.ui?.label_json_schema || 'JSON Schema'"
-          :height="fullscreen ? 'h-full' : 'h-40'"
           placeholder='{"type": "object", "properties": {"name": {"type": "string"}}, "required": ["name"]}'
           show-upload
           accept=".json"

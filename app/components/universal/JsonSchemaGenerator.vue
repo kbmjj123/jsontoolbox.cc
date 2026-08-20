@@ -6,7 +6,6 @@
           v-model="inputJson"
           :label="tool.ui?.label_input || 'Input JSON'"
           placeholder='{"name": "Alice", "age": 30, "active": true}'
-          :height="fullscreen ? 'h-full' : undefined"
           show-upload
           show-load-url
           @clear="clearAll"
@@ -19,7 +18,6 @@
           :label="tool.ui?.label_output || 'JSON Schema'"
           :content="outputSchema"
           :error="error"
-          :height="fullscreen ? 'h-full' : undefined"
           :empty-text="tool.ui?.placeholder_output || 'JSON Schema will appear here...'"
           download-filename="schema.json"
           @copy="copyOutput"

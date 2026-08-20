@@ -6,7 +6,6 @@
           v-model="inputCsv"
           :label="tool.ui?.label_input || 'Input CSV'"
           placeholder="name,age,city&#10;Alice,30,New York&#10;Bob,25,San Francisco"
-          :height="fullscreen ? 'h-full' : undefined"
           show-upload
           show-load-url
           accept=".csv,.tsv,.txt"
@@ -20,7 +19,6 @@
           :label="tool.ui?.label_output ?? 'JSON Output'"
           :content="outputJson"
           :error="error"
-          :height="fullscreen ? 'h-full' : undefined"
           :empty-text="tool.ui?.placeholder_output ?? 'JSON output will appear here...'"
           @copy="copyOutput"
           @download="downloadOutput"

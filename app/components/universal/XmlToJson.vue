@@ -6,7 +6,6 @@
           v-model="inputXml"
           :label="ui?.labelInputXml ?? 'Input XML'"
           placeholder='<?xml version="1.0"?>&#10;<catalog>&#10;  <book id="bk101">&#10;    <title>XML Developer Guide</title>&#10;    <price>44.95</price>&#10;  </book>&#10;</catalog>'
-          :height="fullscreen ? 'h-full' : undefined"
           show-upload
           show-load-url
           accept=".xml"
@@ -20,7 +19,6 @@
           :label="ui?.labelOutput ?? 'JSON Output'"
           :content="outputJson"
           :error="error"
-          :height="fullscreen ? 'h-full' : undefined"
           empty-text="JSON output will appear here..."
           @copy="copyOutput"
           @download="downloadOutput"

@@ -6,7 +6,6 @@
           v-model="inputJson"
           :label="tool.ui?.label_input || 'Input JSON'"
           placeholder='Paste your JSON here...'
-          :height="fullscreen ? 'h-full' : undefined"
           show-upload
           show-load-url
           @clear="clearAll"

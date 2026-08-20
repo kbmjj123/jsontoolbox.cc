@@ -6,7 +6,6 @@
           v-model="inputJson"
           :label="tool.ui?.label_input || 'Input JSON Array'"
           placeholder='[{"name": "Alice", "age": 30}, {"name": "Bob", "age": 25}]'
-          :height="fullscreen ? 'h-full' : undefined"
           show-upload
           show-load-url
           @clear="clearAll"
