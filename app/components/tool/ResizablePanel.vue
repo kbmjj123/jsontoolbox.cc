@@ -10,7 +10,16 @@
     <!-- Header bar -->
     <div class="flex items-center justify-between mb-2">
       <slot name="header-left" />
-      <slot name="header-right"></slot>
+      <slot name="header-right">
+				<!-- Default: fullscreen toggle -->
+        <button
+          @click="isFullscreen = !isFullscreen"
+          class="text-surface-400 hover:text-surface-600 dark:text-surface-500 dark:hover:text-surface-300"
+          :title="isFullscreen ? 'Exit fullscreen' : 'Fullscreen'"
+        >
+          <Icon :name="isFullscreen ? 'lucide:minimize' : 'lucide:maximize'" class="w-4 h-4" />
+        </button>
+			</slot>
     </div>
 
     <!-- Resizable panels -->
@@ -46,14 +55,6 @@
     <div v-if="!isFullscreen" class="mt-3 flex items-center flex-wrap gap-2">
       <slot name="toolbar-left" />
       <slot name="toolbar-right" />
-			<!-- Default: fullscreen toggle -->
-        <button
-          @click="isFullscreen = !isFullscreen"
-          class="text-surface-400 hover:text-surface-600 dark:text-surface-500 dark:hover:text-surface-300"
-          :title="isFullscreen ? 'Exit fullscreen' : 'Fullscreen'"
-        >
-          <Icon :name="isFullscreen ? 'lucide:minimize' : 'lucide:maximize'" class="w-4 h-4" />
-        </button>
     </div>
   </div>
 </template>
