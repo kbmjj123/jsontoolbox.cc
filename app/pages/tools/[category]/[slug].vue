@@ -6,7 +6,7 @@
         <div class="mb-8">
           <div class="flex items-center gap-3 mb-4">
             <div class="flex h-10 w-10 items-center justify-center rounded-lg bg-primary-50 text-primary-600 dark:bg-primary-900/30 dark:text-primary-400">
-              <Icon :name="tool.icon" class="h-5 w-5" />
+              <Icon :name="tool.icon || 'lucide:command'" class="h-5 w-5" />
             </div>
             <div>
               <h1 class="text-2xl font-bold text-surface-900 dark:text-surface-100">

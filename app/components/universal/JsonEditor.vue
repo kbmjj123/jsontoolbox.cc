@@ -90,7 +90,7 @@
             'bg-pink-100 text-pink-700 dark:bg-pink-900/30 dark:text-pink-400': item.type === 'color',
           }"
         >
-          <Icon :name="getTypeIcon(item.type)" class="h-3 w-3" />
+          <Icon :name="getTypeIcon(item.type) || 'lucide:command'" class="h-3 w-3" />
           {{ item.path }}
         </span>
       </div>

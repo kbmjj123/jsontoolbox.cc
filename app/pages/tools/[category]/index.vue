@@ -22,7 +22,7 @@
           >
             <div class="flex items-start gap-3">
               <div class="flex h-9 w-9 shrink-0 items-center justify-center rounded-lg bg-surface-100 text-surface-600 dark:bg-surface-800 dark:text-surface-400">
-                <Icon :name="tool.icon" class="h-4 w-4" />
+                <Icon :name="tool.icon || 'lucide:command'" class="h-4 w-4" />
               </div>
               <div>
                 <h3 class="font-bold text-sm text-surface-900 dark:text-surface-100 group-hover:text-primary-600 dark:group-hover:text-primary-400 transition-colors">
