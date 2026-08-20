@@ -173,6 +173,10 @@
     "autoFormat": "Format on type",
     "fix": "Fix",
     "share": "Share",
-    "example": "Example"
+    "example": "Example",
+    "cancel": "Cancel",
+    "loading": "Loading...",
+    "loadUrlHint": "Enter a public JSON URL. Content is fetched directly in your browser.",
+    "enterUrl": "Enter URL"
   }
 }

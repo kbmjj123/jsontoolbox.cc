@@ -1,29 +1,34 @@
 <template>
-  <div>
-    <div class="grid grid-cols-1 lg:grid-cols-2 gap-4">
-      <!-- Input -->
-      <JsonInputEditor
-        v-model="inputText"
-        :label="$t('system.input')"
-        placeholder='{"message": "Hello \"World\""}'
-        show-upload
-        @clear="clearAll"
-      />
+  <ResizablePanel v-model:fullscreen="fullscreen" :initial-ratio="0.5" responsive>
+    <template #first>
+      <div class="h-full pr-3">
+        <JsonInputEditor
+          v-model="inputText"
+          :label="$t('system.input')"
+          placeholder='{"message": "Hello \"World\""}'
+          :height="fullscreen ? 'h-full' : undefined"
+          show-upload
+          show-load-url
+          @clear="clearAll"
+        />
+      </div>
+    </template>
+    <template #second>
+      <div class="h-full pl-3">
+        <JsonOutputPanel
+          :label="tool.ui?.label_output || 'Escaped JSON'"
+          :content="outputText"
+          :error="error"
+          :height="fullscreen ? 'h-full' : undefined"
+          :empty-text="tool.ui?.placeholder_output || 'Output will appear here...'"
+          download-filename="output.txt"
+          @copy="copyOutput"
+          @download="downloadOutput"
+        />
+      </div>
+    </template>
 
-      <!-- Output -->
-      <JsonOutputPanel
-        :label="tool.ui?.label_output || 'Escaped JSON'"
-        :content="outputText"
-        :error="error"
-        :empty-text="tool.ui?.placeholder_output || 'Output will appear here...'"
-        download-filename="output.txt"
-        @copy="copyOutput"
-        @download="downloadOutput"
-      />
-    </div>
-
-    <!-- Actions -->
-    <div class="mt-4 flex flex-wrap gap-3">
+    <template #toolbar-left>
       <button @click="escapeJson" class="btn-primary px-5 py-2 text-xs">
         <Icon name="lucide:lock" class="h-4 w-4 mr-1.5" />
         {{ tool.ui?.btn_escape || 'Escape' }}
@@ -42,8 +47,8 @@
       <button @click="clearAll" class="rounded-xl border border-surface-200 bg-white px-4 py-2 text-xs font-bold text-surface-700 hover:bg-surface-50 dark:border-surface-700 dark:bg-surface-800 dark:text-surface-300 dark:hover:bg-surface-700">
         {{ $t('system.clearAll') }}
       </button>
-    </div>
-  </div>
+    </template>
+  </ResizablePanel>
 </template>
 
 <script setup lang="ts">
@@ -52,6 +57,7 @@ defineProps<{ tool: any }>()
 const inputText = ref('')
 const outputText = ref('')
 const error = ref('')
+const fullscreen = ref(false)
 
 const escapeJson = () => {
   error.value = ''

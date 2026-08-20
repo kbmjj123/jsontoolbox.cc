@@ -1,6 +1,11 @@
 <template>
-  <!-- Input / Output resizable split -->
   <ResizablePanel v-model:fullscreen="fullscreen" :initial-ratio="0.5" responsive>
+    <!-- Header left: label -->
+    <template #header-left>
+      <span />
+    </template>
+
+    <!-- Input editor -->
     <template #first>
       <div class="h-full pr-3">
         <JsonInputEditor
@@ -9,6 +14,7 @@
           placeholder='{"name": "JSON Toolbox", "version": "1.0"}'
           :height="fullscreen ? 'h-full' : undefined"
           show-upload
+          show-load-url
           @clear="clearAll"
           @paste="onInputPaste"
         >
@@ -35,6 +41,8 @@
         </JsonInputEditor>
       </div>
     </template>
+
+    <!-- Output panel -->
     <template #second>
       <div class="h-full pl-3">
         <JsonOutputPanel
@@ -50,60 +58,12 @@
           @copy="copyOutput"
           @download="downloadOutput"
           @copy-path="copyPath"
-        >
-          <template #actions>
-            <button
-              @click="fullscreen = !fullscreen"
-              class="text-surface-400 hover:text-surface-600 dark:text-surface-500 dark:hover:text-surface-300"
-              :title="fullscreen ? 'Exit fullscreen' : 'Fullscreen'"
-            >
-              <Icon :name="fullscreen ? 'lucide:minimize' : 'lucide:maximize'" class="w-4 h-4" />
-            </button>
-          </template>
-        </JsonOutputPanel>
+        />
       </div>
     </template>
-  </ResizablePanel>
 
-  <!-- Bottom controls (hidden in fullscreen) -->
-  <div v-if="!fullscreen">
-    <!-- Load from URL -->
-    <div class="mt-3">
-      <button
-        v-if="!showUrlInput"
-        @click="showUrlInput = true"
-        class="text-xs text-primary-600 hover:text-primary-700 dark:text-primary-400"
-      >
-        {{ $t('system.loadUrl') }}
-      </button>
-      <div v-else class="flex items-center gap-2">
-        <input
-          v-model="urlToFetch"
-          type="url"
-          placeholder="https://api.example.com/data.json"
-          class="flex-1 rounded-lg border border-surface-200 bg-white px-3 py-1.5 text-xs dark:border-surface-700 dark:bg-surface-800 dark:text-surface-100"
-          @keydown.enter="fetchFromUrl"
-        />
-        <button
-          @click="fetchFromUrl"
-          :disabled="urlLoading"
-          class="rounded-lg bg-primary-600 px-3 py-1.5 text-xs text-white hover:bg-primary-700 disabled:opacity-50"
-        >
-          {{ urlLoading ? '...' : $t('system.fetch') }}
-        </button>
-        <button
-          @click="showUrlInput = false; urlError = ''"
-          class="text-xs text-surface-500 hover:text-surface-700 dark:text-surface-400"
-        >
-          {{ $t('system.close') }}
-        </button>
-      </div>
-      <p v-if="urlError" class="mt-1 text-xs text-red-600 dark:text-red-400">{{ urlError }}</p>
-    </div>
-
-    <!-- Bottom action bar -->
-    <div class="mt-3 flex items-center flex-wrap gap-2">
-      <!-- Indent selector -->
+    <!-- Toolbar left: indent + action buttons -->
+    <template #toolbar-left>
       <div class="flex items-center gap-2">
         <label class="text-xs font-bold text-surface-600 dark:text-surface-400">{{ tool.ui?.option_indent || 'Indent:' }}</label>
         <select v-model="indent" class="rounded-lg border border-surface-200 bg-white px-2 py-1 text-xs dark:border-surface-700 dark:bg-surface-800">
@@ -130,43 +90,48 @@
       <button @click="fixJson" class="rounded-xl border border-surface-200 bg-white px-4 py-2 text-xs font-bold text-surface-700 hover:bg-surface-50 dark:border-surface-700 dark:bg-surface-800 dark:text-surface-300">
         {{ $t('system.fix') }}
       </button>
+    </template>
 
-      <!-- Share button -->
-      <div class="relative ml-auto">
-        <button @click="showShareMenu = !showShareMenu" class="text-xs text-primary-600 hover:text-primary-700 dark:text-primary-400">
-          {{ $t('system.share') }}
-        </button>
-        <div v-if="showShareMenu" class="absolute right-0 top-full mt-1 bg-white dark:bg-surface-800 border border-surface-200 dark:border-surface-700 rounded-lg shadow-lg p-2 z-50 min-w-[200px]">
-          <button @click="copyShareLink" class="w-full text-left px-3 py-2 text-xs hover:bg-surface-100 dark:hover:bg-surface-700 rounded">
-            {{ shareCopied ? '✓ Copied!' : 'Copy Share Link' }}
+    <!-- Toolbar right: share + auto-format -->
+    <template #toolbar-right>
+      <div class="flex items-center gap-3 ml-auto">
+        <!-- Share button -->
+        <div class="relative">
+          <button @click="showShareMenu = !showShareMenu" class="text-xs text-primary-600 hover:text-primary-700 dark:text-primary-400">
+            {{ $t('system.share') }}
           </button>
-          <button @click="shareToTwitter" class="w-full text-left px-3 py-2 text-xs hover:bg-surface-100 dark:hover:bg-surface-700 rounded">
-            Share on Twitter
-          </button>
-          <p class="px-3 pt-1 pb-0.5 text-[10px] text-amber-600 dark:text-amber-400 leading-tight">
-            ⚠️ Share links encode JSON content in the URL. Do not share passwords, tokens, or sensitive data.
-          </p>
+          <div v-if="showShareMenu" class="absolute right-0 bottom-full mb-1 bg-white dark:bg-surface-800 border border-surface-200 dark:border-surface-700 rounded-lg shadow-lg p-2 z-50 min-w-[200px]">
+            <button @click="copyShareLink" class="w-full text-left px-3 py-2 text-xs hover:bg-surface-100 dark:hover:bg-surface-700 rounded">
+              {{ shareCopied ? '✓ Copied!' : 'Copy Share Link' }}
+            </button>
+            <button @click="shareToTwitter" class="w-full text-left px-3 py-2 text-xs hover:bg-surface-100 dark:hover:bg-surface-700 rounded">
+              Share on Twitter
+            </button>
+            <p class="px-3 pt-1 pb-0.5 text-[10px] text-amber-600 dark:text-amber-400 leading-tight">
+              ⚠️ Share links encode JSON content in the URL. Do not share passwords, tokens, or sensitive data.
+            </p>
+          </div>
         </div>
-      </div>
 
-      <!-- Auto-format toggle -->
-      <label class="flex items-center gap-1.5 ml-auto cursor-pointer select-none">
-        <span class="text-xs text-surface-600 dark:text-surface-400">{{ $t('system.autoFormat') }}</span>
-        <button
-          @click="autoFormat = !autoFormat"
-          :class="autoFormat ? 'bg-primary-600' : 'bg-surface-300 dark:bg-surface-600'"
-          class="relative inline-flex h-5 w-9 items-center rounded-full transition-colors"
-          role="switch"
-          :aria-checked="autoFormat"
-        >
-          <span
-            :class="autoFormat ? 'translate-x-4' : 'translate-x-0.5'"
-            class="inline-block h-4 w-4 rounded-full bg-white transition-transform"
-          />
-        </button>
-      </label>
-    </div>
-  </div>
+        <!-- Auto-format toggle -->
+        <label class="flex items-center gap-1.5 cursor-pointer select-none">
+          <span class="text-xs text-surface-600 dark:text-surface-400">{{ $t('system.autoFormat') }}</span>
+          <button
+            @click="autoFormat = !autoFormat"
+            :class="autoFormat ? 'bg-primary-600' : 'bg-surface-300 dark:bg-surface-600'"
+            class="relative inline-flex h-5 w-9 items-center rounded-full transition-colors"
+            role="switch"
+            :aria-checked="autoFormat"
+          >
+            <span
+              :class="autoFormat ? 'translate-x-4' : 'translate-x-0.5'"
+              class="inline-block h-4 w-4 rounded-full bg-white transition-transform"
+            />
+          </button>
+        </label>
+      </div>
+    </template>
+  </ResizablePanel>
 </template>
 
 <script setup lang="ts">
@@ -180,10 +145,6 @@ const autoFormat = ref(false)
 const viewMode = ref<'text' | 'tree'>('text')
 const fullscreen = ref(false)
 const lastAction = ref<'formatted' | 'minified' | 'validated'>('formatted')
-const showUrlInput = ref(false)
-const urlToFetch = ref('')
-const urlLoading = ref(false)
-const urlError = ref('')
 
 const showShareMenu = ref(false)
 const shareCopied = ref(false)
@@ -205,27 +166,6 @@ const loadDefaultExample = () => {
 const loadExampleById = (id: string) => {
   loadById(id, inputJson)
   nextTick(() => formatJson())
-}
-
-const fetchFromUrl = async () => {
-  const url = urlToFetch.value.trim()
-  if (!url) return
-
-  urlLoading.value = true
-  urlError.value = ''
-  try {
-    const res = await fetch(url)
-    if (!res.ok) throw new Error(`HTTP ${res.status}`)
-    const text = await res.text()
-    JSON.parse(text)
-    inputJson.value = text
-    showUrlInput.value = false
-    urlToFetch.value = ''
-  } catch (e) {
-    urlError.value = (e as Error).message
-  } finally {
-    urlLoading.value = false
-  }
 }
 
 const parsedData = computed(() => {

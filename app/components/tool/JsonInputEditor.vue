@@ -6,6 +6,13 @@
       <div class="flex gap-2 items-center">
         <slot name="actions" />
         <button
+          v-if="showLoadUrl"
+          @click="showUrlModal = true"
+          class="text-xs text-primary-600 hover:text-primary-700 dark:text-primary-400"
+        >
+          {{ $t('system.loadUrl') }}
+        </button>
+        <button
           v-if="showUpload"
           @click="triggerUpload"
           class="text-xs text-primary-600 hover:text-primary-700 dark:text-primary-400"
@@ -79,6 +86,13 @@
         <span class="text-sm font-medium text-primary-600 dark:text-primary-400">Drop .json file here</span>
       </div>
     </div>
+
+    <!-- Load URL Modal -->
+    <LoadUrlModal
+      :visible="showUrlModal"
+      @close="showUrlModal = false"
+      @loaded="onUrlLoaded"
+    />
   </div>
 </template>
 
@@ -92,6 +106,7 @@ interface Props {
   showPaste?: boolean
   showClear?: boolean
   showUpload?: boolean
+  showLoadUrl?: boolean
   accept?: string
 }
 
@@ -103,6 +118,7 @@ const props = withDefaults(defineProps<Props>(), {
   showPaste: true,
   showClear: true,
   showUpload: false,
+  showLoadUrl: true,
   accept: '.json,.txt,.jsonl,.geojson,.ndjson',
 })
 
@@ -111,6 +127,7 @@ const emit = defineEmits<{
   paste: [text: string]
   clear: []
   upload: [text: string]
+  loadUrl: [text: string]
 }>()
 
 const gutterRef = ref<HTMLDivElement>()
@@ -118,6 +135,13 @@ const textareaRef = ref<HTMLTextAreaElement>()
 const fileInputRef = ref<HTMLInputElement>()
 const dragging = ref(false)
 const fileInfo = ref<{ name: string; size: string } | null>(null)
+const showUrlModal = ref(false)
+
+const onUrlLoaded = (text: string) => {
+  emit('update:modelValue', text)
+  emit('loadUrl', text)
+  showUrlModal.value = false
+}
 
 const formatFileSize = (bytes: number): string => {
   if (bytes < 1024) return `${bytes} B`

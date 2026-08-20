@@ -1,44 +1,34 @@
 <template>
-  <div>
-    <div class="grid grid-cols-1 lg:grid-cols-2 gap-4">
-      <!-- Input -->
-      <JsonInputEditor
-        v-model="inputJson"
-        :label="tool.ui?.label_input || 'Input JSON'"
-        placeholder='{"name": "JSON Toolbox", "version": "1.0"}'
-        @clear="clearAll"
-      />
-
-      <!-- Output -->
-      <JsonOutputPanel
-        :label="tool.ui?.label_output || 'Minified JSON'"
-        :content="outputJson"
-        :error="error"
-        :empty-text="tool.ui?.placeholder_output || 'Minified output will appear here...'"
-        download-filename="minified.json"
-        @copy="copyOutput"
-        @download="downloadOutput"
-      />
-    </div>
-
-    <!-- Stats -->
-    <div v-if="outputJson && !error" class="mt-4 flex flex-wrap gap-3">
-      <div class="stat-chip">
-        <Icon name="lucide:file-text" class="h-3 w-3" />
-        {{ inputSize }} {{ tool.ui?.unit_chars || 'chars' }}
+  <ResizablePanel v-model:fullscreen="fullscreen" :initial-ratio="0.5" responsive>
+    <template #first>
+      <div class="h-full pr-3">
+        <JsonInputEditor
+          v-model="inputJson"
+          :label="tool.ui?.label_input || 'Input JSON'"
+          placeholder='{"name": "JSON Toolbox", "version": "1.0"}'
+          :height="fullscreen ? 'h-full' : undefined"
+          show-upload
+          show-load-url
+          @clear="clearAll"
+        />
       </div>
-      <div class="stat-chip">
-        <Icon name="lucide:minimize" class="h-3 w-3" />
-        {{ outputSize }} {{ tool.ui?.unit_chars || 'chars' }}
+    </template>
+    <template #second>
+      <div class="h-full pl-3">
+        <JsonOutputPanel
+          :label="tool.ui?.label_output || 'Minified JSON'"
+          :content="outputJson"
+          :error="error"
+          :height="fullscreen ? 'h-full' : undefined"
+          :empty-text="tool.ui?.placeholder_output || 'Minified output will appear here...'"
+          download-filename="minified.json"
+          @copy="copyOutput"
+          @download="downloadOutput"
+        />
       </div>
-      <div class="stat-chip" :class="compressionRatio > 0 ? 'text-green-600 dark:text-green-400' : ''">
-        <Icon name="lucide:trending-down" class="h-3 w-3" />
-        {{ compressionRatio }}% {{ tool.ui?.unit_smaller || 'smaller' }}
-      </div>
-    </div>
+    </template>
 
-    <!-- Actions -->
-    <div class="mt-4 flex flex-wrap gap-3">
+    <template #toolbar-left>
       <button @click="minifyJson" class="btn-primary px-5 py-2 text-xs">
         <Icon name="lucide:minimize" class="h-4 w-4 mr-1.5" />
         {{ $t('system.minify') }}
@@ -50,8 +40,24 @@
       <button @click="clearAll" class="rounded-xl border border-surface-200 bg-white px-4 py-2 text-xs font-bold text-surface-700 hover:bg-surface-50 dark:border-surface-700 dark:bg-surface-800 dark:text-surface-300 dark:hover:bg-surface-700">
         {{ $t('system.clearAll') }}
       </button>
-    </div>
-  </div>
+
+      <!-- Stats -->
+      <template v-if="outputJson && !error">
+        <div class="stat-chip">
+          <Icon name="lucide:file-text" class="h-3 w-3" />
+          {{ inputSize }} {{ tool.ui?.unit_chars || 'chars' }}
+        </div>
+        <div class="stat-chip">
+          <Icon name="lucide:minimize" class="h-3 w-3" />
+          {{ outputSize }} {{ tool.ui?.unit_chars || 'chars' }}
+        </div>
+        <div class="stat-chip" :class="compressionRatio > 0 ? 'text-green-600 dark:text-green-400' : ''">
+          <Icon name="lucide:trending-down" class="h-3 w-3" />
+          {{ compressionRatio }}% {{ tool.ui?.unit_smaller || 'smaller' }}
+        </div>
+      </template>
+    </template>
+  </ResizablePanel>
 </template>
 
 <script setup lang="ts">
@@ -60,6 +66,7 @@ defineProps<{ tool: any }>()
 const inputJson = ref('')
 const outputJson = ref('')
 const error = ref('')
+const fullscreen = ref(false)
 
 const inputSize = computed(() => inputJson.value.length)
 const outputSize = computed(() => outputJson.value.length)

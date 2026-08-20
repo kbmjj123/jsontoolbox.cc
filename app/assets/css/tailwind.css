@@ -18,6 +18,34 @@
 		@apply font-sans;
 		@apply antialiased;
 		@apply scroll-smooth;
+		scrollbar-width: thin;
+		scrollbar-color: #cbd5e1 transparent;
+	}
+
+	html.dark {
+		scrollbar-color: #475569 transparent;
+	}
+
+	html::-webkit-scrollbar {
+		width: 6px;
+		height: 6px;
+	}
+
+	html::-webkit-scrollbar-track {
+		background: transparent;
+	}
+
+	html::-webkit-scrollbar-thumb {
+		background: #cbd5e1;
+		border-radius: 3px;
+	}
+
+	html.dark::-webkit-scrollbar-thumb {
+		background: #475569;
+	}
+
+	html.dark::-webkit-scrollbar-thumb:hover {
+		background: #64748b;
 	}
 
 	body {

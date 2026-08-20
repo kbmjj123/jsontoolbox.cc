@@ -8,30 +8,54 @@
       containerClass
     ]"
   >
-    <!-- Left / Top panel -->
-    <div :style="firstStyle" class="min-w-0 min-h-0 overflow-hidden" :class="isFullscreen ? 'h-full' : ''">
-      <slot name="first" />
+    <!-- Header bar -->
+    <div class="flex items-center justify-between mb-2">
+      <slot name="header-left" />
+      <slot name="header-right">
+        <!-- Default: fullscreen toggle -->
+        <button
+          @click="isFullscreen = !isFullscreen"
+          class="text-surface-400 hover:text-surface-600 dark:text-surface-500 dark:hover:text-surface-300"
+          :title="isFullscreen ? 'Exit fullscreen' : 'Fullscreen'"
+        >
+          <Icon :name="isFullscreen ? 'lucide:minimize' : 'lucide:maximize'" class="w-4 h-4" />
+        </button>
+      </slot>
     </div>
 
-    <!-- Drag handle -->
-    <div
-      class="flex-none flex items-center justify-center group"
-      :class="effectiveDirection === 'horizontal' ? 'w-3 cursor-col-resize' : 'h-3 cursor-row-resize'"
-      @mousedown="onDragStart"
-      @touchstart.passive="onTouchStart"
-    >
+    <!-- Resizable panels -->
+    <div class="flex flex-1 min-h-0 overflow-hidden" :class="effectiveDirection === 'horizontal' ? 'flex-row' : 'flex-col'">
+      <!-- Left / Top panel -->
+      <div :style="firstStyle" class="min-w-0 min-h-0 overflow-hidden">
+        <slot name="first" />
+      </div>
+
+      <!-- Drag handle -->
       <div
-        class="rounded-full transition-colors"
-        :class="[
-          dragging ? 'bg-primary-500' : 'bg-surface-300 group-hover:bg-primary-400 dark:bg-surface-600 dark:group-hover:bg-primary-500',
-          effectiveDirection === 'horizontal' ? 'w-1 h-8' : 'h-1 w-8'
-        ]"
-      />
+        class="flex-none flex items-center justify-center group"
+        :class="effectiveDirection === 'horizontal' ? 'w-3 cursor-col-resize' : 'h-3 cursor-row-resize'"
+        @mousedown="onDragStart"
+        @touchstart.passive="onTouchStart"
+      >
+        <div
+          class="rounded-full transition-colors"
+          :class="[
+            dragging ? 'bg-primary-500' : 'bg-surface-300 group-hover:bg-primary-400 dark:bg-surface-600 dark:group-hover:bg-primary-500',
+            effectiveDirection === 'horizontal' ? 'w-1 h-8' : 'h-1 w-8'
+          ]"
+        />
+      </div>
+
+      <!-- Right / Bottom panel -->
+      <div class="min-w-0 min-h-0 flex-1 overflow-hidden">
+        <slot name="second" />
+      </div>
     </div>
 
-    <!-- Right / Bottom panel -->
-    <div class="min-w-0 min-h-0 flex-1 overflow-hidden" :class="isFullscreen ? 'h-full' : ''">
-      <slot name="second" />
+    <!-- Bottom toolbar (hidden in fullscreen) -->
+    <div v-if="!isFullscreen" class="mt-3 flex items-center flex-wrap gap-2">
+      <slot name="toolbar-left" />
+      <slot name="toolbar-right" />
     </div>
   </div>
 </template>

@@ -1,30 +1,45 @@
 <template>
-  <div>
-    <div class="grid grid-cols-1 lg:grid-cols-2 gap-4">
-      <!-- Input -->
-      <JsonInputEditor
-        v-model="inputCsv"
-        :label="tool.ui?.label_input || 'Input CSV'"
-        placeholder="name,age,city&#10;Alice,30,New York&#10;Bob,25,San Francisco"
-        show-upload
-        accept=".csv,.tsv,.txt"
-        @clear="clearAll"
-      />
+  <ResizablePanel v-model:fullscreen="fullscreen" :initial-ratio="0.5" responsive>
+    <template #first>
+      <div class="h-full pr-3">
+        <JsonInputEditor
+          v-model="inputCsv"
+          :label="tool.ui?.label_input || 'Input CSV'"
+          placeholder="name,age,city&#10;Alice,30,New York&#10;Bob,25,San Francisco"
+          :height="fullscreen ? 'h-full' : undefined"
+          show-upload
+          show-load-url
+          accept=".csv,.tsv,.txt"
+          @clear="clearAll"
+        />
+      </div>
+    </template>
+    <template #second>
+      <div class="h-full pl-3">
+        <JsonOutputPanel
+          :label="tool.ui?.label_output ?? 'JSON Output'"
+          :content="outputJson"
+          :error="error"
+          :height="fullscreen ? 'h-full' : undefined"
+          :empty-text="tool.ui?.placeholder_output ?? 'JSON output will appear here...'"
+          @copy="copyOutput"
+          @download="downloadOutput"
+        />
+      </div>
+    </template>
 
-      <!-- Output -->
-      <JsonOutputPanel
-        :label="tool.ui?.label_output ?? 'JSON Output'"
-        :content="outputJson"
-        :error="error"
-        :empty-text="tool.ui?.placeholder_output ?? 'JSON output will appear here...'"
-        height="h-64"
-        @copy="copyOutput"
-        @download="downloadOutput"
-      />
-    </div>
+    <template #toolbar-left>
+      <button @click="convert" class="btn-primary px-5 py-2 text-xs">
+        <Icon name="lucide:arrow-right" class="h-4 w-4 mr-1.5" />
+        {{ tool.ui?.btn_convert || 'Convert to JSON' }}
+      </button>
+      <button @click="loadExample" class="text-xs text-primary-600 hover:text-primary-700 dark:text-primary-400">
+        {{ tool.ui?.btn_example || 'Load Example' }}
+      </button>
+      <button @click="clearAll" class="rounded-xl border border-surface-200 bg-white px-4 py-2 text-xs font-bold text-surface-700 hover:bg-surface-50 dark:border-surface-700 dark:bg-surface-800 dark:text-surface-300 dark:hover:bg-surface-700">
+        {{ $t('system.clearAll') }}
+      </button>
 
-    <!-- Options -->
-    <div class="mt-4 flex flex-wrap items-center gap-4">
       <div class="flex items-center gap-2">
         <label class="text-xs font-bold text-surface-600 dark:text-surface-400">{{ tool.ui?.option_delimiter || 'Delimiter:' }}</label>
         <select v-model="delimiter" class="rounded-lg border border-surface-200 bg-white px-2 py-1 text-xs dark:border-surface-700 dark:bg-surface-800">
@@ -46,22 +61,8 @@
           <option :value="4">4 spaces</option>
         </select>
       </div>
-    </div>
-
-    <!-- Actions -->
-    <div class="mt-3 flex flex-wrap gap-3">
-      <button @click="convert" class="btn-primary px-5 py-2 text-xs">
-        <Icon name="lucide:arrow-right" class="h-4 w-4 mr-1.5" />
-        {{ tool.ui?.btn_convert || 'Convert to JSON' }}
-      </button>
-      <button @click="loadExample" class="text-xs text-primary-600 hover:text-primary-700 dark:text-primary-400">
-        {{ tool.ui?.btn_example || 'Load Example' }}
-      </button>
-      <button @click="clearAll" class="rounded-xl border border-surface-200 bg-white px-4 py-2 text-xs font-bold text-surface-700 hover:bg-surface-50 dark:border-surface-700 dark:bg-surface-800 dark:text-surface-300 dark:hover:bg-surface-700">
-        {{ $t('system.clearAll') }}
-      </button>
-    </div>
-  </div>
+    </template>
+  </ResizablePanel>
 </template>
 
 <script setup lang="ts">
@@ -73,8 +74,8 @@ const error = ref('')
 const delimiter = ref(',')
 const hasHeader = ref(true)
 const indent = ref(2)
+const fullscreen = ref(false)
 
-// Example data
 const exampleCsv = `name,age,city,active
 Alice,30,New York,true
 Bob,25,San Francisco,false
@@ -146,9 +147,7 @@ const convert = () => {
       return
     }
 
-    // Auto-detect delimiter if needed
     const effectiveDelimiter = delimiter.value === 'auto' ? detectDelimiter(inputCsv.value) : delimiter.value
-
     const rows = lines.map(line => parseCsvLine(line, effectiveDelimiter))
 
     if (hasHeader.value) {
@@ -157,7 +156,6 @@ const convert = () => {
         const obj: any = {}
         headers.forEach((header, index) => {
           const value = row[index] || ''
-          // Enhanced type inference
           if (value === '' || value === 'null') {
             obj[header] = null
           } else if (value === 'true') {
