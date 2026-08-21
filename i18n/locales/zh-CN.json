@@ -178,6 +178,35 @@
     "loading": "加载中...",
     "loadUrlHint": "输入公开的 JSON 链接，内容在浏览器本地获取。",
     "enterUrl": "输入链接",
-    "emptyOutput": "结果将在此显示"
+    "emptyOutput": "结果将在此显示",
+    "copyShareLink": "复制分享链接",
+    "shareOnTwitter": "分享到 Twitter",
+    "shareWarning": "分享链接会在 URL 中编码 JSON 内容。请勿分享密码、令牌或敏感数据。"
+  },
+  "formatter": {
+    "1space": "1 个空格",
+    "2spaces": "2 个空格",
+    "3spaces": "3 个空格",
+    "4spaces": "4 个空格",
+    "6spaces": "6 个空格",
+    "8spaces": "8 个空格",
+    "tab": "Tab",
+    "invalidJson": "无效的 JSON",
+    "validJson": "✅ 有效的 JSON",
+    "fixedIssues": "✅ 已修复 {count} 个问题：",
+    "unableToFix": "无法自动修复 JSON，请检查语法。",
+    "lineColError": "第 {line} 行，第 {col} 列：{message}"
+  },
+  "tree": {
+    "searchByKey": "键名",
+    "searchByValue": "值",
+    "searchByPath": "路径",
+    "placeholderKey": "按键名搜索...",
+    "placeholderValue": "按值搜索...",
+    "placeholderPath": "按路径搜索（如 store.book[0]）...",
+    "matchCount": "{current}/{total}",
+    "noResults": "无结果",
+    "expandAll": "展开",
+    "collapseAll": "收起"
   }
 }

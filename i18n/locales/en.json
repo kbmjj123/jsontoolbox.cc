@@ -178,6 +178,35 @@
     "loading": "Loading...",
     "loadUrlHint": "Enter a public JSON URL. Content is fetched directly in your browser.",
     "enterUrl": "Enter URL",
-    "emptyOutput": "Result will appear here"
+    "emptyOutput": "Result will appear here",
+    "copyShareLink": "Copy Share Link",
+    "shareOnTwitter": "Share on Twitter",
+    "shareWarning": "Share links encode JSON content in the URL. Do not share passwords, tokens, or sensitive data."
+  },
+  "formatter": {
+    "1space": "1 space",
+    "2spaces": "2 spaces",
+    "3spaces": "3 spaces",
+    "4spaces": "4 spaces",
+    "6spaces": "6 spaces",
+    "8spaces": "8 spaces",
+    "tab": "Tab",
+    "invalidJson": "Invalid JSON",
+    "validJson": "✅ Valid JSON",
+    "fixedIssues": "✅ Fixed {count} issue(s):",
+    "unableToFix": "Unable to auto-fix JSON. Please check the syntax.",
+    "lineColError": "Line {line}, Column {col}: {message}"
+  },
+  "tree": {
+    "searchByKey": "Key",
+    "searchByValue": "Value",
+    "searchByPath": "Path",
+    "placeholderKey": "Search by key name...",
+    "placeholderValue": "Search by value...",
+    "placeholderPath": "Search by path (e.g. store.book[0])...",
+    "matchCount": "{current}/{total}",
+    "noResults": "No results",
+    "expandAll": "Expand",
+    "collapseAll": "Collapse"
   }
 }

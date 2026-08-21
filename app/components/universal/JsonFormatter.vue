@@ -49,8 +49,9 @@
           :content="outputJson"
           :error="error"
           :view-mode="viewMode"
-          show-mode-toggle
           :parsed-data="parsedData"
+          :show-copy="false"
+          :show-download="false"
           :empty-text="$t('system.emptyOutput')"
           @update:view-mode="viewMode = $event"
           @copy="copyOutput"
@@ -65,14 +66,14 @@
       <div class="flex items-center gap-2">
         <label class="text-xs font-bold text-surface-600 dark:text-surface-400">{{ tool.ui?.option_indent || 'Indent:' }}</label>
         <select v-model="indent" class="rounded-lg border border-surface-200 bg-white px-2 py-1 text-xs dark:border-surface-700 dark:bg-surface-800">
-          <option :value="1">1 space</option>
-          <option :value="2">{{ tool.ui?.option_2_spaces || '2 spaces' }}</option>
-          <option :value="3">3 spaces</option>
-          <option :value="4">{{ tool.ui?.option_4_spaces || '4 spaces' }}</option>
-          <option :value="6">6 spaces</option>
-          <option :value="8">8 spaces</option>
-          <option value="tab">Tab</option>
-          <option :value="0">{{ tool.ui?.option_minified || 'Minified' }}</option>
+          <option :value="1">{{ $t('formatter.1space') }}</option>
+          <option :value="2">{{ tool.ui?.option_2_spaces || $t('formatter.2spaces') }}</option>
+          <option :value="3">{{ $t('formatter.3spaces') }}</option>
+          <option :value="4">{{ tool.ui?.option_4_spaces || $t('formatter.4spaces') }}</option>
+          <option :value="6">{{ $t('formatter.6spaces') }}</option>
+          <option :value="8">{{ $t('formatter.8spaces') }}</option>
+          <option value="tab">{{ $t('formatter.tab') }}</option>
+          <option :value="0">{{ tool.ui?.option_minified || $t('system.minify') }}</option>
         </select>
       </div>
 
@@ -88,64 +89,79 @@
       <button @click="fixJson" class="rounded-xl border border-surface-200 bg-white px-4 py-2 text-xs font-bold text-surface-700 hover:bg-surface-50 dark:border-surface-700 dark:bg-surface-800 dark:text-surface-300">
         {{ $t('system.fix') }}
       </button>
+
+      <!-- Auto-format toggle -->
+      <label class="flex items-center gap-1.5 cursor-pointer select-none ml-2">
+        <span class="text-xs text-surface-600 dark:text-surface-400">{{ $t('system.autoFormat') }}</span>
+        <button
+          @click="autoFormat = !autoFormat"
+          :class="autoFormat ? 'bg-primary-600' : 'bg-surface-300 dark:bg-surface-600'"
+          class="relative inline-flex h-5 w-9 items-center rounded-full transition-colors"
+          role="switch"
+          :aria-checked="autoFormat"
+        >
+          <span
+            :class="autoFormat ? 'translate-x-4' : 'translate-x-0.5'"
+            class="inline-block h-4 w-4 rounded-full bg-white transition-transform"
+          />
+        </button>
+      </label>
     </template>
 
-    <!-- Toolbar right: share + auto-format -->
+    <!-- Toolbar right: copy + download + share -->
     <template #toolbar-right>
-      <div class="flex items-center gap-3 ml-auto">
-        <!-- Share button -->
-        <div class="relative p-0 m-0">
-          <button @click="showShareMenu = !showShareMenu" class="text-xs text-primary-600 hover:text-primary-700 dark:text-primary-400">
+      <div class="flex items-center gap-2 ml-auto">
+        <button
+          v-if="outputJson"
+          @click="copyOutput"
+          class="text-xs text-primary-600 hover:text-primary-700 dark:text-primary-400"
+        >
+          {{ copyJustCopied ? '✓ Copied!' : $t('system.copy') }}
+        </button>
+        <button
+          v-if="outputJson"
+          @click="downloadOutput"
+          class="text-xs text-surface-500 hover:text-surface-700 dark:text-surface-400"
+        >
+          {{ $t('system.download') }}
+        </button>
+        <div class="relative flex items-center" ref="shareMenuRef">
+          <button @click="showShareMenu = !showShareMenu" class="text-xs text-surface-500 hover:text-surface-700 dark:text-surface-400">
             {{ $t('system.share') }}
           </button>
           <div v-if="showShareMenu" class="absolute right-0 bottom-full mb-1 bg-white dark:bg-surface-800 border border-surface-200 dark:border-surface-700 rounded-lg shadow-lg p-2 z-50 min-w-[200px]">
             <button @click="copyShareLink" class="w-full text-left px-3 py-2 text-xs hover:bg-surface-100 dark:hover:bg-surface-700 rounded">
-              {{ shareCopied ? '✓ Copied!' : 'Copy Share Link' }}
+              {{ shareCopied ? $t('system.copied') : $t('system.copyShareLink') }}
             </button>
             <button @click="shareToTwitter" class="w-full text-left px-3 py-2 text-xs hover:bg-surface-100 dark:hover:bg-surface-700 rounded">
-              Share on Twitter
+              {{ $t('system.shareOnTwitter') }}
             </button>
             <p class="px-3 pt-1 pb-0.5 text-[10px] text-amber-600 dark:text-amber-400 leading-tight">
-              ⚠️ Share links encode JSON content in the URL. Do not share passwords, tokens, or sensitive data.
+              ⚠️ {{ $t('system.shareWarning') }}
             </p>
           </div>
         </div>
-
-        <!-- Auto-format toggle -->
-        <label class="flex items-center gap-1.5 cursor-pointer select-none">
-          <span class="text-xs text-surface-600 dark:text-surface-400">{{ $t('system.autoFormat') }}</span>
-          <button
-            @click="autoFormat = !autoFormat"
-            :class="autoFormat ? 'bg-primary-600' : 'bg-surface-300 dark:bg-surface-600'"
-            class="relative inline-flex h-5 w-9 items-center rounded-full transition-colors"
-            role="switch"
-            :aria-checked="autoFormat"
-          >
-            <span
-              :class="autoFormat ? 'translate-x-4' : 'translate-x-0.5'"
-              class="inline-block h-4 w-4 rounded-full bg-white transition-transform"
-            />
-          </button>
-        </label>
       </div>
     </template>
   </ResizablePanel>
 </template>
 
 <script setup lang="ts">
-defineProps<{ tool: any }>()
+const { tool } = defineProps<{ tool: any }>()
 
 const inputJson = ref('')
 const outputJson = ref('')
 const error = ref('')
 const indent = ref<number | string>(2)
-const autoFormat = ref(false)
-const viewMode = ref<'text' | 'tree' | 'rich'>('text')
+const autoFormat = ref(true)
+const viewMode = ref<'text' | 'rich'>('rich')
 const fullscreen = ref(false)
 const lastAction = ref<'formatted' | 'minified' | 'validated'>('formatted')
 
 const showShareMenu = ref(false)
 const shareCopied = ref(false)
+const copyJustCopied = ref(false)
+const shareMenuRef = ref<HTMLElement>()
 
 const { fixJson: fixJsonAuto, getJsonError } = useJsonFixer()
 const { generateShareUrl, copyShareUrl, shareToSocial } = useShareJson()
@@ -180,6 +196,8 @@ const copyPath = async (path: string) => {
   } catch {}
 }
 
+const { t } = useI18n()
+
 const formatJson = () => {
   if (!inputJson.value.trim()) { error.value = ''; outputJson.value = ''; return }
   try {
@@ -190,7 +208,7 @@ const formatJson = () => {
     error.value = ''
   } catch {
     const err = getJsonError(inputJson.value)
-    error.value = err ? `Line ${err.line}, Column ${err.column}: ${err.message}` : 'Invalid JSON'
+    error.value = err ? t('formatter.lineColError', { line: err.line, col: err.column, message: err.message }) : t('formatter.invalidJson')
   }
 }
 
@@ -203,7 +221,7 @@ const minifyJson = () => {
     error.value = ''
   } catch {
     const err = getJsonError(inputJson.value)
-    error.value = err ? `Line ${err.line}, Column ${err.column}: ${err.message}` : 'Invalid JSON'
+    error.value = err ? t('formatter.lineColError', { line: err.line, col: err.column, message: err.message }) : t('formatter.invalidJson')
   }
 }
 
@@ -211,12 +229,12 @@ const validateJson = () => {
   if (!inputJson.value.trim()) { error.value = ''; outputJson.value = ''; return }
   try {
     JSON.parse(inputJson.value)
-    outputJson.value = '✅ Valid JSON'
+    outputJson.value = tool.ui?.status_valid || t('formatter.validJson')
     lastAction.value = 'validated'
     error.value = ''
   } catch {
     const err = getJsonError(inputJson.value)
-    error.value = err ? `Line ${err.line}, Column ${err.column}: ${err.message}` : 'Invalid JSON'
+    error.value = err ? t('formatter.lineColError', { line: err.line, col: err.column, message: err.message }) : t('formatter.invalidJson')
     outputJson.value = ''
   }
 }
@@ -226,11 +244,11 @@ const fixJson = () => {
 
   if (fixed) {
     inputJson.value = fixed
-    outputJson.value = `✅ Fixed ${fixes.length} issue(s):\n${fixes.map(f => `• ${f}`).join('\n')}`
+    outputJson.value = `${t('formatter.fixedIssues', { count: fixes.length })}\n${fixes.map(f => `• ${f}`).join('\n')}`
     error.value = ''
     nextTick(() => formatJson())
   } else {
-    error.value = 'Unable to auto-fix JSON. Please check the syntax.'
+    error.value = t('formatter.unableToFix')
   }
 }
 
@@ -258,6 +276,8 @@ useEventListener('keydown', (e: KeyboardEvent) => {
 const copyOutput = async () => {
   try {
     await navigator.clipboard.writeText(outputJson.value)
+    copyJustCopied.value = true
+    setTimeout(() => { copyJustCopied.value = false }, 2000)
   } catch (e) {
     console.error('Failed to copy:', e)
   }
@@ -298,8 +318,10 @@ const shareToTwitter = () => {
 
 const handleClickOutside = (e: MouseEvent) => {
   const target = e.target as HTMLElement
-  if (!target.closest('.relative')) {
+  if (shareMenuRef.value && !shareMenuRef.value.contains(target)) {
     showShareMenu.value = false
+  }
+  if (!target.closest('[ref="exampleMenuRef"]') && !target.closest('.relative')) {
     showExampleMenu.value = false
   }
 }

@@ -90,26 +90,14 @@ defineEmits<{
   copy: [path: string]
 }>()
 
-const expanded = ref<Set<string | number>>(new Set())
+// --- helpers (hoisted before use) ---
 
-// Support expand/collapse all via provide/inject
-const expandAllSignal = inject<Ref<number> | null>('treeExpandAll', null)
-const collapseAllSignal = inject<Ref<number> | null>('treeCollapseAll', null)
+const isObject = (val: unknown): val is Record<string, unknown> =>
+  val !== null && typeof val === 'object' && !Array.isArray(val)
 
-if (expandAllSignal) {
-  watch(expandAllSignal, () => {
-    const keys = getAllExpandableKeys(props.data)
-    expanded.value = new Set(keys)
-  })
-}
+const isArray = (val: unknown): val is unknown[] => Array.isArray(val)
 
-if (collapseAllSignal) {
-  watch(collapseAllSignal, () => {
-    expanded.value = new Set()
-  })
-}
-
-const getAllExpandableKeys = (data: unknown): (string | number)[] => {
+function getAllExpandableKeys(data: unknown): (string | number)[] {
   const keys: (string | number)[] = []
   if (isObject(data)) {
     for (const [key, value] of Object.entries(data as Record<string, unknown>)) {
@@ -129,10 +117,25 @@ const getAllExpandableKeys = (data: unknown): (string | number)[] => {
   return keys
 }
 
-const isObject = (val: unknown): val is Record<string, unknown> =>
-  val !== null && typeof val === 'object' && !Array.isArray(val)
+// --- state ---
 
-const isArray = (val: unknown): val is unknown[] => Array.isArray(val)
+const expanded = ref<Set<string | number>>(new Set(getAllExpandableKeys(props.data)))
+
+// Support expand/collapse all via provide/inject
+const expandAllSignal = inject<Ref<number> | null>('treeExpandAll', null)
+const collapseAllSignal = inject<Ref<number> | null>('treeCollapseAll', null)
+
+if (expandAllSignal) {
+  watch(expandAllSignal, () => {
+    expanded.value = new Set(getAllExpandableKeys(props.data))
+  })
+}
+
+if (collapseAllSignal) {
+  watch(collapseAllSignal, () => {
+    expanded.value = new Set()
+  })
+}
 
 const toggle = (key: string | number) => {
   if (expanded.value.has(key)) {
