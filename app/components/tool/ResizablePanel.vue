@@ -33,7 +33,7 @@
     </div>
 
     <!-- Resizable panels -->
-    <div class="flex flex-1 min-h-[30rem] overflow-hidden" :class="[effectiveDirection === 'horizontal' ? 'flex-row' : 'flex-col', isFullscreen || isMobile ? '' : 'max-h-60']">
+    <div class="flex flex-1 min-h-[25rem] overflow-hidden" :class="[effectiveDirection === 'horizontal' ? 'flex-row' : 'flex-col', isFullscreen || isMobile ? '' : 'max-h-60']">
       <!-- Left / Top panel -->
       <div :style="firstStyle" class="min-w-0 min-h-0 overflow-hidden">
         <slot name="first" />
