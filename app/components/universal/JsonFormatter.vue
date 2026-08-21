@@ -50,6 +50,8 @@
           :error="error"
           :view-mode="viewMode"
           :parsed-data="parsedData"
+          :field-errors="fieldErrors"
+          :locate-target="locateTarget"
           :show-copy="false"
           :show-download="false"
           :empty-text="$t('system.emptyOutput')"
@@ -57,6 +59,12 @@
           @copy="copyOutput"
           @download="downloadOutput"
           @copy-path="copyPath"
+        />
+        <JsonErrorsPanel
+          :parse-errors="parseErrors"
+          :field-errors="fieldErrors"
+          @locate-parse-error="onLocateParseError"
+          @locate-field-error="onLocateFieldError"
         />
       </div>
     </template>
@@ -147,16 +155,23 @@
 </template>
 
 <script setup lang="ts">
+import type { ParseError, FieldError } from '~/types/jsonErrors'
+
 const { tool } = defineProps<{ tool: any }>()
 
 const inputJson = ref('')
 const outputJson = ref('')
 const error = ref('')
+const parseError = ref<ParseError | null>(null)
 const indent = ref<number | string>(2)
 const autoFormat = ref(true)
 const viewMode = ref<'text' | 'rich'>('rich')
 const fullscreen = ref(false)
 const lastAction = ref<'formatted' | 'minified' | 'validated'>('formatted')
+
+// Structured errors for the errors panel
+const parseErrors = computed<ParseError[]>(() => parseError.value ? [parseError.value] : [])
+const fieldErrors = ref<FieldError[]>([]) // placeholder for future field-level validation
 
 const showShareMenu = ref(false)
 const shareCopied = ref(false)
@@ -199,42 +214,48 @@ const copyPath = async (path: string) => {
 const { t } = useI18n()
 
 const formatJson = () => {
-  if (!inputJson.value.trim()) { error.value = ''; outputJson.value = ''; return }
+  if (!inputJson.value.trim()) { error.value = ''; parseError.value = null; outputJson.value = ''; return }
   try {
     const parsed = JSON.parse(inputJson.value)
     const space = indent.value === 'tab' ? '\t' : Number(indent.value)
     outputJson.value = JSON.stringify(parsed, null, space)
     lastAction.value = 'formatted'
     error.value = ''
+    parseError.value = null
   } catch {
     const err = getJsonError(inputJson.value)
-    error.value = err ? t('formatter.lineColError', { line: err.line, col: err.column, message: err.message }) : t('formatter.invalidJson')
+    parseError.value = err
+    error.value = err ? t('errors.lineCol', { line: err.line, col: err.column }) + ': ' + err.message : t('formatter.invalidJson')
   }
 }
 
 const minifyJson = () => {
-  if (!inputJson.value.trim()) { error.value = ''; outputJson.value = ''; return }
+  if (!inputJson.value.trim()) { error.value = ''; parseError.value = null; outputJson.value = ''; return }
   try {
     const parsed = JSON.parse(inputJson.value)
     outputJson.value = JSON.stringify(parsed)
     lastAction.value = 'minified'
     error.value = ''
+    parseError.value = null
   } catch {
     const err = getJsonError(inputJson.value)
-    error.value = err ? t('formatter.lineColError', { line: err.line, col: err.column, message: err.message }) : t('formatter.invalidJson')
+    parseError.value = err
+    error.value = err ? t('errors.lineCol', { line: err.line, col: err.column }) + ': ' + err.message : t('formatter.invalidJson')
   }
 }
 
 const validateJson = () => {
-  if (!inputJson.value.trim()) { error.value = ''; outputJson.value = ''; return }
+  if (!inputJson.value.trim()) { error.value = ''; parseError.value = null; outputJson.value = ''; return }
   try {
     JSON.parse(inputJson.value)
     outputJson.value = tool.ui?.status_valid || t('formatter.validJson')
     lastAction.value = 'validated'
     error.value = ''
+    parseError.value = null
   } catch {
     const err = getJsonError(inputJson.value)
-    error.value = err ? t('formatter.lineColError', { line: err.line, col: err.column, message: err.message }) : t('formatter.invalidJson')
+    parseError.value = err
+    error.value = err ? t('errors.lineCol', { line: err.line, col: err.column }) + ': ' + err.message : t('formatter.invalidJson')
     outputJson.value = ''
   }
 }
@@ -246,6 +267,7 @@ const fixJson = () => {
     inputJson.value = fixed
     outputJson.value = `${t('formatter.fixedIssues', { count: fixes.length })}\n${fixes.map(f => `• ${f}`).join('\n')}`
     error.value = ''
+    parseError.value = null
     nextTick(() => formatJson())
   } else {
     error.value = t('formatter.unableToFix')
@@ -255,6 +277,23 @@ const fixJson = () => {
 const clearAll = () => {
   outputJson.value = ''
   error.value = ''
+  parseError.value = null
+}
+
+const onLocateParseError = (err: ParseError) => {
+  // Switch to text view to show line-based error location
+  viewMode.value = 'text'
+  // TODO: scroll to line in text editor when line-number support is added
+  console.log('Locate parse error:', err.line, err.column)
+}
+
+// Locate field error in tree — expand ancestors + scroll + flash
+const locateTarget = ref('')
+const onLocateFieldError = (err: FieldError) => {
+  // Convert JSON Pointer ("/users/2/email") to dot path ("users.2.email")
+  const dotPath = err.instancePath.replace(/^\//, '').replace(/\//g, '.')
+  locateTarget.value = ''
+  nextTick(() => { locateTarget.value = dotPath })
 }
 
 const onInputPaste = () => {

@@ -65,6 +65,10 @@
             {{ tool.ui?.placeholder_result || 'Validation result will appear here...' }}
           </div>
         </div>
+        <JsonErrorsPanel
+          :parse-errors="parseErrors"
+          :field-errors="fieldErrors"
+        />
       </div>
     </template>
 
@@ -90,18 +94,25 @@
 </template>
 
 <script setup lang="ts">
+import type { ParseError, FieldError } from '~/types/jsonErrors'
+
 const props = defineProps<{ tool: any }>()
 
 const inputJson = ref('')
 const result = ref<{ valid: boolean; error?: string; line?: number; column?: number; fixes?: string[] } | null>(null)
+const parseError = ref<ParseError | null>(null)
 const urlLoaded = ref(false)
 const fullscreen = ref(false)
 
-const { fixJson: fixJsonAuto } = useJsonFixer()
+const { fixJson: fixJsonAuto, getJsonError } = useJsonFixer()
 const { copied, copyToClipboard } = useClipboard()
 const { loadDataFromUrl, clearAllParams } = useUrlParams()
 
 const copyErrorCopied = ref(false)
+
+// Structured errors for the errors panel
+const parseErrors = computed<ParseError[]>(() => parseError.value ? [parseError.value] : [])
+const fieldErrors = ref<FieldError[]>([]) // placeholder for future field-level validation
 
 onMounted(() => {
   const urlData = loadDataFromUrl('json') || loadDataFromUrl('data')
@@ -116,25 +127,29 @@ const validate = () => {
   try {
     JSON.parse(inputJson.value)
     result.value = { valid: true }
-  } catch (e) {
-    const error = e as SyntaxError
-    const match = error.message.match(/position (\d+)/)
-    let line: number | undefined, column: number | undefined
-    if (match) {
-      const pos = parseInt(match[1])
-      const lines = inputJson.value.substring(0, pos).split('\n')
-      line = lines.length; column = lines[lines.length - 1].length + 1
+    parseError.value = null
+  } catch {
+    const err = getJsonError(inputJson.value)
+    parseError.value = err
+    result.value = {
+      valid: false,
+      error: err?.message || 'Invalid JSON',
+      line: err?.line,
+      column: err?.column,
     }
-    result.value = { valid: false, error: error.message, line, column }
   }
 }
 
 const fixJson = () => {
   const { fixed, fixes } = fixJsonAuto(inputJson.value)
-  if (fixed) { inputJson.value = fixed; result.value = { valid: true, fixes } }
+  if (fixed) {
+    inputJson.value = fixed
+    result.value = { valid: true, fixes }
+    parseError.value = null
+  }
 }
 
-const clearAll = () => { result.value = null; urlLoaded.value = false }
+const clearAll = () => { result.value = null; parseError.value = null; urlLoaded.value = false }
 const clearUrlData = () => { clearAllParams(); urlLoaded.value = false }
 const onInputPaste = () => { nextTick(() => validate()) }
 const copyInput = async () => { await copyToClipboard(inputJson.value) }

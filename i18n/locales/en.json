@@ -208,5 +208,15 @@
     "noResults": "No results",
     "expandAll": "Expand",
     "collapseAll": "Collapse"
+  },
+  "errors": {
+    "panelTitle": "Errors",
+    "parseError": "Parse Error",
+    "fieldError": "Field Error",
+    "parseErrorCount": "{count} parse error(s)",
+    "fieldErrorCount": "{count} field error(s)",
+    "noErrors": "No errors",
+    "lineCol": "Line {line}, Col {col}",
+    "clickToLocate": "Click to locate"
   }
 }

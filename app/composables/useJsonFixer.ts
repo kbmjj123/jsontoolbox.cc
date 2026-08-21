@@ -1,3 +1,5 @@
+import type { ParseError } from '~/types/jsonErrors'
+
 /**
  * JSON Auto-Fixer Composable
  * Automatically fix common JSON syntax errors, reusable for formatter, validator, etc.
@@ -217,8 +219,9 @@ export const useJsonFixer = () => {
 
   /**
    * Get detailed JSON error information (line, column)
+   * Returns structured ParseError or null if valid
    */
-  const getJsonError = (input: string): { message: string; line: number; column: number } | null => {
+  const getJsonError = (input: string): ParseError | null => {
     try {
       JSON.parse(input)
       return null
@@ -227,10 +230,11 @@ export const useJsonFixer = () => {
       const match = error.message.match(/position (\d+)/)
       let line = 1
       let column = 1
+      let offset: number | undefined
 
       if (match) {
-        const pos = parseInt(match[1])
-        const lines = input.substring(0, pos).split('\n')
+        offset = parseInt(match[1])
+        const lines = input.substring(0, offset).split('\n')
         line = lines.length
         column = lines[lines.length - 1].length + 1
       }
@@ -238,7 +242,8 @@ export const useJsonFixer = () => {
       return {
         message: error.message,
         line,
-        column
+        column,
+        offset
       }
     }
   }

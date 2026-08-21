@@ -156,6 +156,8 @@
 </template>
 
 <script setup lang="ts">
+import type { FieldError } from '~/types/jsonErrors'
+
 const { t } = useI18n()
 
 interface Props {
@@ -164,10 +166,12 @@ interface Props {
   error?: string
   viewMode?: 'text' | 'rich'
   parsedData?: unknown | null
+  fieldErrors?: FieldError[]
   showCopy?: boolean
   showDownload?: boolean
   downloadFilename?: string
   emptyText?: string
+  locateTarget?: string
 }
 
 const props = withDefaults(defineProps<Props>(), {
@@ -176,10 +180,12 @@ const props = withDefaults(defineProps<Props>(), {
   error: '',
   viewMode: 'text',
   parsedData: null,
+  fieldErrors: () => [],
   showCopy: true,
   showDownload: true,
   downloadFilename: 'output.json',
   emptyText: 'Result will appear here',
+  locateTarget: '',
 })
 
 const emit = defineEmits<{
@@ -240,12 +246,37 @@ onMounted(() => {
 // Provide search state to tree nodes
 provide('treeSearch', treeSearch)
 
+// Field errors → errorMap for tree nodes
+const errorMap = computed(() => {
+  const map: Record<string, FieldError[]> = {}
+  for (const err of props.fieldErrors) {
+    const path = err.instancePath
+    if (!map[path]) map[path] = []
+    map[path].push(err)
+  }
+  return map
+})
+provide('jsonErrors', errorMap)
+
 // Expand/collapse all signals
 const allExpanded = ref(true)
 const expandAllSignal = ref(0)
 const collapseAllSignal = ref(0)
 provide('expandAllSignal', expandAllSignal)
 provide('collapseAllSignal', collapseAllSignal)
+
+// Locate path signal — used by error panel click → scroll to tree node
+const locatePath = ref<string>('')
+provide('locatePath', locatePath)
+
+// Sync locateTarget prop → locatePath provide
+watch(() => props.locateTarget, (target) => {
+  if (target) {
+    locatePath.value = target
+    // Switch to rich view so the tree is visible
+    emit('update:viewMode', 'rich')
+  }
+})
 
 function toggleExpandAll() {
   if (allExpanded.value) {

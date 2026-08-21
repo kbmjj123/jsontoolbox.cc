@@ -48,108 +48,151 @@
         <button @click="downloadResult" class="text-xs text-surface-500 hover:text-surface-700 dark:text-surface-400">{{ $t('system.download') }}</button>
       </div>
     </div>
+
+    <!-- Valid -->
     <div v-if="result.valid" class="rounded-xl border border-green-200 bg-green-50 p-4 dark:border-green-800 dark:bg-green-900/20">
-      <div class="flex items-center gap-2"><Icon name="lucide:check-circle" class="h-5 w-5 text-green-500" /><span class="text-sm font-bold text-green-700 dark:text-green-400">{{ tool.ui?.status_valid || 'Valid JSON' }}</span></div>
+      <div class="flex items-center gap-2">
+        <Icon name="lucide:check-circle" class="h-5 w-5 text-green-500" />
+        <span class="text-sm font-bold text-green-700 dark:text-green-400">{{ tool.ui?.status_valid || 'Valid JSON' }}</span>
+      </div>
       <p class="mt-2 text-xs text-green-600 dark:text-green-400">{{ tool.ui?.status_matches || 'The JSON data matches the schema.' }}</p>
     </div>
-    <div v-else class="rounded-xl border border-red-200 bg-red-50 p-4 dark:border-red-800 dark:bg-red-900/20">
-      <div class="flex items-center gap-2"><Icon name="lucide:x-circle" class="h-5 w-5 text-red-500" /><span class="text-sm font-bold text-red-700 dark:text-red-400">{{ tool.ui?.status_invalid || 'Invalid JSON' }}</span></div>
-      <div class="mt-3 space-y-2">
-        <div v-for="(err, index) in result.errors" :key="index" class="text-xs text-red-600 dark:text-red-400"><span class="font-mono">{{ err.path || '/' }}</span>: {{ err.message }}</div>
+
+    <!-- Invalid -->
+    <div v-else>
+      <div class="rounded-xl border border-red-200 bg-red-50 p-4 dark:border-red-800 dark:bg-red-900/20 mb-2">
+        <div class="flex items-center gap-2">
+          <Icon name="lucide:x-circle" class="h-5 w-5 text-red-500" />
+          <span class="text-sm font-bold text-red-700 dark:text-red-400">
+            {{ result.fieldErrors.length }} {{ result.fieldErrors.length === 1 ? 'error' : 'errors' }} found
+          </span>
+        </div>
+      </div>
+
+      <JsonErrorsPanel
+        :field-errors="result.fieldErrors"
+        @locate-field-error="onLocateFieldError"
+      />
+
+      <!-- Rich tree view with error markers -->
+      <div v-if="parsedData" class="mt-3 rounded-xl border border-surface-200 bg-surface-50 p-4 dark:border-surface-700 dark:bg-surface-800 overflow-auto max-h-[400px]">
+        <JsonTreeNode :data="parsedData" path="" />
       </div>
     </div>
   </div>
 
-  <div v-if="error" class="mt-4 rounded-lg bg-red-50 border border-red-200 p-3 text-xs text-red-700 dark:bg-red-900/30 dark:border-red-800 dark:text-red-400">{{ error }}</div>
+  <div v-if="schemaError" class="mt-4 rounded-lg bg-red-50 border border-red-200 p-3 text-xs text-red-700 dark:bg-red-900/30 dark:border-red-800 dark:text-red-400">
+    {{ schemaError }}
+  </div>
 </template>
 
 <script setup lang="ts">
+import type { FieldError } from '~/types/jsonErrors'
+
 const props = defineProps<{ tool: any }>()
 
 const jsonData = ref('')
 const schemaData = ref('')
-const error = ref('')
-const result = ref<{ valid: boolean; errors: Array<{ path: string; message: string }> } | null>(null)
+const schemaError = ref('')
+const result = ref<{ valid: boolean; fieldErrors: FieldError[] } | null>(null)
 const fullscreen = ref(false)
 
-const ui = computed(() => props.tool?.ui || {})
+const { validateWithSchemaText } = useSchemaValidation()
 
-const validateValue = (value: any, schema: any, path: string = ''): Array<{ path: string; message: string }> => {
-  const errors: Array<{ path: string; message: string }> = []
-  if (!schema) return errors
+// Provide state for tree nodes
+const errorMap = ref<Record<string, FieldError[]>>({})
+provide('jsonErrors', errorMap)
+const locatePath = ref('')
+provide('locatePath', locatePath)
+provide('treeSearch', null)
+const expandAllSignal = ref(0)
+const collapseAllSignal = ref(0)
+provide('expandAllSignal', expandAllSignal)
+provide('collapseAllSignal', collapseAllSignal)
 
-  if (schema.type) {
-    const actualType = Array.isArray(value) ? 'array' : typeof value
-    if (value === null) { if (schema.type !== 'null') errors.push({ path, message: `Expected ${schema.type}, got null` }) }
-    else if (actualType !== schema.type) errors.push({ path, message: `Expected ${schema.type}, got ${actualType}` })
-  }
-
-  if (schema.required && typeof value === 'object' && !Array.isArray(value)) {
-    for (const key of schema.required) { if (!(key in value)) errors.push({ path: path ? `${path}.${key}` : key, message: 'Missing required property' }) }
-  }
-
-  if (schema.properties && typeof value === 'object' && !Array.isArray(value)) {
-    for (const [key, propSchema] of Object.entries(schema.properties)) {
-      if (key in value) errors.push(...validateValue(value[key], propSchema, path ? `${path}.${key}` : key))
-    }
-  }
-
-  if (schema.items && Array.isArray(value)) {
-    value.forEach((item, index) => { errors.push(...validateValue(item, schema.items, `${path}[${index}]`)) })
-  }
-
-  if (typeof value === 'string') {
-    if (schema.minLength !== undefined && value.length < schema.minLength) errors.push({ path, message: `String length ${value.length} is less than minimum ${schema.minLength}` })
-    if (schema.maxLength !== undefined && value.length > schema.maxLength) errors.push({ path, message: `String length ${value.length} is greater than maximum ${schema.maxLength}` })
-    if (schema.pattern && !new RegExp(schema.pattern).test(value)) errors.push({ path, message: `String does not match pattern ${schema.pattern}` })
-  }
-
-  if (typeof value === 'number') {
-    if (schema.minimum !== undefined && value < schema.minimum) errors.push({ path, message: `Value ${value} is less than minimum ${schema.minimum}` })
-    if (schema.maximum !== undefined && value > schema.maximum) errors.push({ path, message: `Value ${value} is greater than maximum ${schema.maximum}` })
-  }
-
-  if (Array.isArray(value)) {
-    if (schema.minItems !== undefined && value.length < schema.minItems) errors.push({ path, message: `Array length ${value.length} is less than minimum ${schema.minItems}` })
-    if (schema.maxItems !== undefined && value.length > schema.maxItems) errors.push({ path, message: `Array length ${value.length} is greater than maximum ${schema.maxItems}` })
-  }
-
-  if (schema.enum && !schema.enum.includes(value)) errors.push({ path, message: `Value must be one of: ${schema.enum.join(', ')}` })
-
-  return errors
-}
+const parsedData = computed(() => {
+  try { return JSON.parse(jsonData.value) } catch { return null }
+})
 
 const validate = () => {
-  error.value = ''; result.value = null
+  schemaError.value = ''
+  result.value = null
+  errorMap.value = {}
+
+  if (!jsonData.value.trim() || !schemaData.value.trim()) {
+    schemaError.value = 'Please enter both JSON data and JSON Schema.'
+    return
+  }
+
+  let data: any
   try {
-    const data = JSON.parse(jsonData.value)
-    const schema = JSON.parse(schemaData.value)
-    const errors = validateValue(data, schema)
-    result.value = { valid: errors.length === 0, errors }
-  } catch (e) { error.value = (e as Error).message }
+    data = JSON.parse(jsonData.value)
+  } catch (e) {
+    schemaError.value = `Invalid JSON data: ${(e as Error).message}`
+    return
+  }
+
+  const { errors, schemaError: se } = validateWithSchemaText(data, schemaData.value)
+  if (se) {
+    schemaError.value = se
+    return
+  }
+
+  result.value = { valid: errors.length === 0, fieldErrors: errors }
+
+  // Build errorMap for tree nodes
+  const map: Record<string, FieldError[]> = {}
+  for (const err of errors) {
+    const path = err.instancePath
+    if (!map[path]) map[path] = []
+    map[path].push(err)
+  }
+  errorMap.value = map
+}
+
+const onLocateFieldError = (err: FieldError) => {
+  const dotPath = err.instancePath.replace(/^\//, '').replace(/\//g, '.')
+  locatePath.value = ''
+  nextTick(() => { locatePath.value = dotPath })
 }
 
 const loadSample = () => {
-  jsonData.value = JSON.stringify({ name: "Alice", age: 30, email: "alice@example.com" }, null, 2)
-  schemaData.value = JSON.stringify({ type: "object", properties: { name: { type: "string", minLength: 1 }, age: { type: "number", minimum: 0 }, email: { type: "string", pattern: "^[^@]+@[^@]+$" } }, required: ["name", "email"] }, null, 2)
+  jsonData.value = JSON.stringify({ name: 'Alice', age: 30, email: 'alice@example.com' }, null, 2)
+  schemaData.value = JSON.stringify({
+    type: 'object',
+    properties: {
+      name: { type: 'string', minLength: 1 },
+      age: { type: 'number', minimum: 0 },
+      email: { type: 'string', pattern: '^[^@]+@[^@]+$' },
+    },
+    required: ['name', 'email'],
+  }, null, 2)
 }
 
-const clearJsonData = () => { error.value = '' }
-const clearSchemaData = () => { error.value = '' }
-const clearAll = () => { error.value = ''; result.value = null }
+const clearJsonData = () => { schemaError.value = '' }
+const clearSchemaData = () => { schemaError.value = '' }
+const clearAll = () => { schemaError.value = ''; result.value = null; errorMap.value = {} }
 
 const copyResult = async () => {
   if (!result.value) return
-  try { await navigator.clipboard.writeText(JSON.stringify({ valid: result.value.valid, errors: result.value.errors, timestamp: new Date().toISOString() }, null, 2)) } catch (e) { console.error('Failed to copy:', e) }
+  try {
+    await navigator.clipboard.writeText(
+      JSON.stringify({ valid: result.value.valid, errors: result.value.fieldErrors, timestamp: new Date().toISOString() }, null, 2)
+    )
+  } catch {}
 }
 
 const downloadResult = () => {
   if (!result.value) return
-  const content = JSON.stringify({ valid: result.value.valid, errors: result.value.errors, timestamp: new Date().toISOString() }, null, 2)
+  const content = JSON.stringify({ valid: result.value.valid, errors: result.value.fieldErrors, timestamp: new Date().toISOString() }, null, 2)
   const blob = new Blob([content], { type: 'application/json' })
   const url = URL.createObjectURL(blob)
   const link = document.createElement('a')
-  link.href = url; link.download = 'validation-report.json'
-  document.body.appendChild(link); link.click(); document.body.removeChild(link); URL.revokeObjectURL(url)
+  link.href = url
+  link.download = 'validation-report.json'
+  document.body.appendChild(link)
+  link.click()
+  document.body.removeChild(link)
+  URL.revokeObjectURL(url)
 }
 </script>

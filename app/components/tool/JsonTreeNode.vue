@@ -7,13 +7,15 @@
           :ref="(el) => markRow(getFullPath(key), el as HTMLElement)"
           :class="[
             'grid rounded px-1 cursor-pointer group transition-colors',
-            isCurrentMatch(getFullPath(key))
-              ? 'bg-amber-200 dark:bg-amber-700/60 ring-1 ring-amber-400 dark:ring-amber-500'
-              : isMatch(getFullPath(key))
-                ? 'bg-yellow-100 dark:bg-yellow-800/40'
-                : isSelected(getFullPath(key))
-                  ? 'bg-primary-50 dark:bg-primary-900/30 border-l-2 border-primary-500 dark:border-primary-400'
-                  : 'hover:bg-surface-100 dark:hover:bg-surface-700',
+            flashPath === getFullPath(key)
+              ? 'bg-orange-200 dark:bg-orange-700/50 ring-2 ring-orange-400 dark:ring-orange-500 animate-pulse'
+              : isCurrentMatch(getFullPath(key))
+                ? 'bg-amber-200 dark:bg-amber-700/60 ring-1 ring-amber-400 dark:ring-amber-500'
+                : isMatch(getFullPath(key))
+                  ? 'bg-yellow-100 dark:bg-yellow-800/40'
+                  : isSelected(getFullPath(key))
+                    ? 'bg-primary-50 dark:bg-primary-900/30 border-l-2 border-primary-500 dark:border-primary-400'
+                    : 'hover:bg-surface-100 dark:hover:bg-surface-700',
           ]"
           style="grid-template-columns: 2rem 1fr"
           @click="isExpandable(value) ? toggle(key) : selectAndCopy(getFullPath(key))"
@@ -45,6 +47,17 @@
             </span>
             <span v-else-if="isArray(value)" class="text-surface-400">[{{ value.length }}]</span>
             <span v-else class="text-surface-400">{...}</span>
+
+            <!-- Error indicator -->
+            <span
+              v-if="hasError(getFullPath(key))"
+              class="relative group/error shrink-0 ml-1"
+            >
+              <span class="inline-block w-2 h-2 rounded-full bg-red-500 animate-pulse" />
+              <span class="absolute bottom-full left-1/2 -translate-x-1/2 mb-1 px-2 py-1 rounded bg-red-600 text-white text-[10px] whitespace-nowrap opacity-0 group-hover/error:opacity-100 transition-opacity pointer-events-none z-50">
+                {{ getNodeErrors(getFullPath(key))[0]?.message }}
+              </span>
+            </span>
           </div>
         </div>
 
@@ -74,13 +87,15 @@
           :ref="(el) => markRow(getFullPath(index), el as HTMLElement)"
           :class="[
             'grid rounded px-1 cursor-pointer transition-colors',
-            isCurrentMatch(getFullPath(index))
-              ? 'bg-amber-200 dark:bg-amber-700/60 ring-1 ring-amber-400 dark:ring-amber-500'
-              : isMatch(getFullPath(index))
-                ? 'bg-yellow-100 dark:bg-yellow-800/40'
-                : isSelected(getFullPath(index))
-                  ? 'bg-primary-50 dark:bg-primary-900/30 border-l-2 border-primary-500 dark:border-primary-400'
-                  : 'hover:bg-surface-100 dark:hover:bg-surface-700',
+            flashPath === getFullPath(index)
+              ? 'bg-orange-200 dark:bg-orange-700/50 ring-2 ring-orange-400 dark:ring-orange-500 animate-pulse'
+              : isCurrentMatch(getFullPath(index))
+                ? 'bg-amber-200 dark:bg-amber-700/60 ring-1 ring-amber-400 dark:ring-amber-500'
+                : isMatch(getFullPath(index))
+                  ? 'bg-yellow-100 dark:bg-yellow-800/40'
+                  : isSelected(getFullPath(index))
+                    ? 'bg-primary-50 dark:bg-primary-900/30 border-l-2 border-primary-500 dark:border-primary-400'
+                    : 'hover:bg-surface-100 dark:hover:bg-surface-700',
           ]"
           style="grid-template-columns: 2rem 1fr"
           @click="isExpandable(item) ? toggle(index) : selectAndCopy(getFullPath(index))"
@@ -111,6 +126,17 @@
             </span>
             <span v-else-if="isArray(item)" class="text-surface-400 ml-1">[{{ item.length }}]</span>
             <span v-else class="text-surface-400 ml-1">{...}</span>
+
+            <!-- Error indicator -->
+            <span
+              v-if="hasError(getFullPath(index))"
+              class="relative group/error shrink-0 ml-1"
+            >
+              <span class="inline-block w-2 h-2 rounded-full bg-red-500 animate-pulse" />
+              <span class="absolute bottom-full left-1/2 -translate-x-1/2 mb-1 px-2 py-1 rounded bg-red-600 text-white text-[10px] whitespace-nowrap opacity-0 group-hover/error:opacity-100 transition-opacity pointer-events-none z-50">
+                {{ getNodeErrors(getFullPath(index))[0]?.message }}
+              </span>
+            </span>
           </div>
         </div>
 
@@ -139,13 +165,15 @@
         :ref="(el) => markRow(props.path, el as HTMLElement)"
         :class="[
           'grid rounded px-1 transition-colors',
-          isCurrentMatch(props.path)
-            ? 'bg-amber-200 dark:bg-amber-700/60 ring-1 ring-amber-400 dark:ring-amber-500'
-            : isMatch(props.path)
-              ? 'bg-yellow-100 dark:bg-yellow-800/40'
-              : isSelected(props.path)
-                ? 'bg-primary-50 dark:bg-primary-900/30 border-l-2 border-primary-500 dark:border-primary-400'
-                : '',
+          flashPath === props.path
+            ? 'bg-orange-200 dark:bg-orange-700/50 ring-2 ring-orange-400 dark:ring-orange-500 animate-pulse'
+            : isCurrentMatch(props.path)
+              ? 'bg-amber-200 dark:bg-amber-700/60 ring-1 ring-amber-400 dark:ring-amber-500'
+              : isMatch(props.path)
+                ? 'bg-yellow-100 dark:bg-yellow-800/40'
+                : isSelected(props.path)
+                  ? 'bg-primary-50 dark:bg-primary-900/30 border-l-2 border-primary-500 dark:border-primary-400'
+                  : '',
         ]"
         style="grid-template-columns: 2rem 1fr"
       >
@@ -159,6 +187,17 @@
               :style="{ backgroundColor: getColorStyle(data) || undefined }"
             />
             <span :class="valueColorClass(data)">{{ formatValue(data) }}</span>
+          </span>
+
+          <!-- Error indicator -->
+          <span
+            v-if="hasError(props.path)"
+            class="relative group/error shrink-0 ml-1"
+          >
+            <span class="inline-block w-2 h-2 rounded-full bg-red-500 animate-pulse" />
+            <span class="absolute bottom-full left-1/2 -translate-x-1/2 mb-1 px-2 py-1 rounded bg-red-600 text-white text-[10px] whitespace-nowrap opacity-0 group-hover/error:opacity-100 transition-opacity pointer-events-none z-50">
+              {{ getNodeErrors(props.path)[0]?.message }}
+            </span>
           </span>
         </div>
       </div>
@@ -177,6 +216,7 @@
 <script setup lang="ts">
 import type { PreviewImage } from '~/composables/useImagePreview'
 import type { useTreeSearch } from '~/composables/useTreeSearch'
+import type { FieldError } from '~/types/jsonErrors'
 
 const props = defineProps<{
   data: unknown
@@ -233,10 +273,54 @@ if (!props.path) {
   watch(collapseAllSignal, () => {
     expanded.value = new Set()
   })
+
+  // Locate path: expand ancestors + scroll + flash
+  watch(() => locatePath.value, (target) => {
+    if (!target) return
+
+    // Expand all ancestors of the target path
+    // e.g. for "users.2.email" → expand "users", "users.2"
+    const parts = target.split(/\.|\[|\]/).filter(Boolean)
+    const next = new Set(expanded.value)
+    let current = ''
+    for (let i = 0; i < parts.length - 1; i++) {
+      current = current ? `${current}.${parts[i]}` : parts[i]
+      next.add(current)
+    }
+    expanded.value = next
+
+    // Scroll into view after DOM updates
+    nextTick(() => {
+      const el = rowElements.get(target)
+      if (el) {
+        el.scrollIntoView({ behavior: 'smooth', block: 'center' })
+        flashPath.value = target
+        setTimeout(() => { flashPath.value = '' }, 2000)
+      }
+      locatePath.value = ''
+    })
+  })
 }
 
 // ── Search state (injected from JsonTreeViewer) ────────────────
 const search = inject<ReturnType<typeof useTreeSearch> | null>('treeSearch', null)
+
+// ── Field errors (injected from JsonOutputPanel) ───────────────
+const errorMap = inject<Ref<Record<string, FieldError[]>>>('jsonErrors', ref({}))
+provide('jsonErrors', errorMap)
+
+// ── Locate path signal (click error → scroll to node) ─────────
+const locatePath = inject<Ref<string>>('locatePath', ref(''))
+provide('locatePath', locatePath)
+const flashPath = ref('') // temporarily highlighted path
+
+function getNodeErrors(path: string): FieldError[] {
+  return errorMap.value[path] ?? []
+}
+
+function hasError(path: string): boolean {
+  return path in errorMap.value
+}
 
 function isMatch(path: string) {
   return search?.isMatch(path) ?? false

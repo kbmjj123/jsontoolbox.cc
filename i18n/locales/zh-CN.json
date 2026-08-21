@@ -208,5 +208,15 @@
     "noResults": "无结果",
     "expandAll": "展开",
     "collapseAll": "收起"
+  },
+  "errors": {
+    "panelTitle": "错误",
+    "parseError": "解析错误",
+    "fieldError": "字段错误",
+    "parseErrorCount": "{count} 个解析错误",
+    "fieldErrorCount": "{count} 个字段错误",
+    "noErrors": "无错误",
+    "lineCol": "第 {line} 行，第 {col} 列",
+    "clickToLocate": "点击定位"
   }
 }
