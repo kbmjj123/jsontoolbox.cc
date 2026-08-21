@@ -1,12 +1,12 @@
 {
   "slug": "json-schema-validator",
-  "category": "validate",
+  "category": "format",
   "component": "JsonSchemaValidator",
   "icon": "lucide:shield-check",
   "sort": 2,
   "applicationCategory": "DeveloperApplication",
-  "nextSteps": ["json-schema-generator", "json-validator"],
-  "recommends": ["json-formatter", "json-tree-viewer"],
+  "nextSteps": ["json-schema-generator"],
+  "recommends": ["json-editor"],
   "en": {
     "name": "JSON Schema Validator",
     "description": "Validate JSON data against a JSON Schema. This json schema validator online lets you validate json against schema and check if your JSON conforms to the expected structure and data types.",
@@ -125,8 +125,8 @@
       "content": "<h2>What is JSON Schema Validation?</h2><p>JSON Schema validation checks if JSON data conforms to a defined structure, data types, and constraints. It's essential for ensuring data quality in APIs and applications.</p><h2>Why Validate Against Schema?</h2><ul><li><strong>API Quality:</strong> Ensure incoming data meets expected format</li><li><strong>Data Integrity:</strong> Validate data before processing</li><li><strong>Error Prevention:</strong> Catch issues early in development</li><li><strong>Documentation:</strong> Schema serves as living documentation</li></ul><h2>What Can JSON Schema Validate?</h2><ul><li><strong>Data Types:</strong> string, number, boolean, array, object, null</li><li><strong>Required Fields:</strong> Mark fields as mandatory</li><li><strong>Constraints:</strong> Min/max values, string patterns, array lengths</li><li><strong>Nested Objects:</strong> Validate complex nested structures</li></ul><h2>How to Validate</h2><ol><li><strong>Paste JSON data</strong> in the left panel</li><li><strong>Paste JSON Schema</strong> in the right panel</li><li><strong>Click Validate</strong> to check conformance</li><li><strong>Review errors</strong> if validation fails</li></ol><h2>Common Schema Patterns</h2><ul><li><strong>type:</strong> Define expected data type</li><li><strong>required:</strong> List mandatory fields</li><li><strong>properties:</strong> Define object structure</li><li><strong>items:</strong> Define array element types</li></ul>",
       "links": [
         {"text": "JSON Schema Generator", "url": "/tools/convert/json-schema-generator"},
-        {"text": "JSON Validator", "url": "/tools/validate/json-validator"},
-        {"text": "JSON Formatter", "url": "/tools/format/json-formatter"}
+        {"text": "JSON Schema Validator", "url": "/tools/format/json-schema-validator"},
+        {"text": "JSON Editor", "url": "/tools/format/json-editor"}
       ]
     }
   },
@@ -248,8 +248,8 @@
       "content": "<h2>什么是 JSON Schema 验证？</h2><p>JSON Schema 验证检查 JSON 数据是否符合定义的结构、数据类型和约束。它对于确保 API 和应用程序中的数据质量至关重要。</p><h2>为什么要根据 Schema 验证？</h2><ul><li><strong>API 质量：</strong>确保传入数据符合预期格式</li><li><strong>数据完整性：</strong>处理前验证数据</li><li><strong>错误预防：</strong>在开发早期发现问题</li><li><strong>文档：</strong>Schema 作为活文档</li></ul><h2>JSON Schema 可以验证什么？</h2><ul><li><strong>数据类型：</strong>string、number、boolean、array、object、null</li><li><strong>必填字段：</strong>将字段标记为必填</li><li><strong>约束：</strong>最小/最大值、字符串模式、数组长度</li><li><strong>嵌套对象：</strong>验证复杂的嵌套结构</li></ul><h2>如何验证</h2><ol><li><strong>粘贴 JSON 数据</strong>到左侧面板</li><li><strong>粘贴 JSON Schema</strong>到右侧面板</li><li><strong>点击验证</strong>检查一致性</li><li><strong>查看错误</strong>如果验证失败</li></ol><h2>常见 Schema 模式</h2><ul><li><strong>type：</strong>定义预期的数据类型</li><li><strong>required：</strong>列出必填字段</li><li><strong>properties：</strong>定义对象结构</li><li><strong>items：</strong>定义数组元素类型</li></ul>",
       "links": [
         {"text": "JSON Schema 生成器", "url": "/tools/convert/json-schema-generator"},
-        {"text": "JSON 验证器", "url": "/tools/validate/json-validator"},
-        {"text": "JSON 格式化工具", "url": "/tools/format/json-formatter"}
+        {"text": "JSON Schema 验证器", "url": "/tools/format/json-schema-validator"},
+        {"text": "JSON 编辑器", "url": "/tools/format/json-editor"}
       ]
     }
   }

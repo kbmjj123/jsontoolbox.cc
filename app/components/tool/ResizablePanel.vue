@@ -22,6 +22,7 @@
       </div>
       <slot name="header-right">
         <button
+          v-if="!isMobile"
           @click="isFullscreen = !isFullscreen"
           class="text-surface-400 hover:text-surface-600 dark:text-surface-500 dark:hover:text-surface-300"
           :title="isFullscreen ? 'Exit fullscreen' : 'Fullscreen'"
@@ -32,14 +33,15 @@
     </div>
 
     <!-- Resizable panels -->
-    <div class="flex flex-1 min-h-60 overflow-hidden" :class="[effectiveDirection === 'horizontal' ? 'flex-row' : 'flex-col', isFullscreen ? '' : 'max-h-60']">
+    <div class="flex flex-1 min-h-60 overflow-hidden" :class="[effectiveDirection === 'horizontal' ? 'flex-row' : 'flex-col', isFullscreen || isMobile ? '' : 'max-h-60']">
       <!-- Left / Top panel -->
       <div :style="firstStyle" class="min-w-0 min-h-0 overflow-hidden">
         <slot name="first" />
       </div>
 
-      <!-- Drag handle -->
+      <!-- Drag handle (hidden on mobile) -->
       <div
+        v-if="!isMobile"
         class="flex-none flex items-center justify-center group"
         :class="effectiveDirection === 'horizontal' ? 'w-3 cursor-col-resize' : 'h-3 cursor-row-resize'"
         @mousedown="onDragStart"
@@ -134,6 +136,10 @@ const dragging = ref(false)
 const effectiveDirection = computed(() => props.responsive && isMobile.value ? 'vertical' : props.direction)
 
 const firstStyle = computed(() => {
+  // Mobile: panels share space equally, no fixed size
+  if (props.responsive && isMobile.value) {
+    return { flex: '1 1 0', minHeight: 0 }
+  }
   const size = `${ratio.value * 100}%`
   return effectiveDirection.value === 'horizontal'
     ? { width: size, minWidth: props.minFirst }

@@ -5,8 +5,8 @@
   "icon": "lucide:file-input",
   "sort": 12,
   "applicationCategory": "DeveloperApplication",
-  "nextSteps": ["json-formatter", "json-to-xml"],
-  "recommends": ["json-validator", "json-tree-viewer"],
+  "nextSteps": ["json-editor", "json-to-xml"],
+  "recommends": ["json-editor"],
   "en": {
     "name": "XML to JSON Converter",
     "ui": {

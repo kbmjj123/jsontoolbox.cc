@@ -21,12 +21,18 @@
 						{{ $t('app.description') || 'Free, client-side JSON tools for developers. Format, validate, convert — all in your browser.' }}
 					</p>
 
-					<div class="mb-8 flex items-center gap-2 text-xs font-bold text-surface-500 dark:text-surface-400">
+					<div class="mb-4 flex items-center gap-2 text-xs font-bold text-surface-500 dark:text-surface-400">
 						<span class="relative flex h-2 w-2">
 							<span class="absolute inline-flex h-full w-full animate-ping rounded-full bg-accent-400 opacity-75"></span>
 							<span class="relative inline-flex h-2 w-2 rounded-full bg-accent-500"></span>
 						</span>
 						<span>All Systems Operational</span>
+					</div>
+
+					<div class="mb-8 flex items-center gap-2 text-xs text-surface-400 dark:text-surface-500">
+						<p>&copy; {{ new Date().getFullYear() }} {{ $t('app.footer.copyright') }}</p>
+						<span class="text-surface-300 dark:text-surface-700">|</span>
+						<span>100% Client-Side</span>
 					</div>
 
 					<div class="flex gap-3">
@@ -42,7 +48,7 @@
 				</div>
 
 				<div class="flex-1">
-					<div class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-x-8 gap-y-10">
+					<div class="grid grid-cols-1 sm:grid-cols-3 gap-x-8 gap-y-10">
 
 						<div v-for="cat in categoriesWithSub" :key="cat.id">
 							<strong
@@ -68,31 +74,43 @@
 							</ul>
 						</div>
 
+					<!-- Support links -->
+					<div>
+						<strong
+							class="mb-5 text-xs font-bold uppercase tracking-widest text-surface-900 dark:text-surface-100">
+							{{ $t('app.footer.support_title') || 'Support' }}
+						</strong>
+						<ul class="space-y-3">
+							<li>
+								<NuxtLinkLocale to="/about"
+									class="text-sm font-medium text-surface-500 hover:text-primary-600 hover:translate-x-1 transition-all inline-block dark:text-surface-400 dark:hover:text-primary-400">
+									{{ $t('app.footer.support.about_us') }}
+								</NuxtLinkLocale>
+							</li>
+							<li>
+								<NuxtLinkLocale to="/contact"
+									class="text-sm font-medium text-surface-500 hover:text-primary-600 hover:translate-x-1 transition-all inline-block dark:text-surface-400 dark:hover:text-primary-400">
+									{{ $t('app.footer.support.contact') }}
+								</NuxtLinkLocale>
+							</li>
+							<li>
+								<NuxtLinkLocale to="/privacy"
+									class="text-sm font-medium text-surface-500 hover:text-primary-600 hover:translate-x-1 transition-all inline-block dark:text-surface-400 dark:hover:text-primary-400">
+									{{ $t('app.footer.support.privacy') }}
+								</NuxtLinkLocale>
+							</li>
+							<li>
+								<NuxtLinkLocale to="/terms-of-service"
+									class="text-sm font-medium text-surface-500 hover:text-primary-600 hover:translate-x-1 transition-all inline-block dark:text-surface-400 dark:hover:text-primary-400">
+									{{ $t('app.footer.support.terms') }}
+								</NuxtLinkLocale>
+							</li>
+						</ul>
+					</div>
+
 					</div>
 				</div>
 
-			</div>
-
-			<div
-				class="border-t border-surface-200/50 pt-8 flex flex-col md:flex-row justify-between items-center gap-4 text-xs font-medium text-surface-500 dark:border-surface-700/50 dark:text-surface-400">
-				<div class="flex items-center gap-2">
-					<p>&copy; {{ new Date().getFullYear() }} {{ $t('app.footer.copyright') }}</p>
-					<span class="hidden md:inline text-surface-300 dark:text-surface-700">|</span>
-					<span class="hidden md:flex items-center gap-1 opacity-70">
-						100% Client-Side
-					</span>
-				</div>
-
-				<div class="flex flex-wrap justify-center gap-6">
-					<NuxtLinkLocale :title="$t('app.footer.support.about_us')" to="/about"
-						class="hover:text-primary-600 transition-colors dark:hover:text-surface-100">{{ $t('app.footer.support.about_us') }}</NuxtLinkLocale>
-					<NuxtLinkLocale :title="$t('app.footer.support.contact')" to="/contact"
-						class="hover:text-primary-600 transition-colors dark:hover:text-surface-100">{{ $t('app.footer.support.contact') }}</NuxtLinkLocale>
-					<NuxtLinkLocale :title="$t('app.footer.support.privacy')" to="/privacy"
-						class="hover:text-primary-600 transition-colors dark:hover:text-surface-100">{{ $t('app.footer.support.privacy') }}</NuxtLinkLocale>
-					<NuxtLinkLocale :title="$t('app.footer.support.terms')" to="/terms-of-service"
-						class="hover:text-primary-600 transition-colors dark:hover:text-surface-100">{{ $t('app.footer.support.terms') }}</NuxtLinkLocale>
-				</div>
 			</div>
 
 		</div>

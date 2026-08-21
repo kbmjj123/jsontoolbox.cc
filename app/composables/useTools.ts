@@ -4,7 +4,7 @@ import { useI18n } from 'vue-i18n'
 // 首页推荐工具配置
 const FEATURED_CONFIG = [
   {
-    slug: 'json-formatter',
+    slug: 'json-editor',
     category: 'format',
     badge: {
       key: 'trending',
@@ -13,31 +13,36 @@ const FEATURED_CONFIG = [
     }
   },
   {
-    slug: 'json-validator',
-    category: 'validate',
-    badge: {
-      key: 'instant',
-      icon: '⚡',
-      class: 'bg-gradient-to-r from-primary-500 to-primary-400'
-    }
+    slug: 'json-schema-validator',
+    category: 'format',
   },
   {
     slug: 'json-to-csv',
     category: 'convert',
-    badge: {
-      key: 'popular',
-      icon: '📊',
-      class: 'bg-gradient-to-r from-cyan-500 to-primary-500'
-    }
   },
   {
-    slug: 'json-tree-viewer',
-    category: 'view',
-    badge: {
-      key: 'useful',
-      icon: '🌳',
-      class: 'bg-gradient-to-r from-emerald-500 to-primary-500'
-    }
+    slug: 'json-to-yaml',
+    category: 'convert',
+  },
+  {
+    slug: 'json-to-typescript',
+    category: 'convert',
+  },
+  {
+    slug: 'json-compare',
+    category: 'convert',
+  },
+  {
+    slug: 'json-path-tester',
+    category: 'format',
+  },
+  {
+    slug: 'json-minifier',
+    category: 'format',
+  },
+  {
+    slug: 'json-to-xml',
+    category: 'convert',
   },
 ]
 

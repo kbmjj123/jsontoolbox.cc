@@ -5,8 +5,8 @@
   "icon": "lucide:file-input",
   "sort": 11,
   "applicationCategory": "DeveloperApplication",
-  "nextSteps": ["json-formatter", "json-to-yaml"],
-  "recommends": ["json-validator", "json-tree-viewer"],
+  "nextSteps": ["json-editor", "json-to-yaml"],
+  "recommends": ["json-editor"],
   "en": {
     "name": "YAML to JSON Converter",
     "description": "Convert YAML data to JSON format online. This yaml to json converter lets you convert yaml to json and transform YAML config files into JSON objects — a free yaml to json online tool.",

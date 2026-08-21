@@ -2,13 +2,24 @@
   <ResizablePanel v-model:fullscreen="fullscreen" :initial-ratio="0.5" responsive>
     <template #first>
       <div class="h-full pr-3">
-        <JsonInputEditor
-          v-model="inputJson"
+        <JsonOutputPanel
+          v-model:view-mode="inputViewMode"
           :label="tool.ui?.label_input || 'Input JSON'"
+          :content="inputJson"
+          :parsed-data="parsedInputData"
+          :error="inputError"
+          :editable="true"
+          :show-edit-actions="false"
+          :show-copy="false"
+          :show-download="false"
           placeholder='{"name": "JSON Toolbox", "version": "1.0"}'
-          show-upload
-          show-load-url
-          @clear="clearAll"
+          empty-text="Paste your JSON here"
+          @update:content="inputJson = $event"
+          @format="onFormat"
+          @minify="onMinify"
+          @validate="onValidate"
+          @fix="onFix"
+          @paste="onPaste"
         />
       </div>
     </template>
@@ -63,6 +74,14 @@ defineProps<{ tool: any }>()
 
 const inputJson = ref('')
 const outputJson = ref('')
+
+const inputError = ref('')
+const inputViewMode = ref<'text' | 'rich'>('text')
+
+const parsedInputData = computed(() => {
+  if (!inputJson.value.trim()) return null
+  try { return JSON.parse(inputJson.value) } catch { return null }
+})
 const error = ref('')
 const fullscreen = ref(false)
 

@@ -5,8 +5,8 @@
   "icon": "lucide:file-text",
   "sort": 9,
   "applicationCategory": "DeveloperApplication",
-  "nextSteps": ["json-formatter", "json-to-csv"],
-  "recommends": ["json-tree-viewer", "json-validator"],
+  "nextSteps": ["json-editor", "json-to-csv"],
+  "recommends": ["json-editor"],
   "en": {
     "name": "JSON to PDF Converter",
     "description": "Convert JSON data to PDF format. This json to pdf converter lets you generate printable PDF documents from your JSON data — works as a json to pdf online tool.",

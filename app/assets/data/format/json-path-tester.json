@@ -1,12 +1,12 @@
 {
   "slug": "json-path-tester",
-  "category": "view",
+  "category": "format",
   "component": "JsonPathTester",
   "icon": "lucide:route",
   "sort": 2,
   "applicationCategory": "DeveloperApplication",
-  "nextSteps": ["json-tree-viewer", "json-formatter"],
-  "recommends": ["json-validator", "json-compare"],
+  "nextSteps": ["json-editor"],
+  "recommends": ["json-compare"],
   "en": {
     "name": "JSONPath Tester",
     "ui": {
@@ -111,9 +111,9 @@
       "title": "How to Test JSONPath Expressions Online",
       "content": "<h2>What is JSONPath?</h2><p>JSONPath is a query language for JSON, similar to XPath for XML. It allows you to navigate and extract specific values from JSON data using a simple syntax.</p><h2>Common JSONPath Expressions</h2><ul><li><strong>$.store.book[0].title</strong> — Get the title of the first book</li><li><strong>$.store.book[*].author</strong> — Get all book authors</li><li><strong>$..price</strong> — Get all prices (recursive search)</li><li><strong>$.store.book[?(@.price < 10)]</strong> — Filter books under $10</li></ul><h2>How to Use the Tester</h2><ol><li><strong>Paste JSON</strong> into the input field</li><li><strong>Enter JSONPath expression</strong> (e.g., $.users[0].name)</li><li><strong>Click Evaluate</strong> to see results</li><li><strong>Copy results</strong> for use in your code</li></ol><h2>JSONPath Syntax Guide</h2><ul><li><strong>$</strong> — Root object</li><li><strong>.key</strong> — Child key access</li><li><strong>[n]</strong> — Array index</li><li><strong>[*]</strong> — Wildcard (all elements)</li><li><strong>..</strong> — Recursive descent</li><li><strong>[?(expr)]</strong> — Filter expression</li></ul><h2>Use Cases</h2><ul><li><strong>API Testing:</strong> Extract values from API responses</li><li><strong>Data Processing:</strong> Transform JSON data structures</li><li><strong>Configuration:</strong> Navigate nested config objects</li><li><strong>Debugging:</strong> Inspect specific JSON values</li></ul>",
       "links": [
-        {"text": "JSON Tree Viewer", "url": "/tools/view/json-tree-viewer"},
-        {"text": "JSON Formatter", "url": "/tools/format/json-formatter"},
-        {"text": "JSON Validator", "url": "/tools/validate/json-validator"}
+        {"text": "JSON Editor", "url": "/tools/format/json-editor"},
+        {"text": "JSON Editor", "url": "/tools/format/json-editor"},
+        {"text": "JSON Schema Validator", "url": "/tools/format/json-schema-validator"}
       ]
     }
   },
@@ -221,9 +221,9 @@
       "title": "如何在线测试 JSONPath 表达式",
       "content": "<h2>什么是 JSONPath？</h2><p>JSONPath 是 JSON 的查询语言，类似于 XML 的 XPath。它允许你使用简单的语法从 JSON 数据中导航和提取特定值。</p><h2>常见 JSONPath 表达式</h2><ul><li><strong>$.store.book[0].title</strong> — 获取第一本书的标题</li><li><strong>$.store.book[*].author</strong> — 获取所有书籍的作者</li><li><strong>$..price</strong> — 获取所有价格（递归搜索）</li><li><strong>$.store.book[?(@.price < 10)]</strong> — 过滤价格低于 $10 的书</li></ul><h2>如何使用测试器</h2><ol><li><strong>粘贴 JSON</strong> 到输入框</li><li><strong>输入 JSONPath 表达式</strong>（如 $.users[0].name）</li><li><strong>点击执行</strong> 查看结果</li><li><strong>复制结果</strong> 用于代码</li></ol><h2>JSONPath 语法指南</h2><ul><li><strong>$</strong> — 根对象</li><li><strong>.key</strong> — 子键访问</li><li><strong>[n]</strong> — 数组索引</li><li><strong>[*]</strong> — 通配符（所有元素）</li><li><strong>..</strong> — 递归下降</li><li><strong>[?(expr)]</strong> — 过滤表达式</li></ul><h2>使用场景</h2><ul><li><strong>API 测试：</strong>从 API 响应中提取值</li><li><strong>数据处理：</strong>转换 JSON 数据结构</li><li><strong>配置管理：</strong>导航嵌套的配置对象</li><li><strong>调试：</strong>检查特定的 JSON 值</li></ul>",
       "links": [
-        {"text": "JSON 树形查看器", "url": "/tools/view/json-tree-viewer"},
-        {"text": "JSON 格式化工具", "url": "/tools/format/json-formatter"},
-        {"text": "JSON 验证器", "url": "/tools/validate/json-validator"}
+        {"text": "JSON 编辑器", "url": "/tools/format/json-editor"},
+        {"text": "JSON 编辑器", "url": "/tools/format/json-editor"},
+        {"text": "JSON Schema 验证器", "url": "/tools/format/json-schema-validator"}
       ]
     }
   }

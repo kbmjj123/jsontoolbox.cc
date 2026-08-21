@@ -97,6 +97,22 @@
           </template>
         </template>
 
+        <!-- Edit action buttons (when editable) -->
+        <template v-if="showEditActions">
+          <button @click="emit('format')" class="btn-primary px-3 py-1 text-xs">
+            {{ $t('system.format') }}
+          </button>
+          <button @click="emit('minify')" class="rounded-lg border border-surface-200 bg-white px-3 py-1 text-xs font-bold text-surface-700 hover:bg-surface-50 dark:border-surface-700 dark:bg-surface-800 dark:text-surface-300 dark:hover:bg-surface-700">
+            {{ $t('system.minify') }}
+          </button>
+          <button @click="emit('validate')" class="rounded-lg border border-surface-200 bg-white px-3 py-1 text-xs font-bold text-surface-700 hover:bg-surface-50 dark:border-surface-700 dark:bg-surface-800 dark:text-surface-300 dark:hover:bg-surface-700">
+            {{ $t('system.validate') }}
+          </button>
+          <button @click="emit('fix')" class="rounded-lg border border-surface-200 bg-white px-3 py-1 text-xs font-bold text-surface-700 hover:bg-surface-50 dark:border-surface-700 dark:bg-surface-800 dark:text-surface-300 dark:hover:bg-surface-700">
+            {{ $t('system.fix') }}
+          </button>
+        </template>
+
         <slot name="actions" />
 
         <button
@@ -118,7 +134,29 @@
 
     <!-- Text view -->
     <div v-show="currentMode === 'text'" class="relative flex-1 min-h-0">
+      <!-- Editable mode: textarea with line numbers -->
       <div
+        v-if="editable"
+        class="w-full h-full rounded-xl border border-surface-200 bg-surface-50 font-mono text-sm overflow-hidden dark:border-surface-700 dark:bg-surface-800 flex"
+        :class="error ? 'border-red-300 dark:border-red-700' : ''"
+      >
+        <div class="flex-none select-none text-right py-4 pl-2 pr-3 text-surface-400 dark:text-surface-500 border-r border-surface-200 dark:border-surface-700 leading-[1.5] overflow-hidden">
+          <div v-for="n in textareaLineCount" :key="n">{{ n }}</div>
+        </div>
+        <textarea
+          ref="textareaRef"
+          :value="content"
+          @input="onTextareaInput"
+          @paste="emit('paste')"
+          @scroll="syncLineNumbers"
+          :placeholder="placeholder"
+          class="flex-1 p-4 m-0 bg-transparent font-mono text-sm text-surface-900 dark:text-surface-100 resize-none outline-none leading-[1.5] whitespace-pre overflow-auto w-full h-full"
+          spellcheck="false"
+        />
+      </div>
+      <!-- Read-only mode: pre with line numbers -->
+      <div
+        v-else
         :class="[hasContent ? 'text-surface-900 dark:text-surface-100' : 'text-surface-400 dark:text-surface-500']"
         class="w-full h-full rounded-xl border border-surface-200 bg-surface-50 font-mono text-sm overflow-auto dark:border-surface-700 dark:bg-surface-800"
       >
@@ -172,6 +210,12 @@ interface Props {
   downloadFilename?: string
   emptyText?: string
   locateTarget?: string
+  /** Enable editable textarea in text mode */
+  editable?: boolean
+  /** Placeholder text when editable and empty */
+  placeholder?: string
+  /** Show format/minify/validate/fix action buttons in header */
+  showEditActions?: boolean
 }
 
 const props = withDefaults(defineProps<Props>(), {
@@ -186,22 +230,47 @@ const props = withDefaults(defineProps<Props>(), {
   downloadFilename: 'output.json',
   emptyText: 'Result will appear here',
   locateTarget: '',
+  editable: false,
+  placeholder: '',
+  showEditActions: false,
 })
 
 const emit = defineEmits<{
   'update:viewMode': [mode: 'text' | 'rich']
+  'update:content': [value: string]
   copy: []
   download: []
   copyPath: [path: string]
+  format: []
+  minify: []
+  validate: []
+  fix: []
+  paste: []
 }>()
 
 const copied = ref(false)
 const showModeDropdown = ref(false)
 const modeDropdownRef = ref<HTMLElement>()
+const textareaRef = ref<HTMLTextAreaElement>()
 
 const currentMode = computed(() => props.viewMode)
 const hasContent = computed(() => !!props.content)
 const contentLines = computed(() => (props.content || '').replace(/\n$/, '').split('\n'))
+
+// Editable textarea line count (mirrors contentLines but works for empty state too)
+const textareaLineCount = computed(() => {
+  const lines = (props.content || '').split('\n')
+  return Math.max(lines.length, 1)
+})
+
+function onTextareaInput(e: Event) {
+  const target = e.target as HTMLTextAreaElement
+  emit('update:content', target.value)
+}
+
+function syncLineNumbers() {
+  // Line numbers auto-scroll via CSS overflow — no manual sync needed
+}
 
 // Search
 const parsedDataRef = computed(() => props.parsedData)

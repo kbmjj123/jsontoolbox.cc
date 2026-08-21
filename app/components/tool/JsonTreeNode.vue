@@ -265,6 +265,18 @@ function getAllExpandablePaths(data: unknown, parentPath = ''): string[] {
   return paths
 }
 
+// ── Field errors (injected from JsonOutputPanel) ───────────────
+const errorMap = inject<Ref<Record<string, FieldError[]>>>('jsonErrors', ref({}))
+provide('jsonErrors', errorMap)
+
+// ── Locate path signal (click error → scroll to node) ─────────
+const locatePath = inject<Ref<string>>('locatePath', ref(''))
+provide('locatePath', locatePath)
+const flashPath = ref('')
+
+// ── Search state (injected from JsonTreeViewer) ────────────────
+const search = inject<ReturnType<typeof useTreeSearch> | null>('treeSearch', null)
+
 // Root instance: watch expand/collapse signals
 if (!props.path) {
   watch(expandAllSignal, () => {
@@ -301,18 +313,6 @@ if (!props.path) {
     })
   })
 }
-
-// ── Search state (injected from JsonTreeViewer) ────────────────
-const search = inject<ReturnType<typeof useTreeSearch> | null>('treeSearch', null)
-
-// ── Field errors (injected from JsonOutputPanel) ───────────────
-const errorMap = inject<Ref<Record<string, FieldError[]>>>('jsonErrors', ref({}))
-provide('jsonErrors', errorMap)
-
-// ── Locate path signal (click error → scroll to node) ─────────
-const locatePath = inject<Ref<string>>('locatePath', ref(''))
-provide('locatePath', locatePath)
-const flashPath = ref('') // temporarily highlighted path
 
 function getNodeErrors(path: string): FieldError[] {
   return errorMap.value[path] ?? []

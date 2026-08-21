@@ -5,8 +5,8 @@
   "icon": "lucide:file-spreadsheet",
   "sort": 3,
   "applicationCategory": "DeveloperApplication",
-  "nextSteps": ["json-formatter", "json-to-csv"],
-  "recommends": ["json-validator", "json-tree-viewer"],
+  "nextSteps": ["json-editor", "json-to-csv"],
+  "recommends": ["json-editor"],
   "en": {
     "name": "CSV to JSON Converter",
     "description": "Convert CSV data to JSON array format online. This csv to json converter and csv to json formatter lets you import CSV files and export as structured JSON.",

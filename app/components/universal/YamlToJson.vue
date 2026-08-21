@@ -5,10 +5,9 @@
         <JsonInputEditor
           v-model="inputYaml"
           :label="tool.ui?.label_input || 'Input YAML'"
-          placeholder='name: JSON Toolbox&#10;version: "1.0"&#10;features:&#10;  - format&#10;  - validate&#10;  - convert'
+          placeholder="name: JSON Toolbox\nversion: 1.0"
           show-upload
           show-load-url
-          accept=".yaml,.yml"
           @clear="clearAll"
         />
       </div>

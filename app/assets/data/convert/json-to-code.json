@@ -5,8 +5,8 @@
   "icon": "lucide:code-2",
   "sort": 13,
   "applicationCategory": "DeveloperApplication",
-  "nextSteps": ["json-to-typescript", "json-formatter"],
-  "recommends": ["json-schema-generator", "json-validator"],
+  "nextSteps": ["json-to-typescript", "json-editor"],
+  "recommends": ["json-schema-generator"],
   "en": {
     "name": "JSON to Code Generator",
     "ui": {

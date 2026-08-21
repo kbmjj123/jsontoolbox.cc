@@ -46,7 +46,7 @@
     ]
   },
   "zh": {
-    "title": "JSON 格式化工具",
+    "title": "JSON 编辑器",
     "description": "在线格式化、美化和压缩 JSON 数据。所有处理在浏览器中完成。",
     "keywords": ["json格式化", "json美化", "json压缩", "在线json格式化"],
     "h2": "格式化与美化",

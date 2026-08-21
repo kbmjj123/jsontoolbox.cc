@@ -5,7 +5,7 @@
   "icon": "lucide:shield",
   "sort": 3,
   "applicationCategory": "DeveloperApplication",
-  "nextSteps": ["json-formatter", "json-validator"],
+  "nextSteps": ["json-editor"],
   "recommends": ["json-minifier", "json-to-csv"],
   "en": {
     "name": "JSON Escape & Unescape",
@@ -94,8 +94,8 @@
       "title": "How to Escape & Unescape JSON Strings Online",
       "content": "<h2>What is JSON Escaping?</h2><p>JSON escaping adds backslash characters before special characters so they can be safely included in JSON strings. This is essential when embedding one JSON string inside another.</p><h2>Common Escaped Characters</h2><ul><li><strong>\\\"</strong> — Double quote</li><li><strong>\\\\</strong> — Backslash</li><li><strong>\\n</strong> — Newline</li><li><strong>\\t</strong> — Tab</li><li><strong>\\r</strong> — Carriage return</li><li><strong>\\uXXXX</strong> — Unicode character</li></ul><h2>When to Escape</h2><ul><li><strong>Nesting JSON:</strong> Embedding a JSON string inside another JSON</li><li><strong>Code Generation:</strong> Including JSON in JavaScript strings</li><li><strong>Logs:</strong> Writing JSON to log files</li><li><strong>Configuration:</strong> Including JSON in config files</li></ul><h2>When to Unescape</h2><ul><li><strong>Reading Logs:</strong> Parsing escaped JSON from log files</li><li><strong>API Responses:</strong> Handling escaped strings from APIs</li><li><strong>Debugging:</strong> Viewing escaped JSON content</li></ul><h2>How to Use</h2><ol><li><strong>Paste</strong> your escaped or unescaped string</li><li><strong>Click Escape</strong> to add escape characters</li><li><strong>Or click Unescape</strong> to remove them</li><li><strong>Copy</strong> the result</li></ol>",
       "links": [
-        {"text": "JSON Formatter", "url": "/tools/format/json-formatter"},
-        {"text": "JSON Validator", "url": "/tools/validate/json-validator"},
+        {"text": "JSON Editor", "url": "/tools/format/json-editor"},
+        {"text": "JSON Schema Validator", "url": "/tools/format/json-schema-validator"},
         {"text": "JSON Minifier", "url": "/tools/format/json-minifier"}
       ]
     },
@@ -199,8 +199,8 @@
       "title": "如何在线转义和反转义 JSON 字符串",
       "content": "<h2>什么是 JSON 转义？</h2><p>JSON 转义在特殊字符前添加反斜杠，使其可以安全地包含在 JSON 字符串中。当在另一个 JSON 字符串中嵌入 JSON 字符串时，这是必不可少的。</p><h2>常见转义字符</h2><ul><li><strong>\\\"</strong> — 双引号</li><li><strong>\\\\</strong> — 反斜杠</li><li><strong>\\n</strong> — 换行符</li><li><strong>\\t</strong> — 制表符</li><li><strong>\\r</strong> — 回车符</li><li><strong>\\uXXXX</strong> — Unicode 字符</li></ul><h2>何时转义</h2><ul><li><strong>嵌套 JSON：</strong>在另一个 JSON 中嵌入 JSON 字符串</li><li><strong>代码生成：</strong>在 JavaScript 字符串中包含 JSON</li><li><strong>日志：</strong>将 JSON 写入日志文件</li><li><strong>配置：</strong>在配置文件中包含 JSON</li></ul><h2>何时反转义</h2><ul><li><strong>读取日志：</strong>解析日志文件中的转义 JSON</li><li><strong>API 响应：</strong>处理来自 API 的转义字符串</li><li><strong>调试：</strong>查看转义的 JSON 内容</li></ul><h2>如何使用</h2><ol><li><strong>粘贴</strong> 你的转义或未转义字符串</li><li><strong>点击转义</strong> 添加转义字符</li><li><strong>或点击反转义</strong> 移除它们</li><li><strong>复制</strong> 结果</li></ol>",
       "links": [
-        {"text": "JSON 格式化工具", "url": "/tools/format/json-formatter"},
-        {"text": "JSON 验证器", "url": "/tools/validate/json-validator"},
+        {"text": "JSON 编辑器", "url": "/tools/format/json-editor"},
+        {"text": "JSON Schema 验证器", "url": "/tools/format/json-schema-validator"},
         {"text": "JSON 压缩器", "url": "/tools/format/json-minifier"}
       ]
     }

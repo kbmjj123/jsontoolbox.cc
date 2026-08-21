@@ -3,10 +3,10 @@
   "category": "format",
   "component": "JsonEditor",
   "icon": "lucide:edit",
-  "sort": 4,
+  "sort": 1,
   "applicationCategory": "DeveloperApplication",
-  "nextSteps": ["json-formatter", "json-validator"],
-  "recommends": ["json-tree-viewer", "json-compare"],
+  "nextSteps": ["json-minifier", "json-to-csv"],
+  "recommends": ["json-compare", "json-schema-validator"],
   "en": {
     "name": "JSON Editor",
     "description": "Edit JSON data online with syntax highlighting and validation. This free json editor online works as a .json editor and json online editor — right in your browser.",
@@ -109,9 +109,9 @@
       "title": "How to Edit JSON Online with Syntax Highlighting",
       "content": "<h2>Why Use a JSON Editor?</h2><p>A JSON editor provides an interactive environment for editing JSON data with real-time validation and syntax highlighting. Unlike a simple text editor, it understands JSON structure and helps you avoid errors.</p><h2>Key Features</h2><ul><li><strong>Syntax Highlighting:</strong> Color-coded keys, values, and strings</li><li><strong>Live Validation:</strong> Instant error detection as you type</li><li><strong>Formatting:</strong> Auto-indent and structure your JSON</li><li><strong>Copy/Download:</strong> Export your edited JSON</li></ul><h2>How to Use</h2><ol><li><strong>Paste or type JSON</strong> in the editor</li><li><strong>Edit freely:</strong> Modify values, add/remove keys</li><li><strong>Check for errors:</strong> Red highlights indicate syntax issues</li><li><strong>Format:</strong> Click format to auto-indent</li><li><strong>Export:</strong> Copy or download the result</li></ol><h2>JSON Editor vs Formatter</h2><ul><li><strong>Editor:</strong> Interactive editing, modify data</li><li><strong>Formatter:</strong> Auto-format existing JSON</li></ul><h2>Best Practices</h2><ul><li><strong>Validate first:</strong> Ensure JSON is valid before editing</li><li><strong>Use formatting:</strong> Keep JSON readable while editing</li><li><strong>Save often:</strong> Download backup copies</li></ul>",
       "links": [
-        {"text": "JSON Formatter", "url": "/tools/format/json-formatter"},
-        {"text": "JSON Validator", "url": "/tools/validate/json-validator"},
-        {"text": "JSON Tree Viewer", "url": "/tools/view/json-tree-viewer"}
+        {"text": "JSON Editor", "url": "/tools/format/json-editor"},
+        {"text": "JSON Schema Validator", "url": "/tools/format/json-schema-validator"},
+        {"text": "JSON Editor", "url": "/tools/format/json-editor"}
       ]
     }
   },
@@ -217,9 +217,9 @@
       "title": "如何在线编辑 JSON 并使用语法高亮",
       "content": "<h2>为什么使用 JSON 编辑器？</h2><p>JSON 编辑器提供了一个交互式环境来编辑 JSON 数据，具有实时验证和语法高亮功能。与简单的文本编辑器不同，它理解 JSON 结构并帮助你避免错误。</p><h2>主要功能</h2><ul><li><strong>语法高亮：</strong>键、值和字符串的颜色编码</li><li><strong>实时验证：</strong>输入时即时检测错误</li><li><strong>格式化：</strong>自动缩进和结构化你的 JSON</li><li><strong>复制/下载：</strong>导出编辑后的 JSON</li></ul><h2>如何使用</h2><ol><li><strong>粘贴或输入 JSON</strong> 到编辑器</li><li><strong>自由编辑：</strong>修改值、添加/删除键</li><li><strong>检查错误：</strong>红色高亮表示语法问题</li><li><strong>格式化：</strong>点击格式化按钮自动缩进</li><li><strong>导出：</strong>复制或下载结果</li></ol><h2>JSON 编辑器 vs 格式化</h2><ul><li><strong>编辑器：</strong>交互式编辑，修改数据</li><li><strong>格式化：</strong>自动格式化现有 JSON</li></ul><h2>最佳实践</h2><ul><li><strong>先验证：</strong>编辑前确保 JSON 有效</li><li><strong>使用格式化：</strong>编辑时保持 JSON 可读</li><li><strong>经常保存：</strong>下载备份副本</li></ul>",
       "links": [
-        {"text": "JSON 格式化工具", "url": "/tools/format/json-formatter"},
-        {"text": "JSON 验证器", "url": "/tools/validate/json-validator"},
-        {"text": "JSON 树形查看器", "url": "/tools/view/json-tree-viewer"}
+        {"text": "JSON 编辑器", "url": "/tools/format/json-editor"},
+        {"text": "JSON Schema 验证器", "url": "/tools/format/json-schema-validator"},
+        {"text": "JSON 编辑器", "url": "/tools/format/json-editor"}
       ]
     }
   }

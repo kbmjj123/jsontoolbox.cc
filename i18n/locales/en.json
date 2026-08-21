@@ -22,6 +22,7 @@
     },
     "footer": {
       "view_all": "View All",
+      "support_title": "Support",
       "support": {
         "about_us": "About Us",
         "contact": "Contact",
@@ -111,23 +112,23 @@
     "blog": {
       "title": "Learn More About JSON",
       "description": "Explore guides, tips, and best practices for working with JSON data.",
-      "items": [
-        {
+      "items": {
+        "what_is_json": {
           "title": "What is JSON?",
           "description": "A beginner-friendly guide to JSON format, syntax, and common use cases.",
           "link_text": "Learn more"
         },
-        {
+        "json_vs_yaml_vs_xml": {
           "title": "JSON vs YAML vs XML",
           "description": "Compare the most popular data formats and when to use each one.",
           "link_text": "Compare formats"
         },
-        {
+        "common_json_mistakes": {
           "title": "Common JSON Mistakes",
           "description": "Frequent JSON errors and how to fix them quickly with our tools.",
           "link_text": "See mistakes"
         }
-      ]
+      }
     }
   },
   "tools": {

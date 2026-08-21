@@ -239,8 +239,13 @@ export const useJsonFixer = () => {
         column = lines[lines.length - 1].length + 1
       }
 
+      // Strip redundant position info from message since we provide line/column
+      const cleanMessage = error.message
+        .replace(/\s+at position \d+.*$/, '')
+        .replace(/\s+\(line \d+ column \d+\).*$/, '')
+
       return {
-        message: error.message,
+        message: cleanMessage,
         line,
         column,
         offset

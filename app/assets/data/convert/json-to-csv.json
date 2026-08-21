@@ -6,7 +6,7 @@
   "sort": 1,
   "applicationCategory": "DeveloperApplication",
   "nextSteps": ["json-to-yaml", "json-to-xml"],
-  "recommends": ["json-formatter", "json-tree-viewer"],
+  "recommends": ["json-editor"],
   "en": {
     "name": "JSON to CSV Converter",
     "description": "Convert JSON arrays to CSV format for Excel and Google Sheets. This free JSON to CSV converter flattens nested objects, supports field selection, and runs entirely in your browser — no upload needed.",
@@ -113,7 +113,7 @@
       "title": "How to Convert JSON to CSV for Excel & Google Sheets",
       "content": "<h2>Why Convert JSON to CSV?</h2><p>JSON (JavaScript Object Notation) is widely used for data exchange between servers and applications. However, when you need to analyze this data, create reports, or share it with non-technical team members, CSV (Comma-Separated Values) is the preferred format. CSV files can be opened directly in Excel, Google Sheets, and any spreadsheet application.</p><h2>Common Use Cases</h2><ul><li><strong>API Data Export:</strong> Convert API responses (JSON) to CSV for analysis in Excel</li><li><strong>Database Backups:</strong> Export database records stored as JSON to spreadsheet format</li><li><strong>Data Migration:</strong> Move data between systems that use different formats</li><li><strong>Reporting:</strong> Create charts and pivot tables from JSON data in Excel</li></ul><h2>Handling Nested JSON Objects</h2><p>Real-world JSON data is often nested. For example:</p><pre>{\"user\": {\"name\": \"Alice\", \"address\": {\"city\": \"NYC\"}}, \"status\": \"active\"}</pre><p>Our converter automatically flattens this into CSV columns:</p><ul><li>user.name → Alice</li><li>user.address.city → NYC</li><li>status → active</li></ul><h2>Excel Compatibility Tips</h2><ol><li><strong>Use UTF-8 BOM:</strong> Our converter adds a Byte Order Mark (BOM) to ensure Excel correctly reads UTF-8 characters</li><li><strong>GBK Encoding:</strong> For older Excel versions or Chinese locale, select GBK encoding</li><li><strong>Field Selection:</strong> Only export the fields you need to keep your spreadsheet clean</li></ol><h2>Best Practices</h2><ul><li><strong>Preview First:</strong> Always check the table preview before downloading</li><li><strong>Validate Data:</strong> Ensure your JSON array contains objects with consistent structure</li><li><strong>Large Files:</strong> For very large JSON files (100MB+), consider splitting into chunks</li></ul>",
       "links": [
-        {"text": "JSON Formatter", "url": "/tools/format/json-formatter"},
+        {"text": "JSON Editor", "url": "/tools/format/json-editor"},
         {"text": "JSON to Excel", "url": "/tools/convert/json-to-excel"},
         {"text": "CSV to JSON", "url": "/tools/convert/csv-to-json"}
       ]
@@ -225,7 +225,7 @@
       "title": "如何将 JSON 转换为 Excel 和 Google Sheets 可用的 CSV",
       "content": "<h2>为什么要将 JSON 转换为 CSV？</h2><p>JSON（JavaScript Object Notation）广泛用于服务器和应用程序之间的数据交换。然而，当你需要分析这些数据、创建报表或与非技术人员共享时，CSV（逗号分隔值）是首选格式。CSV 文件可以直接在 Excel、Google Sheets 和任何电子表格应用程序中打开。</p><h2>常见使用场景</h2><ul><li><strong>API 数据导出：</strong>将 API 响应（JSON）转换为 CSV 以便在 Excel 中分析</li><li><strong>数据库备份：</strong>将以 JSON 格式存储的数据库记录导出为电子表格格式</li><li><strong>数据迁移：</strong>在使用不同格式的系统之间迁移数据</li><li><strong>报表生成：</strong>在 Excel 中基于 JSON 数据创建图表和数据透视表</li></ul><h2>处理嵌套 JSON 对象</h2><p>现实世界中的 JSON 数据通常是嵌套的。例如：</p><pre>{\"user\": {\"name\": \"Alice\", \"address\": {\"city\": \"NYC\"}}, \"status\": \"active\"}</pre><p>我们的转换器会自动将其展平为 CSV 列：</p><ul><li>user.name → Alice</li><li>user.address.city → NYC</li><li>status → active</li></ul><h2>Excel 兼容性技巧</h2><ol><li><strong>使用 UTF-8 BOM：</strong>我们的转换器添加字节顺序标记（BOM），确保 Excel 正确读取 UTF-8 字符</li><li><strong>GBK 编码：</strong>对于旧版 Excel 或中文 locale，选择 GBK 编码</li><li><strong>字段选择：</strong>只导出需要的字段，保持电子表格整洁</li></ol><h2>最佳实践</h2><ul><li><strong>先预览：</strong>下载前务必检查表格预览</li><li><strong>验证数据：</strong>确保 JSON 数组包含结构一致的对象</li><li><strong>大文件处理：</strong>对于非常大的 JSON 文件（100MB+），考虑分块处理</li></ul>",
       "links": [
-        {"text": "JSON 格式化工具", "url": "/tools/format/json-formatter"},
+        {"text": "JSON 编辑器", "url": "/tools/format/json-editor"},
         {"text": "JSON 转 Excel", "url": "/tools/convert/json-to-excel"},
         {"text": "CSV 转 JSON", "url": "/tools/convert/csv-to-json"}
       ]

@@ -4,11 +4,10 @@
       <div class="h-full pr-3">
         <JsonInputEditor
           v-model="inputXml"
-          :label="ui?.labelInputXml ?? 'Input XML'"
-          placeholder='<?xml version="1.0"?>&#10;<catalog>&#10;  <book id="bk101">&#10;    <title>XML Developer Guide</title>&#10;    <price>44.95</price>&#10;  </book>&#10;</catalog>'
+          :label="tool.ui?.label_input || 'Input XML'"
+          placeholder='<root><item>data</item></root>'
           show-upload
           show-load-url
-          accept=".xml"
           @clear="clearAll"
         />
       </div>
@@ -63,6 +62,7 @@
 
 <script setup lang="ts">
 const props = defineProps<{ tool: any }>()
+
 const ui = computed(() => props.tool?.ui)
 
 const inputXml = ref('')

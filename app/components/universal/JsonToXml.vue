@@ -2,13 +2,24 @@
   <ResizablePanel v-model:fullscreen="fullscreen" :initial-ratio="0.5" responsive>
     <template #first>
       <div class="h-full pr-3">
-        <JsonInputEditor
-          v-model="inputJson"
+        <JsonOutputPanel
+          v-model:view-mode="inputViewMode"
           :label="tool.ui?.label_input || 'Input JSON'"
+          :content="inputJson"
+          :parsed-data="parsedInputData"
+          :error="inputError"
+          :editable="true"
+          :show-edit-actions="true"
+          :show-copy="false"
+          :show-download="false"
           placeholder='{"name": "JSON Toolbox", "version": "1.0"}'
-          show-upload
-          show-load-url
-          @clear="clearAll"
+          empty-text="Paste your JSON here"
+          @update:content="inputJson = $event"
+          @format="onFormat"
+          @minify="onMinify"
+          @validate="onValidate"
+          @fix="onFix"
+          @paste="onPaste"
         />
       </div>
     </template>
@@ -68,6 +79,37 @@
 
 <script setup lang="ts">
 const props = defineProps<{ tool: any }>()
+
+const { formatJson, minifyJson, validateJson, fixJson } = useJsonEditor()
+
+const inputError = ref('')
+const inputViewMode = ref<'text' | 'rich'>('text')
+
+const parsedInputData = computed(() => {
+  if (!inputJson.value.trim()) return null
+  try { return JSON.parse(inputJson.value) } catch { return null }
+})
+
+const onFormat = () => {
+  const result = formatJson(inputJson.value)
+  if (result.output) { inputJson.value = result.output; inputError.value = '' }
+  else { inputError.value = result.error }
+}
+const onMinify = () => {
+  const result = minifyJson(inputJson.value)
+  if (result.output) { inputJson.value = result.output; inputError.value = '' }
+  else { inputError.value = result.error }
+}
+const onValidate = () => {
+  const result = validateJson(inputJson.value)
+  inputError.value = result.error
+}
+const onFix = () => {
+  const result = fixJson(inputJson.value)
+  if (result.fixed) { inputJson.value = result.fixed; inputError.value = '' }
+  else { inputError.value = result.error }
+}
+const onPaste = () => { nextTick(() => onFormat()) }
 
 const inputJson = ref('')
 const outputXml = ref('')

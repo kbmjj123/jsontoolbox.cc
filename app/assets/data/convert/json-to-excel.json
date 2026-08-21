@@ -6,7 +6,7 @@
   "sort": 4,
   "applicationCategory": "DeveloperApplication",
   "nextSteps": ["json-to-csv", "csv-to-json"],
-  "recommends": ["json-formatter", "json-tree-viewer"],
+  "recommends": ["json-editor"],
   "en": {
     "name": "JSON to Excel Converter",
     "description": "Convert JSON data to Excel-compatible format. This json to excel converter lets you export JSON arrays to CSV for spreadsheet use — works entirely online.",

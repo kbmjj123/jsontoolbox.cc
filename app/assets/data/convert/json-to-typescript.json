@@ -6,7 +6,7 @@
   "sort": 8,
   "applicationCategory": "DeveloperApplication",
   "nextSteps": ["json-to-code", "json-schema-generator"],
-  "recommends": ["json-validator", "json-tree-viewer"],
+  "recommends": ["json-editor"],
   "en": {
     "name": "JSON to TypeScript Converter",
     "ui": {
@@ -111,7 +111,7 @@
       "links": [
         {"text": "JSON to Code", "url": "/tools/convert/json-to-code"},
         {"text": "JSON Schema Generator", "url": "/tools/convert/json-schema-generator"},
-        {"text": "JSON Formatter", "url": "/tools/format/json-formatter"}
+        {"text": "JSON Editor", "url": "/tools/format/json-editor"}
       ]
     }
   },
@@ -219,7 +219,7 @@
       "links": [
         {"text": "JSON 转代码", "url": "/tools/convert/json-to-code"},
         {"text": "JSON Schema 生成器", "url": "/tools/convert/json-schema-generator"},
-        {"text": "JSON 格式化工具", "url": "/tools/format/json-formatter"}
+        {"text": "JSON 编辑器", "url": "/tools/format/json-editor"}
       ]
     }
   }

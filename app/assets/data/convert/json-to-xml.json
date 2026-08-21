@@ -6,7 +6,7 @@
   "sort": 5,
   "applicationCategory": "DeveloperApplication",
   "nextSteps": ["json-to-yaml", "json-to-csv"],
-  "recommends": ["json-formatter", "json-validator"],
+  "recommends": ["json-editor"],
   "en": {
     "name": "JSON to XML Converter",
     "description": "Convert JSON data to XML format online. This json xml converter and json to xml online tool transforms JSON objects and arrays into structured XML documents.",
@@ -99,7 +99,7 @@
       "content": "<h2>Why Convert JSON to XML?</h2><p>While JSON is popular for web APIs, XML is still widely used in enterprise systems, SOAP APIs, and legacy applications. Converting JSON to XML allows you to integrate with these systems.</p><h2>Common Use Cases</h2><ul><li><strong>Enterprise Integration:</strong> Connect modern APIs with legacy XML systems</li><li><strong>SOAP Web Services:</strong> Convert JSON payloads for SOAP APIs</li><li><strong>Configuration Files:</strong> Transform JSON config to XML format</li><li><strong>Data Exchange:</strong> Share data with XML-based systems</li></ul><h2>JSON vs XML</h2><ul><li><strong>JSON:</strong> Lightweight, easy to read, native JavaScript</li><li><strong>XML:</strong> Verbose, supports attributes, schema validation</li></ul><h2>How to Convert</h2><ol><li><strong>Paste JSON</strong> into the input field</li><li><strong>Set root element</strong> (optional, default: root)</li><li><strong>Click Convert</strong> to generate XML</li><li><strong>Copy or Download</strong> the result</li></ol><h2>Best Practices</h2><ul><li><strong>Choose good root names:</strong> Use descriptive element names</li><li><strong>Validate output:</strong> Check the XML is well-formed</li><li><strong>Consider attributes:</strong> JSON doesn't have attributes, so they become elements</li></ul>",
       "links": [
         {"text": "XML to JSON", "url": "/tools/convert/xml-to-json"},
-        {"text": "JSON Formatter", "url": "/tools/format/json-formatter"},
+        {"text": "JSON Editor", "url": "/tools/format/json-editor"},
         {"text": "JSON to YAML", "url": "/tools/convert/json-to-yaml"}
       ]
     },
@@ -218,7 +218,7 @@
       "content": "<h2>为什么要将 JSON 转换为 XML？</h2><p>虽然 JSON 在 Web API 中很流行，但 XML 仍然广泛用于企业系统、SOAP API 和遗留应用程序。将 JSON 转换为 XML 允许你与这些系统集成。</p><h2>常见使用场景</h2><ul><li><strong>企业集成：</strong>将现代 API 与遗留 XML 系统连接</li><li><strong>SOAP Web 服务：</strong>为 SOAP API 转换 JSON 负载</li><li><strong>配置文件：</strong>将 JSON 配置转换为 XML 格式</li><li><strong>数据交换：</strong>与基于 XML 的系统共享数据</li></ul><h2>JSON vs XML</h2><ul><li><strong>JSON：</strong>轻量级、易读、原生 JavaScript</li><li><strong>XML：</strong>冗长、支持属性、Schema 验证</li></ul><h2>如何转换</h2><ol><li><strong>粘贴 JSON</strong> 到输入框</li><li><strong>设置根元素</strong>（可选，默认：root）</li><li><strong>点击转换</strong> 生成 XML</li><li><strong>复制或下载</strong> 结果</li></ol><h2>最佳实践</h2><ul><li><strong>选择好的根名称：</strong>使用描述性的元素名称</li><li><strong>验证输出：</strong>检查 XML 格式正确</li><li><strong>考虑属性：</strong>JSON 没有属性，所以它们变成元素</li></ul>",
       "links": [
         {"text": "XML 转 JSON", "url": "/tools/convert/xml-to-json"},
-        {"text": "JSON 格式化工具", "url": "/tools/format/json-formatter"},
+        {"text": "JSON 编辑器", "url": "/tools/format/json-editor"},
         {"text": "JSON 转 YAML", "url": "/tools/convert/json-to-yaml"}
       ]
     }

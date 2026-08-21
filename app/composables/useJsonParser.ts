@@ -50,7 +50,9 @@ export const useJsonParser = () => {
 
       return { data: JSON.parse(text), error: null }
     } catch (e) {
-      return { data: null, error: (e as Error).message }
+      const raw = (e as Error).message
+      const clean = raw.replace(/\s+at position \d+.*$/, '').replace(/\s+\(line \d+ column \d+\).*$/, '')
+      return { data: null, error: clean }
     }
   }
 
@@ -94,7 +96,9 @@ export const useJsonParser = () => {
       JSON.parse(text)
       return { valid: true, error: null }
     } catch (e) {
-      return { valid: false, error: (e as Error).message }
+      const raw = (e as Error).message
+      const clean = raw.replace(/\s+at position \d+.*$/, '').replace(/\s+\(line \d+ column \d+\).*$/, '')
+      return { valid: false, error: clean }
     }
   }
 

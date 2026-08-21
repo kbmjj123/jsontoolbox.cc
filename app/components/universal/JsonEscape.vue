@@ -2,13 +2,19 @@
   <ResizablePanel v-model:fullscreen="fullscreen" :initial-ratio="0.5" responsive>
     <template #first>
       <div class="h-full pr-3">
-        <JsonInputEditor
-          v-model="inputText"
-          :label="$t('system.input')"
-          placeholder='{"message": "Hello \"World\""}'
-          show-upload
-          show-load-url
-          @clear="clearAll"
+        <JsonOutputPanel
+          v-model:view-mode="inputViewMode"
+          :label="tool.ui?.label_input || 'Input Text'"
+          :content="inputText"
+          :parsed-data="parsedInputData"
+          :error="inputError"
+          :editable="true"
+          :show-edit-actions="false"
+          :show-copy="false"
+          :show-download="false"
+          placeholder='Paste JSON or text to escape/unescape...'
+          empty-text="Paste your text here"
+          @update:content="inputText = $event"
         />
       </div>
     </template>
@@ -54,6 +60,14 @@ defineProps<{ tool: any }>()
 
 const inputText = ref('')
 const outputText = ref('')
+
+const inputError = ref('')
+const inputViewMode = ref<'text' | 'rich'>('text')
+
+const parsedInputData = computed(() => {
+  if (!inputText.value.trim()) return null
+  try { return JSON.parse(inputText.value) } catch { return null }
+})
 const error = ref('')
 const fullscreen = ref(false)
 

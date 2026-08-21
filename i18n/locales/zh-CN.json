@@ -22,6 +22,7 @@
     },
     "footer": {
       "view_all": "查看全部",
+      "support_title": "支持",
       "support": {
         "about_us": "关于我们",
         "contact": "联系我们",
@@ -111,23 +112,23 @@
     "blog": {
       "title": "了解更多JSON知识",
       "description": "探索JSON数据处理的指南、技巧和最佳实践。",
-      "items": [
-        {
+      "items": {
+        "what_is_json": {
           "title": "什么是 JSON？",
           "description": "JSON格式、语法和常见用例的入门指南。",
           "link_text": "了解更多"
         },
-        {
-          "title": "JSONvs YAML vs XML",
+        "json_vs_yaml_vs_xml": {
+          "title": "JSON vs YAML vs XML",
           "description": "对比最流行的数据格式，了解各自的适用场景。",
           "link_text": "对比格式"
         },
-        {
+        "common_json_mistakes": {
           "title": "常见JSON错误",
           "description": "常见的JSON错误以及如何用我们的工具快速修复。",
           "link_text": "查看错误"
         }
-      ]
+      }
     }
   },
   "tools": {

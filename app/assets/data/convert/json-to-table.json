@@ -6,7 +6,7 @@
   "sort": 6,
   "applicationCategory": "DeveloperApplication",
   "nextSteps": ["json-to-csv", "json-to-excel"],
-  "recommends": ["json-formatter", "json-tree-viewer"],
+  "recommends": ["json-editor"],
   "en": {
     "name": "JSON to HTML Table",
     "ui": {
