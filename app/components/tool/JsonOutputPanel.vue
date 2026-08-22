@@ -141,7 +141,7 @@
         :class="error ? 'border-red-300 dark:border-red-700' : ''"
       >
         <div ref="lineNumbersRef" class="w-10 shrink-0 select-none text-right py-4 pl-2 pr-3 text-surface-400 dark:text-surface-500 border-r border-surface-200 dark:border-surface-700 leading-[1.5] overflow-hidden">
-          <div v-for="n in textareaLineCount" :key="n">{{ n }}</div>
+          <div v-for="n in lineCount" :key="n">{{ n }}</div>
         </div>
         <textarea
           ref="textareaRef"
@@ -160,11 +160,11 @@
         :class="[hasContent ? 'text-surface-900 dark:text-surface-100' : 'text-surface-400 dark:text-surface-500']"
         class="w-full h-full rounded-xl border border-surface-200 bg-surface-50 font-mono text-sm overflow-auto dark:border-surface-700 dark:bg-surface-800"
       >
-        <div v-if="hasContent" class="flex">
-          <div class="w-10 shrink-0 select-none text-right pr-3 pl-2 py-4 text-surface-400 dark:text-surface-500 border-r border-surface-200 dark:border-surface-700 leading-[1.5] overflow-hidden">
-            <div v-for="n in contentLines.length" :key="n">{{ n }}</div>
+        <div v-if="hasContent" class="flex min-w-max">
+          <div class="w-10 shrink-0 select-none text-right pr-3 pl-2 py-4 text-surface-400 dark:text-surface-500 border-r border-surface-200 dark:border-surface-700 leading-[1.5]">
+            <div v-for="n in lineCount" :key="n">{{ n }}</div>
           </div>
-          <pre class="flex-1 p-4 m-0 overflow-x-auto whitespace-pre leading-[1.5]">{{ content }}</pre>
+          <pre class="flex-1 p-4 m-0 whitespace-pre leading-[1.5]">{{ content }}</pre>
         </div>
         <div v-else class="p-4">{{ emptyText }}</div>
       </div>
@@ -258,10 +258,7 @@ const textareaRef = ref<HTMLTextAreaElement>()
 
 const currentMode = computed(() => props.viewMode)
 const hasContent = computed(() => !!props.content)
-const contentLines = computed(() => (props.content || '').replace(/\n$/, '').split('\n'))
-
-// Editable textarea line count (mirrors contentLines but works for empty state too)
-const textareaLineCount = computed(() => {
+const lineCount = computed(() => {
   const lines = (props.content || '').split('\n')
   return Math.max(lines.length, 1)
 })

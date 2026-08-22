@@ -18,10 +18,9 @@
                     : 'hover:bg-surface-100 dark:hover:bg-surface-700',
           ]"
           @click="isExpandable(value) ? toggle(key) : selectAndCopy(getFullPath(key))"
+          @mouseenter="!isExpandable(value) && onNodeInteraction(getFullPath(key), 'hover')"
+          @mouseleave="onNodeInteraction('', 'hover')"
         >
-          <!-- Line number -->
-          <span class="w-8 shrink-0 text-right pr-2 pt-px text-surface-400 dark:text-surface-500 select-none leading-[1.5]">{{ lineMap[getFullPath(key)] ?? '' }}</span>
-
           <!-- Content -->
           <div class="flex items-start gap-1 min-w-0 leading-[1.5] flex-1">
             <button
@@ -97,10 +96,9 @@
                     : 'hover:bg-surface-100 dark:hover:bg-surface-700',
           ]"
           @click="isExpandable(item) ? toggle(index) : selectAndCopy(getFullPath(index))"
+          @mouseenter="!isExpandable(item) && onNodeInteraction(getFullPath(index), 'hover')"
+          @mouseleave="onNodeInteraction('', 'hover')"
         >
-          <!-- Line number -->
-          <span class="w-8 shrink-0 text-right pr-2 pt-px text-surface-400 dark:text-surface-500 select-none leading-[1.5]">{{ lineMap[getFullPath(index)] ?? '' }}</span>
-
           <!-- Content -->
           <div class="flex items-start gap-1 min-w-0 leading-[1.5] flex-1">
             <button
@@ -174,7 +172,6 @@
                   : '',
         ]"
       >
-        <span class="w-8 shrink-0 text-right pr-2 pt-px text-surface-400 dark:text-surface-500 select-none leading-[1.5]">{{ lineMap[props.path] ?? 1 }}</span>
         <div class="flex items-start gap-1 leading-[1.5] flex-1">
           <span class="w-4 shrink-0"></span>
           <span class="flex items-center gap-1.5">
@@ -231,9 +228,8 @@ provide('richExpanded', expanded)
 const selectedPath = inject<Ref<string>>('richSelectedPath', ref(''))
 provide('richSelectedPath', selectedPath)
 
-// ── Line number map ────────────────────────────────────────────
-const lineMap = inject<Ref<Record<string, number>>>('richLineMap', ref({}))
-provide('richLineMap', lineMap)
+// ── Node interaction callback (click/hover → source line) ────
+const onNodeInteraction = inject<(path: string, type: 'click' | 'hover') => void>('onNodeInteraction', () => {})
 
 // ── Expand/collapse all signals ────────────────────────────────
 const expandAllSignal = inject<Ref<number>>('expandAllSignal', ref(0))
@@ -440,6 +436,7 @@ function isSelected(path: string) {
 function selectAndCopy(path: string) {
   selectedPath.value = path
   copyToClipboard(path)
+  onNodeInteraction(path, 'click')
 }
 
 function formatValue(val: unknown): string {
@@ -457,49 +454,5 @@ function valueColorClass(val: unknown): string {
     case 'boolean': return 'text-orange-600 dark:text-orange-400'
     default: return 'text-surface-700 dark:text-surface-300'
   }
-}
-
-// Root instance: compute line map
-if (!props.path) {
-  watch(
-    () => {
-      // Reactive deps: data, expanded set, and search-expanded paths
-      const se = search?.searchExpandedPaths.value
-      return [props.data, [...expanded.value].sort().join(), se ? [...se].sort().join() : '']
-    },
-    () => {
-      const map: Record<string, number> = {}
-      let counter = 1
-
-      const walkChildren = (val: unknown, parentPath: string) => {
-        if (isObject(val)) {
-          for (const key of Object.keys(val)) {
-            const childPath = parentPath ? `${parentPath}.${key}` : String(key)
-            map[childPath] = counter++
-            const child = (val as Record<string, unknown>)[key]
-            if (isExpandable(child) && isNodeExpanded(key)) {
-              walkChildren(child, childPath)
-            }
-          }
-        } else if (isArray(val)) {
-          val.forEach((item, i) => {
-            const childPath = `${parentPath}[${i}]`
-            map[childPath] = counter++
-            if (isExpandable(item) && isNodeExpanded(i)) {
-              walkChildren(item, childPath)
-            }
-          })
-        }
-      }
-
-      if (isObject(props.data) || isArray(props.data)) {
-        walkChildren(props.data, '')
-      } else {
-        map[''] = counter
-      }
-      lineMap.value = map
-    },
-    { immediate: true },
-  )
 }
 </script>

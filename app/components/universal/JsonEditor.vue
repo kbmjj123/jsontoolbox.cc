@@ -9,6 +9,7 @@
     <template #first>
       <div class="h-full pr-3 overflow-hidden">
         <JsonInputEditor
+          ref="inputEditorRef"
           v-model="inputJson"
           :label="tool.ui?.label_input || 'Input JSON'"
           placeholder='{"name": "JSON Toolbox", "version": "1.0"}'
@@ -191,6 +192,30 @@ const shareCopied = ref(false)
 const copyJustCopied = ref(false)
 const shareMenuRef = ref<HTMLElement>()
 
+// ── Input editor ref & source map ─────────────────────────────
+const inputEditorRef = ref<InstanceType<typeof import('~/components/tool/JsonInputEditor.vue').default>>()
+const sourceMap = ref<Map<string, number>>(new Map())
+
+watch(inputJson, useDebounceFn(() => {
+  sourceMap.value = inputJson.value ? buildSourceMap(inputJson.value) : new Map()
+}, 500))
+
+provide('onNodeInteraction', (path: string, type: 'click' | 'hover') => {
+  if (!path) {
+    // Clear highlight on mouse leave
+    inputEditorRef.value?.highlightLine(0, 'subtle')
+    return
+  }
+  const line = sourceMap.value.get(path)
+  if (!line) return
+  if (type === 'click') {
+    inputEditorRef.value?.scrollToLine(line)
+    inputEditorRef.value?.highlightLine(line, 'flash')
+  } else {
+    inputEditorRef.value?.highlightLine(line, 'subtle')
+  }
+})
+
 const { fixJson: fixJsonAuto, getJsonError } = useJsonFixer()
 const { generateShareUrl, copyShareUrl, shareToSocial } = useShareJson()
 const { examples, hasExamples, getLabel: getExampleLabel, loadById } = useToolExample('json-editor')
@@ -297,10 +322,11 @@ const clearAll = () => {
 }
 
 const onLocateParseError = (err: ParseError) => {
-  // Switch to text view to show line-based error location
   viewMode.value = 'text'
-  // TODO: scroll to line in text editor when line-number support is added
-  console.log('Locate parse error:', err.line, err.column)
+  nextTick(() => {
+    inputEditorRef.value?.scrollToLine(err.line)
+    inputEditorRef.value?.highlightLine(err.line, 'flash')
+  })
 }
 
 // Locate field error in tree — expand ancestors + scroll + flash
