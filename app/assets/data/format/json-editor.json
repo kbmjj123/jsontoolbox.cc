@@ -75,6 +75,11 @@
         "description": "Copy the edited JSON or download it as a file."
       }
     ],
+    "example": {
+      "input": "{\\n  \"name\": \"Alice\",\\n  \"age\": 30\\n}",
+      "output": "{\\n  \"name\": \"Alice\",\\n  \"age\": 31,\\n  \"email\": \"alice@example.com\"\\n}",
+      "useCase": "Edit JSON configuration files online with real-time syntax validation and error highlighting."
+    },
     "faq": [
       {
         "question": "Is my JSON data uploaded to a server?",
@@ -183,6 +188,11 @@
         "description": "复制编辑后的 JSON 或下载为文件。"
       }
     ],
+    "example": {
+      "input": "{\\n  \"name\": \"Alice\",\\n  \"age\": 30\\n}",
+      "output": "{\\n  \"name\": \"Alice\",\\n  \"age\": 31,\\n  \"email\": \"alice@example.com\"\\n}",
+      "useCase": "在线编辑 JSON 配置文件，实时查看语法错误和高亮提示。"
+    },
     "faq": [
       {
         "question": "我的 JSON 数据会上传到服务器吗？",

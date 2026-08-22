@@ -34,6 +34,18 @@ declare global {
     }>;
   }
 
+  // 工具示例接口
+  interface ToolExample {
+    input?: string;
+    output?: string;
+    useCase?: string;
+    // 特殊工具的额外字段
+    inputLeft?: string;  // JSON Compare
+    inputRight?: string; // JSON Compare
+    schema?: string;     // JSON Schema Validator
+    expression?: string; // JSONPath Tester
+  }
+
   // 工具语言包，主要用于在界面上做展示用途
   interface ToolUIInfo {
     name: string;
@@ -64,6 +76,7 @@ declare global {
       question: string;
       answer: string;
     }>,
+    example?: ToolExample;
     results: {
       workflow: {
         tip: string;

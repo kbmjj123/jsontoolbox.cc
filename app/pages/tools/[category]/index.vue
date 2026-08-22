@@ -1,14 +1,14 @@
 <template>
   <div class="py-12">
     <div class="mx-auto max-w-[1200px] px-5">
-      <div v-if="categoryData">
+      <div v-if="categoryLangData">
         <!-- Category Header -->
         <div class="mb-10">
           <h1 class="text-3xl font-bold text-surface-900 dark:text-surface-100">
-            {{ categoryData.h2 || categoryData.title }}
+            {{ categoryLangData.h2 || categoryLangData.title }}
           </h1>
           <p class="mt-3 text-surface-600 dark:text-surface-400">
-            {{ categoryData.pdesc || categoryData.description }}
+            {{ categoryLangData.pdesc || categoryLangData.description }}
           </p>
         </div>
 
@@ -52,14 +52,30 @@
 <script setup lang="ts">
 const route = useRoute()
 const { getCategoryBySlug, getToolsByCategory } = useTools()
-const { t } = useI18n()
+const { t, locale } = useI18n()
 
 const categorySlug = computed(() => route.params.category as string)
 const categoryData = computed(() => getCategoryBySlug(categorySlug.value))
 const categoryTools = computed(() => getToolsByCategory(categorySlug.value).value)
 
+// 获取当前语言的分类数据
+const categoryLangData = computed(() => {
+  if (!categoryData.value) return null
+  return categoryData.value[locale.value] || categoryData.value['en'] || {}
+})
+
 useSeoMeta({
-  title: () => categoryData.value ? (categoryData.value.h2 || categoryData.value.title) : t('tools.page_title'),
-  description: () => categoryData.value?.pdesc || categoryData.value?.description || t('tools.page_description'),
+  title: () => {
+    const langData = categoryLangData.value
+    return langData?.title || categoryData.value?.title || t('tools.page_title')
+  },
+  description: () => {
+    const langData = categoryLangData.value
+    return langData?.description || categoryData.value?.description || t('tools.page_description')
+  },
+  keywords: () => {
+    const langData = categoryLangData.value
+    return langData?.keywords?.join(', ') || ''
+  },
 })
 </script>

@@ -64,6 +64,11 @@
         "description": "Copy the YAML output or download it as a file."
       }
     ],
+    "example": {
+      "input": "{\\n  \"database\": {\\n    \"host\": \"localhost\",\\n    \"port\": 5432,\\n    \"name\": \"myapp\"\\n  }\\n}",
+      "output": "database:\\n  host: localhost\\n  port: 5432\\n  name: myapp",
+      "useCase": "Convert JSON configuration to YAML format for Docker Compose or Kubernetes."
+    },
     "faq": [
       {
         "question": "Is my JSON data uploaded to a server?",
@@ -167,6 +172,11 @@
         "description": "复制 YAML 输出或下载为文件。"
       }
     ],
+    "example": {
+      "input": "{\\n  \"database\": {\\n    \"host\": \"localhost\",\\n    \"port\": 5432,\\n    \"name\": \"myapp\"\\n  }\\n}",
+      "output": "database:\\n  host: localhost\\n  port: 5432\\n  name: myapp",
+      "useCase": "将 JSON 配置转换为 YAML 格式用于 Docker Compose 或 Kubernetes。"
+    },
     "faq": [
       {
         "question": "我的 JSON 数据会上传到服务器吗？",

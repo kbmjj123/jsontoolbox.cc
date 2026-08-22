@@ -81,6 +81,11 @@
         "description": "Download the file or copy CSV to clipboard."
       }
     ],
+    "example": {
+      "input": "[\\n  { \"product\": \"Laptop\", \"price\": 999, \"quantity\": 5 },\\n  { \"product\": \"Mouse\", \"price\": 25, \"quantity\": 50 }\\n]",
+      "output": "product,price,quantity\\nLaptop,999,5\\nMouse,25,50",
+      "useCase": "Export product data to Excel-compatible CSV for financial analysis."
+    },
     "faq": [
       {
         "question": "Is my JSON data uploaded to a server?",
@@ -182,6 +187,11 @@
         "description": "下载文件或复制 CSV 到剪贴板。"
       }
     ],
+    "example": {
+      "input": "[\\n  { \"product\": \"Laptop\", \"price\": 999, \"quantity\": 5 },\\n  { \"product\": \"Mouse\", \"price\": 25, \"quantity\": 50 }\\n]",
+      "output": "product,price,quantity\\nLaptop,999,5\\nMouse,25,50",
+      "useCase": "将产品数据导出为 Excel 格式供财务分析。"
+    },
     "faq": [
       {
         "question": "我的 JSON 数据会上传到服务器吗？",

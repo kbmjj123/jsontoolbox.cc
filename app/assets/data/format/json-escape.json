@@ -64,6 +64,11 @@
         "description": "Copy the processed string to clipboard."
       }
     ],
+    "example": {
+      "input": "{\"message\": \"User said: \"hello\" and left\"}",
+      "output": "{\"message\": \"User said: \\\"hello\\\" and left\"}",
+      "useCase": "Escape unquoted strings in JSON to make them valid. Fixes invalid JSON with unescaped special characters."
+    },
     "faq": [
       {
         "question": "Is my JSON data uploaded to a server?",
@@ -163,6 +168,11 @@
         "description": "复制处理后的字符串到剪贴板。"
       }
     ],
+    "example": {
+      "input": "{\"message\": \"User said: \"hello\" and left\"}",
+      "output": "{\"message\": \"User said: \\\"hello\\\" and left\"}",
+      "useCase": "转义 JSON 中未转引号的字符串，使其成为有效的 JSON。修复包含未转义特殊字符的无效 JSON。"
+    },
     "faq": [
       {
         "question": "我的 JSON 数据会上传到服务器吗？",

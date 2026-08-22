@@ -68,6 +68,11 @@
         "description": "Preview the table, select fields if needed, then download the CSV file."
       }
     ],
+    "example": {
+      "input": "[\\n  { \"name\": \"Alice\", \"age\": 30, \"city\": \"New York\" },\\n  { \"name\": \"Bob\", \"age\": 25, \"city\": \"London\" }\\n]",
+      "output": "name,age,city\\nAlice,30,New York\\nBob,25,London",
+      "useCase": "Export API user lists to CSV for analysis in Excel or Google Sheets."
+    },
     "faq": [
       {
         "question": "How to convert JSON to CSV for Excel?",
@@ -180,6 +185,11 @@
         "description": "预览表格，需要时选择字段，然后下载 CSV 文件。"
       }
     ],
+    "example": {
+      "input": "[\\n  { \"name\": \"Alice\", \"age\": 30, \"city\": \"New York\" },\\n  { \"name\": \"Bob\", \"age\": 25, \"city\": \"London\" }\\n]",
+      "output": "name,age,city\\nAlice,30,New York\\nBob,25,London",
+      "useCase": "将 API 返回的用户列表导出为 CSV，用于 Excel 分析。"
+    },
     "faq": [
       {
         "question": "如何将 JSON 转换为 Excel 可用的 CSV？",

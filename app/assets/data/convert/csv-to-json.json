@@ -75,6 +75,11 @@
         "description": "Copy the JSON output or download it as a file."
       }
     ],
+    "example": {
+      "input": "name,age,city\\nAlice,30,New York\\nBob,25,London",
+      "output": "[\\n  { \"name\": \"Alice\", \"age\": 30, \"city\": \"New York\" },\\n  { \"name\": \"Bob\", \"age\": 25, \"city\": \"London\" }\\n]",
+      "useCase": "Convert Excel-exported CSV data to JSON for programmatic processing."
+    },
     "faq": [
       {
         "question": "Is my CSV data uploaded to a server?",
@@ -170,6 +175,11 @@
         "description": "复制 JSON 输出或下载为文件。"
       }
     ],
+    "example": {
+      "input": "name,age,city\\nAlice,30,New York\\nBob,25,London",
+      "output": "[\\n  { \"name\": \"Alice\", \"age\": 30, \"city\": \"New York\" },\\n  { \"name\": \"Bob\", \"age\": 25, \"city\": \"London\" }\\n]",
+      "useCase": "将 Excel 导出的 CSV 数据转换为 JSON 供程序处理。"
+    },
     "faq": [
       {
         "question": "我的 CSV 数据会上传到服务器吗？",

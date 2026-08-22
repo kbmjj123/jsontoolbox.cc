@@ -75,6 +75,11 @@
         "description": "Copy the TypeScript code or download it as a file."
       }
     ],
+    "example": {
+      "input": "{\\n  \"id\": 1,\\n  \"name\": \"Alice\",\\n  \"email\": \"alice@example.com\",\\n  \"isActive\": true\\n}",
+      "output": "interface Root {\\n  id: number;\\n  name: string;\\n  email: string;\\n  isActive: boolean;\\n}",
+      "useCase": "Auto-generate TypeScript interfaces from API response examples."
+    },
     "faq": [
       {
         "question": "Is my JSON data uploaded to a server?",
@@ -183,6 +188,11 @@
         "description": "复制 TypeScript 代码或下载为文件。"
       }
     ],
+    "example": {
+      "input": "{\\n  \"id\": 1,\\n  \"name\": \"Alice\",\\n  \"email\": \"alice@example.com\",\\n  \"isActive\": true\\n}",
+      "output": "interface Root {\\n  id: number;\\n  name: string;\\n  email: string;\\n  isActive: boolean;\\n}",
+      "useCase": "从 API 响应示例自动生成 TypeScript 接口定义。"
+    },
     "faq": [
       {
         "question": "我的 JSON 数据会上传到服务器吗？",

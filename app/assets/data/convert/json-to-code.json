@@ -74,6 +74,11 @@
         "description": "Copy the generated code or download it as a file."
       }
     ],
+    "example": {
+      "input": "{\\n  \"id\": 1,\\n  \"name\": \"Alice\",\\n  \"email\": \"alice@example.com\"\\n}",
+      "output": "type User struct {\\n  ID    int    `json:\"id\"`\\n  Name  string `json:\"name\"`\\n  Email string `json:\"email\"`\\n}",
+      "useCase": "Quickly generate Go structs, C# classes, or Python dataclasses from JSON."
+    },
     "faq": [
       {
         "question": "Is my JSON data uploaded to a server?",
@@ -168,6 +173,11 @@
         "description": "复制生成的代码或下载为文件。"
       }
     ],
+    "example": {
+      "input": "{\\n  \"id\": 1,\\n  \"name\": \"Alice\",\\n  \"email\": \"alice@example.com\"\\n}",
+      "output": "type User struct {\\n  ID    int    `json:\"id\"`\\n  Name  string `json:\"name\"`\\n  Email string `json:\"email\"`\\n}",
+      "useCase": "从 JSON 快速生成 Go 结构体、C# 类或 Python dataclass。"
+    },
     "faq": [
       {
         "question": "我的 JSON 数据会上传到服务器吗？",

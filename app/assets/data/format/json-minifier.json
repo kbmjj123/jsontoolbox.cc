@@ -64,6 +64,11 @@
         "description": "Copy the minified JSON or download it as a file."
       }
     ],
+    "example": {
+      "input": "{\\n  \"users\": [\\n    {\\n      \"id\": 1,\\n      \"name\": \"Alice\",\\n      \"email\": \"alice@example.com\"\\n    }\\n  ]\\n}",
+      "output": "{\"users\":[{\"id\":1,\"name\":\"Alice\",\"email\":\"alice@example.com\"}]}",
+      "useCase": "Compress JSON for network transmission or embedding in URLs to reduce payload size."
+    },
     "faq": [
       {
         "question": "Is my JSON data uploaded to a server?",
@@ -176,6 +181,11 @@
         "description": "复制压缩后的 JSON 或下载为文件。"
       }
     ],
+    "example": {
+      "input": "{\\n  \"users\": [\\n    {\\n      \"id\": 1,\\n      \"name\": \"Alice\",\\n      \"email\": \"alice@example.com\"\\n    }\\n  ]\\n}",
+      "output": "{\"users\":[{\"id\":1,\"name\":\"Alice\",\"email\":\"alice@example.com\"}]}",
+      "useCase": "压缩 JSON 用于网络传输或嵌入 URL，减少数据大小。"
+    },
     "faq": [
       {
         "question": "我的 JSON 数据会上传到服务器吗？",

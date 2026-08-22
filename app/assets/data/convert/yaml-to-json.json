@@ -72,6 +72,11 @@
         "description": "Copy the JSON output or download it as a file."
       }
     ],
+    "example": {
+      "input": "database:\\n  host: localhost\\n  port: 5432\\n  name: myapp",
+      "output": "{\\n  \"database\": {\\n    \"host\": \"localhost\",\\n    \"port\": 5432,\\n    \"name\": \"myapp\"\\n  }\\n}",
+      "useCase": "Convert YAML configuration files to JSON for Node.js applications."
+    },
     "faq": [
       {
         "question": "Is my YAML data uploaded to a server?",
@@ -164,6 +169,11 @@
         "description": "复制 JSON 输出或下载为文件。"
       }
     ],
+    "example": {
+      "input": "database:\\n  host: localhost\\n  port: 5432\\n  name: myapp",
+      "output": "{\\n  \"database\": {\\n    \"host\": \"localhost\",\\n    \"port\": 5432,\\n    \"name\": \"myapp\"\\n  }\\n}",
+      "useCase": "将 YAML 配置文件转换为 JSON 供 Node.js 应用使用。"
+    },
     "faq": [
       {
         "question": "我的 YAML 数据会上传到服务器吗？",

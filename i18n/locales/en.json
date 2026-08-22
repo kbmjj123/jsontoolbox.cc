@@ -133,7 +133,17 @@
   },
   "tools": {
     "page_title": "All JSON Tools — Free Online JSON Tools",
-    "page_description": "Browse all available JSON tools. Format, validate, convert, and explore JSON data."
+    "page_description": "Browse all available JSON tools. Format, validate, convert, and explore JSON data.",
+    "example": {
+      "title": "Example",
+      "input": "Input",
+      "inputLeft": "Left Input",
+      "inputRight": "Right Input",
+      "output": "Output",
+      "schema": "Schema",
+      "expression": "JSONPath Expression",
+      "useCase": "Use Case"
+    }
   },
   "error": {
     "not_found": {

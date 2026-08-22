@@ -76,6 +76,11 @@
         "description": "Copy the schema or download it as a file."
       }
     ],
+    "example": {
+      "input": "{\\n  \"name\": \"Alice\",\\n  \"age\": 30,\\n  \"email\": \"alice@example.com\",\\n  \"tags\": [\"admin\", \"user\"]\\n}",
+      "output": "{\\n  \"type\": \"object\",\\n  \"properties\": {\\n    \"name\": { \"type\": \"string\" },\\n    \"age\": { \"type\": \"number\" },\\n    \"email\": { \"type\": \"string\" },\\n    \"tags\": {\\n      \"type\": \"array\",\\n      \"items\": { \"type\": \"string\" }\\n    }\\n  },\\n  \"required\": [\"name\", \"age\", \"email\", \"tags\"]\\n}",
+      "useCase": "Auto-generate JSON Schema from sample JSON for API documentation."
+    },
     "faq": [
       {
         "question": "Is my JSON data uploaded to a server?",
@@ -189,6 +194,11 @@
         "description": "复制 Schema 或下载为文件。"
       }
     ],
+    "example": {
+      "input": "{\\n  \"name\": \"Alice\",\\n  \"age\": 30,\\n  \"email\": \"alice@example.com\",\\n  \"tags\": [\"admin\", \"user\"]\\n}",
+      "output": "{\\n  \"type\": \"object\",\\n  \"properties\": {\\n    \"name\": { \"type\": \"string\" },\\n    \"age\": { \"type\": \"number\" },\\n    \"email\": { \"type\": \"string\" },\\n    \"tags\": {\\n      \"type\": \"array\",\\n      \"items\": { \"type\": \"string\" }\\n    }\\n  },\\n  \"required\": [\"name\", \"age\", \"email\", \"tags\"]\\n}",
+      "useCase": "从示例 JSON 自动生成 JSON Schema 用于 API 文档。"
+    },
     "faq": [
       {
         "question": "我的 JSON 数据会上传到服务器吗？",

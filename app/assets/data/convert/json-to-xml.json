@@ -64,6 +64,11 @@
         "description": "Copy the XML output or download it as a file."
       }
     ],
+    "example": {
+      "input": "{\\n  \"user\": {\\n    \"name\": \"Alice\",\\n    \"age\": 30\\n  }\\n}",
+      "output": "<?xml version=\"1.0\" encoding=\"UTF-8\"?>\\n<user>\\n  <name>Alice</name>\\n  <age>30</age>\\n</user>",
+      "useCase": "Convert JSON data to XML format for legacy system integration."
+    },
     "faq": [
       {
         "question": "Is my JSON data uploaded to a server?",
@@ -174,6 +179,11 @@
         "description": "复制 XML 输出或下载为文件。"
       }
     ],
+    "example": {
+      "input": "{\\n  \"user\": {\\n    \"name\": \"Alice\",\\n    \"age\": 30\\n  }\\n}",
+      "output": "<?xml version=\"1.0\" encoding=\"UTF-8\"?>\\n<user>\\n  <name>Alice</name>\\n  <age>30</age>\\n</user>",
+      "useCase": "将 JSON 数据转换为 XML 格式用于传统系统集成。"
+    },
     "faq": [
       {
         "question": "我的 JSON 数据会上传到服务器吗？",

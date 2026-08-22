@@ -77,6 +77,11 @@
         "description": "Download the PDF file to your device."
       }
     ],
+    "example": {
+      "input": "{\\n  \"report\": \"Q1 2026\",\\n  \"revenue\": 150000,\\n  \"expenses\": 80000,\\n  \"profit\": 70000\\n}",
+      "output": "[Download PDF] — formatted JSON document with proper indentation and layout",
+      "useCase": "Export JSON-formatted report data as printable PDF documents."
+    },
     "faq": [
       {
         "question": "Is my JSON data uploaded to a server?",
@@ -174,6 +179,11 @@
         "description": "将 PDF 文件下载到你的设备。"
       }
     ],
+    "example": {
+      "input": "{\\n  \"report\": \"Q1 2026\",\\n  \"revenue\": 150000,\\n  \"expenses\": 80000,\\n  \"profit\": 70000\\n}",
+      "output": "[下载 PDF] — 格式化的 JSON 文档，带有正确的缩进和布局",
+      "useCase": "将 JSON 格式的报告数据导出为可打印的 PDF 文档。"
+    },
     "faq": [
       {
         "question": "我的 JSON 数据会上传到服务器吗？",
