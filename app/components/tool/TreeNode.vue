@@ -187,7 +187,7 @@ const matchesSearch = (key: unknown, value: unknown) => {
 }
 
 const copyPath = (path: string) => {
-  navigator.clipboard.writeText(path).catch(() => {})
+  copyToClipboard(path)
 }
 </script>
 

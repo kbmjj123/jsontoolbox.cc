@@ -150,7 +150,7 @@ const formatValue = (val: any): string => {
 }
 
 const copyPath = async (path: string) => {
-  try { await navigator.clipboard.writeText(path) } catch {}
+  await copyToClipboard(path)
 }
 
 const getByPath = (obj: any, path: string): any[] => {

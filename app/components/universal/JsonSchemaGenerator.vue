@@ -167,7 +167,7 @@ const generate = () => {
 const clearAll = () => { outputSchema.value = ''; error.value = '' }
 
 const copyOutput = async () => {
-  try { await navigator.clipboard.writeText(outputSchema.value) } catch (e) { console.error('Failed to copy:', e) }
+  await copyToClipboard(outputSchema.value)
 }
 
 const downloadOutput = () => {

@@ -175,11 +175,9 @@ const clearAll = () => { schemaError.value = ''; result.value = null; errorMap.v
 
 const copyResult = async () => {
   if (!result.value) return
-  try {
-    await navigator.clipboard.writeText(
-      JSON.stringify({ valid: result.value.valid, errors: result.value.fieldErrors, timestamp: new Date().toISOString() }, null, 2)
-    )
-  } catch {}
+  await copyToClipboard(
+    JSON.stringify({ valid: result.value.valid, errors: result.value.fieldErrors, timestamp: new Date().toISOString() }, null, 2)
+  )
 }
 
 const downloadResult = () => {

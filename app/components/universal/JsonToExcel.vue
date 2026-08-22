@@ -159,7 +159,7 @@ const convert = () => {
 }
 
 const copyCsv = async () => {
-  try { await navigator.clipboard.writeText(csvContent.value) } catch (e) { console.error('Failed to copy:', e) }
+  await copyToClipboard(csvContent.value)
 }
 
 const downloadCsv = () => {

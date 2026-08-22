@@ -93,12 +93,7 @@ export const useShareJson = () => {
    * Copy link to clipboard
    */
   const copyShareUrl = async (url: string): Promise<boolean> => {
-    try {
-      await navigator.clipboard.writeText(url)
-      return true
-    } catch {
-      return false
-    }
+    return copyToClipboard(url)
   }
 
   /**

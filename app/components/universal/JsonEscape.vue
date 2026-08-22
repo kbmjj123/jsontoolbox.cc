@@ -108,11 +108,7 @@ const loadExample = () => {
 }
 
 const copyOutput = async () => {
-  try {
-    await navigator.clipboard.writeText(outputText.value)
-  } catch (e) {
-    console.error('Failed to copy:', e)
-  }
+  await copyToClipboard(outputText.value)
 }
 
 const downloadOutput = () => {

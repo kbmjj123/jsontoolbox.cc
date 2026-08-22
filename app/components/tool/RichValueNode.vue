@@ -297,7 +297,7 @@ const isSelected = (path: string) => selectedPath.value === path
 
 const selectAndCopy = (path: string) => {
   selectedPath.value = path
-  navigator.clipboard.writeText(path).catch(() => {})
+  copyToClipboard(path)
 }
 
 const getFullPath = (key: string | number) => {

@@ -60,7 +60,7 @@
       <!-- Line numbers gutter -->
       <div
         ref="gutterRef"
-        class="flex-none w-10 select-none overflow-hidden py-4 pr-2 text-right font-mono text-xs leading-[1.5] text-surface-400 dark:text-surface-500 border-r border-surface-200 dark:border-surface-700"
+        class="flex-none w-10 select-none overflow-hidden py-4 pr-2 text-right font-mono text-sm leading-[1.5] text-surface-400 dark:text-surface-500 border-r border-surface-200 dark:border-surface-700"
         aria-hidden="true"
       >
         <div v-for="n in lineCount" :key="n">{{ n }}</div>
@@ -73,7 +73,8 @@
         @input="onInput"
         @scroll="onScroll"
         @paste="onPaste"
-        class="flex-1 min-w-0 resize-none bg-transparent py-4 px-4 font-mono text-sm leading-[1.5] text-surface-900 outline-none dark:text-surface-100"
+        wrap="off"
+        class="flex-1 min-w-0 resize-none bg-transparent py-4 px-4 font-mono text-sm leading-[1.5] text-surface-900 outline-none dark:text-surface-100 whitespace-pre"
         :placeholder="placeholder"
         spellcheck="false"
       ></textarea>

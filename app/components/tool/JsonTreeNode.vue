@@ -1,12 +1,12 @@
 <template>
-  <div class="font-mono text-xs">
+  <div class="font-mono text-sm">
     <!-- Object -->
     <template v-if="isObject(data)">
       <div v-for="(value, key) in data" :key="key">
         <div
           :ref="(el) => markRow(getFullPath(key), el as HTMLElement)"
           :class="[
-            'grid rounded px-1 cursor-pointer group transition-colors',
+            'flex rounded px-1 cursor-pointer group transition-colors',
             flashPath === getFullPath(key)
               ? 'bg-orange-200 dark:bg-orange-700/50 ring-2 ring-orange-400 dark:ring-orange-500 animate-pulse'
               : isCurrentMatch(getFullPath(key))
@@ -17,14 +17,13 @@
                     ? 'bg-primary-50 dark:bg-primary-900/30 border-l-2 border-primary-500 dark:border-primary-400'
                     : 'hover:bg-surface-100 dark:hover:bg-surface-700',
           ]"
-          style="grid-template-columns: 2rem 1fr"
           @click="isExpandable(value) ? toggle(key) : selectAndCopy(getFullPath(key))"
         >
           <!-- Line number -->
-          <span class="text-right pr-2 pt-px text-surface-400 dark:text-surface-500 select-none leading-5">{{ lineMap[getFullPath(key)] ?? '' }}</span>
+          <span class="w-8 shrink-0 text-right pr-2 pt-px text-surface-400 dark:text-surface-500 select-none leading-[1.5]">{{ lineMap[getFullPath(key)] ?? '' }}</span>
 
           <!-- Content -->
-          <div class="flex items-start gap-1 min-w-0 leading-5">
+          <div class="flex items-start gap-1 min-w-0 leading-[1.5] flex-1">
             <button
               v-if="isExpandable(value)"
               @click.stop="toggle(key)"
@@ -62,8 +61,8 @@
         </div>
 
         <!-- Image preview -->
-        <div v-if="isPossibleImageUrl(value)" class="grid" style="grid-template-columns: 2rem 1fr">
-          <span />
+        <div v-if="isPossibleImageUrl(value)" class="flex">
+          <span class="w-8 shrink-0" />
           <img
             :src="value"
             :alt="String(key)"
@@ -75,7 +74,7 @@
 
         <!-- Expanded children -->
         <div v-if="isNodeExpanded(key) && isExpandable(value)" class="ml-4 border-l border-surface-200 dark:border-surface-700 pl-0">
-          <JsonTreeNode :data="value" :path="getFullPath(key)" />
+          <JsonTreeNode :data="value" :path="getFullPath(key)" :depth="depth + 1" />
         </div>
       </div>
     </template>
@@ -86,7 +85,7 @@
         <div
           :ref="(el) => markRow(getFullPath(index), el as HTMLElement)"
           :class="[
-            'grid rounded px-1 cursor-pointer transition-colors',
+            'flex rounded px-1 cursor-pointer transition-colors',
             flashPath === getFullPath(index)
               ? 'bg-orange-200 dark:bg-orange-700/50 ring-2 ring-orange-400 dark:ring-orange-500 animate-pulse'
               : isCurrentMatch(getFullPath(index))
@@ -97,14 +96,13 @@
                     ? 'bg-primary-50 dark:bg-primary-900/30 border-l-2 border-primary-500 dark:border-primary-400'
                     : 'hover:bg-surface-100 dark:hover:bg-surface-700',
           ]"
-          style="grid-template-columns: 2rem 1fr"
           @click="isExpandable(item) ? toggle(index) : selectAndCopy(getFullPath(index))"
         >
           <!-- Line number -->
-          <span class="text-right pr-2 pt-px text-surface-400 dark:text-surface-500 select-none leading-5">{{ lineMap[getFullPath(index)] ?? '' }}</span>
+          <span class="w-8 shrink-0 text-right pr-2 pt-px text-surface-400 dark:text-surface-500 select-none leading-[1.5]">{{ lineMap[getFullPath(index)] ?? '' }}</span>
 
           <!-- Content -->
-          <div class="flex items-start gap-1 min-w-0 leading-5">
+          <div class="flex items-start gap-1 min-w-0 leading-[1.5] flex-1">
             <button
               v-if="isExpandable(item)"
               @click.stop="toggle(index)"
@@ -141,8 +139,8 @@
         </div>
 
         <!-- Image preview -->
-        <div v-if="isPossibleImageUrl(item)" class="grid" style="grid-template-columns: 2rem 1fr">
-          <span />
+        <div v-if="isPossibleImageUrl(item)" class="flex">
+          <span class="w-8 shrink-0" />
           <img
             :src="item"
             :alt="`[${index}]`"
@@ -154,7 +152,7 @@
 
         <!-- Expanded children -->
         <div v-if="isNodeExpanded(index) && isExpandable(item)" class="ml-4 border-l border-surface-200 dark:border-surface-700 pl-0">
-          <JsonTreeNode :data="item" :path="getFullPath(index)" />
+          <JsonTreeNode :data="item" :path="getFullPath(index)" :depth="depth + 1" />
         </div>
       </div>
     </template>
@@ -164,7 +162,7 @@
       <div
         :ref="(el) => markRow(props.path, el as HTMLElement)"
         :class="[
-          'grid rounded px-1 transition-colors',
+          'flex rounded px-1 transition-colors',
           flashPath === props.path
             ? 'bg-orange-200 dark:bg-orange-700/50 ring-2 ring-orange-400 dark:ring-orange-500 animate-pulse'
             : isCurrentMatch(props.path)
@@ -175,10 +173,9 @@
                   ? 'bg-primary-50 dark:bg-primary-900/30 border-l-2 border-primary-500 dark:border-primary-400'
                   : '',
         ]"
-        style="grid-template-columns: 2rem 1fr"
       >
-        <span class="text-right pr-2 pt-px text-surface-400 dark:text-surface-500 select-none leading-5">{{ lineMap[props.path] ?? 1 }}</span>
-        <div class="flex items-start gap-1 leading-5">
+        <span class="w-8 shrink-0 text-right pr-2 pt-px text-surface-400 dark:text-surface-500 select-none leading-[1.5]">{{ lineMap[props.path] ?? 1 }}</span>
+        <div class="flex items-start gap-1 leading-[1.5] flex-1">
           <span class="w-4 shrink-0"></span>
           <span class="flex items-center gap-1.5">
             <span
@@ -218,10 +215,13 @@ import type { PreviewImage } from '~/composables/useImagePreview'
 import type { useTreeSearch } from '~/composables/useTreeSearch'
 import type { FieldError } from '~/types/jsonErrors'
 
-const props = defineProps<{
+const props = withDefaults(defineProps<{
   data: unknown
   path: string
-}>()
+  depth?: number
+}>(), {
+  depth: 0,
+})
 
 // ── Shared expanded state (inject + re-provide) ────────────────
 const expanded = inject<Ref<Set<string>>>('richExpanded', ref(new Set()))
@@ -439,7 +439,7 @@ function isSelected(path: string) {
 
 function selectAndCopy(path: string) {
   selectedPath.value = path
-  navigator.clipboard.writeText(path).catch(() => {})
+  copyToClipboard(path)
 }
 
 function formatValue(val: unknown): string {

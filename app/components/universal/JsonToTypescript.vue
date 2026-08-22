@@ -175,7 +175,7 @@ const generateTypescript = () => {
 const clearAll = () => { outputTs.value = ''; error.value = '' }
 
 const copyOutput = async () => {
-  try { await navigator.clipboard.writeText(outputTs.value) } catch (e) { console.error('Failed to copy:', e) }
+  await copyToClipboard(outputTs.value)
 }
 
 const downloadOutput = () => {

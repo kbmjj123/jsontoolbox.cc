@@ -7,7 +7,7 @@
 
     <!-- Input editor -->
     <template #first>
-      <div class="h-full pr-3">
+      <div class="h-full pr-3 overflow-hidden">
         <JsonInputEditor
           v-model="inputJson"
           :label="tool.ui?.label_input || 'Input JSON'"
@@ -43,7 +43,7 @@
 
     <!-- Output panel -->
     <template #second>
-      <div class="h-full pl-3">
+      <div class="h-full pl-3 flex flex-col overflow-hidden">
         <JsonOutputPanel
           :label="tool.ui?.label_output || 'Output'"
           :content="outputJson"
@@ -219,9 +219,7 @@ const parsedData = computed(() => {
 })
 
 const copyPath = async (path: string) => {
-  try {
-    await navigator.clipboard.writeText(path)
-  } catch {}
+  await copyToClipboard(path)
 }
 
 const { t } = useI18n()
@@ -232,7 +230,7 @@ const formatJson = () => {
     const parsed = JSON.parse(inputJson.value)
     const space = indent.value === 'tab' ? '\t' : Number(indent.value)
     outputJson.value = JSON.stringify(parsed, null, space)
-    lastAction.value = 'formatted'
+    lastAction.value = Number(indent.value) === 0 ? 'minified' : 'formatted'
     error.value = ''
     parseError.value = null
   } catch {
@@ -244,7 +242,7 @@ const formatJson = () => {
         const parsed = JSON.parse(fixed)
         const space = indent.value === 'tab' ? '\t' : Number(indent.value)
         outputJson.value = JSON.stringify(parsed, null, space)
-        lastAction.value = 'formatted'
+        lastAction.value = Number(indent.value) === 0 ? 'minified' : 'formatted'
         error.value = ''
         parseError.value = null
         return
@@ -257,29 +255,9 @@ const formatJson = () => {
 }
 
 const minifyJson = () => {
-  if (!inputJson.value.trim()) { error.value = ''; parseError.value = null; outputJson.value = ''; return }
-  try {
-    const parsed = JSON.parse(inputJson.value)
-    outputJson.value = JSON.stringify(parsed)
-    lastAction.value = 'minified'
-    error.value = ''
-    parseError.value = null
-  } catch {
-    if (autoFix.value) {
-      const { fixed } = fixJsonAuto(inputJson.value)
-      if (fixed) {
-        inputJson.value = fixed
-        outputJson.value = JSON.stringify(JSON.parse(fixed))
-        lastAction.value = 'minified'
-        error.value = ''
-        parseError.value = null
-        return
-      }
-    }
-    const err = getJsonError(inputJson.value)
-    parseError.value = err
-    error.value = err ? t('errors.lineCol', { line: err.line, col: err.column }) + ': ' + err.message : t('formatter.invalidJson')
-  }
+  indent.value = 0
+  // indent watcher handles re-format; if autoFormat is off, format manually
+  if (!autoFormat.value) formatJson()
 }
 
 const validateJson = () => {
@@ -363,6 +341,15 @@ watch(inputJson, () => {
   }
 })
 
+// Indent change: immediate re-format (deliberate user action, no debounce)
+watch(indent, () => {
+  if (!inputJson.value.trim()) return
+  formatJson()
+  if (autoFormat.value) {
+    formatInputInPlace()
+  }
+})
+
 useEventListener('keydown', (e: KeyboardEvent) => {
   if ((e.metaKey || e.ctrlKey) && e.key === 'Enter') {
     e.preventDefault()
@@ -371,13 +358,9 @@ useEventListener('keydown', (e: KeyboardEvent) => {
 })
 
 const copyOutput = async () => {
-  try {
-    await navigator.clipboard.writeText(outputJson.value)
-    copyJustCopied.value = true
-    setTimeout(() => { copyJustCopied.value = false }, 2000)
-  } catch (e) {
-    console.error('Failed to copy:', e)
-  }
+  await copyToClipboard(outputJson.value)
+  copyJustCopied.value = true
+  setTimeout(() => { copyJustCopied.value = false }, 2000)
 }
 
 const downloadOutput = () => {

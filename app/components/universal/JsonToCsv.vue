@@ -202,7 +202,7 @@ const selectAllFields = () => { selectedFields.value = [...availableFields.value
 const deselectAllFields = () => { selectedFields.value = [] }
 
 const copyOutput = async () => {
-  try { await navigator.clipboard.writeText(outputCsv.value) } catch (e) { console.error('Failed to copy:', e) }
+  await copyToClipboard(outputCsv.value)
 }
 
 const downloadCsv = () => {
