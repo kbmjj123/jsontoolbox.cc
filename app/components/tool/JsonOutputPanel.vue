@@ -1,5 +1,5 @@
 <template>
-  <div class="h-full flex flex-col">
+  <div class="flex-1 min-h-0 flex flex-col">
     <!-- Header -->
     <div class="flex items-center justify-between mb-2 gap-3">
       <div class="flex items-center gap-2 shrink-0">
@@ -140,7 +140,7 @@
         class="w-full h-full rounded-xl border border-surface-200 bg-surface-50 font-mono text-sm overflow-hidden dark:border-surface-700 dark:bg-surface-800 flex"
         :class="error ? 'border-red-300 dark:border-red-700' : ''"
       >
-        <div class="flex-none select-none text-right py-4 pl-2 pr-3 text-surface-400 dark:text-surface-500 border-r border-surface-200 dark:border-surface-700 leading-[1.5] overflow-hidden">
+        <div ref="lineNumbersRef" class="w-10 shrink-0 select-none text-right py-4 pl-2 pr-3 text-surface-400 dark:text-surface-500 border-r border-surface-200 dark:border-surface-700 leading-[1.5] overflow-hidden">
           <div v-for="n in textareaLineCount" :key="n">{{ n }}</div>
         </div>
         <textarea
@@ -161,7 +161,7 @@
         class="w-full h-full rounded-xl border border-surface-200 bg-surface-50 font-mono text-sm overflow-auto dark:border-surface-700 dark:bg-surface-800"
       >
         <div v-if="hasContent" class="flex">
-          <div class="flex-none select-none text-right pr-3 pl-2 py-4 text-surface-400 dark:text-surface-500 border-r border-surface-200 dark:border-surface-700 leading-[1.5]">
+          <div class="w-10 shrink-0 select-none text-right pr-3 pl-2 py-4 text-surface-400 dark:text-surface-500 border-r border-surface-200 dark:border-surface-700 leading-[1.5] overflow-hidden">
             <div v-for="n in contentLines.length" :key="n">{{ n }}</div>
           </div>
           <pre class="flex-1 p-4 m-0 overflow-x-auto whitespace-pre leading-[1.5]">{{ content }}</pre>
@@ -271,8 +271,12 @@ function onTextareaInput(e: Event) {
   emit('update:content', target.value)
 }
 
+const lineNumbersRef = ref<HTMLElement>()
+
 function syncLineNumbers() {
-  // Line numbers auto-scroll via CSS overflow — no manual sync needed
+  if (textareaRef.value && lineNumbersRef.value) {
+    lineNumbersRef.value.scrollTop = textareaRef.value.scrollTop
+  }
 }
 
 // Search

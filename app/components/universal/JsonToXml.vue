@@ -188,11 +188,7 @@ const clearAll = () => {
 }
 
 const copyOutput = async () => {
-  try {
-    await navigator.clipboard.writeText(outputXml.value)
-  } catch (e) {
-    console.error('Failed to copy:', e)
-  }
+  await copyToClipboard(outputXml.value)
 }
 
 const downloadOutput = () => {

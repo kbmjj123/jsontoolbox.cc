@@ -165,7 +165,7 @@ const generateHtmlTable = (): string => {
 }
 
 const copyHtml = async () => {
-  try { await navigator.clipboard.writeText(generateHtmlTable()) } catch (e) { console.error('Failed to copy:', e) }
+  await copyToClipboard(generateHtmlTable())
 }
 
 const downloadCsv = () => {
