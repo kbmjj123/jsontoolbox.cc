@@ -172,6 +172,7 @@
     "loadUrl": "从 URL 加载",
     "fetch": "获取",
     "autoFormat": "输入时格式化",
+    "autoFix": "自动修复",
     "fix": "修复",
     "share": "分享",
     "example": "示例",

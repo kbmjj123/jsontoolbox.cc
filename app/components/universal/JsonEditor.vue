@@ -54,6 +54,7 @@
           :locate-target="locateTarget"
           :show-copy="false"
           :show-download="false"
+          :show-view-toggle="showViewToggle"
           :empty-text="$t('system.emptyOutput')"
           @update:view-mode="viewMode = $event"
           @copy="copyOutput"
@@ -85,18 +86,25 @@
         </select>
       </div>
 
-      <button @click="formatJson" class="btn-primary px-4 py-2 text-xs">
-        {{ $t('system.format') }}
-      </button>
       <button @click="minifyJson" class="rounded-xl border border-surface-200 bg-white px-4 py-2 text-xs font-bold text-surface-700 hover:bg-surface-50 dark:border-surface-700 dark:bg-surface-800 dark:text-surface-300">
         {{ $t('system.minify') }}
       </button>
-      <button @click="validateJson" class="rounded-xl border border-surface-200 bg-white px-4 py-2 text-xs font-bold text-surface-700 hover:bg-surface-50 dark:border-surface-700 dark:bg-surface-800 dark:text-surface-300">
-        {{ $t('system.validate') }}
-      </button>
-      <button @click="fixJson" class="rounded-xl border border-surface-200 bg-white px-4 py-2 text-xs font-bold text-surface-700 hover:bg-surface-50 dark:border-surface-700 dark:bg-surface-800 dark:text-surface-300">
-        {{ $t('system.fix') }}
-      </button>
+      <!-- Auto-fix toggle -->
+      <label class="flex items-center gap-1.5 cursor-pointer select-none">
+        <span class="text-xs text-surface-600 dark:text-surface-400">{{ $t('system.autoFix') || 'Auto Fix' }}</span>
+        <button
+          @click="autoFix = !autoFix"
+          :class="autoFix ? 'bg-primary-600' : 'bg-surface-300 dark:bg-surface-600'"
+          class="relative inline-flex h-5 w-9 items-center rounded-full transition-colors"
+          role="switch"
+          :aria-checked="autoFix"
+        >
+          <span
+            :class="autoFix ? 'translate-x-4' : 'translate-x-0.5'"
+            class="inline-block h-4 w-4 rounded-full bg-white transition-transform"
+          />
+        </button>
+      </label>
 
       <!-- Auto-format toggle -->
       <label class="flex items-center gap-1.5 cursor-pointer select-none ml-2">
@@ -157,7 +165,11 @@
 <script setup lang="ts">
 import type { ParseError, FieldError } from '~/types/jsonErrors'
 
-const { tool } = defineProps<{ tool: any }>()
+const { tool, showViewToggle = true, defaultViewMode = 'rich' } = defineProps<{
+  tool: any
+  showViewToggle?: boolean
+  defaultViewMode?: 'text' | 'rich'
+}>()
 
 const inputJson = ref('')
 const outputJson = ref('')
@@ -165,7 +177,8 @@ const error = ref('')
 const parseError = ref<ParseError | null>(null)
 const indent = ref<number | string>(2)
 const autoFormat = ref(true)
-const viewMode = ref<'text' | 'rich'>('rich')
+const autoFix = ref(true)
+const viewMode = ref<'text' | 'rich'>(defaultViewMode)
 const fullscreen = ref(false)
 const lastAction = ref<'formatted' | 'minified' | 'validated'>('formatted')
 
@@ -223,6 +236,20 @@ const formatJson = () => {
     error.value = ''
     parseError.value = null
   } catch {
+    // Auto-fix: try to fix then re-format
+    if (autoFix.value) {
+      const { fixed } = fixJsonAuto(inputJson.value)
+      if (fixed) {
+        inputJson.value = fixed
+        const parsed = JSON.parse(fixed)
+        const space = indent.value === 'tab' ? '\t' : Number(indent.value)
+        outputJson.value = JSON.stringify(parsed, null, space)
+        lastAction.value = 'formatted'
+        error.value = ''
+        parseError.value = null
+        return
+      }
+    }
     const err = getJsonError(inputJson.value)
     parseError.value = err
     error.value = err ? t('errors.lineCol', { line: err.line, col: err.column }) + ': ' + err.message : t('formatter.invalidJson')
@@ -238,6 +265,17 @@ const minifyJson = () => {
     error.value = ''
     parseError.value = null
   } catch {
+    if (autoFix.value) {
+      const { fixed } = fixJsonAuto(inputJson.value)
+      if (fixed) {
+        inputJson.value = fixed
+        outputJson.value = JSON.stringify(JSON.parse(fixed))
+        lastAction.value = 'minified'
+        error.value = ''
+        parseError.value = null
+        return
+      }
+    }
     const err = getJsonError(inputJson.value)
     parseError.value = err
     error.value = err ? t('errors.lineCol', { line: err.line, col: err.column }) + ': ' + err.message : t('formatter.invalidJson')
@@ -296,14 +334,34 @@ const onLocateFieldError = (err: FieldError) => {
   nextTick(() => { locateTarget.value = dotPath })
 }
 
+// In-place format: replace inputJson with formatted version
+const formatInputInPlace = () => {
+  if (!inputJson.value.trim()) return
+  try {
+    const parsed = JSON.parse(inputJson.value)
+    const space = indent.value === 'tab' ? '\t' : Number(indent.value)
+    inputJson.value = JSON.stringify(parsed, null, space)
+  } catch {}
+}
+
+// Paste: immediately format input in-place
 const onInputPaste = () => {
   if (autoFormat.value) {
-    nextTick(() => formatJson())
+    nextTick(() => formatInputInPlace())
   }
 }
 
+// 300ms debounce: update output panel only (non-intrusive)
 const debouncedFormat = useDebounceFn(() => { formatJson() }, 300)
-watch(inputJson, () => { if (autoFormat.value) debouncedFormat() })
+// 1.5s debounce: format input in-place (after user stops typing)
+const debouncedFormatInPlace = useDebounceFn(() => { formatInputInPlace() }, 1500)
+
+watch(inputJson, () => {
+  if (autoFormat.value) {
+    debouncedFormat()
+    debouncedFormatInPlace()
+  }
+})
 
 useEventListener('keydown', (e: KeyboardEvent) => {
   if ((e.metaKey || e.ctrlKey) && e.key === 'Enter') {

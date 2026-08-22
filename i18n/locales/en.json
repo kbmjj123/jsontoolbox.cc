@@ -172,6 +172,7 @@
     "loadUrl": "Load from URL",
     "fetch": "Fetch",
     "autoFormat": "Format on type",
+    "autoFix": "Auto Fix",
     "fix": "Fix",
     "share": "Share",
     "example": "Example",

@@ -6,7 +6,7 @@
         <label class="text-sm font-bold text-surface-700 dark:text-surface-300">{{ label }}</label>
         <!-- View mode toggle -->
         <div
-          v-if="parsedData !== null"
+          v-if="parsedData !== null && showViewToggle"
           class="flex rounded-lg border border-surface-200 dark:border-surface-700 overflow-hidden"
         >
           <button
@@ -216,6 +216,8 @@ interface Props {
   placeholder?: string
   /** Show format/minify/validate/fix action buttons in header */
   showEditActions?: boolean
+  /** Show text/rich view mode toggle */
+  showViewToggle?: boolean
 }
 
 const props = withDefaults(defineProps<Props>(), {
@@ -233,6 +235,7 @@ const props = withDefaults(defineProps<Props>(), {
   editable: false,
   placeholder: '',
   showEditActions: false,
+  showViewToggle: true,
 })
 
 const emit = defineEmits<{
@@ -326,6 +329,38 @@ const errorMap = computed(() => {
   return map
 })
 provide('jsonErrors', errorMap)
+
+// Default: expand all nodes in rich view
+function isObject(v: unknown): v is Record<string, unknown> { return typeof v === 'object' && v !== null && !Array.isArray(v) }
+function isArray(v: unknown): v is unknown[] { return Array.isArray(v) }
+function isExpandable(v: unknown): boolean { return isObject(v) || isArray(v) }
+
+function getAllExpandablePaths(data: unknown, parentPath = ''): string[] {
+  const paths: string[] = []
+  if (isObject(data)) {
+    for (const key of Object.keys(data)) {
+      const childPath = parentPath ? `${parentPath}.${key}` : key
+      if (isExpandable(data[key])) { paths.push(childPath); paths.push(...getAllExpandablePaths(data[key], childPath)) }
+    }
+  } else if (isArray(data)) {
+    data.forEach((item, i) => {
+      const childPath = `${parentPath}[${i}]`
+      if (isExpandable(item)) { paths.push(childPath); paths.push(...getAllExpandablePaths(item, childPath)) }
+    })
+  }
+  return paths
+}
+
+const richExpanded = ref<Set<string>>(new Set())
+provide('richExpanded', richExpanded)
+
+watch(() => props.parsedData, (data) => {
+  if (data !== null && data !== undefined) {
+    richExpanded.value = new Set(getAllExpandablePaths(data))
+  } else {
+    richExpanded.value = new Set()
+  }
+}, { immediate: true })
 
 // Expand/collapse all signals
 const allExpanded = ref(true)
