@@ -19,7 +19,7 @@
           @paste="onInputPaste"
         >
           <template #actions>
-            <template v-if="hasExamples">
+            <div v-if="hasExamples" ref="exampleMenuRef" class="relative">
               <button
                 @click="showExampleMenu = !showExampleMenu"
                 class="text-xs text-primary-600 hover:text-primary-700 dark:text-primary-400"
@@ -36,7 +36,7 @@
                   {{ getExampleLabel(ex) }}
                 </button>
               </div>
-            </template>
+            </div>
           </template>
         </JsonInputEditor>
       </div>
@@ -191,6 +191,7 @@ const showShareMenu = ref(false)
 const shareCopied = ref(false)
 const copyJustCopied = ref(false)
 const shareMenuRef = ref<HTMLElement>()
+const exampleMenuRef = ref<HTMLElement>()
 
 // ── Input editor ref & source map ─────────────────────────────
 const inputEditorRef = ref<InstanceType<typeof import('~/components/tool/JsonInputEditor.vue').default>>()
@@ -427,7 +428,7 @@ const handleClickOutside = (e: MouseEvent) => {
   if (shareMenuRef.value && !shareMenuRef.value.contains(target)) {
     showShareMenu.value = false
   }
-  if (!target.closest('[ref="exampleMenuRef"]') && !target.closest('.relative')) {
+  if (exampleMenuRef.value && !exampleMenuRef.value.contains(target)) {
     showExampleMenu.value = false
   }
 }
