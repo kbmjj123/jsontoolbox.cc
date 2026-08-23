@@ -10,8 +10,14 @@
       v-if="preview.isReady.value"
       class="preview-overlay"
     >
-      <!-- ════ Top bar: close + counter ════ -->
+      <!-- ════ Top bar: counter + close ════ -->
       <div class="preview-top-bar">
+        <span class="preview-counter">
+          {{ preview.currentIndex.value + 1 }} / {{ preview.totalSlides.value }}
+        </span>
+
+        <div class="preview-spacer" />
+
         <button
           type="button"
           class="preview-btn"
@@ -22,12 +28,6 @@
             <path d="M18 6L6 18M6 6l12 12" />
           </svg>
         </button>
-
-        <span class="preview-counter">
-          {{ preview.currentIndex.value + 1 }} / {{ preview.totalSlides.value }}
-        </span>
-
-        <div class="preview-spacer" />
       </div>
 
       <!-- ════ Navigation arrows ════ -->
@@ -406,6 +406,11 @@ watch(
   height: 100%;
   object-fit: cover;
   display: block;
+}
+
+/* ── Hide PhotoSwipe built-in close button ────── */
+:deep(.pswp__button--close) {
+  display: none !important;
 }
 
 /* ── Responsive ───────────────────────────────── */
