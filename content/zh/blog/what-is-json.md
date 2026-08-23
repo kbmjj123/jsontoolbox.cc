@@ -5,7 +5,7 @@ category: "json_tools"
 date: 2026-08-23
 lastmod: 2026-08-23
 author: "BulkPicTools Team"
-image: "https://img.yoursite.com/blog/what-is-json-cover.webp"
+image: "/blog/cover/zh/what-is-json-cover.svg"
 tags: ["JSON", "JSON Formatter", "JSON Validator", "API Debugging", "Web Development"]
 locales: ["zh-CN", "en"]
 promo:
