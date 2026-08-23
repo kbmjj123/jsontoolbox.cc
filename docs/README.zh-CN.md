@@ -149,7 +149,7 @@ JSON tools powered by [jsontoolbox.cc](https://jsontoolbox.cc).
 ### 去品牌授权（可选）
 
 如果你需要完全去品牌的版本（例如企业内网白标部署），可以联系我获取单独授权。  
-联系方式：[your-email@example.com]
+联系方式：[kbmjj123@gmail.com]
 
 ---
 

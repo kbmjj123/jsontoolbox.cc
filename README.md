@@ -149,7 +149,7 @@ JSON tools powered by [jsontoolbox.cc](https://jsontoolbox.cc).
 ### White-label / No-Attribution License (Optional)
 
 If you need a fully white-label version (e.g., for internal enterprise deployment without branding), please contact me for a separate license.  
-Contact: [your-email@example.com]
+Contact: [kbmjj123@gmail.com]
 
 ---
 
