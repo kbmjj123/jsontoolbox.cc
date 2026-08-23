@@ -151,21 +151,6 @@
       </div>
     </section>
 
-    <!-- FAQ Section -->
-    <section class="py-16">
-      <div class="mx-auto max-w-[1200px] px-5">
-        <div class="text-center mb-12">
-          <h2 class="text-2xl font-bold text-surface-900 dark:text-surface-100 sm:text-3xl">
-            {{ $t('home.faq.title') }}
-          </h2>
-        </div>
-
-        <div class="mx-auto max-w-3xl">
-          <ToolFaq :faq="faqItems" />
-        </div>
-      </div>
-    </section>
-
     <!-- Blog / Learn More Section (only shown when blog posts exist) -->
     <section v-if="blogPosts && blogPosts.length" class="py-16 bg-surface-50 dark:bg-surface-950">
       <div class="mx-auto max-w-[1200px] px-5">
@@ -196,6 +181,21 @@
               <Icon name="lucide:arrow-right" class="w-3 h-3" />
             </span>
           </NuxtLinkLocale>
+        </div>
+      </div>
+    </section>
+
+		<!-- FAQ Section -->
+    <section class="py-16">
+      <div class="mx-auto max-w-[1200px] px-5">
+        <div class="text-center mb-12">
+          <h2 class="text-2xl font-bold text-surface-900 dark:text-surface-100 sm:text-3xl">
+            {{ $t('home.faq.title') }}
+          </h2>
+        </div>
+
+        <div class="mx-auto max-w-3xl">
+          <ToolFaq :faq="faqItems" />
         </div>
       </div>
     </section>
