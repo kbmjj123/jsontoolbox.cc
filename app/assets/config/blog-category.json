@@ -1,0 +1,16 @@
+{
+  "en": {
+    "all": "All",
+    "json_tools": "JSON Tools",
+    "tutorials": "Tutorials",
+    "best_practices": "Best Practices",
+    "data_formats": "Data Formats"
+  },
+  "zh": {
+    "all": "全部",
+    "json_tools": "JSON 工具",
+    "tutorials": "教程",
+    "best_practices": "最佳实践",
+    "data_formats": "数据格式"
+  }
+}
