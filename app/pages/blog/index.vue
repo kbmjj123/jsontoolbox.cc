@@ -13,7 +13,7 @@
       </div>
 
       <!-- Category Filter -->
-      <div v-if="categoryList.length > 1" class="flex flex-wrap justify-center gap-2 mb-10">
+      <div v-if="false" class="flex flex-wrap justify-center gap-2 mb-10">
         <button
           v-for="item in categoryList"
           :key="item.key"

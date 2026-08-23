@@ -18,6 +18,7 @@ export const useBlog = () => {
 
     return useAsyncData(key, async () => {
       const allPosts = await queryCollection('blog')
+				.where('path', 'LIKE', `/${locale.value}/blog/%`)
         .order('date', 'DESC')
         .all()
 
@@ -35,16 +36,12 @@ export const useBlog = () => {
   const getBlogPost = (slug: string) => {
     const key = `blog-post-${locale.value}-${slug}`
 
-    return useAsyncData(key, async () => {
-      // Query all posts and find by path suffix to avoid path-format mismatches
-      const allPosts = await queryCollection('blog').all()
-      return allPosts.find(post => {
-        const path: string = post.path || ''
-        return path.endsWith(`/${slug}`) && matchesLocale(post)
-      }) || null
-    }, {
-      watch: [locale]
-    })
+		return useAsyncData(key, () => {
+			return queryCollection('blog')
+				// 精准匹配：路径必须等于 /en/blog/slug
+				.where('path', '=', `/${locale.value}/blog/${slug}`)
+				.first()
+		})
   }
 
   /**
