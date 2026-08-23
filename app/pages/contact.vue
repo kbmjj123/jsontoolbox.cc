@@ -17,7 +17,7 @@
 
         <ul>
           <li><strong>GitHub:</strong> <a href="https://github.com/kbmjj123/jsontoolbox.cc" target="_blank">github.com/kbmjj123/jsontoolbox.cc</a></li>
-          <li><strong>Twitter:</strong> <a href="https://twitter.com/jsontoolbox" target="_blank">@jsontoolbox</a></li>
+          <li><strong>Twitter:</strong> <a href="https://twitter.com/solomaker282" target="_blank">@jsontoolbox</a></li>
           <li><strong>Email:</strong> <a href="mailto:hello@jsontoolbox.cc">hello@jsontoolbox.cc</a></li>
         </ul>
 
