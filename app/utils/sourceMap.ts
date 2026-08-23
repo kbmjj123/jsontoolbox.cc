@@ -1,15 +1,25 @@
 /**
  * Build a map from JSON path → source line number.
- * Scans the raw JSON string character by character.
+ * Recursively scans the raw JSON string.
+ *
+ * Path format matches tree components' getFullPath: "users[0].name"
  *
  * Example: '{"config":{"debug":true}}'
  *   → Map { "config" → 1, "config.debug" → 1 }
  */
 export function buildSourceMap(json: string): Map<string, number> {
   const map = new Map<string, number>()
-  const path: string[] = []
   let line = 1
   let i = 0
+
+  // ── Helpers ─────────────────────────────────────────────────
+
+  const skipWs = () => {
+    while (i < json.length && /[\s]/.test(json[i])) {
+      if (json[i] === '\n') line++
+      i++
+    }
+  }
 
   const skipString = () => {
     i++ // opening quote
@@ -19,18 +29,6 @@ export function buildSourceMap(json: string): Map<string, number> {
       if (json[i] === '\n') line++
       i++
     }
-  }
-
-  const skipValue = () => {
-    while (i < json.length && /[\s]/.test(json[i])) {
-      if (json[i] === '\n') line++
-      i++
-    }
-    if (i >= json.length) return
-    if (json[i] === '"') { skipString(); return }
-    if (json[i] === '{' || json[i] === '[') return // handled by main loop
-    // number, boolean, null — skip until delimiter
-    while (i < json.length && /[^,}\]\s]/.test(json[i])) i++
   }
 
   const readString = (): string => {
@@ -46,80 +44,102 @@ export function buildSourceMap(json: string): Map<string, number> {
     return s
   }
 
-  const currentPath = () => path.join('.')
+  const skipPrimitive = () => {
+    while (i < json.length && /[^,}\]\s]/.test(json[i])) i++
+  }
 
-  while (i < json.length) {
+  /** Skip any value (string, number, bool, null, object, array) without recording */
+  const skipValue = () => {
+    skipWs()
+    if (i >= json.length) return
     const ch = json[i]
-    if (ch === '\n') { line++; i++; continue }
-    if (/[\s]/.test(ch)) { i++; continue }
+    if (ch === '"') { skipString(); return }
+    if (ch === '{') { skipObject(); return }
+    if (ch === '[') { skipArray(); return }
+    skipPrimitive()
+  }
 
-    if (ch === '{') {
-      i++
-      // parse key-value pairs
-      while (i < json.length) {
-        // skip whitespace/newlines
-        while (i < json.length && /[\s]/.test(json[i])) {
-          if (json[i] === '\n') line++
-          i++
-        }
-        if (i >= json.length || json[i] === '}') { i++; break }
-        if (json[i] === ',') { i++; continue }
-
-        // key
-        if (json[i] === '"') {
-          const key = readString()
-          path.push(key)
-
-          // skip to colon
-          while (i < json.length && /[\s]/.test(json[i])) {
-            if (json[i] === '\n') line++
-            i++
-          }
-          i++ // colon
-
-          // record this key's line
-          map.set(currentPath(), line)
-
-          // skip to value
-          while (i < json.length && /[\s]/.test(json[i])) {
-            if (json[i] === '\n') line++
-            i++
-          }
-
-          if (i < json.length && (json[i] === '{' || json[i] === '[')) {
-            // nested — let main loop handle it
-          } else {
-            skipValue()
-            path.pop()
-          }
-        }
+  const skipObject = () => {
+    i++ // {
+    while (true) {
+      skipWs()
+      if (i >= json.length || json[i] === '}') { i++; return }
+      if (json[i] === ',') { i++; continue }
+      if (json[i] === '"') {
+        skipString() // key
+        skipWs()
+        i++ // :
+        skipValue()
+      } else {
+        i++
       }
-    } else if (ch === '[') {
-      i++
-      let index = 0
-      while (i < json.length) {
-        while (i < json.length && /[\s]/.test(json[i])) {
-          if (json[i] === '\n') line++
-          i++
-        }
-        if (i >= json.length || json[i] === ']') { i++; break }
-        if (json[i] === ',') { i++; continue }
-
-        path.push(String(index))
-        map.set(currentPath(), line)
-
-        if (json[i] === '{' || json[i] === '[') {
-          // nested — let main loop handle it
-        } else {
-          skipValue()
-          path.pop()
-          index++
-        }
-      }
-    } else {
-      i++
     }
   }
 
+  const skipArray = () => {
+    i++ // [
+    while (true) {
+      skipWs()
+      if (i >= json.length || json[i] === ']') { i++; return }
+      if (json[i] === ',') { i++; continue }
+      skipValue()
+    }
+  }
+
+  // ── Path builder (matches tree's getFullPath format) ────────
+
+  const joinPath = (parent: string, key: string, isIndex: boolean): string => {
+    if (!parent) return key
+    return isIndex ? `${parent}[${key}]` : `${parent}.${key}`
+  }
+
+  // ── Recursive parsers (record paths) ────────────────────────
+
+  const parseValue = (path: string) => {
+    skipWs()
+    if (i >= json.length) return
+    const ch = json[i]
+    if (ch === '{') { parseObject(path); return }
+    if (ch === '[') { parseArray(path); return }
+    // string/primitive — advance past the value
+    skipValue()
+  }
+
+  const parseObject = (parentPath: string) => {
+    i++ // {
+    while (true) {
+      skipWs()
+      if (i >= json.length || json[i] === '}') { i++; return }
+      if (json[i] === ',') { i++; continue }
+      if (json[i] === '"') {
+        const key = readString()
+        skipWs()
+        i++ // :
+        const childPath = joinPath(parentPath, key, false)
+        map.set(childPath, line)
+        parseValue(childPath)
+      } else {
+        i++
+      }
+    }
+  }
+
+  const parseArray = (parentPath: string) => {
+    i++ // [
+    let index = 0
+    while (true) {
+      skipWs()
+      if (i >= json.length || json[i] === ']') { i++; return }
+      if (json[i] === ',') { i++; continue }
+      const childPath = joinPath(parentPath, String(index), true)
+      map.set(childPath, line)
+      parseValue(childPath)
+      index++
+    }
+  }
+
+  // ── Entry ───────────────────────────────────────────────────
+
+  parseValue('')
   return map
 }

@@ -242,24 +242,28 @@ function scrollToLine(line: number) {
   textareaRef.value.focus()
 }
 
+let flashTimers: ReturnType<typeof setTimeout>[] = []
+
 function highlightLine(line: number, style: 'flash' | 'subtle') {
+  // Clear pending flash timers
+  flashTimers.forEach(clearTimeout)
+  flashTimers = []
+
   if (line <= 0) {
     highlight.active = false
     return
   }
-  highlight.active = false
-  nextTick(() => {
-    highlight.line = line
-    highlight.style = style
-    highlight.opacity = 1
-    highlight.active = true
-    updateHighlightPosition()
 
-    if (style === 'flash') {
-      setTimeout(() => { highlight.opacity = 0 }, 1500)
-      setTimeout(() => { highlight.active = false }, 2000)
-    }
-  })
+  highlight.line = line
+  highlight.style = style
+  highlight.opacity = 1
+  highlight.active = true
+  updateHighlightPosition()
+
+  if (style === 'flash') {
+    flashTimers.push(setTimeout(() => { highlight.opacity = 0 }, 1500))
+    flashTimers.push(setTimeout(() => { highlight.active = false }, 2000))
+  }
 }
 
 // Sync highlight position on scroll
