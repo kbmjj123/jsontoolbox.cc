@@ -11,7 +11,7 @@ export const useBlog = () => {
 
     return useAsyncData(key, () => {
       let query = queryCollection('blog')
-        .where('locales', 'contains', locale.value)
+        .where('locales', 'LIKE', `%"${locale.value}"%`)
         .order('date', 'DESC')
 
       if (limit) {
@@ -50,7 +50,7 @@ export const useBlog = () => {
 
     return useAsyncData(key, () => {
       return queryCollection('blog')
-        .where('locales', 'contains', locale.value)
+        .where('locales', 'LIKE', `%"${locale.value}"%`)
         .where('slug', '<>', currentSlug)
         .order('date', 'DESC')
         .limit(limit)
@@ -68,7 +68,7 @@ export const useBlog = () => {
   const getSurroundingPosts = (path: string) => {
     return useAsyncData(`surround-${path}`, async () => {
       const res = await queryCollectionItemSurroundings('blog', path)
-        .where('locales', 'contains', locale.value)
+        .where('locales', 'LIKE', `%"${locale.value}"%`)
       return res
     }, {
       watch: [locale]
