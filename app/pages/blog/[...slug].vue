@@ -146,7 +146,7 @@
       </article>
 
       <!-- Table of Contents -->
-      <BlogPostToc :links="tocLinks" />
+      <PostToc :links="tocLinks" />
     </section>
   </div>
 </template>
