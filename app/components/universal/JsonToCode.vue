@@ -301,7 +301,7 @@ const clearAll = () => {
 }
 
 const copyOutput = async () => {
-  try { await navigator.clipboard.writeText(outputCode.value) } catch (e) { console.error('Failed to copy:', e) }
+  await copyToClipboard(outputCode.value)
 }
 
 const downloadOutput = () => {

@@ -135,6 +135,25 @@
     "page_title": "所有JSON工具 — 免费在线JSON工具",
     "page_description": "浏览所有可用的JSON工具。格式化、验证、转换和探索JSON数据。"
   },
+  "blog": {
+    "title": "博客",
+    "subtitle": "深入了解 JSON 处理、开发者工具和数据工作流。",
+    "view_more": "阅读全文",
+    "prev": "上一篇",
+    "next": "下一篇",
+    "toc": "目录",
+    "no_posts": "暂无文章",
+    "no_posts_desc": "敬请期待新文章。",
+    "question_or_feedback": "有问题或反馈？",
+    "contact_us": "联系我们",
+    "related_title": "相关文章",
+    "pro_tip": "小贴士",
+    "seo": {
+      "title": "JSON 博客 — 教程与指南",
+      "description": "关于 JSON、数据处理和开发者工具的文章与教程。",
+      "keywords": "json 博客, json 教程, json 指南, json 技巧, 开发者工具"
+    }
+  },
   "error": {
     "not_found": {
       "title": "页面未找到",
@@ -172,6 +191,7 @@
     "loadUrl": "从 URL 加载",
     "fetch": "获取",
     "autoFormat": "输入时格式化",
+    "autoFix": "自动修复",
     "fix": "修复",
     "share": "分享",
     "example": "示例",
@@ -182,7 +202,10 @@
     "emptyOutput": "结果将在此显示",
     "copyShareLink": "复制分享链接",
     "shareOnTwitter": "分享到 Twitter",
-    "shareWarning": "分享链接会在 URL 中编码 JSON 内容。请勿分享密码、令牌或敏感数据。"
+    "shareWarning": "分享链接会在 URL 中编码 JSON 内容。请勿分享密码、令牌或敏感数据。",
+    "pasted": "已粘贴",
+    "pasteFailed": "粘贴失败",
+    "pasteHint": "请按 Ctrl+V 粘贴"
   },
   "formatter": {
     "1space": "1 个空格",

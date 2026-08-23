@@ -60,7 +60,7 @@
       <!-- Line numbers gutter -->
       <div
         ref="gutterRef"
-        class="flex-none w-10 select-none overflow-hidden py-4 pr-2 text-right font-mono text-xs leading-[1.5] text-surface-400 dark:text-surface-500 border-r border-surface-200 dark:border-surface-700"
+        class="flex-none w-10 select-none overflow-hidden py-4 pr-2 text-right font-mono text-sm leading-[1.5] text-surface-400 dark:text-surface-500 border-r border-surface-200 dark:border-surface-700"
         aria-hidden="true"
       >
         <div v-for="n in lineCount" :key="n">{{ n }}</div>
@@ -71,12 +71,24 @@
         ref="textareaRef"
         :value="modelValue"
         @input="onInput"
-        @scroll="onScroll"
+        @scroll="onScrollWithHighlight"
         @paste="onPaste"
-        class="flex-1 min-w-0 resize-none bg-transparent py-4 px-4 font-mono text-sm leading-[1.5] text-surface-900 outline-none dark:text-surface-100"
+        wrap="off"
+        class="flex-1 min-w-0 resize-none bg-transparent py-4 px-4 font-mono text-sm leading-[1.5] text-surface-900 outline-none dark:text-surface-100 whitespace-pre"
         :placeholder="placeholder"
         spellcheck="false"
       ></textarea>
+
+      <!-- Line highlight overlay -->
+      <div
+        v-if="highlight.active"
+        ref="highlightOverlayRef"
+        class="absolute right-0 h-[1.5em] pointer-events-none transition-opacity duration-300"
+        :class="highlight.style === 'flash'
+          ? 'bg-orange-200/50 dark:bg-orange-700/30 animate-pulse'
+          : 'bg-blue-100/40 dark:bg-blue-900/20'"
+        :style="{ top: highlight.top + 'px', left: '2.5rem', opacity: highlight.opacity }"
+      />
 
       <!-- Drop overlay -->
       <div
@@ -196,6 +208,72 @@ const handlePaste = async () => {
     console.error('Failed to read clipboard:', e)
   }
 }
+
+// ── Line highlight & scroll-to-line ────────────────────────────
+const highlightOverlayRef = ref<HTMLDivElement>()
+const highlight = reactive({
+  active: false,
+  line: 0,
+  style: 'subtle' as 'flash' | 'subtle',
+  top: 0,
+  opacity: 1,
+})
+
+const LINE_HEIGHT = 21 // 14px * 1.5
+const PADDING_TOP = 16 // py-4
+
+function updateHighlightPosition() {
+  if (!highlight.active || !textareaRef.value) return
+  highlight.top = PADDING_TOP + (highlight.line - 1) * LINE_HEIGHT - textareaRef.value.scrollTop
+}
+
+function scrollToLine(line: number) {
+  if (!textareaRef.value) return
+  const targetScroll = Math.max(0, (line - 1) * LINE_HEIGHT - textareaRef.value.clientHeight / 3)
+  textareaRef.value.scrollTop = targetScroll
+  gutterRef.value && (gutterRef.value.scrollTop = targetScroll)
+  // Set cursor to the start of the target line
+  const lines = props.modelValue.split('\n')
+  let offset = 0
+  for (let i = 0; i < line - 1 && i < lines.length; i++) {
+    offset += lines[i].length + 1
+  }
+  textareaRef.value.setSelectionRange(offset, offset)
+  textareaRef.value.focus()
+}
+
+let flashTimers: ReturnType<typeof setTimeout>[] = []
+
+function highlightLine(line: number, style: 'flash' | 'subtle') {
+  // Clear pending flash timers
+  flashTimers.forEach(clearTimeout)
+  flashTimers = []
+
+  if (line <= 0) {
+    highlight.active = false
+    return
+  }
+
+  highlight.line = line
+  highlight.style = style
+  highlight.opacity = 1
+  highlight.active = true
+  updateHighlightPosition()
+
+  if (style === 'flash') {
+    flashTimers.push(setTimeout(() => { highlight.opacity = 0 }, 1500))
+    flashTimers.push(setTimeout(() => { highlight.active = false }, 2000))
+  }
+}
+
+// Sync highlight position on scroll
+const origOnScroll = onScroll
+const onScrollWithHighlight = () => {
+  origOnScroll()
+  updateHighlightPosition()
+}
+
+defineExpose({ scrollToLine, highlightLine })
 
 const handleClear = () => {
   emit('update:modelValue', '')

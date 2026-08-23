@@ -145,6 +145,25 @@
       "useCase": "Use Case"
     }
   },
+  "blog": {
+    "title": "Blog",
+    "subtitle": "Deep dives into JSON processing, developer tools, and data workflows.",
+    "view_more": "Read More",
+    "prev": "Previous",
+    "next": "Next",
+    "toc": "On This Page",
+    "no_posts": "No posts found",
+    "no_posts_desc": "Check back soon for new articles.",
+    "question_or_feedback": "Have a question or feedback?",
+    "contact_us": "Contact us",
+    "related_title": "Related Articles",
+    "pro_tip": "Pro Tip",
+    "seo": {
+      "title": "JSON Blog — Tutorials & Guides",
+      "description": "Articles and tutorials about JSON, data processing, and developer tools.",
+      "keywords": "json blog, json tutorial, json guide, json tips, developer tools"
+    }
+  },
   "error": {
     "not_found": {
       "title": "Page Not Found",
@@ -182,6 +201,7 @@
     "loadUrl": "Load from URL",
     "fetch": "Fetch",
     "autoFormat": "Format on type",
+    "autoFix": "Auto Fix",
     "fix": "Fix",
     "share": "Share",
     "example": "Example",
@@ -192,7 +212,10 @@
     "emptyOutput": "Result will appear here",
     "copyShareLink": "Copy Share Link",
     "shareOnTwitter": "Share on Twitter",
-    "shareWarning": "Share links encode JSON content in the URL. Do not share passwords, tokens, or sensitive data."
+    "shareWarning": "Share links encode JSON content in the URL. Do not share passwords, tokens, or sensitive data.",
+    "pasted": "Pasted!",
+    "pasteFailed": "Paste failed",
+    "pasteHint": "Press Ctrl+V to paste"
   },
   "formatter": {
     "1space": "1 space",

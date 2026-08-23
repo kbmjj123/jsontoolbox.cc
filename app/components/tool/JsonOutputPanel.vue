@@ -1,12 +1,12 @@
 <template>
-  <div class="h-full flex flex-col">
+  <div class="flex-1 min-h-0 flex flex-col">
     <!-- Header -->
     <div class="flex items-center justify-between mb-2 gap-3">
       <div class="flex items-center gap-2 shrink-0">
         <label class="text-sm font-bold text-surface-700 dark:text-surface-300">{{ label }}</label>
         <!-- View mode toggle -->
         <div
-          v-if="parsedData !== null"
+          v-if="parsedData !== null && showViewToggle"
           class="flex rounded-lg border border-surface-200 dark:border-surface-700 overflow-hidden"
         >
           <button
@@ -140,8 +140,8 @@
         class="w-full h-full rounded-xl border border-surface-200 bg-surface-50 font-mono text-sm overflow-hidden dark:border-surface-700 dark:bg-surface-800 flex"
         :class="error ? 'border-red-300 dark:border-red-700' : ''"
       >
-        <div class="flex-none select-none text-right py-4 pl-2 pr-3 text-surface-400 dark:text-surface-500 border-r border-surface-200 dark:border-surface-700 leading-[1.5] overflow-hidden">
-          <div v-for="n in textareaLineCount" :key="n">{{ n }}</div>
+        <div ref="lineNumbersRef" class="w-10 shrink-0 select-none text-right py-4 pl-2 pr-3 text-surface-400 dark:text-surface-500 border-r border-surface-200 dark:border-surface-700 leading-[1.5] overflow-hidden">
+          <div v-for="n in lineCount" :key="n">{{ n }}</div>
         </div>
         <textarea
           ref="textareaRef"
@@ -160,11 +160,11 @@
         :class="[hasContent ? 'text-surface-900 dark:text-surface-100' : 'text-surface-400 dark:text-surface-500']"
         class="w-full h-full rounded-xl border border-surface-200 bg-surface-50 font-mono text-sm overflow-auto dark:border-surface-700 dark:bg-surface-800"
       >
-        <div v-if="hasContent" class="flex">
-          <div class="flex-none select-none text-right pr-3 pl-2 py-4 text-surface-400 dark:text-surface-500 border-r border-surface-200 dark:border-surface-700 leading-[1.5]">
-            <div v-for="n in contentLines.length" :key="n">{{ n }}</div>
+        <div v-if="hasContent" class="flex min-w-max">
+          <div class="w-10 shrink-0 select-none text-right pr-3 pl-2 py-4 text-surface-400 dark:text-surface-500 border-r border-surface-200 dark:border-surface-700 leading-[1.5]">
+            <div v-for="n in lineCount" :key="n">{{ n }}</div>
           </div>
-          <pre class="flex-1 p-4 m-0 overflow-x-auto whitespace-pre leading-[1.5]">{{ content }}</pre>
+          <pre class="flex-1 p-4 m-0 whitespace-pre leading-[1.5]">{{ content }}</pre>
         </div>
         <div v-else class="p-4">{{ emptyText }}</div>
       </div>
@@ -216,6 +216,8 @@ interface Props {
   placeholder?: string
   /** Show format/minify/validate/fix action buttons in header */
   showEditActions?: boolean
+  /** Show text/rich view mode toggle */
+  showViewToggle?: boolean
 }
 
 const props = withDefaults(defineProps<Props>(), {
@@ -233,6 +235,7 @@ const props = withDefaults(defineProps<Props>(), {
   editable: false,
   placeholder: '',
   showEditActions: false,
+  showViewToggle: true,
 })
 
 const emit = defineEmits<{
@@ -255,10 +258,7 @@ const textareaRef = ref<HTMLTextAreaElement>()
 
 const currentMode = computed(() => props.viewMode)
 const hasContent = computed(() => !!props.content)
-const contentLines = computed(() => (props.content || '').replace(/\n$/, '').split('\n'))
-
-// Editable textarea line count (mirrors contentLines but works for empty state too)
-const textareaLineCount = computed(() => {
+const lineCount = computed(() => {
   const lines = (props.content || '').split('\n')
   return Math.max(lines.length, 1)
 })
@@ -268,8 +268,12 @@ function onTextareaInput(e: Event) {
   emit('update:content', target.value)
 }
 
+const lineNumbersRef = ref<HTMLElement>()
+
 function syncLineNumbers() {
-  // Line numbers auto-scroll via CSS overflow — no manual sync needed
+  if (textareaRef.value && lineNumbersRef.value) {
+    lineNumbersRef.value.scrollTop = textareaRef.value.scrollTop
+  }
 }
 
 // Search
@@ -326,6 +330,38 @@ const errorMap = computed(() => {
   return map
 })
 provide('jsonErrors', errorMap)
+
+// Default: expand all nodes in rich view
+function isObject(v: unknown): v is Record<string, unknown> { return typeof v === 'object' && v !== null && !Array.isArray(v) }
+function isArray(v: unknown): v is unknown[] { return Array.isArray(v) }
+function isExpandable(v: unknown): boolean { return isObject(v) || isArray(v) }
+
+function getAllExpandablePaths(data: unknown, parentPath = ''): string[] {
+  const paths: string[] = []
+  if (isObject(data)) {
+    for (const key of Object.keys(data)) {
+      const childPath = parentPath ? `${parentPath}.${key}` : key
+      if (isExpandable(data[key])) { paths.push(childPath); paths.push(...getAllExpandablePaths(data[key], childPath)) }
+    }
+  } else if (isArray(data)) {
+    data.forEach((item, i) => {
+      const childPath = `${parentPath}[${i}]`
+      if (isExpandable(item)) { paths.push(childPath); paths.push(...getAllExpandablePaths(item, childPath)) }
+    })
+  }
+  return paths
+}
+
+const richExpanded = ref<Set<string>>(new Set())
+provide('richExpanded', richExpanded)
+
+watch(() => props.parsedData, (data) => {
+  if (data !== null && data !== undefined) {
+    richExpanded.value = new Set(getAllExpandablePaths(data))
+  } else {
+    richExpanded.value = new Set()
+  }
+}, { immediate: true })
 
 // Expand/collapse all signals
 const allExpanded = ref(true)

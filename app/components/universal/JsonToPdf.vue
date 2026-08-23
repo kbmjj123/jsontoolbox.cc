@@ -132,7 +132,7 @@ const format = () => {
 }
 
 const copyOutput = async () => {
-  try { await navigator.clipboard.writeText(formattedJson.value) } catch (e) { console.error('Failed to copy:', e) }
+  await copyToClipboard(formattedJson.value)
 }
 
 const downloadPdf = () => {

@@ -3,6 +3,8 @@
  * Handle copy/paste operations for text and files
  * Reusable for all tools
  */
+import { copyToClipboard as copyToClipboardUtil } from '~/utils'
+
 export const useClipboard = () => {
   const copied = ref(false)
   const copyError = ref('')
@@ -14,21 +16,18 @@ export const useClipboard = () => {
    * @returns Promise<boolean> - Success status
    */
   const copyToClipboard = async (text: string, timeout: number = 2000): Promise<boolean> => {
-    try {
-      await navigator.clipboard.writeText(text)
-      copied.value = true
-      copyError.value = ''
+    // Uses utility with execCommand fallback for non-HTTPS
+    const success = await copyToClipboardUtil(text)
+    copied.value = success
+    copyError.value = success ? '' : 'Copy failed'
 
+    if (success) {
       setTimeout(() => {
         copied.value = false
       }, timeout)
-
-      return true
-    } catch (e) {
-      copyError.value = (e as Error).message
-      copied.value = false
-      return false
     }
+
+    return success
   }
 
   /**

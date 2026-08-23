@@ -5,17 +5,15 @@
       <div v-for="(value, key) in data" :key="key">
         <div
           :class="[
-            'grid rounded px-1 cursor-pointer group transition-colors',
+            'rounded px-1 cursor-pointer group transition-colors',
             isSelected(getFullPath(key))
               ? 'bg-primary-100 dark:bg-primary-900/30'
               : 'hover:bg-surface-100 dark:hover:bg-surface-700',
           ]"
-          style="grid-template-columns: 2rem 1fr"
           @click="isExpandable(value) ? toggle(key) : selectAndCopy(getFullPath(key))"
+          @mouseenter="!isExpandable(value) && onNodeInteraction(getFullPath(key), 'hover')"
+          @mouseleave="onNodeInteraction('', 'hover')"
         >
-          <!-- Line number -->
-          <span class="text-right pr-2 pt-px text-surface-400 dark:text-surface-500 select-none leading-5">{{ lineMap[getFullPath(key)] ?? '' }}</span>
-
           <!-- Content -->
           <div class="flex items-start gap-1 min-w-0 leading-5">
             <!-- Expand indicator -->
@@ -46,8 +44,7 @@
         </div>
 
         <!-- Image preview (any URL, hidden on load error) -->
-        <div v-if="isPossibleImageUrl(value)" class="grid" style="grid-template-columns: 2rem 1fr">
-          <span />
+        <div v-if="isPossibleImageUrl(value)">
           <img
             :src="value"
             :alt="String(key)"
@@ -69,17 +66,15 @@
       <div v-for="(item, index) in data" :key="index">
         <div
           :class="[
-            'grid rounded px-1 cursor-pointer transition-colors',
+            'rounded px-1 cursor-pointer transition-colors',
             isSelected(getFullPath(index))
               ? 'bg-primary-100 dark:bg-primary-900/30'
               : 'hover:bg-surface-100 dark:hover:bg-surface-700',
           ]"
-          style="grid-template-columns: 2rem 1fr"
           @click="isExpandable(item) ? toggle(index) : selectAndCopy(getFullPath(index))"
+          @mouseenter="!isExpandable(item) && onNodeInteraction(getFullPath(index), 'hover')"
+          @mouseleave="onNodeInteraction('', 'hover')"
         >
-          <!-- Line number -->
-          <span class="text-right pr-2 pt-px text-surface-400 dark:text-surface-500 select-none leading-5">{{ lineMap[getFullPath(index)] ?? '' }}</span>
-
           <!-- Content -->
           <div class="flex items-start gap-1 min-w-0 leading-5">
             <!-- Expand indicator -->
@@ -109,8 +104,7 @@
         </div>
 
         <!-- Image preview (any URL, hidden on load error) -->
-        <div v-if="isPossibleImageUrl(item)" class="grid" style="grid-template-columns: 2rem 1fr">
-          <span />
+        <div v-if="isPossibleImageUrl(item)">
           <img
             :src="item"
             :alt="`[${index}]`"
@@ -131,14 +125,12 @@
     <template v-else>
       <div
         :class="[
-          'grid rounded px-1 transition-colors',
+          'rounded px-1 transition-colors',
           isSelected(props.path)
             ? 'bg-primary-100 dark:bg-primary-900/30'
             : '',
         ]"
-        style="grid-template-columns: 2rem 1fr"
       >
-        <span class="text-right pr-2 pt-px text-surface-400 dark:text-surface-500 select-none leading-5">{{ lineMap[props.path] ?? 1 }}</span>
         <div class="flex items-start gap-1 leading-5">
           <span class="w-4 shrink-0"></span>
           <span class="flex items-center gap-1.5">
@@ -179,9 +171,8 @@ provide('richExpanded', expanded)
 const selectedPath = inject<Ref<string>>('richSelectedPath', ref(''))
 provide('richSelectedPath', selectedPath)
 
-// ── Line number map (computed once per render, no side-effects) ────
-const lineMap = inject<Ref<Record<string, number>>>('richLineMap', ref({}))
-provide('richLineMap', lineMap)
+// ── Node interaction callback (click/hover → source line) ──────────
+const onNodeInteraction = inject<(path: string, type: 'click' | 'hover') => void>('onNodeInteraction', () => {})
 
 // ── Image preview state ────────────────────────────────────────────
 const showPreview = ref(false)
@@ -238,48 +229,6 @@ const isArray = (val: unknown): val is unknown[] => Array.isArray(val)
 const isExpandable = (val: unknown): val is Record<string, unknown> | unknown[] =>
   isObject(val) || isArray(val)
 
-// Root instance: compute the full line map from the data tree
-if (!props.path) {
-  watch(
-    () => [props.data, [...expanded.value].sort().join()],
-    () => {
-      const map: Record<string, number> = {}
-      let counter = 1
-
-      // Walk children of a node — assigns line numbers to visible rows
-      const walkChildren = (val: unknown, parentPath: string) => {
-        if (isObject(val)) {
-          for (const key of Object.keys(val)) {
-            const childPath = parentPath ? `${parentPath}.${key}` : String(key)
-            map[childPath] = counter++
-            const child = (val as Record<string, unknown>)[key]
-            if (isExpandable(child) && expanded.value.has(childPath)) {
-              walkChildren(child, childPath)
-            }
-          }
-        } else if (isArray(val)) {
-          val.forEach((item, i) => {
-            const childPath = `${parentPath}[${i}]`
-            map[childPath] = counter++
-            if (isExpandable(item) && expanded.value.has(childPath)) {
-              walkChildren(item, childPath)
-            }
-          })
-        }
-      }
-
-      if (isObject(props.data) || isArray(props.data)) {
-        walkChildren(props.data, '')
-      } else {
-        // Root is a primitive — single row
-        map[''] = counter
-      }
-      lineMap.value = map
-    },
-    { immediate: true, deep: true },
-  )
-}
-
 const toggle = (key: string | number) => {
   const fullPath = getFullPath(key)
   const next = new Set(expanded.value)
@@ -297,7 +246,8 @@ const isSelected = (path: string) => selectedPath.value === path
 
 const selectAndCopy = (path: string) => {
   selectedPath.value = path
-  navigator.clipboard.writeText(path).catch(() => {})
+  copyToClipboard(path)
+  onNodeInteraction(path, 'click')
 }
 
 const getFullPath = (key: string | number) => {
