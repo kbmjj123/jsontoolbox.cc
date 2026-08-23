@@ -83,13 +83,30 @@
           <option :value="6">{{ $t('formatter.6spaces') }}</option>
           <option :value="8">{{ $t('formatter.8spaces') }}</option>
           <option value="tab">{{ $t('formatter.tab') }}</option>
-          <option :value="0">{{ tool.ui?.option_minified || $t('system.minify') }}</option>
         </select>
       </div>
 
-      <button @click="minifyJson" class="rounded-xl border border-surface-200 bg-white px-4 py-2 text-xs font-bold text-surface-700 hover:bg-surface-50 dark:border-surface-700 dark:bg-surface-800 dark:text-surface-300">
-        {{ $t('system.minify') }}
-      </button>
+      <!-- Minify / Format toggle -->
+      <div class="inline-flex rounded-lg border border-surface-200 dark:border-surface-700 overflow-hidden">
+        <button
+          @click="setMinified"
+          :class="isMinified
+            ? 'bg-surface-900 text-white dark:bg-surface-100 dark:text-surface-900'
+            : 'bg-white text-surface-600 hover:bg-surface-50 dark:bg-surface-800 dark:text-surface-400 dark:hover:bg-surface-700'"
+          class="px-3 py-1.5 text-xs font-bold transition-colors"
+        >
+          {{ $t('system.minify') }}
+        </button>
+        <button
+          @click="setFormatted"
+          :class="!isMinified
+            ? 'bg-surface-900 text-white dark:bg-surface-100 dark:text-surface-900'
+            : 'bg-white text-surface-600 hover:bg-surface-50 dark:bg-surface-800 dark:text-surface-400 dark:hover:bg-surface-700'"
+          class="px-3 py-1.5 text-xs font-bold transition-colors"
+        >
+          {{ $t('system.format') || 'Format' }}
+        </button>
+      </div>
       <!-- Auto-fix toggle -->
       <label class="flex items-center gap-1.5 cursor-pointer select-none">
         <span class="text-xs text-surface-600 dark:text-surface-400">{{ $t('system.autoFix') || 'Auto Fix' }}</span>
@@ -280,9 +297,17 @@ const formatJson = () => {
   }
 }
 
-const minifyJson = () => {
+const isMinified = computed(() => Number(indent.value) === 0)
+const lastIndent = ref<number | string>(2)
+
+const setMinified = () => {
+  if (!isMinified.value) lastIndent.value = indent.value
   indent.value = 0
-  // indent watcher handles re-format; if autoFormat is off, format manually
+  if (!autoFormat.value) formatJson()
+}
+
+const setFormatted = () => {
+  indent.value = lastIndent.value
   if (!autoFormat.value) formatJson()
 }
 
