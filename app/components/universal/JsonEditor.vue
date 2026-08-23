@@ -87,13 +87,13 @@
       </div>
 
       <!-- Minify / Format toggle -->
-      <div class="inline-flex rounded-xl border border-surface-200 dark:border-surface-700 overflow-hidden">
+      <div class="inline-flex rounded-lg border border-surface-200 dark:border-surface-700 overflow-hidden">
         <button
           @click="setMinified"
           :class="isMinified
             ? 'bg-primary-600 text-white dark:bg-primary-500'
             : 'bg-white text-surface-600 hover:bg-surface-50 dark:bg-surface-800 dark:text-surface-400 dark:hover:bg-surface-700'"
-          class="px-4 py-2 text-xs font-bold transition-colors"
+          class="px-2.5 py-1 text-[11px] font-bold transition-colors"
         >
           {{ $t('system.minify') }}
         </button>
@@ -102,7 +102,7 @@
           :class="!isMinified
             ? 'bg-primary-600 text-white dark:bg-primary-500'
             : 'bg-white text-surface-600 hover:bg-surface-50 dark:bg-surface-800 dark:text-surface-400 dark:hover:bg-surface-700'"
-          class="px-4 py-2 text-xs font-bold transition-colors"
+          class="px-2.5 py-1 text-[11px] font-bold transition-colors"
         >
           {{ $t('system.format') || 'Format' }}
         </button>
