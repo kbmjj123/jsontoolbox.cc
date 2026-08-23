@@ -204,7 +204,8 @@
 
 <script setup lang="ts">
 const { featuredTools, getToolDetail } = useTools()
-const { t, locale } = useI18n()
+const { t } = useI18n()
+const { getBlogList } = useBlog()
 
 // FAQ items from i18n (逐个取值，避免 returnObjects 返回消息 AST)
 const faqItems = computed(() => {
@@ -215,14 +216,8 @@ const faqItems = computed(() => {
   }))
 })
 
-// Blog posts from content collection
-const { data: blogPosts } = await useAsyncData('home-blog-posts', () =>
-  queryCollection('blog')
-    .where('locales', 'contains', locale.value)
-    .order('date', 'DESC')
-    .limit(3)
-    .all()
-)
+// Blog posts via useBlog composable
+const { data: blogPosts } = await getBlogList(3)
 
 // FAQPage Schema.org JSON-LD
 useSchemaOrg(

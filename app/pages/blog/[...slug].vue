@@ -36,12 +36,11 @@
 <script setup lang="ts">
 const route = useRoute()
 const { t } = useI18n()
+const { getBlogPost } = useBlog()
 
-const { data: post } = await useAsyncData(`blog-${route.path}`, () =>
-  queryCollection('blog')
-    .where('_path', '=', route.path)
-    .first()
-)
+// Extract slug from catch-all route: /blog/what-is-json → 'what-is-json'
+const slug = (route.params.slug as string[]).join('/')
+const { data: post } = await getBlogPost(slug)
 
 useSeoMeta({
   title: () => post.value?.title || 'JSON Blog',

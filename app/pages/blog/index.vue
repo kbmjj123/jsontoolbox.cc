@@ -30,14 +30,10 @@
 </template>
 
 <script setup lang="ts">
-const { locale, t } = useI18n()
+const { t } = useI18n()
+const { getBlogList } = useBlog()
 
-const { data: posts } = await useAsyncData('blog-posts', () =>
-  queryCollection('blog')
-    .where('locales', 'contains', locale.value)
-    .order('date', 'DESC')
-    .all()
-)
+const { data: posts } = await getBlogList()
 
 useSeoMeta({
   title: 'JSON Blog — Tutorials & Guides',
