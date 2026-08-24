@@ -1,23 +1,47 @@
-// LLMs.txt - provides information about the site for LLMs
-export default defineEventHandler(() => {
-  return `# JSON Toolbox
+import { getGroupedTools } from '../utils/tools'
+import { getBlogs } from '../utils/blog'
 
-JSON Toolbox is a free, client-side collection of JSON tools for developers.
-Format, validate, compare, and convert JSON data directly in your browser — no uploads, no tracking.
+export default defineEventHandler((event) => {
+  setResponseHeader(event, 'Content-Type', 'text/plain; charset=utf-8')
 
-## Available Tools
+  const grouped = getGroupedTools()
+  const blogs = getBlogs()
+  const domain = 'https://jsontoolbox.cc'
 
-- JSON Formatter: Format and beautify JSON with custom indentation
-- JSON Validator: Validate JSON syntax with detailed error messages
-- JSON to CSV: Convert JSON arrays to CSV format
-- JSON Tree Viewer: View JSON as an interactive tree structure
+  let md = `# JSON Toolbox — Free Online JSON Tools\n\n`
+  md += `> **100% client-side JSON tools for developers.** Format, validate, compare, and convert JSON data directly in your browser.\n`
+  md += `> **No uploads, no tracking, no sign-up.** Your data never leaves your device.\n\n`
 
-## Privacy
+  // Tools by category
+  for (const [key, group] of Object.entries(grouped)) {
+    const catUrl = `${domain}/tools/${key}`
+    md += `## [${group.meta.title}](${catUrl})\n`
+    if (group.meta.pdesc) {
+      md += `${group.meta.pdesc}\n\n`
+    }
+    group.tools.forEach(tool => {
+      md += `### [${tool.name}](${domain}${tool.path})\n`
+      md += `${tool.description}\n\n`
+    })
+  }
 
-All processing happens in your browser. No data is ever uploaded to any server.
+  // Blog articles
+  if (blogs.length > 0) {
+    md += `## JSON Guides & Tutorials\n`
+    md += `Practical articles on JSON processing, debugging, and best practices.\n\n`
+    blogs.forEach(blog => {
+      md += `### [${blog.title}](${domain}${blog.path})\n`
+      md += `${blog.description}\n`
+      if (blog.tags.length > 0) {
+        md += `**Topics:** ${blog.tags.join(', ')}\n`
+      }
+      md += `\n`
+    })
+  }
 
-## Website
+  md += `---\n`
+  md += `For detailed FAQs, usage guides, and full documentation:\n`
+  md += `${domain}/llms-full.txt\n`
 
-https://jsontoolbox.cc
-`
+  return md
 })
