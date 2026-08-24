@@ -3,12 +3,11 @@ import { readdirSync, readFileSync, existsSync } from 'fs'
 import { resolve } from 'path'
 
 interface SitemapUrl {
-  url: string
+  loc: string
   lastmod: string
   images?: Array<{
-    url: string
+    loc: string
     title?: string
-    caption?: string
   }>
 }
 
@@ -49,20 +48,19 @@ export default defineEventHandler(async () => {
         const seoTitle = data.en?.meta?.title || data.en?.name || `${slug} - JSON Toolbox`
 
         tools.push({
-          url: toolUrl,
+          loc: toolUrl,
           lastmod: new Date(lastmod).toISOString(),
           images: [
             {
-              url: ogImageUrl,
-              title: seoTitle,
-              caption: seoTitle
+              loc: ogImageUrl,
+              title: seoTitle
             }
           ]
         })
       } catch {
         // Fallback to current date if parsing fails
         tools.push({
-          url: `/tools/${category}/${slug}`,
+          loc: `/tools/${category}/${slug}`,
           lastmod: new Date().toISOString()
         })
       }
