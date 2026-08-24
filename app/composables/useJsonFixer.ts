@@ -82,14 +82,10 @@ export const useJsonFixer = () => {
 
   /**
    * Aggressive fix — includes potentially destructive operations.
-   * Used by "Fix All" button in the errors panel (user-initiated, explicit).
+   * Used by "Fix All" button (user-initiated, explicit).
    *
-   * Additional operations beyond safe fixes:
-   * - Convert single quotes to double quotes
-   * - Add missing closing brackets
-   * - Add quotes to unquoted keys
-   * - Remove JSON comments (// and /* *​/)
-   * - Fix newline characters in strings
+   * Applies fixes in a loop so steps can stack:
+   * e.g. single quote conversion → trailing comma removal → valid JSON
    */
   const fixJson = (input: string): { fixed: string | null; fixes: string[] } => {
     // Start with safe fixes
@@ -97,53 +93,41 @@ export const useJsonFixer = () => {
     let fixed = safe.fixed ?? input
     const fixes = [...safe.fixes]
 
-    // 5. Fix trailing commas (end of objects and arrays)
-    const trailingCommaFixed = fixed.replace(/,\s*([\]}])/g, '$1')
-    if (trailingCommaFixed !== fixed && isValidJson(trailingCommaFixed)) {
-      fixes.push('Removed trailing commas')
-      fixed = trailingCommaFixed
-    }
+    // Define all fix steps (order matters — each may enable the next)
+    const fixSteps = [
+      { name: 'Removed trailing commas', apply: (s: string) => s.replace(/,\s*([\]}])/g, '$1') },
+      { name: 'Converted single quotes to double quotes', apply: (s: string) => !s.includes('"') ? s.replace(/'/g, '"') : s },
+      { name: 'Added missing closing brackets', apply: (s: string) => fixMissingBrackets(s) },
+      { name: 'Added missing quotes to keys', apply: (s: string) => fixMissingKeyQuotes(s) },
+      { name: 'Removed JSON comments', apply: (s: string) => (s.includes('//') || s.includes('/*')) ? removeJsonComments(s) : s },
+      { name: 'Fixed newline characters in strings', apply: (s: string) => s.replace(/\\n/g, '\n').replace(/\n/g, '\\n') },
+    ]
 
-    // 6. Fix single quotes to double quotes (only if no existing double quotes)
-    if (!fixed.includes('"')) {
-      const singleQuoteFixed = fixed.replace(/'/g, '"')
-      if (isValidJson(singleQuoteFixed)) {
-        fixes.push('Converted single quotes to double quotes')
-        fixed = singleQuoteFixed
+    // Apply fixes in a loop so steps can stack (max 4 passes)
+    for (let pass = 0; pass < 4; pass++) {
+      if (isValidJson(fixed)) break
+      const before = fixed
+      for (const step of fixSteps) {
+        if (isValidJson(fixed)) break
+        const result = step.apply(fixed)
+        if (result !== fixed) {
+          if (isValidJson(result)) {
+            fixes.push(step.name)
+            fixed = result
+            break
+          } else if (result.length < fixed.length || /['"]/.test(result) !== /['"]/.test(fixed)) {
+            // Accept intermediate progress even if not yet valid
+            // (e.g. single quote conversion enables trailing comma fix next)
+            fixes.push(step.name)
+            fixed = result
+          }
+        }
       }
+      // No progress in this pass — stop
+      if (fixed === before) break
     }
 
-    // 7. Fix missing closing brackets
-    const bracketFixed = fixMissingBrackets(fixed)
-    if (bracketFixed !== fixed && isValidJson(bracketFixed)) {
-      fixes.push('Added missing closing brackets')
-      fixed = bracketFixed
-    }
-
-    // 8. Fix missing quotes (simple case: unquoted keys)
-    const quotesFixed = fixMissingKeyQuotes(fixed)
-    if (quotesFixed !== fixed && isValidJson(quotesFixed)) {
-      fixes.push('Added missing quotes to keys')
-      fixed = quotesFixed
-    }
-
-    // 9. Fix comments (remove // and /* */ comments)
-    if (fixed.includes('//') || fixed.includes('/*')) {
-      const commentFixed = removeJsonComments(fixed)
-      if (commentFixed !== fixed && isValidJson(commentFixed)) {
-        fixes.push('Removed JSON comments')
-        fixed = commentFixed
-      }
-    }
-
-    // 10. Fix newline characters in strings
-    const newlineFixed = fixed.replace(/\\n/g, '\n').replace(/\n/g, '\\n')
-    if (newlineFixed !== fixed && isValidJson(newlineFixed)) {
-      fixes.push('Fixed newline characters in strings')
-      fixed = newlineFixed
-    }
-
-    if (fixes.length === 0 && !isValidJson(fixed)) {
+    if (!isValidJson(fixed)) {
       return { fixed: null, fixes: [] }
     }
 

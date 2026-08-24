@@ -363,7 +363,6 @@ const clearAll = () => {
 // Locate error from the output panel "Jump to Error" button
 const onLocateFromPanel = () => {
   if (!parseError.value) return
-  viewMode.value = 'text'
   nextTick(() => {
     inputEditorRef.value?.scrollToLine(parseError.value!.line)
     inputEditorRef.value?.highlightLine(parseError.value!.line, 'flash')
