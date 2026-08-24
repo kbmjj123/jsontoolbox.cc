@@ -241,6 +241,51 @@
     "fieldErrorCount": "{count} 个字段错误",
     "noErrors": "无错误",
     "lineCol": "第 {line} 行，第 {col} 列",
-    "clickToLocate": "点击定位"
+    "clickToLocate": "点击定位",
+    "messages": {
+      "missingCommaOrExtraBracket": "此处前可能缺少逗号，或有多余的闭合括号。",
+      "missingComma": "属性或数组元素之间缺少逗号。",
+      "singleQuotes": "JSON 必须使用双引号 \"，不能使用单引号 '。",
+      "unquotedKey": "对象键名必须用双引号包裹。",
+      "unterminatedString": "字符串缺少结束双引号 \"。",
+      "unexpectedEnd": "输入意外结束，请检查是否有未闭合的字符串、对象或数组。",
+      "missingCommaBeforeObject": "此处前缺少逗号。",
+      "trailingComma": "JSON 不允许末尾多余的逗号。",
+      "unexpectedToken": "非法字符，请检查引号、逗号和括号。",
+      "duplicateKey": "存在重复的键名。",
+      "genericSyntaxError": "第 {line} 行第 {col} 列附近 JSON 语法错误，请检查引号、逗号和括号。"
+    }
+  },
+  "errorBar": {
+    "valid": "JSON 有效",
+    "invalid": "JSON 无效",
+    "locateError": "定位",
+    "copyError": "复制",
+    "autoFix": "自动修复",
+    "fixAll": "全部修复",
+    "copyAll": "复制全部"
+  },
+  "errorEmpty": {
+    "title": "无法生成输出结果",
+    "subtitle": "请先修复输入 JSON 中的语法错误。",
+    "locateError": "跳转到错误位置",
+    "loadExample": "载入示例",
+    "staleOutput": "输入存在错误 — 输出可能已过时"
+  },
+  "contact": {
+    "title": "发送消息",
+    "name": "姓名",
+    "namePlaceholder": "你的名字",
+    "email": "邮箱",
+    "emailPlaceholder": "your@email.com",
+    "message": "留言",
+    "messagePlaceholder": "告诉我们你需要什么帮助...",
+    "submit": "提交",
+    "successMessage": "感谢你的留言！我们会尽快回复。",
+    "errorMessage": "提交失败，请稍后重试。",
+    "requiredFields": "请填写所有必填项。",
+    "invalidEmail": "请输入有效的邮箱地址。",
+    "networkError": "网络错误，请检查连接后重试。",
+    "privacy": "你的信息受我们的"
   }
 }

@@ -251,6 +251,51 @@
     "fieldErrorCount": "{count} field error(s)",
     "noErrors": "No errors",
     "lineCol": "Line {line}, Col {col}",
-    "clickToLocate": "Click to locate"
+    "clickToLocate": "Click to locate",
+    "messages": {
+      "missingCommaOrExtraBracket": "Missing comma before this position, or an extra closing bracket.",
+      "missingComma": "Missing comma between properties or array elements.",
+      "singleQuotes": "JSON requires double quotes (\") for strings, not single quotes (').",
+      "unquotedKey": "Object keys must be wrapped in double quotes.",
+      "unterminatedString": "String is missing its closing double quote (\").",
+      "unexpectedEnd": "Unexpected end of input — check for unclosed strings, objects, or arrays.",
+      "missingCommaBeforeObject": "Missing comma before this position.",
+      "trailingComma": "Trailing comma is not allowed in JSON.",
+      "unexpectedToken": "Unexpected character. Check quotes, commas, and brackets.",
+      "duplicateKey": "Duplicate key found.",
+      "genericSyntaxError": "JSON syntax error near line {line}, column {col}. Check quotes, commas, and brackets."
+    }
+  },
+  "errorBar": {
+    "valid": "JSON Valid",
+    "invalid": "JSON Invalid",
+    "locateError": "Locate",
+    "copyError": "Copy",
+    "autoFix": "Auto Fix",
+    "fixAll": "Fix All",
+    "copyAll": "Copy All"
+  },
+  "errorEmpty": {
+    "title": "Unable to generate output",
+    "subtitle": "Fix the syntax error in the input to see results.",
+    "locateError": "Jump to Error",
+    "loadExample": "Load Example",
+    "staleOutput": "Input has errors — output may be outdated"
+  },
+  "contact": {
+    "title": "Send us a Message",
+    "name": "Name",
+    "namePlaceholder": "Your name",
+    "email": "Email",
+    "emailPlaceholder": "your@email.com",
+    "message": "Message",
+    "messagePlaceholder": "Tell us what you need help with...",
+    "submit": "Submit",
+    "successMessage": "Thanks for reaching out! We'll get back to you soon.",
+    "errorMessage": "Failed to submit. Please try again later.",
+    "requiredFields": "Please fill in all required fields.",
+    "invalidEmail": "Please enter a valid email address.",
+    "networkError": "Network error. Please check your connection and try again.",
+    "privacy": "Your information is protected under our"
   }
 }
