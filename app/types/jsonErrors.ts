@@ -9,6 +9,8 @@ export interface ParseError {
   column: number
   message: string
   offset?: number
+  /** i18n key for friendly localized error message */
+  errorKey?: string
 }
 
 /** Field-level error (semantic/rule level) — from validation rules */

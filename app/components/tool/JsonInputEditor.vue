@@ -22,9 +22,14 @@
         <button
           v-if="showPaste"
           @click="handlePaste"
-          class="text-xs text-primary-600 hover:text-primary-700 dark:text-primary-400"
+          class="text-xs transition-colors"
+          :class="pasted
+            ? 'text-green-600 dark:text-green-400'
+            : pasteError
+              ? 'text-red-500 dark:text-red-400'
+              : 'text-primary-600 hover:text-primary-700 dark:text-primary-400'"
         >
-          {{ $t('system.paste') }}
+          {{ pasted ? '✓ ' + $t('system.pasted') : pasteError ? $t('system.pasteFailed') : $t('system.paste') }}
         </button>
         <button
           v-if="showClear"
@@ -63,7 +68,11 @@
         class="flex-none w-10 select-none overflow-hidden py-4 pr-2 text-right font-mono text-sm leading-[1.5] text-surface-400 dark:text-surface-500 border-r border-surface-200 dark:border-surface-700"
         aria-hidden="true"
       >
-        <div v-for="n in lineCount" :key="n">{{ n }}</div>
+        <div
+          v-for="n in lineCount"
+          :key="n"
+          :class="n === errorLine ? 'text-red-500 dark:text-red-400 font-bold' : ''"
+        >{{ n }}</div>
       </div>
 
       <!-- Textarea -->
@@ -89,6 +98,47 @@
           : 'bg-blue-100/40 dark:bg-blue-900/20'"
         :style="{ top: highlight.top + 'px', left: '2.5rem', opacity: highlight.opacity }"
       />
+
+      <!-- Error line overlay (persistent red highlight) -->
+      <div
+        v-if="errorLine > 0"
+        class="absolute right-0 h-[1.5em] pointer-events-none border-l-2 border-red-400 dark:border-red-500 bg-red-100/30 dark:bg-red-900/15"
+        :style="{ top: errorLineTop + 'px', left: '2.5rem', right: '0' }"
+      >
+        <!-- Error position wavy underline -->
+        <div
+          v-if="errorColumn > 0"
+          class="absolute bottom-0 h-[3px] -translate-x-1/2 pointer-events-auto cursor-pointer"
+          :style="{ left: errorColumnLeft + 'px', width: errorRangeWidth + 'px' }"
+          @mouseenter="showTooltip = true"
+          @mouseleave="showTooltip = false"
+          @click="showTooltip = !showTooltip"
+        >
+          <svg class="absolute bottom-0 left-0 w-full h-[3px]" :viewBox="`0 0 ${errorRangeWidth} 3`" preserveAspectRatio="none">
+            <path
+              :d="wavyPath"
+              fill="none"
+              stroke="currentColor"
+              stroke-width="1.5"
+              class="text-red-500 dark:text-red-400"
+            />
+          </svg>
+          <!-- Inline tooltip -->
+          <Transition name="fade">
+            <div
+              v-if="showTooltip && friendlyMessage"
+              class="absolute bottom-full left-1/2 -translate-x-1/2 mb-2 z-50 max-w-[280px] rounded-lg bg-red-600 dark:bg-red-700 px-3 py-2 text-xs text-white shadow-lg whitespace-normal"
+            >
+              <div class="flex items-start gap-1.5">
+                <span class="i-lucide-alert-circle w-3.5 h-3.5 mt-0.5 shrink-0" />
+                <span>{{ friendlyMessage }}</span>
+              </div>
+              <!-- Arrow -->
+              <div class="absolute top-full left-1/2 -translate-x-1/2 w-0 h-0 border-l-[5px] border-l-transparent border-r-[5px] border-r-transparent border-t-[5px] border-t-red-600 dark:border-t-red-700" />
+            </div>
+          </Transition>
+        </div>
+      </div>
 
       <!-- Drop overlay -->
       <div
@@ -119,6 +169,12 @@ interface Props {
   showUpload?: boolean
   showLoadUrl?: boolean
   accept?: string
+  /** Line number with a parse error (1-based) */
+  errorLine?: number
+  /** Column number of the error within the line (1-based) */
+  errorColumn?: number
+  /** Friendly localized error message (shown in tooltip) */
+  friendlyMessage?: string
 }
 
 const props = withDefaults(defineProps<Props>(), {
@@ -130,6 +186,9 @@ const props = withDefaults(defineProps<Props>(), {
   showUpload: false,
   showLoadUrl: true,
   accept: '.json,.txt,.jsonl,.geojson,.ndjson',
+  errorLine: 0,
+  errorColumn: 0,
+  friendlyMessage: '',
 })
 
 const emit = defineEmits<{
@@ -199,13 +258,47 @@ const onPaste = (e: ClipboardEvent) => {
   if (text) emit('paste', text)
 }
 
+const pasted = ref(false)
+const pasteError = ref(false)
+let pasteTimer: ReturnType<typeof setTimeout> | null = null
+
+const clearPasteFeedback = () => {
+  if (pasteTimer) clearTimeout(pasteTimer)
+  pasteTimer = setTimeout(() => {
+    pasted.value = false
+    pasteError.value = false
+  }, 2000)
+}
+
 const handlePaste = async () => {
-  try {
-    const text = await navigator.clipboard.readText()
-    emit('update:modelValue', text)
-    emit('paste', text)
-  } catch (e) {
-    console.error('Failed to read clipboard:', e)
+  // Reset previous feedback
+  pasted.value = false
+  pasteError.value = false
+
+  // Ensure textarea is focused for the fallback to work
+  textareaRef.value?.focus()
+
+  // Try modern Clipboard API first
+  if (navigator.clipboard?.readText) {
+    try {
+      const text = await navigator.clipboard.readText()
+      if (text) {
+        emit('update:modelValue', text)
+        emit('paste', text)
+        pasted.value = true
+        clearPasteFeedback()
+        return
+      }
+    } catch {
+      // Fall through to execCommand fallback
+    }
+  }
+
+  // Fallback: trigger native paste event via execCommand
+  const success = document.execCommand('paste')
+  if (!success) {
+    pasteError.value = true
+    clearPasteFeedback()
   }
 }
 
@@ -221,6 +314,51 @@ const highlight = reactive({
 
 const LINE_HEIGHT = 21 // 14px * 1.5
 const PADDING_TOP = 16 // py-4
+const CHAR_WIDTH = 8.4 // approximate monospace char width at 14px
+
+// Error line positioning (scroll-aware)
+const scrollTop = ref(0)
+const showTooltip = ref(false)
+
+const errorLineTop = computed(() => {
+  if (props.errorLine <= 0) return 0
+  return PADDING_TOP + (props.errorLine - 1) * LINE_HEIGHT - scrollTop.value
+})
+
+const errorColumnLeft = computed(() => {
+  if (props.errorColumn <= 0) return 0
+  return props.errorColumn * CHAR_WIDTH
+})
+
+/** Width of the wavy underline (span ~4 chars or remaining line width) */
+const errorRangeWidth = computed(() => {
+  if (props.errorColumn <= 0) return 0
+  // Try to get the line content to calculate remaining width
+  const lines = props.modelValue.split('\n')
+  const lineIdx = props.errorLine - 1
+  if (lineIdx >= 0 && lineIdx < lines.length) {
+    const lineLen = lines[lineIdx].length
+    const remainingChars = lineLen - props.errorColumn + 1
+    const spanChars = Math.max(Math.min(remainingChars, 4), 2)
+    return spanChars * CHAR_WIDTH
+  }
+  return 4 * CHAR_WIDTH
+})
+
+/** SVG path for wavy underline */
+const wavyPath = computed(() => {
+  const w = errorRangeWidth.value
+  if (w <= 0) return ''
+  const segments = Math.max(Math.floor(w / 6), 2)
+  let d = `M 0 1.5`
+  for (let i = 0; i < segments; i++) {
+    const x1 = (w / segments) * (i + 0.5)
+    const x2 = (w / segments) * (i + 1)
+    const y1 = i % 2 === 0 ? 0 : 3
+    d += ` Q ${x1} ${y1} ${x2} 1.5`
+  }
+  return d
+})
 
 function updateHighlightPosition() {
   if (!highlight.active || !textareaRef.value) return
@@ -266,10 +404,11 @@ function highlightLine(line: number, style: 'flash' | 'subtle') {
   }
 }
 
-// Sync highlight position on scroll
+// Sync highlight + error line position on scroll
 const origOnScroll = onScroll
 const onScrollWithHighlight = () => {
   origOnScroll()
+  if (textareaRef.value) scrollTop.value = textareaRef.value.scrollTop
   updateHighlightPosition()
 }
 

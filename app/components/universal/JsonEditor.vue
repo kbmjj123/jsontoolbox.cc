@@ -13,6 +13,9 @@
           v-model="inputJson"
           :label="tool.ui?.label_input || 'Input JSON'"
           placeholder='{"name": "JSON Toolbox", "version": "1.0"}'
+          :error-line="parseError?.line ?? 0"
+          :error-column="parseError?.column ?? 0"
+          :friendly-message="friendlyMessage"
           show-upload
           show-load-url
           @clear="clearAll"
@@ -49,6 +52,7 @@
           :label="tool.ui?.label_output || 'Output'"
           :content="outputJson"
           :error="error"
+          :friendly-message="friendlyMessage"
           :view-mode="viewMode"
           :parsed-data="parsedData"
           :field-errors="fieldErrors"
@@ -61,12 +65,15 @@
           @copy="copyOutput"
           @download="downloadOutput"
           @copy-path="copyPath"
+          @locate-error="onLocateFromPanel"
+          @load-example="loadDefaultExample"
         />
         <JsonErrorsPanel
           :parse-errors="parseErrors"
           :field-errors="fieldErrors"
           @locate-parse-error="onLocateParseError"
           @locate-field-error="onLocateFieldError"
+          @fix-all="fixJson"
         />
       </div>
     </template>
@@ -204,6 +211,15 @@ const lastAction = ref<'formatted' | 'minified' | 'validated'>('formatted')
 const parseErrors = computed<ParseError[]>(() => parseError.value ? [parseError.value] : [])
 const fieldErrors = ref<FieldError[]>([]) // placeholder for future field-level validation
 
+// Friendly localized error message (for output panel and error bar)
+const friendlyMessage = computed(() => {
+  if (!parseError.value?.errorKey) return ''
+  return t(`errors.messages.${parseError.value.errorKey}`, {
+    line: parseError.value.line,
+    col: parseError.value.column,
+  }, { default: parseError.value.message })
+})
+
 const showShareMenu = ref(false)
 const shareCopied = ref(false)
 const copyJustCopied = ref(false)
@@ -234,7 +250,7 @@ provide('onNodeInteraction', (path: string, type: 'click' | 'hover') => {
   }
 })
 
-const { fixJson: fixJsonAuto, getJsonError } = useJsonFixer()
+const { fixJsonSafe, fixJson: fixJsonAggressive, getJsonError } = useJsonFixer()
 const { generateShareUrl, copyShareUrl, shareToSocial } = useShareJson()
 const { examples, hasExamples, getLabel: getExampleLabel, loadById } = useToolExample('json-editor')
 
@@ -277,9 +293,9 @@ const formatJson = () => {
     error.value = ''
     parseError.value = null
   } catch {
-    // Auto-fix: try to fix then re-format
+    // Auto-fix: conservative safe fixes only (BOM, trim, smart quotes, trailing commas)
     if (autoFix.value) {
-      const { fixed } = fixJsonAuto(inputJson.value)
+      const { fixed } = fixJsonSafe(inputJson.value)
       if (fixed) {
         inputJson.value = fixed
         const parsed = JSON.parse(fixed)
@@ -328,7 +344,7 @@ const validateJson = () => {
 }
 
 const fixJson = () => {
-  const { fixed, fixes } = fixJsonAuto(inputJson.value)
+  const { fixed, fixes } = fixJsonAggressive(inputJson.value)
 
   if (fixed) {
     inputJson.value = fixed
@@ -353,6 +369,12 @@ const onLocateParseError = (err: ParseError) => {
     inputEditorRef.value?.scrollToLine(err.line)
     inputEditorRef.value?.highlightLine(err.line, 'flash')
   })
+}
+
+// Locate error from the output panel "Jump to Error" button
+const onLocateFromPanel = () => {
+  if (!parseError.value) return
+  onLocateParseError(parseError.value)
 }
 
 // Locate field error in tree — expand ancestors + scroll + flash
