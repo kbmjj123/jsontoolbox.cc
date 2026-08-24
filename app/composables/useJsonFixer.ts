@@ -1,3 +1,4 @@
+import { jsonrepair } from 'jsonrepair'
 import type { ParseError } from '~/types/jsonErrors'
 
 /**
@@ -324,9 +325,26 @@ export const useJsonFixer = () => {
     }
   }
 
+  /**
+   * Repair JSON using the jsonrepair library.
+   * Handles: single quotes, unquoted keys, trailing commas, missing brackets,
+   * comments, Python constants (True/False/None), and more.
+   * Returns the repaired string if successful, null if still unparseable.
+   */
+  const repairJson = (input: string): string | null => {
+    try {
+      const repaired = jsonrepair(input)
+      JSON.parse(repaired) // validate
+      return repaired
+    } catch {
+      return null
+    }
+  }
+
   return {
     fixJsonSafe,
     fixJson,
+    repairJson,
     isValidJson,
     getJsonError
   }

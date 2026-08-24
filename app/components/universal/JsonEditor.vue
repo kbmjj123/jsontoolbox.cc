@@ -227,7 +227,7 @@ provide('onNodeInteraction', (path: string, type: 'click' | 'hover') => {
   }
 })
 
-const { fixJson: fixJsonAggressive, getJsonError } = useJsonFixer()
+const { repairJson, getJsonError } = useJsonFixer()
 const { generateShareUrl, copyShareUrl, shareToSocial } = useShareJson()
 const { examples, hasExamples, getLabel: getExampleLabel, loadById } = useToolExample('json-editor')
 
@@ -270,11 +270,11 @@ const formatJson = () => {
     error.value = ''
     parseError.value = null
   } catch {
-    // Auto-fix: try aggressive fix (trailing commas, single quotes, missing brackets, etc.)
-    const { fixed } = fixJsonAggressive(inputJson.value)
-    if (fixed) {
-      inputJson.value = fixed
-      const parsed = JSON.parse(fixed)
+    // Auto-repair using jsonrepair library
+    const repaired = repairJson(inputJson.value)
+    if (repaired) {
+      inputJson.value = repaired
+      const parsed = JSON.parse(repaired)
       const space = indent.value === 'tab' ? '\t' : Number(indent.value)
       outputJson.value = JSON.stringify(parsed, null, space)
       lastAction.value = Number(indent.value) === 0 ? 'minified' : 'formatted'
@@ -282,7 +282,7 @@ const formatJson = () => {
       parseError.value = null
       return
     }
-    // Fix failed — show error
+    // Repair failed — show error
     const err = getJsonError(inputJson.value)
     parseError.value = err
     error.value = err ? t('errors.lineCol', { line: err.line, col: err.column }) + ': ' + err.message : t('formatter.invalidJson')
