@@ -16,10 +16,14 @@
           :error-line="parseError?.line ?? 0"
           :error-column="parseError?.column ?? 0"
           :friendly-message="friendlyMessage"
+          :error="error"
           show-upload
           show-load-url
           @clear="clearAll"
           @paste="onInputPaste"
+          @locate-error="onLocateFromPanel"
+          @copy-error="copyErrorMessage"
+          @auto-fix="fixJson"
         >
           <template #actions>
             <div v-if="hasExamples" ref="exampleMenuRef" class="relative">
@@ -362,6 +366,13 @@ const onLocateFromPanel = () => {
     inputEditorRef.value?.scrollToLine(parseError.value!.line)
     inputEditorRef.value?.highlightLine(parseError.value!.line, 'flash')
   })
+}
+
+// Copy error message to clipboard
+const copyErrorMessage = async () => {
+  if (!parseError.value) return
+  const text = `${t('errors.lineCol', { line: parseError.value.line, col: parseError.value.column })}: ${friendlyMessage.value || parseError.value.message}`
+  await copyToClipboard(text)
 }
 
 // Locate field error in tree — expand ancestors + scroll + flash

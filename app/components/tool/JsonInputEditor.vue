@@ -108,11 +108,8 @@
         <!-- Error position wavy underline -->
         <div
           v-if="errorColumn > 0"
-          class="absolute bottom-0 h-[3px] -translate-x-1/2 pointer-events-auto cursor-pointer"
+          class="absolute bottom-0 h-[3px] -translate-x-1/2 pointer-events-none"
           :style="{ left: errorColumnLeft + 'px', width: errorRangeWidth + 'px' }"
-          @mouseenter="showTooltip = true"
-          @mouseleave="showTooltip = false"
-          @click="showTooltip = !showTooltip"
         >
           <svg class="absolute bottom-0 left-0 w-full h-[3px]" :viewBox="`0 0 ${errorRangeWidth} 3`" preserveAspectRatio="none">
             <path
@@ -123,20 +120,6 @@
               class="text-red-500 dark:text-red-400"
             />
           </svg>
-          <!-- Inline tooltip -->
-          <Transition name="fade">
-            <div
-              v-if="showTooltip && friendlyMessage"
-              class="absolute bottom-full left-1/2 -translate-x-1/2 mb-2 z-50 max-w-[280px] rounded-lg bg-red-600 dark:bg-red-700 px-3 py-2 text-xs text-white shadow-lg whitespace-normal"
-            >
-              <div class="flex items-start gap-1.5">
-                <span class="i-lucide-alert-circle w-3.5 h-3.5 mt-0.5 shrink-0" />
-                <span>{{ friendlyMessage }}</span>
-              </div>
-              <!-- Arrow -->
-              <div class="absolute top-full left-1/2 -translate-x-1/2 w-0 h-0 border-l-[5px] border-l-transparent border-r-[5px] border-r-transparent border-t-[5px] border-t-red-600 dark:border-t-red-700" />
-            </div>
-          </Transition>
         </div>
       </div>
 
@@ -148,6 +131,46 @@
         <span class="text-sm font-medium text-primary-600 dark:text-primary-400">Drop .json file here</span>
       </div>
     </div>
+
+    <!-- Error status bar (persistent, always visible when error exists) -->
+    <Transition name="fade">
+      <div
+        v-if="error"
+        class="mt-2 flex items-center gap-3 rounded-lg border px-3 py-2 text-xs border-red-200 bg-red-50 dark:border-red-800 dark:bg-red-900/20"
+      >
+        <span class="i-lucide-x-circle w-4 h-4 text-red-500 shrink-0" />
+        <div class="flex-1 min-w-0">
+          <span class="font-bold text-red-700 dark:text-red-400">
+            {{ $t('errorBar.invalid') }}
+          </span>
+          <span v-if="errorLine > 0" class="text-red-600 dark:text-red-400">
+            · {{ $t('errors.lineCol', { line: errorLine, col: errorColumn }) }}
+          </span>
+          <span class="text-red-600 dark:text-red-400"> — </span>
+          <span class="text-red-700 dark:text-red-300">{{ friendlyMessage || error }}</span>
+        </div>
+        <div class="flex gap-1.5 shrink-0">
+          <button
+            @click="emit('locateError')"
+            class="rounded px-2 py-0.5 text-[10px] font-medium text-red-600 hover:bg-red-100 dark:text-red-400 dark:hover:bg-red-900/30 transition-colors"
+          >
+            {{ $t('errorBar.locateError') }}
+          </button>
+          <button
+            @click="emit('copyError')"
+            class="rounded px-2 py-0.5 text-[10px] font-medium text-red-600 hover:bg-red-100 dark:text-red-400 dark:hover:bg-red-900/30 transition-colors"
+          >
+            {{ $t('errorBar.copyError') }}
+          </button>
+          <button
+            @click="emit('autoFix')"
+            class="rounded px-2 py-0.5 text-[10px] font-medium text-amber-700 bg-amber-100 hover:bg-amber-200 dark:text-amber-400 dark:bg-amber-900/30 dark:hover:bg-amber-900/40 transition-colors"
+          >
+            {{ $t('errorBar.autoFix') }}
+          </button>
+        </div>
+      </div>
+    </Transition>
 
     <!-- Load URL Modal -->
     <LoadUrlModal
@@ -173,8 +196,10 @@ interface Props {
   errorLine?: number
   /** Column number of the error within the line (1-based) */
   errorColumn?: number
-  /** Friendly localized error message (shown in tooltip) */
+  /** Friendly localized error message (shown in error bar) */
   friendlyMessage?: string
+  /** Raw error string (used as boolean + display fallback) */
+  error?: string
 }
 
 const props = withDefaults(defineProps<Props>(), {
@@ -189,6 +214,7 @@ const props = withDefaults(defineProps<Props>(), {
   errorLine: 0,
   errorColumn: 0,
   friendlyMessage: '',
+  error: '',
 })
 
 const emit = defineEmits<{
@@ -197,6 +223,9 @@ const emit = defineEmits<{
   clear: []
   upload: [text: string]
   loadUrl: [text: string]
+  locateError: []
+  copyError: []
+  autoFix: []
 }>()
 
 const gutterRef = ref<HTMLDivElement>()
@@ -318,7 +347,6 @@ const CHAR_WIDTH = 8.4 // approximate monospace char width at 14px
 
 // Error line positioning (scroll-aware)
 const scrollTop = ref(0)
-const showTooltip = ref(false)
 
 const errorLineTop = computed(() => {
   if (props.errorLine <= 0) return 0
