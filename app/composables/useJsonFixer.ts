@@ -66,14 +66,7 @@ export const useJsonFixer = () => {
       }
     }
 
-    // 3. Fix trailing commas (end of objects and arrays)
-    const trailingCommaFixed = fixed.replace(/,\s*([\]}])/g, '$1')
-    if (trailingCommaFixed !== fixed && isValidJson(trailingCommaFixed)) {
-      fixes.push('Removed trailing commas')
-      fixed = trailingCommaFixed
-    }
-
-    // 4. Fix duplicate commas
+    // 3. Fix duplicate commas
     const doubleCommaFixed = fixed.replace(/,,+/g, ',')
     if (doubleCommaFixed !== fixed && isValidJson(doubleCommaFixed)) {
       fixes.push('Removed duplicate commas')
@@ -104,7 +97,14 @@ export const useJsonFixer = () => {
     let fixed = safe.fixed ?? input
     const fixes = [...safe.fixes]
 
-    // 5. Fix single quotes to double quotes (only if no existing double quotes)
+    // 5. Fix trailing commas (end of objects and arrays)
+    const trailingCommaFixed = fixed.replace(/,\s*([\]}])/g, '$1')
+    if (trailingCommaFixed !== fixed && isValidJson(trailingCommaFixed)) {
+      fixes.push('Removed trailing commas')
+      fixed = trailingCommaFixed
+    }
+
+    // 6. Fix single quotes to double quotes (only if no existing double quotes)
     if (!fixed.includes('"')) {
       const singleQuoteFixed = fixed.replace(/'/g, '"')
       if (isValidJson(singleQuoteFixed)) {
@@ -113,21 +113,21 @@ export const useJsonFixer = () => {
       }
     }
 
-    // 6. Fix missing closing brackets
+    // 7. Fix missing closing brackets
     const bracketFixed = fixMissingBrackets(fixed)
     if (bracketFixed !== fixed && isValidJson(bracketFixed)) {
       fixes.push('Added missing closing brackets')
       fixed = bracketFixed
     }
 
-    // 7. Fix missing quotes (simple case: unquoted keys)
+    // 8. Fix missing quotes (simple case: unquoted keys)
     const quotesFixed = fixMissingKeyQuotes(fixed)
     if (quotesFixed !== fixed && isValidJson(quotesFixed)) {
       fixes.push('Added missing quotes to keys')
       fixed = quotesFixed
     }
 
-    // 8. Fix comments (remove // and /* */ comments)
+    // 9. Fix comments (remove // and /* */ comments)
     if (fixed.includes('//') || fixed.includes('/*')) {
       const commentFixed = removeJsonComments(fixed)
       if (commentFixed !== fixed && isValidJson(commentFixed)) {
@@ -136,7 +136,7 @@ export const useJsonFixer = () => {
       }
     }
 
-    // 9. Fix newline characters in strings
+    // 10. Fix newline characters in strings
     const newlineFixed = fixed.replace(/\\n/g, '\n').replace(/\n/g, '\\n')
     if (newlineFixed !== fixed && isValidJson(newlineFixed)) {
       fixes.push('Fixed newline characters in strings')
