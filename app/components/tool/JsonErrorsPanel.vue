@@ -14,7 +14,6 @@ const props = withDefaults(defineProps<{
 const emit = defineEmits<{
   locateParseError: [error: ParseError]
   locateFieldError: [error: FieldError]
-  fixAll: []
 }>()
 
 const totalErrors = computed(() => props.parseErrors.length + props.fieldErrors.length)
@@ -77,13 +76,6 @@ const copyAllErrors = async () => {
           class="rounded px-2 py-0.5 text-[10px] font-medium text-red-600 hover:bg-red-100 dark:text-red-400 dark:hover:bg-red-900/30 transition-colors"
         >
           {{ t('errorBar.copyAll') }}
-        </button>
-        <button
-          v-if="parseErrors.length > 0"
-          @click.stop="emit('fixAll')"
-          class="rounded px-2 py-0.5 text-[10px] font-medium text-amber-700 bg-amber-100 hover:bg-amber-200 dark:text-amber-400 dark:bg-amber-900/30 dark:hover:bg-amber-900/40 transition-colors"
-        >
-          {{ t('errorBar.autoFix') }}
         </button>
       </div>
     </div>

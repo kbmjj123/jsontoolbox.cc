@@ -201,7 +201,6 @@
     "loadUrl": "Load from URL",
     "fetch": "Fetch",
     "autoFormat": "Format on type",
-    "autoFix": "Auto Fix",
     "fix": "Fix",
     "share": "Share",
     "example": "Example",
@@ -271,8 +270,6 @@
     "invalid": "JSON Invalid",
     "locateError": "Locate",
     "copyError": "Copy",
-    "autoFix": "Auto Fix",
-    "fixAll": "Fix All",
     "copyAll": "Copy All"
   },
   "errorEmpty": {

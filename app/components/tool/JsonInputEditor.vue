@@ -165,12 +165,6 @@
           >
             {{ errorCopied ? '✓' : $t('errorBar.copyError') }}
           </button>
-          <button
-            @click="emit('autoFix')"
-            class="rounded px-2 py-0.5 text-[10px] font-medium text-amber-700 bg-amber-100 hover:bg-amber-200 dark:text-amber-400 dark:bg-amber-900/30 dark:hover:bg-amber-900/40 transition-colors"
-          >
-            {{ $t('errorBar.autoFix') }}
-          </button>
         </div>
       </div>
     </Transition>
@@ -231,7 +225,6 @@ const emit = defineEmits<{
   loadUrl: [text: string]
   locateError: []
   copyError: []
-  autoFix: []
 }>()
 
 const gutterRef = ref<HTMLDivElement>()
