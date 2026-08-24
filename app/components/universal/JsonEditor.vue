@@ -24,7 +24,6 @@
           @paste="onInputPaste"
           @locate-error="onLocateFromPanel"
           @copy-error="copyErrorMessage"
-          @auto-fix="fixJson"
         >
           <template #actions>
             <div v-if="hasExamples" ref="exampleMenuRef" class="relative">
@@ -112,23 +111,6 @@
           {{ $t('system.format') || 'Format' }}
         </button>
       </div>
-      <!-- Auto-fix toggle -->
-      <label class="flex items-center gap-1.5 cursor-pointer select-none">
-        <span class="text-xs text-surface-600 dark:text-surface-400">{{ $t('system.autoFix') || 'Auto Fix' }}</span>
-        <button
-          @click="autoFix = !autoFix"
-          :class="autoFix ? 'bg-primary-600' : 'bg-surface-300 dark:bg-surface-600'"
-          class="relative inline-flex h-5 w-9 items-center rounded-full transition-colors"
-          role="switch"
-          :aria-checked="autoFix"
-        >
-          <span
-            :class="autoFix ? 'translate-x-4' : 'translate-x-0.5'"
-            class="inline-block h-4 w-4 rounded-full bg-white transition-transform"
-          />
-        </button>
-      </label>
-
       <!-- Auto-format toggle -->
       <label class="flex items-center gap-1.5 cursor-pointer select-none ml-2">
         <span class="text-xs text-surface-600 dark:text-surface-400">{{ $t('system.autoFormat') }}</span>
@@ -200,7 +182,6 @@ const error = ref('')
 const parseError = ref<ParseError | null>(null)
 const indent = ref<number | string>(2)
 const autoFormat = ref(true)
-const autoFix = ref(true)
 const viewMode = ref<'text' | 'rich'>(defaultViewMode)
 const fullscreen = ref(false)
 const lastAction = ref<'formatted' | 'minified' | 'validated'>('formatted')
@@ -246,7 +227,7 @@ provide('onNodeInteraction', (path: string, type: 'click' | 'hover') => {
   }
 })
 
-const { fixJsonSafe, fixJson: fixJsonAggressive, getJsonError } = useJsonFixer()
+const { fixJson: fixJsonAggressive, getJsonError } = useJsonFixer()
 const { generateShareUrl, copyShareUrl, shareToSocial } = useShareJson()
 const { examples, hasExamples, getLabel: getExampleLabel, loadById } = useToolExample('json-editor')
 
@@ -289,20 +270,19 @@ const formatJson = () => {
     error.value = ''
     parseError.value = null
   } catch {
-    // Auto-fix: conservative safe fixes only (BOM, trim, smart quotes, trailing commas)
-    if (autoFix.value) {
-      const { fixed } = fixJsonSafe(inputJson.value)
-      if (fixed) {
-        inputJson.value = fixed
-        const parsed = JSON.parse(fixed)
-        const space = indent.value === 'tab' ? '\t' : Number(indent.value)
-        outputJson.value = JSON.stringify(parsed, null, space)
-        lastAction.value = Number(indent.value) === 0 ? 'minified' : 'formatted'
-        error.value = ''
-        parseError.value = null
-        return
-      }
+    // Auto-fix: try aggressive fix (trailing commas, single quotes, missing brackets, etc.)
+    const { fixed } = fixJsonAggressive(inputJson.value)
+    if (fixed) {
+      inputJson.value = fixed
+      const parsed = JSON.parse(fixed)
+      const space = indent.value === 'tab' ? '\t' : Number(indent.value)
+      outputJson.value = JSON.stringify(parsed, null, space)
+      lastAction.value = Number(indent.value) === 0 ? 'minified' : 'formatted'
+      error.value = ''
+      parseError.value = null
+      return
     }
+    // Fix failed — show error
     const err = getJsonError(inputJson.value)
     parseError.value = err
     error.value = err ? t('errors.lineCol', { line: err.line, col: err.column }) + ': ' + err.message : t('formatter.invalidJson')
@@ -337,18 +317,6 @@ const validateJson = () => {
     error.value = err ? t('errors.lineCol', { line: err.line, col: err.column }) + ': ' + err.message : t('formatter.invalidJson')
     outputJson.value = ''
   }
-}
-
-const fixJson = () => {
-  const { fixed, fixes } = fixJsonAggressive(inputJson.value)
-
-  if (fixed) {
-    inputJson.value = fixed
-    error.value = ''
-    parseError.value = null
-    nextTick(() => formatJson())
-  }
-  // If fix fails, do nothing — keep the original error state as-is
 }
 
 const clearAll = () => {
