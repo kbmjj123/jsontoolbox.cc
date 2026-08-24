@@ -287,7 +287,7 @@
     "name": "Name",
     "namePlaceholder": "Your name",
     "email": "Email",
-    "emailPlaceholder": "your@email.com",
+    "emailPlaceholder": "your{'@'}email.com",
     "message": "Message",
     "messagePlaceholder": "Tell us what you need help with...",
     "submit": "Submit",

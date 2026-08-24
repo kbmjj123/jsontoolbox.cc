@@ -277,7 +277,7 @@
     "name": "姓名",
     "namePlaceholder": "你的名字",
     "email": "邮箱",
-    "emailPlaceholder": "your@email.com",
+    "emailPlaceholder": "your{'@'}email.com",
     "message": "留言",
     "messagePlaceholder": "告诉我们你需要什么帮助...",
     "submit": "提交",
