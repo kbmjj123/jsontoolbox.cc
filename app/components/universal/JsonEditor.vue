@@ -17,6 +17,7 @@
           :error-column="parseError?.column ?? 0"
           :friendly-message="friendlyMessage"
           :error="error"
+          :error-copied="errorCopied"
           show-upload
           show-load-url
           @clear="clearAll"
@@ -343,11 +344,12 @@ const fixJson = () => {
 
   if (fixed) {
     inputJson.value = fixed
-    outputJson.value = `${t('formatter.fixedIssues', { count: fixes.length })}\n${fixes.map(f => `• ${f}`).join('\n')}`
     error.value = ''
     parseError.value = null
     nextTick(() => formatJson())
   } else {
+    // Show "unable to fix" — clear parseError so friendlyMessage doesn't override it
+    parseError.value = null
     error.value = t('formatter.unableToFix')
   }
 }
@@ -369,10 +371,13 @@ const onLocateFromPanel = () => {
 }
 
 // Copy error message to clipboard
+const errorCopied = ref(false)
 const copyErrorMessage = async () => {
   if (!parseError.value) return
   const text = `${t('errors.lineCol', { line: parseError.value.line, col: parseError.value.column })}: ${friendlyMessage.value || parseError.value.message}`
   await copyToClipboard(text)
+  errorCopied.value = true
+  setTimeout(() => { errorCopied.value = false }, 2000)
 }
 
 // Locate field error in tree — expand ancestors + scroll + flash

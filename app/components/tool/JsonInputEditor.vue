@@ -158,9 +158,12 @@
           </button>
           <button
             @click="emit('copyError')"
-            class="rounded px-2 py-0.5 text-[10px] font-medium text-red-600 hover:bg-red-100 dark:text-red-400 dark:hover:bg-red-900/30 transition-colors"
+            class="rounded px-2 py-0.5 text-[10px] font-medium transition-colors"
+            :class="errorCopied
+              ? 'text-green-600 dark:text-green-400'
+              : 'text-red-600 hover:bg-red-100 dark:text-red-400 dark:hover:bg-red-900/30'"
           >
-            {{ $t('errorBar.copyError') }}
+            {{ errorCopied ? '✓' : $t('errorBar.copyError') }}
           </button>
           <button
             @click="emit('autoFix')"
@@ -200,6 +203,8 @@ interface Props {
   friendlyMessage?: string
   /** Raw error string (used as boolean + display fallback) */
   error?: string
+  /** Whether error was just copied (shows feedback) */
+  errorCopied?: boolean
 }
 
 const props = withDefaults(defineProps<Props>(), {
@@ -215,6 +220,7 @@ const props = withDefaults(defineProps<Props>(), {
   errorColumn: 0,
   friendlyMessage: '',
   error: '',
+  errorCopied: false,
 })
 
 const emit = defineEmits<{

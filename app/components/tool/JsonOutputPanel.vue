@@ -157,50 +157,10 @@
       <!-- Read-only mode: pre with line numbers -->
       <div
         v-else
-        :class="[hasContent ? 'text-surface-900 dark:text-surface-100' : 'text-surface-400 dark:text-surface-500']"
         class="w-full h-full rounded-xl border border-surface-200 bg-surface-50 font-mono text-sm overflow-auto dark:border-surface-700 dark:bg-surface-800"
       >
-        <div v-if="hasContent" class="flex flex-col min-h-0">
-          <!-- Stale output content -->
-          <div class="flex min-w-max relative flex-1 min-h-0">
-            <div
-              v-if="error"
-              class="absolute top-2 right-2 z-10 flex items-center gap-1.5 rounded-md bg-amber-50 border border-amber-200 px-2 py-1 text-[10px] text-amber-700 dark:bg-amber-900/30 dark:border-amber-800 dark:text-amber-400"
-            >
-              <span class="i-lucide-alert-triangle w-3 h-3" />
-              {{ t('errorEmpty.staleOutput') }}
-            </div>
-            <div class="w-10 shrink-0 select-none text-right pr-3 pl-2 py-4 text-surface-400 dark:text-surface-500 border-r border-surface-200 dark:border-surface-700 leading-[1.5]">
-              <div v-for="n in lineCount" :key="n">{{ n }}</div>
-            </div>
-            <pre class="flex-1 p-4 m-0 whitespace-pre leading-[1.5]" :class="error ? 'opacity-60' : ''">{{ content }}</pre>
-          </div>
-          <!-- Friendly error bar (when content exists but has error) -->
-          <div v-if="error" class="flex items-center justify-between gap-3 px-3 py-2 bg-red-50 dark:bg-red-900/20 border-t border-red-200 dark:border-red-800 shrink-0">
-            <div class="flex items-center gap-2 min-w-0">
-              <span class="i-lucide-alert-circle w-4 h-4 text-red-400 dark:text-red-500 shrink-0" />
-              <p class="text-xs text-red-700 dark:text-red-400 truncate">
-                {{ friendlyMessage || error }}
-              </p>
-            </div>
-            <div class="flex gap-1.5 shrink-0">
-              <button
-                @click="emit('locateError')"
-                class="rounded px-2 py-0.5 text-[10px] font-medium text-red-600 hover:bg-red-100 dark:text-red-400 dark:hover:bg-red-900/30 transition-colors"
-              >
-                {{ t('errorEmpty.locateError') }}
-              </button>
-              <button
-                @click="emit('loadExample')"
-                class="rounded px-2 py-0.5 text-[10px] font-medium text-surface-500 hover:bg-surface-100 dark:text-surface-400 dark:hover:bg-surface-700 transition-colors"
-              >
-                {{ t('errorEmpty.loadExample') }}
-              </button>
-            </div>
-          </div>
-        </div>
-        <!-- Error empty state -->
-        <div v-else-if="error" class="flex flex-col items-center justify-center h-full gap-3 p-6 text-center">
+        <!-- Error state: always shown when error, regardless of content -->
+        <div v-if="error" class="flex flex-col items-center justify-center h-full gap-3 p-6 text-center">
           <span class="i-lucide-alert-circle w-8 h-8 text-red-400 dark:text-red-500" />
           <div>
             <p class="text-sm font-medium text-red-700 dark:text-red-400">{{ t('errorEmpty.title') }}</p>
@@ -222,6 +182,13 @@
               {{ t('errorEmpty.loadExample') }}
             </button>
           </div>
+        </div>
+        <!-- Content -->
+        <div v-else-if="hasContent" class="flex min-w-max">
+          <div class="w-10 shrink-0 select-none text-right pr-3 pl-2 py-4 text-surface-400 dark:text-surface-500 border-r border-surface-200 dark:border-surface-700 leading-[1.5]">
+            <div v-for="n in lineCount" :key="n">{{ n }}</div>
+          </div>
+          <pre class="flex-1 p-4 m-0 whitespace-pre leading-[1.5] text-surface-900 dark:text-surface-100">{{ content }}</pre>
         </div>
         <div v-else class="p-4">{{ emptyText }}</div>
       </div>
