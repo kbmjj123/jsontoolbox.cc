@@ -4,7 +4,7 @@
   "private": true,
   "packageManager": "pnpm@10.25.0",
   "scripts": {
-    "build": "nuxt build",
+    "build": "nuxt build && cp .output/public/sitemap_index.xml .output/public/sitemap.xml",
     "dev": "nuxt dev",
     "dev-ip": "nuxt dev --host 0.0.0.0 --port 3333",
     "generate": "nuxt generate --logLevel=info",
