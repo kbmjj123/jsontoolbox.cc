@@ -347,11 +347,8 @@ const fixJson = () => {
     error.value = ''
     parseError.value = null
     nextTick(() => formatJson())
-  } else {
-    // Show "unable to fix" — clear parseError so friendlyMessage doesn't override it
-    parseError.value = null
-    error.value = t('formatter.unableToFix')
   }
+  // If fix fails, do nothing — keep the original error state as-is
 }
 
 const clearAll = () => {
