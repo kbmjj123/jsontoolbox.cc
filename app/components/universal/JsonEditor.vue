@@ -68,13 +68,6 @@
           @locate-error="onLocateFromPanel"
           @load-example="loadDefaultExample"
         />
-        <JsonErrorsPanel
-          :parse-errors="parseErrors"
-          :field-errors="fieldErrors"
-          @locate-parse-error="onLocateParseError"
-          @locate-field-error="onLocateFieldError"
-          @fix-all="fixJson"
-        />
       </div>
     </template>
 
@@ -207,8 +200,6 @@ const viewMode = ref<'text' | 'rich'>(defaultViewMode)
 const fullscreen = ref(false)
 const lastAction = ref<'formatted' | 'minified' | 'validated'>('formatted')
 
-// Structured errors for the errors panel
-const parseErrors = computed<ParseError[]>(() => parseError.value ? [parseError.value] : [])
 const fieldErrors = ref<FieldError[]>([]) // placeholder for future field-level validation
 
 // Friendly localized error message (for output panel and error bar)
@@ -363,28 +354,18 @@ const clearAll = () => {
   parseError.value = null
 }
 
-const onLocateParseError = (err: ParseError) => {
-  viewMode.value = 'text'
-  nextTick(() => {
-    inputEditorRef.value?.scrollToLine(err.line)
-    inputEditorRef.value?.highlightLine(err.line, 'flash')
-  })
-}
-
 // Locate error from the output panel "Jump to Error" button
 const onLocateFromPanel = () => {
   if (!parseError.value) return
-  onLocateParseError(parseError.value)
+  viewMode.value = 'text'
+  nextTick(() => {
+    inputEditorRef.value?.scrollToLine(parseError.value!.line)
+    inputEditorRef.value?.highlightLine(parseError.value!.line, 'flash')
+  })
 }
 
 // Locate field error in tree — expand ancestors + scroll + flash
 const locateTarget = ref('')
-const onLocateFieldError = (err: FieldError) => {
-  // Convert JSON Pointer ("/users/2/email") to dot path ("users.2.email")
-  const dotPath = err.instancePath.replace(/^\//, '').replace(/\//g, '.')
-  locateTarget.value = ''
-  nextTick(() => { locateTarget.value = dotPath })
-}
 
 // In-place format: replace inputJson with formatted version
 const formatInputInPlace = () => {
