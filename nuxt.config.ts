@@ -91,7 +91,6 @@ export default defineNuxtConfig({
   },
   // Sitemap 配置
   sitemap: {
-    zeroRuntime: true,
     autoLastmod: true,
     discoverImages: false,
     exclude: ['/404'],

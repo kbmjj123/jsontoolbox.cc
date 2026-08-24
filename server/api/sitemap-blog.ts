@@ -3,7 +3,7 @@ import { readdirSync, readFileSync, existsSync } from 'fs'
 import { resolve } from 'path'
 
 interface BlogSitemapEntry {
-  url: string
+  loc: string
   lastmod: string
 }
 
@@ -38,17 +38,17 @@ export default defineEventHandler(() => {
         const lastmod = lastmodMatch?.[1]?.trim()
 
         // Build the URL path: /blog/slug for default locale, /{locale}/blog/slug for others
-        const url = locale === 'en' ? `/blog/${slug}` : `/${locale}/blog/${slug}`
+        const loc = locale === 'en' ? `/blog/${slug}` : `/${locale}/blog/${slug}`
 
         entries.push({
-          url,
+          loc,
           lastmod: lastmod || date || new Date().toISOString()
         })
       } catch {
         // Fallback if file read fails
-        const url = locale === 'en' ? `/blog/${slug}` : `/${locale}/blog/${slug}`
+        const loc = locale === 'en' ? `/blog/${slug}` : `/${locale}/blog/${slug}`
         entries.push({
-          url,
+          loc,
           lastmod: new Date().toISOString()
         })
       }
