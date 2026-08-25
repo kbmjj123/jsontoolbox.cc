@@ -208,6 +208,7 @@ const hoveredRow = ref<number>(-1)
 function onRowHover(index: number) {
   hoveredRow.value = index
   const path = buildRowPath(index)
+  console.log('[TableView] onRowHover path:', path)
   if (path) onNodeInteraction(path, 'hover')
 }
 

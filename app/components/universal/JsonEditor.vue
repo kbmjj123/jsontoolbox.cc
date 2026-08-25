@@ -212,12 +212,14 @@ watch(inputJson, useDebounceFn(() => {
 }, 500))
 
 provide('onNodeInteraction', (path: string, type: 'click' | 'hover') => {
+  console.log('[onNodeInteraction] path:', path, 'type:', type, 'sourceMap keys:', [...sourceMap.value.keys()])
   if (!path) {
     // Clear highlight on mouse leave
     inputEditorRef.value?.highlightLine(0, 'subtle')
     return
   }
   const line = sourceMap.value.get(path)
+  console.log('[onNodeInteraction] line:', line)
   if (!line) return
   if (type === 'click') {
     inputEditorRef.value?.scrollToLine(line)
