@@ -109,9 +109,8 @@ export default defineNuxtConfig({
       }
     ]
   },
-  // OG Image 配置 (暂时禁用，nuxt-og-image v6 有组件解析 bug)
   ogImage: {
-    enabled: false,
+    enabled: true,
   },
   schemaOrg: {
     identity: 'Person'
