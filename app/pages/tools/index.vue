@@ -65,9 +65,19 @@
 <script setup lang="ts">
 const { categories, searchQuery } = useTools()
 const { t } = useI18n()
+const localePath = useLocalePath()
 
 useSeoMeta({
   title: t('tools.page_title'),
   description: t('tools.page_description'),
 })
+
+useSchemaOrg([
+  defineBreadcrumb({
+    itemListElement: [
+      { name: () => t('app.nav.home'), item: '/' },
+      { name: () => t('app.nav.tools'), item: localePath('/tools') }
+    ]
+  })
+])
 </script>

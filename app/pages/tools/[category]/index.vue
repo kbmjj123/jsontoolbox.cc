@@ -53,6 +53,7 @@
 const route = useRoute()
 const { getCategoryBySlug, getToolsByCategory } = useTools()
 const { t, locale } = useI18n()
+const localePath = useLocalePath()
 
 const categorySlug = computed(() => route.params.category as string)
 const categoryData = computed(() => getCategoryBySlug(categorySlug.value))
@@ -78,4 +79,14 @@ useSeoMeta({
     return langData?.keywords?.join(', ') || ''
   },
 })
+
+useSchemaOrg([
+  defineBreadcrumb({
+    itemListElement: [
+      { name: () => t('app.nav.home'), item: '/' },
+      { name: () => t('app.nav.tools'), item: localePath('/tools') },
+      { name: () => categoryLangData.value?.h2 || categoryLangData.value?.title || categorySlug.value, item: localePath(`/tools/${categorySlug.value}`) }
+    ]
+  })
+])
 </script>

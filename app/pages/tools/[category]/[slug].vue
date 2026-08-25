@@ -46,8 +46,9 @@
 <script setup lang="ts">
 const route = useRoute()
 import { computed, defineAsyncComponent } from 'vue'
-const { getToolDetail } = useTools()
+const { getToolDetail, getCategoryBySlug } = useTools()
 const { t } = useI18n()
+const localePath = useLocalePath()
 
 const category = computed(() => route.params.category as string)
 const slug = computed(() => route.params.slug as string)
@@ -148,4 +149,24 @@ defineOgImage({
     variant: ogVariant.value,
     accent: ogAccent.value,
   },
-})</script>
+})
+
+// Schema.org Breadcrumb
+const categoryInfo = computed(() => tool.value ? getCategoryBySlug(tool.value.category) : null)
+const categoryName = computed(() => {
+  if (!categoryInfo.value) return category.value
+  const langData = categoryInfo.value[t.locale] || categoryInfo.value['en'] || {}
+  return langData.h2 || langData.title || category.value
+})
+
+useSchemaOrg([
+  defineBreadcrumb({
+    itemListElement: [
+      { name: () => t('app.nav.home'), item: '/' },
+      { name: () => t('app.nav.tools'), item: localePath('/tools') },
+      { name: () => categoryName.value, item: localePath(`/tools/${category.value}`) },
+      { name: () => tool.value?.name || slug.value, item: localePath(route.path) }
+    ]
+  })
+])
+</script>
