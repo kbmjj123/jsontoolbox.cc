@@ -34,8 +34,6 @@
 
 					<div class="mb-8 flex items-center gap-2 text-xs text-surface-400 dark:text-surface-500">
 						<p>&copy; {{ new Date().getFullYear() }} {{ $t('app.footer.copyright') }}</p>
-						<span class="text-surface-300 dark:text-surface-700">|</span>
-						<span>100% Client-Side</span>
 					</div>
 
 					<div class="flex gap-3">
