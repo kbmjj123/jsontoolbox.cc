@@ -169,4 +169,20 @@ useSchemaOrg([
     ]
   })
 ])
+
+// FAQ Schema.org (when tool has FAQ items)
+if (tool.value?.faq?.length) {
+  useSchemaOrg(
+    tool.value.faq.map((item: { question: string; answer: string }) =>
+      defineQuestion({
+        '@type': 'Question',
+        name: item.question,
+        acceptedAnswer: {
+          '@type': 'Answer',
+          text: item.answer,
+        },
+      })
+    )
+  )
+}
 </script>
