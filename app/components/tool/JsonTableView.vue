@@ -1,59 +1,49 @@
 <template>
-  <div class="h-full flex flex-col rounded-xl border border-surface-200 bg-white dark:border-surface-700 dark:bg-surface-900 overflow-hidden">
-    <template v-if="columns.length > 0">
-      <!-- Header: fixed, does not scroll -->
-      <div ref="headerRef" class="shrink-0 overflow-x-auto overflow-y-hidden scrollbar-none">
-        <table class="w-full text-xs font-mono" style="table-layout: auto;">
-          <thead>
-            <tr class="bg-surface-50 dark:bg-surface-800 border-b border-surface-200 dark:border-surface-700">
-              <th class="w-12 px-2 py-2 text-center text-surface-400 dark:text-surface-500 font-medium">#</th>
-              <th
-                v-for="col in columns"
-                :key="col"
-                @click="toggleSort(col)"
-                class="px-3 py-2 text-left font-bold text-surface-700 dark:text-surface-300 cursor-pointer select-none hover:bg-surface-100 dark:hover:bg-surface-700 transition-colors whitespace-nowrap"
-              >
-                <span class="inline-flex items-center gap-1">
-                  {{ col }}
-                  <span v-if="sortKey === col && sortDir === 'asc'" class="text-primary-500">↑</span>
-                  <span v-else-if="sortKey === col && sortDir === 'desc'" class="text-primary-500">↓</span>
-                </span>
-              </th>
-            </tr>
-          </thead>
-        </table>
-      </div>
-      <!-- Body: vertical scroll + horizontal scroll -->
-      <div ref="bodyRef" class="flex-1 min-h-0 overflow-auto" @scroll="onBodyScroll">
-        <table class="w-full text-xs font-mono" style="table-layout: auto;">
-          <tbody>
-            <tr
-              v-for="(row, displayIndex) in sortedRows"
-              :key="row.__originalIndex"
-              class="border-b border-surface-100 dark:border-surface-800 last:border-0 transition-colors"
-              :class="hoveredRow === row.__originalIndex
-                ? 'bg-primary-50 dark:bg-primary-900/20'
-                : 'hover:bg-surface-50 dark:hover:bg-surface-800'"
-              @mouseenter="onRowHover(row.__originalIndex)"
-              @mouseleave="onRowLeave"
-            >
-              <td class="w-12 px-2 py-2 text-center text-surface-400 dark:text-surface-500">
-                {{ row.__originalIndex + 1 }}
-              </td>
-              <td
-                v-for="col in columns"
-                :key="col"
-                class="px-3 py-2 text-surface-700 dark:text-surface-300 max-w-[300px] truncate"
-                :title="formatCellTitle(row[col])"
-              >
-                <span :class="cellColorClass(row[col])">{{ formatCellDisplay(row[col]) }}</span>
-              </td>
-            </tr>
-          </tbody>
-        </table>
-      </div>
-    </template>
-    <div v-else class="flex items-center justify-center flex-1 text-surface-400 dark:text-surface-500 text-sm">
+  <div class="h-full overflow-auto rounded-xl border border-surface-200 bg-white dark:border-surface-700 dark:bg-surface-900">
+    <table v-if="columns.length > 0" class="w-full text-xs font-mono">
+      <thead>
+        <tr class="sticky top-0 z-10 bg-surface-50 dark:bg-surface-800 border-b border-surface-200 dark:border-surface-700">
+          <th class="w-12 px-2 py-2 text-center text-surface-400 dark:text-surface-500 font-medium">#</th>
+          <th
+            v-for="col in columns"
+            :key="col"
+            @click="toggleSort(col)"
+            class="px-3 py-2 text-left font-bold text-surface-700 dark:text-surface-300 cursor-pointer select-none hover:bg-surface-100 dark:hover:bg-surface-700 transition-colors whitespace-nowrap"
+          >
+            <span class="inline-flex items-center gap-1">
+              {{ col }}
+              <span v-if="sortKey === col && sortDir === 'asc'" class="text-primary-500">↑</span>
+              <span v-else-if="sortKey === col && sortDir === 'desc'" class="text-primary-500">↓</span>
+            </span>
+          </th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr
+          v-for="(row, displayIndex) in sortedRows"
+          :key="row.__originalIndex"
+          class="border-b border-surface-100 dark:border-surface-800 last:border-0 transition-colors"
+          :class="hoveredRow === row.__originalIndex
+            ? 'bg-primary-50 dark:bg-primary-900/20'
+            : 'hover:bg-surface-50 dark:hover:bg-surface-800'"
+          @mouseenter="onRowHover(row.__originalIndex)"
+          @mouseleave="onRowLeave"
+        >
+          <td class="w-12 px-2 py-2 text-center text-surface-400 dark:text-surface-500">
+            {{ row.__originalIndex + 1 }}
+          </td>
+          <td
+            v-for="col in columns"
+            :key="col"
+            class="px-3 py-2 text-surface-700 dark:text-surface-300 max-w-[300px] truncate"
+            :title="formatCellTitle(row[col])"
+          >
+            <span :class="cellColorClass(row[col])">{{ formatCellDisplay(row[col]) }}</span>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+    <div v-else class="flex items-center justify-center h-full text-surface-400 dark:text-surface-500 text-sm">
       No array data to display
     </div>
   </div>
@@ -64,16 +54,6 @@ const props = defineProps<{
   data: unknown[]
   parentPath?: string
 }>()
-
-// ── Horizontal scroll sync (header ↔ body) ────────────────────
-const headerRef = ref<HTMLElement>()
-const bodyRef = ref<HTMLElement>()
-
-function onBodyScroll() {
-  if (headerRef.value && bodyRef.value) {
-    headerRef.value.scrollLeft = bodyRef.value.scrollLeft
-  }
-}
 
 // ── Column detection ──────────────────────────────────────────
 const columns = computed(() => {
@@ -200,12 +180,3 @@ function cellColorClass(value: unknown): string {
 }
 </script>
 
-<style scoped>
-.scrollbar-none {
-  -ms-overflow-style: none;
-  scrollbar-width: none;
-}
-.scrollbar-none::-webkit-scrollbar {
-  display: none;
-}
-</style>
