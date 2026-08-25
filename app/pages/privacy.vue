@@ -1,56 +1,48 @@
 <template>
-  <div class="py-12">
+  <div v-if="page" class="py-12">
     <div class="mx-auto max-w-[800px] px-5">
-      <h1 class="text-3xl font-bold text-surface-900 dark:text-surface-100 mb-8">
-        Privacy Policy
-      </h1>
-
-      <div class="prose prose-surface dark:prose-invert max-w-none">
-        <p class="text-lg text-surface-600 dark:text-surface-400">
-          <strong>Last updated:</strong> {{ new Date().toLocaleDateString() }}
+      <!-- Header -->
+      <header class="mb-10">
+        <h1 class="text-3xl font-bold text-surface-900 dark:text-surface-100 mb-4">
+          {{ page.title }}
+        </h1>
+        <p v-if="page.updatedAt" class="text-lg text-surface-600 dark:text-surface-400">
+          <strong>{{ $t('privacy_page.last_updated') }}:</strong> {{ formatDate(page.updatedAt) }}
         </p>
+      </header>
 
-        <h2>Data Processing</h2>
-        <p>
-          All JSON processing in JSON Toolbox happens entirely in your browser.
-          Your data is never uploaded to any server, stored remotely, or transmitted
-          over the network. We have no access to any data you process using our tools.
-        </p>
-
-        <h2>Analytics</h2>
-        <p>
-          We use privacy-focused analytics to understand how our tools are used.
-          This data is anonymized and does not include any personal information
-          or the content of your JSON data.
-        </p>
-
-        <h2>Cookies</h2>
-        <p>
-          We use minimal cookies for functionality purposes only, such as
-          remembering your theme preference (light/dark mode) and language settings.
-        </p>
-
-        <h2>Third-Party Services</h2>
-        <p>
-          We do not share any data with third-party services. Our tools are
-          designed to work entirely within your browser.
-        </p>
-
-        <h2>Contact</h2>
-        <p>
-          If you have questions about this privacy policy, please contact us
-          at <a href="mailto:hello@jsontoolbox.cc">hello@jsontoolbox.cc</a>.
-        </p>
+      <!-- Content Body -->
+      <div class="rich-text prose prose-base md:prose-lg max-w-none prose-headings:font-bold prose-headings:tracking-tight prose-headings:text-surface-900 dark:prose-headings:text-surface-100 prose-p:text-surface-700 dark:prose-p:text-surface-300 prose-p:leading-relaxed prose-ul:text-surface-700 dark:prose-ul:text-surface-200 prose-li:text-surface-700 dark:prose-li:text-surface-200 prose-li:marker:text-primary-500 dark:prose-li:marker:text-primary-400 prose-a:text-primary-600 prose-a:no-underline hover:prose-a:underline dark:prose-a:text-primary-400 prose-strong:text-surface-900 dark:prose-strong:text-surface-100">
+        <ContentRenderer :value="page" />
       </div>
     </div>
   </div>
 </template>
 
 <script setup lang="ts">
-const { t } = useI18n()
+const { locale } = useI18n()
+const { getGeneralPage } = useGeneralContent()
 
+const { data: page } = await getGeneralPage('privacy')
+
+// Format date
+const formatDate = (dateStr: string) => {
+  if (!dateStr) return ''
+  try {
+    return new Date(dateStr).toLocaleDateString(locale.value, {
+      year: 'numeric',
+      month: 'long',
+      day: 'numeric'
+    })
+  }
+  catch {
+    return dateStr
+  }
+}
+
+// SEO
 useSeoMeta({
-  title: 'Privacy Policy',
-  description: 'JSON Toolbox privacy policy — your data never leaves your browser.',
+  title: () => page.value?.title || 'Privacy Policy',
+  description: () => page.value?.description || 'JSON Toolbox privacy policy — your data never leaves your browser.',
 })
 </script>

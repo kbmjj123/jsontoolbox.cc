@@ -81,7 +81,7 @@
 <script setup lang="ts">
 const config = useRuntimeConfig()
 const route = useRoute()
-// 替换为您的真实 Key
+const { t } = useI18n()
 const accessKey = config.public.formKey
 
 // 定义可选的主题 (建议在 i18n 文件里加上对应的翻译)
@@ -175,10 +175,10 @@ const handleSubmit = async (e: Event) => {
       form.message = ''
       form.email = ''
     } else {
-      error.value = result.message || 'Submission failed, please try again.'
+      error.value = result.message || t('contact.form.error_submit')
     }
   } catch (err) {
-    error.value = 'Network error. Please check your connection.'
+    error.value = t('contact.form.error_network')
   } finally {
     isSubmitting.value = false
   }

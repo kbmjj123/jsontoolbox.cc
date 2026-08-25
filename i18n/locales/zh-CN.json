@@ -283,6 +283,26 @@
     "requiredFields": "请填写所有必填项。",
     "invalidEmail": "请输入有效的邮箱地址。",
     "networkError": "网络错误，请检查连接后重试。",
-    "privacy": "你的信息受我们的"
+    "privacy": "你的信息受我们的",
+    "form": {
+      "email": "邮箱",
+      "subject": "主题",
+      "message": "留言",
+      "submit": "发送",
+      "success_title": "发送成功！",
+      "success_desc": "感谢你的留言，我们会尽快回复。",
+      "send_another": "再发一条",
+      "subjects": {
+        "general": "一般咨询",
+        "bug": "问题反馈",
+        "feature": "功能建议",
+        "business": "商务合作"
+      },
+      "error_submit": "提交失败，请稍后重试。",
+      "error_network": "网络错误，请检查连接后重试。"
+    }
+  },
+  "privacy_page": {
+    "last_updated": "最后更新时间"
   }
 }

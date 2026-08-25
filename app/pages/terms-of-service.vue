@@ -1,57 +1,48 @@
 <template>
-  <div class="py-12">
+  <div v-if="page" class="py-12">
     <div class="mx-auto max-w-[800px] px-5">
-      <h1 class="text-3xl font-bold text-surface-900 dark:text-surface-100 mb-8">
-        Terms of Service
-      </h1>
-
-      <div class="prose prose-surface dark:prose-invert max-w-none">
-        <p class="text-lg text-surface-600 dark:text-surface-400">
-          <strong>Last updated:</strong> {{ new Date().toLocaleDateString() }}
+      <!-- Header -->
+      <header class="mb-10">
+        <h1 class="text-3xl font-bold text-surface-900 dark:text-surface-100 mb-4">
+          {{ page.title }}
+        </h1>
+        <p v-if="page.updatedAt" class="text-lg text-surface-600 dark:text-surface-400">
+          <strong>{{ $t('privacy_page.last_updated') }}:</strong> {{ formatDate(page.updatedAt) }}
         </p>
+      </header>
 
-        <h2>Acceptance of Terms</h2>
-        <p>
-          By using JSON Toolbox, you agree to these Terms of Service.
-          If you do not agree, please do not use our tools.
-        </p>
-
-        <h2>Use of Service</h2>
-        <p>
-          JSON Toolbox provides free, client-side JSON processing tools.
-          You may use these tools for any lawful purpose. All processing
-          happens in your browser — we do not store or process your data.
-        </p>
-
-        <h2>Disclaimer</h2>
-        <p>
-          JSON Toolbox is provided "as is" without warranties of any kind.
-          We are not responsible for any data loss or damages resulting
-          from the use of our tools.
-        </p>
-
-        <h2>Changes to Terms</h2>
-        <p>
-          We reserve the right to modify these terms at any time.
-          Continued use of JSON Toolbox after changes constitutes
-          acceptance of the new terms.
-        </p>
-
-        <h2>Contact</h2>
-        <p>
-          If you have questions about these terms, please contact us
-          at <a href="mailto:hello@jsontoolbox.cc">hello@jsontoolbox.cc</a>.
-        </p>
+      <!-- Content Body -->
+      <div class="rich-text prose prose-base md:prose-lg max-w-none prose-headings:font-bold prose-headings:tracking-tight prose-headings:text-surface-900 dark:prose-headings:text-surface-100 prose-p:text-surface-700 dark:prose-p:text-surface-300 prose-p:leading-relaxed prose-ul:text-surface-700 dark:prose-ul:text-surface-200 prose-li:text-surface-700 dark:prose-li:text-surface-200 prose-li:marker:text-primary-500 dark:prose-li:marker:text-primary-400 prose-a:text-primary-600 prose-a:no-underline hover:prose-a:underline dark:prose-a:text-primary-400 prose-strong:text-surface-900 dark:prose-strong:text-surface-100">
+        <ContentRenderer :value="page" />
       </div>
     </div>
   </div>
 </template>
 
 <script setup lang="ts">
-const { t } = useI18n()
+const { locale } = useI18n()
+const { getGeneralPage } = useGeneralContent()
 
+const { data: page } = await getGeneralPage('terms-of-service')
+
+// Format date
+const formatDate = (dateStr: string) => {
+  if (!dateStr) return ''
+  try {
+    return new Date(dateStr).toLocaleDateString(locale.value, {
+      year: 'numeric',
+      month: 'long',
+      day: 'numeric'
+    })
+  }
+  catch {
+    return dateStr
+  }
+}
+
+// SEO
 useSeoMeta({
-  title: 'Terms of Service',
-  description: 'JSON Toolbox terms of service.',
+  title: () => page.value?.title || 'Terms of Service',
+  description: () => page.value?.description || 'JSON Toolbox terms of service.',
 })
 </script>
