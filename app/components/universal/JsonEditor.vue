@@ -213,19 +213,40 @@ watch(inputJson, useDebounceFn(() => {
 
 provide('onNodeInteraction', (path: string, type: 'click' | 'hover') => {
   if (!path) {
-    // Clear highlight on mouse leave
     inputEditorRef.value?.highlightLine(0, 'subtle')
     return
   }
-  const line = sourceMap.value.get(path)
-  if (!line) return
+  const startLine = sourceMap.value.get(path)
+  if (!startLine) return
+
+  // Compute end line: find next sibling's start, or EOF
+  const endLine = computeEndLine(path)
+
   if (type === 'click') {
-    inputEditorRef.value?.scrollToLine(line)
-    inputEditorRef.value?.highlightLine(line, 'flash')
+    inputEditorRef.value?.scrollToLine(startLine)
+    inputEditorRef.value?.highlightLines(startLine, endLine, 'flash')
   } else {
-    inputEditorRef.value?.highlightLine(line, 'subtle')
+    inputEditorRef.value?.highlightLines(startLine, endLine, 'subtle')
   }
 })
+
+function computeEndLine(path: string): number {
+  const sm = sourceMap.value
+  const parts = path.split(/\.|\[|\]/).filter(Boolean)
+  if (parts.length === 0) return inputJson.value.split('\n').length
+
+  const lastPart = parts[parts.length - 1]
+  const parentPrefix = path.slice(0, path.length - lastPart.length)
+
+  // Try numeric increment (array element)
+  const num = parseInt(lastPart, 10)
+  if (!isNaN(num)) {
+    const nextLine = sm.get(parentPrefix + String(num + 1))
+    if (nextLine) return nextLine - 1
+  }
+
+  return inputJson.value.split('\n').length
+}
 
 const { repairJson, getJsonError } = useJsonFixer()
 const { generateShareUrl, copyShareUrl, shareToSocial } = useShareJson()

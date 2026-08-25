@@ -92,11 +92,11 @@
       <div
         v-if="highlight.active"
         ref="highlightOverlayRef"
-        class="absolute right-0 h-[1.5em] pointer-events-none transition-opacity duration-300"
+        class="absolute right-0 pointer-events-none transition-opacity duration-300"
         :class="highlight.style === 'flash'
           ? 'bg-orange-200/50 dark:bg-orange-700/30 animate-pulse'
           : 'bg-blue-100/40 dark:bg-blue-900/20'"
-        :style="{ top: highlight.top + 'px', left: '2.5rem', opacity: highlight.opacity }"
+        :style="{ top: highlight.top + 'px', left: '2.5rem', height: highlight.height + 'px', opacity: highlight.opacity }"
       />
 
       <!-- Error line overlay (persistent red highlight) -->
@@ -335,8 +335,10 @@ const highlightOverlayRef = ref<HTMLDivElement>()
 const highlight = reactive({
   active: false,
   line: 0,
+  endLine: 0, // 0 means single line; > line means range
   style: 'subtle' as 'flash' | 'subtle',
   top: 0,
+  height: LINE_HEIGHT,
   opacity: 1,
 })
 
@@ -390,6 +392,8 @@ const wavyPath = computed(() => {
 function updateHighlightPosition() {
   if (!highlight.active || !textareaRef.value) return
   highlight.top = PADDING_TOP + (highlight.line - 1) * LINE_HEIGHT - textareaRef.value.scrollTop
+  const lineCount = highlight.endLine > highlight.line ? highlight.endLine - highlight.line + 1 : 1
+  highlight.height = lineCount * LINE_HEIGHT
 }
 
 function scrollToLine(line: number) {
@@ -420,6 +424,29 @@ function highlightLine(line: number, style: 'flash' | 'subtle') {
   }
 
   highlight.line = line
+  highlight.endLine = 0
+  highlight.style = style
+  highlight.opacity = 1
+  highlight.active = true
+  updateHighlightPosition()
+
+  if (style === 'flash') {
+    flashTimers.push(setTimeout(() => { highlight.opacity = 0 }, 1500))
+    flashTimers.push(setTimeout(() => { highlight.active = false }, 2000))
+  }
+}
+
+function highlightLines(startLine: number, endLine: number, style: 'flash' | 'subtle') {
+  flashTimers.forEach(clearTimeout)
+  flashTimers = []
+
+  if (startLine <= 0 || endLine < startLine) {
+    highlight.active = false
+    return
+  }
+
+  highlight.line = startLine
+  highlight.endLine = endLine
   highlight.style = style
   highlight.opacity = 1
   highlight.active = true
@@ -439,7 +466,7 @@ const onScrollWithHighlight = () => {
   updateHighlightPosition()
 }
 
-defineExpose({ scrollToLine, highlightLine })
+defineExpose({ scrollToLine, highlightLine, highlightLines })
 
 const handleClear = () => {
   emit('update:modelValue', '')

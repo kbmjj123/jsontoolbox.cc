@@ -22,12 +22,15 @@
         <tr
           v-for="(row, displayIndex) in sortedRows"
           :key="row.__originalIndex"
-          class="border-b border-surface-100 dark:border-surface-800 last:border-0 transition-colors"
-          :class="hoveredRow === row.__originalIndex
-            ? 'bg-primary-50 dark:bg-primary-900/20'
-            : 'hover:bg-surface-50 dark:hover:bg-surface-800'"
-          @mouseenter="onRowHover(row.__originalIndex)"
-          @mouseleave="onRowLeave"
+          class="border-b border-surface-100 dark:border-surface-800 last:border-0 transition-colors cursor-pointer"
+          :class="selectedRow === row.__originalIndex
+            ? 'bg-primary-100 dark:bg-primary-900/30 ring-1 ring-inset ring-primary-300 dark:ring-primary-700'
+            : hoveredRow === row.__originalIndex
+              ? 'bg-primary-50 dark:bg-primary-900/15'
+              : 'hover:bg-surface-50 dark:hover:bg-surface-800'"
+          @click="onRowSelect(row.__originalIndex)"
+          @mouseenter="hoveredRow = row.__originalIndex"
+          @mouseleave="hoveredRow = -1"
         >
           <td class="w-12 px-2 py-2 text-center text-surface-400 dark:text-surface-500">
             {{ row.__originalIndex + 1 }}
@@ -201,19 +204,21 @@ const popoverStyle = computed(() => ({
   top: `${popover.y}px`,
 }))
 
-// ── Hover → left editor highlight ─────────────────────────────
+// ── Row selection → left editor highlight ─────────────────────
 const onNodeInteraction = inject<(path: string, type: 'click' | 'hover') => void>('onNodeInteraction', () => {})
 const hoveredRow = ref<number>(-1)
+const selectedRow = ref<number>(-1)
 
-function onRowHover(index: number) {
-  hoveredRow.value = index
-  const path = buildRowPath(index)
-  if (path) onNodeInteraction(path, 'hover')
-}
-
-function onRowLeave() {
-  hoveredRow.value = -1
-  onNodeInteraction('', 'hover')
+function onRowSelect(index: number) {
+  if (selectedRow.value === index) {
+    // Deselect
+    selectedRow.value = -1
+    onNodeInteraction('', 'click')
+  } else {
+    selectedRow.value = index
+    const path = buildRowPath(index)
+    if (path) onNodeInteraction(path, 'click')
+  }
 }
 
 function buildRowPath(index: number): string {
