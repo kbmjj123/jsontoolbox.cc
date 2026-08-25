@@ -37,6 +37,7 @@ export default defineNuxtConfig({
       ]
     },
   },
+	devtools: { enabled: true },
 	components: [
     {
       path: '~/components',
@@ -108,13 +109,9 @@ export default defineNuxtConfig({
       }
     ]
   },
-  // OG Image 配置
+  // OG Image 配置 (暂时禁用，nuxt-og-image v6 有组件解析 bug)
   ogImage: {
-    enabled: true,
-    // SSG 模式下使用静态预渲染
-    defaults: {
-      component: 'OgTemplate',
-    },
+    enabled: false,
   },
   schemaOrg: {
     identity: 'Person'
@@ -206,7 +203,6 @@ export default defineNuxtConfig({
   hooks: {
     'pages:extend': pages => {
       if (process.env.NODE_ENV === 'production') {
-        console.log('🔒 Production build detected: Removing Admin routes...')
         const routesToRemove = pages.filter(page => page.path.startsWith('/admin'))
         routesToRemove.forEach(route => {
           const index = pages.indexOf(route)

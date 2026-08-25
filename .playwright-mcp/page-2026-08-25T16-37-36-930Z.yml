@@ -1,0 +1,116 @@
+- generic [ref=f1e4]:
+  - banner [ref=f1e5]:
+    - generic [ref=f1e6]:
+      - link "JSON Toolbox Logo JSONToolbox" [ref=f1e7] [cursor=pointer]:
+        - /url: /
+        - img "JSON Toolbox Logo" [ref=f1e8]
+        - generic [ref=f1e9]: JSONToolbox
+      - navigation "Main navigation" [ref=f1e10]:
+        - link "Tools" [ref=f1e11] [cursor=pointer]:
+          - /url: /tools
+        - link "About" [ref=f1e12] [cursor=pointer]:
+          - /url: /about
+        - link "Contact" [ref=f1e13] [cursor=pointer]:
+          - /url: /contact
+        - button "⌘K" [ref=f1e14] [cursor=pointer]
+      - generic [ref=f1e17]:
+        - generic [ref=f1e18]: Free · Open Source
+        - button "English" [ref=f1e21] [cursor=pointer]
+        - button "Toggle theme" [ref=f1e25] [cursor=pointer]
+        - link "GitHub" [ref=f1e27] [cursor=pointer]:
+          - /url: https://github.com/kbmjj123/jsontoolbox.cc
+  - generic [ref=f1e29]:
+    - navigation "Breadcrumb" [ref=f1e30]:
+      - list [ref=f1e31]:
+        - listitem [ref=f1e32]:
+          - link "Home" [ref=f1e33] [cursor=pointer]:
+            - /url: /
+        - listitem [ref=f1e34]:
+          - generic [ref=f1e36]: Tools
+    - generic [ref=f1e39]:
+      - heading "Tool Not Found" [level=1] [ref=f1e40]
+      - paragraph [ref=f1e41]: The tool you are looking for does not exist.
+      - link "View All Tools" [ref=f1e42] [cursor=pointer]:
+        - /url: /tools
+  - contentinfo [ref=f1e43]:
+    - generic [ref=f1e45]:
+      - generic [ref=f1e46]:
+        - link "JSON Toolbox Logo JSONToolbox" [ref=f1e47] [cursor=pointer]:
+          - /url: /
+          - img "JSON Toolbox Logo" [ref=f1e48]
+          - generic [ref=f1e49]: JSONToolbox
+        - paragraph [ref=f1e50]: Free, client-side JSON tools for developers. Format, validate, compare, convert JSON data directly in your browser. No upload, no tracking — 100% local processing.
+        - generic [ref=f1e51]: All Systems Operational
+        - generic [ref=f1e59]:
+          - link [ref=f1e60] [cursor=pointer]:
+            - /url: https://openhunts.com
+            - img "OpenHunts Club Member" [ref=f1e61]
+          - generic [ref=f1e62]: ·
+          - link [ref=f1e63] [cursor=pointer]:
+            - /url: https://yo.directory
+            - img "Featured on Yo.directory" [ref=f1e64]
+        - paragraph [ref=f1e66]: © 2026 JSON Toolbox. All rights reserved.
+        - generic [ref=f1e67]:
+          - link "github" [ref=f1e68] [cursor=pointer]:
+            - /url: https://github.com/kbmjj123/jsontoolbox.cc
+          - link "twitter" [ref=f1e70] [cursor=pointer]:
+            - /url: https://twitter.com/jsontoolbox
+      - generic [ref=f1e73]:
+        - generic [ref=f1e74]:
+          - strong [ref=f1e75]:
+            - link "Format & Beautify" [ref=f1e76] [cursor=pointer]:
+              - /url: /tools/format
+          - list [ref=f1e77]:
+            - listitem [ref=f1e78]:
+              - link "JSON Editor" [ref=f1e79] [cursor=pointer]:
+                - /url: /tools/format/json-editor
+            - listitem [ref=f1e80]:
+              - link "JSON Minifier" [ref=f1e81] [cursor=pointer]:
+                - /url: /tools/format/json-minifier
+            - listitem [ref=f1e82]:
+              - link "JSONPath Tester" [ref=f1e83] [cursor=pointer]:
+                - /url: /tools/format/json-path-tester
+            - listitem [ref=f1e84]:
+              - link "JSON Schema Validator" [ref=f1e85] [cursor=pointer]:
+                - /url: /tools/format/json-schema-validator
+            - listitem [ref=f1e86]:
+              - link "JSON Escape & Unescape" [ref=f1e87] [cursor=pointer]:
+                - /url: /tools/format/json-escape
+        - generic [ref=f1e88]:
+          - strong [ref=f1e89]:
+            - link "Conversion" [ref=f1e90] [cursor=pointer]:
+              - /url: /tools/convert
+          - list [ref=f1e91]:
+            - listitem [ref=f1e92]:
+              - link "JSON Compare" [ref=f1e93] [cursor=pointer]:
+                - /url: /tools/convert/json-compare
+            - listitem [ref=f1e94]:
+              - link "JSON to CSV Converter" [ref=f1e95] [cursor=pointer]:
+                - /url: /tools/convert/json-to-csv
+            - listitem [ref=f1e96]:
+              - link "CSV to JSON Converter" [ref=f1e97] [cursor=pointer]:
+                - /url: /tools/convert/csv-to-json
+            - listitem [ref=f1e98]:
+              - link "JSON Schema Generator" [ref=f1e99] [cursor=pointer]:
+                - /url: /tools/convert/json-schema-generator
+            - listitem [ref=f1e100]:
+              - link "JSON to Code Generator" [ref=f1e101] [cursor=pointer]:
+                - /url: /tools/convert/json-to-code
+            - listitem [ref=f1e102]:
+              - link "View All" [ref=f1e103] [cursor=pointer]:
+                - /url: /tools/convert
+        - generic [ref=f1e105]:
+          - strong [ref=f1e106]: Support
+          - list [ref=f1e107]:
+            - listitem [ref=f1e108]:
+              - link "About Us" [ref=f1e109] [cursor=pointer]:
+                - /url: /about
+            - listitem [ref=f1e110]:
+              - link "Contact" [ref=f1e111] [cursor=pointer]:
+                - /url: /contact
+            - listitem [ref=f1e112]:
+              - link "Privacy Policy" [ref=f1e113] [cursor=pointer]:
+                - /url: /privacy
+            - listitem [ref=f1e114]:
+              - link "Terms of Service" [ref=f1e115] [cursor=pointer]:
+                - /url: /terms-of-service

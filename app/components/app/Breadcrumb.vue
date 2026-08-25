@@ -20,4 +20,6 @@
 
 <script setup lang="ts">
 const { breadcrumbs } = useBreadcrumbs()
+// Schema.org BreadcrumbList 由各页面自行注入（如 [slug].vue），
+// 不在此组件统一注入，避免覆盖页面级更完整的面包屑数据。
 </script>
