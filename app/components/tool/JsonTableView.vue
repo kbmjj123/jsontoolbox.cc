@@ -1,11 +1,12 @@
 <template>
-  <div class="h-full overflow-auto">
-    <div v-if="columns.length > 0" class="rounded-xl border border-surface-200 bg-white dark:border-surface-700 dark:bg-surface-900 overflow-hidden">
-      <div class="overflow-x-auto">
-        <table class="w-full text-xs font-mono">
+  <div class="h-full flex flex-col rounded-xl border border-surface-200 bg-white dark:border-surface-700 dark:bg-surface-900 overflow-hidden">
+    <template v-if="columns.length > 0">
+      <!-- Header: fixed, does not scroll -->
+      <div ref="headerRef" class="shrink-0 overflow-x-auto overflow-y-hidden scrollbar-none">
+        <table class="w-full text-xs font-mono" style="table-layout: auto;">
           <thead>
             <tr class="bg-surface-50 dark:bg-surface-800 border-b border-surface-200 dark:border-surface-700">
-              <th class="w-12 px-2 py-2 text-center text-surface-400 dark:text-surface-500 font-medium shrink-0">#</th>
+              <th class="w-12 px-2 py-2 text-center text-surface-400 dark:text-surface-500 font-medium">#</th>
               <th
                 v-for="col in columns"
                 :key="col"
@@ -20,6 +21,11 @@
               </th>
             </tr>
           </thead>
+        </table>
+      </div>
+      <!-- Body: vertical scroll + horizontal scroll -->
+      <div ref="bodyRef" class="flex-1 min-h-0 overflow-auto" @scroll="onBodyScroll">
+        <table class="w-full text-xs font-mono" style="table-layout: auto;">
           <tbody>
             <tr
               v-for="(row, displayIndex) in sortedRows"
@@ -31,7 +37,7 @@
               @mouseenter="onRowHover(row.__originalIndex)"
               @mouseleave="onRowLeave"
             >
-              <td class="w-12 px-2 py-2 text-center text-surface-400 dark:text-surface-500 shrink-0">
+              <td class="w-12 px-2 py-2 text-center text-surface-400 dark:text-surface-500">
                 {{ row.__originalIndex + 1 }}
               </td>
               <td
@@ -46,8 +52,8 @@
           </tbody>
         </table>
       </div>
-    </div>
-    <div v-else class="flex items-center justify-center h-full text-surface-400 dark:text-surface-500 text-sm">
+    </template>
+    <div v-else class="flex items-center justify-center flex-1 text-surface-400 dark:text-surface-500 text-sm">
       No array data to display
     </div>
   </div>
@@ -58,6 +64,16 @@ const props = defineProps<{
   data: unknown[]
   parentPath?: string
 }>()
+
+// ── Horizontal scroll sync (header ↔ body) ────────────────────
+const headerRef = ref<HTMLElement>()
+const bodyRef = ref<HTMLElement>()
+
+function onBodyScroll() {
+  if (headerRef.value && bodyRef.value) {
+    headerRef.value.scrollLeft = bodyRef.value.scrollLeft
+  }
+}
 
 // ── Column detection ──────────────────────────────────────────
 const columns = computed(() => {
@@ -183,3 +199,13 @@ function cellColorClass(value: unknown): string {
   }
 }
 </script>
+
+<style scoped>
+.scrollbar-none {
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+}
+.scrollbar-none::-webkit-scrollbar {
+  display: none;
+}
+</style>
