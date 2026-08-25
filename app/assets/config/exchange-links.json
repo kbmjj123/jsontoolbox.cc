@@ -1,0 +1,11 @@
+[
+	{
+		"name": "OpenHunts",
+		"url": "https://openhunts.com",
+		"type": "image",
+		"imageUrl": "https://cdn.openhunts.com/badges/club.webp",
+		"imageWidth": 150,
+		"imageHeight": 54,
+		"alt": "OpenHunts Club Member"
+	}
+]

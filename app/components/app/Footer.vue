@@ -29,6 +29,9 @@
 						<span>All Systems Operational</span>
 					</div>
 
+					<!-- 换链组件 -->
+					<LinkExchange class="mb-2"/>
+
 					<div class="mb-8 flex items-center gap-2 text-xs text-surface-400 dark:text-surface-500">
 						<p>&copy; {{ new Date().getFullYear() }} {{ $t('app.footer.copyright') }}</p>
 						<span class="text-surface-300 dark:text-surface-700">|</span>
