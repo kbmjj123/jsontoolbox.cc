@@ -208,7 +208,6 @@ const hoveredRow = ref<number>(-1)
 function onRowHover(index: number) {
   hoveredRow.value = index
   const path = buildRowPath(index)
-  console.log('[TableView] onRowHover path:', path)
   if (path) onNodeInteraction(path, 'hover')
 }
 
@@ -220,7 +219,7 @@ function onRowLeave() {
 function buildRowPath(index: number): string {
   const parent = props.parentPath ?? ''
   if (parent) return `${parent}[${index}]`
-  return `[${index}]`
+  return String(index)
 }
 
 // ── Cell formatting ───────────────────────────────────────────
