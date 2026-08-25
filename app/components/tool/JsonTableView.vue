@@ -1,5 +1,5 @@
 <template>
-  <div class="flex-1 min-h-0 overflow-auto">
+  <div class="h-full overflow-auto">
     <div v-if="columns.length > 0" class="rounded-xl border border-surface-200 bg-white dark:border-surface-700 dark:bg-surface-900 overflow-hidden">
       <div class="overflow-x-auto">
         <table class="w-full text-xs font-mono">
