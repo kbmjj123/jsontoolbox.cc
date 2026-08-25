@@ -62,7 +62,7 @@ const inputText = ref('')
 const outputText = ref('')
 
 const inputError = ref('')
-const inputViewMode = ref<'text' | 'rich'>('text')
+const inputViewMode = ref<'text' | 'rich' | 'table'>('text')
 
 const parsedInputData = computed(() => {
   if (!inputText.value.trim()) return null

@@ -67,7 +67,7 @@ const inputJson = ref('')
 const outputYaml = ref('')
 const error = ref('')
 const inputError = ref('')
-const inputViewMode = ref<'text' | 'rich'>('text')
+const inputViewMode = ref<'text' | 'rich' | 'table'>('text')
 
 const parsedInputData = computed(() => {
   if (!inputJson.value.trim()) return null

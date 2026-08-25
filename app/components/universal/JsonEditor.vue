@@ -173,7 +173,7 @@ import type { ParseError, FieldError } from '~/types/jsonErrors'
 const { tool, showViewToggle = true, defaultViewMode = 'rich' } = defineProps<{
   tool: any
   showViewToggle?: boolean
-  defaultViewMode?: 'text' | 'rich'
+  defaultViewMode?: 'text' | 'rich' | 'table'
 }>()
 
 const inputJson = ref('')
@@ -182,7 +182,7 @@ const error = ref('')
 const parseError = ref<ParseError | null>(null)
 const indent = ref<number | string>(2)
 const autoFormat = ref(true)
-const viewMode = ref<'text' | 'rich'>(defaultViewMode)
+const viewMode = ref<'text' | 'rich' | 'table'>(defaultViewMode)
 const fullscreen = ref(false)
 const lastAction = ref<'formatted' | 'minified' | 'validated'>('formatted')
 

@@ -23,6 +23,14 @@
           >
             Text
           </button>
+          <button
+            v-if="isArrayData"
+            @click="emit('update:viewMode', 'table')"
+            :class="viewMode === 'table' ? 'bg-primary-600 text-white' : 'bg-white text-surface-600 dark:bg-surface-800 dark:text-surface-400'"
+            class="px-2 py-0.5 text-xs transition-colors"
+          >
+            Table
+          </button>
         </div>
       </div>
       <div class="flex gap-2 items-center flex-1 justify-end">
@@ -231,6 +239,21 @@
         {{ emptyText }}
       </div>
     </div>
+
+    <!-- Table view -->
+    <div
+      v-show="currentMode === 'table'"
+      class="flex-1 min-h-0 overflow-auto"
+    >
+      <JsonTableView
+        v-if="isArrayData && tableData"
+        :data="tableData"
+        :parent-path="tableParentPath"
+      />
+      <div v-else class="flex items-center justify-center h-full text-surface-400 text-sm">
+        {{ emptyText }}
+      </div>
+    </div>
   </div>
 </template>
 
@@ -245,7 +268,7 @@ interface Props {
   error?: string
   /** Friendly localized error message (shown instead of raw error when available) */
   friendlyMessage?: string
-  viewMode?: 'text' | 'rich'
+  viewMode?: 'text' | 'rich' | 'table'
   parsedData?: unknown | null
   fieldErrors?: FieldError[]
   showCopy?: boolean
@@ -283,7 +306,7 @@ const props = withDefaults(defineProps<Props>(), {
 })
 
 const emit = defineEmits<{
-  'update:viewMode': [mode: 'text' | 'rich']
+  'update:viewMode': [mode: 'text' | 'rich' | 'table']
   'update:content': [value: string]
   copy: []
   download: []
@@ -304,6 +327,14 @@ const textareaRef = ref<HTMLTextAreaElement>()
 
 const currentMode = computed(() => props.viewMode)
 const hasContent = computed(() => !!props.content)
+
+// Table mode helpers
+const isArrayData = computed(() => Array.isArray(props.parsedData))
+const tableData = computed(() => {
+  if (!isArrayData.value) return null
+  return props.parsedData as unknown[]
+})
+const tableParentPath = computed(() => '')
 const lineCount = computed(() => {
   const lines = (props.content || '').split('\n')
   return Math.max(lines.length, 1)
