@@ -20,7 +20,7 @@
 
         <!-- JSON Editor embedded -->
         <div class="mt-16">
-          <JsonEditor v-if="editorTool" :tool="editorTool" :show-view-toggle="false" default-view-mode="rich" />
+          <JsonEditor v-if="editorTool" :tool="editorTool" show-view-toggle default-view-mode="rich" />
         </div>
       </div>
     </section>
