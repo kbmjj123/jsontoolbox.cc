@@ -63,7 +63,7 @@
         <div class="text-[10px] font-bold text-surface-400 dark:text-surface-500 uppercase tracking-wider mb-1.5">
           {{ popover.col }}
         </div>
-        <JsonSyntaxBlock :data="popover.value" />
+        <JsonSyntaxBlock :data="popover.cellValue" />
       </div>
     </Teleport>
   </div>
@@ -150,7 +150,7 @@ const sortedRows = computed(() => {
 const popover = reactive({
   visible: false,
   col: '',
-  value: null as unknown,
+  cellValue: null as unknown,
   x: 0,
   y: 0,
 })
@@ -173,7 +173,7 @@ function showPopover(rowIndex: number, col: string, event: MouseEvent) {
   if (!isComplexValue(value)) return
 
   popover.col = col
-  popover.value = value
+  popover.cellValue = value
 
   // Position below the cell
   const td = (event.target as HTMLElement).closest('td')
