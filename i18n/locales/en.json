@@ -29,7 +29,8 @@
         "privacy": "Privacy Policy",
         "terms": "Terms of Service"
       },
-      "copyright": "JSON Toolbox. All rights reserved."
+      "copyright": "JSON Toolbox. All rights reserved.",
+      "last_updated": "Last updated"
     }
   },
   "nav": {
@@ -311,8 +312,5 @@
       "error_submit": "Submission failed, please try again.",
       "error_network": "Network error. Please check your connection."
     }
-  },
-  "privacy_page": {
-    "last_updated": "Last updated"
   }
 }

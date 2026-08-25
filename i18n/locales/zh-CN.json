@@ -29,7 +29,8 @@
         "privacy": "隐私政策",
         "terms": "服务条款"
       },
-      "copyright": "JSON工具箱。保留所有权利。"
+      "copyright": "JSON工具箱。保留所有权利。",
+      "last_updated": "最后更新时间"
     }
   },
   "nav": {
@@ -301,8 +302,5 @@
       "error_submit": "提交失败，请稍后重试。",
       "error_network": "网络错误，请检查连接后重试。"
     }
-  },
-  "privacy_page": {
-    "last_updated": "最后更新时间"
   }
 }

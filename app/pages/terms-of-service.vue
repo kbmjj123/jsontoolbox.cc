@@ -7,7 +7,7 @@
           {{ page.title }}
         </h1>
         <p v-if="page.updatedAt" class="text-lg text-surface-600 dark:text-surface-400">
-          <strong>{{ $t('privacy_page.last_updated') }}:</strong> {{ formatDate(page.updatedAt) }}
+          <strong>{{ $t('app.footer.last_updated') }}:</strong> {{ formatDate(page.updatedAt) }}
         </p>
       </header>
 
