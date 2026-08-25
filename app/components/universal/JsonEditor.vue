@@ -146,7 +146,7 @@
         >
           {{ $t('system.download') }}
         </button>
-        <div class="relative flex items-center" ref="shareMenuRef">
+        <!-- <div class="relative flex items-center" ref="shareMenuRef">
           <button @click="showShareMenu = !showShareMenu" class="text-xs text-surface-500 hover:text-surface-700 dark:text-surface-400">
             {{ $t('system.share') }}
           </button>
@@ -161,7 +161,7 @@
               ⚠️ {{ $t('system.shareWarning') }}
             </p>
           </div>
-        </div>
+        </div> -->
       </div>
     </template>
   </ResizablePanel>
