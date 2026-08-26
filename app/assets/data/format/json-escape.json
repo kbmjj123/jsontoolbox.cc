@@ -188,48 +188,75 @@
     "guide": [
       {
         "title": "粘贴 JSON 字符串",
-        "description": "将转义或反转义的 JSON 字符串粘贴到输入框中。"
+        "description": "将转义或未转义的 JSON 字符串粘贴到输入框中。也可以上传 .json 文件或从 URL 加载。"
       },
       {
         "title": "点击转义或反转义",
-        "description": "选择转义添加转义字符，或反转义移除转义字符。"
+        "description": "选择转义在引号、换行符等特殊字符前添加反斜杠，或选择反转义移除反斜杠还原原始文本。"
       },
       {
-        "title": "复制结果",
-        "description": "复制处理后的字符串到剪贴板。"
+        "title": "复制或下载结果",
+        "description": "一键复制处理后的字符串到剪贴板，或下载为 .txt 文件。使用交换将输出移回输入框进行反向操作。"
       }
     ],
     "example": {
-      "input": "{\"name\": \"Alice\", \"msg\": \"She said \\\"OK\\\"\"}",
-      "output": "{\\\"name\\\": \\\"Alice\\\", \\\"msg\\\": \\\"She said \\\\\\\"OK\\\\\\\"\\\"}",
-      "inputLabel": "JSON 字符串",
+      "title": "JSON 转义示例",
+      "description": "看看 JSON 对象字符串转义前后的变化。引号、反斜杠和特殊字符都被正确转义。",
+      "input": "{\"name\": \"Alice\", \"msg\": \"She said \\\"OK\\\"\", \"path\": \"C:\\\\Users\\\\test\"}",
+      "output": "{\\\"name\\\": \\\"Alice\\\", \\\"msg\\\": \\\"She said \\\\\\\"OK\\\\\\\"\\\", \\\"path\\\": \\\"C\\\\\\\\Users\\\\\\\\test\\\"}",
+      "inputLabel": "JSON 字符串（未转义）",
       "outputLabel": "转义后的字符串",
+      "note": "注意引号变成 \\\"，反斜杠变成 \\\\，嵌套结构被保留。这个转义后的字符串可以安全地嵌入另一个 JSON 文档或 JavaScript 代码中。",
       "useCase": "转义 JSON 对象字符串 — 内部引号、反斜杠和特殊字符被正确转义，可安全嵌入代码或配置文件。"
     },
     "faq": [
       {
         "question": "我的 JSON 数据会上传到服务器吗？",
-        "answer": "不会。所有处理在浏览器中完成，数据不会离开你的设备。"
+        "answer": "不会。所有处理直接在浏览器中完成，JSON 数据不会离开你的设备 — 没有服务器上传，没有追踪，没有 Cookie。"
       },
       {
         "question": "JSON 转义是什么意思？",
-        "answer": "JSON 转义在特殊字符（如引号、换行符、制表符）前添加反斜杠，使其可以安全地包含在 JSON 字符串中。"
+        "answer": "JSON 转义在特殊字符（引号、反斜杠、换行符、制表符）前添加反斜杠，使其可以安全地包含在 JSON 字符串中，不会破坏结构。"
       },
       {
         "question": "JSON 反转义是什么意思？",
-        "answer": "JSON 反转义移除反斜杠转义字符，将转义序列转换回原始字符。"
+        "answer": "JSON 反转义移除反斜杠转义字符，将 \\\" 和 \\n 等转义序列还原为原始字符（引号和换行符）。当你有转义的 JSON 字符串需要查看实际内容时使用。"
       },
       {
         "question": "什么时候应该转义 JSON？",
-        "answer": "在将 JSON 字符串嵌入另一个 JSON 字符串时，或将 JSON 包含在代码、日志或配置文件中时需要转义 JSON。"
+        "answer": "在将 JSON 字符串嵌入另一个 JSON 文档时、在 JavaScript 代码中包含 JSON 时、将 JSON 写入日志文件时、或将 JSON 粘贴到需要转义字符串的配置文件中时。"
       },
       {
         "question": "什么时候应该反转义 JSON？",
-        "answer": "当你有一个转义的 JSON 字符串（来自日志、API 响应或代码），需要读取实际的 JSON 内容时反转义 JSON。"
+        "answer": "当你从 API 响应、Webhook 请求体、日志文件或错误消息中收到转义的 JSON 字符串，需要查看实际的 JSON 内容进行调试或进一步处理时。"
       },
       {
-        "question": "哪些特殊字符会被转义？",
-        "answer": "常见的转义字符包括：引号（\\\"）、反斜杠（\\\\）、换行符（\\n）、制表符（\\t）、回车符（\\r）和 Unicode 字符（\\uXXXX）。"
+        "question": "哪些特殊字符需要转义？",
+        "answer": "JSON 字符串中必须转义的字符有：双引号（\"）、反斜杠（\\）、换行符（\\n）、制表符（\\t）、回车符（\\r）、退格符（\\b）、换页符（\\f）以及任何使用 \\uXXXX 的 Unicode 转义。"
+      },
+      {
+        "question": "JSON 转义和 HTML 编码有什么区别？",
+        "answer": "JSON 转义使用反斜杠（\\\"）处理 JSON 字符串中的特殊字符，HTML 编码使用 &amp;quot; 处理 HTML 中的特殊字符。目的相同（防止语法冲突），但使用不同的转义字符，不能互换。"
+      },
+      {
+        "question": "可以转义整个 JSON 对象而不只是字符串吗？",
+        "answer": "可以。粘贴像 {\"key\": \"value\"} 这样的 JSON 对象后，转义功能会转换所有引号和特殊字符，使整个对象可以安全地作为字符串嵌入另一个 JSON 文档或 JavaScript 代码中。"
+      },
+      {
+        "question": "为什么转义后的 JSON 有太多反斜杠？",
+        "answer": "通常是因为输入在转义之前已经是转义过的 — 这叫双重转义。先用反转义按钮去除多余的反斜杠，检查输入后再重新转义。"
+      },
+      {
+        "question": "如何处理 JSON 字符串中的 Unicode 字符？",
+        "answer": "Unicode 字符（如 é、ñ、中文、emoji）可以直接出现在 JSON 字符串中，不需要转义。如果需要转义，使用 \\uXXXX 格式加 4 位十六进制编码。例如 é 变成 \\u00e9。"
+      },
+      {
+        "question": "这个工具支持 JSONL（JSON Lines）格式吗？",
+        "answer": "支持。可以粘贴多行 JSONL 内容进行转义或反转义，每行都会按相同的转义规则处理。适合处理 JSONL 日志数据或批量处理。"
+      },
+      {
+        "question": "可以处理的 JSON 有大小限制吗？",
+        "answer": "没有人为的大小限制。工具完全在浏览器中运行，性能取决于你的设备。大多数场景（几 MB 以内）可以即时处理，超大文件（100MB+）可能会让浏览器变慢。"
       }
     ],
     "ui": {
@@ -241,8 +268,8 @@
       "btn_swap": "交换"
     },
     "article": {
-      "title": "如何在线转义和反转义 JSON 字符串",
-      "content": "<h2>什么是 JSON 转义？</h2><p>JSON 转义在特殊字符前添加反斜杠，使其可以安全地包含在 JSON 字符串中。当在另一个 JSON 字符串中嵌入 JSON 字符串时，这是必不可少的。</p><h2>常见转义字符</h2><ul><li><strong>\\\"</strong> — 双引号</li><li><strong>\\\\</strong> — 反斜杠</li><li><strong>\\n</strong> — 换行符</li><li><strong>\\t</strong> — 制表符</li><li><strong>\\r</strong> — 回车符</li><li><strong>\\uXXXX</strong> — Unicode 字符</li></ul><h2>何时转义</h2><ul><li><strong>嵌套 JSON：</strong>在另一个 JSON 中嵌入 JSON 字符串</li><li><strong>代码生成：</strong>在 JavaScript 字符串中包含 JSON</li><li><strong>日志：</strong>将 JSON 写入日志文件</li><li><strong>配置：</strong>在配置文件中包含 JSON</li></ul><h2>何时反转义</h2><ul><li><strong>读取日志：</strong>解析日志文件中的转义 JSON</li><li><strong>API 响应：</strong>处理来自 API 的转义字符串</li><li><strong>调试：</strong>查看转义的 JSON 内容</li></ul><h2>如何使用</h2><ol><li><strong>粘贴</strong> 你的转义或未转义字符串</li><li><strong>点击转义</strong> 添加转义字符</li><li><strong>或点击反转义</strong> 移除它们</li><li><strong>复制</strong> 结果</li></ol>",
+      "title": "如何在线转义和反转义 JSON 字符串 — 完整指南",
+      "content": "<h2>什么是 JSON 转义？</h2><p>JSON 转义是在字符串中的特殊字符前添加反斜杠（\\），使其可以安全地包含在 JSON 文档中。双引号、反斜杠、换行符和制表符在 JSON 中有特殊含义 — 直接使用会破坏 JSON 结构。转义告诉解析器「把这个字符当作普通文本，不要当作语法」。</p><p>例如，字符串 <code>She said \"hello\"</code> 包含会破坏 JSON 的双引号。转义后变成 <code>She said \\\"hello\\\"</code> — 合法且可安全嵌入。</p><h2>JSON 中的常见转义字符</h2><p>JSON 定义了一组在字符串值中必须转义的字符：</p><ul><li><strong>\\\"</strong> — 双引号（必须，因为引号是字符串的定界符）</li><li><strong>\\\\</strong> — 反斜杠（必须，因为它是转义序列的前缀）</li><li><strong>\\n</strong> — 换行符</li><li><strong>\\t</strong> — 制表符</li><li><strong>\\r</strong> — 回车符</li><li><strong>\\uXXXX</strong> — Unicode 字符（4 位十六进制编码）</li></ul><p>其他字符（包括大部分 emoji 和非 ASCII 字符）可以直接出现在 JSON 字符串中，不需要转义。</p><h2>JSON 转义的真实使用场景</h2><h3>日志文件中的 JSON 转义</h3><p>当应用将 JSON 数据写入日志文件（CloudWatch、ELK、Datadog）时，日志条目本身通常也是 JSON。如果请求体包含嵌套的 JSON 字符串，内部字符串必须转义。例如，作为字符串记录在 JSON 日志中的 API 请求体需要正确转义，否则日志聚合器无法正确索引或拆分条目。</p><h3>在 JavaScript 代码中嵌入 JSON</h3><p>如果需要在 JavaScript 字符串中嵌入 JSON 对象（比如测试数据、配置模板或内联脚本），必须转义所有引号和反斜杠。常见错误是把原始 JSON 直接复制到 JS 字符串中而不转义 — 这会产生语法错误。使用我们的 JSON 转义工具一键将原始 JSON 转换为合法的 JavaScript 字符串。</p><h3>处理来自 Webhook 和 API 的转义 JSON</h3><p>很多 API 返回的 JSON 中，某些字段包含转义的 JSON 字符串。例如，Webhook 请求体中可能有一个 <code>payload</code> 字段，其值是编码为字符串的 JSON 对象。要读取实际数据，需要先反转义。这在 Stripe Webhook、Slack API 响应和事件驱动架构中很常见。</p><h3>配置文件中的 JSON</h3><p>配置文件（package.json、tsconfig.json、.eslintrc）是 JSON 格式，但有时包含特殊字符 — Windows 的反斜杠文件路径、正则表达式或多行描述。正确转义确保这些配置文件保持有效的 JSON 格式。</p><h2>JSON 转义的常见错误</h2><h3>双重转义</h3><p>最常见的错误是对已经转义的字符串再次转义。例如，对 <code>She said \\\"hello\\\"</code> 再次转义，会得到 <code>She said \\\\\\\"hello\\\\\\\"</code> — 反斜杠本身被转义，产生错误输出。如果输出有太多反斜杠，很可能就是双重转义了。先用反转义按钮还原，再只转义一次。</p><h3>忘记转义反斜杠</h3><p>反斜杠必须先于其他字符被转义。Windows 文件路径 <code>C:\\Users\\test</code> 在 JSON 中必须写成 <code>C:\\\\Users\\\\test</code>。常见错误是转义了引号但忘记转义反斜杠，产生看起来几乎正确但实际损坏的 JSON。</p><h3>使用错误的转义序列</h3><p>JSON 只支持有限的转义序列：<code>\\\"</code>、<code>\\\\</code>、<code>\\/</code>、<code>\\n</code>、<code>\\r</code>、<code>\\t</code>、<code>\\b</code>、<code>\\f</code> 和 <code>\\uXXXX</code>。<code>\\a</code>、<code>\\v</code>、<code>\\0</code> 在 JSON 中无效（虽然在某些编程语言中有效），使用无效序列会导致 <code>JSON.parse</code> 报错。</p><h3>混合转义和未转义内容</h3><p>如果粘贴的内容部分转义了（有些引号转义了，有些没有），转义或反转义操作会产生不一致的结果。操作前先确认输入是完全转义还是完全未转义的，然后选择对应的操作。</p><h2>如何使用 JSON 转义工具</h2><ol><li>将 JSON 字符串或文本<strong>粘贴</strong>到输入框（或上传文件 / 从 URL 加载）</li><li><strong>点击转义</strong>添加转义字符，或<strong>点击反转义</strong>移除转义字符</li><li><strong>复制</strong>结果或下载为文件</li><li>使用<strong>交换</strong>将输出移回输入框进行反向操作</li></ol><p>所有处理在浏览器中完成 — 数据不会发送到任何服务器。</p>",
       "links": [
         {"text": "JSON 编辑器", "url": "/tools/format/json-editor"},
         {"text": "JSON Schema 验证器", "url": "/tools/format/json-schema-validator"},
