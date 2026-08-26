@@ -3,28 +3,7 @@
     <template #first>
       <div class="h-full pr-3 overflow-hidden">
         <JsonInputEditor v-model="inputText" :label="tool.ui?.label_input || 'Input Text'"
-          placeholder='Paste or type text to escape/unescape...' show-upload show-load-url @clear="clearInput">
-          <template #actions>
-            <div v-if="hasExamples" ref="exampleMenuRef" class="relative">
-              <button
-                @click="showExampleMenu = !showExampleMenu"
-                class="text-xs text-primary-600 hover:text-primary-700 dark:text-primary-400"
-              >
-                {{ $t('system.example') }}
-              </button>
-              <div v-if="showExampleMenu" class="absolute left-0 top-full mt-1 bg-white dark:bg-surface-800 border border-surface-200 dark:border-surface-700 rounded-lg shadow-lg p-1 z-50 min-w-[140px]">
-                <button
-                  v-for="ex in examples"
-                  :key="ex.id"
-                  @click="loadExampleById(ex.id); showExampleMenu = false"
-                  class="w-full text-left px-3 py-1.5 text-xs hover:bg-surface-100 dark:hover:bg-surface-700 rounded"
-                >
-                  {{ getExampleLabel(ex) }}
-                </button>
-              </div>
-            </div>
-          </template>
-        </JsonInputEditor>
+          placeholder='Paste or type text to escape/unescape...' show-upload show-load-url @clear="clearInput" />
       </div>
     </template>
     <template #second>
@@ -49,6 +28,24 @@
       <button @click="clearAll" class="rounded-xl border border-surface-200 bg-white px-4 py-2 text-xs font-bold text-surface-700 hover:bg-surface-50 dark:border-surface-700 dark:bg-surface-800 dark:text-surface-300 dark:hover:bg-surface-700">
         {{ $t('system.clearAll') }}
       </button>
+      <div v-if="hasExamples" ref="exampleMenuRef" class="relative">
+        <button
+          @click="showExampleMenu = !showExampleMenu"
+          class="text-xs text-primary-600 hover:text-primary-700 dark:text-primary-400"
+        >
+          {{ $t('system.example') }}
+        </button>
+        <div v-if="showExampleMenu" class="absolute left-0 bottom-full mb-1 bg-white dark:bg-surface-800 border border-surface-200 dark:border-surface-700 rounded-lg shadow-lg p-1 z-50 min-w-[140px]">
+          <button
+            v-for="ex in examples"
+            :key="ex.id"
+            @click="loadExampleById(ex.id); showExampleMenu = false"
+            class="w-full text-left px-3 py-1.5 text-xs hover:bg-surface-100 dark:hover:bg-surface-700 rounded"
+          >
+            {{ getExampleLabel(ex) }}
+          </button>
+        </div>
+      </div>
     </template>
   </ResizablePanel>
 </template>
@@ -61,7 +58,7 @@ const outputText = ref('')
 const error = ref('')
 const fullscreen = ref(false)
 
-const { examples, hasExamples, getLabel: getExampleLabel, loadById } = useToolExample('json-escape')
+const { examples, hasExamples, getLabel: getExampleLabel, loadById, loadDefault } = useToolExample('json-escape')
 const showExampleMenu = ref(false)
 const exampleMenuRef = ref<HTMLElement>()
 
@@ -110,6 +107,11 @@ const handleClickOutside = (e: MouseEvent) => {
     showExampleMenu.value = false
   }
 }
-onMounted(() => { document.addEventListener('click', handleClickOutside) })
+
+onMounted(() => {
+  document.addEventListener('click', handleClickOutside)
+  // Auto-load first example
+  loadDefault(inputText)
+})
 onUnmounted(() => { document.removeEventListener('click', handleClickOutside) })
 </script>
