@@ -30,20 +30,20 @@
     <template #second>
       <div class="h-full pl-3 flex flex-col overflow-hidden">
         <JsonOutputPanel :label="tool.ui?.label_output || 'Output'" :content="outputText" :error="error"
-          view-mode="text" :show-view-toggle="false" empty-text="Output will appear here..."
+          view-mode="text" :show-view-toggle="false" :empty-text="tool.ui?.placeholder_output || 'Output will appear here...'"
           download-filename="output.txt" />
       </div>
     </template>
     <template #toolbar-left>
       <button @click="escapeText" class="btn-primary px-5 py-2 text-xs">
         <Icon name="lucide:lock" class="h-4 w-4 mr-1.5" />
-        Escape
+        {{ tool.ui?.btn_escape || 'Escape' }}
       </button>
       <button @click="unescapeText" class="rounded-xl border border-surface-200 bg-white px-4 py-2 text-xs font-bold text-surface-700 hover:bg-surface-50 dark:border-surface-700 dark:bg-surface-800 dark:text-surface-300 dark:hover:bg-surface-700">
         <Icon name="lucide:lock-open" class="h-4 w-4 mr-1.5" />
-        Unescape
+        {{ tool.ui?.btn_unescape || 'Unescape' }}
       </button>
-      <button @click="swap" class="rounded-xl border border-surface-200 bg-white px-4 py-2 text-xs font-bold text-surface-700 hover:bg-surface-50 dark:border-surface-700 dark:bg-surface-800 dark:text-surface-300 dark:hover:bg-surface-700">
+      <button @click="swap" :title="tool.ui?.btn_swap || 'Swap'" class="rounded-xl border border-surface-200 bg-white px-4 py-2 text-xs font-bold text-surface-700 hover:bg-surface-50 dark:border-surface-700 dark:bg-surface-800 dark:text-surface-300 dark:hover:bg-surface-700">
         <Icon name="lucide:arrow-left-right" class="h-4 w-4" />
       </button>
       <button @click="clearAll" class="rounded-xl border border-surface-200 bg-white px-4 py-2 text-xs font-bold text-surface-700 hover:bg-surface-50 dark:border-surface-700 dark:bg-surface-800 dark:text-surface-300 dark:hover:bg-surface-700">
@@ -78,7 +78,8 @@ const escapeText = () => {
 const unescapeText = () => {
   if (!inputText.value) { error.value = 'No input'; return }
   try {
-    outputText.value = JSON.parse('"' + inputText.value.replace(/\\n/g, '\\n').replace(/\\r/g, '\\r').replace(/\\t/g, '\\t') + '"')
+    // Wrap in quotes and let JSON.parse handle all escape sequences
+    outputText.value = JSON.parse('"' + inputText.value + '"')
     error.value = ''
   } catch (e) {
     error.value = (e as Error).message

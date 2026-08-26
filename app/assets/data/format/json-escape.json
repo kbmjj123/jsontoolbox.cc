@@ -122,7 +122,7 @@
     "meta": {
       "title": "JSON 转义反转义 — 免费在线工具",
       "description": "在线转义和反转义 JSON 字符串。处理特殊字符、引号、反斜杠和换行符。免费、快速，浏览器中运行。无需上传。",
-      "keywords": ["json转义", "json反转义", "转义json", "反转义json", "json特殊字符处理", "转义特殊字符json", "json字符串格式化", "json转义工具", "json字符串转义", "json字符串反转义"]
+      "keywords": ["json 转义", "json 反转义", "转义 json", "反转义 json", "json 特殊字符处理", "转义特殊字符 json", "json 字符串格式化", "json 转义工具", "json 字符串转义", "json 字符串反转义"]
     },
     "features": [
       {

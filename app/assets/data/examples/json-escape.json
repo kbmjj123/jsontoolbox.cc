@@ -1,20 +1,20 @@
 [
   {
-    "id": "special",
-    "label_en": "Special Characters",
-    "label_zh": "特殊字符",
-    "input": "She said \"Hello\" and left.\nTab\there.\nBackslash: \\"
+    "id": "escape-string",
+    "label_en": "String with Special Chars",
+    "label_zh": "含特殊字符的字符串",
+    "input": "She said \"hello\" to me.\nThen she left.\tBye!"
   },
   {
-    "id": "json-string",
-    "label_en": "JSON String Value",
-    "label_zh": "JSON 字符串值",
-    "input": "{\"message\": \"Hello\\nWorld\", \"path\": \"C:\\\\Users\\\\test\", \"quote\": \"She said \\\"OK\\\"\"}"
+    "id": "escape-json",
+    "label_en": "JSON Object String",
+    "label_zh": "JSON 对象字符串",
+    "input": "{\"name\": \"Alice\", \"bio\": \"She said \\\"OK\\\"\", \"note\": \"Line1\\nLine2\"}"
   },
   {
-    "id": "multiline",
-    "label_en": "Multiline Text",
-    "label_zh": "多行文本",
-    "input": "Line 1\nLine 2\nLine 3\n\tIndented line\n\tAnother indent"
+    "id": "unescape",
+    "label_en": "Escaped String (Unescape)",
+    "label_zh": "已转义字符串（反转义）",
+    "input": "She said \\\"hello\\\" to me.\\nThen she left.\\tBye!"
   }
 ]
