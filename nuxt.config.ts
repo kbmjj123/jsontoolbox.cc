@@ -111,6 +111,10 @@ export default defineNuxtConfig({
   },
   ogImage: {
     enabled: true,
+		fonts: [
+			'Noto+Sans+SC:400',
+			'Noto+Sans+SC:700',
+		]
   },
   schemaOrg: {
     identity: 'Person'
