@@ -1,20 +1,20 @@
 [
   {
-    "id": "escape-string",
-    "label_en": "String with Special Chars",
-    "label_zh": "含特殊字符的字符串",
-    "input": "She said \"hello\" to me.\nThen she left.\tBye!"
-  },
-  {
     "id": "escape-json",
     "label_en": "JSON Object String",
     "label_zh": "JSON 对象字符串",
-    "input": "{\"name\": \"Alice\", \"bio\": \"She said \\\"OK\\\"\", \"note\": \"Line1\\nLine2\"}"
+    "input": "{\"name\": \"Alice\", \"msg\": \"She said \\\"OK\\\"\"}"
   },
   {
     "id": "unescape",
     "label_en": "Escaped String (Unescape)",
     "label_zh": "已转义字符串（反转义）",
-    "input": "She said \\\"hello\\\" to me.\\nThen she left.\\tBye!"
+    "input": "{\\\"name\\\": \\\"Alice\\\", \\\"msg\\\": \\\"She said \\\\\\\"OK\\\\\\\"\\\"}"
+  },
+  {
+    "id": "escape-array",
+    "label_en": "JSON Array String",
+    "label_zh": "JSON 数组字符串",
+    "input": "[{\"id\": 1, \"text\": \"Line one\"}, {\"id\": 2, \"text\": \"Line two\\nNew line\"}]"
   }
 ]

@@ -65,9 +65,11 @@
       }
     ],
     "example": {
-      "input": "{\"message\": \"User said: \"hello\" and left\"}",
-      "output": "{\"message\": \"User said: \\\"hello\\\" and left\"}",
-      "useCase": "Escape unquoted strings in JSON to make them valid. Fixes invalid JSON with unescaped special characters."
+      "input": "{\"name\": \"Alice\", \"msg\": \"She said \\\"OK\\\"\"}",
+      "output": "{\\\"name\\\": \\\"Alice\\\", \\\"msg\\\": \\\"She said \\\\\\\"OK\\\\\\\"\\\"}",
+      "inputLabel": "JSON String",
+      "outputLabel": "Escaped String",
+      "useCase": "Escape a JSON object string — inner quotes, backslashes and special characters are properly escaped for safe embedding in code or config."
     },
     "faq": [
       {
@@ -171,9 +173,11 @@
       }
     ],
     "example": {
-      "input": "{\"message\": \"User said: \"hello\" and left\"}",
-      "output": "{\"message\": \"User said: \\\"hello\\\" and left\"}",
-      "useCase": "转义 JSON 中未转引号的字符串，使其成为有效的 JSON。修复包含未转义特殊字符的无效 JSON。"
+      "input": "{\"name\": \"Alice\", \"msg\": \"She said \\\"OK\\\"\"}",
+      "output": "{\\\"name\\\": \\\"Alice\\\", \\\"msg\\\": \\\"She said \\\\\\\"OK\\\\\\\"\\\"}",
+      "inputLabel": "JSON 字符串",
+      "outputLabel": "转义后的字符串",
+      "useCase": "转义 JSON 对象字符串 — 内部引号、反斜杠和特殊字符被正确转义，可安全嵌入代码或配置文件。"
     },
     "faq": [
       {
