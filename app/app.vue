@@ -69,11 +69,10 @@
     },
   })
 
-  const personId = 'https://jsontoolbox.cc/#person'
   // Schema.org
   useSchemaOrg([
     defineWebSite({
-      '@id': personId,
+      '@id': `${config.public.baseUrl}/#person`,
       name: t('app.name'),
       description: t('app.description'),
       url: config.public.baseUrl,
