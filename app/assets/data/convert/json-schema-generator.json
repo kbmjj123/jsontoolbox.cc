@@ -5,8 +5,12 @@
   "icon": "lucide:file-json",
   "sort": 7,
   "applicationCategory": "DeveloperApplication",
-  "nextSteps": ["json-editor"],
-  "recommends": ["json-to-typescript"],
+  "nextSteps": [
+    "json-editor"
+  ],
+  "recommends": [
+    "json-to-typescript"
+  ],
   "en": {
     "name": "JSON Schema Generator",
     "description": "Generate JSON Schema from JSON data automatically. This json schema generator helps with generating json schema and json to schema conversion from your JSON examples.",
@@ -28,7 +32,18 @@
     "meta": {
       "title": "JSON Schema Generator — Free Online Tool",
       "description": "Generate JSON Schema from JSON data online. Create validation schemas automatically from JSON examples. Export as .json file. Free, 100% client-side.",
-      "keywords": ["json schema generator", "json schema from json", "generate json schema from json", "generating json schema", "json to schema", "json schema creator", "json schema maker", "create json schema", "json example to schema", "json to json schema"]
+      "keywords": [
+        "json schema generator",
+        "json schema from json",
+        "generate json schema from json",
+        "generating json schema",
+        "json to schema",
+        "json schema creator",
+        "json schema maker",
+        "create json schema",
+        "json example to schema",
+        "json to json schema"
+      ]
     },
     "features": [
       {
@@ -117,12 +132,7 @@
     ],
     "article": {
       "title": "How to Generate JSON Schema from JSON Data",
-      "content": "<h2>What is JSON Schema?</h2><p>JSON Schema is a vocabulary that allows you to annotate and validate JSON data. It defines the structure, data types, and constraints for JSON documents, making it essential for API documentation and data validation.</p><h2>Why Generate JSON Schema?</h2><ul><li><strong>API Documentation:</strong> Automatically document your API payload structure</li><li><strong>Data Validation:</strong> Validate incoming JSON data against a schema</li><li><strong>Form Generation:</strong> Generate forms from schema definitions</li><li><strong>Code Generation:</strong> Generate typed models from schema</li></ul><h2>How to Generate</h2><ol><li><strong>Paste JSON</strong> example data</li><li><strong>Click Generate</strong> to create the schema</li><li><strong>Review</strong> the generated schema</li><li><strong>Copy or Download</strong> for use in your project</li></ol><h2>Understanding the Output</h2><ul><li><strong>type:</strong> Data type (string, number, object, array)</li><li><strong>properties:</strong> Object fields with their types</li><li><strong>required:</strong> Mandatory fields</li><li><strong>additionalProperties:</strong> Allow extra fields</li></ul><h2>Best Practices</h2><ul><li><strong>Use examples:</strong> Provide representative JSON data</li><li><strong>Review required fields:</strong> Ensure important fields are marked required</li><li><strong>Test the schema:</strong> Validate it works with your data</li></ul>",
-      "links": [
-        {"text": "JSON Schema Validator", "url": "/tools/format/json-schema-validator"},
-        {"text": "JSON to TypeScript", "url": "/tools/convert/json-to-typescript"},
-        {"text": "JSON Editor", "url": "/tools/format/json-editor"}
-      ]
+      "content": "<h2>What is JSON Schema?</h2><p>JSON Schema is a vocabulary that allows you to annotate and validate JSON data. It defines the structure, data types, and constraints for JSON documents, making it essential for API documentation and data validation.</p><h2>Why Generate JSON Schema?</h2><ul><li><strong>API Documentation:</strong> Automatically document your API payload structure</li><li><strong>Data Validation:</strong> Validate incoming JSON data against a schema</li><li><strong>Form Generation:</strong> Generate forms from schema definitions</li><li><strong>Code Generation:</strong> Generate typed models from schema</li></ul><h2>How to Generate</h2><ol><li><strong>Paste JSON</strong> example data</li><li><strong>Click Generate</strong> to create the schema</li><li><strong>Review</strong> the generated schema</li><li><strong>Copy or Download</strong> for use in your project</li></ol><h2>Understanding the Output</h2><ul><li><strong>type:</strong> Data type (string, number, object, array)</li><li><strong>properties:</strong> Object fields with their types</li><li><strong>required:</strong> Mandatory fields</li><li><strong>additionalProperties:</strong> Allow extra fields</li></ul><h2>Best Practices</h2><ul><li><strong>Use examples:</strong> Provide representative JSON data</li><li><strong>Review required fields:</strong> Ensure important fields are marked required</li><li><strong>Test the schema:</strong> Validate it works with your data</li></ul>"
     }
   },
   "zh": {
@@ -146,7 +156,18 @@
     "meta": {
       "title": "JSON Schema 生成器 — 免费在线工具",
       "description": "在线从 JSON 数据生成 JSON Schema。从 JSON 示例自动创建验证 Schema。导出为 .json 文件。免费、100% 客户端处理。",
-      "keywords": ["json schema生成器", "json schema生成", "从json生成schema", "json转schema", "json schema创建器", "json schema制作器", "创建json schema", "json示例转schema", "json转json schema", "在线生成json schema"]
+      "keywords": [
+        "json schema生成器",
+        "json schema生成",
+        "从json生成schema",
+        "json转schema",
+        "json schema创建器",
+        "json schema制作器",
+        "创建json schema",
+        "json示例转schema",
+        "json转json schema",
+        "在线生成json schema"
+      ]
     },
     "features": [
       {
@@ -235,12 +256,7 @@
     ],
     "article": {
       "title": "如何从 JSON 数据生成 JSON Schema",
-      "content": "<h2>什么是 JSON Schema？</h2><p>JSON Schema 是一种用于注释和验证 JSON 数据的词汇。它定义了 JSON 文档的结构、数据类型和约束，对于 API 文档和数据验证至关重要。</p><h2>为什么要生成 JSON Schema？</h2><ul><li><strong>API 文档：</strong>自动记录你的 API 负载结构</li><li><strong>数据验证：</strong>根据 Schema 验证传入的 JSON 数据</li><li><strong>表单生成：</strong>从 Schema 定义生成表单</li><li><strong>代码生成：</strong>从 Schema 生成类型化模型</li></ul><h2>如何生成</h2><ol><li><strong>粘贴 JSON</strong> 示例数据</li><li><strong>点击生成</strong> 创建 Schema</li><li><strong>审查</strong> 生成的 Schema</li><li><strong>复制或下载</strong> 在项目中使用</li></ol><h2>理解输出</h2><ul><li><strong>type：</strong> 数据类型（string、number、object、array）</li><li><strong>properties：</strong> 对象字段及其类型</li><li><strong>required：</strong> 必填字段</li><li><strong>additionalProperties：</strong> 允许额外字段</li></ul><h2>最佳实践</h2><ul><li><strong>使用示例：</strong>提供代表性的 JSON 数据</li><li><strong>审查必填字段：</strong>确保重要字段标记为必填</li><li><strong>测试 Schema：</strong>验证它适用于你的数据</li></ul>",
-      "links": [
-        {"text": "JSON Schema 验证器", "url": "/tools/format/json-schema-validator"},
-        {"text": "JSON 转 TypeScript", "url": "/tools/convert/json-to-typescript"},
-        {"text": "JSON 编辑器", "url": "/tools/format/json-editor"}
-      ]
+      "content": "<h2>什么是 JSON Schema？</h2><p>JSON Schema 是一种用于注释和验证 JSON 数据的词汇。它定义了 JSON 文档的结构、数据类型和约束，对于 API 文档和数据验证至关重要。</p><h2>为什么要生成 JSON Schema？</h2><ul><li><strong>API 文档：</strong>自动记录你的 API 负载结构</li><li><strong>数据验证：</strong>根据 Schema 验证传入的 JSON 数据</li><li><strong>表单生成：</strong>从 Schema 定义生成表单</li><li><strong>代码生成：</strong>从 Schema 生成类型化模型</li></ul><h2>如何生成</h2><ol><li><strong>粘贴 JSON</strong> 示例数据</li><li><strong>点击生成</strong> 创建 Schema</li><li><strong>审查</strong> 生成的 Schema</li><li><strong>复制或下载</strong> 在项目中使用</li></ol><h2>理解输出</h2><ul><li><strong>type：</strong> 数据类型（string、number、object、array）</li><li><strong>properties：</strong> 对象字段及其类型</li><li><strong>required：</strong> 必填字段</li><li><strong>additionalProperties：</strong> 允许额外字段</li></ul><h2>最佳实践</h2><ul><li><strong>使用示例：</strong>提供代表性的 JSON 数据</li><li><strong>审查必填字段：</strong>确保重要字段标记为必填</li><li><strong>测试 Schema：</strong>验证它适用于你的数据</li></ul>"
     }
   }
 }

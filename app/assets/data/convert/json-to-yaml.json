@@ -5,8 +5,13 @@
   "icon": "lucide:file-text",
   "sort": 2,
   "applicationCategory": "DeveloperApplication",
-  "nextSteps": ["json-to-xml", "json-to-csv"],
-  "recommends": ["json-editor"],
+  "nextSteps": [
+    "json-to-xml",
+    "json-to-csv"
+  ],
+  "recommends": [
+    "json-editor"
+  ],
   "en": {
     "name": "JSON to YAML Converter",
     "description": "Convert JSON data to YAML format online. This json yaml converter and json to yaml online tool is perfect for configuration files, Kubernetes, and Docker Compose.",
@@ -16,7 +21,18 @@
     "meta": {
       "title": "JSON to YAML — Free Online Converter for Config Files",
       "description": "Convert JSON to YAML format online. Perfect for Kubernetes, Docker Compose, and config files. Free, fast, and 100% client-side. No upload required.",
-      "keywords": ["json to yaml", "json to yaml converter", "convert json to yaml", "json yaml converter", "json to yaml online", "json to yaml for kubernetes", "json to docker compose", "json to config file", "yaml to json converter", "json to yaml tool"]
+      "keywords": [
+        "json to yaml",
+        "json to yaml converter",
+        "convert json to yaml",
+        "json yaml converter",
+        "json to yaml online",
+        "json to yaml for kubernetes",
+        "json to docker compose",
+        "json to config file",
+        "yaml to json converter",
+        "json to yaml tool"
+      ]
     },
     "features": [
       {
@@ -107,12 +123,7 @@
     },
     "article": {
       "title": "How to Convert JSON to YAML Online",
-      "content": "<h2>Why Convert JSON to YAML?</h2><p>YAML (YAML Ain't Markup Language) is a human-readable data serialization format widely used for configuration files. While JSON is great for data exchange, YAML is often preferred for configuration because of its readability and support for comments.</p><h2>Common Use Cases</h2><ul><li><strong>Kubernetes Configs:</strong> Convert JSON API responses to YAML for K8s manifests</li><li><strong>Docker Compose:</strong> Transform JSON configuration to docker-compose.yml format</li><li><strong>CI/CD Pipelines:</strong> Convert JSON settings to YAML for GitHub Actions, GitLab CI</li><li><strong>Ansible Playbooks:</strong> Transform JSON data to YAML for automation scripts</li></ul><h2>JSON vs YAML</h2><ul><li><strong>JSON:</strong> Strict syntax, no comments, great for APIs</li><li><strong>YAML:</strong> Readable, supports comments, great for configs</li></ul><h2>How to Convert</h2><ol><li><strong>Paste JSON</strong> into the input field</li><li><strong>Click Convert</strong> to generate YAML</li><li><strong>Review output</strong> and adjust indentation if needed</li><li><strong>Copy or Download</strong> the YAML file</li></ol><h2>Best Practices</h2><ul><li><strong>Validate first:</strong> Ensure your JSON is valid before converting</li><li><strong>Check indentation:</strong> Use 2-space for K8s, 4-space for readability</li><li><strong>Review output:</strong> YAML is sensitive to structure, verify the result</li></ul>",
-      "links": [
-        {"text": "YAML to JSON", "url": "/tools/convert/yaml-to-json"},
-        {"text": "JSON Editor", "url": "/tools/format/json-editor"},
-        {"text": "JSON Schema Validator", "url": "/tools/format/json-schema-validator"}
-      ]
+      "content": "<h2>Why Convert JSON to YAML?</h2><p>YAML (YAML Ain't Markup Language) is a human-readable data serialization format widely used for configuration files. While JSON is great for data exchange, YAML is often preferred for configuration because of its readability and support for comments.</p><h2>Common Use Cases</h2><ul><li><strong>Kubernetes Configs:</strong> Convert JSON API responses to YAML for K8s manifests</li><li><strong>Docker Compose:</strong> Transform JSON configuration to docker-compose.yml format</li><li><strong>CI/CD Pipelines:</strong> Convert JSON settings to YAML for GitHub Actions, GitLab CI</li><li><strong>Ansible Playbooks:</strong> Transform JSON data to YAML for automation scripts</li></ul><h2>JSON vs YAML</h2><ul><li><strong>JSON:</strong> Strict syntax, no comments, great for APIs</li><li><strong>YAML:</strong> Readable, supports comments, great for configs</li></ul><h2>How to Convert</h2><ol><li><strong>Paste JSON</strong> into the input field</li><li><strong>Click Convert</strong> to generate YAML</li><li><strong>Review output</strong> and adjust indentation if needed</li><li><strong>Copy or Download</strong> the YAML file</li></ol><h2>Best Practices</h2><ul><li><strong>Validate first:</strong> Ensure your JSON is valid before converting</li><li><strong>Check indentation:</strong> Use 2-space for K8s, 4-space for readability</li><li><strong>Review output:</strong> YAML is sensitive to structure, verify the result</li></ul>"
     }
   },
   "zh": {
@@ -124,7 +135,17 @@
     "meta": {
       "title": "JSON 转 YAML — 免费在线转换器，支持配置文件",
       "description": "在线将 JSON 转换为 YAML 格式。适合 Kubernetes、Docker Compose 和配置文件。免费、快速、100% 客户端处理。无需上传。",
-      "keywords": ["json转yaml", "json yaml转换器", "转换json为yaml", "在线json转yaml", "json转kubernetes配置", "json转docker compose", "json转配置文件", "yaml转json转换器", "json to yaml工具"]
+      "keywords": [
+        "json转yaml",
+        "json yaml转换器",
+        "转换json为yaml",
+        "在线json转yaml",
+        "json转kubernetes配置",
+        "json转docker compose",
+        "json转配置文件",
+        "yaml转json转换器",
+        "json to yaml工具"
+      ]
     },
     "features": [
       {
@@ -211,12 +232,7 @@
     },
     "article": {
       "title": "如何在线将 JSON 转换为 YAML",
-      "content": "<h2>为什么要将 JSON 转换为 YAML？</h2><p>YAML（YAML Ain't Markup Language）是一种人类可读的数据序列化格式，广泛用于配置文件。虽然 JSON 非常适合数据交换，但 YAML 因其可读性和对注释的支持而常用于配置。</p><h2>常见使用场景</h2><ul><li><strong>Kubernetes 配置：</strong>将 JSON API 响应转换为 K8s 清单的 YAML 格式</li><li><strong>Docker Compose：</strong>将 JSON 配置转换为 docker-compose.yml 格式</li><li><strong>CI/CD 管道：</strong>将 JSON 设置转换为 GitHub Actions、GitLab CI 的 YAML 格式</li><li><strong>Ansible Playbooks：</strong>将 JSON 数据转换为自动化脚本的 YAML 格式</li></ul><h2>JSON vs YAML</h2><ul><li><strong>JSON：</strong>严格语法，不支持注释，适合 API</li><li><strong>YAML：</strong>可读性强，支持注释，适合配置文件</li></ul><h2>如何转换</h2><ol><li><strong>粘贴 JSON</strong> 到输入框</li><li><strong>点击转换</strong> 生成 YAML</li><li><strong>查看输出</strong>，根据需要调整缩进</li><li><strong>复制或下载</strong> YAML 文件</li></ol><h2>最佳实践</h2><ul><li><strong>先验证：</strong>确保 JSON 有效再转换</li><li><strong>检查缩进：</strong>K8s 用 2 空格，可读性用 4 空格</li><li><strong>审查输出：</strong>YAML 对结构敏感，请验证结果</li></ul>",
-      "links": [
-        {"text": "YAML 转 JSON", "url": "/tools/convert/yaml-to-json"},
-        {"text": "JSON 编辑器", "url": "/tools/format/json-editor"},
-        {"text": "JSON Schema 验证器", "url": "/tools/format/json-schema-validator"}
-      ]
+      "content": "<h2>为什么要将 JSON 转换为 YAML？</h2><p>YAML（YAML Ain't Markup Language）是一种人类可读的数据序列化格式，广泛用于配置文件。虽然 JSON 非常适合数据交换，但 YAML 因其可读性和对注释的支持而常用于配置。</p><h2>常见使用场景</h2><ul><li><strong>Kubernetes 配置：</strong>将 JSON API 响应转换为 K8s 清单的 YAML 格式</li><li><strong>Docker Compose：</strong>将 JSON 配置转换为 docker-compose.yml 格式</li><li><strong>CI/CD 管道：</strong>将 JSON 设置转换为 GitHub Actions、GitLab CI 的 YAML 格式</li><li><strong>Ansible Playbooks：</strong>将 JSON 数据转换为自动化脚本的 YAML 格式</li></ul><h2>JSON vs YAML</h2><ul><li><strong>JSON：</strong>严格语法，不支持注释，适合 API</li><li><strong>YAML：</strong>可读性强，支持注释，适合配置文件</li></ul><h2>如何转换</h2><ol><li><strong>粘贴 JSON</strong> 到输入框</li><li><strong>点击转换</strong> 生成 YAML</li><li><strong>查看输出</strong>，根据需要调整缩进</li><li><strong>复制或下载</strong> YAML 文件</li></ol><h2>最佳实践</h2><ul><li><strong>先验证：</strong>确保 JSON 有效再转换</li><li><strong>检查缩进：</strong>K8s 用 2 空格，可读性用 4 空格</li><li><strong>审查输出：</strong>YAML 对结构敏感，请验证结果</li></ul>"
     }
   }
 }

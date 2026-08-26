@@ -5,8 +5,12 @@
   "icon": "lucide:minimize",
   "sort": 2,
   "applicationCategory": "DeveloperApplication",
-  "nextSteps": ["json-editor"],
-  "recommends": ["json-to-csv"],
+  "nextSteps": [
+    "json-editor"
+  ],
+  "recommends": [
+    "json-to-csv"
+  ],
   "en": {
     "name": "JSON Minifier",
     "description": "Compress and minify JSON data by removing all whitespace. This json minifier and json compressor lets you compress json online — free, fast, and runs in your browser.",
@@ -16,7 +20,18 @@
     "meta": {
       "title": "JSON Minifier — Compress JSON to One Line Online Free",
       "description": "Minify and compress JSON data online. Remove all whitespace and formatting to create compact, single-line JSON. Compare size before/after. No upload required.",
-      "keywords": ["json minifier", "json minify", "minify json", "json compressor", "json minification", "compress json online", "json size reducer", "json compact", "json optimizer", "minify json online"]
+      "keywords": [
+        "json minifier",
+        "json minify",
+        "minify json",
+        "json compressor",
+        "json minification",
+        "compress json online",
+        "json size reducer",
+        "json compact",
+        "json optimizer",
+        "minify json online"
+      ]
     },
     "features": [
       {
@@ -65,9 +80,15 @@
       }
     ],
     "example": {
-      "input": "{\\n  \"users\": [\\n    {\\n      \"id\": 1,\\n      \"name\": \"Alice\",\\n      \"email\": \"alice@example.com\"\\n    }\\n  ]\\n}",
-      "output": "{\"users\":[{\"id\":1,\"name\":\"Alice\",\"email\":\"alice@example.com\"}]}",
-      "useCase": "Compress JSON for network transmission or embedding in URLs to reduce payload size."
+      "title": "JSON Minification Example",
+      "description": "This example shows how formatted JSON with indentation and line breaks is compressed into a single line. Minification is commonly used in production to reduce payload size.",
+      "inputLabel": "Formatted JSON (with indentation)",
+      "input": "{\n  \"name\": \"Alice\",\n  \"age\": 28,\n  \"active\": true\n}",
+      "inputExplanation": "This formatted JSON is easy to read during development, but the extra whitespace adds unnecessary bytes when transmitted over a network.",
+      "outputLabel": "Minified JSON (single line)",
+      "output": "{\"name\":\"Alice\",\"age\":28,\"active\":true}",
+      "outputExplanation": "After minification, all whitespace and line breaks are removed. The data is identical — only the formatting is stripped. This reduces file size by ~40% in this example.",
+      "note": "Minified JSON is ideal for production APIs, CDN responses, and storage where every byte counts. Use the formatter to restore readability when needed."
     },
     "faq": [
       {
@@ -97,23 +118,7 @@
     ],
     "article": {
       "title": "How to Minify JSON Online & Reduce File Size",
-      "content": "<h2>Why Minify JSON?</h2><p>JSON minification removes all unnecessary whitespace, line breaks, and indentation from JSON data. This creates compact, single-line JSON that's ideal for production environments where file size matters.</p><h2>When to Minify JSON</h2><ul><li><strong>Production Deployments:</strong> Reduce payload size for faster loading</li><li><strong>API Responses:</strong> Minimize network transfer time</li><li><strong>Database Storage:</strong> Save storage space for large JSON documents</li><li><strong>URL Parameters:</strong> Fit more data in query strings</li></ul><h2>How to Minify</h2><ol><li><strong>Paste JSON</strong> into the input field</li><li><strong>Click Minify</strong> to compress</li><li><strong>Compare sizes</strong> to see compression ratio</li><li><strong>Copy or Download</strong> the minified output</li></ol><h2>JSON Minify vs Format</h2><ul><li><strong>Minify:</strong> Remove whitespace → compact JSON</li><li><strong>Format:</strong> Add indentation → readable JSON</li></ul><p>Use minify for production, format for development.</p><h2>Best Practices</h2><ul><li><strong>Always validate first:</strong> Ensure JSON is valid before minifying</li><li><strong>Compare sizes:</strong> Check compression ratio</li><li><strong>Test output:</strong> Verify minified JSON is still valid</li><li><strong>Use in build process:</strong> Automate minification in CI/CD</li></ul>",
-      "links": [
-        {"text": "JSON Editor", "url": "/tools/format/json-editor"},
-        {"text": "JSON Schema Validator", "url": "/tools/format/json-schema-validator"},
-        {"text": "JSON to CSV", "url": "/tools/convert/json-to-csv"}
-      ]
-    },
-    "example": {
-      "title": "JSON Minification Example",
-      "description": "This example shows how formatted JSON with indentation and line breaks is compressed into a single line. Minification is commonly used in production to reduce payload size.",
-      "inputLabel": "Formatted JSON (with indentation)",
-      "input": "{\n  \"name\": \"Alice\",\n  \"age\": 28,\n  \"active\": true\n}",
-      "inputExplanation": "This formatted JSON is easy to read during development, but the extra whitespace adds unnecessary bytes when transmitted over a network.",
-      "outputLabel": "Minified JSON (single line)",
-      "output": "{\"name\":\"Alice\",\"age\":28,\"active\":true}",
-      "outputExplanation": "After minification, all whitespace and line breaks are removed. The data is identical — only the formatting is stripped. This reduces file size by ~40% in this example.",
-      "note": "Minified JSON is ideal for production APIs, CDN responses, and storage where every byte counts. Use the formatter to restore readability when needed."
+      "content": "<h2>Why Minify JSON?</h2><p>JSON minification removes all unnecessary whitespace, line breaks, and indentation from JSON data. This creates compact, single-line JSON that's ideal for production environments where file size matters.</p><h2>When to Minify JSON</h2><ul><li><strong>Production Deployments:</strong> Reduce payload size for faster loading</li><li><strong>API Responses:</strong> Minimize network transfer time</li><li><strong>Database Storage:</strong> Save storage space for large JSON documents</li><li><strong>URL Parameters:</strong> Fit more data in query strings</li></ul><h2>How to Minify</h2><ol><li><strong>Paste JSON</strong> into the input field</li><li><strong>Click Minify</strong> to compress</li><li><strong>Compare sizes</strong> to see compression ratio</li><li><strong>Copy or Download</strong> the minified output</li></ol><h2>JSON Minify vs Format</h2><ul><li><strong>Minify:</strong> Remove whitespace → compact JSON</li><li><strong>Format:</strong> Add indentation → readable JSON</li></ul><p>Use minify for production, format for development.</p><h2>Best Practices</h2><ul><li><strong>Always validate first:</strong> Ensure JSON is valid before minifying</li><li><strong>Compare sizes:</strong> Check compression ratio</li><li><strong>Test output:</strong> Verify minified JSON is still valid</li><li><strong>Use in build process:</strong> Automate minification in CI/CD</li></ul>"
     },
     "ui": {
       "label_input": "Input JSON",
@@ -133,7 +138,18 @@
     "meta": {
       "title": "JSON 压缩器 — 在线压缩 JSON 为单行",
       "description": "在线压缩和最小化 JSON 数据。移除所有空白和格式，生成紧凑的单行 JSON。比较压缩前后大小。无需上传，100% 客户端处理。",
-      "keywords": ["json压缩", "json压缩器", "压缩json", "json最小化", "在线压缩json", "json大小缩减器", "json紧凑化", "json优化器", "在线minify json", "json压缩工具"]
+      "keywords": [
+        "json压缩",
+        "json压缩器",
+        "压缩json",
+        "json最小化",
+        "在线压缩json",
+        "json大小缩减器",
+        "json紧凑化",
+        "json优化器",
+        "在线minify json",
+        "json压缩工具"
+      ]
     },
     "features": [
       {
@@ -182,9 +198,15 @@
       }
     ],
     "example": {
-      "input": "{\\n  \"users\": [\\n    {\\n      \"id\": 1,\\n      \"name\": \"Alice\",\\n      \"email\": \"alice@example.com\"\\n    }\\n  ]\\n}",
-      "output": "{\"users\":[{\"id\":1,\"name\":\"Alice\",\"email\":\"alice@example.com\"}]}",
-      "useCase": "压缩 JSON 用于网络传输或嵌入 URL，减少数据大小。"
+      "title": "JSON 压缩示例",
+      "description": "以下示例展示了带缩进和换行的格式化 JSON 如何被压缩为单行。压缩通常用于生产环境，以减少传输体积。",
+      "inputLabel": "格式化 JSON（带缩进）",
+      "input": "{\n  \"name\": \"Alice\",\n  \"age\": 28,\n  \"active\": true\n}",
+      "inputExplanation": "这段格式化 JSON 在开发时易于阅读，但多余的空白字符在网络传输时会增加不必要的字节数。",
+      "outputLabel": "压缩后的 JSON（单行）",
+      "output": "{\"name\":\"Alice\",\"age\":28,\"active\":true}",
+      "outputExplanation": "压缩后，所有空白和换行都被移除。数据完全相同，只是格式被去除。在这个示例中，文件体积减少了约 40%。",
+      "note": "压缩后的 JSON 适合生产 API、CDN 响应和存储场景。需要恢复可读性时，使用格式化工具即可。"
     },
     "faq": [
       {
@@ -212,17 +234,6 @@
         "answer": "JSON 压缩器移除所有空白，生成紧凑的 JSON。JSON 格式化添加缩进和换行，让 JSON 更易读。它们是相反的操作。"
       }
     ],
-    "example": {
-      "title": "JSON 压缩示例",
-      "description": "以下示例展示了带缩进和换行的格式化 JSON 如何被压缩为单行。压缩通常用于生产环境，以减少传输体积。",
-      "inputLabel": "格式化 JSON（带缩进）",
-      "input": "{\n  \"name\": \"Alice\",\n  \"age\": 28,\n  \"active\": true\n}",
-      "inputExplanation": "这段格式化 JSON 在开发时易于阅读，但多余的空白字符在网络传输时会增加不必要的字节数。",
-      "outputLabel": "压缩后的 JSON（单行）",
-      "output": "{\"name\":\"Alice\",\"age\":28,\"active\":true}",
-      "outputExplanation": "压缩后，所有空白和换行都被移除。数据完全相同，只是格式被去除。在这个示例中，文件体积减少了约 40%。",
-      "note": "压缩后的 JSON 适合生产 API、CDN 响应和存储场景。需要恢复可读性时，使用格式化工具即可。"
-    },
     "ui": {
       "label_input": "输入 JSON",
       "label_output": "压缩输出",
@@ -233,12 +244,7 @@
     },
     "article": {
       "title": "如何在线压缩 JSON 并减小文件大小",
-      "content": "<h2>为什么要压缩 JSON？</h2><p>JSON 压缩会移除所有不必要的空白、换行和缩进，创建紧凑的单行 JSON。这非常适合文件大小很重要的生产环境。</p><h2>何时压缩 JSON</h2><ul><li><strong>生产部署：</strong>减小负载大小以加快加载速度</li><li><strong>API 响应：</strong>最小化网络传输时间</li><li><strong>数据库存储：</strong>为大型 JSON 文档节省存储空间</li><li><strong>URL 参数：</strong>在查询字符串中放入更多数据</li></ul><h2>如何压缩</h2><ol><li><strong>粘贴 JSON</strong> 到输入框</li><li><strong>点击压缩</strong> 压缩数据</li><li><strong>比较大小</strong> 查看压缩比率</li><li><strong>复制或下载</strong> 压缩后的输出</li></ol><h2>JSON 压缩 vs 格式化</h2><ul><li><strong>压缩：</strong>移除空白 → 紧凑 JSON</li><li><strong>格式化：</strong>添加缩进 → 可读 JSON</li></ul><p>生产环境用压缩，开发环境用格式化。</p><h2>最佳实践</h2><ul><li><strong>先验证：</strong>确保 JSON 有效再压缩</li><li><strong>比较大小：</strong>检查压缩比率</li><li><strong>测试输出：</strong>验证压缩后的 JSON 仍然有效</li><li><strong>在构建流程中使用：</strong>在 CI/CD 中自动化压缩</li></ul>",
-      "links": [
-        {"text": "JSON 编辑器", "url": "/tools/format/json-editor"},
-        {"text": "JSON Schema 验证器", "url": "/tools/format/json-schema-validator"},
-        {"text": "JSON 转 CSV", "url": "/tools/convert/json-to-csv"}
-      ]
+      "content": "<h2>为什么要压缩 JSON？</h2><p>JSON 压缩会移除所有不必要的空白、换行和缩进，创建紧凑的单行 JSON。这非常适合文件大小很重要的生产环境。</p><h2>何时压缩 JSON</h2><ul><li><strong>生产部署：</strong>减小负载大小以加快加载速度</li><li><strong>API 响应：</strong>最小化网络传输时间</li><li><strong>数据库存储：</strong>为大型 JSON 文档节省存储空间</li><li><strong>URL 参数：</strong>在查询字符串中放入更多数据</li></ul><h2>如何压缩</h2><ol><li><strong>粘贴 JSON</strong> 到输入框</li><li><strong>点击压缩</strong> 压缩数据</li><li><strong>比较大小</strong> 查看压缩比率</li><li><strong>复制或下载</strong> 压缩后的输出</li></ol><h2>JSON 压缩 vs 格式化</h2><ul><li><strong>压缩：</strong>移除空白 → 紧凑 JSON</li><li><strong>格式化：</strong>添加缩进 → 可读 JSON</li></ul><p>生产环境用压缩，开发环境用格式化。</p><h2>最佳实践</h2><ul><li><strong>先验证：</strong>确保 JSON 有效再压缩</li><li><strong>比较大小：</strong>检查压缩比率</li><li><strong>测试输出：</strong>验证压缩后的 JSON 仍然有效</li><li><strong>在构建流程中使用：</strong>在 CI/CD 中自动化压缩</li></ul>"
     }
   }
 }

@@ -59,14 +59,14 @@
         {{ tool.article.title }}
       </h2>
       <div v-html="tool.article.content" class="text-surface-700 dark:text-surface-300"></div>
-      <div v-if="tool.article.links?.length" class="mt-6 flex flex-wrap gap-4">
+      <div v-if="articleLinks.length" class="mt-6 flex flex-wrap gap-4">
         <NuxtLinkLocale
-          v-for="link in tool.article.links"
-          :key="link.url"
-          :to="link.url"
+          v-for="link in articleLinks"
+          :key="link.path"
+          :to="link.path"
           class="text-primary-600 hover:text-primary-700 dark:text-primary-400 text-sm"
         >
-          {{ link.text }} →
+          {{ link.name }} →
         </NuxtLinkLocale>
       </div>
     </section>
@@ -91,7 +91,18 @@
 </template>
 
 <script setup lang="ts">
-defineProps<{
+const props = defineProps<{
   tool: ProcessedTool
 }>()
+
+const { getToolBySingleSlug } = useTools()
+
+// Derive article links from nextSteps + recommends (no need to maintain article.links in JSON)
+const articleLinks = computed(() => {
+  const slugs = [...(props.tool.nextSteps || []), ...(props.tool.recommends || [])]
+  return slugs
+    .map(slug => getToolBySingleSlug(slug))
+    .filter(t => t && t.slug !== props.tool.slug)
+    .map(t => ({ name: t!.name, path: t!.path }))
+})
 </script>
