@@ -1,38 +1,29 @@
 <template>
   <ResizablePanel v-model:fullscreen="fullscreen" :initial-ratio="0.5" responsive>
     <template #first>
-      <div class="h-full pr-3">
-        <JsonOutputPanel
-          v-model:view-mode="inputViewMode"
+      <div class="h-full pr-3 overflow-hidden">
+        <JsonInputEditor
+          v-model="inputJson"
           :label="tool.ui?.label_input || 'Input JSON'"
-          :content="inputJson"
-          :parsed-data="parsedInputData"
-          :error="inputError"
-          :editable="true"
-          :show-edit-actions="false"
-          :show-copy="false"
-          :show-download="false"
+          :error="error"
           placeholder='{"name": "JSON Toolbox", "version": "1.0"}'
-          empty-text="Paste your JSON here"
-          @update:content="inputJson = $event"
-          @format="onFormat"
-          @minify="onMinify"
-          @validate="onValidate"
-          @fix="onFix"
-          @paste="onPaste"
+          show-upload
+          show-load-url
+          @clear="clearInput"
         />
       </div>
     </template>
+
     <template #second>
-      <div class="h-full pl-3">
+      <div class="h-full pl-3 overflow-hidden">
         <JsonOutputPanel
           :label="tool.ui?.label_output || 'Minified JSON'"
           :content="outputJson"
           :error="error"
-          :empty-text="tool.ui?.placeholder_output || 'Minified output will appear here...'"
+          view-mode="text"
+          :show-view-toggle="false"
+          empty-text="Minified output will appear here..."
           download-filename="minified.json"
-          @copy="copyOutput"
-          @download="downloadOutput"
         />
       </div>
     </template>
@@ -74,14 +65,6 @@ defineProps<{ tool: any }>()
 
 const inputJson = ref('')
 const outputJson = ref('')
-
-const inputError = ref('')
-const inputViewMode = ref<'text' | 'rich' | 'table'>('text')
-
-const parsedInputData = computed(() => {
-  if (!inputJson.value.trim()) return null
-  try { return JSON.parse(inputJson.value) } catch { return null }
-})
 const error = ref('')
 const fullscreen = ref(false)
 
@@ -113,24 +96,14 @@ const beautifyInput = () => {
   }
 }
 
-const clearAll = () => {
+const clearInput = () => {
   outputJson.value = ''
   error.value = ''
 }
 
-const copyOutput = async () => {
-  await copyToClipboard(outputJson.value)
-}
-
-const downloadOutput = () => {
-  const blob = new Blob([outputJson.value], { type: 'application/json' })
-  const url = URL.createObjectURL(blob)
-  const link = document.createElement('a')
-  link.href = url
-  link.download = 'minified.json'
-  document.body.appendChild(link)
-  link.click()
-  document.body.removeChild(link)
-  URL.revokeObjectURL(url)
+const clearAll = () => {
+  inputJson.value = ''
+  outputJson.value = ''
+  error.value = ''
 }
 </script>

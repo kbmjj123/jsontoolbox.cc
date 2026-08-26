@@ -16,7 +16,7 @@
     "meta": {
       "title": "JSON Escape Unescape — Free Online Tool",
       "description": "Escape and unescape JSON strings online. Handle special characters, quotes, backslashes, and newlines. Free, fast, and runs in your browser. No upload required.",
-      "keywords": ["json unescape", "unescape json", "json escape", "escape json", "json string escape", "json string unescape", "json special characters", "escape special characters json", "json string formatter", "json escape tool"]
+      "keywords": ["json unescape", "unescape json", "json escape", "escape json", "json string escape", "json string unescape", "json special characters", "escape special characters json", "json escape tool"]
     },
     "features": [
       {
@@ -105,6 +105,8 @@
       ]
     },
     "ui": {
+      "label_input": "Input Text",
+      "label_output": "Output",
       "placeholder_output": "Output will appear here...",
       "btn_escape": "Escape",
       "btn_unescape": "Unescape",
@@ -113,7 +115,7 @@
   },
   "zh": {
     "name": "JSON 转义/反转义",
-    "description": "在线json转义或json反转义字符串。处理json特殊字符处理，包括引号、反斜杠和换行符。",
+    "description": "在线 JSON 转义或 JSON 反转义字符串。处理 JSON 特殊字符，包括引号、反斜杠和换行符。",
     "hero": {
       "trustHtml": "100% 本地处理，你的 JSON 数据永远不会离开浏览器。"
     },
@@ -187,12 +189,12 @@
         "answer": "JSON 反转义移除反斜杠转义字符，将转义序列转换回原始字符。"
       },
       {
-        "question": "什么时候应该转义json？",
-        "answer": "在将 JSON 字符串嵌入另一个 JSON 字符串时，或将 JSON 包含在代码、日志或配置文件中时需要转义json。"
+        "question": "什么时候应该转义 JSON？",
+        "answer": "在将 JSON 字符串嵌入另一个 JSON 字符串时，或将 JSON 包含在代码、日志或配置文件中时需要转义 JSON。"
       },
       {
-        "question": "什么时候应该反转义json？",
-        "answer": "当你有一个转义的 JSON 字符串（来自日志、API 响应或代码），需要读取实际的 JSON 内容时反转义json。"
+        "question": "什么时候应该反转义 JSON？",
+        "answer": "当你有一个转义的 JSON 字符串（来自日志、API 响应或代码），需要读取实际的 JSON 内容时反转义 JSON。"
       },
       {
         "question": "哪些特殊字符会被转义？",
@@ -200,6 +202,8 @@
       }
     ],
     "ui": {
+      "label_input": "输入文本",
+      "label_output": "输出结果",
       "placeholder_output": "输出将显示在这里...",
       "btn_escape": "转义",
       "btn_unescape": "反转义",

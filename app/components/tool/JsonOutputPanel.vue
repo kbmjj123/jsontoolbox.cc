@@ -132,7 +132,7 @@
         </button>
         <button
           v-if="showDownload"
-          @click="emit('download')"
+          @click="handleDownload"
           class="text-xs text-surface-500 hover:text-surface-700 dark:text-surface-400"
         >
           {{ $t('system.download') }}
@@ -196,7 +196,8 @@
           <div class="w-10 shrink-0 select-none text-right pr-3 pl-2 py-4 text-surface-400 dark:text-surface-500 border-r border-surface-200 dark:border-surface-700 leading-[1.5]">
             <div v-for="n in lineCount" :key="n">{{ n }}</div>
           </div>
-          <pre class="flex-1 p-4 m-0 whitespace-pre leading-[1.5] text-surface-900 dark:text-surface-100">{{ content }}</pre>
+          <pre v-if="highlight" class="flex-1 p-4 m-0 whitespace-pre leading-[1.5] text-surface-900 dark:text-surface-100" v-html="highlightedContent" />
+          <pre v-else class="flex-1 p-4 m-0 whitespace-pre leading-[1.5] text-surface-900 dark:text-surface-100">{{ content }}</pre>
         </div>
         <div v-else class="p-4">{{ emptyText }}</div>
       </div>
@@ -284,6 +285,8 @@ interface Props {
   showEditActions?: boolean
   /** Show text/rich view mode toggle */
   showViewToggle?: boolean
+  /** Syntax highlighting in text mode: '' = none, 'json' = JSON highlighting */
+  highlight?: '' | 'json'
 }
 
 const props = withDefaults(defineProps<Props>(), {
@@ -303,6 +306,7 @@ const props = withDefaults(defineProps<Props>(), {
   placeholder: '',
   showEditActions: false,
   showViewToggle: true,
+  highlight: '',
 })
 
 const emit = defineEmits<{
@@ -472,9 +476,65 @@ function toggleExpandAll() {
 
 const handleCopy = async () => {
   emit('copy')
+  // Self-contained: write to clipboard if content exists
+  if (props.content) {
+    try { await navigator.clipboard.writeText(props.content) } catch {}
+  }
   copied.value = true
-  setTimeout(() => {
-    copied.value = false
-  }, 2000)
+  setTimeout(() => { copied.value = false }, 2000)
+}
+
+const handleDownload = () => {
+  emit('download')
+  // Self-contained: create blob download if content exists
+  if (props.content) {
+    const blob = new Blob([props.content], { type: 'text/plain' })
+    const url = URL.createObjectURL(blob)
+    const a = document.createElement('a')
+    a.href = url
+    a.download = props.downloadFilename
+    document.body.appendChild(a)
+    a.click()
+    document.body.removeChild(a)
+    URL.revokeObjectURL(url)
+  }
+}
+
+// JSON syntax highlighting for text mode
+const highlightedContent = computed(() => {
+  if (!props.highlight || !props.content) return props.content
+  if (props.highlight === 'json') return highlightJson(props.content)
+  return props.content
+})
+
+function highlightJson(str: string): string {
+  // Escape HTML entities first
+  let html = str.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;')
+  // Match JSON tokens: strings (keys + values), numbers, booleans, null
+  html = html.replace(
+    /("(?:[^"\\]|\\.)*")\s*:/g,
+    '<span class="text-purple-600 dark:text-purple-400">$1</span>:'
+  )
+  // String values (not followed by colon)
+  html = html.replace(
+    /:\s*("(?:[^"\\]|\\.)*")/g,
+    ': <span class="text-green-600 dark:text-green-400">$1</span>'
+  )
+  // Standalone strings (in arrays, etc.)
+  html = html.replace(
+    /(?<![:\w])("(?:[^"\\]|\\.)*")(?!\s*:)/g,
+    '<span class="text-green-600 dark:text-green-400">$1</span>'
+  )
+  // Numbers
+  html = html.replace(
+    /\b(-?\d+\.?\d*(?:[eE][+-]?\d+)?)\b/g,
+    '<span class="text-amber-600 dark:text-amber-400">$1</span>'
+  )
+  // Booleans and null
+  html = html.replace(
+    /\b(true|false|null)\b/g,
+    '<span class="text-blue-600 dark:text-blue-400">$1</span>'
+  )
+  return html
 }
 </script>
