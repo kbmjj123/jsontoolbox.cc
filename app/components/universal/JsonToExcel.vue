@@ -27,11 +27,11 @@
         />
         <div v-if="outputJson" class="flex items-center gap-2 pt-2 pb-1">
           <button
-            @click="downloadCsv"
+            @click="downloadExcel"
             class="flex items-center gap-1.5 text-xs text-surface-500 hover:text-surface-700 dark:text-surface-400 dark:hover:text-surface-200"
           >
             <Icon name="lucide:download" class="w-3.5 h-3.5" />
-            Download CSV
+            Download Excel
           </button>
           <button
             @click="copyCsv"
@@ -48,13 +48,15 @@
     <template #toolbar-left>
       <button @click="convert" class="btn-primary px-5 py-2 text-xs">
         <Icon name="lucide:arrow-right" class="h-4 w-4 mr-1.5" />
-        {{ tool.ui?.btn_convert || 'Convert to CSV' }}
+        {{ tool.ui?.btn_convert || 'Convert to Excel' }}
       </button>
     </template>
   </ResizablePanel>
 </template>
 
 <script setup lang="ts">
+import * as XLSX from 'xlsx'
+
 const props = defineProps<{ tool: any }>()
 
 const inputJson = ref('')
@@ -67,7 +69,6 @@ const outputViewMode = ref<'text' | 'rich' | 'table'>('rich')
 const csvCopied = ref(false)
 
 const { flattenArray, getFlattenedKeys, hasNestedObjects } = useJsonFlatten()
-const { prepareForExcel, generateCsv } = useExcelCompat()
 
 const parsedData = computed(() => {
   if (!outputJson.value.trim()) return null
@@ -95,14 +96,26 @@ const convert = () => {
     let processedData = data
     if (hasNestedObjects(processedData)) processedData = flattenArray(processedData)
 
-    const headers = getFlattenedKeys([processedData[0]])
-    const rows = processedData.map(item => headers.map(key => item[key] ?? ''))
-    csvContent.value = generateCsv(headers, rows)
+    // Generate CSV for clipboard copy
+    const headers = Object.keys(processedData[0])
+    const csvRows = [headers.join(',')]
+    for (const row of processedData) {
+      csvRows.push(headers.map(h => escapeCsvField(row[h])).join(','))
+    }
+    csvContent.value = csvRows.join('\n')
     outputJson.value = JSON.stringify(processedData, null, 2)
     error.value = ''
   } catch (e) {
     error.value = (e as Error).message
   }
+}
+
+const escapeCsvField = (value: any): string => {
+  const str = String(value ?? '')
+  if (str.includes(',') || str.includes('"') || str.includes('\n')) {
+    return `"${str.replace(/"/g, '""')}"`
+  }
+  return str
 }
 
 const copyCsv = async () => {
@@ -111,13 +124,23 @@ const copyCsv = async () => {
   setTimeout(() => { csvCopied.value = false }, 2000)
 }
 
-const downloadCsv = () => {
-  const { buffer, mimeType, extension } = prepareForExcel(csvContent.value, { encoding: 'utf-8', addBom: true })
-  const blob = new Blob([buffer], { type: mimeType })
-  const url = URL.createObjectURL(blob)
-  const link = document.createElement('a')
-  link.href = url; link.download = `converted.${extension}`
-  document.body.appendChild(link); link.click(); document.body.removeChild(link); URL.revokeObjectURL(url)
+const downloadExcel = () => {
+  if (!outputJson.value) return
+  const data = JSON.parse(outputJson.value)
+  const headers = Object.keys(data[0])
+  const rows = data.map((item: Record<string, any>) => headers.map(h => item[h] ?? ''))
+
+  const ws = XLSX.utils.aoa_to_sheet([headers, ...rows])
+
+  // Auto-fit column widths
+  ws['!cols'] = headers.map((h, i) => {
+    const maxLen = Math.max(h.length, ...rows.map(r => String(r[i] ?? '').length))
+    return { wch: Math.min(maxLen + 2, 40) }
+  })
+
+  const wb = XLSX.utils.book_new()
+  XLSX.utils.book_append_sheet(wb, ws, 'Sheet1')
+  XLSX.writeFile(wb, 'converted.xlsx')
 }
 
 onMounted(() => {
