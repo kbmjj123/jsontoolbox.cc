@@ -13,7 +13,7 @@
       </div>
     </template>
     <template #second>
-      <div class="h-full pl-3">
+      <div class="h-full pl-3 flex flex-col overflow-hidden">
         <JsonInputEditor
           v-model="schemaData"
           :label="tool.ui?.label_json_schema || 'JSON Schema'"
@@ -22,6 +22,48 @@
           accept=".json"
           @clear="clearSchemaData"
         />
+
+        <!-- Validation Result (inside panel, visible in fullscreen) -->
+        <div v-if="result !== null" class="mt-2 flex flex-col flex-1 min-h-0 overflow-auto">
+          <div class="flex items-center justify-between mb-2">
+            <label class="text-sm font-bold text-surface-700 dark:text-surface-300">{{ tool.ui?.label_result || 'Validation Result' }}</label>
+            <div class="flex gap-2">
+              <button @click="copyResult" class="text-xs text-primary-600 hover:text-primary-700 dark:text-primary-400">{{ $t('system.copy') }}</button>
+              <button @click="downloadResult" class="text-xs text-surface-500 hover:text-surface-700 dark:text-surface-400">{{ $t('system.download') }}</button>
+            </div>
+          </div>
+
+          <!-- Valid -->
+          <div v-if="result.valid" class="rounded-xl border border-green-200 bg-green-50 p-4 dark:border-green-800 dark:bg-green-900/20">
+            <div class="flex items-center gap-2">
+              <Icon name="lucide:check-circle" class="h-5 w-5 text-green-500" />
+              <span class="text-sm font-bold text-green-700 dark:text-green-400">{{ tool.ui?.status_valid || 'Valid JSON' }}</span>
+            </div>
+            <p class="mt-2 text-xs text-green-600 dark:text-green-400">{{ tool.ui?.status_matches || 'The JSON data matches the schema.' }}</p>
+          </div>
+
+          <!-- Invalid -->
+          <div v-else>
+            <div class="rounded-xl border border-red-200 bg-red-50 p-4 dark:border-red-800 dark:bg-red-900/20 mb-2">
+              <div class="flex items-center gap-2">
+                <Icon name="lucide:x-circle" class="h-5 w-5 text-red-500" />
+                <span class="text-sm font-bold text-red-700 dark:text-red-400">
+                  {{ result.fieldErrors.length }} {{ result.fieldErrors.length === 1 ? 'error' : 'errors' }} found
+                </span>
+              </div>
+            </div>
+
+            <JsonErrorsPanel
+              :field-errors="result.fieldErrors"
+              @locate-field-error="onLocateFieldError"
+            />
+
+            <!-- Rich tree view with error markers -->
+            <div v-if="parsedData" class="mt-3 rounded-xl border border-surface-200 bg-surface-50 p-4 dark:border-surface-700 dark:bg-surface-800 overflow-auto">
+              <JsonTreeNode :data="parsedData" path="" />
+            </div>
+          </div>
+        </div>
       </div>
     </template>
 
@@ -38,48 +80,6 @@
       </button>
     </template>
   </ResizablePanel>
-
-  <!-- Results -->
-  <div v-if="result !== null" class="mt-4">
-    <div class="flex items-center justify-between mb-2">
-      <label class="text-sm font-bold text-surface-700 dark:text-surface-300">{{ tool.ui?.label_result || 'Validation Result' }}</label>
-      <div class="flex gap-2">
-        <button @click="copyResult" class="text-xs text-primary-600 hover:text-primary-700 dark:text-primary-400">{{ $t('system.copy') }}</button>
-        <button @click="downloadResult" class="text-xs text-surface-500 hover:text-surface-700 dark:text-surface-400">{{ $t('system.download') }}</button>
-      </div>
-    </div>
-
-    <!-- Valid -->
-    <div v-if="result.valid" class="rounded-xl border border-green-200 bg-green-50 p-4 dark:border-green-800 dark:bg-green-900/20">
-      <div class="flex items-center gap-2">
-        <Icon name="lucide:check-circle" class="h-5 w-5 text-green-500" />
-        <span class="text-sm font-bold text-green-700 dark:text-green-400">{{ tool.ui?.status_valid || 'Valid JSON' }}</span>
-      </div>
-      <p class="mt-2 text-xs text-green-600 dark:text-green-400">{{ tool.ui?.status_matches || 'The JSON data matches the schema.' }}</p>
-    </div>
-
-    <!-- Invalid -->
-    <div v-else>
-      <div class="rounded-xl border border-red-200 bg-red-50 p-4 dark:border-red-800 dark:bg-red-900/20 mb-2">
-        <div class="flex items-center gap-2">
-          <Icon name="lucide:x-circle" class="h-5 w-5 text-red-500" />
-          <span class="text-sm font-bold text-red-700 dark:text-red-400">
-            {{ result.fieldErrors.length }} {{ result.fieldErrors.length === 1 ? 'error' : 'errors' }} found
-          </span>
-        </div>
-      </div>
-
-      <JsonErrorsPanel
-        :field-errors="result.fieldErrors"
-        @locate-field-error="onLocateFieldError"
-      />
-
-      <!-- Rich tree view with error markers -->
-      <div v-if="parsedData" class="mt-3 rounded-xl border border-surface-200 bg-surface-50 p-4 dark:border-surface-700 dark:bg-surface-800 overflow-auto max-h-[400px]">
-        <JsonTreeNode :data="parsedData" path="" />
-      </div>
-    </div>
-  </div>
 
   <div v-if="schemaError" class="mt-4 rounded-lg bg-red-50 border border-red-200 p-3 text-xs text-red-700 dark:bg-red-900/30 dark:border-red-800 dark:text-red-400">
     {{ schemaError }}
