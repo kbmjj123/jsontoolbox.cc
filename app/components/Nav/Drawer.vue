@@ -75,7 +75,7 @@ const { locale, locales, setLocale } = useI18n()
 
 const navLinks = [
   { to: '/tools',   labelKey: 'app.nav.tools',   icon: 'lucide:wrench' },
-  // { to: '/blog',    labelKey: 'app.nav.blog',     icon: 'lucide:file-text' },
+  { to: '/blog',    labelKey: 'app.nav.blog',     icon: 'lucide:file-text' },
   { to: '/about',   labelKey: 'app.nav.about',    icon: 'lucide:info' },
   { to: '/contact', labelKey: 'app.nav.contact',  icon: 'lucide:mail' },
 ]

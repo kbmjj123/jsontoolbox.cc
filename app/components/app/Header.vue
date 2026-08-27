@@ -95,7 +95,7 @@ const isScrolled = ref(false)
 
 const navLinks = [
   { to: '/tools',   labelKey: 'app.nav.tools' },
-  // { to: '/blog',    labelKey: 'app.nav.blog' },
+  { to: '/blog',    labelKey: 'app.nav.blog' },
   { to: '/about',   labelKey: 'app.nav.about' },
   { to: '/contact', labelKey: 'app.nav.contact' },
 ]
