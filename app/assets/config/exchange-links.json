@@ -16,5 +16,14 @@
 		"imageWidth": 150,
 		"imageHeight": 54,
 		"alt": "Featured on Yo.directory"
-	}
+	},
+	{
+		"name": "Twelve Tools",
+		"url": "https://twelve.tools",
+		"type": "image",
+		"imageUrl": "https://twelve.tools/badge2-dark.svg",
+		"imageWidth": 150,
+		"imageHeight": 54,
+		"alt": "Featured on Twelve Tools"
+	},
 ]
