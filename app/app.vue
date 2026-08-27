@@ -36,7 +36,8 @@
       ...verificationMeta.value,
       ...(i18nHead.value.meta || []),
       { name: 'theme-color', content: themeColor.value },
-      { name: 'referrer', content: 'no-referrer-when-downgrade' }
+      { name: 'referrer', content: 'no-referrer-when-downgrade' },
+      { name: 'directree-verify', content: '61085737a812f3b1dd2a245d41727c05' }
     ],
     script: [...customScripts.value],
   })))
