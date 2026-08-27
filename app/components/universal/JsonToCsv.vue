@@ -25,23 +25,6 @@
           empty-text="JSON output will appear here"
           class="flex-1 min-h-0"
         />
-        <div v-if="outputCsv" class="flex items-center gap-2 pt-2 pb-1">
-          <button
-            @click="downloadCsv"
-            class="flex items-center gap-1.5 text-xs text-surface-500 hover:text-surface-700 dark:text-surface-400 dark:hover:text-surface-200"
-          >
-            <Icon name="lucide:download" class="w-3.5 h-3.5" />
-            Download CSV
-          </button>
-          <button
-            @click="copyCsv"
-            class="flex items-center gap-1.5 text-xs text-surface-500 hover:text-surface-700 dark:text-surface-400 dark:hover:text-surface-200"
-          >
-            <Icon name="lucide:check" v-if="csvCopied" class="w-3.5 h-3.5 text-green-500" />
-            <Icon name="lucide:clipboard" v-else class="w-3.5 h-3.5" />
-            {{ csvCopied ? 'Copied' : 'Copy CSV' }}
-          </button>
-        </div>
       </div>
     </template>
 
@@ -50,6 +33,25 @@
         <Icon name="lucide:arrow-right" class="h-4 w-4 mr-1.5" />
         {{ tool.ui?.btn_convert || 'Convert to CSV' }}
       </button>
+    </template>
+
+    <template #toolbar-right>
+      <div class="flex items-center gap-2 ml-auto">
+        <button
+          v-if="outputCsv"
+          @click="copyCsv"
+          class="text-xs text-primary-600 hover:text-primary-700 dark:text-primary-400"
+        >
+          {{ csvCopied ? '✓ Copied!' : $t('system.copy') }}
+        </button>
+        <button
+          v-if="outputCsv"
+          @click="downloadCsv"
+          class="text-xs text-surface-500 hover:text-surface-700 dark:text-surface-400"
+        >
+          {{ $t('system.download') }}
+        </button>
+      </div>
     </template>
   </ResizablePanel>
 </template>
