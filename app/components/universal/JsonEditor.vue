@@ -20,32 +20,13 @@
           :error-copied="errorCopied"
           show-upload
           show-load-url
+          example-slug="json-editor"
           @clear="clearAll"
           @paste="onInputPaste"
           @locate-error="onLocateFromPanel"
           @copy-error="copyErrorMessage"
-        >
-          <template #actions>
-            <div v-if="hasExamples" ref="exampleMenuRef" class="relative">
-              <button
-                @click="showExampleMenu = !showExampleMenu"
-                class="text-xs text-primary-600 hover:text-primary-700 dark:text-primary-400"
-              >
-                {{ $t('system.example') }}
-              </button>
-              <div v-if="showExampleMenu" class="absolute left-0 top-full mt-1 bg-white dark:bg-surface-800 border border-surface-200 dark:border-surface-700 rounded-lg shadow-lg p-1 z-50 min-w-[140px]">
-                <button
-                  v-for="ex in examples"
-                  :key="ex.id"
-                  @click="loadExampleById(ex.id); showExampleMenu = false"
-                  class="w-full text-left px-3 py-1.5 text-xs hover:bg-surface-100 dark:hover:bg-surface-700 rounded"
-                >
-                  {{ getExampleLabel(ex) }}
-                </button>
-              </div>
-            </div>
-          </template>
-        </JsonInputEditor>
+          @example-loaded="onExampleLoaded"
+        />
       </div>
     </template>
 
@@ -201,8 +182,6 @@ const showShareMenu = ref(false)
 const shareCopied = ref(false)
 const copyJustCopied = ref(false)
 const shareMenuRef = ref<HTMLElement>()
-const exampleMenuRef = ref<HTMLElement>()
-
 // ── Input editor ref & source map ─────────────────────────────
 const inputEditorRef = ref<InstanceType<typeof import('~/components/tool/JsonInputEditor.vue').default>>()
 const sourceMap = ref<Map<string, number>>(new Map())
@@ -250,22 +229,9 @@ function computeEndLine(path: string): number {
 
 const { repairJson, getJsonError } = useJsonFixer()
 const { generateShareUrl, copyShareUrl, shareToSocial } = useShareJson()
-const { examples, hasExamples, getLabel: getExampleLabel, loadById } = useToolExample('json-editor')
 
-const showExampleMenu = ref(false)
-
-const loadDefaultExample = () => {
-  const ex = examples.value[0]
-  if (ex) {
-    inputJson.value = ex.input
-    nextTick(() => formatJson())
-  }
-}
-
-const loadExampleById = (id: string) => {
-  loadById(id, inputJson)
-  nextTick(() => formatJson())
-}
+const loadDefaultExample = () => { inputEditorRef.value?.loadDefaultExample() }
+const onExampleLoaded = () => { nextTick(() => formatJson()) }
 
 const parsedData = computed(() => {
   try {
@@ -456,9 +422,6 @@ const handleClickOutside = (e: MouseEvent) => {
   const target = e.target as HTMLElement
   if (shareMenuRef.value && !shareMenuRef.value.contains(target)) {
     showShareMenu.value = false
-  }
-  if (exampleMenuRef.value && !exampleMenuRef.value.contains(target)) {
-    showExampleMenu.value = false
   }
 }
 

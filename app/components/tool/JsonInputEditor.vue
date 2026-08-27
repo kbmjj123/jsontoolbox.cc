@@ -243,6 +243,7 @@ const emit = defineEmits<{
   loadUrl: [text: string]
   locateError: []
   copyError: []
+  'example-loaded': [input: string]
 }>()
 
 // Example dropdown (built-in when exampleSlug is provided)
@@ -251,10 +252,13 @@ const showExampleMenu = ref(false)
 const exampleMenuRef = ref<HTMLElement>()
 const onExampleSelect = (id: string) => {
   const ex = examples.value.find(e => e.id === id)
-  if (ex) emit('update:modelValue', ex.input)
+  if (ex) { emit('update:modelValue', ex.input); emit('example-loaded', ex.input) }
   showExampleMenu.value = false
 }
-const loadDefaultExample = () => { loadDefault({ get value() { return props.modelValue }, set value(v: string) { emit('update:modelValue', v) } }) }
+const loadDefaultExample = () => {
+  const ex = examples.value[0]
+  if (ex) { emit('update:modelValue', ex.input); emit('example-loaded', ex.input) }
+}
 const handleClickOutside = (e: MouseEvent) => {
   if (exampleMenuRef.value && !exampleMenuRef.value.contains(e.target as HTMLElement)) showExampleMenu.value = false
 }
