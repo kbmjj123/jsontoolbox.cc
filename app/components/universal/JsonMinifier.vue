@@ -3,10 +3,12 @@
     <template #first>
       <div class="h-full pr-3 overflow-hidden">
         <JsonInputEditor
+          ref="inputEditorRef"
           v-model="inputJson"
           :label="tool.ui?.label_input || 'Input JSON'"
           :error="error"
           placeholder='{"name": "JSON Toolbox", "version": "1.0"}'
+          example-slug="json-minifier"
           show-upload
           show-load-url
           @clear="clearInput"
@@ -67,6 +69,7 @@ const inputJson = ref('')
 const outputJson = ref('')
 const error = ref('')
 const fullscreen = ref(false)
+const inputEditorRef = ref()
 
 const inputSize = computed(() => inputJson.value.length)
 const outputSize = computed(() => outputJson.value.length)
@@ -106,4 +109,6 @@ const clearAll = () => {
   outputJson.value = ''
   error.value = ''
 }
+
+onMounted(() => { inputEditorRef.value?.loadDefaultExample() })
 </script>

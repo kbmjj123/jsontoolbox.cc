@@ -4,5 +4,17 @@
     "label_en": "Formatted JSON",
     "label_zh": "格式化 JSON",
     "input": "{\n  \"name\": \"JSON Toolbox\",\n  \"version\": \"1.0.0\",\n  \"features\": [\n    \"format\",\n    \"validate\",\n    \"minify\"\n  ],\n  \"config\": {\n    \"indent\": 2,\n    \"localOnly\": true\n  }\n}"
+  },
+  {
+    "id": "api-response",
+    "label_en": "API Response",
+    "label_zh": "API 响应",
+    "input": "{\n  \"status\": \"success\",\n  \"data\": {\n    \"users\": [\n      { \"id\": 1, \"name\": \"Alice\", \"email\": \"alice@example.com\" },\n      { \"id\": 2, \"name\": \"Bob\", \"email\": \"bob@example.com\" }\n    ],\n    \"total\": 2,\n    \"page\": 1\n  },\n  \"timestamp\": \"2026-08-26T12:00:00Z\"\n}"
+  },
+  {
+    "id": "nested-config",
+    "label_en": "Deep Nested Config",
+    "label_zh": "深层嵌套配置",
+    "input": "{\n  \"server\": {\n    \"host\": \"0.0.0.0\",\n    \"port\": 3000,\n    \"ssl\": {\n      \"enabled\": true,\n      \"cert\": \"/etc/ssl/cert.pem\",\n      \"key\": \"/etc/ssl/key.pem\"\n    },\n    \"cors\": {\n      \"origins\": [\"https://example.com\", \"https://app.example.com\"],\n      \"methods\": [\"GET\", \"POST\", \"PUT\", \"DELETE\"]\n    }\n  },\n  \"database\": {\n    \"primary\": { \"host\": \"db-primary.internal\", \"port\": 5432, \"name\": \"myapp\" },\n    \"replica\": { \"host\": \"db-replica.internal\", \"port\": 5432, \"name\": \"myapp\" }\n  }\n}"
   }
 ]

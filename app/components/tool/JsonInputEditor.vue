@@ -4,6 +4,21 @@
     <div v-if="showHeader" class="flex items-center justify-between mb-2">
       <label class="text-sm font-bold text-surface-700 dark:text-surface-300">{{ label }}</label>
       <div class="flex gap-2 items-center">
+        <!-- Built-in example dropdown -->
+        <div v-if="hasExamples" ref="exampleMenuRef" class="relative">
+          <button @click="showExampleMenu = !showExampleMenu"
+            class="text-xs text-primary-600 hover:text-primary-700 dark:text-primary-400">
+            {{ $t('system.example') }}
+          </button>
+          <div v-if="showExampleMenu"
+            class="absolute right-0 top-full mt-1 bg-white dark:bg-surface-800 border border-surface-200 dark:border-surface-700 rounded-lg shadow-lg p-1 z-50 min-w-[140px]">
+            <button v-for="ex in examples" :key="ex.id"
+              @click="onExampleSelect(ex.id)"
+              class="w-full text-left px-3 py-1.5 text-xs hover:bg-surface-100 dark:hover:bg-surface-700 rounded">
+              {{ getLabel(ex) }}
+            </button>
+          </div>
+        </div>
         <slot name="actions" />
         <button
           v-if="showLoadUrl"
@@ -199,6 +214,8 @@ interface Props {
   error?: string
   /** Whether error was just copied (shows feedback) */
   errorCopied?: boolean
+  /** Tool slug for loading examples (e.g. 'json-minifier') */
+  exampleSlug?: string
 }
 
 const props = withDefaults(defineProps<Props>(), {
@@ -215,6 +232,7 @@ const props = withDefaults(defineProps<Props>(), {
   friendlyMessage: '',
   error: '',
   errorCopied: false,
+  exampleSlug: '',
 })
 
 const emit = defineEmits<{
@@ -226,6 +244,22 @@ const emit = defineEmits<{
   locateError: []
   copyError: []
 }>()
+
+// Example dropdown (built-in when exampleSlug is provided)
+const { examples, hasExamples, getLabel, loadById, loadDefault } = useToolExample(props.exampleSlug)
+const showExampleMenu = ref(false)
+const exampleMenuRef = ref<HTMLElement>()
+const onExampleSelect = (id: string) => {
+  const ex = examples.value.find(e => e.id === id)
+  if (ex) emit('update:modelValue', ex.input)
+  showExampleMenu.value = false
+}
+const loadDefaultExample = () => { loadDefault({ get value() { return props.modelValue }, set value(v: string) { emit('update:modelValue', v) } }) }
+const handleClickOutside = (e: MouseEvent) => {
+  if (exampleMenuRef.value && !exampleMenuRef.value.contains(e.target as HTMLElement)) showExampleMenu.value = false
+}
+onMounted(() => { document.addEventListener('click', handleClickOutside) })
+onUnmounted(() => { document.removeEventListener('click', handleClickOutside) })
 
 const gutterRef = ref<HTMLDivElement>()
 const textareaRef = ref<HTMLTextAreaElement>()
@@ -466,7 +500,7 @@ const onScrollWithHighlight = () => {
   updateHighlightPosition()
 }
 
-defineExpose({ scrollToLine, highlightLine, highlightLines })
+defineExpose({ scrollToLine, highlightLine, highlightLines, loadDefaultExample })
 
 const handleClear = () => {
   emit('update:modelValue', '')
