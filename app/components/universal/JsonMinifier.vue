@@ -15,7 +15,7 @@
     </template>
 
     <template #second>
-      <div class="h-full pl-3 overflow-hidden">
+      <div class="h-full pl-3 overflow-hidden flex flex-col">
         <JsonOutputPanel
           :label="tool.ui?.label_output || 'Minified JSON'"
           :content="outputJson"
