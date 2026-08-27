@@ -10,7 +10,24 @@
           show-upload
           show-load-url
           @clear="clearInput"
-        />
+        >
+          <template #actions>
+            <div v-if="hasExamples" ref="exampleMenuRef" class="relative">
+              <button @click="showExampleMenu = !showExampleMenu"
+                class="text-xs text-primary-600 hover:text-primary-700 dark:text-primary-400">
+                {{ $t('system.example') }}
+              </button>
+              <div v-if="showExampleMenu"
+                class="absolute right-0 top-full mt-1 bg-white dark:bg-surface-800 border border-surface-200 dark:border-surface-700 rounded-lg shadow-lg p-1 z-50 min-w-[140px]">
+                <button v-for="ex in examples" :key="ex.id"
+                  @click="loadExampleById(ex.id); showExampleMenu = false"
+                  class="w-full text-left px-3 py-1.5 text-xs hover:bg-surface-100 dark:hover:bg-surface-700 rounded">
+                  {{ getExampleLabel(ex) }}
+                </button>
+              </div>
+            </div>
+          </template>
+        </JsonInputEditor>
       </div>
     </template>
 
@@ -67,6 +84,10 @@ const inputJson = ref('')
 const outputJson = ref('')
 const error = ref('')
 const fullscreen = ref(false)
+const { examples, hasExamples, getLabel: getExampleLabel, loadById, loadDefault } = useToolExample('json-minifier')
+const showExampleMenu = ref(false)
+const exampleMenuRef = ref<HTMLElement>()
+const loadExampleById = (id: string) => { loadById(id, inputJson) }
 
 const inputSize = computed(() => inputJson.value.length)
 const outputSize = computed(() => outputJson.value.length)
@@ -106,4 +127,10 @@ const clearAll = () => {
   outputJson.value = ''
   error.value = ''
 }
+
+const handleClickOutside = (e: MouseEvent) => {
+  if (exampleMenuRef.value && !exampleMenuRef.value.contains(e.target as HTMLElement)) showExampleMenu.value = false
+}
+onMounted(() => { document.addEventListener('click', handleClickOutside); loadDefault(inputJson) })
+onUnmounted(() => { document.removeEventListener('click', handleClickOutside) })
 </script>
