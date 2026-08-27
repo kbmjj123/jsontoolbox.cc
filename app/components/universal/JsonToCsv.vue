@@ -1,25 +1,14 @@
 <template>
   <ResizablePanel v-model:fullscreen="fullscreen" :initial-ratio="0.5" responsive>
     <template #first>
-      <div class="h-full pr-3">
-        <JsonOutputPanel
-          v-model:view-mode="inputViewMode"
+      <div class="h-full pr-3 flex flex-col">
+        <JsonInputEditor
+          ref="inputEditorRef"
+          v-model="inputJson"
           :label="tool.ui?.label_input || 'Input JSON Array'"
-          :content="inputJson"
-          :parsed-data="parsedInputData"
-          :error="inputError"
-          :editable="true"
-          :show-edit-actions="true"
-          :show-copy="false"
-          :show-download="false"
           placeholder='[{"name": "Alice", "age": 30}, {"name": "Bob", "age": 25}]'
-          empty-text="Paste your JSON array here"
-          @update:content="inputJson = $event"
-          @format="onFormat"
-          @minify="onMinify"
-          @validate="onValidate"
-          @fix="onFix"
-          @paste="onPaste"
+          example-slug="json-to-csv"
+          class="flex-1 min-h-0"
         />
       </div>
     </template>
@@ -32,6 +21,7 @@
           empty-text="Result will appear here"
           download-filename="converted.csv"
           :show-download="true"
+          :show-view-toggle="false"
           @copy="copyOutput"
           @download="downloadCsv"
         />
@@ -43,22 +33,6 @@
         <Icon name="lucide:arrow-right" class="h-4 w-4 mr-1.5" />
         {{ tool.ui?.btn_convert || 'Convert to CSV' }}
       </button>
-      <button @click="clearAll" class="rounded-xl border border-surface-200 bg-white px-4 py-2 text-xs font-bold text-surface-700 hover:bg-surface-50 dark:border-surface-700 dark:bg-surface-800 dark:text-surface-300 dark:hover:bg-surface-700">
-        {{ $t('system.clearAll') }}
-      </button>
-
-      <label class="flex items-center gap-1.5 cursor-pointer select-none">
-        <input type="checkbox" v-model="flattenNested" class="w-3.5 h-3.5 rounded border-surface-300 text-primary-600 focus:ring-primary-500" />
-        <span class="text-xs text-surface-600 dark:text-surface-400">Flatten nested</span>
-      </label>
-
-      <div class="flex items-center gap-2">
-        <label class="text-xs text-surface-600 dark:text-surface-400">Encoding:</label>
-        <select v-model="encoding" class="rounded-lg border border-surface-200 bg-white px-2 py-1 text-xs dark:border-surface-700 dark:bg-surface-800">
-          <option value="utf-8">UTF-8</option>
-          <option value="gbk">GBK (Excel)</option>
-        </select>
-      </div>
 
       <template v-if="parsedData.length > 0">
         <button @click="showPreview = !showPreview" class="text-xs text-primary-600 hover:text-primary-700 dark:text-primary-400">
@@ -115,45 +89,14 @@
 <script setup lang="ts">
 const props = defineProps<{ tool: any }>()
 
-const { formatJson, minifyJson, validateJson, fixJson } = useJsonEditor()
-
 const inputJson = ref('')
 const outputCsv = ref('')
 const error = ref('')
-const inputError = ref('')
-const inputViewMode = ref<'text' | 'rich' | 'table'>('text')
-
-const parsedInputData = computed(() => {
-  if (!inputJson.value.trim()) return null
-  try { return JSON.parse(inputJson.value) } catch { return null }
-})
-
-const onFormat = () => {
-  const result = formatJson(inputJson.value)
-  if (result.output) { inputJson.value = result.output; inputError.value = '' }
-  else { inputError.value = result.error }
-}
-const onMinify = () => {
-  const result = minifyJson(inputJson.value)
-  if (result.output) { inputJson.value = result.output; inputError.value = '' }
-  else { inputError.value = result.error }
-}
-const onValidate = () => {
-  const result = validateJson(inputJson.value)
-  inputError.value = result.error
-}
-const onFix = () => {
-  const result = fixJson(inputJson.value)
-  if (result.fixed) { inputJson.value = result.fixed; inputError.value = '' }
-  else { inputError.value = result.error }
-}
-const onPaste = () => { nextTick(() => onFormat()) }
-const flattenNested = ref(true)
-const encoding = ref<'utf-8' | 'gbk'>('utf-8')
+const fullscreen = ref(false)
+const inputEditorRef = ref()
 const showPreview = ref(false)
 const showFieldSelector = ref(false)
 const selectedFields = ref<string[]>([])
-const fullscreen = ref(false)
 
 const { flattenArray, getFlattenedKeys, hasNestedObjects } = useJsonFlatten()
 const { toTableData, truncateCell } = useTablePreview()
@@ -171,33 +114,40 @@ const tableData = computed(() => {
   if (parsedData.value.length === 0) return { headers: [], rows: [], totalRows: 0 }
   let data = parsedData.value
   if (selectedFields.value.length > 0) data = filterByFields(data, selectedFields.value)
-  if (flattenNested.value && hasNestedObjects(data)) data = flattenArray(data)
   return toTableData(data)
 })
 
 const convert = () => {
+  error.value = ''
+  outputCsv.value = ''
+  parsedData.value = []
+
+  if (!inputJson.value.trim()) {
+    error.value = props.tool.ui?.error_no_data || 'No data to convert'
+    return
+  }
+
   try {
     const data = JSON.parse(inputJson.value)
     if (!Array.isArray(data)) {
       error.value = props.tool.ui?.error_not_array || 'Input must be a JSON array'
-      outputCsv.value = ''; parsedData.value = []; return
+      return
     }
-    if (data.length === 0) { outputCsv.value = ''; error.value = ''; parsedData.value = []; return }
+    if (data.length === 0) { outputCsv.value = ''; error.value = ''; return }
     parsedData.value = data
     let processedData = data
     if (selectedFields.value.length > 0) processedData = filterByFields(data, selectedFields.value)
-    if (flattenNested.value && hasNestedObjects(processedData)) processedData = flattenArray(processedData)
+    if (hasNestedObjects(processedData)) processedData = flattenArray(processedData)
     const headers = getFlattenedKeys([processedData[0]])
     const rows = processedData.map(item => headers.map(key => item[key] ?? ''))
     outputCsv.value = generateCsv(headers, rows)
     error.value = ''
     showPreview.value = true
   } catch (e) {
-    error.value = (e as Error).message; outputCsv.value = ''; parsedData.value = []
+    error.value = (e as Error).message
   }
 }
 
-const clearAll = () => { outputCsv.value = ''; error.value = ''; parsedData.value = []; selectedFields.value = [] }
 const selectAllFields = () => { selectedFields.value = [...availableFields.value] }
 const deselectAllFields = () => { selectedFields.value = [] }
 
@@ -206,11 +156,15 @@ const copyOutput = async () => {
 }
 
 const downloadCsv = () => {
-  const { buffer, mimeType, extension } = prepareForExcel(outputCsv.value, { encoding: encoding.value, addBom: encoding.value === 'utf-8' })
+  const { buffer, mimeType, extension } = prepareForExcel(outputCsv.value, { encoding: 'utf-8', addBom: true })
   const blob = new Blob([buffer], { type: mimeType })
   const url = URL.createObjectURL(blob)
   const link = document.createElement('a')
   link.href = url; link.download = `converted.${extension}`
   document.body.appendChild(link); link.click(); document.body.removeChild(link); URL.revokeObjectURL(url)
 }
+
+onMounted(() => {
+  inputEditorRef.value?.loadDefaultExample()
+})
 </script>
