@@ -1,0 +1,8 @@
+[
+  {
+    "id": "users",
+    "label_en": "User List",
+    "label_zh": "用户列表",
+    "input": "[{\"name\":\"Alice\",\"age\":30,\"email\":\"alice@example.com\",\"address\":{\"city\":\"New York\",\"country\":\"USA\"}},{\"name\":\"Bob\",\"age\":25,\"email\":\"bob@example.com\",\"address\":{\"city\":\"San Francisco\",\"country\":\"USA\"}},{\"name\":\"Charlie\",\"age\":35,\"email\":\"charlie@example.com\",\"address\":{\"city\":\"London\",\"country\":\"UK\"}}]"
+  }
+]
