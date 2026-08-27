@@ -4,6 +4,7 @@
     class="flex overflow-hidden flex-col transition-all duration-300 ease-in-out"
     :class="[
       isFullscreen ? 'fixed inset-0 z-50 bg-white dark:bg-surface-900 p-4 flex-col' : '',
+      responsive && isMobile ? 'h-[calc(100dvh-4rem)]' : '',
       containerClass
     ]"
   >
@@ -33,9 +34,9 @@
     </div>
 
     <!-- Resizable panels -->
-    <div class="flex flex-1 min-h-[25rem] overflow-hidden" :class="[effectiveDirection === 'horizontal' ? 'flex-row' : 'flex-col', isFullscreen || isMobile ? '' : 'min-h-[25rem]', isFullscreen ? '' : 'max-h-[25rem]']">
+    <div class="flex flex-1 overflow-hidden" :class="[effectiveDirection === 'horizontal' ? 'flex-row' : 'flex-col', isFullscreen ? '' : 'min-h-[25rem] max-h-[25rem]', isMobile ? '!min-h-0 !max-h-none' : '']">
       <!-- Left / Top panel -->
-      <div :style="firstStyle" class="min-w-0 min-h-0 overflow-hidden">
+      <div :style="firstStyle" class="min-w-0 min-h-0 overflow-hidden" :class="isMobile ? 'h-1/2' : ''">
         <slot name="first" />
       </div>
 
@@ -57,7 +58,7 @@
       </div>
 
       <!-- Right / Bottom panel -->
-      <div class="min-w-0 min-h-0 flex-1 overflow-hidden">
+      <div class="min-w-0 min-h-0 overflow-hidden" :class="isMobile ? 'h-1/2' : 'flex-1'">
         <slot name="second" />
       </div>
     </div>
