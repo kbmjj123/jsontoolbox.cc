@@ -13,7 +13,7 @@
       </div>
     </template>
     <template #second>
-      <div class="h-full pl-3">
+      <div class="h-full pl-3 flex flex-col">
         <JsonOutputPanel
           v-model:view-mode="outputViewMode"
           :label="tool.ui?.label_output || 'JSON Output'"
