@@ -23,8 +23,8 @@
           @clear="clearSchemaData"
         />
 
-        <!-- Validation Result (visible only in fullscreen) -->
-        <div v-if="fullscreen && result !== null" class="mt-2 flex flex-col flex-1 min-h-0 overflow-auto rounded-xl border" :class="result.valid ? 'border-green-200 dark:border-green-800' : 'border-red-200 dark:border-red-800'">
+        <!-- Validation Result -->
+        <div v-if="result !== null" class="mt-2 flex flex-col flex-1 min-h-0 overflow-auto rounded-xl border" :class="result.valid ? 'border-green-200 dark:border-green-800' : 'border-red-200 dark:border-red-800'">
           <div class="flex items-center justify-between px-4 py-2 border-b" :class="result.valid ? 'border-green-200 dark:border-green-800' : 'border-red-200 dark:border-red-800'">
             <label class="text-sm font-bold text-surface-700 dark:text-surface-300">{{ tool.ui?.label_result || 'Validation Result' }}</label>
             <div class="flex gap-2">
@@ -54,6 +54,11 @@
             </div>
           </div>
         </div>
+
+        <!-- Schema Error -->
+        <div v-if="schemaError" class="mt-2 rounded-lg bg-red-50 border border-red-200 p-3 text-xs text-red-700 dark:bg-red-900/30 dark:border-red-800 dark:text-red-400">
+          {{ schemaError }}
+        </div>
       </div>
     </template>
 
@@ -70,42 +75,6 @@
       </button>
     </template>
   </ResizablePanel>
-
-  <!-- Validation Result (hidden in fullscreen, shown inside panel instead) -->
-  <div v-if="!fullscreen && result !== null" class="mt-4 rounded-xl border overflow-hidden" :class="result.valid ? 'border-green-200 dark:border-green-800' : 'border-red-200 dark:border-red-800'">
-    <div class="flex items-center justify-between px-4 py-2 border-b" :class="result.valid ? 'border-green-200 dark:border-green-800' : 'border-red-200 dark:border-red-800'">
-      <label class="text-sm font-bold text-surface-700 dark:text-surface-300">{{ tool.ui?.label_result || 'Validation Result' }}</label>
-      <div class="flex gap-2">
-        <button @click="copyResult" class="text-xs text-primary-600 hover:text-primary-700 dark:text-primary-400">{{ $t('system.copy') }}</button>
-        <button @click="downloadResult" class="text-xs text-surface-500 hover:text-surface-700 dark:text-surface-400">{{ $t('system.download') }}</button>
-      </div>
-    </div>
-    <!-- Valid -->
-    <div v-if="result.valid" class="flex flex-col items-center justify-center gap-3 p-6 text-center">
-      <Icon name="lucide:check-circle" class="w-8 h-8 text-green-400 dark:text-green-500" />
-      <div>
-        <p class="text-sm font-medium text-green-700 dark:text-green-400">{{ tool.ui?.status_valid || 'Valid JSON' }}</p>
-        <p class="text-xs text-surface-500 dark:text-surface-400 mt-1">{{ tool.ui?.status_matches || 'The JSON data matches the schema.' }}</p>
-      </div>
-    </div>
-    <!-- Invalid -->
-    <div v-else>
-      <div class="flex flex-col items-center justify-center gap-2 p-4 text-center">
-        <Icon name="lucide:x-circle" class="w-8 h-8 text-red-400 dark:text-red-500" />
-        <p class="text-sm font-medium text-red-700 dark:text-red-400">{{ result.fieldErrors.length }} {{ result.fieldErrors.length === 1 ? 'error' : 'errors' }} found</p>
-      </div>
-      <div class="border-t border-red-200 dark:border-red-800">
-        <JsonErrorsPanel :field-errors="result.fieldErrors" @locate-field-error="onLocateFieldError" />
-        <div v-if="parsedData" class="p-4">
-          <JsonTreeNode :data="parsedData" path="" />
-        </div>
-      </div>
-    </div>
-  </div>
-
-  <div v-if="!fullscreen && schemaError" class="mt-4 rounded-lg bg-red-50 border border-red-200 p-3 text-xs text-red-700 dark:bg-red-900/30 dark:border-red-800 dark:text-red-400">
-    {{ schemaError }}
-  </div>
 </template>
 
 <script setup lang="ts">
@@ -207,12 +176,12 @@ const downloadResult = () => {
   const content = JSON.stringify({ valid: result.value.valid, errors: result.value.fieldErrors, timestamp: new Date().toISOString() }, null, 2)
   const blob = new Blob([content], { type: 'application/json' })
   const url = URL.createObjectURL(blob)
-  const link = document.createElement('a')
-  link.href = url
-  link.download = 'validation-report.json'
-  document.body.appendChild(link)
-  link.click()
-  document.body.removeChild(link)
+  const a = document.createElement('a')
+  a.href = url
+  a.download = 'validation-result.json'
+  document.body.appendChild(a)
+  a.click()
+  document.body.removeChild(a)
   URL.revokeObjectURL(url)
 }
 </script>
