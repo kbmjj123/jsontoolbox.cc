@@ -25,5 +25,14 @@
 		"imageWidth": 150,
 		"imageHeight": 54,
 		"alt": "Featured on Twelve Tools"
+	},
+	{
+		"name": "LaunchClash",
+		"url": "https://launchclash.com/product/jsontoolbox",
+		"type": "image",
+		"imageUrl": "https://launchclash.com/assets/images/badge-dark.png",
+		"imageWidth": 150,
+		"imageHeight": 54,
+		"alt": "Featured on LaunchClash"
 	}
 ]
