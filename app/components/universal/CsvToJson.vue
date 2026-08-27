@@ -1,27 +1,30 @@
 <template>
   <ResizablePanel v-model:fullscreen="fullscreen" :initial-ratio="0.5" responsive>
     <template #first>
-      <div class="h-full pr-3">
+      <div class="h-full pr-3 flex flex-col">
         <JsonInputEditor
+          ref="inputEditorRef"
           v-model="inputCsv"
           :label="tool.ui?.label_input || 'Input CSV'"
-          placeholder="name,age,city&#10;Alice,30,New York&#10;Bob,25,San Francisco"
-          show-upload
-          show-load-url
-          accept=".csv,.tsv,.txt"
-          @clear="clearAll"
+          :placeholder="tool.ui?.placeholder_input || 'Paste CSV data here...'"
+          example-slug="csv-to-json"
+          class="flex-1 min-h-0"
         />
       </div>
     </template>
+
     <template #second>
-      <div class="h-full pl-3">
+      <div class="h-full pl-3 flex flex-col">
         <JsonOutputPanel
-          :label="tool.ui?.label_output ?? 'JSON Output'"
+          v-model:view-mode="outputViewMode"
+          :label="tool.ui?.label_output || 'JSON Output'"
           :content="outputJson"
+          :parsed-data="parsedOutputData"
           :error="error"
-          :empty-text="tool.ui?.placeholder_output ?? 'JSON output will appear here...'"
-          @copy="copyOutput"
-          @download="downloadOutput"
+          view-mode="rich"
+          :highlight="'json'"
+          empty-text="JSON output will appear here"
+          download-filename="converted.json"
         />
       </div>
     </template>
@@ -31,34 +34,27 @@
         <Icon name="lucide:arrow-right" class="h-4 w-4 mr-1.5" />
         {{ tool.ui?.btn_convert || 'Convert to JSON' }}
       </button>
-      <button @click="loadExample" class="text-xs text-primary-600 hover:text-primary-700 dark:text-primary-400">
-        {{ tool.ui?.btn_example || 'Load Example' }}
-      </button>
-      <button @click="clearAll" class="rounded-xl border border-surface-200 bg-white px-4 py-2 text-xs font-bold text-surface-700 hover:bg-surface-50 dark:border-surface-700 dark:bg-surface-800 dark:text-surface-300 dark:hover:bg-surface-700">
-        {{ $t('system.clearAll') }}
-      </button>
 
       <div class="flex items-center gap-2">
-        <label class="text-xs font-bold text-surface-600 dark:text-surface-400">{{ tool.ui?.option_delimiter || 'Delimiter:' }}</label>
+        <label class="text-xs text-surface-600 dark:text-surface-400">{{ tool.ui?.option_delimiter || 'Delimiter:' }}</label>
         <select v-model="delimiter" class="rounded-lg border border-surface-200 bg-white px-2 py-1 text-xs dark:border-surface-700 dark:bg-surface-800">
+          <option value="auto">Auto</option>
           <option value=",">Comma (,)</option>
           <option value=";">Semicolon (;)</option>
-          <option value="&#9;">Tab</option>
+          <option value="	">Tab</option>
           <option value="|">Pipe (|)</option>
-          <option value="auto">Auto-detect</option>
         </select>
       </div>
-      <div class="flex items-center gap-2">
-        <input type="checkbox" v-model="hasHeader" id="header" class="rounded border-surface-300">
-        <label for="header" class="text-xs font-bold text-surface-600 dark:text-surface-400">{{ tool.ui?.option_has_header || 'First row is header' }}</label>
-      </div>
-      <div class="flex items-center gap-2">
-        <label class="text-xs font-bold text-surface-600 dark:text-surface-400">{{ tool.ui?.option_indent || 'Indent:' }}</label>
-        <select v-model="indent" class="rounded-lg border border-surface-200 bg-white px-2 py-1 text-xs dark:border-surface-700 dark:bg-surface-800">
-          <option :value="2">2 spaces</option>
-          <option :value="4">4 spaces</option>
-        </select>
-      </div>
+
+      <label class="flex items-center gap-1.5 cursor-pointer select-none">
+        <input type="checkbox" v-model="hasHeader" class="w-3.5 h-3.5 rounded border-surface-300 text-primary-600 focus:ring-primary-500" />
+        <span class="text-xs text-surface-600 dark:text-surface-400">{{ tool.ui?.option_has_header || 'First row is header' }}</span>
+      </label>
+
+      <label class="flex items-center gap-1.5 cursor-pointer select-none">
+        <input type="checkbox" v-model="typeInference" class="w-3.5 h-3.5 rounded border-surface-300 text-primary-600 focus:ring-primary-500" />
+        <span class="text-xs text-surface-600 dark:text-surface-400">Type inference</span>
+      </label>
     </template>
   </ResizablePanel>
 </template>
@@ -68,133 +64,113 @@ const props = defineProps<{ tool: any }>()
 
 const inputCsv = ref('')
 const outputJson = ref('')
+const parsedOutputData = ref<unknown>(null)
 const error = ref('')
-const delimiter = ref(',')
+const delimiter = ref('auto')
 const hasHeader = ref(true)
-const indent = ref(2)
+const typeInference = ref(true)
 const fullscreen = ref(false)
+const outputViewMode = ref<'text' | 'rich' | 'table'>('rich')
+const inputEditorRef = ref()
 
-const exampleCsv = `name,age,city,active
-Alice,30,New York,true
-Bob,25,San Francisco,false
-Charlie,35,London,true`
-
-const loadExample = () => {
-  inputCsv.value = exampleCsv
-  convert()
-}
-
-const detectDelimiter = (csv: string): string => {
-  const firstLine = csv.split('\n')[0]
-  const delimiters = [',', ';', '\t', '|']
-  let maxCount = 0
-  let detected = ','
-
+function detectDelimiter(text: string): string {
+  const lines = text.trim().split('\n').slice(0, 5)
+  const delimiters = [
+    { char: ',', name: ',' },
+    { char: ';', name: ';' },
+    { char: '	', name: '	' },
+    { char: '|', name: '|' },
+  ]
+  let best = delimiters[0]
+  let bestCount = 0
   for (const d of delimiters) {
-    const count = (firstLine.match(new RegExp(d === '|' ? '\\|' : d === '\t' ? '\t' : d, 'g')) || []).length
-    if (count > maxCount) {
-      maxCount = count
-      detected = d
-    }
+    const count = lines.reduce((sum, line) => sum + (line.split(d.char).length - 1), 0)
+    if (count > bestCount) { bestCount = count; best = d }
   }
-
-  return detected
+  return best.name
 }
 
-const parseCsvLine = (line: string, delim: string): string[] => {
-  const result: string[] = []
-  let current = ''
+function parseCsv(text: string, sep: string): string[][] {
+  const rows: string[][] = []
+  let current: string[] = []
+  let field = ''
   let inQuotes = false
 
-  for (let i = 0; i < line.length; i++) {
-    const char = line[i]
-
+  for (let i = 0; i < text.length; i++) {
+    const ch = text[i]
     if (inQuotes) {
-      if (char === '"') {
-        if (i + 1 < line.length && line[i + 1] === '"') {
-          current += '"'
-          i++
-        } else {
-          inQuotes = false
-        }
-      } else {
-        current += char
-      }
+      if (ch === '"') {
+        if (text[i + 1] === '"') { field += '"'; i++ }
+        else inQuotes = false
+      } else field += ch
     } else {
-      if (char === '"') {
-        inQuotes = true
-      } else if (char === delimiter) {
-        result.push(current.trim())
-        current = ''
-      } else {
-        current += char
-      }
+      if (ch === '"') inQuotes = true
+      else if (ch === sep) { current.push(field); field = '' }
+      else if (ch === '\n' || ch === '\r') {
+        if (ch === '\r' && text[i + 1] === '\n') i++
+        current.push(field); field = ''
+        if (current.length > 0 && !(current.length === 1 && current[0] === '')) rows.push(current)
+        current = []
+      } else field += ch
     }
   }
+  current.push(field)
+  if (current.length > 0 && !(current.length === 1 && current[0] === '')) rows.push(current)
+  return rows
+}
 
-  result.push(current.trim())
-  return result
+function inferType(value: string): any {
+  if (value === '') return null
+  if (value === 'true') return true
+  if (value === 'false') return false
+  if (/^-?\d+$/.test(value)) { const n = parseInt(value, 10); if (!isNaN(n)) return n }
+  if (/^-?\d+\.\d+$/.test(value)) { const n = parseFloat(value); if (!isNaN(n)) return n }
+  return value
 }
 
 const convert = () => {
   error.value = ''
-  try {
-    const lines = inputCsv.value.split('\n').filter(line => line.trim())
-    if (lines.length === 0) {
-      error.value = props.tool.ui?.error_no_data || 'No data to convert'
-      return
-    }
+  outputJson.value = ''
+  parsedOutputData.value = null
 
-    const effectiveDelimiter = delimiter.value === 'auto' ? detectDelimiter(inputCsv.value) : delimiter.value
-    const rows = lines.map(line => parseCsvLine(line, effectiveDelimiter))
+  if (!inputCsv.value.trim()) {
+    error.value = props.tool.ui?.error_no_data || 'No data to convert'
+    return
+  }
+
+  try {
+    const sep = delimiter.value === 'auto' ? detectDelimiter(inputCsv.value) : delimiter.value
+    const rows = parseCsv(inputCsv.value, sep)
+    if (rows.length === 0) { error.value = 'No data to convert'; return }
+
+    let headers: string[]
+    let dataRows: string[][]
 
     if (hasHeader.value) {
-      const headers = rows[0]
-      const data = rows.slice(1).map(row => {
-        const obj: any = {}
-        headers.forEach((header, index) => {
-          const value = row[index] || ''
-          if (value === '' || value === 'null') {
-            obj[header] = null
-          } else if (value === 'true') {
-            obj[header] = true
-          } else if (value === 'false') {
-            obj[header] = false
-          } else {
-            const num = Number(value)
-            obj[header] = value !== '' && !isNaN(num) ? num : value
-          }
-        })
-        return obj
-      })
-      outputJson.value = JSON.stringify(data, null, indent.value)
+      headers = rows[0]
+      dataRows = rows.slice(1)
     } else {
-      outputJson.value = JSON.stringify(rows, null, indent.value)
+      headers = rows[0].map((_, i) => `column_${i + 1}`)
+      dataRows = rows
     }
+
+    const result = dataRows.map(row => {
+      const obj: Record<string, any> = {}
+      headers.forEach((h, i) => {
+        const val = (row[i] ?? '').trim()
+        obj[h] = typeInference.value ? inferType(val) : val
+      })
+      return obj
+    })
+
+    parsedOutputData.value = result
+    outputJson.value = JSON.stringify(result, null, 2)
   } catch (e) {
     error.value = (e as Error).message
-    outputJson.value = ''
   }
 }
 
-const clearAll = () => {
-  outputJson.value = ''
-  error.value = ''
-}
-
-const copyOutput = async () => {
-  await copyToClipboard(outputJson.value)
-}
-
-const downloadOutput = () => {
-  const blob = new Blob([outputJson.value], { type: 'application/json' })
-  const url = URL.createObjectURL(blob)
-  const link = document.createElement('a')
-  link.href = url
-  link.download = 'output.json'
-  document.body.appendChild(link)
-  link.click()
-  document.body.removeChild(link)
-  URL.revokeObjectURL(url)
-}
+onMounted(() => {
+  inputEditorRef.value?.loadDefaultExample()
+})
 </script>
