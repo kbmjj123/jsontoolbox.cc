@@ -20,6 +20,7 @@
           :content="outputJson"
           :parsed-data="parsedData"
           :error="error"
+          :show-copy="false"
           :show-download="false"
           highlight="json"
           empty-text="JSON output will appear here"
