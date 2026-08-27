@@ -12,273 +12,313 @@
     "json-editor"
   ],
   "en": {
-    "name": "JSON Schema Validator",
-    "description": "Validate JSON data against a JSON Schema. This json schema validator online lets you validate json against schema and check if your JSON conforms to the expected structure and data types.",
-    "ui": {
-      "label_json_data": "JSON Data",
-      "label_json_schema": "JSON Schema",
-      "label_result": "Validation Result",
-      "status_valid": "Valid JSON",
-      "status_invalid": "Invalid JSON",
-      "status_matches": "The JSON data matches the schema.",
-      "error_expected_type": "Expected",
-      "error_got_null": "got null",
-      "error_got_type": "got",
-      "error_missing_required": "Missing required property",
-      "error_string_too_short": "String length",
-      "error_string_too_long": "String length",
-      "error_string_less_min": "is less than minimum",
-      "error_string_greater_max": "is greater than maximum",
-      "error_string_no_match": "String does not match pattern",
-      "error_value_too_small": "Value",
-      "error_value_too_large": "Value",
-      "error_number_less_min": "is less than minimum",
-      "error_number_greater_max": "is greater than maximum",
-      "error_array_too_short": "Array length",
-      "error_array_too_long": "Array length",
-      "error_array_less_min": "is less than minimum",
-      "error_array_greater_max": "is greater than maximum",
-      "error_enum_invalid": "Value must be one of:"
-    },
-    "hero": {
-      "trustHtml": "100% client-side validation. Your JSON data never leaves your browser."
-    },
-    "meta": {
-      "title": "JSON Schema Validator — Free Online Tool",
-      "description": "Validate JSON data against JSON Schema online. Check structure, data types, and required fields. Detailed error messages. Free, 100% client-side.",
-      "keywords": [
-        "json schema validator",
-        "validate json against schema",
-        "json schema validation",
-        "json schema validator online",
-        "validate json schema",
-        "json schema check",
-        "json schema test",
-        "schema validation tool",
-        "json validator schema",
-        "online schema validator"
-      ]
-    },
-    "features": [
-      {
-        "icon": "lucide:shield-check",
-        "title": "Schema Validation",
-        "description": "Validate JSON data against JSON Schema Draft 7."
-      },
-      {
-        "icon": "lucide:map-pin",
-        "title": "Error Details",
-        "description": "Get detailed error messages with path information."
-      },
-      {
-        "icon": "lucide:copy",
-        "title": "Copy & Export",
-        "description": "Copy validation results or export as report."
-      },
-      {
-        "icon": "lucide:layers",
-        "title": "Nested Support",
-        "description": "Validates deeply nested objects and arrays."
-      },
-      {
-        "icon": "lucide:link",
-        "title": "URL Input",
-        "description": "Load JSON and Schema from URL using ?url= parameter."
-      },
-      {
-        "icon": "lucide:shield",
-        "title": "Private",
-        "description": "All validation happens in your browser. No data upload."
-      }
-    ],
-    "guide": [
-      {
-        "title": "Paste your JSON",
-        "description": "Paste your JSON data into the input field."
-      },
-      {
-        "title": "Paste your Schema",
-        "description": "Paste your JSON Schema into the schema field."
-      },
-      {
-        "title": "Click Validate",
-        "description": "Click Validate to check if your JSON conforms to the schema."
-      }
-    ],
-    "example": {
-      "input": "{\\n  \"name\": \"Alice\",\\n  \"age\": 30,\\n  \"email\": \"alice@example.com\"\\n}",
-      "schema": "{\\n  \"type\": \"object\",\\n  \"properties\": {\\n    \"name\": { \"type\": \"string\" },\\n    \"age\": { \"type\": \"number\" },\\n    \"email\": { \"type\": \"string\", \"format\": \"email\" }\\n  },\\n  \"required\": [\"name\", \"email\"]\\n}",
-      "output": "✅ Valid — matches schema",
-      "useCase": "Validate API requests/responses against a predefined JSON Schema."
-    },
-    "faq": [
-      {
-        "question": "Is my JSON data uploaded to a server?",
-        "answer": "No. All validation happens in your browser. Your data never leaves your device."
-      },
-      {
-        "question": "What JSON Schema version is supported?",
-        "answer": "The validator supports JSON Schema Draft 7, which covers most common use cases."
-      },
-      {
-        "question": "What can JSON Schema validate?",
-        "answer": "JSON Schema can validate data types, required fields, string patterns, number ranges, array lengths, enum values, and nested object structures."
-      },
-      {
-        "question": "What is the difference between JSON validation and JSON Schema validation?",
-        "answer": "JSON validation checks if the syntax is correct (well-formed JSON). JSON Schema validation checks if the data structure, types, and values conform to a defined schema."
-      },
-      {
-        "question": "Can I copy or export the validation results?",
-        "answer": "Yes. After validation, you can copy the results to clipboard or export them as a report for documentation."
-      },
-      {
-        "question": "Can I generate a Schema from JSON?",
-        "answer": "Yes. Use our JSON Schema Generator to automatically create a schema from your JSON data."
-      },
-      {
-        "question": "How do I validate JSON Schema online?",
-        "answer": "Paste your JSON data and your JSON Schema, then click Validate. This free online tool lets you validate json schema directly in your browser — no upload required."
-      }
-    ],
-    "article": {
-      "title": "How to Validate JSON Data Against JSON Schema",
-      "content": "<h2>What is JSON Schema Validation?</h2><p>JSON Schema validation checks if JSON data conforms to a defined structure, data types, and constraints. It's essential for ensuring data quality in APIs and applications.</p><h2>Why Validate Against Schema?</h2><ul><li><strong>API Quality:</strong> Ensure incoming data meets expected format</li><li><strong>Data Integrity:</strong> Validate data before processing</li><li><strong>Error Prevention:</strong> Catch issues early in development</li><li><strong>Documentation:</strong> Schema serves as living documentation</li></ul><h2>What Can JSON Schema Validate?</h2><ul><li><strong>Data Types:</strong> string, number, boolean, array, object, null</li><li><strong>Required Fields:</strong> Mark fields as mandatory</li><li><strong>Constraints:</strong> Min/max values, string patterns, array lengths</li><li><strong>Nested Objects:</strong> Validate complex nested structures</li></ul><h2>How to Validate</h2><ol><li><strong>Paste JSON data</strong> in the left panel</li><li><strong>Paste JSON Schema</strong> in the right panel</li><li><strong>Click Validate</strong> to check conformance</li><li><strong>Review errors</strong> if validation fails</li></ol><h2>Common Schema Patterns</h2><ul><li><strong>type:</strong> Define expected data type</li><li><strong>required:</strong> List mandatory fields</li><li><strong>properties:</strong> Define object structure</li><li><strong>items:</strong> Define array element types</li></ul>"
-    }
-  },
+		"name": "JSON Schema Validator",
+		"description": "Validate JSON data against a JSON Schema. This online JSON Schema validator lets you validate JSON against schema, check structure, data types, required fields, and constraints, and get detailed error messages — all in your browser.",
+		"ui": {
+			"label_json_data": "JSON Data",
+			"label_json_schema": "JSON Schema",
+			"label_result": "Validation Result",
+			"status_valid": "Valid JSON",
+			"status_invalid": "Invalid JSON",
+			"status_matches": "The JSON data matches the schema.",
+			"error_expected_type": "Expected",
+			"error_got_null": "got null",
+			"error_got_type": "got",
+			"error_missing_required": "Missing required property",
+			"error_string_too_short": "String length",
+			"error_string_too_long": "String length",
+			"error_string_less_min": "is less than minimum",
+			"error_string_greater_max": "is greater than maximum",
+			"error_string_no_match": "String does not match pattern",
+			"error_value_too_small": "Value",
+			"error_value_too_large": "Value",
+			"error_number_less_min": "is less than minimum",
+			"error_number_greater_max": "is greater than maximum",
+			"error_array_too_short": "Array length",
+			"error_array_too_long": "Array length",
+			"error_array_less_min": "is less than minimum",
+			"error_array_greater_max": "is greater than maximum",
+			"error_enum_invalid": "Value must be one of:"
+		},
+		"hero": {
+			"trustHtml": "100% client-side validation. Your JSON data never leaves your browser."
+		},
+		"meta": {
+			"title": "JSON Schema Validator — Free Online Tool",
+			"description": "Validate JSON data against JSON Schema online. Check structure, data types, required fields, and constraints. Get detailed error messages with paths. Free, 100% client-side, no upload required.",
+			"keywords": [
+				"json schema validator",
+				"validate json against schema",
+				"json schema validation",
+				"json schema validator online",
+				"validate json schema",
+				"json schema check",
+				"json schema test",
+				"schema validation tool",
+				"json validator schema",
+				"online schema validator",
+				"free json schema validator",
+				"json schema validation online",
+				"validate json with schema",
+				"json schema checker"
+			]
+		},
+		"features": [
+			{
+				"icon": "lucide:shield-check",
+				"title": "Schema Validation",
+				"description": "Validate JSON data against JSON Schema Draft 7. The tool checks data types, required properties, value constraints, and nested structures to ensure your JSON conforms to the expected schema."
+			},
+			{
+				"icon": "lucide:map-pin",
+				"title": "Error Details",
+				"description": "Get detailed error messages with JSON path information when validation fails. Each error points to the exact location and reason, such as missing required fields, type mismatches, or constraint violations."
+			},
+			{
+				"icon": "lucide:copy",
+				"title": "Copy & Export",
+				"description": "Copy validation results or error details to your clipboard. You can use the output in documentation, bug reports, API testing workflows, or team communication."
+			},
+			{
+				"icon": "lucide:layers",
+				"title": "Nested Support",
+				"description": "Validate deeply nested objects and arrays, including complex schemas with multiple levels of properties, items, and conditional rules."
+			},
+			{
+				"icon": "lucide:link",
+				"title": "URL Input",
+				"description": "Load JSON data and JSON Schema from a URL using the ?url= parameter when your workflow provides publicly accessible resources. Review the loaded content before running validation."
+			},
+			{
+				"icon": "lucide:shield",
+				"title": "Private",
+				"description": "All schema validation happens in your browser. Your JSON data and schema are not uploaded to a server, which is useful when working with private API payloads or configuration data."
+			}
+		],
+		"guide": [
+			{
+				"title": "Paste your JSON",
+				"description": "Paste the JSON data you want to validate into the JSON Data field. This can be an API request or response, a configuration file, or any JSON document you need to check against a schema."
+			},
+			{
+				"title": "Paste your Schema",
+				"description": "Paste your JSON Schema into the JSON Schema field. The schema defines the expected structure, data types, required fields, and constraints for your JSON data."
+			},
+			{
+				"title": "Click Validate",
+				"description": "Click Validate to check whether your JSON conforms to the schema. The tool will report success or show detailed errors with paths and descriptions."
+			},
+			{
+				"title": "Review and fix",
+				"description": "If validation fails, use the error messages to locate and fix issues in your JSON or schema. You can re-run validation as many times as needed until the data matches the schema."
+			}
+		],
+		"example": {
+			"input": "{\n  \"name\": \"Alice\",\n  \"age\": 30,\n  \"email\": \"alice@example.com\"\n}",
+			"schema": "{\n  \"type\": \"object\",\n  \"properties\": {\n    \"name\": { \"type\": \"string\" },\n    \"age\": { \"type\": \"number\" },\n    \"email\": { \"type\": \"string\", \"format\": \"email\" }\n  },\n  \"required\": [\"name\", \"email\"]\n}",
+			"output": "✅ Valid — matches schema",
+			"useCase": "Validate API requests/responses against a predefined JSON Schema."
+		},
+		"faq": [
+			{
+				"question": "Is my JSON data uploaded to a server?",
+				"answer": "No. All validation happens locally in your browser. Your JSON data and schema are not uploaded to a remote server and do not leave your device."
+			},
+			{
+				"question": "What JSON Schema version is supported?",
+				"answer": "The validator supports JSON Schema Draft 7, which covers most common use cases for API validation, configuration files, and data contracts."
+			},
+			{
+				"question": "What can JSON Schema validate?",
+				"answer": "JSON Schema can validate data types, required fields, string patterns and lengths, number ranges, array lengths, enum values, and nested object and array structures."
+			},
+			{
+				"question": "What is the difference between JSON validation and JSON Schema validation?",
+				"answer": "JSON validation checks whether the text is well-formed JSON (correct syntax). JSON Schema validation goes further and checks whether the data structure, types, and values conform to a defined schema."
+			},
+			{
+				"question": "Can I copy or export the validation results?",
+				"answer": "Yes. After validation, you can copy the results and error details to your clipboard. You can use this output in documentation, bug reports, API testing, or team communication."
+			},
+			{
+				"question": "Can I generate a Schema from JSON?",
+				"answer": "Yes. You can use a JSON Schema Generator tool to automatically create a schema from sample JSON data. This is useful for quickly deriving an initial schema that you can then refine."
+			},
+			{
+				"question": "How do I validate JSON Schema online?",
+				"answer": "Paste your JSON data and your JSON Schema into the respective fields, then click Validate. This free online tool lets you validate JSON against a schema directly in your browser, with no upload required."
+			},
+			{
+				"question": "What happens if my JSON does not match the schema?",
+				"answer": "If the JSON does not conform to the schema, the tool shows validation errors with paths and descriptions. Each error explains what was expected and what was found, so you can fix the data or adjust the schema."
+			},
+			{
+				"question": "Can I validate large JSON files?",
+				"answer": "You can validate larger JSON files as long as they can be loaded and processed by your browser. The practical limit depends on available memory, device performance, and schema complexity."
+			},
+			{
+				"question": "Is this a free JSON Schema validator?",
+				"answer": "Yes. This is a free online JSON Schema validator for checking JSON data against a schema. You can validate structure, types, and constraints without creating an account or uploading files."
+			}
+		],
+		"article": {
+			"title": "How to Validate JSON Data Against JSON Schema",
+			"content": "<h2>What is JSON Schema Validation?</h2><p>JSON Schema validation checks whether JSON data conforms to a defined structure, data types, and constraints. A JSON Schema describes what a valid JSON document should look like, including required properties, allowed types, value ranges, and patterns.</p><p>This type of validation is essential for ensuring data quality in APIs, configuration files, data pipelines, and any system that relies on structured JSON input.</p><h2>Why Validate Against Schema?</h2><ul><li><strong>API quality:</strong> Ensure incoming requests and outgoing responses match the expected format</li><li><strong>Data integrity:</strong> Validate data before processing or storing it</li><li><strong>Error prevention:</strong> Catch structural and type errors early in development</li><li><strong>Documentation:</strong> Use the schema as living documentation of your data contract</li><li><strong>Consistency:</strong> Enforce consistent shapes across different services and clients</li></ul><h2>What Can JSON Schema Validate?</h2><ul><li><strong>Data types:</strong> string, number, integer, boolean, array, object, null</li><li><strong>Required fields:</strong> Mark specific properties as mandatory</li><li><strong>Constraints:</strong> Minimum and maximum values, string lengths, regex patterns, enum lists</li><li><strong>Nested structures:</strong> Validate complex nested objects and arrays with items and additionalProperties</li><li><strong>Conditional rules:</strong> Apply different subschemas based on conditions (in more advanced schemas)</li></ul><h2>How to Validate JSON Against a Schema</h2><ol><li><strong>Paste JSON data:</strong> Add the JSON document you want to validate in the JSON Data field.</li><li><strong>Paste JSON Schema:</strong> Add the JSON Schema that defines the expected structure and constraints.</li><li><strong>Click Validate:</strong> Run the validation to check whether the JSON conforms to the schema.</li><li><strong>Review results:</strong> If validation succeeds, you will see a success message. If it fails, review the detailed errors with paths and descriptions.</li><li><strong>Fix and re-validate:</strong> Adjust your JSON or schema based on the error messages, then run validation again.</li></ol><h2>Common Schema Keywords</h2><ul><li><strong>type:</strong> Define the expected data type (object, array, string, number, etc.)</li><li><strong>required:</strong> List property names that must be present</li><li><strong>properties:</strong> Define the structure and subschemas for object properties</li><li><strong>items:</strong> Define the schema for array elements</li><li><strong>minimum / maximum:</strong> Set numeric value constraints</li><li><strong>minLength / maxLength:</strong> Set string length constraints</li><li><strong>pattern:</strong> Enforce a regular expression pattern on strings</li><li><strong>enum:</strong> Restrict a value to a fixed set of allowed options</li></ul><h2>Typical Use Cases</h2><ul><li><strong>API testing:</strong> Validate request and response bodies against API schemas</li><li><strong>Configuration validation:</strong> Ensure configuration files match the expected structure</li><li><strong>Data contracts:</strong> Enforce agreed-upon data shapes between services</li><li><strong>Form data:</strong> Validate JSON generated from forms or UI components</li><li><strong>ETL and pipelines:</strong> Check incoming data before transformation or loading</li></ul><h2>Tips for Effective Schema Validation</h2><ul><li><strong>Start with a clear schema:</strong> Define your data contract before validating large amounts of data</li><li><strong>Use descriptive errors:</strong> Leverage the error paths to quickly locate issues in nested structures</li><li><strong>Iterate gradually:</strong> Begin with a simple schema, then add more constraints as needed</li><li><strong>Separate concerns:</strong> Use different schemas for different contexts (e.g., create vs update payloads)</li><li><strong>Keep schemas versioned:</strong> Track schema changes alongside your API or data format versions</li></ul><h2>Client-Side Privacy</h2><p>This JSON Schema validator processes input in your browser instead of requiring an upload to a remote service. That can be convenient for development data and private configuration snippets. However, you should still avoid entering passwords, API keys, access tokens, or other highly sensitive information into any browser-based tool.</p>"
+		}
+	},
   "zh": {
-    "name": "JSON Schema 验证器",
-    "description": "根据schema验证json数据。这是一个在线json schema验证工具，检查你的 JSON 是否符合预期的结构和数据类型。提供详细错误信息。",
-    "ui": {
-      "label_json_data": "JSON 数据",
-      "label_json_schema": "JSON Schema",
-      "label_result": "验证结果",
-      "status_valid": "JSON 有效",
-      "status_invalid": "JSON 无效",
-      "status_matches": "JSON 数据符合 Schema。",
-      "error_expected_type": "期望类型",
-      "error_got_null": "实际为 null",
-      "error_got_type": "实际类型",
-      "error_missing_required": "缺少必填属性",
-      "error_string_too_short": "字符串长度",
-      "error_string_too_long": "字符串长度",
-      "error_string_less_min": "小于最小值",
-      "error_string_greater_max": "大于最大值",
-      "error_string_no_match": "字符串不匹配模式",
-      "error_value_too_small": "值",
-      "error_value_too_large": "值",
-      "error_number_less_min": "小于最小值",
-      "error_number_greater_max": "大于最大值",
-      "error_array_too_short": "数组长度",
-      "error_array_too_long": "数组长度",
-      "error_array_less_min": "小于最小值",
-      "error_array_greater_max": "大于最大值",
-      "error_enum_invalid": "值必须为以下之一："
-    },
-    "hero": {
-      "trustHtml": "100% 本地验证，JSON 数据不会离开浏览器。"
-    },
-    "meta": {
-      "title": "JSON Schema 验证器 — 免费在线工具",
-      "description": "在线根据 JSON Schema 验证 JSON 数据。检查结构、数据类型和必填字段。详细错误信息。免费、100% 客户端处理。",
-      "keywords": [
-        "json schema验证",
-        "json schema验证器",
-        "根据schema验证json",
-        "在线json schema验证",
-        "json schema检查",
-        "json schema测试",
-        "schema验证工具",
-        "json验证器schema",
-        "在线schema验证器",
-        "json schema验证在线"
-      ]
-    },
-    "features": [
-      {
-        "icon": "lucide:shield-check",
-        "title": "Schema 验证",
-        "description": "根据 JSON Schema Draft 7 验证 JSON 数据。"
-      },
-      {
-        "icon": "lucide:map-pin",
-        "title": "错误详情",
-        "description": "获取带路径信息的详细错误消息。"
-      },
-      {
-        "icon": "lucide:copy",
-        "title": "复制与导出",
-        "description": "复制验证结果或导出为报告。"
-      },
-      {
-        "icon": "lucide:layers",
-        "title": "嵌套支持",
-        "description": "验证深度嵌套的对象和数组。"
-      },
-      {
-        "icon": "lucide:link",
-        "title": "URL 输入",
-        "description": "使用 ?url= 参数从 URL 加载 JSON 和 Schema。"
-      },
-      {
-        "icon": "lucide:shield",
-        "title": "私密安全",
-        "description": "所有验证在浏览器中完成，不上传数据。"
-      }
-    ],
-    "guide": [
-      {
-        "title": "粘贴 JSON",
-        "description": "将 JSON 数据粘贴到输入框中。"
-      },
-      {
-        "title": "粘贴 Schema",
-        "description": "将 JSON Schema 粘贴到 Schema 字段中。"
-      },
-      {
-        "title": "点击验证",
-        "description": "点击验证按钮检查 JSON 是否符合 Schema。"
-      }
-    ],
-    "example": {
-      "input": "{\\n  \"name\": \"Alice\",\\n  \"age\": 30,\\n  \"email\": \"alice@example.com\"\\n}",
-      "schema": "{\\n  \"type\": \"object\",\\n  \"properties\": {\\n    \"name\": { \"type\": \"string\" },\\n    \"age\": { \"type\": \"number\" },\\n    \"email\": { \"type\": \"string\", \"format\": \"email\" }\\n  },\\n  \"required\": [\"name\", \"email\"]\\n}",
-      "output": "✅ 有效 — 符合 Schema",
-      "useCase": "验证 API 请求/响应是否符合预定义的 JSON Schema。"
-    },
-    "faq": [
-      {
-        "question": "我的 JSON 数据会上传到服务器吗？",
-        "answer": "不会。所有验证在浏览器中完成，数据不会离开你的设备。"
-      },
-      {
-        "question": "支持什么版本的 JSON Schema？",
-        "answer": "验证器支持 JSON Schema Draft 7，覆盖大多数常见用例。"
-      },
-      {
-        "question": "JSON Schema 可以验证什么？",
-        "answer": "JSON Schema 可以验证数据类型、必填字段、字符串模式、数字范围、数组长度、枚举值和嵌套对象结构。"
-      },
-      {
-        "question": "JSON 验证和 JSON Schema 验证有什么区别？",
-        "answer": "JSON 验证检查语法是否正确（格式良好的 JSON）。JSON Schema 验证检查数据结构、类型和值是否符合定义的 Schema。"
-      },
-      {
-        "question": "可以复制或导出验证结果吗？",
-        "answer": "可以。验证完成后，你可以将结果复制到剪贴板或导出为报告用于文档记录。"
-      },
-      {
-        "question": "可以从 JSON 生成 Schema 吗？",
-        "answer": "可以。使用我们的 JSON Schema 生成器从 JSON 数据自动创建 Schema。"
-      },
-      {
-        "question": "如何在线json schema验证？",
-        "answer": "粘贴 JSON 数据和 JSON Schema，点击验证即可。这个免费的json schema验证器支持在线json schema验证，无需上传数据。"
-      }
-    ],
-    "article": {
-      "title": "如何根据 JSON Schema 验证 JSON 数据",
-      "content": "<h2>什么是 JSON Schema 验证？</h2><p>JSON Schema 验证检查 JSON 数据是否符合定义的结构、数据类型和约束。它对于确保 API 和应用程序中的数据质量至关重要。</p><h2>为什么要根据 Schema 验证？</h2><ul><li><strong>API 质量：</strong>确保传入数据符合预期格式</li><li><strong>数据完整性：</strong>处理前验证数据</li><li><strong>错误预防：</strong>在开发早期发现问题</li><li><strong>文档：</strong>Schema 作为活文档</li></ul><h2>JSON Schema 可以验证什么？</h2><ul><li><strong>数据类型：</strong>string、number、boolean、array、object、null</li><li><strong>必填字段：</strong>将字段标记为必填</li><li><strong>约束：</strong>最小/最大值、字符串模式、数组长度</li><li><strong>嵌套对象：</strong>验证复杂的嵌套结构</li></ul><h2>如何验证</h2><ol><li><strong>粘贴 JSON 数据</strong>到左侧面板</li><li><strong>粘贴 JSON Schema</strong>到右侧面板</li><li><strong>点击验证</strong>检查一致性</li><li><strong>查看错误</strong>如果验证失败</li></ol><h2>常见 Schema 模式</h2><ul><li><strong>type：</strong>定义预期的数据类型</li><li><strong>required：</strong>列出必填字段</li><li><strong>properties：</strong>定义对象结构</li><li><strong>items：</strong>定义数组元素类型</li></ul>"
-    }
-  }
+		"name": "JSON Schema 验证器",
+		"description": "根据 JSON Schema 验证 JSON 数据。这个在线 JSON Schema 验证器可以检查你的 JSON 是否符合预期的结构、数据类型和约束条件，并提供带路径的详细错误信息，适合 API 测试、配置校验和数据契约验证。",
+		"ui": {
+			"label_json_data": "JSON 数据",
+			"label_json_schema": "JSON Schema",
+			"label_result": "验证结果",
+			"status_valid": "JSON 有效",
+			"status_invalid": "JSON 无效",
+			"status_matches": "JSON 数据符合 Schema。",
+			"error_expected_type": "期望类型",
+			"error_got_null": "实际为 null",
+			"error_got_type": "实际类型",
+			"error_missing_required": "缺少必填属性",
+			"error_string_too_short": "字符串长度",
+			"error_string_too_long": "字符串长度",
+			"error_string_less_min": "小于最小值",
+			"error_string_greater_max": "大于最大值",
+			"error_string_no_match": "字符串不匹配模式",
+			"error_value_too_small": "值",
+			"error_value_too_large": "值",
+			"error_number_less_min": "小于最小值",
+			"error_number_greater_max": "大于最大值",
+			"error_array_too_short": "数组长度",
+			"error_array_too_long": "数组长度",
+			"error_array_less_min": "小于最小值",
+			"error_array_greater_max": "大于最大值",
+			"error_enum_invalid": "值必须为以下之一："
+		},
+		"hero": {
+			"trustHtml": "100% 本地验证。JSON 数据始终保留在浏览器中。"
+		},
+		"meta": {
+			"title": "JSON Schema 验证器 — 免费在线工具",
+			"description": "在线根据 JSON Schema 验证 JSON 数据。检查结构、数据类型、必填字段和约束条件，提供带路径的详细错误信息。免费、100% 客户端处理，无需上传文件。",
+			"keywords": [
+				"json schema验证",
+				"json schema验证器",
+				"根据schema验证json",
+				"在线json schema验证",
+				"json schema检查",
+				"json schema测试",
+				"schema验证工具",
+				"json验证器schema",
+				"在线schema验证器",
+				"json schema验证在线",
+				"免费json schema验证",
+				"json schema在线验证",
+				"json数据结构验证",
+				"json schema校验工具"
+			]
+		},
+		"features": [
+			{
+				"icon": "lucide:shield-check",
+				"title": "Schema 验证",
+				"description": "根据 JSON Schema Draft 7 验证 JSON 数据。工具会检查数据类型、必填属性、值约束和嵌套结构，确认你的 JSON 是否符合定义的 Schema。"
+			},
+			{
+				"icon": "lucide:map-pin",
+				"title": "错误详情",
+				"description": "当验证失败时，提供带 JSON 路径的详细错误信息。每条错误都会指出具体位置和原因，例如缺少必填字段、类型不匹配或约束违反。"
+			},
+			{
+				"icon": "lucide:copy",
+				"title": "复制与导出",
+				"description": "将验证结果和错误详情复制到剪贴板。你可以将输出用于文档、问题报告、API 测试流程或团队沟通。"
+			},
+			{
+				"icon": "lucide:layers",
+				"title": "嵌套支持",
+				"description": "支持验证深度嵌套的对象和数组，包括包含多层属性、items 规则和条件规则在内的复杂 Schema。"
+			},
+			{
+				"icon": "lucide:link",
+				"title": "URL 输入",
+				"description": "支持通过 ?url= 参数从公开可访问的 URL 加载 JSON 数据和 JSON Schema。加载后可以先检查内容，再执行验证。"
+			},
+			{
+				"icon": "lucide:shield",
+				"title": "私密安全",
+				"description": "所有 Schema 验证都在浏览器本地完成，不需要将 JSON 数据或 Schema 上传到服务器。适合处理私密 API 负载、配置数据和其他不希望离开设备的内容。"
+			}
+		],
+		"guide": [
+			{
+				"title": "粘贴 JSON",
+				"description": "将要验证的 JSON 数据粘贴到“JSON 数据”输入框中。可以是 API 请求或响应、配置文件，或任何需要根据 Schema 检查的 JSON 文档。"
+			},
+			{
+				"title": "粘贴 Schema",
+				"description": "将 JSON Schema 粘贴到“JSON Schema”输入框中。Schema 定义了 JSON 数据应有的结构、数据类型、必填字段和约束条件。"
+			},
+			{
+				"title": "点击验证",
+				"description": "点击验证按钮，检查 JSON 是否符合 Schema。工具会返回成功信息，或在失败时显示带路径和描述的错误列表。"
+			},
+			{
+				"title": "查看并修复",
+				"description": "如果验证失败，根据错误信息定位并修复 JSON 或 Schema 中的问题。你可以多次重新验证，直到数据完全符合 Schema。"
+			}
+		],
+		"example": {
+			"input": "{\n  \"name\": \"Alice\",\n  \"age\": 30,\n  \"email\": \"alice@example.com\"\n}",
+			"schema": "{\n  \"type\": \"object\",\n  \"properties\": {\n    \"name\": { \"type\": \"string\" },\n    \"age\": { \"type\": \"number\" },\n    \"email\": { \"type\": \"string\", \"format\": \"email\" }\n  },\n  \"required\": [\"name\", \"email\"]\n}",
+			"output": "✅ 有效 — 符合 Schema",
+			"useCase": "验证 API 请求/响应是否符合预定义的 JSON Schema。"
+		},
+		"faq": [
+			{
+				"question": "我的 JSON 数据会上传到服务器吗？",
+				"answer": "不会。所有验证都在浏览器本地完成，你的 JSON 数据和 Schema 不会上传到远程服务器，也不会离开你的设备。"
+			},
+			{
+				"question": "支持什么版本的 JSON Schema？",
+				"answer": "验证器支持 JSON Schema Draft 7，这一版本覆盖了 API 验证、配置文件和数据契约等大多数常见用例。"
+			},
+			{
+				"question": "JSON Schema 可以验证什么？",
+				"answer": "JSON Schema 可以验证数据类型、必填字段、字符串模式和长度、数字范围、数组长度、枚举值，以及嵌套的对象和数组结构。"
+			},
+			{
+				"question": "JSON 验证和 JSON Schema 验证有什么区别？",
+				"answer": "JSON 验证只检查文本是否是格式正确的 JSON（语法是否正确）。JSON Schema 验证在此基础上进一步检查数据结构、类型和值是否符合定义的 Schema。"
+			},
+			{
+				"question": "可以复制或导出验证结果吗？",
+				"answer": "可以。验证完成后，你可以将结果和错误详情复制到剪贴板，用于文档、问题报告、API 测试或团队沟通。"
+			},
+			{
+				"question": "可以从 JSON 生成 Schema 吗？",
+				"answer": "可以。你可以使用 JSON Schema 生成器工具，从示例 JSON 数据自动生成一个初始 Schema，然后再根据需要手动细化和补充约束。"
+			},
+			{
+				"question": "如何在线进行 JSON Schema 验证？",
+				"answer": "将 JSON 数据和 JSON Schema 分别粘贴到对应输入框中，然后点击验证即可。这个免费的 JSON Schema 验证器支持在线验证 JSON 是否符合 Schema，无需上传数据。"
+			},
+			{
+				"question": "如果 JSON 不符合 Schema 会怎样？",
+				"answer": "如果 JSON 不符合 Schema，工具会显示验证错误列表，包括路径和描述。每条错误会说明期望的内容和实际发现的内容，方便你修复数据或调整 Schema。"
+			},
+			{
+				"question": "可以验证较大的 JSON 文件吗？",
+				"answer": "可以验证较大的 JSON 文件，只要浏览器能够加载和处理它们。实际限制取决于设备性能、浏览器可用内存以及 Schema 的复杂程度。"
+			},
+			{
+				"question": "这是一个免费的 JSON Schema 验证器吗？",
+				"answer": "是的。这是一个免费的在线 JSON Schema 验证器，用于检查 JSON 数据是否符合 Schema。你可以验证结构、类型和约束，无需注册账号或上传文件。"
+			}
+		],
+		"article": {
+			"title": "如何根据 JSON Schema 验证 JSON 数据",
+			"content": "<h2>什么是 JSON Schema 验证？</h2><p>JSON Schema 验证用于检查 JSON 数据是否符合定义的结构、数据类型和约束条件。JSON Schema 描述了“合法的”JSON 文档应该长什么样，包括必需的属性、允许的类型、取值范围和模式等。</p><p>这种验证对于确保 API、配置文件、数据管道以及任何依赖结构化 JSON 输入的系统中的数据质量非常重要。</p><h2>为什么要根据 Schema 验证？</h2><ul><li><strong>API 质量：</strong>确保传入请求和传出响应符合预期格式</li><li><strong>数据完整性：</strong>在处理或存储数据之前进行校验</li><li><strong>错误预防：</strong>在开发早期发现结构和类型错误</li><li><strong>文档作用：</strong>将 Schema 作为数据契约的活文档</li><li><strong>一致性：</strong>在不同服务和客户端之间强制执行一致的数据形状</li></ul><h2>JSON Schema 可以验证什么？</h2><ul><li><strong>数据类型：</strong>string、number、integer、boolean、array、object、null</li><li><strong>必填字段：</strong>将某些属性标记为必须存在</li><li><strong>约束条件：</strong>最小/最大值、字符串长度、正则模式、枚举列表等</li><li><strong>嵌套结构：</strong>验证包含多层对象和数组的复杂结构</li><li><strong>条件规则：</strong>在更高级的 Schema 中，根据条件应用不同的子 Schema</li></ul><h2>如何根据 Schema 验证 JSON</h2><ol><li><strong>粘贴 JSON 数据：</strong>在“JSON 数据”字段中添加要验证的 JSON 文档。</li><li><strong>粘贴 JSON Schema：</strong>在“JSON Schema”字段中添加定义预期结构和约束的 Schema。</li><li><strong>点击验证：</strong>运行验证，检查 JSON 是否符合 Schema。</li><li><strong>查看结果：</strong>如果验证成功，会看到成功提示；如果失败，会看到带路径和描述的错误列表。</li><li><strong>修复并重新验证：</strong>根据错误信息调整 JSON 或 Schema，然后再次运行验证。</li></ol><h2>常见 Schema 关键字</h2><ul><li><strong>type：</strong>定义预期的数据类型（object、array、string、number 等）</li><li><strong>required：</strong>列出必须存在的属性名</li><li><strong>properties：</strong>为对象的各个属性定义结构和子 Schema</li><li><strong>items：</strong>为数组元素定义 Schema</li><li><strong>minimum / maximum：</strong>设置数值的上下限</li><li><strong>minLength / maxLength：</strong>设置字符串长度约束</li><li><strong>pattern：</strong>为字符串设置正则表达式模式</li><li><strong>enum：</strong>将值限制在一组固定的可选值之内</li></ul><h2>典型使用场景</h2><ul><li><strong>API 测试：</strong>验证请求体和响应体是否符合 API Schema</li><li><strong>配置校验：</strong>确保配置文件符合预期结构</li><li><strong>数据契约：</strong>在服务之间强制执行约定的数据形状</li><li><strong>表单数据：</strong>验证由表单或 UI 组件生成的 JSON</li><li><strong>ETL 和流水线：</strong>在转换或加载之前检查输入数据</li></ul><h2>高效进行 Schema 验证的技巧</h2><ul><li><strong>先定义清晰的 Schema：</strong>在验证大量数据之前，先明确数据契约</li><li><strong>利用详细错误：</strong>通过错误路径快速定位嵌套结构中的问题</li><li><strong>逐步迭代：</strong>从简单 Schema 开始，再根据需要增加约束</li><li><strong>区分场景：</strong>为不同场景使用不同 Schema（例如创建和更新载荷）</li><li><strong>版本化管理：</strong>将 Schema 变更与 API 或数据格式版本一起管理</li></ul><h2>浏览器本地处理与隐私</h2><p>这个 JSON Schema 验证器在浏览器中处理输入内容，不要求将数据上传到远程服务。对于开发数据和私密配置片段来说，本地处理更加方便。不过，仍然不建议在任何浏览器工具中输入密码、API 密钥、访问令牌或其他高度敏感的信息。</p>"
+		}
+	}
 }
