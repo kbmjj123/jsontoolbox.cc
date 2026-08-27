@@ -23,7 +23,25 @@
           :show-download="false"
           highlight="json"
           empty-text="JSON output will appear here"
+          class="flex-1 min-h-0"
         />
+        <div v-if="outputCsv" class="flex items-center gap-2 pt-2 pb-1">
+          <button
+            @click="downloadCsv"
+            class="flex items-center gap-1.5 text-xs text-surface-500 hover:text-surface-700 dark:text-surface-400 dark:hover:text-surface-200"
+          >
+            <Icon name="lucide:download" class="w-3.5 h-3.5" />
+            Download CSV
+          </button>
+          <button
+            @click="copyCsv"
+            class="flex items-center gap-1.5 text-xs text-surface-500 hover:text-surface-700 dark:text-surface-400 dark:hover:text-surface-200"
+          >
+            <Icon name="lucide:check" v-if="csvCopied" class="w-3.5 h-3.5 text-green-500" />
+            <Icon name="lucide:clipboard" v-else class="w-3.5 h-3.5" />
+            {{ csvCopied ? 'Copied' : 'Copy CSV' }}
+          </button>
+        </div>
       </div>
     </template>
 
@@ -31,15 +49,6 @@
       <button @click="convert" class="btn-primary px-5 py-2 text-xs">
         <Icon name="lucide:arrow-right" class="h-4 w-4 mr-1.5" />
         {{ tool.ui?.btn_convert || 'Convert to CSV' }}
-      </button>
-
-      <button
-        v-if="outputCsv"
-        @click="downloadCsv"
-        class="rounded-xl border border-surface-200 bg-white px-4 py-2 text-xs font-bold text-surface-700 hover:bg-surface-50 dark:border-surface-700 dark:bg-surface-800 dark:text-surface-300 dark:hover:bg-surface-700"
-      >
-        <Icon name="lucide:download" class="h-4 w-4 mr-1.5" />
-        Download CSV
       </button>
     </template>
   </ResizablePanel>
@@ -55,6 +64,7 @@ const error = ref('')
 const fullscreen = ref(false)
 const inputEditorRef = ref()
 const outputViewMode = ref<'text' | 'rich' | 'table'>('rich')
+const csvCopied = ref(false)
 
 const { flattenArray, getFlattenedKeys, hasNestedObjects } = useJsonFlatten()
 const { prepareForExcel, generateCsv } = useExcelCompat()
@@ -93,6 +103,12 @@ const convert = () => {
   } catch (e) {
     error.value = (e as Error).message
   }
+}
+
+const copyCsv = async () => {
+  await copyToClipboard(outputCsv.value)
+  csvCopied.value = true
+  setTimeout(() => { csvCopied.value = false }, 2000)
 }
 
 const downloadCsv = () => {
