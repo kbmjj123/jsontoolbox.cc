@@ -1,0 +1,20 @@
+[
+  {
+    "id": "users",
+    "label_en": "User List",
+    "label_zh": "用户列表",
+    "input": "[{\"name\":\"Alice\",\"age\":30,\"email\":\"alice@example.com\",\"city\":\"New York\"},{\"name\":\"Bob\",\"age\":25,\"email\":\"bob@example.com\",\"city\":\"San Francisco\"},{\"name\":\"Charlie\",\"age\":35,\"email\":\"charlie@example.com\",\"city\":\"London\"}]"
+  },
+  {
+    "id": "products",
+    "label_en": "Product Catalog",
+    "label_zh": "商品目录",
+    "input": "[{\"id\":1,\"name\":\"Laptop\",\"price\":999.99,\"category\":\"Electronics\",\"inStock\":true},{\"id\":2,\"name\":\"Mouse\",\"price\":29.99,\"category\":\"Electronics\",\"inStock\":false},{\"id\":3,\"name\":\"Desk\",\"price\":249.00,\"category\":\"Furniture\",\"inStock\":true}]"
+  },
+  {
+    "id": "nested",
+    "label_en": "Nested Data",
+    "label_zh": "嵌套数据",
+    "input": "[{\"name\":\"Alice\",\"age\":30,\"email\":\"alice@example.com\",\"address\":{\"city\":\"New York\",\"country\":\"USA\"}},{\"name\":\"Bob\",\"age\":25,\"email\":\"bob@example.com\",\"address\":{\"city\":\"San Francisco\",\"country\":\"USA\"}},{\"name\":\"Charlie\",\"age\":35,\"email\":\"charlie@example.com\",\"address\":{\"city\":\"London\",\"country\":\"UK\"}}]"
+  }
+]

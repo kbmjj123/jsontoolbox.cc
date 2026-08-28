@@ -91,6 +91,15 @@
         >{{ n }}</div>
       </div>
 
+      <!-- Syntax highlight backdrop (behind textarea) -->
+      <pre
+        v-if="syntaxHighlight"
+        ref="highlightBackdropRef"
+        class="flex-1 min-w-0 py-4 px-4 m-0 font-mono text-sm leading-[1.5] whitespace-pre overflow-auto pointer-events-none text-surface-900 dark:text-surface-100"
+        aria-hidden="true"
+        v-html="highlightedContent"
+      ></pre>
+
       <!-- Textarea -->
       <textarea
         ref="textareaRef"
@@ -99,7 +108,10 @@
         @scroll="onScrollWithHighlight"
         @paste="onPaste"
         wrap="off"
-        class="flex-1 min-w-0 resize-none bg-transparent py-4 px-4 font-mono text-sm leading-[1.5] text-surface-900 outline-none dark:text-surface-100 whitespace-pre"
+        class="flex-1 min-w-0 resize-none bg-transparent py-4 px-4 font-mono text-sm leading-[1.5] outline-none whitespace-pre"
+        :class="syntaxHighlight
+          ? 'absolute inset-0 text-transparent caret-surface-900 dark:caret-surface-100 z-10'
+          : 'text-surface-900 dark:text-surface-100'"
         :placeholder="placeholder"
         spellcheck="false"
       ></textarea>
@@ -237,6 +249,8 @@ interface Props {
   exampleSlug?: string
   /** Editor implementation: 'textarea' (default) or 'codemirror' */
   editorMode?: 'textarea' | 'codemirror'
+  /** Enable JSON syntax highlighting in textarea mode */
+  syntaxHighlight?: boolean
 }
 
 const props = withDefaults(defineProps<Props>(), {
@@ -255,6 +269,7 @@ const props = withDefaults(defineProps<Props>(), {
   errorCopied: false,
   exampleSlug: '',
   editorMode: 'textarea',
+  syntaxHighlight: false,
 })
 
 const emit = defineEmits<{
@@ -289,6 +304,7 @@ onUnmounted(() => { document.removeEventListener('click', handleClickOutside) })
 
 const gutterRef = ref<HTMLDivElement>()
 const textareaRef = ref<HTMLTextAreaElement>()
+const highlightBackdropRef = ref<HTMLPreElement>()
 const fileInputRef = ref<HTMLInputElement>()
 const cmRef = ref<InstanceType<typeof CodeMirrorEditor>>()
 const dragging = ref(false)
@@ -341,6 +357,67 @@ const lineCount = computed(() => {
   const lines = props.modelValue.split('\n').length
   return Math.max(lines, 1)
 })
+
+// JSON syntax highlighting (single-pass tokenizer)
+const highlightedContent = computed(() => {
+  if (!props.syntaxHighlight || !props.modelValue) return ''
+  return highlightJson(props.modelValue)
+})
+
+function highlightJson(str: string): string {
+  let out = ''
+  let i = 0
+  const esc = (s: string) => s.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;')
+
+  while (i < str.length) {
+    const ch = str[i]
+
+    if (ch === '"') {
+      let j = i + 1
+      while (j < str.length) {
+        if (str[j] === '\\') { j += 2; continue }
+        if (str[j] === '"') break
+        j++
+      }
+      const raw = str.slice(i, j + 1)
+      let k = j + 1
+      while (k < str.length && (str[k] === ' ' || str[k] === '\t')) k++
+      if (str[k] === ':') {
+        out += `<span class="text-purple-600 dark:text-purple-400">${esc(raw)}</span>`
+      } else {
+        out += `<span class="text-green-600 dark:text-green-400">${esc(raw)}</span>`
+      }
+      i = j + 1
+      continue
+    }
+
+    if (ch === '-' || (ch >= '0' && ch <= '9')) {
+      let j = i + 1
+      while (j < str.length && /[\d.eE+-]/.test(str[j])) j++
+      out += `<span class="text-amber-600 dark:text-amber-400">${esc(str.slice(i, j))}</span>`
+      i = j
+      continue
+    }
+
+    if (str.startsWith('true', i)) {
+      out += '<span class="text-blue-600 dark:text-blue-400">true</span>'
+      i += 4; continue
+    }
+    if (str.startsWith('false', i)) {
+      out += '<span class="text-blue-600 dark:text-blue-400">false</span>'
+      i += 5; continue
+    }
+    if (str.startsWith('null', i)) {
+      out += '<span class="text-blue-600 dark:text-blue-400">null</span>'
+      i += 4; continue
+    }
+
+    out += esc(ch)
+    i++
+  }
+
+  return out
+}
 
 const onInput = (e: Event) => {
   const target = e.target as HTMLTextAreaElement
@@ -536,6 +613,11 @@ const onScrollWithHighlight = () => {
   origOnScroll()
   if (textareaRef.value) scrollTop.value = textareaRef.value.scrollTop
   updateHighlightPosition()
+  // Sync syntax highlight backdrop scroll
+  if (highlightBackdropRef.value && textareaRef.value) {
+    highlightBackdropRef.value.scrollTop = textareaRef.value.scrollTop
+    highlightBackdropRef.value.scrollLeft = textareaRef.value.scrollLeft
+  }
 }
 
 // ── Unified exposed methods ──

@@ -1,53 +1,59 @@
 <template>
   <ResizablePanel v-model:fullscreen="fullscreen" :initial-ratio="0.4" responsive>
     <template #first>
-      <div class="h-full pr-3">
-        <JsonOutputPanel
-          v-model:view-mode="inputViewMode"
+      <div class="h-full pr-3 overflow-hidden">
+        <JsonInputEditor
+          ref="inputEditorRef"
+          v-model="inputJson"
           :label="tool.ui?.label_input || 'Input JSON'"
-          :content="inputJson"
-          :parsed-data="parsedInputData"
-          :error="inputError"
-          :editable="true"
-          :show-edit-actions="true"
-          :show-copy="false"
-          :show-download="false"
-          placeholder='{"name": "JSON Toolbox", "version": "1.0"}'
-          empty-text="Paste your JSON here"
-          @update:content="inputJson = $event"
-          @format="onFormat"
-          @minify="onMinify"
-          @validate="onValidate"
-          @fix="onFix"
+          placeholder='[{"name": "Alice", "age": 30}, {"name": "Bob", "age": 25}]'
+          show-upload
+          show-load-url
+          example-slug="json-to-table"
+          @clear="clearAll"
           @paste="onPaste"
+          @example-loaded="onExampleLoaded"
         />
       </div>
     </template>
+
     <template #second>
-      <div class="h-full pl-3 overflow-auto">
-        <div v-if="headers.length > 0" class="rounded-xl border border-surface-200 bg-white dark:border-surface-700 dark:bg-surface-900 overflow-hidden">
-          <div class="overflow-x-auto">
-            <table class="w-full text-sm">
-              <thead>
-                <tr class="bg-surface-50 dark:bg-surface-800">
-                  <th v-for="header in headers" :key="header" class="px-4 py-3 text-left font-bold text-surface-700 dark:text-surface-300 border-b border-surface-200 dark:border-surface-700">{{ header }}</th>
-                </tr>
-              </thead>
-              <tbody>
-                <tr v-for="(row, index) in rows" :key="index" class="border-b border-surface-100 dark:border-surface-800 last:border-0 hover:bg-surface-50 dark:hover:bg-surface-800">
-                  <td v-for="header in headers" :key="header" class="px-4 py-3 text-surface-900 dark:text-surface-100">{{ formatCell(row[header]) }}</td>
-                </tr>
-              </tbody>
-            </table>
+      <div class="h-full pl-3 flex flex-col overflow-hidden">
+        <!-- Table header bar -->
+        <div class="flex items-center justify-between mb-2 gap-3">
+          <label class="text-sm font-bold text-surface-700 dark:text-surface-300">{{ tool.ui?.label_output || 'Table Preview' }}</label>
+          <div v-if="rows.length > 0" class="flex items-center gap-2">
+            <button @click="copyHtml" class="text-xs text-primary-600 hover:text-primary-700 dark:text-primary-400">
+              {{ tool.ui?.btnCopyHtml ?? 'Copy HTML' }}
+            </button>
+            <button @click="downloadCsv" class="text-xs text-surface-500 hover:text-surface-700 dark:text-surface-400">
+              {{ tool.ui?.btnDownloadCsv ?? 'CSV' }}
+            </button>
           </div>
         </div>
-        <div v-else-if="error" class="rounded-lg bg-red-50 border border-red-200 p-3 text-xs text-red-700 dark:bg-red-900/30 dark:border-red-800 dark:text-red-400">{{ error }}</div>
-        <div v-else class="flex h-full items-center justify-center text-surface-400 dark:text-surface-500 text-sm">
-          {{ ui?.emptyState ?? 'Paste JSON array and click "Render Table"' }}
+
+        <!-- Table content -->
+        <div class="flex-1 min-h-0 overflow-auto rounded-xl border border-surface-200 bg-white dark:border-surface-700 dark:bg-surface-900">
+          <table v-if="headers.length > 0" class="w-full text-sm">
+            <thead class="sticky top-0 z-10">
+              <tr class="bg-surface-50 dark:bg-surface-800">
+                <th v-for="header in headers" :key="header" class="px-4 py-3 text-left font-bold text-surface-700 dark:text-surface-300 border-b border-surface-200 dark:border-surface-700 whitespace-nowrap">{{ header }}</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr v-for="(row, ri) in rows" :key="ri" class="border-b border-surface-100 dark:border-surface-800 last:border-0 hover:bg-surface-50 dark:hover:bg-surface-800">
+                <td v-for="(_, ci) in headers" :key="ci" class="px-4 py-3 text-surface-900 dark:text-surface-100 whitespace-nowrap">{{ formatCell(row[ci]) }}</td>
+              </tr>
+            </tbody>
+          </table>
+          <div v-else-if="error" class="p-3 text-xs text-red-700 dark:text-red-400">{{ error }}</div>
+          <div v-else class="flex h-full items-center justify-center text-surface-400 dark:text-surface-500 text-sm">
+            {{ tool.ui?.emptyState ?? 'Paste a JSON array to preview as table' }}
+          </div>
         </div>
 
-        <!-- Stats -->
-        <div v-if="rows.length > 0" class="mt-3 flex flex-wrap gap-3">
+        <!-- Stats (outside scrollable area) -->
+        <div v-if="rows.length > 0" class="mt-2 flex flex-wrap gap-3 shrink-0">
           <div class="stat-chip"><Icon name="lucide:rows" class="h-3 w-3" /> {{ rows.length }} rows</div>
           <div class="stat-chip"><Icon name="lucide:columns" class="h-3 w-3" /> {{ headers.length }} columns</div>
         </div>
@@ -57,23 +63,11 @@
     <template #toolbar-left>
       <button @click="renderTable" class="btn-primary px-5 py-2 text-xs">
         <Icon name="lucide:table" class="h-4 w-4 mr-1.5" />
-        {{ ui?.btnRender ?? 'Render Table' }}
-      </button>
-      <button @click="loadExample" class="text-xs text-primary-600 hover:text-primary-700 dark:text-primary-400">
-        {{ ui?.btnExample ?? 'Example' }}
-      </button>
-      <button @click="copyHtml" class="text-xs text-primary-600 hover:text-primary-700 dark:text-primary-400">
-        {{ ui?.btnCopyHtml ?? 'Copy HTML' }}
-      </button>
-      <button @click="downloadCsv" class="text-xs text-surface-500 hover:text-surface-700 dark:text-surface-400">
-        {{ ui?.btnDownloadCsv ?? 'CSV' }}
-      </button>
-      <button @click="clearAll" class="rounded-xl border border-surface-200 bg-white px-4 py-2 text-xs font-bold text-surface-700 hover:bg-surface-50 dark:border-surface-700 dark:bg-surface-800 dark:text-surface-300 dark:hover:bg-surface-700">
-        {{ $t('system.clearAll') }}
+        {{ tool.ui?.btnRender ?? 'Render Table' }}
       </button>
       <label class="flex items-center gap-1.5 cursor-pointer select-none">
         <input type="checkbox" v-model="flattenNested" class="w-3.5 h-3.5 rounded border-surface-300 text-primary-600 focus:ring-primary-500" />
-        <span class="text-xs text-surface-600 dark:text-surface-400">{{ ui?.option_flatten ?? 'Flatten' }}</span>
+        <span class="text-xs text-surface-600 dark:text-surface-400">{{ tool.ui?.option_flatten ?? 'Flatten' }}</span>
       </label>
     </template>
   </ResizablePanel>
@@ -82,36 +76,6 @@
 <script setup lang="ts">
 const props = defineProps<{ tool: any }>()
 
-const { formatJson, minifyJson, validateJson, fixJson } = useJsonEditor()
-
-const inputError = ref('')
-const inputViewMode = ref<'text' | 'rich' | 'table'>('text')
-
-const parsedInputData = computed(() => {
-  if (!inputJson.value.trim()) return null
-  try { return JSON.parse(inputJson.value) } catch { return null }
-})
-
-const onFormat = () => {
-  const result = formatJson(inputJson.value)
-  if (result.output) { inputJson.value = result.output; inputError.value = '' }
-  else { inputError.value = result.error }
-}
-const onMinify = () => {
-  const result = minifyJson(inputJson.value)
-  if (result.output) { inputJson.value = result.output; inputError.value = '' }
-  else { inputError.value = result.error }
-}
-const onValidate = () => {
-  const result = validateJson(inputJson.value)
-  inputError.value = result.error
-}
-const onFix = () => {
-  const result = fixJson(inputJson.value)
-  if (result.fixed) { inputJson.value = result.fixed; inputError.value = '' }
-  else { inputError.value = result.error }
-}
-const onPaste = () => { nextTick(() => onFormat()) }
 const ui = computed(() => props.tool?.ui)
 
 const inputJson = ref('')
@@ -121,17 +85,44 @@ const rows = ref<any[]>([])
 const flattenNested = ref(false)
 const fullscreen = ref(false)
 
-const exampleData = [
-  { name: "Alice", age: 30, email: "alice@example.com", address: { city: "New York", country: "USA" } },
-  { name: "Bob", age: 25, email: "bob@example.com", address: { city: "San Francisco", country: "USA" } },
-  { name: "Charlie", age: 35, email: "charlie@example.com", address: { city: "London", country: "UK" } }
-]
+const inputEditorRef = ref<InstanceType<typeof import('~/components/tool/JsonInputEditor.vue').default>>()
 
 const { flatten } = useJsonFlatten()
 const { toTableData } = useTablePreview()
 const { exportToCsv } = useExcelCompat()
 
-const loadExample = () => { inputJson.value = JSON.stringify(exampleData, null, 2); renderTable() }
+// Auto-format input in-place (debounced 1.5s after user stops typing)
+const formatInputInPlace = () => {
+  if (!inputJson.value.trim()) return
+  try {
+    const parsed = JSON.parse(inputJson.value)
+    inputJson.value = JSON.stringify(parsed, null, 2)
+  } catch {}
+}
+const debouncedFormatInPlace = useDebounceFn(() => { formatInputInPlace() }, 1500)
+
+// Auto-render on input change (debounced 300ms)
+const debouncedRender = useDebounceFn(() => { renderTable() }, 300)
+watch(inputJson, () => {
+  debouncedRender()
+  debouncedFormatInPlace()
+})
+
+// Re-render when flatten option changes
+watch(flattenNested, () => {
+  if (inputJson.value.trim()) renderTable()
+})
+
+const onExampleLoaded = () => {
+  nextTick(() => renderTable())
+}
+
+const onPaste = () => {
+  nextTick(() => {
+    formatInputInPlace()
+    renderTable()
+  })
+}
 
 const formatCell = (value: any): string => {
   if (value === null || value === undefined) return ''
@@ -141,6 +132,7 @@ const formatCell = (value: any): string => {
 
 const renderTable = () => {
   error.value = ''; headers.value = []; rows.value = []
+  if (!inputJson.value.trim()) return
   try {
     let data = JSON.parse(inputJson.value)
     if (!Array.isArray(data)) { error.value = ui.value?.errorInvalidInput ?? 'Input must be a JSON array'; return }
@@ -177,5 +169,7 @@ const downloadCsv = () => {
   exportToCsv(csvData, headers.value, 'table-data.csv')
 }
 
-const clearAll = () => { error.value = ''; headers.value = []; rows.value = [] }
+const clearAll = () => {
+  error.value = ''; headers.value = []; rows.value = []
+}
 </script>
