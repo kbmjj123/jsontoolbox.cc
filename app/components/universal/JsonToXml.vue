@@ -1,30 +1,24 @@
 <template>
   <ResizablePanel v-model:fullscreen="fullscreen" :initial-ratio="0.5" responsive>
     <template #first>
-      <div class="h-full pr-3">
-        <JsonOutputPanel
-          v-model:view-mode="inputViewMode"
+      <div class="h-full pr-3 overflow-hidden">
+        <JsonInputEditor
+          ref="inputEditorRef"
+          v-model="inputJson"
           :label="tool.ui?.label_input || 'Input JSON'"
-          :content="inputJson"
-          :parsed-data="parsedInputData"
-          :error="inputError"
-          :editable="true"
-          :show-edit-actions="true"
-          :show-copy="false"
-          :show-download="false"
           placeholder='{"name": "JSON Toolbox", "version": "1.0"}'
-          empty-text="Paste your JSON here"
-          @update:content="inputJson = $event"
-          @format="onFormat"
-          @minify="onMinify"
-          @validate="onValidate"
-          @fix="onFix"
+          show-upload
+          show-load-url
+          example-slug="json-to-xml"
+          @clear="clearAll"
           @paste="onPaste"
+          @example-loaded="onExampleLoaded"
         />
       </div>
     </template>
+
     <template #second>
-      <div class="h-full pl-3">
+      <div class="h-full pl-3 flex flex-col overflow-hidden">
         <JsonOutputPanel
           :label="tool.ui?.label_output || 'XML Output'"
           :content="outputXml"
@@ -42,15 +36,9 @@
         <Icon name="lucide:arrow-right" class="h-4 w-4 mr-1.5" />
         {{ tool.ui?.btn_convert || 'Convert to XML' }}
       </button>
-      <button @click="loadExample" class="text-xs text-primary-600 hover:text-primary-700 dark:text-primary-400">
-        {{ tool.ui?.btn_example || 'Load Example' }}
-      </button>
-      <button @click="clearAll" class="rounded-xl border border-surface-200 bg-white px-4 py-2 text-xs font-bold text-surface-700 hover:bg-surface-50 dark:border-surface-700 dark:bg-surface-800 dark:text-surface-300 dark:hover:bg-surface-700">
-        {{ $t('system.clearAll') }}
-      </button>
 
       <div class="flex items-center gap-2">
-        <label class="text-xs font-bold text-surface-600 dark:text-surface-400">{{ tool.ui?.option_root_element || 'Root Element:' }}</label>
+        <label class="text-xs font-bold text-surface-600 dark:text-surface-400">{{ tool.ui?.option_root_element || 'Root:' }}</label>
         <input
           v-model="rootElement"
           class="w-20 rounded-lg border border-surface-200 bg-white px-2 py-1 text-xs dark:border-surface-700 dark:bg-surface-800 dark:text-surface-100"
@@ -80,37 +68,6 @@
 <script setup lang="ts">
 const props = defineProps<{ tool: any }>()
 
-const { formatJson, minifyJson, validateJson, fixJson } = useJsonEditor()
-
-const inputError = ref('')
-const inputViewMode = ref<'text' | 'rich' | 'table'>('text')
-
-const parsedInputData = computed(() => {
-  if (!inputJson.value.trim()) return null
-  try { return JSON.parse(inputJson.value) } catch { return null }
-})
-
-const onFormat = () => {
-  const result = formatJson(inputJson.value)
-  if (result.output) { inputJson.value = result.output; inputError.value = '' }
-  else { inputError.value = result.error }
-}
-const onMinify = () => {
-  const result = minifyJson(inputJson.value)
-  if (result.output) { inputJson.value = result.output; inputError.value = '' }
-  else { inputError.value = result.error }
-}
-const onValidate = () => {
-  const result = validateJson(inputJson.value)
-  inputError.value = result.error
-}
-const onFix = () => {
-  const result = fixJson(inputJson.value)
-  if (result.fixed) { inputJson.value = result.fixed; inputError.value = '' }
-  else { inputError.value = result.error }
-}
-const onPaste = () => { nextTick(() => onFormat()) }
-
 const inputJson = ref('')
 const outputXml = ref('')
 const error = ref('')
@@ -119,22 +76,36 @@ const indent = ref<number | string>(2)
 const encoding = ref('UTF-8')
 const fullscreen = ref(false)
 
-const exampleJson = {
-  catalog: {
-    book: [
-      { id: "bk101", title: "XML Developer's Guide", author: "Gambardella, Matthew", genre: "Computer", price: 44.95, publishDate: "2000-10-01" },
-      { id: "bk102", title: "Midnight Rain", author: "Ralls, Kim", genre: "Fantasy", price: 5.95, publishDate: "2000-12-16" }
-    ]
-  }
-}
+const inputEditorRef = ref<InstanceType<typeof import('~/components/tool/JsonInputEditor.vue').default>>()
 
-const loadExample = () => {
-  inputJson.value = JSON.stringify(exampleJson, null, 2)
-  convertToXml()
+// Auto-format input in-place (debounced 1.5s after user stops typing)
+const formatInputInPlace = () => {
+  if (!inputJson.value.trim()) return
+  try {
+    const parsed = JSON.parse(inputJson.value)
+    inputJson.value = JSON.stringify(parsed, null, 2)
+  } catch {}
 }
+const debouncedFormatInPlace = useDebounceFn(() => { formatInputInPlace() }, 1500)
+
+// Auto-convert on input change (debounced 300ms)
+const debouncedConvert = useDebounceFn(() => { convertToXml() }, 300)
+watch(inputJson, () => {
+  debouncedConvert()
+  debouncedFormatInPlace()
+})
+
+// Re-convert when options change
+watch([rootElement, indent, encoding], () => {
+  if (inputJson.value.trim()) convertToXml()
+})
+
+const onExampleLoaded = () => { nextTick(() => convertToXml()) }
+const onPaste = () => { nextTick(() => { formatInputInPlace(); convertToXml() }) }
 
 const jsonToXml = (obj: any, currentIndent: number = 0): string => {
-  const spaces = '  '.repeat(currentIndent)
+  const unit = indent.value === 'tab' ? '\t' : ' '.repeat(Number(indent.value))
+  const spaces = unit.repeat(currentIndent)
   let xml = ''
 
   if (Array.isArray(obj)) {
@@ -171,6 +142,7 @@ const jsonToXml = (obj: any, currentIndent: number = 0): string => {
 
 const convertToXml = () => {
   error.value = ''
+  if (!inputJson.value.trim()) { outputXml.value = ''; return }
   try {
     const parsed = JSON.parse(inputJson.value)
     const root = rootElement.value || 'root'
@@ -182,24 +154,15 @@ const convertToXml = () => {
   }
 }
 
-const clearAll = () => {
-  outputXml.value = ''
-  error.value = ''
-}
+const clearAll = () => { outputXml.value = ''; error.value = '' }
 
-const copyOutput = async () => {
-  await copyToClipboard(outputXml.value)
-}
+const copyOutput = async () => { await copyToClipboard(outputXml.value) }
 
 const downloadOutput = () => {
   const blob = new Blob([outputXml.value], { type: 'text/xml' })
   const url = URL.createObjectURL(blob)
   const link = document.createElement('a')
-  link.href = url
-  link.download = 'output.xml'
-  document.body.appendChild(link)
-  link.click()
-  document.body.removeChild(link)
-  URL.revokeObjectURL(url)
+  link.href = url; link.download = 'output.xml'
+  document.body.appendChild(link); link.click(); document.body.removeChild(link); URL.revokeObjectURL(url)
 }
 </script>
