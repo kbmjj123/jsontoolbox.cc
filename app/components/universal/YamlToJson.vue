@@ -1,24 +1,30 @@
 <template>
   <ResizablePanel v-model:fullscreen="fullscreen" :initial-ratio="0.5" responsive>
     <template #first>
-      <div class="h-full pr-3">
+      <div class="h-full pr-3 overflow-hidden">
         <JsonInputEditor
+          ref="inputEditorRef"
           v-model="inputYaml"
           :label="tool.ui?.label_input || 'Input YAML'"
           placeholder="name: JSON Toolbox\nversion: 1.0"
           show-upload
           show-load-url
+          example-slug="yaml-to-json"
           @clear="clearAll"
+          @paste="onPaste"
+          @example-loaded="onExampleLoaded"
         />
       </div>
     </template>
+
     <template #second>
-      <div class="h-full pl-3">
+      <div class="h-full pl-3 flex flex-col overflow-hidden">
         <JsonOutputPanel
           :label="tool.ui?.label_output || 'JSON Output'"
           :content="outputJson"
           :error="error"
           :empty-text="tool.ui?.placeholder_output || 'JSON output will appear here...'"
+          highlight="json"
           download-filename="output.json"
           @copy="copyOutput"
           @download="downloadOutput"
@@ -30,12 +36,6 @@
       <button @click="convertToJson" class="btn-primary px-5 py-2 text-xs">
         <Icon name="lucide:arrow-right" class="h-4 w-4 mr-1.5" />
         {{ tool.ui?.btn_convert || 'Convert to JSON' }}
-      </button>
-      <button @click="loadExample" class="text-xs text-primary-600 hover:text-primary-700 dark:text-primary-400">
-        {{ tool.ui?.btn_example || 'Load Example' }}
-      </button>
-      <button @click="clearAll" class="rounded-xl border border-surface-200 bg-white px-4 py-2 text-xs font-bold text-surface-700 hover:bg-surface-50 dark:border-surface-700 dark:bg-surface-800 dark:text-surface-300 dark:hover:bg-surface-700">
-        {{ $t('system.clearAll') }}
       </button>
 
       <div class="flex items-center gap-2">
@@ -60,40 +60,25 @@ const error = ref('')
 const indent = ref(2)
 const fullscreen = ref(false)
 
-const exampleYaml = `# Kubernetes Deployment Example
-apiVersion: apps/v1
-kind: Deployment
-metadata:
-  name: nginx-deployment
-  labels:
-    app: nginx
-spec:
-  replicas: 3
-  selector:
-    matchLabels:
-      app: nginx
-  template:
-    metadata:
-      labels:
-        app: nginx
-    spec:
-      containers:
-        - name: nginx
-          image: nginx:1.21
-          ports:
-            - containerPort: 80
-          resources:
-            limits:
-              memory: "128Mi"
-              cpu: "500m"`
+const inputEditorRef = ref<InstanceType<typeof import('~/components/tool/JsonInputEditor.vue').default>>()
 
-const loadExample = () => {
-  inputYaml.value = exampleYaml
-  convertToJson()
-}
+// Auto-convert on input change (debounced 300ms)
+const debouncedConvert = useDebounceFn(() => { convertToJson() }, 300)
+watch(inputYaml, () => {
+  debouncedConvert()
+})
+
+// Re-convert when indent changes
+watch(indent, () => {
+  if (inputYaml.value.trim()) convertToJson()
+})
+
+const onExampleLoaded = () => { nextTick(() => convertToJson()) }
+const onPaste = () => { nextTick(() => convertToJson()) }
 
 const convertToJson = () => {
   error.value = ''
+  if (!inputYaml.value.trim()) { outputJson.value = ''; return }
   try {
     const parsed = yaml.load(inputYaml.value)
     outputJson.value = JSON.stringify(parsed, null, indent.value)
@@ -103,24 +88,15 @@ const convertToJson = () => {
   }
 }
 
-const clearAll = () => {
-  outputJson.value = ''
-  error.value = ''
-}
+const clearAll = () => { outputJson.value = ''; error.value = '' }
 
-const copyOutput = async () => {
-  await copyToClipboard(outputJson.value)
-}
+const copyOutput = async () => { await copyToClipboard(outputJson.value) }
 
 const downloadOutput = () => {
   const blob = new Blob([outputJson.value], { type: 'application/json' })
   const url = URL.createObjectURL(blob)
   const link = document.createElement('a')
-  link.href = url
-  link.download = 'output.json'
-  document.body.appendChild(link)
-  link.click()
-  document.body.removeChild(link)
-  URL.revokeObjectURL(url)
+  link.href = url; link.download = 'output.json'
+  document.body.appendChild(link); link.click(); document.body.removeChild(link); URL.revokeObjectURL(url)
 }
 </script>
