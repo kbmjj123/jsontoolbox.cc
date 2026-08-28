@@ -10,8 +10,7 @@
 			<!-- Marquee container -->
 			<div class="flex-1 min-w-0 overflow-hidden"
 				style="mask-image: linear-gradient(90deg, transparent 0, #000 24px, #000 calc(100% - 24px), transparent 100%)">
-				<!-- 需要滚动时加：animate-link-scroll group-hover:[animation-play-state:paused] -->
-				<div class="flex items-center gap-2 w-fit ">
+				<div class="flex items-center gap-2 w-fit animate-link-scroll group-hover:[animation-play-state:paused]">
 					<template v-for="(link, i) in loopedLinks" :key="`${i}-${link.name}`">
 						<span v-if="i > 0" class="shrink-0 text-[10px] text-[var(--color-text-muted)] opacity-40">·</span>
 
@@ -49,6 +48,6 @@ export interface ExchangeLink {
 
 const links = linksData as ExchangeLink[]
 // Duplicate links twice for seamless infinite scroll — the CSS translateX(-50%) needs two copies
-const loopedLinks = computed(() => [...links])
-// const loopedLinks = computed(() => [...links, ...links])
+// const loopedLinks = computed(() => [...links])
+const loopedLinks = computed(() => [...links, ...links])
 </script>
