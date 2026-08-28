@@ -15,42 +15,17 @@
       show-load-url
       @clear="onClearRight"
     />
-    <div class="flex flex-wrap gap-3 items-center">
-      <button @click="compare" class="btn-primary px-5 py-2 text-xs">
-        <Icon name="lucide:git-compare" class="h-4 w-4 mr-1.5" />
-        {{ tool.ui?.btn_compare || 'Compare' }}
-      </button>
-      <button @click="sortAndCompare" class="rounded-xl border border-surface-200 bg-white px-4 py-2 text-xs font-bold text-surface-700 hover:bg-surface-50 dark:border-surface-700 dark:bg-surface-800 dark:text-surface-300 dark:hover:bg-surface-700">
-        <Icon name="lucide:arrow-az" class="h-4 w-4 mr-1.5" />
-        {{ tool.ui?.btn_sort_keys || 'Sort Keys' }}
-      </button>
-      <button @click="swapInputs" class="rounded-xl border border-surface-200 bg-white px-4 py-2 text-xs font-bold text-surface-700 hover:bg-surface-50 dark:border-surface-700 dark:bg-surface-800 dark:text-surface-300 dark:hover:bg-surface-700">
-        <Icon name="lucide:arrow-left-right" class="h-4 w-4 mr-1.5" />
-        {{ tool.ui?.btn_swap || 'Swap' }}
-      </button>
-      <button @click="clearAll" class="rounded-xl border border-surface-200 bg-white px-4 py-2 text-xs font-bold text-surface-700 hover:bg-surface-50 dark:border-surface-700 dark:bg-surface-800 dark:text-surface-300 dark:hover:bg-surface-700">
-        {{ $t('system.clearAll') }}
-      </button>
-      <label class="inline-flex items-center gap-1.5 text-xs text-surface-600 dark:text-surface-400 select-none ml-1">
-        <button
-          @click="ignoreArrayOrder = !ignoreArrayOrder"
-          class="relative inline-flex h-4 w-7 items-center rounded-full transition-colors"
-          :class="ignoreArrayOrder ? 'bg-primary-500' : 'bg-surface-300 dark:bg-surface-600'"
-        >
-          <span
-            class="inline-block h-3 w-3 transform rounded-full bg-white transition-transform"
-            :class="ignoreArrayOrder ? 'translate-x-3.5' : 'translate-x-0.5'"
-          />
-        </button>
-        {{ tool.ui?.btn_ignore_order || 'Ignore array order' }}
-      </label>
-    </div>
-
   </div>
 
   <!-- Desktop: resizable split -->
   <div class="hidden lg:block">
     <ResizablePanel v-model:fullscreen="fullscreen" :initial-ratio="0.5" responsive>
+      <template #toolbar-left>
+        <button @click="compare" class="btn-primary px-4 py-1.5 text-xs">
+          <Icon name="lucide:git-compare" class="h-3.5 w-3.5 mr-1" />
+          {{ tool.ui?.btn_compare || 'Compare' }}
+        </button>
+      </template>
       <template #first>
         <div class="h-full pr-3">
           <JsonInputEditor
@@ -80,37 +55,6 @@
         </div>
       </template>
 
-      <template #toolbar-left>
-        <button @click="compare" class="btn-primary px-5 py-2 text-xs">
-          <Icon name="lucide:git-compare" class="h-4 w-4 mr-1.5" />
-          {{ tool.ui?.btn_compare || 'Compare' }}
-        </button>
-        <button @click="sortAndCompare" class="rounded-xl border border-surface-200 bg-white px-4 py-2 text-xs font-bold text-surface-700 hover:bg-surface-50 dark:border-surface-700 dark:bg-surface-800 dark:text-surface-300 dark:hover:bg-surface-700">
-          <Icon name="lucide:arrow-az" class="h-4 w-4 mr-1.5" />
-          {{ tool.ui?.btn_sort_keys || 'Sort Keys' }}
-        </button>
-        <button @click="swapInputs" class="rounded-xl border border-surface-200 bg-white px-4 py-2 text-xs font-bold text-surface-700 hover:bg-surface-50 dark:border-surface-700 dark:bg-surface-800 dark:text-surface-300 dark:hover:bg-surface-700">
-          <Icon name="lucide:arrow-left-right" class="h-4 w-4 mr-1.5" />
-          {{ tool.ui?.btn_swap || 'Swap' }}
-        </button>
-        <button @click="clearAll" class="rounded-xl border border-surface-200 bg-white px-4 py-2 text-xs font-bold text-surface-700 hover:bg-surface-50 dark:border-surface-700 dark:bg-surface-800 dark:text-surface-300 dark:hover:bg-surface-700">
-          {{ $t('system.clearAll') }}
-        </button>
-        <div class="h-4 w-px bg-surface-200 dark:bg-surface-700 mx-1"></div>
-        <label class="inline-flex items-center gap-1.5 text-xs text-surface-600 dark:text-surface-400 select-none">
-          <button
-            @click="ignoreArrayOrder = !ignoreArrayOrder"
-            class="relative inline-flex h-4 w-7 items-center rounded-full transition-colors"
-            :class="ignoreArrayOrder ? 'bg-primary-500' : 'bg-surface-300 dark:bg-surface-600'"
-          >
-            <span
-              class="inline-block h-3 w-3 transform rounded-full bg-white transition-transform"
-              :class="ignoreArrayOrder ? 'translate-x-3.5' : 'translate-x-0.5'"
-            />
-          </button>
-          {{ tool.ui?.btn_ignore_order || 'Ignore array order' }}
-        </label>
-      </template>
     </ResizablePanel>
   </div>
 
@@ -156,21 +100,23 @@ onMounted(() => {
   if (leftUrl && rightUrl) nextTick(() => compare())
 })
 
-const ignoreArrayOrder = ref(false)
-
 // ── Line-level diff highlighting ──
 watch([leftDecorations, rightDecorations], ([newLeft, newRight]) => {
   leftEditor.value?.setLineDecorations(newLeft)
   rightEditor.value?.setLineDecorations(newRight)
 }, { flush: 'post' })
 
-// Also update decorations when ignoreArrayOrder changes (re-compare triggers diffs watch)
+// ── Auto-compare on input change (debounced) ──
+let compareTimer: ReturnType<typeof setTimeout> | null = null
+watch([leftJson, rightJson], () => {
+  if (compareTimer) clearTimeout(compareTimer)
+  compareTimer = setTimeout(() => { compare() }, 300)
+})
 
 // ── Scroll sync between editors ──
 let scrollSyncing = false
 
 onMounted(() => {
-  // Register scroll handlers for CodeMirror editors
   leftEditor.value?.onCmScrollRegister((info) => {
     if (scrollSyncing) return
     scrollSyncing = true
@@ -188,24 +134,6 @@ onMounted(() => {
   })
 })
 
-const deepSortKeys = (obj: any): any => {
-  if (Array.isArray(obj)) return obj.map(deepSortKeys)
-  if (obj !== null && typeof obj === 'object') {
-    return Object.keys(obj).sort().reduce((acc: any, key) => { acc[key] = deepSortKeys(obj[key]); return acc }, {})
-  }
-  return obj
-}
-
-const sortAndCompare = () => {
-  if (!leftJson.value.trim() || !rightJson.value.trim()) return
-  let parsedLeft: any, parsedRight: any
-  try { parsedLeft = JSON.parse(leftJson.value) } catch { return }
-  try { parsedRight = JSON.parse(rightJson.value) } catch { return }
-  leftJson.value = JSON.stringify(deepSortKeys(parsedLeft), null, 2)
-  rightJson.value = JSON.stringify(deepSortKeys(parsedRight), null, 2)
-  compare()
-}
-
 const compare = () => {
   error.value = ''; diffs.value = []; compared.value = false
   leftDecorations.value = []; rightDecorations.value = []
@@ -215,12 +143,10 @@ const compare = () => {
 
   if (!leftJson.value.trim() || !rightJson.value.trim()) return
 
-  // Validate JSON
   try { JSON.parse(leftJson.value) } catch (e) { error.value = `JSON A: ${(e as Error).message}`; return }
   try { JSON.parse(rightJson.value) } catch (e) { error.value = `JSON B: ${(e as Error).message}`; return }
 
-  // Compute diff + line mapping in one shot
-  const result = computeAndMap(leftJson.value, rightJson.value, ignoreArrayOrder.value)
+  const result = computeAndMap(leftJson.value, rightJson.value)
   diffs.value = result.diffs as Diff[]
   leftDecorations.value = result.leftLines
   rightDecorations.value = result.rightLines
@@ -229,12 +155,6 @@ const compare = () => {
   compared.value = true
 }
 
-const swapInputs = () => { const temp = leftJson.value; leftJson.value = rightJson.value; rightJson.value = temp }
 const onClearLeft = () => { error.value = '' }
 const onClearRight = () => { error.value = '' }
-const clearAll = () => {
-  leftJson.value = ''; rightJson.value = ''; error.value = ''; diffs.value = []; compared.value = false
-  leftEditor.value?.clearLineDecorations()
-  rightEditor.value?.clearLineDecorations()
-}
 </script>
