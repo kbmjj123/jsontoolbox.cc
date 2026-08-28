@@ -69,8 +69,9 @@
       <button @click="fileInfo = null" class="text-surface-400 hover:text-surface-600 dark:hover:text-surface-300">✕</button>
     </div>
 
-    <!-- Editor: line numbers + textarea -->
+    <!-- Editor: line numbers + textarea (default mode) -->
     <div
+      v-if="editorMode === 'textarea'"
       class="relative flex flex-1 min-h-0 rounded-xl border border-surface-200 bg-surface-50 dark:border-surface-700 dark:bg-surface-800"
       :class="[dragging ? 'border-primary-400 dark:border-primary-500 bg-primary-50/50 dark:bg-primary-900/20' : '']"
       @dragover.prevent="onDragOver"
@@ -147,6 +148,24 @@
       </div>
     </div>
 
+    <!-- Editor: CodeMirror mode -->
+    <div
+      v-else
+      class="flex flex-col flex-1 min-h-0 rounded-xl border border-surface-200 bg-surface-50 dark:border-surface-700 dark:bg-surface-800 overflow-hidden"
+      @dragover.prevent="onDragOver"
+      @dragleave="onDragLeave"
+      @drop.prevent="onDrop"
+    >
+      <CodeMirrorEditor
+        ref="cmRef"
+        :model-value="modelValue"
+        @update:model-value="emit('update:modelValue', $event)"
+        :placeholder="placeholder"
+        @scroll="onCmScroll"
+        @ready="onCmReady"
+      />
+    </div>
+
     <!-- Error status bar (persistent, always visible when error exists) -->
     <Transition name="fade">
       <div
@@ -216,6 +235,8 @@ interface Props {
   errorCopied?: boolean
   /** Tool slug for loading examples (e.g. 'json-minifier') */
   exampleSlug?: string
+  /** Editor implementation: 'textarea' (default) or 'codemirror' */
+  editorMode?: 'textarea' | 'codemirror'
 }
 
 const props = withDefaults(defineProps<Props>(), {
@@ -233,6 +254,7 @@ const props = withDefaults(defineProps<Props>(), {
   error: '',
   errorCopied: false,
   exampleSlug: '',
+  editorMode: 'textarea',
 })
 
 const emit = defineEmits<{
@@ -268,9 +290,21 @@ onUnmounted(() => { document.removeEventListener('click', handleClickOutside) })
 const gutterRef = ref<HTMLDivElement>()
 const textareaRef = ref<HTMLTextAreaElement>()
 const fileInputRef = ref<HTMLInputElement>()
+const cmRef = ref<InstanceType<typeof CodeMirrorEditor>>()
 const dragging = ref(false)
 const fileInfo = ref<{ name: string; size: string } | null>(null)
 const showUrlModal = ref(false)
+
+// CodeMirror event handlers
+const cmScrollHandler = ref<((info: { scrollTop: number; scrollHeight: number; clientHeight: number }) => void) | null>(null)
+
+const onCmScroll = (info: { scrollTop: number; scrollHeight: number; clientHeight: number }) => {
+  cmScrollHandler.value?.(info)
+}
+
+const onCmReady = () => {
+  // CodeMirror is ready — parent can start calling exposed methods
+}
 
 const onUrlLoaded = (text: string) => {
   emit('update:modelValue', text)
@@ -504,7 +538,34 @@ const onScrollWithHighlight = () => {
   updateHighlightPosition()
 }
 
-defineExpose({ scrollToLine, highlightLine, highlightLines, loadDefaultExample })
+// ── Unified exposed methods ──
+function setLineDecorations(lines: Array<{ line: number; type: 'added' | 'removed' | 'changed' }>) {
+  if (props.editorMode === 'codemirror') cmRef.value?.setLineDecorations(lines)
+}
+
+function clearLineDecorations() {
+  if (props.editorMode === 'codemirror') cmRef.value?.clearLineDecorations()
+}
+
+function scrollToRatio(ratio: number) {
+  if (props.editorMode === 'codemirror') cmRef.value?.scrollToRatio(ratio)
+}
+
+/** Register a scroll handler for the CodeMirror editor (used by parent for scroll sync) */
+function onCmScrollRegister(handler: (info: { scrollTop: number; scrollHeight: number; clientHeight: number }) => void) {
+  cmScrollHandler.value = handler
+}
+
+defineExpose({
+  scrollToLine,
+  highlightLine,
+  highlightLines,
+  loadDefaultExample,
+  setLineDecorations,
+  clearLineDecorations,
+  scrollToRatio,
+  onCmScrollRegister,
+})
 
 const handleClear = () => {
   emit('update:modelValue', '')

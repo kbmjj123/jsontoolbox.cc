@@ -13,241 +13,273 @@
     "json-editor"
   ],
   "en": {
-    "name": "JSON to TypeScript Converter",
-    "ui": {
-      "labelInputJson": "Input JSON",
-      "labelOutput": "TypeScript Interface",
-      "labelInterfaceName": "Interface Name:",
-      "labelExport": "Export",
-      "btnGenerate": "Generate",
-      "placeholderOutput": "TypeScript interface will appear here...",
-      "placeholderName": "RootObject",
-      "errorInvalidInput": "Input must be a JSON object or array",
-      "errorEmptyArray": "Array is empty"
-    },
-    "description": "Convert JSON data to TypeScript interfaces automatically. Generate type definitions and json to ts code from JSON examples — all in your browser.",
-    "hero": {
-      "trustHtml": "100% client-side conversion. Your JSON data never leaves your browser."
-    },
-    "meta": {
-      "title": "JSON to TypeScript — Free Online Interface Generator",
-      "description": "Convert JSON to TypeScript interfaces online. Generate type definitions from JSON data automatically. Export as .ts file. Free, 100% client-side.",
-      "keywords": [
-        "json to typescript",
-        "json to ts",
-        "json to typescript interface",
-        "json to typescript online",
-        "generate typescript from json",
-        "json interface generator",
-        "typescript type generator",
-        "json to ts interface",
-        "json to typescript code",
-        "generate ts from json"
-      ]
-    },
-    "features": [
-      {
-        "icon": "lucide:file-code",
-        "title": "Interface Generation",
-        "description": "Generate TypeScript interfaces from JSON data automatically."
-      },
-      {
-        "icon": "lucide:settings",
-        "title": "Customizable",
-        "description": "Configure optional fields, null handling, and naming conventions."
-      },
-      {
-        "icon": "lucide:download",
-        "title": "Export to File",
-        "description": "Download the generated TypeScript code as a .ts file."
-      },
-      {
-        "icon": "lucide:copy",
-        "title": "Copy Code",
-        "description": "Copy the TypeScript interface code to clipboard with one click."
-      },
-      {
-        "icon": "lucide:layers",
-        "title": "Nested Support",
-        "description": "Handles deeply nested objects and arrays with proper type inference."
-      },
-      {
-        "icon": "lucide:shield-check",
-        "title": "Private",
-        "description": "All conversion happens in your browser. No data upload."
-      }
-    ],
-    "guide": [
-      {
-        "title": "Paste your JSON",
-        "description": "Paste your JSON data into the input field."
-      },
-      {
-        "title": "Click Convert",
-        "description": "Click Convert to TypeScript to generate the interfaces."
-      },
-      {
-        "title": "Copy or Download",
-        "description": "Copy the TypeScript code or download it as a file."
-      }
-    ],
-    "example": {
-      "input": "{\\n  \"id\": 1,\\n  \"name\": \"Alice\",\\n  \"email\": \"alice@example.com\",\\n  \"isActive\": true\\n}",
-      "output": "interface Root {\\n  id: number;\\n  name: string;\\n  email: string;\\n  isActive: boolean;\\n}",
-      "useCase": "Auto-generate TypeScript interfaces from API response examples."
-    },
-    "faq": [
-      {
-        "question": "Is my JSON data uploaded to a server?",
-        "answer": "No. All conversion happens in your browser. Your data never leaves your device."
-      },
-      {
-        "question": "Does it handle nested objects?",
-        "answer": "Yes. The converter generates nested interfaces for nested objects and arrays. You can generate TypeScript from JSON with any level of nesting."
-      },
-      {
-        "question": "Can I configure optional fields?",
-        "answer": "Yes. You can choose to mark fields as optional based on null values or configure it manually."
-      },
-      {
-        "question": "Does it support arrays?",
-        "answer": "Yes. JSON arrays are converted to TypeScript array types with proper element typing."
-      },
-      {
-        "question": "What is the difference between interface and type?",
-        "answer": "Both can be used for type definitions. Interfaces are more extensible, while types support unions and intersections. The converter generates interfaces by default."
-      },
-      {
-        "question": "Can I download the generated code?",
-        "answer": "Yes. You can copy the TypeScript code to clipboard or download it as a .ts file. The file is ready to import into your TypeScript project."
-      },
-      {
-        "question": "Can I generate TypeScript from JSON online?",
-        "answer": "Yes. This free json to typescript online tool lets you generate typescript from json directly in your browser. Whether you need json to typescript interface generation or simple json to ts conversion, paste your data and get type definitions instantly — no upload required."
-      }
-    ],
-    "article": {
-      "title": "How to Generate TypeScript Interfaces from JSON",
-      "content": "<h2>Why Generate TypeScript from JSON?</h2><p>TypeScript provides static type checking for JavaScript, helping catch errors at compile time. When working with APIs or JSON data, generating TypeScript interfaces ensures your code is type-safe and easier to maintain.</p><h2>Common Use Cases</h2><ul><li><strong>API Integration:</strong> Generate types from API response examples</li><li><strong>Form Handling:</strong> Create types for form data structures</li><li><strong>State Management:</strong> Define types for Redux/Vuex state</li><li><strong>Database Models:</strong> Generate types from database record examples</li></ul><h2>How to Generate TypeScript</h2><ol><li><strong>Paste JSON</strong> — paste a JSON object or array</li><li><strong>Set Interface Name</strong> — name your root interface (default: RootObject)</li><li><strong>Click Generate</strong> — TypeScript interfaces appear instantly</li><li><strong>Copy or Download</strong> — use the code in your project</li></ol><h2>Understanding the Output</h2><ul><li><strong>Nested objects</strong> become separate interfaces</li><li><strong>Arrays</strong> use proper element typing (e.g., string[], User[])</li><li><strong>Null values</strong> create optional fields (? prefix)</li></ul><h2>Best Practices</h2><ul><li><strong>Use meaningful names:</strong> Replace RootObject with descriptive names</li><li><strong>Review optional fields:</strong> Check if ? marks are correct</li><li><strong>Export types:</strong> Use export keyword for shared types</li></ul>"
-    }
-  },
+		"name": "JSON to TypeScript Converter",
+		"ui": {
+			"labelInputJson": "Input JSON",
+			"labelOutput": "TypeScript Interface",
+			"labelInterfaceName": "Interface Name:",
+			"labelExport": "Export",
+			"btnGenerate": "Generate",
+			"placeholderOutput": "TypeScript interface will appear here...",
+			"placeholderName": "RootObject",
+			"errorInvalidInput": "Input must be a JSON object or array",
+			"errorEmptyArray": "Array is empty"
+		},
+		"description": "Convert JSON data to TypeScript interfaces automatically. Generate type definitions and JSON to TypeScript code from JSON examples — all in your browser, with support for nested objects, arrays, and customizable options.",
+		"hero": {
+			"trustHtml": "100% client-side conversion. Your JSON data never leaves your browser."
+		},
+		"meta": {
+			"title": "JSON to TypeScript — Free Online Interface Generator",
+			"description": "Convert JSON to TypeScript interfaces online. Generate type definitions from JSON data automatically. Configure interface names, optional fields, and export as .ts file. Free, 100% client-side.",
+			"keywords": [
+				"json to typescript",
+				"json to ts",
+				"json to typescript interface",
+				"json to typescript online",
+				"generate typescript from json",
+				"json interface generator",
+				"typescript type generator",
+				"json to ts interface",
+				"json to typescript code",
+				"generate ts from json",
+				"free json to typescript",
+				"json to typescript converter",
+				"online typescript generator",
+				"json to ts types"
+			]
+		},
+		"features": [
+			{
+				"icon": "lucide:file-code",
+				"title": "Interface Generation",
+				"description": "Generate TypeScript interfaces from JSON data automatically. The tool infers types for strings, numbers, booleans, arrays, and nested objects."
+			},
+			{
+				"icon": "lucide:settings",
+				"title": "Customizable",
+				"description": "Configure optional fields, null handling, and naming conventions. Adjust how the converter treats missing or null values in your JSON."
+			},
+			{
+				"icon": "lucide:download",
+				"title": "Export to File",
+				"description": "Download the generated TypeScript code as a .ts file. The file is ready to import into your TypeScript or Angular project."
+			},
+			{
+				"icon": "lucide:copy",
+				"title": "Copy Code",
+				"description": "Copy the TypeScript interface code to your clipboard with one click. Use it directly in your codebase, documentation, or type definition files."
+			},
+			{
+				"icon": "lucide:layers",
+				"title": "Nested Support",
+				"description": "Handles deeply nested objects and arrays with proper type inference. Nested structures become separate interfaces with clear relationships."
+			},
+			{
+				"icon": "lucide:shield-check",
+				"title": "Private",
+				"description": "All conversion happens in your browser. Your JSON data is not uploaded to a server, which is useful when working with private API responses or configuration data."
+			}
+		],
+		"guide": [
+			{
+				"title": "Paste your JSON",
+				"description": "Paste a JSON object or array into the input field. You can use API response examples, configuration snippets, or any JSON structure you want to type."
+			},
+			{
+				"title": "Configure options",
+				"description": "Set the root interface name (default: RootObject) and adjust how optional fields and null values are handled. This helps tailor the output to your project's conventions."
+			},
+			{
+				"title": "Click Generate",
+				"description": "Click Generate to convert the JSON into TypeScript interfaces. The tool infers types and creates nested interfaces for complex structures."
+			},
+			{
+				"title": "Copy or Download",
+				"description": "Copy the TypeScript code to your clipboard or download it as a .ts file. Import the generated types into your project and refine them as needed."
+			}
+		],
+		"example": {
+			"input": "{\n  \"id\": 1,\n  \"name\": \"Alice\",\n  \"email\": \"alice@example.com\",\n  \"isActive\": true\n}",
+			"output": "interface Root {\n  id: number;\n  name: string;\n  email: string;\n  isActive: boolean;\n}",
+			"useCase": "Auto-generate TypeScript interfaces from API response examples."
+		},
+		"faq": [
+			{
+				"question": "Is my JSON data uploaded to a server?",
+				"answer": "No. All conversion happens locally in your browser. Your JSON data never leaves your device and is not stored or transmitted anywhere."
+			},
+			{
+				"question": "Does it handle nested objects?",
+				"answer": "Yes. The converter generates nested interfaces for nested objects and arrays. You can generate TypeScript from JSON with any level of nesting, and the tool will create appropriately structured type definitions."
+			},
+			{
+				"question": "Can I configure optional fields?",
+				"answer": "Yes. You can choose to mark fields as optional based on null or missing values, or configure this behavior manually. This helps match your project's typing conventions."
+			},
+			{
+				"question": "Does it support arrays?",
+				"answer": "Yes. JSON arrays are converted to TypeScript array types with proper element typing. For example, an array of user objects becomes User[] in the generated interface."
+			},
+			{
+				"question": "What is the difference between interface and type?",
+				"answer": "Both can be used for type definitions. Interfaces are more extensible and support declaration merging, while type aliases support unions, intersections, and mapped types. This converter generates interfaces by default, which work well for most object shapes."
+			},
+			{
+				"question": "Can I download the generated code?",
+				"answer": "Yes. You can copy the TypeScript code to your clipboard or download it as a .ts file. The file is ready to import into your TypeScript project and can be refined further as needed."
+			},
+			{
+				"question": "Can I generate TypeScript from JSON online?",
+				"answer": "Yes. This free JSON to TypeScript online tool lets you generate TypeScript from JSON directly in your browser. Whether you need JSON to TypeScript interface generation or simple JSON to TS conversion, paste your data and get type definitions instantly — no upload required."
+			},
+			{
+				"question": "What types does the converter infer?",
+				"answer": "The converter infers string, number, boolean, null, array, and object types. Nested objects become separate interfaces, and arrays are typed based on their element types."
+			},
+			{
+				"question": "Is this a free JSON to TypeScript converter?",
+				"answer": "Yes. This is a free online JSON to TypeScript converter. You can paste JSON, generate interfaces, and copy or export the TypeScript code without creating an account or uploading data to a server."
+			}
+		],
+		"article": {
+			"title": "How to Generate TypeScript Interfaces from JSON",
+			"content": "<h2>Why Generate TypeScript from JSON?</h2><p>TypeScript provides static type checking for JavaScript, helping catch errors at compile time rather than at runtime. When working with APIs or JSON data, generating TypeScript interfaces ensures your code is type-safe, easier to refactor, and more maintainable in the long run.</p><h2>Common Use Cases</h2><ul><li><strong>API integration:</strong> Generate types from API response examples to ensure your frontend code matches the backend contract</li><li><strong>Form handling:</strong> Create types for form data structures to validate user input and streamline form logic</li><li><strong>State management:</strong> Define types for Redux, Vuex, or other state management solutions to keep your application state predictable</li><li><strong>Database models:</strong> Generate types from database record examples to align your TypeScript code with your data layer</li><li><strong>Code generation:</strong> Use JSON examples as a starting point for generating boilerplate types and interfaces</li></ul><h2>How to Generate TypeScript Interfaces</h2><ol><li><strong>Paste JSON:</strong> Add a JSON object or array to the input field. Use representative examples of your data for best results.</li><li><strong>Set interface name:</strong> Name your root interface (default: RootObject). Choose a descriptive name that reflects the data's purpose.</li><li><strong>Configure options:</strong> Adjust how optional fields and null values are handled to match your project's conventions.</li><li><strong>Click Generate:</strong> The tool infers types and creates TypeScript interfaces instantly.</li><li><strong>Copy or download:</strong> Copy the generated code to your clipboard or download it as a .ts file for use in your project.</li></ol><h2>Understanding the Output</h2><ul><li><strong>Nested objects:</strong> Become separate interfaces with clear relationships, making complex structures easier to understand and maintain.</li><li><strong>Arrays:</strong> Use proper element typing (for example, string[], User[]), so you get full type safety when iterating or accessing elements.</li><li><strong>Null and missing values:</strong> Can create optional fields (with the ? prefix) or union types including null, depending on your configuration.</li></ul><h2>Best Practices</h2><ul><li><strong>Use meaningful names:</strong> Replace generic names like RootObject with descriptive names that reflect the data's role in your application.</li><li><strong>Review optional fields:</strong> Check whether the ? marks and null handling match your expectations and backend behavior.</li><li><strong>Export types:</strong> Use the export keyword for shared types so they can be imported across your project.</li><li><strong>Iterate with examples:</strong> Use multiple JSON examples if your data has variations, then merge or refine the generated types manually.</li><li><strong>Keep types in sync:</strong> When your API or data structure changes, regenerate or update your types to avoid drift between your code and reality.</li></ul><h2>Client-Side Privacy</h2><p>This JSON to TypeScript converter processes input in your browser instead of requiring an upload to a remote service. That can be convenient for development data and private configuration snippets. However, you should still avoid entering passwords, API keys, access tokens, or other highly sensitive information into any browser-based tool.</p>"
+		}
+	},
   "zh": {
-    "name": "JSON 转 TypeScript",
-    "ui": {
-      "labelInputJson": "输入 JSON",
-      "labelOutput": "TypeScript 接口",
-      "labelInterfaceName": "接口名称：",
-      "labelExport": "导出",
-      "btnGenerate": "生成",
-      "placeholderOutput": "TypeScript 接口将显示在此处...",
-      "placeholderName": "RootObject",
-      "errorInvalidInput": "输入必须是 JSON 对象或数组",
-      "errorEmptyArray": "数组为空"
-    },
-    "description": "在线将json转typescript接口，自动从json生成typescript类型定义。支持json转ts，导出为.ts文件。免费在浏览器中完成。",
-    "hero": {
-      "trustHtml": "100% 本地转换，JSON 数据不会离开浏览器。"
-    },
-    "meta": {
-      "title": "JSON 转 TypeScript — 免费在线接口生成器",
-      "description": "在线将 JSON 转换为 TypeScript 接口。从 JSON 数据自动生成类型定义。导出为 .ts 文件。免费、100% 客户端处理。",
-      "keywords": [
-        "json转typescript",
-        "json转ts",
-        "json typescript接口",
-        "从json生成typescript",
-        "json接口生成器",
-        "typescript类型生成器",
-        "json转ts接口",
-        "json转typescript代码",
-        "在线生成ts",
-        "json to ts工具"
-      ]
-    },
-    "features": [
-      {
-        "icon": "lucide:file-code",
-        "title": "接口生成",
-        "description": "从 JSON 数据自动生成 TypeScript 接口。"
-      },
-      {
-        "icon": "lucide:settings",
-        "title": "可配置",
-        "description": "配置可选字段、null 处理和命名约定。"
-      },
-      {
-        "icon": "lucide:download",
-        "title": "导出文件",
-        "description": "下载生成的 TypeScript 代码为 .ts 文件。"
-      },
-      {
-        "icon": "lucide:copy",
-        "title": "复制代码",
-        "description": "一键复制 TypeScript 接口代码到剪贴板。"
-      },
-      {
-        "icon": "lucide:layers",
-        "title": "嵌套支持",
-        "description": "处理深度嵌套的对象和数组，正确推断类型。"
-      },
-      {
-        "icon": "lucide:shield-check",
-        "title": "私密安全",
-        "description": "所有转换在浏览器中完成，不上传数据。"
-      }
-    ],
-    "guide": [
-      {
-        "title": "粘贴 JSON",
-        "description": "将 JSON 数据粘贴到输入框中。"
-      },
-      {
-        "title": "点击转换",
-        "description": "点击转换为 TypeScript 生成接口。"
-      },
-      {
-        "title": "复制或下载",
-        "description": "复制 TypeScript 代码或下载为文件。"
-      }
-    ],
-    "example": {
-      "input": "{\\n  \"id\": 1,\\n  \"name\": \"Alice\",\\n  \"email\": \"alice@example.com\",\\n  \"isActive\": true\\n}",
-      "output": "interface Root {\\n  id: number;\\n  name: string;\\n  email: string;\\n  isActive: boolean;\\n}",
-      "useCase": "从 API 响应示例自动生成 TypeScript 接口定义。"
-    },
-    "faq": [
-      {
-        "question": "我的 JSON 数据会上传到服务器吗？",
-        "answer": "不会。所有转换在浏览器中完成，数据不会离开你的设备。"
-      },
-      {
-        "question": "能处理嵌套对象吗？",
-        "answer": "能。转换器为嵌套对象和数组生成嵌套接口。你可以从任意嵌套层级的 JSON 生成 TypeScript。"
-      },
-      {
-        "question": "可以配置可选字段吗？",
-        "answer": "可以。你可以选择根据 null 值标记字段为可选，或手动配置。"
-      },
-      {
-        "question": "支持数组吗？",
-        "answer": "支持。JSON 数组转换为 TypeScript 数组类型，带有正确的元素类型。"
-      },
-      {
-        "question": "interface 和 type 有什么区别？",
-        "answer": "两者都可用于类型定义。接口更可扩展，而类型支持联合和交叉。转换器默认生成接口。"
-      },
-      {
-        "question": "可以下载生成的代码吗？",
-        "answer": "可以。你可以复制 TypeScript 代码到剪贴板或下载为 .ts 文件。文件可以直接导入到你的 TypeScript 项目中。"
-      },
-      {
-        "question": "如何从json生成typescript接口？",
-        "answer": "粘贴 JSON 数据，点击转换即可自动生成json typescript接口。这个工具支持json转ts和json转typescript，生成的接口可以直接复制到你的项目中使用。"
-      }
-    ],
-    "article": {
-      "title": "如何从 JSON 生成 TypeScript 接口",
-      "content": "<h2>为什么要从 JSON 生成 TypeScript？</h2><p>TypeScript 为 JavaScript 提供静态类型检查，帮助在编译时捕获错误。处理 API 或 JSON 数据时，生成 TypeScript 接口可确保代码类型安全且易于维护。</p><h2>常见使用场景</h2><ul><li><strong>API 集成：</strong>从 API 响应示例生成类型</li><li><strong>表单处理：</strong>为表单数据结构创建类型</li><li><strong>状态管理：</strong>定义 Redux/Vuex 状态的类型</li><li><strong>数据库模型：</strong>从数据库记录示例生成类型</li></ul><h2>如何生成 TypeScript</h2><ol><li><strong>粘贴 JSON</strong> — 粘贴 JSON 对象或数组</li><li><strong>设置接口名称</strong> — 命名根接口（默认：RootObject）</li><li><strong>点击生成</strong> — TypeScript 接口立即出现</li><li><strong>复制或下载</strong> — 在项目中使用代码</li></ol><h2>理解输出</h2><ul><li><strong>嵌套对象</strong>变成单独的接口</li><li><strong>数组</strong>使用正确的元素类型（如 string[], User[]）</li><li><strong>Null 值</strong>创建可选字段（? 前缀）</li></ul><h2>最佳实践</h2><ul><li><strong>使用有意义的名称：</strong>将 RootObject 替换为描述性名称</li><li><strong>审查可选字段：</strong>检查 ? 标记是否正确</li><li><strong>导出类型：</strong>对共享类型使用 export 关键字</li></ul>"
-    }
-  }
+		"name": "JSON 转 TypeScript",
+		"ui": {
+			"labelInputJson": "输入 JSON",
+			"labelOutput": "TypeScript 接口",
+			"labelInterfaceName": "接口名称：",
+			"labelExport": "导出",
+			"btnGenerate": "生成",
+			"placeholderOutput": "TypeScript 接口将显示在此处...",
+			"placeholderName": "RootObject",
+			"errorInvalidInput": "输入必须是 JSON 对象或数组",
+			"errorEmptyArray": "数组为空"
+		},
+		"description": "在线将 JSON 转换为 TypeScript 接口，自动从 JSON 生成 TypeScript 类型定义。支持 JSON 转 TS、嵌套对象和数组类型推断，并可导出为 .ts 文件，全部在浏览器中完成。",
+		"hero": {
+			"trustHtml": "100% 本地转换。JSON 数据始终保留在浏览器中。"
+		},
+		"meta": {
+			"title": "JSON 转 TypeScript — 免费在线接口生成器",
+			"description": "在线将 JSON 转换为 TypeScript 接口。从 JSON 数据自动生成类型定义，支持配置接口名称、可选字段和 null 处理，并可导出为 .ts 文件。免费、100% 客户端处理。",
+			"keywords": [
+				"json转typescript",
+				"json转ts",
+				"json typescript接口",
+				"从json生成typescript",
+				"json接口生成器",
+				"typescript类型生成器",
+				"json转ts接口",
+				"json转typescript代码",
+				"在线生成ts",
+				"json to ts工具",
+				"免费json转typescript",
+				"json类型定义生成",
+				"json转ts在线",
+				"typescript接口生成器"
+			]
+		},
+		"features": [
+			{
+				"icon": "lucide:file-code",
+				"title": "接口生成",
+				"description": "从 JSON 数据自动生成 TypeScript 接口。工具会推断字符串、数字、布尔值、数组和嵌套对象的类型。"
+			},
+			{
+				"icon": "lucide:settings",
+				"title": "可配置",
+				"description": "配置可选字段、null 处理和命名约定。调整转换器对 JSON 中缺失或 null 值的处理方式，以匹配项目规范。"
+			},
+			{
+				"icon": "lucide:download",
+				"title": "导出文件",
+				"description": "将生成的 TypeScript 代码下载为 .ts 文件。文件可直接导入到 TypeScript 或 Angular 项目中使用。"
+			},
+			{
+				"icon": "lucide:copy",
+				"title": "复制代码",
+				"description": "一键将 TypeScript 接口代码复制到剪贴板。可直接用于代码库、文档或类型定义文件。"
+			},
+			{
+				"icon": "lucide:layers",
+				"title": "嵌套支持",
+				"description": "处理深度嵌套的对象和数组，并进行正确的类型推断。嵌套结构会生成独立的接口，关系清晰。"
+			},
+			{
+				"icon": "lucide:shield-check",
+				"title": "私密安全",
+				"description": "所有转换都在浏览器中完成，不需要将 JSON 数据上传到服务器。适合处理私密 API 响应或配置数据。"
+			}
+		],
+		"guide": [
+			{
+				"title": "粘贴 JSON",
+				"description": "将 JSON 对象或数组粘贴到输入框中。可以使用 API 响应示例、配置片段或任何需要类型化的 JSON 结构。"
+			},
+			{
+				"title": "配置选项",
+				"description": "设置根接口名称（默认：RootObject），并调整可选字段和 null 值的处理方式。这有助于使输出更符合项目的命名和类型约定。"
+			},
+			{
+				"title": "点击生成",
+				"description": "点击“生成”将 JSON 转换为 TypeScript 接口。工具会推断类型，并为复杂结构创建嵌套接口。"
+			},
+			{
+				"title": "复制或下载",
+				"description": "将 TypeScript 代码复制到剪贴板，或下载为 .ts 文件。导入到项目中后，可根据实际需求进一步细化类型。"
+			}
+		],
+		"example": {
+			"input": "{\n  \"id\": 1,\n  \"name\": \"Alice\",\n  \"email\": \"alice@example.com\",\n  \"isActive\": true\n}",
+			"output": "interface Root {\n  id: number;\n  name: string;\n  email: string;\n  isActive: boolean;\n}",
+			"useCase": "从 API 响应示例自动生成 TypeScript 接口定义。"
+		},
+		"faq": [
+			{
+				"question": "我的 JSON 数据会上传到服务器吗？",
+				"answer": "不会。所有转换都在浏览器本地完成，你的 JSON 数据不会离开设备，也不会被存储或传输到任何地方。"
+			},
+			{
+				"question": "能处理嵌套对象吗？",
+				"answer": "能。转换器会为嵌套对象和数组生成嵌套接口。你可以从任意嵌套层级的 JSON 生成 TypeScript，工具会创建结构清晰的类型定义。"
+			},
+			{
+				"question": "可以配置可选字段吗？",
+				"answer": "可以。你可以选择根据 null 或缺失值将字段标记为可选，或手动配置这一行为。这有助于匹配项目的类型约定。"
+			},
+			{
+				"question": "支持数组吗？",
+				"answer": "支持。JSON 数组会转换为带有正确元素类型的 TypeScript 数组类型。例如，用户对象数组会生成 User[] 类型。"
+			},
+			{
+				"question": "interface 和 type 有什么区别？",
+				"answer": "两者都可用于类型定义。接口更可扩展，支持声明合并；而 type 别名支持联合类型、交叉类型和映射类型等。此转换器默认生成接口，适用于大多数对象形状。"
+			},
+			{
+				"question": "可以下载生成的代码吗？",
+				"answer": "可以。你可以将 TypeScript 代码复制到剪贴板，或下载为 .ts 文件。文件可直接导入到 TypeScript 项目中，并根据需要进一步细化。"
+			},
+			{
+				"question": "如何从 JSON 生成 TypeScript 接口？",
+				"answer": "粘贴 JSON 数据，点击“生成”即可自动生成 JSON TypeScript 接口。这个工具支持 JSON 转 TS 和 JSON 转 TypeScript，生成的接口可以直接复制到项目中使用。"
+			},
+			{
+				"question": "转换器会推断哪些类型？",
+				"answer": "转换器会推断 string、number、boolean、null、array 和 object 类型。嵌套对象会生成独立接口，数组会根据元素类型进行类型化。"
+			},
+			{
+				"question": "这是一个免费的 JSON 转 TypeScript 转换器吗？",
+				"answer": "是的。这是一个免费的在线 JSON 转 TypeScript 转换器。你可以粘贴 JSON、生成接口，并复制或导出 TypeScript 代码，无需创建账号或将数据上传到服务器。"
+			}
+		],
+		"article": {
+			"title": "如何从 JSON 生成 TypeScript 接口",
+			"content": "<h2>为什么要从 JSON 生成 TypeScript？</h2><p>TypeScript 为 JavaScript 提供静态类型检查，帮助在编译阶段而非运行时捕获错误。在处理 API 或 JSON 数据时，生成 TypeScript 接口可以确保代码类型安全、更易于重构，并在长期维护中减少隐患。</p><h2>常见使用场景</h2><ul><li><strong>API 集成：</strong>从 API 响应示例生成类型，确保前端代码与后端契约一致</li><li><strong>表单处理：</strong>为表单数据结构创建类型，用于校验用户输入并简化表单逻辑</li><li><strong>状态管理：</strong>为 Redux、Vuex 等状态管理方案定义类型，使应用状态更可预测</li><li><strong>数据库模型：</strong>从数据库记录示例生成类型，使 TypeScript 代码与数据层保持一致</li><li><strong>代码生成：</strong>使用 JSON 示例作为起点，生成类型和接口的样板代码</li></ul><h2>如何生成 TypeScript 接口</h2><ol><li><strong>粘贴 JSON：</strong>在输入框中添加 JSON 对象或数组。使用具有代表性的数据示例可获得更好的类型推断结果。</li><li><strong>设置接口名称：</strong>为根接口命名（默认：RootObject）。选择一个能反映数据用途的描述性名称。</li><li><strong>配置选项：</strong>调整可选字段和 null 值的处理方式，使其符合项目的类型约定。</li><li><strong>点击生成：</strong>工具会推断类型并立即生成 TypeScript 接口。</li><li><strong>复制或下载：</strong>将生成的代码复制到剪贴板，或下载为 .ts 文件以便在项目中导入使用。</li></ol><h2>理解输出结果</h2><ul><li><strong>嵌套对象：</strong>会变成独立的接口，关系清晰，使复杂结构更易于理解和维护。</li><li><strong>数组：</strong>会使用正确的元素类型（例如 string[]、User[]），在遍历或访问元素时获得完整的类型安全。</li><li><strong>Null 和缺失值：</strong>根据你的配置，可能生成带 ? 前缀的可选字段，或包含 null 的联合类型。</li></ul><h2>最佳实践</h2><ul><li><strong>使用有意义的名称：</strong>将 RootObject 等通用名称替换为能反映数据在应用中角色的描述性名称。</li><li><strong>审查可选字段：</strong>检查 ? 标记和 null 处理是否符合预期以及后端行为。</li><li><strong>导出类型：</strong>对共享类型使用 export 关键字，以便在项目中多处导入使用。</li><li><strong>使用多个示例迭代：</strong>如果数据存在多种形态，可以使用多个 JSON 示例生成类型，然后手动合并或细化。</li><li><strong>保持类型同步：</strong>当 API 或数据结构变更时，及时重新生成或更新类型，避免代码与实际数据脱节。</li></ul><h2>浏览器本地处理与隐私</h2><p>这个 JSON 转 TypeScript 转换器在浏览器中处理输入内容，不要求将数据上传到远程服务。对于开发数据和私密配置片段来说，本地处理更加方便。不过，仍然不建议在任何浏览器工具中输入密码、API 密钥、访问令牌或其他高度敏感的信息。</p>"
+		}
+	}
 }
