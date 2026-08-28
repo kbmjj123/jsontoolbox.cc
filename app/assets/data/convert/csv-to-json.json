@@ -6,205 +6,275 @@
   "sort": 3,
   "applicationCategory": "DeveloperApplication",
   "nextSteps": ["json-editor", "json-to-csv"],
-  "recommends": ["json-editor"],
+  "recommends": [],
   "en": {
-    "name": "CSV to JSON Converter",
-    "description": "Convert CSV data to JSON array format online. This csv to json converter and csv to json formatter lets you import CSV files and export as structured JSON.",
-    "hero": {
-      "trustHtml": "100% client-side conversion. Your data never leaves your browser."
-    },
-    "meta": {
-      "title": "CSV to JSON — Free Online Converter",
-      "description": "Convert CSV to JSON format online. Transform CSV files into JSON arrays. Free, fast, and runs in your browser. No upload required.",
-      "keywords": ["csv to json", "csv to json converter", "convert csv to json", "csv to json online", "csv to json format", "csv to json formatter"]
-    },
-    "ui": {
-      "label_input": "Input CSV",
-      "label_output": "JSON Output",
-      "btn_convert": "Convert to JSON",
-      "btn_example": "Load Example",
-      "option_delimiter": "Delimiter:",
-      "option_has_header": "First row is header",
-      "option_indent": "Indent:",
-      "placeholder_output": "JSON output will appear here...",
-      "error_no_data": "No data to convert"
-    },
-    "features": [
-      {
-        "icon": "lucide:file-spreadsheet",
-        "title": "CSV Import",
-        "description": "Paste CSV data or upload a CSV file to convert."
-      },
-      {
-        "icon": "lucide:download",
-        "title": "JSON Export",
-        "description": "Download the JSON output or copy to clipboard."
-      },
-      {
-        "icon": "lucide:settings",
-        "title": "Smart Options",
-        "description": "Auto-detect delimiters, infer types (numbers, booleans)."
-      },
-      {
-        "icon": "lucide:upload",
-        "title": "File Upload",
-        "description": "Upload .csv, .tsv, or .txt files directly."
-      },
-      {
-        "icon": "lucide:code",
-        "title": "Type Inference",
-        "description": "Automatically convert numbers, booleans, and null values."
-      },
-      {
-        "icon": "lucide:shield-check",
-        "title": "Private",
-        "description": "All conversion happens in your browser. No data upload."
-      }
-    ],
-    "guide": [
-      {
-        "title": "Paste CSV data",
-        "description": "Paste your CSV data into the input field or upload a file."
-      },
-      {
-        "title": "Click Convert",
-        "description": "Click Convert to JSON to generate the output."
-      },
-      {
-        "title": "Copy or Download",
-        "description": "Copy the JSON output or download it as a file."
-      }
-    ],
-    "example": {
-      "input": "name,age,city\\nAlice,30,New York\\nBob,25,London",
-      "output": "[\\n  { \"name\": \"Alice\", \"age\": 30, \"city\": \"New York\" },\\n  { \"name\": \"Bob\", \"age\": 25, \"city\": \"London\" }\\n]",
-      "useCase": "Convert Excel-exported CSV data to JSON for programmatic processing."
-    },
-    "faq": [
-      {
-        "question": "Is my CSV data uploaded to a server?",
-        "answer": "No. All conversion happens in your browser. Your data never leaves your device."
-      },
-      {
-        "question": "Does it handle quoted fields?",
-        "answer": "Yes. The converter properly handles quoted fields, commas within quotes, and escaped characters."
-      },
-      {
-        "question": "Can I convert large CSV files?",
-        "answer": "Yes. Since all processing happens locally, file size is limited only by your browser's memory."
-      },
-      {
-        "question": "What format does the JSON output use?",
-        "answer": "The output is a JSON array of objects, where each row becomes an object with column headers as keys."
-      },
-      {
-        "question": "Does it support different delimiters?",
-        "answer": "Yes. Choose from comma, semicolon, tab, pipe, or let the tool auto-detect the delimiter."
-      },
-      {
-        "question": "Does it infer data types?",
-        "answer": "Yes. Numbers are converted to numeric values, 'true'/'false' to booleans, and empty cells to null."
-      }
-    ]
-  },
+		"name": "CSV to JSON Converter",
+		"description": "Convert CSV data to JSON array format online. This CSV to JSON converter and CSV to JSON formatter lets you import CSV files or paste CSV text, configure delimiters and headers, and export structured JSON — all in your browser.",
+		"hero": {
+			"trustHtml": "100% client-side conversion. Your data never leaves your browser."
+		},
+		"meta": {
+			"title": "CSV to JSON — Free Online Converter",
+			"description": "Convert CSV to JSON format online. Transform CSV files and text into JSON arrays with configurable delimiters, headers, and type inference. Free, fast, and runs in your browser. No upload required.",
+			"keywords": [
+				"csv to json",
+				"csv to json converter",
+				"convert csv to json",
+				"csv to json online",
+				"csv to json format",
+				"csv to json formatter",
+				"csv to json array",
+				"csv to json converter online",
+				"free csv to json",
+				"csv to json tool"
+			]
+		},
+		"ui": {
+			"label_input": "Input CSV",
+			"label_output": "JSON Output",
+			"btn_convert": "Convert to JSON",
+			"btn_example": "Load Example",
+			"option_delimiter": "Delimiter:",
+			"option_has_header": "First row is header",
+			"option_indent": "Indent:",
+			"placeholder_output": "JSON output will appear here...",
+			"error_no_data": "No data to convert"
+		},
+		"features": [
+			{
+				"icon": "lucide:file-spreadsheet",
+				"title": "CSV Import",
+				"description": "Paste CSV data directly or upload a CSV file to convert. The tool supports common CSV exports from Excel, Google Sheets, databases, and other data sources."
+			},
+			{
+				"icon": "lucide:download",
+				"title": "JSON Export",
+				"description": "Download the converted JSON as a .json file or copy the output to your clipboard. Use the result in APIs, scripts, configuration files, or frontend applications."
+			},
+			{
+				"icon": "lucide:settings",
+				"title": "Smart Options",
+				"description": "Auto-detect delimiters such as comma, semicolon, tab, or pipe. Configure whether the first row contains headers and choose indentation for readable JSON output."
+			},
+			{
+				"icon": "lucide:upload",
+				"title": "File Upload",
+				"description": "Upload .csv, .tsv, or .txt files directly from your device. The converter reads the file locally without uploading it to a server."
+			},
+			{
+				"icon": "lucide:code",
+				"title": "Type Inference",
+				"description": "Automatically convert numeric strings to numbers, 'true'/'false' to booleans, and empty cells to null. This produces more natural JSON for programmatic use."
+			},
+			{
+				"icon": "lucide:shield-check",
+				"title": "Private",
+				"description": "All CSV parsing and JSON conversion happen in your browser. Your data is not uploaded to a server, which is useful when working with sensitive or internal datasets."
+			}
+		],
+		"guide": [
+			{
+				"title": "Paste CSV data",
+				"description": "Paste your CSV content into the input field or upload a .csv, .tsv, or .txt file. You can use data exported from spreadsheets, databases, logs, or other sources."
+			},
+			{
+				"title": "Configure options",
+				"description": "Select the delimiter (or use auto-detect), indicate whether the first row is a header, and choose the JSON indentation style. Enable type inference if you want numbers and booleans converted automatically."
+			},
+			{
+				"title": "Click Convert",
+				"description": "Click Convert to JSON to parse the CSV and generate a JSON array of objects. Each row becomes an object, and column headers (or generated keys) become property names."
+			},
+			{
+				"title": "Copy or Download",
+				"description": "Copy the JSON output to your clipboard or download it as a .json file. Use the result in APIs, scripts, frontend code, or other data processing workflows."
+			}
+		],
+		"example": {
+			"input": "name,age,city\nAlice,30,New York\nBob,25,London",
+			"output": "[\n  { \"name\": \"Alice\", \"age\": 30, \"city\": \"New York\" },\n  { \"name\": \"Bob\", \"age\": 25, \"city\": \"London\" }\n]",
+			"useCase": "Convert Excel-exported CSV data to JSON for programmatic processing."
+		},
+		"faq": [
+			{
+				"question": "Is my CSV data uploaded to a server?",
+				"answer": "No. All CSV parsing and JSON conversion happen locally in your browser. Your data is not uploaded to a remote server and does not leave your device."
+			},
+			{
+				"question": "Does it handle quoted fields?",
+				"answer": "Yes. The converter correctly handles quoted fields, commas inside quotes, newlines within quoted cells, and escaped characters according to common CSV rules."
+			},
+			{
+				"question": "Can I convert large CSV files?",
+				"answer": "You can convert larger CSV files as long as they can be loaded and processed by your browser. The practical limit depends on available memory, device performance, and the complexity of the data."
+			},
+			{
+				"question": "What format does the JSON output use?",
+				"answer": "The output is a JSON array of objects. Each CSV row becomes one object, and the column headers (or generated keys if no header) become the property names."
+			},
+			{
+				"question": "Does it support different delimiters?",
+				"answer": "Yes. You can choose comma, semicolon, tab, pipe, or let the tool auto-detect the delimiter based on the input content."
+			},
+			{
+				"question": "Does it infer data types?",
+				"answer": "Yes. When type inference is enabled, numeric strings are converted to numbers, 'true' and 'false' (case-insensitive) to booleans, and empty cells to null."
+			},
+			{
+				"question": "What if my CSV has no header row?",
+				"answer": "If you disable the 'First row is header' option, the converter will generate generic keys such as column0, column1, etc. You can then rename keys in the JSON if needed."
+			},
+			{
+				"question": "Can I use this tool for TSV files?",
+				"answer": "Yes. TSV (tab-separated values) files are supported. Select the tab delimiter or use auto-detect, then convert the TSV to JSON as usual."
+			},
+			{
+				"question": "Can I convert JSON back to CSV?",
+				"answer": "This tool focuses on CSV to JSON conversion. For JSON to CSV conversion, use a dedicated JSON to CSV converter tool in the same toolbox."
+			},
+			{
+				"question": "Is this a free CSV to JSON converter?",
+				"answer": "Yes. This is a free online CSV to JSON converter. You can paste CSV text or upload files, configure options, and export JSON without creating an account or uploading data to a server."
+			}
+		],
+		"article": {
+			"title": "How to Convert CSV to JSON Online",
+			"content": "<h2>What Is CSV to JSON Conversion?</h2><p>CSV (Comma-Separated Values) is a simple tabular format widely used for exporting data from spreadsheets, databases, and analytics tools. JSON (JavaScript Object Notation) is a structured, hierarchical format commonly used in APIs, web applications, and modern data pipelines.</p><p>Converting CSV to JSON transforms flat, row-based data into an array of objects, where each row becomes an object and each column becomes a property. This makes the data easier to work with in JavaScript, frontend frameworks, and API-driven workflows.</p><h2>Why Convert CSV to JSON?</h2><ul><li><strong>API integration:</strong> Many APIs expect JSON payloads instead of CSV</li><li><strong>Frontend development:</strong> JSON is the native data format for JavaScript and frameworks like React, Vue, and Angular</li><li><strong>Data transformation:</strong> JSON supports nested structures, making it easier to reshape data for specific use cases</li><li><strong>Configuration files:</strong> JSON is commonly used for application settings and feature flags</li><li><strong>Programmatic processing:</strong> JSON is easier to parse and manipulate in most programming languages</li></ul><h2>How to Convert CSV to JSON</h2><ol><li><strong>Paste or upload CSV:</strong> Add your CSV content by pasting text or uploading a .csv, .tsv, or .txt file.</li><li><strong>Configure options:</strong> Select the delimiter (comma, semicolon, tab, pipe, or auto-detect), indicate whether the first row is a header, and choose JSON indentation.</li><li><strong>Enable type inference (optional):</strong> If enabled, numeric strings become numbers, 'true'/'false' become booleans, and empty cells become null.</li><li><strong>Click Convert:</strong> The tool parses the CSV and generates a JSON array of objects.</li><li><strong>Copy or download:</strong> Copy the JSON to your clipboard or save it as a .json file for use in your project.</li></ol><h2>Understanding the Output Format</h2><p>The default output is a JSON array where each CSV row becomes an object. If your CSV has a header row, the header values are used as property names. For example:</p><pre>name,age,city\nAlice,30,New York\nBob,25,London</pre><p>becomes:</p><pre>[\n  { \"name\": \"Alice\", \"age\": 30, \"city\": \"New York\" },\n  { \"name\": \"Bob\", \"age\": 25, \"city\": \"London\" }\n]</pre><p>If there is no header row, the converter generates generic keys such as column0, column1, etc. You can later rename these keys in the JSON if needed.</p><h2>Handling Special Cases</h2><ul><li><strong>Quoted fields:</strong> The converter correctly handles fields enclosed in quotes, including commas and newlines inside quoted cells.</li><li><strong>Escaped characters:</strong> Common CSV escape sequences and quoted quotes are preserved correctly in the JSON output.</li><li><strong>Different delimiters:</strong> Semicolon-separated, tab-separated (TSV), and pipe-separated files are all supported.</li><li><strong>Empty cells:</strong> Empty values can be converted to null when type inference is enabled, or kept as empty strings if preferred.</li></ul><h2>Best Practices</h2><ul><li><strong>Use header rows:</strong> Including a header row makes the resulting JSON more readable and self-describing.</li><li><strong>Check data types:</strong> Review the output to ensure numbers, booleans, and strings are represented as expected.</li><li><strong>Validate JSON:</strong> After conversion, use a JSON validator to confirm the output is well-formed before using it in production.</li><li><strong>Keep a backup:</strong> Retain the original CSV file in case you need to re-import or adjust the conversion settings.</li><li><strong>Consider encoding:</strong> For non-ASCII characters, ensure your CSV file uses UTF-8 encoding to avoid character issues in the JSON output.</li></ul><h2>Common Use Cases</h2><ul><li><strong>Spreadsheet exports:</strong> Convert Excel or Google Sheets exports into JSON for use in web applications</li><li><strong>Database dumps:</strong> Transform CSV exports from databases into JSON for API consumption</li><li><strong>Analytics data:</strong> Convert analytics or reporting CSVs into JSON for visualization libraries</li><li><strong>Test data:</strong> Generate JSON test fixtures from CSV datasets for automated testing</li><li><strong>Migration scripts:</strong> Prepare data for migration by converting legacy CSV formats to JSON</li></ul><h2>Client-Side Privacy</h2><p>This CSV to JSON converter processes input in your browser instead of requiring an upload to a remote service. That can be convenient for internal datasets, sensitive reports, or development data. However, you should still avoid entering passwords, API keys, access tokens, or other highly sensitive information into any browser-based tool.</p>"
+		}
+	},
   "zh": {
-    "name": "CSV 转 JSON",
-    "description": "在线csv转json，将csv数据转换为json数组格式。免费的csv json转换器，支持转换csv为json。导入 CSV 文件并导出为结构化 JSON。",
-    "hero": {
-      "trustHtml": "100% 本地转换，数据不会离开浏览器。"
-    },
-    "meta": {
-      "title": "CSV 转 JSON — 免费在线转换器",
-      "description": "在线将 CSV 转换为 JSON 格式。将 CSV 文件转换为 JSON 数组。免费、快速，在浏览器中运行。无需上传。",
-      "keywords": ["csv转json", "csv json转换器", "转换csv为json", "在线csv转json"]
-    },
-    "ui": {
-      "label_input": "输入 CSV",
-      "label_output": "JSON 输出",
-      "btn_convert": "转换为 JSON",
-      "btn_example": "加载示例",
-      "option_delimiter": "分隔符：",
-      "option_has_header": "第一行是表头",
-      "option_indent": "缩进：",
-      "placeholder_output": "JSON 输出将显示在这里...",
-      "error_no_data": "没有数据可转换"
-    },
-    "features": [
-      {
-        "icon": "lucide:file-spreadsheet",
-        "title": "CSV 导入",
-        "description": "粘贴 CSV 数据或上传 CSV 文件进行转换。"
-      },
-      {
-        "icon": "lucide:download",
-        "title": "JSON 导出",
-        "description": "下载 JSON 输出或复制到剪贴板。"
-      },
-      {
-        "icon": "lucide:settings",
-        "title": "智能选项",
-        "description": "自动检测分隔符，推断类型（数字、布尔值）。"
-      },
-      {
-        "icon": "lucide:upload",
-        "title": "文件上传",
-        "description": "直接上传 .csv、.tsv 或 .txt 文件。"
-      },
-      {
-        "icon": "lucide:code",
-        "title": "类型推断",
-        "description": "自动转换数字、布尔值和空值。"
-      },
-      {
-        "icon": "lucide:shield-check",
-        "title": "私密安全",
-        "description": "所有转换在浏览器中完成，不上传数据。"
-      }
-    ],
-    "guide": [
-      {
-        "title": "粘贴 CSV 数据",
-        "description": "将 CSV 数据粘贴到输入框中或上传文件。"
-      },
-      {
-        "title": "点击转换",
-        "description": "点击转换为 JSON 生成输出。"
-      },
-      {
-        "title": "复制或下载",
-        "description": "复制 JSON 输出或下载为文件。"
-      }
-    ],
-    "example": {
-      "input": "name,age,city\\nAlice,30,New York\\nBob,25,London",
-      "output": "[\\n  { \"name\": \"Alice\", \"age\": 30, \"city\": \"New York\" },\\n  { \"name\": \"Bob\", \"age\": 25, \"city\": \"London\" }\\n]",
-      "useCase": "将 Excel 导出的 CSV 数据转换为 JSON 供程序处理。"
-    },
-    "faq": [
-      {
-        "question": "我的 CSV 数据会上传到服务器吗？",
-        "answer": "不会。所有转换在浏览器中完成，数据不会离开你的设备。"
-      },
-      {
-        "question": "能处理带引号的字段吗？",
-        "answer": "能。转换器正确处理带引号的字段、引号内的逗号和转义字符。"
-      },
-      {
-        "question": "可以转换大型 CSV 文件吗？",
-        "answer": "可以。所有处理在本地完成，文件大小仅受浏览器内存限制。"
-      },
-      {
-        "question": "JSON 输出是什么格式？",
-        "answer": "输出是 JSON 对象数组，每行变成一个对象，列头作为键。"
-      },
-      {
-        "question": "支持不同的分隔符吗？",
-        "answer": "支持。可以选择逗号、分号、制表符、竖线，或让工具自动检测。"
-      },
-      {
-        "question": "会自动推断数据类型吗？",
-        "answer": "会。数字转换为数值，'true'/'false' 转换为布尔值，空单元格转换为 null。"
-      }
-    ]
-  }
+		"name": "CSV 转 JSON",
+		"description": "在线将 CSV 数据转换为 JSON 数组格式。这个 CSV 转 JSON 转换器支持粘贴 CSV 文本或上传 CSV/TSV 文件，配置分隔符、表头和缩进选项，并导出结构化 JSON，全部在浏览器中完成。",
+		"hero": {
+			"trustHtml": "100% 本地转换。数据始终保留在浏览器中。"
+		},
+		"meta": {
+			"title": "CSV 转 JSON — 免费在线转换器",
+			"description": "在线将 CSV 转换为 JSON 格式。把 CSV 文件和文本转换为 JSON 数组，支持配置分隔符、表头和类型推断。免费、快速，在浏览器中运行，无需上传文件。",
+			"keywords": [
+				"csv转json",
+				"csv json转换器",
+				"转换csv为json",
+				"在线csv转json",
+				"csv转json在线",
+				"csv转json格式",
+				"csv转json数组",
+				"免费csv转json",
+				"csv转json工具",
+				"csv文件转json"
+			]
+		},
+		"ui": {
+			"label_input": "输入 CSV",
+			"label_output": "JSON 输出",
+			"btn_convert": "转换为 JSON",
+			"btn_example": "加载示例",
+			"option_delimiter": "分隔符：",
+			"option_has_header": "第一行是表头",
+			"option_indent": "缩进：",
+			"placeholder_output": "JSON 输出将显示在这里...",
+			"error_no_data": "没有数据可转换"
+		},
+		"features": [
+			{
+				"icon": "lucide:file-spreadsheet",
+				"title": "CSV 导入",
+				"description": "直接粘贴 CSV 数据或上传 CSV 文件进行转换。支持来自 Excel、Google 表格、数据库和其他数据源的常见 CSV 导出文件。"
+			},
+			{
+				"icon": "lucide:download",
+				"title": "JSON 导出",
+				"description": "将转换后的 JSON 下载为 .json 文件或复制到剪贴板。可将结果用于 API、脚本、配置文件或前端应用。"
+			},
+			{
+				"icon": "lucide:settings",
+				"title": "智能选项",
+				"description": "自动检测逗号、分号、制表符、竖线等分隔符。可配置第一行是否为表头，并选择 JSON 缩进风格以获得更易读的输出。"
+			},
+			{
+				"icon": "lucide:upload",
+				"title": "文件上传",
+				"description": "直接从设备上传 .csv、.tsv 或 .txt 文件。转换器在本地读取文件，不会将数据上传到服务器。"
+			},
+			{
+				"icon": "lucide:code",
+				"title": "类型推断",
+				"description": "自动将数字字符串转换为数值，将 'true'/'false' 转换为布尔值，将空单元格转换为 null。生成的 JSON 更适合程序化使用。"
+			},
+			{
+				"icon": "lucide:shield-check",
+				"title": "私密安全",
+				"description": "所有 CSV 解析和 JSON 转换都在浏览器中完成，不需要将数据上传到服务器。适合处理敏感数据或内部数据集。"
+			}
+		],
+		"guide": [
+			{
+				"title": "粘贴 CSV 数据",
+				"description": "将 CSV 内容粘贴到输入框中，或上传 .csv、.tsv 或 .txt 文件。可以使用从电子表格、数据库、日志或其他来源导出的数据。"
+			},
+			{
+				"title": "配置选项",
+				"description": "选择分隔符（或使用自动检测），指定第一行是否为表头，并选择 JSON 缩进风格。如果希望自动转换数字和布尔值，可以启用类型推断。"
+			},
+			{
+				"title": "点击转换",
+				"description": "点击“转换为 JSON”按钮，解析 CSV 并生成 JSON 对象数组。每一行会变成一个对象，列标题（或生成的键名）会成为属性名。"
+			},
+			{
+				"title": "复制或下载",
+				"description": "将 JSON 输出复制到剪贴板，或下载为 .json 文件。可将结果用于 API、脚本、前端代码或其他数据处理流程。"
+			}
+		],
+		"example": {
+			"input": "name,age,city\nAlice,30,New York\nBob,25,London",
+			"output": "[\n  { \"name\": \"Alice\", \"age\": 30, \"city\": \"New York\" },\n  { \"name\": \"Bob\", \"age\": 25, \"city\": \"London\" }\n]",
+			"useCase": "将 Excel 导出的 CSV 数据转换为 JSON 供程序处理。"
+		},
+		"faq": [
+			{
+				"question": "我的 CSV 数据会上传到服务器吗？",
+				"answer": "不会。所有 CSV 解析和 JSON 转换都在浏览器本地完成，数据不会上传到远程服务器，也不会离开你的设备。"
+			},
+			{
+				"question": "能处理带引号的字段吗？",
+				"answer": "能。转换器会正确处理带引号的字段、引号内的逗号、引号单元格内的换行，以及常见的 CSV 转义规则。"
+			},
+			{
+				"question": "可以转换大型 CSV 文件吗？",
+				"answer": "可以转换较大的 CSV 文件，只要浏览器能够加载和处理它们。实际限制取决于设备性能、浏览器可用内存以及数据的复杂程度。"
+			},
+			{
+				"question": "JSON 输出是什么格式？",
+				"answer": "输出是一个 JSON 对象数组。每一行 CSV 数据会变成一个对象，列标题（如果没有表头则使用生成的键名）会成为属性名。"
+			},
+			{
+				"question": "支持不同的分隔符吗？",
+				"answer": "支持。你可以选择逗号、分号、制表符、竖线，或者让工具根据输入内容自动检测分隔符。"
+			},
+			{
+				"question": "会自动推断数据类型吗？",
+				"answer": "会。启用类型推断后，数字字符串会被转换为数值，'true' 和 'false'（不区分大小写）会被转换为布尔值，空单元格会被转换为 null。"
+			},
+			{
+				"question": "如果 CSV 没有表头行怎么办？",
+				"answer": "如果取消勾选“第一行是表头”选项，转换器会生成通用的键名，例如 column0、column1 等。之后如有需要，可以在 JSON 中重命名这些键。"
+			},
+			{
+				"question": "可以用这个工具处理 TSV 文件吗？",
+				"answer": "可以。TSV（制表符分隔值）文件受支持。选择制表符分隔符或使用自动检测，然后像平常一样将 TSV 转换为 JSON。"
+			},
+			{
+				"question": "可以把 JSON 再转回 CSV 吗？",
+				"answer": "这个工具专注于 CSV 到 JSON 的转换。如果需要将 JSON 转换为 CSV，可以使用同一工具箱中的 JSON 转 CSV 工具。"
+			},
+			{
+				"question": "这是一个免费的 CSV 转 JSON 转换器吗？",
+				"answer": "是的。这是一个免费的在线 CSV 转 JSON 转换器。你可以粘贴 CSV 文本或上传文件，配置选项并导出 JSON，无需创建账号或将数据上传到服务器。"
+			}
+		],
+		"article": {
+			"title": "如何在线将 CSV 转换为 JSON",
+			"content": "<h2>什么是 CSV 转 JSON？</h2><p>CSV（逗号分隔值）是一种简单的表格格式，广泛用于从电子表格、数据库和分析工具导出数据。JSON（JavaScript 对象表示法）是一种结构化的分层格式，常用于 API、Web 应用和现代数据管道。</p><p>将 CSV 转换为 JSON，可以把扁平的、按行组织的数据变成一个对象数组：每一行变成一个对象，每一列变成一个属性。这样在 JavaScript、前端框架和基于 API 的工作流中更容易使用。</p><h2>为什么要将 CSV 转换为 JSON？</h2><ul><li><strong>API 集成：</strong>许多 API 期望接收 JSON 载荷而不是 CSV</li><li><strong>前端开发：</strong>JSON 是 JavaScript 以及 React、Vue、Angular 等框架的原生数据格式</li><li><strong>数据转换：</strong>JSON 支持嵌套结构，更容易根据具体需求重塑数据</li><li><strong>配置文件：</strong>JSON 常用于应用设置和功能开关等配置场景</li><li><strong>程序化处理：</strong>在大多数编程语言中，JSON 比 CSV 更容易解析和操作</li></ul><h2>如何将 CSV 转换为 JSON</h2><ol><li><strong>粘贴或上传 CSV：</strong>通过粘贴文本或上传 .csv、.tsv、.txt 文件添加 CSV 内容。</li><li><strong>配置选项：</strong>选择分隔符（逗号、分号、制表符、竖线或自动检测），指定第一行是否为表头，并选择 JSON 缩进风格。</li><li><strong>启用类型推断（可选）：</strong>启用后，数字字符串会转换为数值，'true'/'false' 会转换为布尔值，空单元格会转换为 null。</li><li><strong>点击转换：</strong>工具会解析 CSV 并生成一个 JSON 对象数组。</li><li><strong>复制或下载：</strong>将 JSON 复制到剪贴板，或保存为 .json 文件以便在项目中使用。</li></ol><h2>理解输出格式</h2><p>默认输出是一个 JSON 数组，其中每一行 CSV 数据变成一个对象。如果 CSV 包含表头行，则表头值会作为属性名。例如：</p><pre>name,age,city\nAlice,30,New York\nBob,25,London</pre><p>会被转换为：</p><pre>[\n  { \"name\": \"Alice\", \"age\": 30, \"city\": \"New York\" },\n  { \"name\": \"Bob\", \"age\": 25, \"city\": \"London\" }\n]</pre><p>如果没有表头行，转换器会生成通用的键名，如 column0、column1 等。如有需要，之后可以在 JSON 中重命名这些键。</p><h2>处理特殊情况</h2><ul><li><strong>带引号的字段：</strong>转换器能正确处理被引号包围的字段，包括引号内的逗号和换行。</li><li><strong>转义字符：</strong>常见的 CSV 转义序列和引号中的引号会在 JSON 输出中正确保留。</li><li><strong>不同分隔符：</strong>支持分号分隔、制表符分隔（TSV）和竖线分隔的文件。</li><li><strong>空单元格：</strong>启用类型推断时，空值可以转换为 null；也可以根据需要保留为空字符串。</li></ul><h2>最佳实践</h2><ul><li><strong>使用表头行：</strong>包含表头行可以让生成的 JSON 更具可读性和自描述性。</li><li><strong>检查数据类型：</strong>检查输出，确保数字、布尔值和字符串的表示符合预期。</li><li><strong>验证 JSON：</strong>转换后，使用 JSON 验证工具确认输出格式正确，然后再用于生产环境。</li><li><strong>保留备份：</strong>保留原始 CSV 文件，以便需要时重新导入或调整转换设置。</li><li><strong>注意编码：</strong>对于非 ASCII 字符，确保 CSV 文件使用 UTF-8 编码，避免在 JSON 输出中出现字符问题。</li></ul><h2>常见使用场景</h2><ul><li><strong>表格导出：</strong>将 Excel 或 Google 表格的导出文件转换为 JSON，用于 Web 应用</li><li><strong>数据库导出：</strong>将数据库的 CSV 导出转换为 JSON，供 API 使用</li><li><strong>分析数据：</strong>将分析或报表 CSV 转换为 JSON，用于可视化库</li><li><strong>测试数据：</strong>从 CSV 数据集生成 JSON 测试用例，用于自动化测试</li><li><strong>迁移脚本：</strong>将旧系统的 CSV 格式数据转换为 JSON，用于数据迁移</li></ul><h2>浏览器本地处理与隐私</h2><p>这个 CSV 转 JSON 转换器在浏览器中处理输入内容，不要求将数据上传到远程服务。对于内部数据集、敏感报表或开发数据来说，本地处理更加方便。不过，仍然不建议在任何浏览器工具中输入密码、API 密钥、访问令牌或其他高度敏感的信息。</p>"
+		}
+	}
 }
