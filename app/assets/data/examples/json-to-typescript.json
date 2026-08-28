@@ -1,0 +1,20 @@
+[
+  {
+    "id": "user",
+    "label_en": "User Object",
+    "label_zh": "用户对象",
+    "input": "{\"id\":12345,\"name\":\"John Doe\",\"email\":\"john@example.com\",\"isActive\":true,\"score\":95.5,\"tags\":[\"admin\",\"user\"],\"address\":{\"street\":\"123 Main St\",\"city\":\"New York\",\"country\":\"USA\"}}"
+  },
+  {
+    "id": "product",
+    "label_en": "Product",
+    "label_zh": "商品",
+    "input": "{\"id\":1,\"name\":\"Laptop\",\"price\":999.99,\"inStock\":true,\"specs\":{\"cpu\":\"i7\",\"ram\":16},\"images\":[\"img1.png\",\"img2.png\"]}"
+  },
+  {
+    "id": "api",
+    "label_en": "API Response",
+    "label_zh": "API 响应",
+    "input": "{\"status\":\"success\",\"code\":200,\"data\":{\"items\":[{\"id\":1,\"title\":\"Item A\",\"createdAt\":\"2024-06-15T10:30:00Z\"}],\"total\":1,\"page\":1}}"
+  }
+]
