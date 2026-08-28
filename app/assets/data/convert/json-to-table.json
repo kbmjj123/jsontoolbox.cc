@@ -8,205 +8,243 @@
   "nextSteps": ["json-to-csv", "json-to-excel"],
   "recommends": ["json-editor"],
   "en": {
-    "name": "JSON to HTML Table",
-    "ui": {
-      "labelInputJson": "Input JSON Array",
-      "btnRender": "Render Table",
-      "btnExample": "Load Example",
-      "btnCopyHtml": "Copy HTML",
-      "btnDownloadCsv": "Download CSV",
-      "option_flatten": "Flatten nested objects",
-      "statusRows": "{count} rows",
-      "statusColumns": "{count} columns",
-      "errorInvalidInput": "Input must be a JSON array",
-      "errorEmptyArray": "Array is empty"
-    },
-    "description": "Convert JSON data to an HTML table view. This json table converter, json table generator, and json table viewer visualizes JSON arrays as formatted, readable tables.",
-    "hero": {
-      "trustHtml": "100% client-side conversion. Your data never leaves your browser."
-    },
-    "meta": {
-      "title": "JSON to Table — Free Online JSON Table Viewer",
-      "description": "Convert JSON arrays to HTML tables online. Visualize JSON data as formatted, readable tables. Free, fast, and 100% client-side.",
-      "keywords": ["json to table", "json to html table", "json table converter", "json table viewer", "json html table generator", "json table generator", "convert json to html table"]
-    },
-    "features": [
-      {
-        "icon": "lucide:table",
-        "title": "Table View",
-        "description": "Convert JSON arrays to clean HTML tables."
-      },
-      {
-        "icon": "lucide:copy",
-        "title": "Copy HTML",
-        "description": "Copy the HTML table code to clipboard."
-      },
-      {
-        "icon": "lucide:download",
-        "title": "Download CSV",
-        "description": "Export table data as CSV file for spreadsheet apps."
-      },
-      {
-        "icon": "lucide:list",
-        "title": "Flatten Nested",
-        "description": "Flatten nested JSON objects into dot-notation columns."
-      },
-      {
-        "icon": "lucide:upload",
-        "title": "File Upload",
-        "description": "Upload .json files directly for conversion."
-      },
-      {
-        "icon": "lucide:shield-check",
-        "title": "Private",
-        "description": "All conversion happens in your browser. No data upload."
-      }
-    ],
-    "guide": [
-      {
-        "title": "Paste your JSON array",
-        "description": "Paste your JSON array into the input field."
-      },
-      {
-        "title": "View table",
-        "description": "The JSON data is displayed as an HTML table."
-      },
-      {
-        "title": "Copy HTML or Download CSV",
-        "description": "Copy the HTML code or download as CSV file."
-      }
-    ],
-    "example": {
-      "input": "[\\n  { \"name\": \"Alice\", \"age\": 30, \"city\": \"New York\" },\\n  { \"name\": \"Bob\", \"age\": 25, \"city\": \"London\" }\\n]",
-      "output": "<table>\\n  <thead>\\n    <tr><th>name</th><th>age</th><th>city</th></tr>\\n  </thead>\\n  <tbody>\\n    <tr><td>Alice</td><td>30</td><td>New York</td></tr>\\n    <tr><td>Bob</td><td>25</td><td>London</td></tr>\\n  </tbody>\\n</table>",
-      "useCase": "Quickly convert JSON data to HTML tables for web page display."
-    },
-    "faq": [
-      {
-        "question": "Is my JSON data uploaded to a server?",
-        "answer": "No. All conversion happens in your browser. Your data never leaves your device."
-      },
-      {
-        "question": "Can I copy the HTML code?",
-        "answer": "Yes. You can copy the generated HTML table code to use in your web pages or documents."
-      },
-      {
-        "question": "Does it support nested JSON objects?",
-        "answer": "Yes. Enable 'Flatten nested objects' to expand nested structures into dot-notation columns (e.g., address.city)."
-      },
-      {
-        "question": "Can I convert large JSON files?",
-        "answer": "Yes. Since all processing happens locally, file size is limited only by your browser's memory."
-      },
-      {
-        "question": "What is the difference between this and JSON to CSV?",
-        "answer": "JSON to Table creates an HTML table view for visual display. JSON to CSV creates a downloadable CSV file for spreadsheet applications."
-      },
-      {
-        "question": "Can I download the table as CSV?",
-        "answer": "Yes. Click 'Download CSV' to export the table data as a CSV file compatible with Excel and Google Sheets."
-      }
-    ]
-  },
+		"name": "JSON to HTML Table",
+		"ui": {
+			"labelInputJson": "Input JSON Array",
+			"btnRender": "Render Table",
+			"btnExample": "Load Example",
+			"btnCopyHtml": "Copy HTML",
+			"btnDownloadCsv": "Download CSV",
+			"option_flatten": "Flatten nested objects",
+			"statusRows": "{count} rows",
+			"statusColumns": "{count} columns",
+			"errorInvalidInput": "Input must be a JSON array",
+			"errorEmptyArray": "Array is empty"
+		},
+		"description": "Convert JSON data to an HTML table view. This JSON table converter, JSON table generator, and JSON table viewer visualizes JSON arrays as formatted, readable tables that you can embed in web pages or export as CSV.",
+		"hero": {
+			"trustHtml": "100% client-side conversion. Your data never leaves your browser."
+		},
+		"meta": {
+			"title": "JSON to Table — Free Online JSON Table Viewer",
+			"description": "Convert JSON arrays to HTML tables online. Visualize JSON data as formatted, readable tables. Copy HTML code or export as CSV. Free, fast, and 100% client-side.",
+			"keywords": [
+				"json to table",
+				"json to html table",
+				"json table converter",
+				"json table viewer",
+				"json html table generator",
+				"json table generator",
+				"convert json to html table",
+				"json array to table",
+				"online json table",
+				"free json to table"
+			]
+		},
+		"features": [
+			{
+				"icon": "lucide:table",
+				"title": "Table View",
+				"description": "Convert JSON arrays to clean, semantic HTML tables. Each object becomes a row, and each key becomes a column header for easy reading."
+			},
+			{
+				"icon": "lucide:copy",
+				"title": "Copy HTML",
+				"description": "Copy the generated HTML table code to your clipboard. Use it directly in web pages, documentation, emails, or other HTML-compatible destinations."
+			},
+			{
+				"icon": "lucide:download",
+				"title": "Download CSV",
+				"description": "Export the table data as a CSV file for use in Excel, Google Sheets, or other spreadsheet applications. This is useful for further analysis or reporting."
+			},
+			{
+				"icon": "lucide:list",
+				"title": "Flatten Nested",
+				"description": "Flatten nested JSON objects into dot-notation columns (for example, address.city, user.name). This makes deeply structured data usable in flat table views."
+			},
+			{
+				"icon": "lucide:upload",
+				"title": "File Upload",
+				"description": "Upload .json files directly from your device for conversion. The file is read locally in your browser and is not uploaded to any server."
+			},
+			{
+				"icon": "lucide:shield-check",
+				"title": "Private",
+				"description": "All JSON parsing and table generation happen in your browser. Your data is not uploaded to a server, which is useful when working with internal or sensitive datasets."
+			}
+		],
+		"guide": [
+			{
+				"title": "Paste your JSON array",
+				"description": "Paste a JSON array of objects into the input field, or upload a .json file. Each object will become one row in the HTML table."
+			},
+			{
+				"title": "Render table",
+				"description": "Click Render Table to convert the JSON into an HTML table view. If your data contains nested objects, you can enable 'Flatten nested objects' to expand them into separate columns."
+			},
+			{
+				"title": "Copy HTML or Download CSV",
+				"description": "Copy the HTML table code to use in web pages or documents, or download the table data as a CSV file for use in spreadsheet applications."
+			}
+		],
+		"example": {
+			"input": "[\n  { \"name\": \"Alice\", \"age\": 30, \"city\": \"New York\" },\n  { \"name\": \"Bob\", \"age\": 25, \"city\": \"London\" }\n]",
+			"output": "<table>\n  <thead>\n    <tr><th>name</th><th>age</th><th>city</th></tr>\n  </thead>\n  <tbody>\n    <tr><td>Alice</td><td>30</td><td>New York</td></tr>\n    <tr><td>Bob</td><td>25</td><td>London</td></tr>\n  </tbody>\n</table>",
+			"useCase": "Quickly convert JSON data to HTML tables for web page display."
+		},
+		"faq": [
+			{
+				"question": "Is my JSON data uploaded to a server?",
+				"answer": "No. All JSON parsing and table generation happen locally in your browser. Your data never leaves your device and is not stored or transmitted anywhere."
+			},
+			{
+				"question": "Can I copy the HTML code?",
+				"answer": "Yes. You can copy the generated HTML table code and paste it into web pages, documentation, emails, or other HTML-compatible destinations."
+			},
+			{
+				"question": "Does it support nested JSON objects?",
+				"answer": "Yes. Enable 'Flatten nested objects' to expand nested structures into dot-notation columns (for example, address.city, user.name). This makes nested data compatible with flat table views."
+			},
+			{
+				"question": "Can I convert large JSON files?",
+				"answer": "You can convert larger JSON files as long as they can be loaded and processed by your browser. The practical limit depends on available memory, device performance, and data complexity."
+			},
+			{
+				"question": "What is the difference between this and JSON to CSV?",
+				"answer": "JSON to Table creates an HTML table view primarily for visual display in web pages or documents. JSON to CSV creates a downloadable CSV file optimized for spreadsheet applications like Excel and Google Sheets."
+			},
+			{
+				"question": "Can I download the table as CSV?",
+				"answer": "Yes. Click 'Download CSV' to export the table data as a CSV file compatible with Excel, Google Sheets, and other spreadsheet applications."
+			},
+			{
+				"question": "Can I use this table in my website?",
+				"answer": "Yes. The generated HTML table is standard, semantic HTML that you can embed directly into your web pages. You can style it further with your own CSS if needed."
+			},
+			{
+				"question": "Is this a free JSON to table converter?",
+				"answer": "Yes. This is a free online JSON to table converter. You can paste JSON arrays or upload files, render HTML tables, and copy or export the result without creating an account or uploading data to a server."
+			}
+		]
+	},
   "zh": {
-    "name": "JSON 转 HTML 表格",
-    "ui": {
-      "labelInputJson": "输入 JSON 数组",
-      "btnRender": "渲染表格",
-      "btnExample": "加载示例",
-      "btnCopyHtml": "复制 HTML",
-      "btnDownloadCsv": "下载 CSV",
-      "option_flatten": "展平嵌套对象",
-      "statusRows": "{count} 行",
-      "statusColumns": "{count} 列",
-      "errorInvalidInput": "输入必须是 JSON 数组",
-      "errorEmptyArray": "数组为空"
-    },
-    "description": "将json转表格，转换 JSON 数据为json html表格视图。免费的json表格转换器和json表格查看器，将 JSON 数组可视化为格式化的可读表格。",
-    "hero": {
-      "trustHtml": "100% 本地转换，数据不会离开浏览器。"
-    },
-    "meta": {
-      "title": "JSON 转表格 — 免费在线 JSON 表格查看器",
-      "description": "在线将 JSON 数组转换为 HTML 表格。将 JSON 数据可视化为格式化的可读表格。免费、快速、100% 客户端处理。",
-      "keywords": ["json转表格", "json html表格", "json表格转换器", "json表格查看器"]
-    },
-    "features": [
-      {
-        "icon": "lucide:table",
-        "title": "表格视图",
-        "description": "将 JSON 数组转换为清晰的 HTML 表格。"
-      },
-      {
-        "icon": "lucide:copy",
-        "title": "复制 HTML",
-        "description": "复制 HTML 表格代码到剪贴板。"
-      },
-      {
-        "icon": "lucide:download",
-        "title": "下载 CSV",
-        "description": "导出表格数据为 CSV 文件，兼容 Excel 和 Google Sheets。"
-      },
-      {
-        "icon": "lucide:list",
-        "title": "展平嵌套",
-        "description": "将嵌套 JSON 对象展平为点号表示的列（如 address.city）。"
-      },
-      {
-        "icon": "lucide:upload",
-        "title": "文件上传",
-        "description": "直接上传 .json 文件进行转换。"
-      },
-      {
-        "icon": "lucide:shield-check",
-        "title": "私密安全",
-        "description": "所有转换在浏览器中完成，不上传数据。"
-      }
-    ],
-    "guide": [
-      {
-        "title": "粘贴 JSON 数组",
-        "description": "将 JSON 数组粘贴到输入框中。"
-      },
-      {
-        "title": "查看表格",
-        "description": "JSON 数据显示为 HTML 表格。"
-      },
-      {
-        "title": "复制 HTML 或下载 CSV",
-        "description": "复制 HTML 代码或下载为 CSV 文件。"
-      }
-    ],
-    "example": {
-      "input": "[\\n  { \"name\": \"Alice\", \"age\": 30, \"city\": \"New York\" },\\n  { \"name\": \"Bob\", \"age\": 25, \"city\": \"London\" }\\n]",
-      "output": "<table>\\n  <thead>\\n    <tr><th>name</th><th>age</th><th>city</th></tr>\\n  </thead>\\n  <tbody>\\n    <tr><td>Alice</td><td>30</td><td>New York</td></tr>\\n    <tr><td>Bob</td><td>25</td><td>London</td></tr>\\n  </tbody>\\n</table>",
-      "useCase": "将 JSON 数据快速转换为 HTML 表格用于网页展示。"
-    },
-    "faq": [
-      {
-        "question": "我的 JSON 数据会上传到服务器吗？",
-        "answer": "不会。所有转换在浏览器中完成，数据不会离开你的设备。"
-      },
-      {
-        "question": "可以复制 HTML 代码吗？",
-        "answer": "可以。你可以复制生成的 HTML 表格代码，用于网页或文档。"
-      },
-      {
-        "question": "支持嵌套 JSON 对象吗？",
-        "answer": "支持。启用\"展平嵌套对象\"可以将嵌套结构展开为点号表示的列（如 address.city）。"
-      },
-      {
-        "question": "可以转换大型 JSON 文件吗？",
-        "answer": "可以。所有处理在本地完成，文件大小仅受浏览器内存限制。"
-      },
-      {
-        "question": "这个工具和 JSON 转 CSV 有什么区别？",
-        "answer": "JSON 转表格创建 HTML 表格视图用于可视化显示。JSON 转 CSV 创建可下载的 CSV 文件用于电子表格应用。"
-      },
-      {
-        "question": "可以下载表格为 CSV 吗？",
-        "answer": "可以。点击\"下载 CSV\"将表格数据导出为 CSV 文件，兼容 Excel 和 Google Sheets。"
-      }
-    ]
-  }
+		"name": "JSON 转 HTML 表格",
+		"ui": {
+			"labelInputJson": "输入 JSON 数组",
+			"btnRender": "渲染表格",
+			"btnExample": "加载示例",
+			"btnCopyHtml": "复制 HTML",
+			"btnDownloadCsv": "下载 CSV",
+			"option_flatten": "展平嵌套对象",
+			"statusRows": "{count} 行",
+			"statusColumns": "{count} 列",
+			"errorInvalidInput": "输入必须是 JSON 数组",
+			"errorEmptyArray": "数组为空"
+		},
+		"description": "将 JSON 数据转换为 HTML 表格视图。这个 JSON 表格转换器和 JSON 表格查看器可以将 JSON 数组可视化为格式化的可读表格，支持复制 HTML 代码或导出为 CSV，用于网页展示和数据分析。",
+		"hero": {
+			"trustHtml": "100% 本地转换。数据始终保留在浏览器中。"
+		},
+		"meta": {
+			"title": "JSON 转表格 — 免费在线 JSON 表格查看器",
+			"description": "在线将 JSON 数组转换为 HTML 表格。将 JSON 数据可视化为格式化的可读表格，支持复制 HTML 代码或导出为 CSV。免费、快速、100% 客户端处理。",
+			"keywords": [
+				"json转表格",
+				"json html表格",
+				"json表格转换器",
+				"json表格查看器",
+				"json转html表格",
+				"json数组转表格",
+				"在线json表格",
+				"免费json转表格",
+				"json数据转表格",
+				"json表格生成器"
+			]
+		},
+		"features": [
+			{
+				"icon": "lucide:table",
+				"title": "表格视图",
+				"description": "将 JSON 数组转换为清晰、语义化的 HTML 表格。每个对象变成一行，每个键变成列标题，便于阅读和展示。"
+			},
+			{
+				"icon": "lucide:copy",
+				"title": "复制 HTML",
+				"description": "将生成的 HTML 表格代码复制到剪贴板。可直接用于网页、文档、邮件或其他支持 HTML 的场景。"
+			},
+			{
+				"icon": "lucide:download",
+				"title": "下载 CSV",
+				"description": "将表格数据导出为 CSV 文件，用于 Excel、Google Sheets 或其他电子表格应用。适合进一步分析或生成报表。"
+			},
+			{
+				"icon": "lucide:list",
+				"title": "展平嵌套",
+				"description": "将嵌套 JSON 对象展平为点号表示的列（例如 address.city、user.name）。这样可以在扁平表格中清晰展示深层结构数据。"
+			},
+			{
+				"icon": "lucide:upload",
+				"title": "文件上传",
+				"description": "直接从设备上传 .json 文件进行转换。文件在浏览器本地读取，不会上传到任何服务器。"
+			},
+			{
+				"icon": "lucide:shield-check",
+				"title": "私密安全",
+				"description": "所有 JSON 解析和表格生成都在浏览器中完成，不需要将数据上传到服务器。适合处理内部数据或敏感数据集。"
+			}
+		],
+		"guide": [
+			{
+				"title": "粘贴 JSON 数组",
+				"description": "将 JSON 对象数组粘贴到输入框中，或上传 .json 文件。每个对象会变成 HTML 表格中的一行。"
+			},
+			{
+				"title": "渲染表格",
+				"description": "点击“渲染表格”将 JSON 转换为 HTML 表格视图。如果数据包含嵌套对象，可以启用“展平嵌套对象”将其展开为独立列。"
+			},
+			{
+				"title": "复制 HTML 或下载 CSV",
+				"description": "复制 HTML 表格代码用于网页或文档，或将表格数据下载为 CSV 文件，用于电子表格应用和数据分析。"
+			}
+		],
+		"example": {
+			"input": "[\n  { \"name\": \"Alice\", \"age\": 30, \"city\": \"New York\" },\n  { \"name\": \"Bob\", \"age\": 25, \"city\": \"London\" }\n]",
+			"output": "<table>\n  <thead>\n    <tr><th>name</th><th>age</th><th>city</th></tr>\n  </thead>\n  <tbody>\n    <tr><td>Alice</td><td>30</td><td>New York</td></tr>\n    <tr><td>Bob</td><td>25</td><td>London</td></tr>\n  </tbody>\n</table>",
+			"useCase": "将 JSON 数据快速转换为 HTML 表格用于网页展示。"
+		},
+		"faq": [
+			{
+				"question": "我的 JSON 数据会上传到服务器吗？",
+				"answer": "不会。所有 JSON 解析和表格生成都在浏览器本地完成，数据不会离开你的设备，也不会被存储或传输到任何地方。"
+			},
+			{
+				"question": "可以复制 HTML 代码吗？",
+				"answer": "可以。你可以复制生成的 HTML 表格代码，粘贴到网页、文档、邮件或其他支持 HTML 的地方直接使用。"
+			},
+			{
+				"question": "支持嵌套 JSON 对象吗？",
+				"answer": "支持。启用“展平嵌套对象”后，嵌套结构会被展开为点号表示的列（例如 address.city、user.name），使嵌套数据能够适配扁平的表格视图。"
+			},
+			{
+				"question": "可以转换大型 JSON 文件吗？",
+				"answer": "可以转换较大的 JSON 文件，只要浏览器能够加载和处理它们。实际限制取决于设备性能、浏览器可用内存以及数据的复杂程度。"
+			},
+			{
+				"question": "这个工具和 JSON 转 CSV 有什么区别？",
+				"answer": "JSON 转表格主要创建用于网页或文档中可视化展示的 HTML 表格视图。JSON 转 CSV 则生成可下载的 CSV 文件，更适合在 Excel、Google Sheets 等电子表格应用中进行分析和处理。"
+			},
+			{
+				"question": "可以下载表格为 CSV 吗？",
+				"answer": "可以。点击“下载 CSV”可以将表格数据导出为 CSV 文件，兼容 Excel、Google Sheets 和其他主流电子表格应用。"
+			},
+			{
+				"question": "可以在自己的网站中使用这个表格吗？",
+				"answer": "可以。生成的 HTML 表格是标准、语义化的 HTML，可以直接嵌入到你的网页中。如有需要，还可以使用自己的 CSS 进一步美化样式。"
+			},
+			{
+				"question": "这是一个免费的 JSON 转表格转换器吗？",
+				"answer": "是的。这是一个免费的在线 JSON 转表格转换器。你可以粘贴 JSON 数组或上传文件，渲染 HTML 表格，并复制或导出结果，无需创建账号或将数据上传到服务器。"
+			}
+		]
+	}
 }

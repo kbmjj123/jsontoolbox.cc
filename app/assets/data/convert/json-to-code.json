@@ -8,201 +8,263 @@
   "nextSteps": ["json-to-typescript", "json-editor"],
   "recommends": ["json-schema-generator"],
   "en": {
-    "name": "JSON to Code Generator",
-    "ui": {
-      "labelInputJson": "Input JSON",
-      "labelOutput": "Code Output",
-      "labelLanguage": "Language:",
-      "labelTypeName": "Type Name:",
-      "btnGenerate": "Generate",
-      "btnExample": "Load Example",
-      "placeholderOutput": "Code output will appear here...",
-      "placeholderName": "RootObject"
-    },
-    "description": "Convert JSON data to code in 10 languages: TypeScript, Python, Go, Rust, Java, Kotlin, C#, Swift, MySQL, and Protobuf. This json to code tool helps you generate type definitions from JSON examples.",
-    "hero": {
-      "trustHtml": "100% client-side generation. Your JSON data never leaves your browser."
-    },
-    "meta": {
-      "title": "JSON to Code — TypeScript, Python, Go, Kotlin, C#, Swift — Free Online",
-      "description": "Convert JSON to TypeScript, Python, Go, Rust, Java, Kotlin, C#, Swift, MySQL, or Protobuf online. Generate type definitions from JSON data automatically. Free, 100% client-side.",
-      "keywords": ["json to code", "json to go", "json to python", "json to c#", "json to kotlin", "json to swift", "json to mysql", "json to protobuf", "json to struct"]
-    },
-    "features": [
-      {
-        "icon": "lucide:code-2",
-        "title": "10 Languages",
-        "description": "TypeScript, Python, Go, Rust, Java, Kotlin, C#, Swift, MySQL, Protobuf."
-      },
-      {
-        "icon": "lucide:copy",
-        "title": "Copy & Download",
-        "description": "Copy code to clipboard or download as source file."
-      },
-      {
-        "icon": "lucide:settings",
-        "title": "Customizable",
-        "description": "Configure type name and naming conventions."
-      },
-      {
-        "icon": "lucide:layers",
-        "title": "Nested Support",
-        "description": "Creates separate type definitions for nested objects."
-      },
-      {
-        "icon": "lucide:upload",
-        "title": "File Upload",
-        "description": "Upload .json files directly for conversion."
-      },
-      {
-        "icon": "lucide:shield-check",
-        "title": "Private",
-        "description": "All generation happens in your browser. No data upload."
-      }
-    ],
-    "guide": [
-      {
-        "title": "Paste your JSON",
-        "description": "Paste your JSON data into the input field or upload a file."
-      },
-      {
-        "title": "Select language",
-        "description": "Choose your target language from 10 options."
-      },
-      {
-        "title": "Copy or download",
-        "description": "Copy the generated code or download it as a file."
-      }
-    ],
-    "example": {
-      "input": "{\\n  \"id\": 1,\\n  \"name\": \"Alice\",\\n  \"email\": \"alice@example.com\"\\n}",
-      "output": "type User struct {\\n  ID    int    `json:\"id\"`\\n  Name  string `json:\"name\"`\\n  Email string `json:\"email\"`\\n}",
-      "useCase": "Quickly generate Go structs, C# classes, or Python dataclasses from JSON."
-    },
-    "faq": [
-      {
-        "question": "Is my JSON data uploaded to a server?",
-        "answer": "No. All generation happens in your browser. Your data never leaves your device."
-      },
-      {
-        "question": "Which languages are supported?",
-        "answer": "10 languages: TypeScript, Python, Go, Rust, Java, Kotlin, C#, Swift, MySQL (CREATE TABLE), and Protobuf."
-      },
-      {
-        "question": "Does it handle nested objects?",
-        "answer": "Yes. The generator creates separate type definitions for nested objects in all supported languages."
-      },
-      {
-        "question": "Can I customize the type name?",
-        "answer": "Yes. Enter a custom type name in the 'Type Name' field. Default is 'RootObject'."
-      },
-      {
-        "question": "What is MySQL output used for?",
-        "answer": "The MySQL option generates a CREATE TABLE statement from your JSON data, useful for database schema design."
-      },
-      {
-        "question": "What is Protobuf output?",
-        "answer": "Protobuf (Protocol Buffers) generates .proto message definitions for use with gRPC and Google services."
-      }
-    ]
-  },
+		"name": "JSON to Code Generator",
+		"ui": {
+			"labelInputJson": "Input JSON",
+			"labelOutput": "Code Output",
+			"labelLanguage": "Language:",
+			"labelTypeName": "Type Name:",
+			"btnGenerate": "Generate",
+			"btnExample": "Load Example",
+			"placeholderOutput": "Code output will appear here...",
+			"placeholderName": "RootObject"
+		},
+		"description": "Convert JSON data to code in 10 languages: TypeScript, Python, Go, Rust, Java, Kotlin, C#, Swift, MySQL, and Protobuf. This JSON to code tool helps you generate type definitions, data classes, structs, and schema statements from JSON examples — all in your browser.",
+		"hero": {
+			"trustHtml": "100% client-side generation. Your JSON data never leaves your browser."
+		},
+		"meta": {
+			"title": "JSON to Code — TypeScript, Python, Go, Kotlin, C#, Swift — Free Online",
+			"description": "Convert JSON to TypeScript, Python, Go, Rust, Java, Kotlin, C#, Swift, MySQL, or Protobuf online. Generate type definitions, classes, structs, and schemas from JSON data automatically. Free, 100% client-side.",
+			"keywords": [
+				"json to code",
+				"json to go",
+				"json to python",
+				"json to c#",
+				"json to kotlin",
+				"json to swift",
+				"json to mysql",
+				"json to protobuf",
+				"json to struct",
+				"json to typescript",
+				"json to java",
+				"json to rust",
+				"json to code generator",
+				"generate code from json"
+			]
+		},
+		"features": [
+			{
+				"icon": "lucide:code-2",
+				"title": "10 Languages",
+				"description": "Generate code in TypeScript, Python, Go, Rust, Java, Kotlin, C#, Swift, MySQL (CREATE TABLE), and Protobuf (.proto messages). Choose the target that matches your stack."
+			},
+			{
+				"icon": "lucide:copy",
+				"title": "Copy & Download",
+				"description": "Copy the generated code to your clipboard or download it as a source file (.ts, .py, .go, .rs, .java, .kt, .cs, .swift, .sql, or .proto). Use it directly in your project."
+			},
+			{
+				"icon": "lucide:settings",
+				"title": "Customizable",
+				"description": "Configure the root type name and naming conventions. Adjust how the generator treats keys and types to match your project's style."
+			},
+			{
+				"icon": "lucide:layers",
+				"title": "Nested Support",
+				"description": "Creates separate type definitions, classes, or structs for nested objects. This keeps the generated code organized and idiomatic in each language."
+			},
+			{
+				"icon": "lucide:upload",
+				"title": "File Upload",
+				"description": "Upload .json files directly from your device for conversion. The file is read locally in your browser and is not uploaded to any server."
+			},
+			{
+				"icon": "lucide:shield-check",
+				"title": "Private",
+				"description": "All code generation happens in your browser. Your JSON data is not uploaded to a server, which is useful when working with private API responses or configuration data."
+			}
+		],
+		"guide": [
+			{
+				"title": "Paste your JSON",
+				"description": "Paste a JSON object or array into the input field, or upload a .json file. Use representative examples of your data for best type inference."
+			},
+			{
+				"title": "Select language",
+				"description": "Choose your target language from 10 options: TypeScript, Python, Go, Rust, Java, Kotlin, C#, Swift, MySQL, or Protobuf. The generator adapts the output to each language's conventions."
+			},
+			{
+				"title": "Configure type name",
+				"description": "Enter a custom type name (default: RootObject). For nested objects, the generator will derive related names automatically."
+			},
+			{
+				"title": "Generate and use",
+				"description": "Click Generate to produce code. Copy the output to your clipboard or download it as a source file, then import or integrate it into your project."
+			}
+		],
+		"example": {
+			"input": "{\n  \"id\": 1,\n  \"name\": \"Alice\",\n  \"email\": \"alice@example.com\"\n}",
+			"output": "type User struct {\n  ID    int    `json:\"id\"`\n  Name  string `json:\"name\"`\n  Email string `json:\"email\"`\n}",
+			"useCase": "Quickly generate Go structs, C# classes, or Python dataclasses from JSON."
+		},
+		"faq": [
+			{
+				"question": "Is my JSON data uploaded to a server?",
+				"answer": "No. All code generation happens locally in your browser. Your JSON data never leaves your device and is not stored or transmitted anywhere."
+			},
+			{
+				"question": "Which languages are supported?",
+				"answer": "10 languages: TypeScript, Python, Go, Rust, Java, Kotlin, C#, Swift, MySQL (CREATE TABLE statements), and Protobuf (.proto message definitions)."
+			},
+			{
+				"question": "Does it handle nested objects?",
+				"answer": "Yes. The generator creates separate type definitions, classes, or structs for nested objects in all supported languages, keeping the code organized and idiomatic."
+			},
+			{
+				"question": "Can I customize the type name?",
+				"answer": "Yes. Enter a custom type name in the 'Type Name' field. The default is 'RootObject', but you can use any valid identifier for your language."
+			},
+			{
+				"question": "What is MySQL output used for?",
+				"answer": "The MySQL option generates a CREATE TABLE statement based on your JSON structure. This is useful for quickly prototyping database schemas from API responses or data samples."
+			},
+			{
+				"question": "What is Protobuf output?",
+				"answer": "Protobuf (Protocol Buffers) generates .proto message definitions. These can be used with gRPC, Google services, and other systems that rely on Protocol Buffers for interface contracts."
+			},
+			{
+				"question": "Does it infer types correctly?",
+				"answer": "The generator infers types based on the JSON values it sees (strings, numbers, booleans, arrays, objects). For best results, use representative JSON examples that reflect the full range of your data."
+			},
+			{
+				"question": "Can I download the generated code?",
+				"answer": "Yes. You can copy the generated code to your clipboard or download it as a source file with the appropriate extension for the selected language."
+			},
+			{
+				"question": "Is this a free JSON to code generator?",
+				"answer": "Yes. This is a free online JSON to code generator. You can paste JSON or upload files, select a language, and generate code without creating an account or uploading data to a server."
+			}
+		]
+	},
   "zh": {
-    "name": "JSON 转代码生成器",
-    "ui": {
-      "labelInputJson": "输入 JSON",
-      "labelOutput": "代码输出",
-      "labelLanguage": "语言：",
-      "labelTypeName": "类型名称：",
-      "btnGenerate": "生成",
-      "btnExample": "加载示例",
-      "placeholderOutput": "代码输出将显示在此处...",
-      "placeholderName": "RootObject"
-    },
-    "description": "将json转为10种语言代码：TypeScript、Python、Go、Rust、Java、Kotlin、C#、Swift、MySQL 和 Protobuf。从json生成类型定义。",
-    "hero": {
-      "trustHtml": "100% 本地生成，JSON 数据不会离开浏览器。"
-    },
-    "meta": {
-      "title": "JSON 转代码 — TypeScript、Python、Go、Kotlin、C#、Swift — 免费在线",
-      "description": "在线将 JSON 转换为 TypeScript、Python、Go、Rust、Java、Kotlin、C#、Swift、MySQL 或 Protobuf。从 JSON 数据自动生成类型定义。免费、100% 客户端处理。",
-      "keywords": ["json转代码", "json转go", "json转python", "json转c#", "json转kotlin", "json转swift", "json转mysql", "json转protobuf", "json转结构体"]
-    },
-    "features": [
-      {
-        "icon": "lucide:code-2",
-        "title": "10 种语言",
-        "description": "TypeScript、Python、Go、Rust、Java、Kotlin、C#、Swift、MySQL、Protobuf。"
-      },
-      {
-        "icon": "lucide:copy",
-        "title": "复制与下载",
-        "description": "复制代码到剪贴板或下载为源文件。"
-      },
-      {
-        "icon": "lucide:settings",
-        "title": "可配置",
-        "description": "配置类型名称和命名约定。"
-      },
-      {
-        "icon": "lucide:layers",
-        "title": "嵌套支持",
-        "description": "为嵌套对象创建单独的类型定义。"
-      },
-      {
-        "icon": "lucide:upload",
-        "title": "文件上传",
-        "description": "直接上传 .json 文件进行转换。"
-      },
-      {
-        "icon": "lucide:shield-check",
-        "title": "私密安全",
-        "description": "所有生成在浏览器中完成，不上传数据。"
-      }
-    ],
-    "guide": [
-      {
-        "title": "粘贴 JSON",
-        "description": "将 JSON 数据粘贴到输入框中或上传文件。"
-      },
-      {
-        "title": "选择语言",
-        "description": "从 10 种语言中选择目标语言。"
-      },
-      {
-        "title": "复制或下载",
-        "description": "复制生成的代码或下载为文件。"
-      }
-    ],
-    "example": {
-      "input": "{\\n  \"id\": 1,\\n  \"name\": \"Alice\",\\n  \"email\": \"alice@example.com\"\\n}",
-      "output": "type User struct {\\n  ID    int    `json:\"id\"`\\n  Name  string `json:\"name\"`\\n  Email string `json:\"email\"`\\n}",
-      "useCase": "从 JSON 快速生成 Go 结构体、C# 类或 Python dataclass。"
-    },
-    "faq": [
-      {
-        "question": "我的 JSON 数据会上传到服务器吗？",
-        "answer": "不会。所有生成在浏览器中完成，数据不会离开你的设备。"
-      },
-      {
-        "question": "支持哪些语言？",
-        "answer": "10 种语言：TypeScript、Python、Go、Rust、Java、Kotlin、C#、Swift、MySQL（CREATE TABLE）和 Protobuf。"
-      },
-      {
-        "question": "能处理嵌套对象吗？",
-        "answer": "能。生成器会为所有支持的语言创建嵌套对象的单独类型定义。"
-      },
-      {
-        "question": "可以自定义类型名称吗？",
-        "answer": "可以。在\"类型名称\"字段中输入自定义名称。默认是 'RootObject'。"
-      },
-      {
-        "question": "MySQL 输出有什么用？",
-        "answer": "MySQL 选项从 JSON 数据生成 CREATE TABLE 语句，适用于数据库 schema 设计。"
-      },
-      {
-        "question": "Protobuf 输出是什么？",
-        "answer": "Protobuf（Protocol Buffers）生成 .proto 消息定义，用于 gRPC 和 Google 服务。"
-      }
-    ]
-  }
+		"name": "JSON 转代码生成器",
+		"ui": {
+			"labelInputJson": "输入 JSON",
+			"labelOutput": "代码输出",
+			"labelLanguage": "语言：",
+			"labelTypeName": "类型名称：",
+			"btnGenerate": "生成",
+			"btnExample": "加载示例",
+			"placeholderOutput": "代码输出将显示在此处...",
+			"placeholderName": "RootObject"
+		},
+		"description": "将 JSON 数据转换为 10 种编程语言的代码：TypeScript、Python、Go、Rust、Java、Kotlin、C#、Swift、MySQL 和 Protobuf。这个 JSON 转代码工具可以从 JSON 示例自动生成类型定义、数据类、结构体和 schema 语句，全部在浏览器中完成。",
+		"hero": {
+			"trustHtml": "100% 本地生成。JSON 数据始终保留在浏览器中。"
+		},
+		"meta": {
+			"title": "JSON 转代码 — TypeScript、Python、Go、Kotlin、C#、Swift — 免费在线",
+			"description": "在线将 JSON 转换为 TypeScript、Python、Go、Rust、Java、Kotlin、C#、Swift、MySQL 或 Protobuf。从 JSON 数据自动生成类型定义、类、结构体和 schema。免费、100% 客户端处理，无需上传文件。",
+			"keywords": [
+				"json转代码",
+				"json转go",
+				"json转python",
+				"json转c#",
+				"json转kotlin",
+				"json转swift",
+				"json转mysql",
+				"json转protobuf",
+				"json转结构体",
+				"json转typescript",
+				"json转java",
+				"json转rust",
+				"json代码生成器",
+				"从json生成代码"
+			]
+		},
+		"features": [
+			{
+				"icon": "lucide:code-2",
+				"title": "10 种语言",
+				"description": "支持 TypeScript、Python、Go、Rust、Java、Kotlin、C#、Swift、MySQL（CREATE TABLE）和 Protobuf（.proto 消息）。选择与你的技术栈匹配的目标语言。"
+			},
+			{
+				"icon": "lucide:copy",
+				"title": "复制与下载",
+				"description": "将生成的代码复制到剪贴板，或下载为源文件（.ts、.py、.go、.rs、.java、.kt、.cs、.swift、.sql 或 .proto）。可直接用于你的项目。"
+			},
+			{
+				"icon": "lucide:settings",
+				"title": "可配置",
+				"description": "配置根类型名称和命名约定。调整生成器对键和类型的处理方式，使其符合项目的代码风格。"
+			},
+			{
+				"icon": "lucide:layers",
+				"title": "嵌套支持",
+				"description": "为嵌套对象创建单独的类型定义、类或结构体。这样可以让生成的代码在每种语言中都保持结构清晰、风格地道。"
+			},
+			{
+				"icon": "lucide:upload",
+				"title": "文件上传",
+				"description": "直接从设备上传 .json 文件进行转换。文件在浏览器本地读取，不会上传到任何服务器。"
+			},
+			{
+				"icon": "lucide:shield-check",
+				"title": "私密安全",
+				"description": "所有代码生成都在浏览器中完成，不需要将 JSON 数据上传到服务器。适合处理私密 API 响应或配置数据。"
+			}
+		],
+		"guide": [
+			{
+				"title": "粘贴 JSON",
+				"description": "将 JSON 对象或数组粘贴到输入框中，或上传 .json 文件。使用具有代表性的数据示例可获得更好的类型推断结果。"
+			},
+			{
+				"title": "选择语言",
+				"description": "从 10 种语言中选择目标语言：TypeScript、Python、Go、Rust、Java、Kotlin、C#、Swift、MySQL 或 Protobuf。生成器会根据每种语言的约定调整输出。"
+			},
+			{
+				"title": "配置类型名称",
+				"description": "输入自定义类型名称（默认：RootObject）。对于嵌套对象，生成器会自动派生相关的类型名称。"
+			},
+			{
+				"title": "生成并使用",
+				"description": "点击“生成”生成代码。将输出复制到剪贴板或下载为源文件，然后导入或集成到你的项目中。"
+			}
+		],
+		"example": {
+			"input": "{\n  \"id\": 1,\n  \"name\": \"Alice\",\n  \"email\": \"alice@example.com\"\n}",
+			"output": "type User struct {\n  ID    int    `json:\"id\"`\n  Name  string `json:\"name\"`\n  Email string `json:\"email\"`\n}",
+			"useCase": "从 JSON 快速生成 Go 结构体、C# 类或 Python dataclass。"
+		},
+		"faq": [
+			{
+				"question": "我的 JSON 数据会上传到服务器吗？",
+				"answer": "不会。所有代码生成都在浏览器本地完成，你的 JSON 数据不会离开设备，也不会被存储或传输到任何地方。"
+			},
+			{
+				"question": "支持哪些语言？",
+				"answer": "支持 10 种语言：TypeScript、Python、Go、Rust、Java、Kotlin、C#、Swift、MySQL（CREATE TABLE 语句）和 Protobuf（.proto 消息定义）。"
+			},
+			{
+				"question": "能处理嵌套对象吗？",
+				"answer": "能。生成器会为所有支持的语言创建嵌套对象的单独类型定义、类或结构体，使生成的代码结构清晰、符合各语言的习惯写法。"
+			},
+			{
+				"question": "可以自定义类型名称吗？",
+				"answer": "可以。在“类型名称”字段中输入自定义名称。默认是 'RootObject'，但你可以使用任何在目标语言中合法的标识符。"
+			},
+			{
+				"question": "MySQL 输出有什么用？",
+				"answer": "MySQL 选项会根据你的 JSON 结构生成 CREATE TABLE 语句。这对于从 API 响应或数据样本快速原型化数据库 schema 非常有用。"
+			},
+			{
+				"question": "Protobuf 输出是什么？",
+				"answer": "Protobuf（Protocol Buffers）会生成 .proto 消息定义。这些可以用于 gRPC、Google 服务以及其他依赖 Protocol Buffers 作为接口契约的系统。"
+			},
+			{
+				"question": "类型推断准确吗？",
+				"answer": "生成器会根据 JSON 中看到的值推断类型（字符串、数字、布尔值、数组、对象）。为获得最佳结果，请使用能反映数据完整范围的 JSON 示例。"
+			},
+			{
+				"question": "可以下载生成的代码吗？",
+				"answer": "可以。你可以将生成的代码复制到剪贴板，或下载为对应语言的源文件，然后直接用于项目中。"
+			},
+			{
+				"question": "这是一个免费的 JSON 转代码生成器吗？",
+				"answer": "是的。这是一个免费的在线 JSON 转代码生成器。你可以粘贴 JSON 或上传文件，选择语言并生成代码，无需创建账号或将数据上传到服务器。"
+			}
+		]
+	}
 }
