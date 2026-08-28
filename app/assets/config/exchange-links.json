@@ -34,5 +34,14 @@
 		"imageWidth": 150,
 		"imageHeight": 54,
 		"alt": "Featured on LaunchClash"
+	},
+	{
+		"name": "Builders.to",
+		"url": "https://builders.to/projects/jsontoolbox?utm_source=badge",
+		"type": "image",
+		"imageUrl": "https://builders.to/badges/featured-on-builders.svg",
+		"imageWidth": 150,
+		"imageHeight": 54,
+		"alt": "JsonToolbox - Featured on Builders.to"
 	}
 ]
