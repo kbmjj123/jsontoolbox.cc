@@ -508,33 +508,65 @@ const highlightedContent = computed(() => {
 })
 
 function highlightJson(str: string): string {
-  // Escape HTML entities first
-  let html = str.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;')
-  // Match JSON tokens: strings (keys + values), numbers, booleans, null
-  html = html.replace(
-    /("(?:[^"\\]|\\.)*")\s*:/g,
-    '<span class="text-purple-600 dark:text-purple-400">$1</span>:'
-  )
-  // String values (not followed by colon)
-  html = html.replace(
-    /:\s*("(?:[^"\\]|\\.)*")/g,
-    ': <span class="text-green-600 dark:text-green-400">$1</span>'
-  )
-  // Standalone strings (in arrays, etc.)
-  html = html.replace(
-    /(?<![:\w])("(?:[^"\\]|\\.)*")(?!\s*:)/g,
-    '<span class="text-green-600 dark:text-green-400">$1</span>'
-  )
-  // Numbers
-  html = html.replace(
-    /\b(-?\d+\.?\d*(?:[eE][+-]?\d+)?)\b/g,
-    '<span class="text-amber-600 dark:text-amber-400">$1</span>'
-  )
-  // Booleans and null
-  html = html.replace(
-    /\b(true|false|null)\b/g,
-    '<span class="text-blue-600 dark:text-blue-400">$1</span>'
-  )
-  return html
+  // Single-pass character scanner — avoids nested regex replacement bugs
+  let out = ''
+  let i = 0
+  const esc = (s: string) => s.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;')
+
+  while (i < str.length) {
+    const ch = str[i]
+
+    if (ch === '"') {
+      // Find end of string
+      let j = i + 1
+      while (j < str.length) {
+        if (str[j] === '\\') { j += 2; continue }
+        if (str[j] === '"') break
+        j++
+      }
+      const raw = str.slice(i, j + 1)
+      // Look ahead: skip whitespace after closing quote
+      let k = j + 1
+      while (k < str.length && (str[k] === ' ' || str[k] === '\t')) k++
+      if (str[k] === ':') {
+        // It's a key
+        out += `<span class="text-purple-600 dark:text-purple-400">${esc(raw)}</span>`
+      } else {
+        // It's a value
+        out += `<span class="text-green-600 dark:text-green-400">${esc(raw)}</span>`
+      }
+      i = j + 1
+      continue
+    }
+
+    // Numbers
+    if (ch === '-' || (ch >= '0' && ch <= '9')) {
+      let j = i + 1
+      while (j < str.length && /[\d.eE+-]/.test(str[j])) j++
+      out += `<span class="text-amber-600 dark:text-amber-400">${esc(str.slice(i, j))}</span>`
+      i = j
+      continue
+    }
+
+    // Booleans and null
+    if (str.startsWith('true', i)) {
+      out += '<span class="text-blue-600 dark:text-blue-400">true</span>'
+      i += 4; continue
+    }
+    if (str.startsWith('false', i)) {
+      out += '<span class="text-blue-600 dark:text-blue-400">false</span>'
+      i += 5; continue
+    }
+    if (str.startsWith('null', i)) {
+      out += '<span class="text-blue-600 dark:text-blue-400">null</span>'
+      i += 4; continue
+    }
+
+    // Punctuation, whitespace, etc.
+    out += esc(ch)
+    i++
+  }
+
+  return out
 }
 </script>

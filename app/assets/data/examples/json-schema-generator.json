@@ -1,0 +1,20 @@
+[
+  {
+    "id": "user",
+    "label_en": "User Object",
+    "label_zh": "用户对象",
+    "input": "{\"id\":1234567890,\"name\":\"John Doe\",\"email\":\"john@example.com\",\"avatar\":\"https://example.com/avatar.jpg\",\"birthday\":\"1990-01-15\",\"isActive\":true,\"score\":95.5,\"tags\":[\"admin\",\"user\"],\"address\":{\"city\":\"New York\",\"country\":\"USA\"}}"
+  },
+  {
+    "id": "product",
+    "label_en": "Product Catalog",
+    "label_zh": "商品目录",
+    "input": "{\"products\":[{\"id\":1,\"name\":\"Laptop\",\"price\":999.99,\"specs\":{\"cpu\":\"i7\",\"ram\":16},\"inStock\":true},{\"id\":2,\"name\":\"Mouse\",\"price\":29.99,\"specs\":{\"dpi\":1600},\"inStock\":false}],\"total\":2,\"currency\":\"USD\"}"
+  },
+  {
+    "id": "api",
+    "label_en": "API Response",
+    "label_zh": "API 响应",
+    "input": "{\"status\":\"success\",\"data\":{\"items\":[{\"id\":1,\"title\":\"Item A\",\"createdAt\":\"2024-06-15T10:30:00Z\"},{\"id\":2,\"title\":\"Item B\",\"createdAt\":\"2024-06-16T14:20:00Z\"}],\"total\":2,\"page\":1,\"hasMore\":false}}"
+  }
+]
