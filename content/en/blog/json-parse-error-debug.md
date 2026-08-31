@@ -14,7 +14,7 @@ promo:
   btn: "Open JSON Editor"
 ---
 
-# JSON Parse Failed: 10 Common API Errors and How to Debug Them
+<!-- # JSON Parse Failed: 10 Common API Errors and How to Debug Them -->
 
 In frontend and backend development, "JSON parse failed" is one of the most common errors: your code expects a JSON response, but `JSON.parse` throws an exception and the console fills with red errors.  
 This article breaks down **10 typical JSON parsing errors** from real-world debugging scenarios, and provides actionable troubleshooting steps and prevention tips to help you quickly locate and fix the root cause.

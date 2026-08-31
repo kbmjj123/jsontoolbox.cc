@@ -14,7 +14,7 @@ promo:
   btn: "Open JSON Editor"
 ---
 
-# JSON Best Practices in Real Projects: API Design, Performance, and Security
+<!-- # JSON Best Practices in Real Projects: API Design, Performance, and Security -->
 
 In most web projects, JSON has become the de facto standard for data exchange. But "using JSON" and "using JSON well" are two different things:  
 - Inconsistent response structures make frontend code hard to maintain;  
