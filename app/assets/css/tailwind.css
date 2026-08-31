@@ -82,6 +82,11 @@
   display: block;
 }
 
+/* Override @nuxtjs/mdc ProsePre default */
+pre code .line {
+  display: block;
+}
+
 .prose-code :deep(.line.highlight) {
   background-color: #fef3c7;
   display: block;
