@@ -60,6 +60,8 @@
 
 <script setup lang="ts">
 const props = defineProps<{ tool: any }>()
+const { t } = useI18n()
+const toast = useToast()
 
 const inputJson = ref('')
 const outputSchema = ref('')
@@ -83,7 +85,7 @@ const formatInputInPlace = () => {
 const debouncedFormatInPlace = useDebounceFn(() => { formatInputInPlace() }, 1500)
 
 // Auto-generate on input change (debounced 300ms)
-const debouncedGenerate = useDebounceFn(() => { generate() }, 300)
+const debouncedGenerate = useDebounceFn(() => { generate(true) }, 300)
 watch(inputJson, () => {
   debouncedGenerate()
   debouncedFormatInPlace()
@@ -140,7 +142,7 @@ const inferSchema = (value: any): any => {
   return {}
 }
 
-const generate = () => {
+const generate = (silent = false) => {
   error.value = ''
   if (!inputJson.value.trim()) { outputSchema.value = ''; return }
   try {
@@ -148,9 +150,11 @@ const generate = () => {
     const schema = { $schema: 'http://json-schema.org/draft-07/schema#', ...inferSchema(parsed) }
     const space = indent.value === 'tab' ? '\t' : Number(indent.value)
     outputSchema.value = JSON.stringify(schema, null, space)
+    if (!silent) toast.success(t('toast.generated'))
   } catch (e) {
     error.value = (e as Error).message
     outputSchema.value = ''
+    if (!silent) toast.error((e as Error).message)
   }
 }
 

@@ -66,6 +66,8 @@
 
 <script setup lang="ts">
 const props = defineProps<{ tool: any }>()
+const { t } = useI18n()
+const toast = useToast()
 
 const ui = computed(() => props.tool?.ui)
 
@@ -89,7 +91,7 @@ const formatInputInPlace = () => {
 const debouncedFormatInPlace = useDebounceFn(() => { formatInputInPlace() }, 1500)
 
 // Auto-generate on input change (debounced 300ms)
-const debouncedGenerate = useDebounceFn(() => { generate() }, 300)
+const debouncedGenerate = useDebounceFn(() => { generate(true) }, 300)
 watch(inputJson, () => {
   debouncedGenerate()
   debouncedFormatInPlace()
@@ -268,16 +270,18 @@ const generators: Record<string, (obj: any, name: string) => string> = {
   mysql: generateMySQL, protobuf: generateProtobuf
 }
 
-const generate = () => {
+const generate = (silent = false) => {
   error.value = ''
   if (!inputJson.value.trim()) { outputCode.value = ''; return }
   try {
     const parsed = JSON.parse(inputJson.value)
     const name = typeName.value || 'RootObject'
     outputCode.value = generators[language.value]?.(parsed, name) || ''
+    if (!silent) toast.success(t('toast.generated'))
   } catch (e) {
     error.value = (e as Error).message
     outputCode.value = ''
+    if (!silent) toast.error((e as Error).message)
   }
 }
 

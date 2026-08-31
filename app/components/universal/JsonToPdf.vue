@@ -111,6 +111,8 @@ import { jsPDF } from 'jspdf'
 import html2canvas from 'html2canvas'
 
 const props = defineProps<{ tool: any }>()
+const { t } = useI18n()
+const toast = useToast()
 
 const inputJson = ref('')
 const formattedJson = ref('')
@@ -176,7 +178,7 @@ const formatInputInPlace = () => {
   } catch {}
 }
 const debouncedFormatInPlace = useDebounceFn(() => { formatInputInPlace() }, 1500)
-const debouncedFormat = useDebounceFn(() => { format() }, 300)
+const debouncedFormat = useDebounceFn(() => { format(true) }, 300)
 
 watch(inputJson, () => {
   debouncedFormat()
@@ -186,11 +188,14 @@ watch(inputJson, () => {
 const onExampleLoaded = () => { nextTick(() => format()) }
 const onPaste = () => { nextTick(() => { formatInputInPlace(); format() }) }
 
-const format = () => {
+const format = (silent = false) => {
   error.value = ''
   if (!inputJson.value.trim()) { formattedJson.value = ''; return }
-  try { formattedJson.value = JSON.stringify(JSON.parse(inputJson.value), null, 2) }
-  catch (e) { error.value = (e as Error).message; formattedJson.value = '' }
+  try {
+    formattedJson.value = JSON.stringify(JSON.parse(inputJson.value), null, 2)
+    if (!silent) toast.success(t('toast.formatted'))
+  }
+  catch (e) { error.value = (e as Error).message; formattedJson.value = ''; if (!silent) toast.error((e as Error).message) }
 }
 
 const copyOutput = async () => { await copyToClipboard(formattedJson.value) }

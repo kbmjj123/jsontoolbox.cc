@@ -208,6 +208,18 @@
     "pasteFailed": "粘贴失败",
     "pasteHint": "请按 Ctrl+V 粘贴"
   },
+  "toast": {
+    "converted": "转换成功",
+    "copied": "已复制！",
+    "formatted": "格式化成功",
+    "validated": "JSON 格式正确",
+    "minified": "压缩成功",
+    "escaped": "转义成功",
+    "generated": "生成成功",
+    "compared": "比较完成",
+    "fixed": "修复成功",
+    "unescaped": "反转义成功"
+  },
   "formatter": {
     "1space": "1 个空格",
     "2spaces": "2 个空格",

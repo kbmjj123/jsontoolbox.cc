@@ -64,6 +64,8 @@
 
 <script setup lang="ts">
 defineProps<{ tool: any }>()
+const { t } = useI18n()
+const toast = useToast()
 
 const inputJson = ref('')
 const outputJson = ref('')
@@ -83,9 +85,11 @@ const minifyJson = () => {
   try {
     const parsed = JSON.parse(inputJson.value)
     outputJson.value = JSON.stringify(parsed)
+    toast.success(t('toast.minified'))
   } catch (e) {
     error.value = (e as Error).message
     outputJson.value = ''
+    toast.error((e as Error).message)
   }
 }
 

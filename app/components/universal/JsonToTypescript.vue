@@ -55,6 +55,8 @@
 
 <script setup lang="ts">
 const props = defineProps<{ tool: any }>()
+const { t } = useI18n()
+const toast = useToast()
 
 const ui = computed(() => props.tool?.ui)
 
@@ -78,7 +80,7 @@ const formatInputInPlace = () => {
 const debouncedFormatInPlace = useDebounceFn(() => { formatInputInPlace() }, 1500)
 
 // Auto-generate on input change (debounced 300ms)
-const debouncedGenerate = useDebounceFn(() => { generateTypescript() }, 300)
+const debouncedGenerate = useDebounceFn(() => { generateTypescript(true) }, 300)
 watch(inputJson, () => {
   debouncedGenerate()
   debouncedFormatInPlace()
@@ -148,13 +150,14 @@ const generateInterface = (obj: any, name: string, indent: number = 0): string =
   return lines.join('\n')
 }
 
-const generateTypescript = () => {
+const generateTypescript = (silent = false) => {
   error.value = ''
   if (!inputJson.value.trim()) { outputTs.value = ''; return }
   try {
     const parsed = JSON.parse(inputJson.value)
     if (typeof parsed !== 'object' || parsed === null) {
       error.value = ui.value?.errorInvalidInput ?? 'Input must be a JSON object or array'
+      if (!silent) toast.error(error.value)
       return
     }
     if (Array.isArray(parsed)) {
@@ -163,9 +166,11 @@ const generateTypescript = () => {
     } else {
       outputTs.value = generateInterface(parsed, interfaceName.value)
     }
+    if (!silent) toast.success(t('toast.generated'))
   } catch (e) {
     error.value = (e as Error).message
     outputTs.value = ''
+    if (!silent) toast.error((e as Error).message)
   }
 }
 

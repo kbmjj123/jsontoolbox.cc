@@ -67,6 +67,8 @@
 
 <script setup lang="ts">
 const props = defineProps<{ tool: any }>()
+const { t } = useI18n()
+const toast = useToast()
 
 const inputJson = ref('')
 const outputXml = ref('')
@@ -89,7 +91,7 @@ const formatInputInPlace = () => {
 const debouncedFormatInPlace = useDebounceFn(() => { formatInputInPlace() }, 1500)
 
 // Auto-convert on input change (debounced 300ms)
-const debouncedConvert = useDebounceFn(() => { convertToXml() }, 300)
+const debouncedConvert = useDebounceFn(() => { convertToXml(true) }, 300)
 watch(inputJson, () => {
   debouncedConvert()
   debouncedFormatInPlace()
@@ -140,7 +142,7 @@ const jsonToXml = (obj: any, currentIndent: number = 0): string => {
   return xml
 }
 
-const convertToXml = () => {
+const convertToXml = (silent = false) => {
   error.value = ''
   if (!inputJson.value.trim()) { outputXml.value = ''; return }
   try {
@@ -148,9 +150,11 @@ const convertToXml = () => {
     const root = rootElement.value || 'root'
     const safeRoot = root.replace(/[^a-zA-Z0-9_-]/g, '_')
     outputXml.value = `<?xml version="1.0" encoding="${encoding.value}"?>\n<${safeRoot}>\n${jsonToXml(parsed, 1)}</${safeRoot}>`
+    if (!silent) toast.success(t('toast.converted'))
   } catch (e) {
     error.value = (e as Error).message
     outputXml.value = ''
+    if (!silent) toast.error((e as Error).message)
   }
 }
 

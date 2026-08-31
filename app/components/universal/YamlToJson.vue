@@ -53,6 +53,8 @@
 import yaml from 'js-yaml'
 
 const props = defineProps<{ tool: any }>()
+const { t } = useI18n()
+const toast = useToast()
 
 const inputYaml = ref('')
 const outputJson = ref('')
@@ -63,7 +65,7 @@ const fullscreen = ref(false)
 const inputEditorRef = ref<InstanceType<typeof import('~/components/tool/JsonInputEditor.vue').default>>()
 
 // Auto-convert on input change (debounced 300ms)
-const debouncedConvert = useDebounceFn(() => { convertToJson() }, 300)
+const debouncedConvert = useDebounceFn(() => { convertToJson(true) }, 300)
 watch(inputYaml, () => {
   debouncedConvert()
 })
@@ -76,15 +78,17 @@ watch(indent, () => {
 const onExampleLoaded = () => { nextTick(() => convertToJson()) }
 const onPaste = () => { nextTick(() => convertToJson()) }
 
-const convertToJson = () => {
+const convertToJson = (silent = false) => {
   error.value = ''
   if (!inputYaml.value.trim()) { outputJson.value = ''; return }
   try {
     const parsed = yaml.load(inputYaml.value)
     outputJson.value = JSON.stringify(parsed, null, indent.value)
+    if (!silent) toast.success(t('toast.converted'))
   } catch (e) {
     error.value = (e as Error).message
     outputJson.value = ''
+    if (!silent) toast.error((e as Error).message)
   }
 }
 

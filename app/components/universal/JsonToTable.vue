@@ -75,6 +75,8 @@
 
 <script setup lang="ts">
 const props = defineProps<{ tool: any }>()
+const { t } = useI18n()
+const toast = useToast()
 
 const ui = computed(() => props.tool?.ui)
 
@@ -102,7 +104,7 @@ const formatInputInPlace = () => {
 const debouncedFormatInPlace = useDebounceFn(() => { formatInputInPlace() }, 1500)
 
 // Auto-render on input change (debounced 300ms)
-const debouncedRender = useDebounceFn(() => { renderTable() }, 300)
+const debouncedRender = useDebounceFn(() => { renderTable(true) }, 300)
 watch(inputJson, () => {
   debouncedRender()
   debouncedFormatInPlace()
@@ -130,17 +132,18 @@ const formatCell = (value: any): string => {
   return String(value)
 }
 
-const renderTable = () => {
+const renderTable = (silent = false) => {
   error.value = ''; headers.value = []; rows.value = []
   if (!inputJson.value.trim()) return
   try {
     let data = JSON.parse(inputJson.value)
-    if (!Array.isArray(data)) { error.value = ui.value?.errorInvalidInput ?? 'Input must be a JSON array'; return }
+    if (!Array.isArray(data)) { error.value = ui.value?.errorInvalidInput ?? 'Input must be a JSON array'; if (!silent) toast.error(error.value); return }
     if (data.length === 0) { error.value = ui.value?.errorEmptyArray ?? 'Array is empty'; return }
     if (flattenNested.value) data = data.map(item => flatten(item))
     const tableData = toTableData(data)
     headers.value = tableData.headers; rows.value = tableData.rows
-  } catch (e) { error.value = (e as Error).message }
+    if (!silent) toast.success(t('toast.converted'))
+  } catch (e) { error.value = (e as Error).message; if (!silent) toast.error((e as Error).message) }
 }
 
 const generateHtmlTable = (): string => {

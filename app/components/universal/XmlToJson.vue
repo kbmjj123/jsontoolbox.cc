@@ -63,6 +63,8 @@
 
 <script setup lang="ts">
 const props = defineProps<{ tool: any }>()
+const { t } = useI18n()
+const toast = useToast()
 
 const inputXml = ref('')
 const outputJson = ref('')
@@ -75,7 +77,7 @@ const fullscreen = ref(false)
 const inputEditorRef = ref<InstanceType<typeof import('~/components/tool/JsonInputEditor.vue').default>>()
 
 // Auto-convert on input change (debounced 300ms)
-const debouncedConvert = useDebounceFn(() => { convertToJson() }, 300)
+const debouncedConvert = useDebounceFn(() => { convertToJson(true) }, 300)
 watch(inputXml, () => {
   debouncedConvert()
 })
@@ -126,7 +128,7 @@ const parseXmlNode = (node: Element): any => {
   return result
 }
 
-const convertToJson = () => {
+const convertToJson = (silent = false) => {
   error.value = ''
   if (!inputXml.value.trim()) { outputJson.value = ''; return }
   try {
@@ -136,14 +138,17 @@ const convertToJson = () => {
     if (parserError) {
       error.value = (tool.ui?.error_invalid_xml || 'Invalid XML: ') + parserError.textContent
       outputJson.value = ''
+      if (!silent) toast.error(error.value)
       return
     }
     const root = doc.documentElement
     const result = { [root.tagName]: parseXmlNode(root) }
     outputJson.value = JSON.stringify(result, null, indent.value)
+    if (!silent) toast.success(t('toast.converted'))
   } catch (e) {
     error.value = (e as Error).message
     outputJson.value = ''
+    if (!silent) toast.error((e as Error).message)
   }
 }
 

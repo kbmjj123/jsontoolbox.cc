@@ -218,6 +218,18 @@
     "pasteFailed": "Paste failed",
     "pasteHint": "Press Ctrl+V to paste"
   },
+  "toast": {
+    "converted": "Converted successfully",
+    "copied": "Copied!",
+    "formatted": "Formatted successfully",
+    "validated": "Valid JSON",
+    "minified": "Minified successfully",
+    "escaped": "Escaped successfully",
+    "generated": "Generated successfully",
+    "compared": "Comparison complete",
+    "fixed": "Fixed successfully",
+    "unescaped": "Unescaped successfully"
+  },
   "formatter": {
     "1space": "1 space",
     "2spaces": "2 spaces",

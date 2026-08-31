@@ -64,6 +64,8 @@
 
 <script setup lang="ts">
 const props = defineProps<{ tool: any }>()
+const { t } = useI18n()
+const toast = useToast()
 
 interface Diff {
   path: string
@@ -110,7 +112,7 @@ watch([leftDecorations, rightDecorations], ([newLeft, newRight]) => {
 let compareTimer: ReturnType<typeof setTimeout> | null = null
 watch([leftJson, rightJson], () => {
   if (compareTimer) clearTimeout(compareTimer)
-  compareTimer = setTimeout(() => { compare() }, 300)
+  compareTimer = setTimeout(() => { compare(true) }, 300)
 })
 
 // ── Scroll sync between editors ──
@@ -134,7 +136,7 @@ onMounted(() => {
   })
 })
 
-const compare = () => {
+const compare = (silent = false) => {
   error.value = ''; diffs.value = []; compared.value = false
   leftDecorations.value = []; rightDecorations.value = []
   leftPathLine.value = new Map(); rightPathLine.value = new Map()
@@ -143,8 +145,8 @@ const compare = () => {
 
   if (!leftJson.value.trim() || !rightJson.value.trim()) return
 
-  try { JSON.parse(leftJson.value) } catch (e) { error.value = `JSON A: ${(e as Error).message}`; return }
-  try { JSON.parse(rightJson.value) } catch (e) { error.value = `JSON B: ${(e as Error).message}`; return }
+  try { JSON.parse(leftJson.value) } catch (e) { error.value = `JSON A: ${(e as Error).message}`; if (!silent) toast.error(error.value); return }
+  try { JSON.parse(rightJson.value) } catch (e) { error.value = `JSON B: ${(e as Error).message}`; if (!silent) toast.error(error.value); return }
 
   const result = computeAndMap(leftJson.value, rightJson.value)
   diffs.value = result.diffs as Diff[]
@@ -153,6 +155,7 @@ const compare = () => {
   leftPathLine.value = result.leftPathLine
   rightPathLine.value = result.rightPathLine
   compared.value = true
+  if (!silent) toast.success(t('toast.compared'))
 }
 
 const onClearLeft = () => { error.value = '' }

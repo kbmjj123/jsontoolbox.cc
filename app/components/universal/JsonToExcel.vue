@@ -61,6 +61,8 @@
 import * as XLSX from 'xlsx'
 
 const props = defineProps<{ tool: any }>()
+const { t } = useI18n()
+const toast = useToast()
 
 const inputJson = ref('')
 const outputJson = ref('')
@@ -108,8 +110,10 @@ const convert = () => {
     csvContent.value = csvRows.join('\n')
     outputJson.value = JSON.stringify(processedData, null, 2)
     error.value = ''
+    toast.success(t('toast.converted'))
   } catch (e) {
     error.value = (e as Error).message
+    toast.error((e as Error).message)
   }
 }
 

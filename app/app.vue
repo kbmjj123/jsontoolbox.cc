@@ -115,5 +115,8 @@
 
     <!-- Global quick tool search modal -->
     <ToolSelectorModal :is-open="isOpen" :files="contextualFiles" @close="close" />
+
+    <!-- Global toast notifications -->
+    <ToastContainer />
   </NuxtLayout>
 </template>

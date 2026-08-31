@@ -99,6 +99,8 @@
 
 <script setup lang="ts">
 const props = defineProps<{ tool: any }>()
+const { t } = useI18n()
+const toast = useToast()
 const ui = computed(() => props.tool?.ui)
 
 const inputJson = ref('')
@@ -177,13 +179,18 @@ const getByPath = (obj: any, path: string): any[] => {
 
 const evaluate = () => {
   error.value = ''; results.value = []
-  if (!inputJson.value.trim()) { error.value = ui.value?.errorNoJson ?? 'Please enter JSON data'; return }
-  if (!jsonPath.value.trim()) { error.value = ui.value?.errorNoExpression ?? 'Please enter a JSONPath expression'; return }
+  if (!inputJson.value.trim()) { error.value = ui.value?.errorNoJson ?? 'Please enter JSON data'; toast.error(error.value); return }
+  if (!jsonPath.value.trim()) { error.value = ui.value?.errorNoExpression ?? 'Please enter a JSONPath expression'; toast.error(error.value); return }
   try {
     const parsed = JSON.parse(inputJson.value)
     results.value = getByPath(parsed, jsonPath.value)
-    if (results.value.length === 0) error.value = ui.value?.errorNoMatches ?? 'No matches found'
-  } catch (e) { error.value = (e as Error).message }
+    if (results.value.length === 0) {
+      error.value = ui.value?.errorNoMatches ?? 'No matches found'
+      toast.warning(error.value)
+    } else {
+      toast.success(`${results.value.length} match(es) found`)
+    }
+  } catch (e) { error.value = (e as Error).message; toast.error((e as Error).message) }
 }
 
 const clearAll = () => { error.value = ''; results.value = [] }

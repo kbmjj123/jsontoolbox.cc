@@ -52,6 +52,8 @@
 import yaml from 'js-yaml'
 
 const props = defineProps<{ tool: any }>()
+const { t } = useI18n()
+const toast = useToast()
 
 const inputJson = ref('')
 const outputYaml = ref('')
@@ -72,7 +74,7 @@ const formatInputInPlace = () => {
 const debouncedFormatInPlace = useDebounceFn(() => { formatInputInPlace() }, 1500)
 
 // Auto-convert on input change (debounced 300ms)
-const debouncedConvert = useDebounceFn(() => { convertToYaml() }, 300)
+const debouncedConvert = useDebounceFn(() => { convertToYaml(true) }, 300)
 watch(inputJson, () => {
   debouncedConvert()
   debouncedFormatInPlace()
@@ -86,7 +88,7 @@ watch(indent, () => {
 const onExampleLoaded = () => { nextTick(() => convertToYaml()) }
 const onPaste = () => { nextTick(() => { formatInputInPlace(); convertToYaml() }) }
 
-const convertToYaml = () => {
+const convertToYaml = (silent = false) => {
   error.value = ''
   if (!inputJson.value.trim()) { outputYaml.value = ''; return }
   try {
@@ -96,9 +98,11 @@ const convertToYaml = () => {
       lineWidth: -1,
       noRefs: true,
     })
+    if (!silent) toast.success(t('toast.converted'))
   } catch (e) {
     error.value = (e as Error).message
     outputYaml.value = ''
+    if (!silent) toast.error((e as Error).message)
   }
 }
 

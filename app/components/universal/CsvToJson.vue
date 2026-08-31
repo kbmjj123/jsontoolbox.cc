@@ -61,6 +61,8 @@
 
 <script setup lang="ts">
 const props = defineProps<{ tool: any }>()
+const { t } = useI18n()
+const toast = useToast()
 
 const inputCsv = ref('')
 const outputJson = ref('')
@@ -165,8 +167,10 @@ const convert = () => {
 
     parsedOutputData.value = result
     outputJson.value = JSON.stringify(result, null, 2)
+    toast.success(t('toast.converted'))
   } catch (e) {
     error.value = (e as Error).message
+    toast.error((e as Error).message)
   }
 }
 

@@ -81,6 +81,8 @@
 import type { FieldError } from '~/types/jsonErrors'
 
 const props = defineProps<{ tool: any }>()
+const { t } = useI18n()
+const toast = useToast()
 
 const jsonData = ref('')
 const schemaData = ref('')
@@ -130,6 +132,12 @@ const validate = () => {
   }
 
   result.value = { valid: errors.length === 0, fieldErrors: errors }
+
+  if (errors.length === 0) {
+    toast.success(t('toast.validated'))
+  } else {
+    toast.error(`${errors.length} validation error(s) found`)
+  }
 
   // Build errorMap for tree nodes
   const map: Record<string, FieldError[]> = {}

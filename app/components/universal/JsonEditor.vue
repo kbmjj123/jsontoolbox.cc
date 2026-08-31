@@ -279,8 +279,9 @@ const copyPath = async (path: string) => {
 }
 
 const { t } = useI18n()
+const toast = useToast()
 
-const formatJson = () => {
+const formatJson = (silent = false) => {
   if (!inputJson.value.trim()) { error.value = ''; parseError.value = null; outputJson.value = ''; return }
   try {
     const parsed = JSON.parse(inputJson.value)
@@ -289,6 +290,7 @@ const formatJson = () => {
     lastAction.value = Number(indent.value) === 0 ? 'minified' : 'formatted'
     error.value = ''
     parseError.value = null
+    if (!silent) toast.success(Number(indent.value) === 0 ? t('toast.minified') : t('toast.formatted'))
   } catch {
     // Auto-repair using jsonrepair library
     const repaired = repairJson(inputJson.value)
@@ -300,12 +302,14 @@ const formatJson = () => {
       lastAction.value = Number(indent.value) === 0 ? 'minified' : 'formatted'
       error.value = ''
       parseError.value = null
+      if (!silent) toast.success(Number(indent.value) === 0 ? t('toast.minified') : t('toast.formatted'))
       return
     }
     // Repair failed — show error
     const err = getJsonError(inputJson.value)
     parseError.value = err
     error.value = err ? t('errors.lineCol', { line: err.line, col: err.column }) + ': ' + err.message : t('formatter.invalidJson')
+    if (!silent) toast.error(error.value)
   }
 }
 
@@ -331,11 +335,13 @@ const validateJson = () => {
     lastAction.value = 'validated'
     error.value = ''
     parseError.value = null
+    toast.success(t('toast.validated'))
   } catch {
     const err = getJsonError(inputJson.value)
     parseError.value = err
     error.value = err ? t('errors.lineCol', { line: err.line, col: err.column }) + ': ' + err.message : t('formatter.invalidJson')
     outputJson.value = ''
+    toast.error(error.value)
   }
 }
 
@@ -385,7 +391,7 @@ const onInputPaste = () => {
 }
 
 // 300ms debounce: update output panel only (non-intrusive)
-const debouncedFormat = useDebounceFn(() => { formatJson() }, 300)
+const debouncedFormat = useDebounceFn(() => { formatJson(true) }, 300)
 // 1.5s debounce: format input in-place (after user stops typing)
 const debouncedFormatInPlace = useDebounceFn(() => { formatInputInPlace() }, 1500)
 

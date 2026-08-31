@@ -50,6 +50,8 @@
 
 <script setup lang="ts">
 defineProps<{ tool: any }>()
+const { t } = useI18n()
+const toast = useToast()
 
 const inputText = ref('')
 const outputText = ref('')
@@ -66,6 +68,7 @@ const escapeText = () => {
     .replace(/\r/g, '\\r')
     .replace(/\t/g, '\\t')
   error.value = ''
+  toast.success(t('toast.escaped'))
 }
 
 const unescapeText = () => {
@@ -73,8 +76,10 @@ const unescapeText = () => {
   try {
     outputText.value = JSON.parse('"' + inputText.value + '"')
     error.value = ''
+    toast.success(t('toast.unescaped'))
   } catch (e) {
     error.value = (e as Error).message
+    toast.error((e as Error).message)
   }
 }
 
