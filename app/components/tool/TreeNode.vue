@@ -190,9 +190,3 @@ const copyPath = (path: string) => {
   copyToClipboard(path)
 }
 </script>
-
-<style scoped>
-.group {
-  position: relative;
-}
-</style>

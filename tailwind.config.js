@@ -79,7 +79,7 @@ export default {
       // ── 字体族 ────────────────────────────────────────
       fontFamily: {
         sans: [
-          'Inter', 'ui-sans-serif', 'system-ui', '-apple-system',
+          'Inter Variable', 'Inter', 'ui-sans-serif', 'system-ui', '-apple-system',
           'PingFang SC', 'Microsoft YaHei', 'Noto Sans SC',
           'Noto Sans JP', 'sans-serif',
         ],

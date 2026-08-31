@@ -1,9 +1,5 @@
-/* 1. 引入字体（必须在 @tailwind 之前） */
-@import '@fontsource/inter/400.css';
-@import '@fontsource/inter/500.css';
-@import '@fontsource/inter/600.css';
-@import '@fontsource/inter/700.css';
-@import '@fontsource/inter/800.css';
+/* 1. 引入字体（必须在 @tailwind 之前） — 可变字体，一个文件覆盖 100-900 字重 */
+@import '@fontsource-variable/inter/wght.css';
 
 /* 2. 引入 Tailwind 的基础层 */
 @tailwind base;
@@ -13,7 +9,7 @@
 @layer base {
 	/* 全局设置 */
 	html {
-		font-family: 'Inter', system-ui, -apple-system, BlinkMacSystemFont,
+		font-family: 'Inter Variable', 'Inter', system-ui, -apple-system, BlinkMacSystemFont,
     'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
 		@apply font-sans;
 		@apply antialiased;
@@ -576,6 +572,12 @@ html.dark .prose pre.shiki {
 .share-drop-enter-from,
 .share-drop-leave-to { opacity: 0; transform: translateY(-6px) scale(0.97) }
 
+/* ── CodeMirror 编辑器 ── */
+.cm-host > div,
+.cm-host .cm-editor {
+  height: 100%;
+}
+
 /* ── 工具选择弹窗过渡 ── */
 .modal-fade-enter-active,
 .modal-fade-leave-active { transition: opacity 0.2s ease }
@@ -591,3 +593,174 @@ html.dark .prose pre.shiki {
 .pill-fade-leave-active { transition: all 0.15s ease }
 .pill-fade-enter-from,
 .pill-fade-leave-to { opacity: 0; transform: scale(0.85) }
+
+/* ══════════════════════════════════════════════════
+   ResizablePanel
+   ══════════════════════════════════════════════════ */
+.rp-container {
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+  transition: all 0.3s ease-in-out;
+}
+.rp-panels {
+  display: flex;
+  flex: 1;
+  overflow: hidden;
+  min-height: 25rem;
+  max-height: 25rem;
+}
+.rp-panels-h { flex-direction: row; }
+.rp-panels-v { flex-direction: column; }
+.rp-panel-second { flex: 1; }
+.rp-fullscreen {
+  display: flex;
+  flex-direction: column;
+}
+.rp-fullscreen .rp-panels {
+  min-height: 0;
+  max-height: none;
+}
+@media (max-width: 767px) {
+  .rp-responsive .rp-panels {
+    flex-direction: column !important;
+    min-height: 0 !important;
+    max-height: none !important;
+    height: calc(100dvh - 4rem);
+  }
+  .rp-responsive .rp-panel-first,
+  .rp-responsive .rp-panel-second {
+    flex: 1 1 0 !important;
+    min-height: 0 !important;
+    width: 100% !important;
+    height: auto !important;
+  }
+  .rp-responsive .rp-panel-first { width: 100% !important; }
+  .rp-responsive .rp-handle { display: none !important; }
+  .rp-responsive .rp-fullscreen-btn { display: none; }
+}
+.esc-hint-enter-active { transition: opacity 0.3s ease, transform 0.3s ease; }
+.esc-hint-leave-active { transition: opacity 0.2s ease, transform 0.2s ease; }
+.esc-hint-enter-from,
+.esc-hint-leave-to { opacity: 0; transform: translateY(-4px); }
+
+/* ══════════════════════════════════════════════════
+   PrivacyNotice — popover transition
+   ══════════════════════════════════════════════════ */
+.popover-enter-active { transition: opacity 0.15s ease, transform 0.15s ease; }
+.popover-leave-active { transition: opacity 0.1s ease, transform 0.1s ease; }
+.popover-enter-from,
+.popover-leave-to { opacity: 0; transform: translate(-50%, 4px); }
+
+/* ══════════════════════════════════════════════════
+   PrivacyPanel — expand transition
+   ══════════════════════════════════════════════════ */
+.panel-enter-active { transition: all 0.2s ease-out; }
+.panel-leave-active { transition: all 0.15s ease-in; }
+.panel-enter-from,
+.panel-leave-to { opacity: 0; max-height: 0; transform: translateY(-4px); }
+.panel-enter-to,
+.panel-leave-from { opacity: 1; max-height: 300px; }
+
+/* ══════════════════════════════════════════════════
+   SensitiveFieldWarning — warning transition
+   ══════════════════════════════════════════════════ */
+.warning-enter-active { transition: all 0.2s ease-out; }
+.warning-leave-active { transition: all 0.15s ease-in; }
+.warning-enter-from,
+.warning-leave-to { opacity: 0; transform: translateY(-4px); max-height: 0; }
+.warning-enter-to,
+.warning-leave-from { max-height: 200px; }
+
+/* ══════════════════════════════════════════════════
+   Preview — image lightbox overlay
+   ══════════════════════════════════════════════════ */
+.preview-overlay {
+  position: fixed; inset: 0; z-index: 100001; pointer-events: none;
+}
+.preview-top-bar {
+  position: absolute; inset-inline: 0; top: 0;
+  display: flex; align-items: center; gap: 12px;
+  height: 48px; padding: 0 12px; pointer-events: auto;
+  background: linear-gradient(180deg, rgba(0,0,0,0.7) 0%, rgba(0,0,0,0) 100%);
+}
+.preview-spacer { flex: 1; }
+.preview-counter {
+  font-size: 13px; font-weight: 500; color: rgba(255,255,255,0.8);
+  user-select: none; white-space: nowrap;
+}
+.preview-bottom-bar {
+  position: absolute; inset-inline: 0; bottom: 0;
+  display: flex; flex-direction: column; gap: 8px;
+  padding: 10px 12px 12px; pointer-events: auto;
+  background: linear-gradient(0deg, rgba(0,0,0,0.7) 0%, rgba(0,0,0,0) 100%);
+}
+.preview-zoom-row {
+  display: flex; align-items: center; justify-content: center; gap: 8px;
+}
+.preview-zoom-level {
+  font-size: 12px; color: rgba(255,255,255,0.6); min-width: 48px;
+  text-align: center; user-select: none;
+}
+.preview-divider {
+  width: 1px; height: 16px; background: rgba(255,255,255,0.2); margin: 0 4px;
+}
+.preview-btn {
+  display: flex; align-items: center; justify-content: center;
+  width: 38px; height: 38px; background: rgba(255,255,255,0.1);
+  border: 1px solid rgba(255,255,255,0.2); color: #e2e8f0;
+  cursor: pointer; transition: all 0.15s ease; border-radius: 6px;
+}
+.preview-btn:hover {
+  border-color: rgba(255,255,255,0.4); color: #fff; background: rgba(255,255,255,0.15);
+}
+.preview-icon-btn {
+  display: flex; align-items: center; justify-content: center;
+  width: 30px; height: 30px; background: rgba(255,255,255,0.06);
+  border: 1px solid rgba(255,255,255,0.15); color: #94a3b8;
+  cursor: pointer; transition: all 0.15s ease; border-radius: 4px;
+}
+.preview-icon-btn:hover:not(:disabled) {
+  border-color: rgba(255,255,255,0.3); color: #e2e8f0; background: rgba(255,255,255,0.1);
+}
+.preview-icon-btn:disabled { opacity: 0.3; cursor: not-allowed; }
+.preview-arrow {
+  position: absolute; top: 50%; transform: translateY(-50%);
+  display: flex; align-items: center; justify-content: center;
+  width: 44px; height: 44px; background: rgba(255,255,255,0.1);
+  border: 1px solid rgba(255,255,255,0.2); color: rgba(255,255,255,0.8);
+  border-radius: 50%; cursor: pointer; pointer-events: auto;
+  transition: all 0.2s ease; z-index: 1;
+}
+.preview-arrow:hover {
+  background: rgba(255,255,255,0.2); border-color: rgba(255,255,255,0.4); color: #fff;
+}
+.preview-arrow-left { left: 16px; }
+.preview-arrow-right { right: 16px; }
+.preview-thumb-strip {
+  display: flex; justify-content: center; gap: 6px;
+  overflow-x: auto; padding: 2px 0; -webkit-overflow-scrolling: touch;
+}
+.preview-thumb-strip::-webkit-scrollbar { height: 4px; }
+.preview-thumb-strip::-webkit-scrollbar-track { background: transparent; }
+.preview-thumb-strip::-webkit-scrollbar-thumb { background: rgba(255,255,255,0.2); border-radius: 2px; }
+.preview-thumb-strip::-webkit-scrollbar-thumb:hover { background: rgba(255,255,255,0.4); }
+.preview-thumb {
+  flex-shrink: 0; width: 48px; height: 48px; border-radius: 4px;
+  overflow: hidden; border: 2px solid rgba(255,255,255,0.15);
+  background: rgba(0,0,0,0.4); cursor: pointer; padding: 0;
+  transition: all 0.15s ease;
+}
+.preview-thumb:hover { border-color: rgba(255,255,255,0.4); }
+.preview-thumb.active {
+  border-color: rgba(255,255,255,0.8); box-shadow: 0 0 8px rgba(255,255,255,0.2);
+}
+.preview-thumb img { width: 100%; height: 100%; object-fit: cover; display: block; }
+.pswp__button--close { display: none !important; }
+@media (max-width: 480px) {
+  .preview-top-bar { height: 42px; padding: 0 8px; }
+  .preview-bottom-bar { padding: 8px 8px 10px; gap: 6px; }
+  .preview-thumb { width: 40px; height: 40px; }
+  .preview-counter { font-size: 8px; }
+  .preview-zoom-level { font-size: 8px; min-width: 36px; }
+}

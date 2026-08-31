@@ -56,23 +56,3 @@
 <script setup lang="ts">
 const expanded = ref(false)
 </script>
-
-<style scoped>
-.panel-enter-active {
-  transition: all 0.2s ease-out;
-}
-.panel-leave-active {
-  transition: all 0.15s ease-in;
-}
-.panel-enter-from,
-.panel-leave-to {
-  opacity: 0;
-  max-height: 0;
-  transform: translateY(-4px);
-}
-.panel-enter-to,
-.panel-leave-from {
-  opacity: 1;
-  max-height: 300px;
-}
-</style>

@@ -219,7 +219,7 @@ export default defineNuxtConfig({
     },
     build: {
       cssCodeSplit: false,
-      assetsInlineLimit: 100000
+      assetsInlineLimit: 4096
     },
   },
   hooks: {

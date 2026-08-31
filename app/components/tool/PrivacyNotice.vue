@@ -62,20 +62,3 @@ onClickOutside(popoverRef, () => {
   showVerify.value = false
 })
 </script>
-
-<style scoped>
-.popover-enter-active {
-  transition: opacity 0.15s ease, transform 0.15s ease;
-}
-.popover-leave-active {
-  transition: opacity 0.1s ease, transform 0.1s ease;
-}
-.popover-enter-from {
-  opacity: 0;
-  transform: translate(-50%, 4px);
-}
-.popover-leave-to {
-  opacity: 0;
-  transform: translate(-50%, 4px);
-}
-</style>

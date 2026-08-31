@@ -1,10 +1,10 @@
 <template>
   <div
     ref="containerRef"
-    class="flex overflow-hidden flex-col transition-all duration-300 ease-in-out"
+    class="rp-container"
     :class="[
-      isFullscreen ? 'fixed inset-0 z-50 bg-white dark:bg-surface-900 p-4 flex-col' : '',
-      responsive && isMobile ? 'h-[calc(100dvh-4rem)]' : '',
+      responsive && 'rp-responsive',
+      isFullscreen ? 'fixed inset-0 z-50 bg-white dark:bg-surface-900 p-4 rp-fullscreen' : '',
       containerClass
     ]"
   >
@@ -23,9 +23,8 @@
       </div>
       <slot name="header-right">
         <button
-          v-if="!isMobile"
           @click="isFullscreen = !isFullscreen"
-          class="text-surface-400 hover:text-surface-600 dark:text-surface-500 dark:hover:text-surface-300"
+          class="rp-fullscreen-btn text-surface-400 hover:text-surface-600 dark:text-surface-500 dark:hover:text-surface-300"
           :title="isFullscreen ? 'Exit fullscreen' : 'Fullscreen'"
         >
           <Icon :name="isFullscreen ? 'lucide:minimize' : 'lucide:maximize'" class="w-4 h-4" />
@@ -34,16 +33,15 @@
     </div>
 
     <!-- Resizable panels -->
-    <div class="flex flex-1 overflow-hidden" :class="[effectiveDirection === 'horizontal' ? 'flex-row' : 'flex-col', isFullscreen ? '' : 'min-h-[25rem] max-h-[25rem]', isMobile ? '!min-h-0 !max-h-none' : '']">
+    <div class="rp-panels" :class="effectiveDirection === 'horizontal' ? 'rp-panels-h' : 'rp-panels-v'">
       <!-- Left / Top panel -->
-      <div :style="firstStyle" class="min-w-0 min-h-0 overflow-hidden" :class="isMobile ? 'h-1/2' : ''">
+      <div :style="firstStyle" class="min-w-0 min-h-0 overflow-hidden rp-panel-first">
         <slot name="first" />
       </div>
 
-      <!-- Drag handle (hidden on mobile) -->
+      <!-- Drag handle (hidden on mobile via CSS) -->
       <div
-        v-if="!isMobile"
-        class="flex-none flex items-center justify-center group"
+        class="rp-handle flex-none flex items-center justify-center group"
         :class="effectiveDirection === 'horizontal' ? 'w-3 cursor-col-resize' : 'h-3 cursor-row-resize'"
         @mousedown="onDragStart"
         @touchstart.passive="onTouchStart"
@@ -58,7 +56,7 @@
       </div>
 
       <!-- Right / Bottom panel -->
-      <div class="min-w-0 min-h-0 overflow-hidden" :class="isMobile ? 'h-1/2' : 'flex-1'">
+      <div class="min-w-0 min-h-0 overflow-hidden rp-panel-second">
         <slot name="second" />
       </div>
     </div>
@@ -101,20 +99,15 @@ const isFullscreen = computed({
 
 const containerClass = computed(() => props.class)
 
+// JS fallback only for non-responsive mode or fullscreen exit key
 const isMobile = ref(false)
-let resizeObserver: ResizeObserver | null = null
 
 onMounted(() => {
-  if (props.responsive && containerRef.value) {
+  if (props.responsive) {
     const check = () => { isMobile.value = window.innerWidth < 768 }
     check()
     window.addEventListener('resize', check)
-    resizeObserver = new ResizeObserver(check)
-    resizeObserver.observe(containerRef.value)
-    onUnmounted(() => {
-      window.removeEventListener('resize', check)
-      resizeObserver?.disconnect()
-    })
+    onUnmounted(() => window.removeEventListener('resize', check))
   }
 })
 
@@ -196,20 +189,3 @@ const updateRatio = (clientX: number, clientY: number) => {
   }
 }
 </script>
-
-<style scoped>
-.esc-hint-enter-active {
-  transition: opacity 0.3s ease, transform 0.3s ease;
-}
-.esc-hint-leave-active {
-  transition: opacity 0.2s ease, transform 0.2s ease;
-}
-.esc-hint-enter-from {
-  opacity: 0;
-  transform: translateY(-4px);
-}
-.esc-hint-leave-to {
-  opacity: 0;
-  transform: translateY(-4px);
-}
-</style>

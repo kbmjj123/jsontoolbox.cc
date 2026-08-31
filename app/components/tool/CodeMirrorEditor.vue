@@ -20,13 +20,6 @@
   </div>
 </template>
 
-<style scoped>
-.cm-host :deep(> div),
-.cm-host :deep(.cm-editor) {
-  height: 100%;
-}
-</style>
-
 <script setup lang="ts">
 import CodeMirror from 'vue-codemirror6'
 import { json, jsonParseLinter } from '@codemirror/lang-json'

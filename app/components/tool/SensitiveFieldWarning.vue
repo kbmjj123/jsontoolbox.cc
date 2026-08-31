@@ -41,22 +41,3 @@ const sensitiveDescription = computed(() => {
   return t('privacy_notice.sensitive_description', { fields: fieldsStr })
 })
 </script>
-
-<style scoped>
-.warning-enter-active {
-  transition: all 0.2s ease-out;
-}
-.warning-leave-active {
-  transition: all 0.15s ease-in;
-}
-.warning-enter-from,
-.warning-leave-to {
-  opacity: 0;
-  transform: translateY(-4px);
-  max-height: 0;
-}
-.warning-enter-to,
-.warning-leave-from {
-  max-height: 200px;
-}
-</style>
