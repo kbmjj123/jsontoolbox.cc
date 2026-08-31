@@ -46,7 +46,10 @@
           :show-download="false"
           :show-view-toggle="showViewToggle"
           :empty-text="$t('system.emptyOutput')"
+          :masked="masked"
+          :sensitive-paths="sensitivePathSet"
           @update:view-mode="viewMode = $event"
+          @update:masked="masked = $event"
           @copy="copyOutput"
           @download="downloadOutput"
           @copy-path="copyPath"
@@ -146,6 +149,11 @@
       </div>
     </template>
   </ResizablePanel>
+
+  <!-- Sensitive field warning -->
+  <div v-if="sensitiveFields.length > 0" class="mt-2">
+    <SensitiveFieldWarning :fields="sensitiveFields" @dismiss="dismissSensitiveWarning" />
+  </div>
 </template>
 
 <script setup lang="ts">
@@ -168,6 +176,10 @@ const fullscreen = ref(false)
 const lastAction = ref<'formatted' | 'minified' | 'validated'>('formatted')
 
 const fieldErrors = ref<FieldError[]>([]) // placeholder for future field-level validation
+
+// Masked display for sensitive fields
+const masked = ref(false)
+const sensitivePathSet = computed(() => new Set(sensitiveFields.value.map(f => f.path)))
 
 // Friendly localized error message (for output panel and error bar)
 const friendlyMessage = computed(() => {
@@ -229,6 +241,27 @@ function computeEndLine(path: string): number {
 
 const { repairJson, getJsonError } = useJsonFixer()
 const { generateShareUrl, copyShareUrl, shareToSocial } = useShareJson()
+
+// Sensitive field detection
+const { scanJson, detectedFields: sensitiveFields, clear: clearSensitiveFields } = useSensitiveFieldDetection()
+const sensitiveDismissed = ref(false)
+
+const dismissSensitiveWarning = () => {
+  sensitiveDismissed.value = true
+  clearSensitiveFields()
+}
+
+// Scan for sensitive fields when input changes (debounced)
+const debouncedSensitiveScan = useDebounceFn((val: string) => {
+  if (sensitiveDismissed.value) return
+  if (!val.trim()) { clearSensitiveFields(); return }
+  scanJson(val)
+}, 500)
+
+watch(inputJson, (val) => {
+  sensitiveDismissed.value = false
+  debouncedSensitiveScan(val)
+})
 
 const loadDefaultExample = () => { inputEditorRef.value?.loadDefaultExample() }
 const onExampleLoaded = () => { nextTick(() => formatJson()) }

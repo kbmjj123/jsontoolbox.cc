@@ -27,6 +27,11 @@
           </div>
         </div>
 
+        <!-- Privacy Notice -->
+        <div class="mt-3 flex justify-center">
+          <PrivacyNotice />
+        </div>
+
         <!-- SEO Content Sections -->
         <ToolSeoContent :tool="tool" class="mt-12" />
       </div>

@@ -21,6 +21,12 @@
         <!-- JSON Editor embedded -->
         <div class="mt-16">
           <JsonEditor v-if="editorTool" :tool="editorTool" show-view-toggle default-view-mode="rich" />
+          <div class="mt-3 flex justify-center">
+            <PrivacyNotice />
+          </div>
+          <div class="mt-3">
+            <PrivacyPanel />
+          </div>
         </div>
       </div>
     </section>

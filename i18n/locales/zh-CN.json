@@ -30,7 +30,8 @@
         "terms": "服务条款"
       },
       "copyright": "JSON工具箱。保留所有权利。",
-      "last_updated": "最后更新时间"
+      "last_updated": "最后更新时间",
+      "privacy_notice": "所有JSON处理在浏览器本地完成，数据不会发送到任何服务器。"
     }
   },
   "nav": {
@@ -269,6 +270,26 @@
     "locateError": "跳转到错误位置",
     "loadExample": "载入示例",
     "staleOutput": "输入存在错误 — 输出可能已过时"
+  },
+  "privacy_notice": {
+    "label": "所有处理在浏览器本地完成，JSON数据不会发送到任何服务器。",
+    "how_to_verify": "如何验证",
+    "verify_title": "3步验证",
+    "verify_step1": "打开开发者工具 → Network 标签",
+    "verify_step2": "粘贴并格式化你的JSON",
+    "verify_step3": "确认：没有任何网络请求",
+    "full_details": "完整隐私政策",
+    "panel_title": "隐私与安全",
+    "panel_toggle": "查看详情",
+    "panel_client_side": "所有JSON处理在浏览器本地完成。",
+    "panel_no_server": "数据不会发送到我们的服务器。",
+    "panel_third_party": "第三方脚本：仅Google AdSense（仅用于广告）。",
+    "panel_open_source": "开源项目 — 你可以自行验证代码。",
+    "sensitive_title": "检测到敏感字段",
+    "sensitive_description": "此JSON包含敏感字段（如 {fields}）。你处于纯本地模式：数据不会发送到任何服务器。",
+    "sensitive_learn_more": "了解更多",
+    "mask_toggle": "隐藏敏感字段",
+    "unmask_toggle": "显示敏感字段"
   },
   "contact": {
     "title": "发送消息",

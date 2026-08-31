@@ -32,6 +32,20 @@
             Table
           </button>
         </div>
+
+        <!-- Mask sensitive fields toggle -->
+        <button
+          v-if="sensitivePaths.size > 0"
+          @click="emit('update:masked', !masked)"
+          class="flex items-center gap-1 text-xs transition-colors"
+          :class="masked
+            ? 'text-amber-600 dark:text-amber-400'
+            : 'text-surface-400 hover:text-surface-600 dark:text-surface-500 dark:hover:text-surface-300'"
+          :title="masked ? $t('privacy_notice.unmask_toggle') : $t('privacy_notice.mask_toggle')"
+        >
+          <Icon :name="masked ? 'lucide:eye-off' : 'lucide:eye'" class="w-3.5 h-3.5" />
+          <span class="hidden sm:inline">{{ masked ? $t('privacy_notice.unmask_toggle') : $t('privacy_notice.mask_toggle') }}</span>
+        </button>
       </div>
       <div class="flex gap-2 items-center flex-1 justify-end">
 
@@ -287,6 +301,10 @@ interface Props {
   showViewToggle?: boolean
   /** Syntax highlighting in text mode: '' = none, 'json' = JSON highlighting */
   highlight?: '' | 'json'
+  /** Enable masked display for sensitive fields */
+  masked?: boolean
+  /** Set of sensitive field paths to mask */
+  sensitivePaths?: Set<string>
 }
 
 const props = withDefaults(defineProps<Props>(), {
@@ -307,11 +325,14 @@ const props = withDefaults(defineProps<Props>(), {
   showEditActions: false,
   showViewToggle: true,
   highlight: '',
+  masked: false,
+  sensitivePaths: () => new Set(),
 })
 
 const emit = defineEmits<{
   'update:viewMode': [mode: 'text' | 'rich' | 'table']
   'update:content': [value: string]
+  'update:masked': [value: boolean]
   copy: []
   download: []
   copyPath: [path: string]
@@ -399,6 +420,9 @@ onMounted(() => {
 
 // Provide search state to tree nodes
 provide('treeSearch', treeSearch)
+
+// Provide masked state for sensitive fields
+provide('maskedFields', computed(() => props.masked ? props.sensitivePaths : new Set()))
 
 // Field errors → errorMap for tree nodes
 const errorMap = computed(() => {

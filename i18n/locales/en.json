@@ -30,7 +30,8 @@
         "terms": "Terms of Service"
       },
       "copyright": "JSON Toolbox. All rights reserved.",
-      "last_updated": "Last updated"
+      "last_updated": "Last updated",
+      "privacy_notice": "All JSON processing runs in your browser. No data is sent to any server."
     }
   },
   "nav": {
@@ -279,6 +280,26 @@
     "locateError": "Jump to Error",
     "loadExample": "Load Example",
     "staleOutput": "Input has errors — output may be outdated"
+  },
+  "privacy_notice": {
+    "label": "All processing happens in your browser. No JSON is sent to our servers.",
+    "how_to_verify": "How to verify",
+    "verify_title": "Verify in 3 steps",
+    "verify_step1": "Open DevTools → Network tab",
+    "verify_step2": "Paste and format your JSON",
+    "verify_step3": "Confirm: zero network requests are made",
+    "full_details": "Full privacy details",
+    "panel_title": "Privacy & Security",
+    "panel_toggle": "Show details",
+    "panel_client_side": "All JSON processing runs in your browser.",
+    "panel_no_server": "No data is sent to our servers.",
+    "panel_third_party": "Third-party scripts: Google AdSense (ads only).",
+    "panel_open_source": "Open source — verify the code yourself.",
+    "sensitive_title": "Sensitive fields detected",
+    "sensitive_description": "This JSON appears to contain sensitive fields (e.g. {fields}). You are in local-only mode: nothing is sent to our servers.",
+    "sensitive_learn_more": "Learn more",
+    "mask_toggle": "Mask sensitive fields",
+    "unmask_toggle": "Show sensitive fields"
   },
   "contact": {
     "title": "Send us a Message",

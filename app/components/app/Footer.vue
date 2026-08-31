@@ -32,6 +32,14 @@
 					<!-- 换链组件 -->
 					<LinkExchange class="mb-2"/>
 
+					<div class="mb-3 flex items-center gap-1.5 text-xs text-surface-400 dark:text-surface-500">
+						<Icon name="lucide:shield-check" class="w-3.5 h-3.5 text-green-500 shrink-0" />
+						<span>{{ $t('app.footer.privacy_notice') }}</span>
+						<NuxtLinkLocale to="/privacy" class="text-primary-500 hover:text-primary-600 dark:text-primary-400 dark:hover:text-primary-300 underline underline-offset-2">
+							{{ $t('app.footer.support.privacy') }}
+						</NuxtLinkLocale>
+					</div>
+
 					<div class="mb-8 flex items-center gap-2 text-xs text-surface-400 dark:text-surface-500">
 						<p>&copy; {{ new Date().getFullYear() }} {{ $t('app.footer.copyright') }}</p>
 					</div>

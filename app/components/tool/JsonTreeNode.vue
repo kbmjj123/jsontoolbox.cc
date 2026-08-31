@@ -41,7 +41,7 @@
                 class="inline-block w-3.5 h-3.5 rounded border border-surface-300 dark:border-surface-600 shrink-0"
                 :style="{ backgroundColor: getColorStyle(value) || undefined }"
               />
-              <span :class="valueColorClass(value)">{{ formatValue(value) }}</span>
+              <span :class="valueColorClass(value)">{{ formatValue(value, getFullPath(key)) }}</span>
             </span>
             <span v-else-if="isArray(value)" class="text-surface-400">[{{ value.length }}]</span>
             <span v-else class="text-surface-400">{...}</span>
@@ -59,8 +59,8 @@
           </div>
         </div>
 
-        <!-- Image preview -->
-        <div v-if="isPossibleImageUrl(value)" class="flex">
+        <!-- Image preview (hidden when masked) -->
+        <div v-if="isPossibleImageUrl(value) && !isSensitive(getFullPath(key))" class="flex">
           <span class="w-8 shrink-0" />
           <img
             :src="value"
@@ -118,7 +118,7 @@
                 class="inline-block w-3.5 h-3.5 rounded border border-surface-300 dark:border-surface-600 shrink-0"
                 :style="{ backgroundColor: getColorStyle(item) || undefined }"
               />
-              <span :class="valueColorClass(item)">{{ formatValue(item) }}</span>
+              <span :class="valueColorClass(item)">{{ formatValue(item, getFullPath(index)) }}</span>
             </span>
             <span v-else-if="isArray(item)" class="text-surface-400 ml-1">[{{ item.length }}]</span>
             <span v-else class="text-surface-400 ml-1">{...}</span>
@@ -136,8 +136,8 @@
           </div>
         </div>
 
-        <!-- Image preview -->
-        <div v-if="isPossibleImageUrl(item)" class="flex">
+        <!-- Image preview (hidden when masked) -->
+        <div v-if="isPossibleImageUrl(item) && !isSensitive(getFullPath(index))" class="flex">
           <span class="w-8 shrink-0" />
           <img
             :src="item"
@@ -180,7 +180,7 @@
               class="inline-block w-3.5 h-3.5 rounded border border-surface-300 dark:border-surface-600 shrink-0"
               :style="{ backgroundColor: getColorStyle(data) || undefined }"
             />
-            <span :class="valueColorClass(data)">{{ formatValue(data) }}</span>
+            <span :class="valueColorClass(data)">{{ formatValue(data, props.path) }}</span>
           </span>
 
           <!-- Error indicator -->
@@ -272,6 +272,10 @@ const flashPath = ref('')
 
 // ── Search state (injected from JsonTreeViewer) ────────────────
 const search = inject<ReturnType<typeof useTreeSearch> | null>('treeSearch', null)
+
+// ── Masked state for sensitive fields ─────────────────────────
+const maskedFields = inject<ComputedRef<Set<string>>>('maskedFields', computed(() => new Set()))
+provide('maskedFields', maskedFields)
 
 // Root instance: watch expand/collapse signals
 if (!props.path) {
@@ -439,7 +443,17 @@ function selectAndCopy(path: string) {
   onNodeInteraction(path, 'click')
 }
 
-function formatValue(val: unknown): string {
+function isSensitive(path: string): boolean {
+  return maskedFields.value.has(path)
+}
+
+function formatValue(val: unknown, path?: string): string {
+  if (path && isSensitive(path)) {
+    if (typeof val === 'string') return '"****"'
+    if (typeof val === 'number') return '0'
+    if (typeof val === 'boolean') return 'false'
+    return '****'
+  }
   if (val === null) return 'null'
   if (val === undefined) return 'undefined'
   if (typeof val === 'string') return `"${val}"`
