@@ -240,8 +240,7 @@ const fullEditorUrl = computed(() => {
 
 <template>
   <div
-    class="flex flex-col"
-    :style="{ minHeight: minHeight + 'px' }"
+    class="flex flex-col h-full"
   >
     <!-- Top bar -->
     <div class="flex items-center justify-between px-4 py-2 border-b border-surface-200 dark:border-surface-700 bg-white dark:bg-surface-900 shrink-0">
@@ -259,7 +258,7 @@ const fullEditorUrl = computed(() => {
     </div>
 
     <!-- Editor mode -->
-    <div v-if="mode === 'editor'" class="flex-1 flex flex-col overflow-hidden px-4 pb-4">
+    <div v-if="mode === 'editor'" class="flex-1 flex flex-col overflow-hidden px-4 pb-4" :style="{ minHeight: minHeight + 'px' }">
       <ResizablePanel v-model:fullscreen="fullscreen" :initial-ratio="0.5" responsive class="flex-1">
         <template #header-left>
           <span />
@@ -401,7 +400,7 @@ const fullEditorUrl = computed(() => {
     </div>
 
     <!-- Viewer mode -->
-    <div v-else class="flex-1 flex flex-col overflow-hidden p-4">
+    <div v-else class="flex-1 flex flex-col overflow-hidden p-4" :style="{ minHeight: minHeight + 'px' }">
       <JsonOutputPanel
         :label="$t('embed.outputLabel') || 'JSON Viewer'"
         :content="outputJson"
