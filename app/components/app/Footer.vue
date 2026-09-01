@@ -32,18 +32,6 @@
 					<!-- 换链组件 -->
 					<LinkExchange class="mb-2"/>
 
-					<div class="mb-3 flex items-center gap-1.5 text-xs text-surface-400 dark:text-surface-500">
-						<Icon name="lucide:shield-check" class="w-3.5 h-3.5 text-green-500 shrink-0" />
-						<span>{{ $t('app.footer.privacy_notice') }}</span>
-						<NuxtLinkLocale to="/privacy" class="text-primary-500 hover:text-primary-600 dark:text-primary-400 dark:hover:text-primary-300 underline underline-offset-2">
-							{{ $t('app.footer.support.privacy') }}
-						</NuxtLinkLocale>
-					</div>
-
-					<div class="mb-8 flex items-center gap-2 text-xs text-surface-400 dark:text-surface-500">
-						<p>&copy; {{ new Date().getFullYear() }} {{ $t('app.footer.copyright') }}</p>
-					</div>
-
 					<div class="flex gap-3">
 						<a href="https://github.com/kbmjj123/jsontoolbox.cc" title="github" target="_blank"
 							class="flex h-11 w-11 items-center justify-center rounded-xl border border-surface-200 bg-white/50 text-surface-500 transition-all hover:border-primary-200 hover:bg-white hover:text-primary-600 hover:shadow-sm dark:border-surface-700/50 dark:bg-surface-900 dark:text-surface-400 dark:hover:border-surface-600 dark:hover:text-surface-100">
@@ -120,6 +108,18 @@
 					</div>
 				</div>
 
+			</div>
+
+			<!-- Bottom bar: privacy + copyright -->
+			<div class="border-t border-surface-200/60 dark:border-surface-700/60 pt-6 flex flex-col sm:flex-row items-center justify-between gap-3 text-xs text-surface-400 dark:text-surface-500">
+				<div class="flex items-center gap-1.5">
+					<Icon name="lucide:shield-check" class="w-3.5 h-3.5 text-green-500 shrink-0" />
+					<span>{{ $t('app.footer.privacy_notice') }}</span>
+					<NuxtLinkLocale to="/privacy" class="text-primary-500 hover:text-primary-600 dark:text-primary-400 dark:hover:text-primary-300 underline underline-offset-2">
+						{{ $t('app.footer.support.privacy') }}
+					</NuxtLinkLocale>
+				</div>
+				<p>&copy; {{ new Date().getFullYear() }} {{ $t('app.footer.copyright') }}</p>
 			</div>
 
 		</div>
