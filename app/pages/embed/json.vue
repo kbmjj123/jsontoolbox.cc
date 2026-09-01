@@ -9,8 +9,14 @@ useSeoMeta({
 })
 
 const route = useRoute()
-const { t } = useI18n()
+const { t, locale, setLocale } = useI18n()
 const toast = useToast()
+
+// Apply locale from query param
+const queryLocale = route.query.lang as string
+if (queryLocale && ['en', 'zh'].includes(queryLocale)) {
+  setLocale(queryLocale)
+}
 
 // ── Query params ─────────────────────────────────────────────
 const mode = computed(() => {

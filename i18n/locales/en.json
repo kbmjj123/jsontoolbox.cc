@@ -358,6 +358,7 @@
     "height": "Height (px)",
     "indent": "Indent",
     "spaces": "spaces",
+    "language": "Language",
     "showToolbar": "Show toolbar",
     "readonly": "Read-only",
     "showBranding": "Show attribution",

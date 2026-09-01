@@ -4,7 +4,7 @@ useSeoMeta({
   description: 'Add a private, browser-based JSON editor or viewer to your documentation. No account, upload, or server-side storage required.',
 })
 
-const { t } = useI18n()
+const { t, locale } = useI18n()
 
 // ── Config state ─────────────────────────────────────────────
 const config = reactive({
@@ -15,6 +15,7 @@ const config = reactive({
   readonly: false,
   indent: 2 as number | string,
   branding: true,
+  lang: locale.value as string,
 })
 
 // ── Generated iframe URL ─────────────────────────────────────
@@ -28,6 +29,7 @@ const embedUrl = computed(() => {
   if (config.readonly) params.set('readonly', '1')
   if (config.indent !== 2) params.set('indent', String(config.indent))
   if (!config.branding) params.set('branding', '0')
+  if (config.lang) params.set('lang', config.lang)
   return `${base}?${params.toString()}`
 })
 
@@ -85,6 +87,7 @@ const previewSrc = computed(() => {
     if (config.readonly) params.set('readonly', '1')
     if (config.indent !== 2) params.set('indent', String(config.indent))
     if (!config.branding) params.set('branding', '0')
+    if (config.lang) params.set('lang', config.lang)
     return `/embed/json?${params.toString()}`
   }
   return embedUrl.value
@@ -188,6 +191,17 @@ const previewSrc = computed(() => {
 								<option :value="2">2 {{ $t('embed.spaces') || 'spaces' }}</option>
 								<option :value="4">4 {{ $t('embed.spaces') || 'spaces' }}</option>
 								<option value="tab">{{ $t('formatter.tab') || 'Tab' }}</option>
+							</select>
+						</div>
+
+						<!-- Language -->
+						<div class="mb-4">
+							<label class="block text-sm font-medium text-surface-700 dark:text-surface-300 mb-1.5">
+								{{ $t('embed.language') || 'Language' }}
+							</label>
+							<select v-model="config.lang" class="w-full rounded-lg border border-surface-200 bg-white px-3 py-2 text-sm dark:border-surface-700 dark:bg-surface-800">
+								<option value="en">English</option>
+								<option value="zh">简体中文</option>
 							</select>
 						</div>
 

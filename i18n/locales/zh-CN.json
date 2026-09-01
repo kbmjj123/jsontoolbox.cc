@@ -349,6 +349,7 @@
     "height": "高度 (px)",
     "indent": "缩进",
     "spaces": "空格",
+    "language": "语言",
     "showToolbar": "显示工具栏",
     "readonly": "只读",
     "showBranding": "显示署名",
