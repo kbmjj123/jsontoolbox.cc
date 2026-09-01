@@ -376,6 +376,14 @@
     "outputLabel": "输出",
     "viewerPlaceholder": "粘贴 JSON 以查看...",
     "viewerEmpty": "粘贴或输入 JSON 查看其结构",
-    "brandingText": "数据在浏览器本地处理 ·"
+    "brandingText": "数据在浏览器本地处理 ·",
+    "seo": {
+      "title": "可嵌入的 JSON 工具 — 适用于文档和团队 | JsonToolBox",
+      "description": "将隐私、本地运行的 JSON 编辑器或查看器添加到你的文档中。无需注册、无需上传、无需服务器。"
+    },
+    "jsonSeo": {
+      "title": "可嵌入的 JSON 查看器与编辑器 | JsonToolBox",
+      "description": "轻量、隐私优先的 JSON 查看器和编辑器，可嵌入文档中使用。所有处理在浏览器本地完成。"
+    }
   }
 }

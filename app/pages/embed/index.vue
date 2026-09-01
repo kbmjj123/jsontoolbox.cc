@@ -1,10 +1,10 @@
 <script setup lang="ts">
-useSeoMeta({
-  title: 'Embeddable JSON Tools for Docs & Teams | JsonToolBox',
-  description: 'Add a private, browser-based JSON editor or viewer to your documentation. No account, upload, or server-side storage required.',
-})
-
 const { t, locale } = useI18n()
+
+useSeoMeta({
+  title: () => t('embed.seo.title'),
+  description: () => t('embed.seo.description'),
+})
 
 // ── Config state ─────────────────────────────────────────────
 const config = reactive({

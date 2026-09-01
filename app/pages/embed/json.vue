@@ -3,13 +3,13 @@ import type { ParseError, FieldError } from '~/types/jsonErrors'
 
 definePageMeta({ layout: 'embed' })
 
-useSeoMeta({
-  title: 'Embeddable JSON Viewer & Editor | JsonToolBox',
-  description: 'A lightweight, privacy-first JSON viewer and editor for embedding in documentation. All processing runs in your browser.',
-})
-
 const route = useRoute()
 const { t, locale, setLocale } = useI18n()
+
+useSeoMeta({
+  title: () => t('embed.jsonSeo.title'),
+  description: () => t('embed.jsonSeo.description'),
+})
 const toast = useToast()
 
 // Apply locale from query param
