@@ -103,9 +103,9 @@ const previewSrc = computed(() => {
       </p>
     </div>
 
-    <div class="grid lg:grid-cols-2 gap-8 mb-16">
+    <div class="grid lg:grid-cols-5 gap-8 mb-16">
       <!-- Config panel -->
-      <div class="space-y-6">
+      <div class="lg:col-span-2 space-y-6">
         <div class="bg-white dark:bg-surface-800 rounded-xl border border-surface-200 dark:border-surface-700 p-6">
           <h2 class="text-lg font-semibold text-surface-900 dark:text-surface-100 mb-4">
             {{ $t('embed.configTitle') || 'Configuration' }}
@@ -268,7 +268,7 @@ const previewSrc = computed(() => {
       </div>
 
       <!-- Preview -->
-      <div>
+      <div class="lg:col-span-3">
         <div class="bg-white dark:bg-surface-800 rounded-xl border border-surface-200 dark:border-surface-700 p-6 sticky top-24">
           <h2 class="text-lg font-semibold text-surface-900 dark:text-surface-100 mb-4">
             {{ $t('embed.previewTitle') || 'Preview' }}
