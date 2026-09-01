@@ -40,8 +40,8 @@ const attributionUrl = computed(() => {
 
 const attributionText = computed(() => {
   return config.mode === 'editor'
-    ? 'JSON Editor by JsonToolBox'
-    : 'JSON Viewer by JsonToolBox'
+    ? t('embed.attrEditor')
+    : t('embed.attrViewer')
 })
 
 // ── Generated code ───────────────────────────────────────────
@@ -62,7 +62,7 @@ const generatedCode = computed(() => {
   <a href="${attributionUrl.value}">
     ${attributionText.value}
   </a>
-  — format, validate, and inspect JSON locally in your browser.
+  — ${t('embed.attrDescription')}
 </p>`
 })
 

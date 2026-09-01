@@ -386,6 +386,9 @@
     "viewerPlaceholder": "Paste JSON here to view...",
     "viewerEmpty": "Paste or type JSON to view its structure",
     "brandingText": "Runs locally in your browser ·",
+    "attrEditor": "JSON Editor by JsonToolBox",
+    "attrViewer": "JSON Viewer by JsonToolBox",
+    "attrDescription": "format, validate, and inspect JSON locally in your browser.",
     "seo": {
       "title": "Embeddable JSON Tools for Docs & Teams | JsonToolBox",
       "description": "Add a private, browser-based JSON editor or viewer to your documentation. No account, upload, or server-side storage required."
