@@ -273,13 +273,13 @@ const previewSrc = computed(() => {
           <h2 class="text-lg font-semibold text-surface-900 dark:text-surface-100 mb-4">
             {{ $t('embed.previewTitle') || 'Preview' }}
           </h2>
-          <div class="rounded-lg overflow-hidden border border-surface-200 dark:border-surface-700">
+          <div class="rounded-lg overflow-hidden border border-surface-200 dark:border-surface-700 p-1">
             <iframe
               :src="previewSrc"
               width="100%"
               :height="config.height"
               loading="lazy"
-              class="w-full bg-surface-50 dark:bg-surface-950"
+              class="w-full rounded bg-surface-50 dark:bg-surface-950"
             />
           </div>
         </div>

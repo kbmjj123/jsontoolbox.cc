@@ -252,7 +252,7 @@ const fullEditorUrl = computed(() => {
     </div>
 
     <!-- Editor mode -->
-    <div v-if="mode === 'editor'" class="flex-1 flex flex-col overflow-hidden">
+    <div v-if="mode === 'editor'" class="flex-1 flex flex-col overflow-hidden px-4 pb-4">
       <ResizablePanel v-model:fullscreen="fullscreen" :initial-ratio="0.5" responsive class="flex-1">
         <template #header-left>
           <span />
