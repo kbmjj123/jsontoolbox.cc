@@ -9,12 +9,14 @@
       "home": "首页",
       "tools": "工具",
       "blog": "博客",
+      "embed": "嵌入",
       "about": "关于",
       "contact": "联系"
     },
     "menu": {
       "tools": "工具",
       "blog": "博客",
+      "embed": "嵌入",
       "about": "关于",
       "contact": "联系",
       "quick_search": "快速搜索",

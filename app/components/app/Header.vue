@@ -96,8 +96,9 @@ const isScrolled = ref(false)
 const navLinks = [
   { to: '/tools',   labelKey: 'app.nav.tools' },
   { to: '/blog',    labelKey: 'app.nav.blog' },
-  { to: '/about',   labelKey: 'app.nav.about' },
-  { to: '/contact', labelKey: 'app.nav.contact' },
+  { to: '/embed',   labelKey: 'app.nav.embed' },
+  // { to: '/about',   labelKey: 'app.nav.about' },
+  // { to: '/contact', labelKey: 'app.nav.contact' },
 ]
 
 // 全局快捷搜索
