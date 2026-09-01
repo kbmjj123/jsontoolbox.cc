@@ -34,6 +34,7 @@ const minHeight = computed(() => {
 const showToolbar = computed(() => route.query.toolbar !== '0')
 const isReadonly = computed(() => route.query.readonly === '1')
 const showBranding = computed(() => route.query.branding !== '0')
+const isPreview = computed(() => route.query.preview === '1')
 const initialIndent = computed(() => {
   const v = route.query.indent as string
   if (v === 'tab') return 'tab'
@@ -264,6 +265,10 @@ const fullEditorUrl = computed(() => {
           <span />
         </template>
 
+        <template v-if="isPreview" #header-right>
+          <span />
+        </template>
+
         <template #first>
           <div class="h-full pr-3 overflow-hidden">
             <JsonInputEditor
@@ -275,10 +280,10 @@ const fullEditorUrl = computed(() => {
               :error-column="parseError?.column ?? 0"
               :friendly-message="friendlyMessage"
               :error="error"
-              :show-upload="!isReadonly"
-              :show-load-url="!isReadonly"
-              :show-paste="!isReadonly"
-              :show-clear="!isReadonly"
+              :show-upload="!isReadonly && !isPreview"
+              :show-load-url="!isReadonly && !isPreview"
+              :show-paste="!isReadonly && !isPreview"
+              :show-clear="!isReadonly && !isPreview"
               :example-slug="exampleSlug || 'json-editor'"
               @clear="clearAll"
               @paste="onInputPaste"

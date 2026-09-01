@@ -88,6 +88,7 @@ const previewSrc = computed(() => {
     if (config.indent !== 2) params.set('indent', String(config.indent))
     if (!config.branding) params.set('branding', '0')
     if (config.lang) params.set('lang', config.lang)
+    params.set('preview', '1')
     return `/embed/json?${params.toString()}`
   }
   return embedUrl.value
