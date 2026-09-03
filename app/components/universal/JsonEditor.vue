@@ -1,4 +1,21 @@
 <template>
+  <!-- Shared JSON banner (shown when opened via share link) -->
+  <SharedJsonBanner
+    v-if="isSharedSession"
+    :title="sharedPayload?.meta?.title"
+    :source="sharedPayload?.meta?.source"
+    @edit-copy="exitReadonly"
+  />
+
+  <!-- Share link error state -->
+  <ShareLinkErrorState
+    v-if="shareLoadError"
+    :reason="shareLoadError"
+    :detail="shareLoadDetail"
+    @open-empty="clearAndReset"
+    @paste-manual="focusInput"
+  />
+
   <ResizablePanel v-model:fullscreen="fullscreen" :initial-ratio="0.5" responsive>
     <!-- Header left: label -->
     <template #header-left>
@@ -18,8 +35,11 @@
           :friendly-message="friendlyMessage"
           :error="error"
           :error-copied="errorCopied"
-          show-upload
-          show-load-url
+          :readonly="isSharedReadonly"
+          :show-upload="!isSharedReadonly"
+          :show-load-url="!isSharedReadonly"
+          :show-paste="!isSharedReadonly"
+          :show-clear="!isSharedReadonly"
           example-slug="json-editor"
           @clear="clearAll"
           @paste="onInputPaste"
@@ -130,22 +150,13 @@
         >
           {{ $t('system.download') }}
         </button>
-        <!-- <div class="relative flex items-center" ref="shareMenuRef">
-          <button @click="showShareMenu = !showShareMenu" class="text-xs text-surface-500 hover:text-surface-700 dark:text-surface-400">
-            {{ $t('system.share') }}
-          </button>
-          <div v-if="showShareMenu" class="absolute right-0 bottom-full mb-1 bg-white dark:bg-surface-800 border border-surface-200 dark:border-surface-700 rounded-lg shadow-lg p-2 z-50 min-w-[200px]">
-            <button @click="copyShareLink" class="w-full text-left px-3 py-2 text-xs hover:bg-surface-100 dark:hover:bg-surface-700 rounded">
-              {{ shareCopied ? $t('system.copied') : $t('system.copyShareLink') }}
-            </button>
-            <button @click="shareToTwitter" class="w-full text-left px-3 py-2 text-xs hover:bg-surface-100 dark:hover:bg-surface-700 rounded">
-              {{ $t('system.shareOnTwitter') }}
-            </button>
-            <p class="px-3 pt-1 pb-0.5 text-[10px] text-amber-600 dark:text-amber-400 leading-tight">
-              ⚠️ {{ $t('system.shareWarning') }}
-            </p>
-          </div>
-        </div> -->
+        <button
+          @click="openShareModal"
+          class="text-xs text-surface-500 hover:text-surface-700 dark:text-surface-400"
+        >
+          <Icon name="lucide:share-2" class="w-3.5 h-3.5 inline mr-1" />
+          {{ $t('share.button') }}
+        </button>
       </div>
     </template>
   </ResizablePanel>
@@ -154,6 +165,28 @@
   <div v-if="sensitiveFields.length > 0" class="mt-2">
     <SensitiveFieldWarning :fields="sensitiveFields" @dismiss="dismissSensitiveWarning" />
   </div>
+
+  <!-- Share Modal -->
+  <ShareModal
+    :state="share.modalState.value"
+    :payload="share.currentPayload.value"
+    :sensitive-fields="share.detectedSensitive.value"
+    :url-length="share.urlLength.value"
+    :error-message="share.errorMessage.value"
+    :can-native-share="share.canNativeShare.value"
+    v-model:title="share.shareTitle.value"
+    v-model:readonly="shareReadonly"
+    v-model:settings="shareSettings"
+    @close="share.closeModal()"
+    @share-anyway="handleShareAnyway"
+    @generate="handleGenerateAndCopy"
+    @copy-again="share.copyAgain()"
+    @open-link="share.openLink()"
+    @download="share.downloadOriginal()"
+    @download-package="share.downloadSharePackage()"
+    @native-share="share.nativeShare()"
+    @retry="share.retry()"
+  />
 </template>
 
 <script setup lang="ts">
@@ -190,10 +223,7 @@ const friendlyMessage = computed(() => {
   }, { default: parseError.value.message })
 })
 
-const showShareMenu = ref(false)
-const shareCopied = ref(false)
 const copyJustCopied = ref(false)
-const shareMenuRef = ref<HTMLElement>()
 // ── Input editor ref & source map ─────────────────────────────
 const inputEditorRef = ref<InstanceType<typeof import('~/components/tool/JsonInputEditor.vue').default>>()
 const sourceMap = ref<Map<string, number>>(new Map())
@@ -240,7 +270,8 @@ function computeEndLine(path: string): number {
 }
 
 const { repairJson, getJsonError } = useJsonFixer()
-const { generateShareUrl, copyShareUrl, shareToSocial } = useShareJson()
+const share = useShareJson()
+const sharedPayloadLoader = useSharedPayloadLoader()
 
 // Sensitive field detection
 const { scanJson, detectedFields: sensitiveFields, clear: clearSensitiveFields } = useSensitiveFieldDetection()
@@ -265,6 +296,109 @@ watch(inputJson, (val) => {
 
 const loadDefaultExample = () => { inputEditorRef.value?.loadDefaultExample() }
 const onExampleLoaded = () => { nextTick(() => formatJson()) }
+
+// ── Share integration ───────────────────────────────────────────
+const shareReadonly = ref(true)
+const shareSettings = ref(true)
+const isSharedReadonly = ref(false)
+const isSharedSession = ref(false)
+const sharedPayload = ref<any>(null)
+const shareLoadError = ref<string | null>(null)
+const shareLoadDetail = ref<string | null>(null)
+
+function openShareModal() {
+  share.openShare({
+    getPayload: () => ({
+      tool: 'json-formatter' as const,
+      rawText: inputJson.value,
+      isValidJson: !error.value && !!inputJson.value.trim(),
+      display: {
+        readOnly: shareReadonly.value,
+        preferredView: viewMode.value === 'text' ? 'code' as const : viewMode.value === 'rich' ? 'tree' as const : 'formatted' as const,
+      },
+      toolState: {
+        indentSize: indent.value === 'tab' ? 'tab' as const : Number(indent.value) as 2 | 4,
+      },
+      ...(parseError.value && {
+        validation: {
+          message: parseError.value.message,
+          line: parseError.value.line,
+          column: parseError.value.column,
+        },
+      }),
+    }),
+  })
+}
+
+async function handleShareAnyway() {
+  share.shareAnyway()
+  await share.generateAndCopy()
+}
+
+async function handleGenerateAndCopy() {
+  await share.generateAndCopy()
+}
+
+function exitReadonly() {
+  isSharedReadonly.value = false
+}
+
+function clearAndReset() {
+  inputJson.value = ''
+  outputJson.value = ''
+  error.value = ''
+  parseError.value = null
+  shareLoadError.value = null
+  shareLoadDetail.value = null
+  isSharedSession.value = false
+  sharedPayload.value = null
+  sharedPayloadLoader.clearHash()
+  nextTick(() => inputEditorRef.value?.focus())
+}
+
+function focusInput() {
+  shareLoadError.value = null
+  shareLoadDetail.value = null
+  nextTick(() => inputEditorRef.value?.focus())
+}
+
+// Load shared payload from hash on mount
+async function loadSharedContent() {
+  try {
+    const result = await sharedPayloadLoader.loadFromHash()
+    if (!result.ok) {
+      if (result.reason !== 'missing') {
+        shareLoadError.value = result.reason
+        shareLoadDetail.value = result.detail || null
+      }
+      return
+    }
+
+    const payload = result.payload
+    isSharedSession.value = true
+    sharedPayload.value = payload
+
+    // Restore content
+    inputJson.value = payload.content.rawText
+    isSharedReadonly.value = payload.display.readOnly
+
+    // Restore view mode
+    if (payload.display.preferredView === 'code') viewMode.value = 'text'
+    else if (payload.display.preferredView === 'tree') viewMode.value = 'rich'
+    else viewMode.value = 'rich'
+
+    // Restore tool state
+    if (payload.toolState?.indentSize) {
+      indent.value = payload.toolState.indentSize === 'tab' ? 'tab' : payload.toolState.indentSize
+    }
+
+    // Auto-format
+    nextTick(() => formatJson(true))
+  } catch (e) {
+    console.error('Failed to load shared content:', e)
+    shareLoadError.value = 'decode_error'
+  }
+}
 
 const parsedData = computed(() => {
   try {
@@ -436,40 +570,13 @@ const downloadOutput = () => {
   URL.revokeObjectURL(url)
 }
 
-const copyShareLink = async () => {
-  if (!outputJson.value) return
+onMounted(async () => {
+  // Check for shared content first
+  await loadSharedContent()
 
-  const url = generateShareUrl(outputJson.value)
-  const success = await copyShareUrl(url)
-  shareCopied.value = success
-
-  setTimeout(() => {
-    shareCopied.value = false
-    showShareMenu.value = false
-  }, 2000)
-}
-
-const shareToTwitter = () => {
-  if (!outputJson.value) return
-
-  const url = generateShareUrl(outputJson.value)
-  shareToSocial(url, 'Check out this formatted JSON', 'twitter')
-  showShareMenu.value = false
-}
-
-const handleClickOutside = (e: MouseEvent) => {
-  const target = e.target as HTMLElement
-  if (shareMenuRef.value && !shareMenuRef.value.contains(target)) {
-    showShareMenu.value = false
+  // If no shared content, load default example
+  if (!isSharedSession.value) {
+    loadDefaultExample()
   }
-}
-
-onMounted(() => {
-  document.addEventListener('click', handleClickOutside)
-  loadDefaultExample()
-})
-
-onUnmounted(() => {
-  document.removeEventListener('click', handleClickOutside)
 })
 </script>

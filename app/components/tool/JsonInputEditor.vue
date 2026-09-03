@@ -108,10 +108,14 @@
         @scroll="onScrollWithHighlight"
         @paste="onPaste"
         wrap="off"
+        :readonly="readonly"
         class="flex-1 min-w-0 resize-none bg-transparent py-4 px-4 font-mono text-sm leading-[1.5] outline-none whitespace-pre"
-        :class="syntaxHighlight
-          ? 'absolute inset-0 text-transparent caret-surface-900 dark:caret-surface-100 z-10'
-          : 'text-surface-900 dark:text-surface-100'"
+        :class="[
+          syntaxHighlight
+            ? 'absolute inset-0 text-transparent caret-surface-900 dark:caret-surface-100 z-10'
+            : 'text-surface-900 dark:text-surface-100',
+          readonly && 'opacity-75 cursor-default'
+        ]"
         :placeholder="placeholder"
         spellcheck="false"
       ></textarea>
@@ -251,6 +255,8 @@ interface Props {
   editorMode?: 'textarea' | 'codemirror'
   /** Enable JSON syntax highlighting in textarea mode */
   syntaxHighlight?: boolean
+  /** Make the editor read-only */
+  readonly?: boolean
 }
 
 const props = withDefaults(defineProps<Props>(), {
@@ -270,6 +276,7 @@ const props = withDefaults(defineProps<Props>(), {
   exampleSlug: '',
   editorMode: 'textarea',
   syntaxHighlight: false,
+  readonly: false,
 })
 
 const emit = defineEmits<{
@@ -638,6 +645,10 @@ function onCmScrollRegister(handler: (info: { scrollTop: number; scrollHeight: n
   cmScrollHandler.value = handler
 }
 
+const focus = () => {
+  textareaRef.value?.focus()
+}
+
 defineExpose({
   scrollToLine,
   highlightLine,
@@ -647,6 +658,7 @@ defineExpose({
   clearLineDecorations,
   scrollToRatio,
   onCmScrollRegister,
+  focus,
 })
 
 const handleClear = () => {
