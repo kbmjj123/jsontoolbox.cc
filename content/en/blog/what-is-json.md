@@ -4,12 +4,12 @@ description: "A developer-focused guide to what JSON is, its data types and synt
 category: "json_tools"
 date: 2026-08-23
 lastmod: 2026-08-23
-author: "BulkPicTools Team"
-image: "/images/blog/what-is-json-cover-en.svg"
+author: "JSON Toolbox Team"
+image: "/blog/cover/en/what-is-json-cover.svg"
 tags: ["JSON", "JSON Editor", "JSON Validator", "API Debugging", "Web Development"]
 locales: ["en", "zh-CN"]
 promo:
-  slug: "jsoneditor"
+  slug: "json-editor"
   text: "🚀 Skip straight to formatting/validating your JSON:"
   btn: "Open JSON Editor"
 ---

@@ -1,0 +1,284 @@
+<svg
+  width="1200"
+  height="630"
+  viewBox="0 0 1200 630"
+  xmlns="http://www.w3.org/2000/svg"
+  role="img"
+  aria-labelledby="svg-title svg-description"
+>
+  <title id="svg-title">JSON 校验：语法校验与 Schema 结构校验</title>
+  <desc id="svg-description">
+    JsonToolBox 开发者指南封面，展示 JSON 语法校验与 Schema 结构校验的区别。
+  </desc>
+
+  <style>
+    :root {
+      /* 浅色模式（默认） */
+      --bg-color: #f8fafc;
+      --line-color: #e2e8f0;
+      --brace-color: #0284c7;
+      --title-color: #0f172a;
+      --subtitle-color: #475569;
+      --code-color: #0369a1;
+      --brand-color: #64748b;
+
+      --syntax-bg: #ecfdf5;
+      --syntax-border: #86efac;
+      --syntax-icon-bg: #16a34a;
+      --syntax-title: #166534;
+      --syntax-code: #15803d;
+      --syntax-desc: #3f6212;
+
+      --schema-bg: #eff6ff;
+      --schema-border: #93c5fd;
+      --schema-icon-bg: #2563eb;
+      --schema-title: #1d4ed8;
+      --schema-code: #2563eb;
+      --schema-desc: #1e40af;
+
+      --arrow-color: #94a3b8;
+    }
+
+    :root.dark {
+      /* 深色模式 */
+      --bg-color: #0f172a;
+      --line-color: #1e293b;
+      --brace-color: #38bdf8;
+      --title-color: #e2e8f0;
+      --subtitle-color: #94a3b8;
+      --code-color: #a5f3fc;
+      --brand-color: #94a3b8;
+
+      --syntax-bg: #052e16;
+      --syntax-border: #166534;
+      --syntax-icon-bg: #22c55e;
+      --syntax-title: #bbf7d0;
+      --syntax-code: #86efac;
+      --syntax-desc: #bbf7d0;
+
+      --schema-bg: #172554;
+      --schema-border: #1d4ed8;
+      --schema-icon-bg: #3b82f6;
+      --schema-title: #bfdbfe;
+      --schema-code: #93c5fd;
+      --schema-desc: #bfdbfe;
+
+      --arrow-color: #64748b;
+    }
+  </style>
+
+  <!-- Background -->
+  <rect width="1200" height="630" fill="var(--bg-color)"/>
+
+  <!-- Decorative code-like background lines -->
+  <g fill="var(--line-color)" opacity="0.6">
+    <rect x="80" y="72" width="220" height="14" rx="4"/>
+    <rect x="80" y="102" width="160" height="14" rx="4"/>
+    <rect x="80" y="132" width="200" height="14" rx="4"/>
+    <rect x="80" y="162" width="140" height="14" rx="4"/>
+
+    <rect x="400" y="72" width="180" height="14" rx="4"/>
+    <rect x="400" y="102" width="220" height="14" rx="4"/>
+    <rect x="400" y="132" width="160" height="14" rx="4"/>
+
+    <rect x="720" y="72" width="200" height="14" rx="4"/>
+    <rect x="720" y="102" width="140" height="14" rx="4"/>
+    <rect x="720" y="132" width="180" height="14" rx="4"/>
+    <rect x="720" y="162" width="220" height="14" rx="4"/>
+  </g>
+
+  <!-- Big JSON braces -->
+  <text
+    x="84"
+    y="390"
+    font-family="ui-monospace, SFMono-Regular, Menlo, Consolas, monospace"
+    font-size="190"
+    font-weight="600"
+    fill="var(--brace-color)"
+    opacity="0.18"
+  >{</text>
+
+  <text
+    x="990"
+    y="390"
+    font-family="ui-monospace, SFMono-Regular, Menlo, Consolas, monospace"
+    font-size="190"
+    font-weight="600"
+    fill="var(--brace-color)"
+    opacity="0.18"
+  >}</text>
+
+  <!-- Syntax validation card -->
+  <g transform="translate(300 174)">
+    <rect
+      x="0"
+      y="0"
+      width="250"
+      height="124"
+      rx="18"
+      fill="var(--syntax-bg)"
+      stroke="var(--syntax-border)"
+      stroke-width="2"
+    />
+
+    <!-- Check icon -->
+    <circle
+      cx="42"
+      cy="42"
+      r="18"
+      fill="var(--syntax-icon-bg)"
+    />
+
+    <path
+      d="M33 42 L40 49 L53 34"
+      fill="none"
+      stroke="#ffffff"
+      stroke-width="4"
+      stroke-linecap="round"
+      stroke-linejoin="round"
+    />
+
+    <text
+      x="76"
+      y="40"
+      font-family="ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, Segoe UI, PingFang SC, Microsoft YaHei, Noto Sans CJK SC, sans-serif"
+      font-size="21"
+      font-weight="700"
+      fill="var(--syntax-title)"
+    >语法校验</text>
+
+    <text
+      x="76"
+      y="69"
+      font-family="ui-monospace, SFMono-Regular, Menlo, Consolas, monospace"
+      font-size="14"
+      fill="var(--syntax-code)"
+    >JSON.parse()</text>
+
+    <text
+      x="24"
+      y="103"
+      font-family="ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, Segoe UI, PingFang SC, Microsoft YaHei, Noto Sans CJK SC, sans-serif"
+      font-size="13"
+      fill="var(--syntax-desc)"
+    >能否解析为合法 JSON？</text>
+  </g>
+
+  <!-- Direction arrow -->
+  <path
+    d="M570 236 H628"
+    fill="none"
+    stroke="var(--arrow-color)"
+    stroke-width="4"
+    stroke-linecap="round"
+  />
+
+  <path
+    d="M615 223 L630 236 L615 249"
+    fill="none"
+    stroke="var(--arrow-color)"
+    stroke-width="4"
+    stroke-linecap="round"
+    stroke-linejoin="round"
+  />
+
+  <!-- Schema validation card -->
+  <g transform="translate(650 174)">
+    <rect
+      x="0"
+      y="0"
+      width="250"
+      height="124"
+      rx="18"
+      fill="var(--schema-bg)"
+      stroke="var(--schema-border)"
+      stroke-width="2"
+    />
+
+    <!-- Schema/document icon -->
+    <rect
+      x="24"
+      y="24"
+      width="38"
+      height="38"
+      rx="9"
+      fill="var(--schema-icon-bg)"
+    />
+
+    <path
+      d="M35 34 H52 M35 43 H52 M35 52 H46"
+      fill="none"
+      stroke="#ffffff"
+      stroke-width="3"
+      stroke-linecap="round"
+    />
+
+    <text
+      x="76"
+      y="40"
+      font-family="ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, Segoe UI, PingFang SC, Microsoft YaHei, Noto Sans CJK SC, sans-serif"
+      font-size="21"
+      font-weight="700"
+      fill="var(--schema-title)"
+    >结构校验</text>
+
+    <text
+      x="76"
+      y="69"
+      font-family="ui-monospace, SFMono-Regular, Menlo, Consolas, monospace"
+      font-size="14"
+      fill="var(--schema-code)"
+    >required · type</text>
+
+    <text
+      x="24"
+      y="103"
+      font-family="ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, Segoe UI, PingFang SC, Microsoft YaHei, Noto Sans CJK SC, sans-serif"
+      font-size="13"
+      fill="var(--schema-desc)"
+    >字段、类型与规则是否匹配？</text>
+  </g>
+
+  <!-- Main title -->
+  <text
+    x="600"
+    y="382"
+    text-anchor="middle"
+    font-family="ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, Segoe UI, PingFang SC, Microsoft YaHei, Noto Sans CJK SC, sans-serif"
+    font-size="52"
+    font-weight="700"
+    fill="var(--title-color)"
+  >JSON 校验</text>
+
+  <!-- Subtitle -->
+  <text
+    x="600"
+    y="434"
+    text-anchor="middle"
+    font-family="ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, Segoe UI, PingFang SC, Microsoft YaHei, Noto Sans CJK SC, sans-serif"
+    font-size="26"
+    fill="var(--subtitle-color)"
+  >语法校验 vs Schema 结构校验</text>
+
+  <!-- JSON code decoration -->
+  <g
+    fill="var(--code-color)"
+    font-family="ui-monospace, SFMono-Regular, Menlo, Consolas, monospace"
+    font-size="15"
+    opacity="0.9"
+  >
+    <text x="600" y="484" text-anchor="middle">
+      { "email": "ada@example.com", "age": 36, "role": "editor" }
+    </text>
+  </g>
+
+  <!-- Brand / site name -->
+  <text
+    x="600"
+    y="566"
+    text-anchor="middle"
+    font-family="ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, Segoe UI, PingFang SC, Microsoft YaHei, Noto Sans CJK SC, sans-serif"
+    font-size="18"
+    fill="var(--brand-color)"
+  >JsonToolBox · 开发者指南</text>
+</svg>

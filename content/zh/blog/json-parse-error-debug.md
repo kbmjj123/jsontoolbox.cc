@@ -3,13 +3,13 @@ title: "JSON 解析失败怎么办？接口调试中的 10 个典型错误与排
 description: "从真实接口调试场景出发，总结 JSON.parse 报错的 10 类典型错误，并给出逐步排查方法与预防建议。"
 category: "json_tools"
 date: 2026-08-24
-lastmod: 2026-08-24
-author: "BulkPicTools Team"
+lastmod: 2026-09-03
+author: "JSON Toolbox Team"
 image: "/blog/cover/zh/json-parse-error-debug-cover.svg"
-tags: ["JSON", "JSON Editor", "JSON Validator", "API Debugging", "Error Handling"]
+tags: ["JSON", "JSON Editor", "JSON Validator", "API Debugging", "Error Handling", "JSON.parse"]
 locales: ["zh-CN", "en"]
 promo:
-  slug: "jsoneditor"
+  slug: "json-editor"
   text: "🚀 先检查你的 JSON 是否合法："
   btn: "打开 JSON Editor"
 ---
@@ -19,7 +19,7 @@ promo:
 在前后端开发中，“JSON 解析失败”几乎是最常见的错误之一：前端调用接口，期望拿到 JSON，结果 `JSON.parse` 抛出异常，控制台一片红。  
 这篇文章从真实开发场景出发，总结 **10 类典型 JSON 解析错误**，并给出可操作的排查步骤和预防建议，帮助你快速定位问题、减少调试时间。
 
-> 如果你手边正好有一段“解析失败”的 JSON，可以先把它粘贴到首页的 [JSON Editor](/) 中，自动检查语法并查看错误位置。
+> 如果你手边正好有一段”解析失败”的 JSON，可以先把它粘贴到 [JSON Editor](/tools/format/json-editor) 中，自动检查语法并查看错误位置。
 
 ## 典型错误信息总览
 
@@ -92,10 +92,7 @@ HTML 通常以 `<!DOCTYPE html>` 或 `<html>` 开头，第一个字符是 `<`，
 
 ### 解决方式
 
-- 后端统一设置：  
-  ```http
-  Content-Type: application/json; charset=utf-8
-  ```
+- 后端统一返回 `Content-Type: application/json`，并以 UTF-8 编码输出 body。很多框架也会输出 `application/json; charset=utf-8`；关键是响应 body 必须是合法 JSON，且编码一致。
 - 前端对非 `application/json` 的响应，谨慎解析，或先记录日志再处理。
 
 ---
@@ -135,7 +132,7 @@ HTML 通常以 `<!DOCTYPE html>` 或 `<html>` 开头，第一个字符是 `<`，
 
 ### 排查步骤
 
-1. 将原始响应/文本粘贴到 [JSON Editor](/) 中。  
+1. 将原始响应/文本粘贴到 [JSON Editor](/tools/format/json-editor) 中。  
 2. 让工具自动格式化并高亮错误位置。  
 3. 根据提示修复：去掉多余逗号、改为双引号、删除注释。  
 
@@ -177,15 +174,23 @@ HTML 通常以 `<!DOCTYPE html>` 或 `<html>` 开头，第一个字符是 `<`，
 ### 解决方式
 
 - 后端避免对已经是 JSON 字符串的数据再次 `JSON.stringify`。  
-- 前端如果必须兼容这种接口：  
-  ```js
-  const data = JSON.parse(JSON.parse(text));
+- 前端如果必须兼容这种接口，先解析外层，再显式验证结果是字符串后才二次解析。不要对所有响应都盲目调用两次 `JSON.parse`——应从源头修复接口约定：  
+  ```ts
+  export function parsePossiblyDoubleEncodedJson(text: string): unknown {
+    const first = JSON.parse(text)
+    if (typeof first !== 'string') {
+      return first
+    }
+    return JSON.parse(first)
+  }
   ```
-  但更推荐从源头修复后端逻辑。
+  仅在接口约定明确文档化了双重编码时使用此方法。否则应将其视为后端契约 bug。
 
 ---
 
 ## 场景 5：大 JSON 导致超时 / 内存问题
+
+大 JSON 通常是合法的。失败往往是性能、内存或传输问题，而不是 JSON 语法错误。
 
 ### 现象
 
@@ -225,7 +230,7 @@ HTML 通常以 `<!DOCTYPE html>` 或 `<html>` 开头，第一个字符是 `<`，
 ### 原因
 
 - 某些后端/代理在输出时使用了带 BOM 的 UTF-8 或其他编码。  
-- JSON 标准推荐使用无 BOM 的 UTF-8。  
+- 在系统间交换的 JSON 必须使用 UTF-8 编码。生产端不得添加字节序标记（BOM）；解析端可以选择忽略 BOM，但不能依赖所有解析器都容忍它。  
 
 ### 排查步骤
 
@@ -235,7 +240,8 @@ HTML 通常以 `<!DOCTYPE html>` 或 `<html>` 开头，第一个字符是 `<`，
 ### 解决方式
 
 - 后端统一使用无 BOM 的 UTF-8 输出 JSON。  
-- 在网关/代理层确保不额外添加 BOM 或改变编码。
+- 在网关/代理层确保不额外添加 BOM 或改变编码。  
+- 在浏览器 Fetch 场景中，解码链会处理部分 BOM 情况，但真正问题可能是：服务器输出了非 UTF-8、文件内容以 `U+FEFF` 进入 JavaScript 字符串、代理/转码层破坏了字节、JSON 字符串内有未转义控制字符、或文本被错误解码。不要把所有"模糊 parse error"都归因于 BOM。
 
 ---
 
@@ -290,13 +296,14 @@ HTML 通常以 `<!DOCTYPE html>` 或 `<html>` 开头，第一个字符是 `<`，
 
 ### 解决方式
 
-- 尽量从源头修复，保证响应是“纯 JSON”。  
-- 如果暂时无法修改后端，可以在前端做一层清洗：  
-  ```js
-  const jsonText = text.match(/\{[\s\S]*\}/); // 简单示例[0]
-  const data = JSON.parse(jsonText);
-  ```
-  但要注意这种正则并不通用，仅适用于结构简单的情况。
+- 尽量从源头修复，保证响应是”纯 JSON”。  
+- **不要在生产环境中用正则从混合响应中提取任意 JSON。** JSON 是嵌套结构，字符串中可以包含花括号，简单的正则表达式无法可靠识别目标 JSON 值。问题包括：顶层可能是数组 `[]`、字符串字段内可能有 `{` 或 `}`、文本中可能有多个 JSON 片段、贪婪匹配可能吞掉不属于 JSON 的内容、以及掩盖协议层应修复的问题。  
+- 可靠的替代方案：  
+  1. 修复 API，使响应 body 始终为纯 JSON。  
+  2. 为不同内容类型设计不同的 endpoint。  
+  3. 如果协议采用已知的包装格式（SSE、NDJSON、JSONP 或特定日志格式），使用对应的 parser。  
+  4. 临时排查时，将原始内容复制到 [JSON Editor](/tools/format/json-editor) 中，人工找出 JSON 边界。  
+  5. 在代码中记录有限的、脱敏的响应片段，不要盲目猜测 JSON 边界。
 
 ---
 
@@ -346,15 +353,20 @@ HTML 通常以 `<!DOCTYPE html>` 或 `<html>` 开头，第一个字符是 `<`，
 1. 检查代码中所有 `JSON.parse` 调用点：  
    - 数据来源是否可信？  
    - 是否有 `try...catch` 包裹？  
-2. 对报错的输入样本，粘贴到 [JSON Editor](/) 中查看具体错误。  
+2. 对报错的输入样本，粘贴到 [JSON Editor](/tools/format/json-editor) 中查看具体错误。  
 
 ### 解决方式
 
 - 对所有外部输入：  
-  - 先做长度限制（例如最大 1MB）；  
-  - 再做基本字符校验（例如只允许 printable ASCII / UTF-8）；  
-  - 再用 `try...catch` 包裹 `JSON.parse`。  
-- 对关键数据，使用 JSON Schema / Zod / Joi 等做结构校验。
+  - 在解析前设置合理的字节大小限制（例如最大 1MB）。  
+  - 以 UTF-8 解码输入。  
+  - 在平台暴露解码错误时，拒绝编码格式不正确的输入。  
+  - 用 `try...catch` 包裹 `JSON.parse`。  
+  - 用 schema 或业务规则校验解析后的值。  
+  - 避免记录完整的不可信 payload，特别是可能包含敏感信息的内容。  
+- JSON 允许 Unicode 字符串——不要限制为"可打印 ASCII"，否则会拒绝合法的国际化数据，如 `"São Paulo"` 或 `"日本語"`。
+
+文本能解析后，语法校验只是第一步。在应用中接受数据之前，用 [JSON Schema 校验来检查必填字段、数据类型和允许值](/blog/json-validation-syntax-vs-schema)。
 
 ---
 
@@ -369,7 +381,7 @@ HTML 通常以 `<!DOCTYPE html>` 或 `<html>` 开头，第一个字符是 `<`，
    - 是否前后有多余字符？  
 4. **看大小**：是否异常大（几 MB 以上）？  
 5. **用工具校验**：  
-   - 将响应粘贴到 [JSON Editor](/) 中，自动检查语法错误。  
+   - 将响应粘贴到 [JSON Editor](/tools/format/json-editor) 中，自动检查语法错误。  
 6. **看编码**：是否有 BOM 头或非 UTF-8 编码？  
 7. **看日志**：后端是否有异常堆栈输出到响应中？  
 8. **看代码**：  
@@ -401,7 +413,7 @@ HTML 通常以 `<!DOCTYPE html>` 或 `<html>` 开头，第一个字符是 `<`，
 
 4. **善用工具**  
    - 开发阶段：  
-     - 用 [JSON Editor](/) 快速校验接口返回的 JSON。  
+     - 用 [JSON Editor](/tools/format/json-editor) 快速校验接口返回的 JSON。  
      - 对复杂结构，先格式化再阅读。  
    - 生产问题排查：  
      - 将问题样本粘贴到编辑器中，快速定位错误位置。  
@@ -414,4 +426,10 @@ HTML 通常以 `<!DOCTYPE html>` 或 `<html>` 开头，第一个字符是 `<`，
 - 通过系统的排查步骤（状态码 → Content-Type → 响应内容 → 工具校验），可以大幅缩短调试时间。  
 - 从长远看，统一接口规范、封装解析逻辑、善用校验工具，是减少这类问题的关键。  
 
-> 下次遇到 JSON 解析报错时，可以先将响应粘贴到 [JSON Editor](/) 中，快速确认是否是语法问题，再决定是前端处理还是找后端排查。
+> 下次遇到 JSON 解析报错时，可以先将响应粘贴到 [JSON Editor](/tools/format/json-editor) 中，快速确认是否是语法问题，再决定是前端处理还是找后端排查。
+
+## 下一步
+
+- 文本能解析后，语法校验只是第一层。了解如何使用 [JSON Schema 校验来检查数据结构、必填字段和数据类型](/blog/json-validation-syntax-vs-schema)。
+- 如果需要 JSON 结构和语法规则的基础 overview，请参阅 [JSON 是什么？](/blog/what-is-json)。
+- 关于接口设计模式和响应结构的最佳实践，请参阅 [JSON 最佳实践](/blog/json-best-practices)。

@@ -3,13 +3,13 @@ title: "JSON Parse Failed: 10 Common API Errors and How to Debug Them"
 description: "A practical guide to debugging JSON parse errors in real APIs, covering typical error messages, root causes, and step-by-step troubleshooting."
 category: "json_tools"
 date: 2026-08-24
-lastmod: 2026-08-24
-author: "BulkPicTools Team"
+lastmod: 2026-09-03
+author: "JSON Toolbox Team"
 image: "/blog/cover/en/json-parse-error-debug-cover.svg"
-tags: ["JSON", "JSON Editor", "JSON Validator", "API Debugging", "Error Handling"]
+tags: ["JSON", "JSON Editor", "JSON Validator", "API Debugging", "Error Handling", "JSON.parse"]
 locales: ["en", "zh-CN"]
 promo:
-  slug: "jsoneditor"
+  slug: "json-editor"
   text: "🚀 Validate your JSON first:"
   btn: "Open JSON Editor"
 ---
@@ -19,7 +19,7 @@ promo:
 In frontend and backend development, "JSON parse failed" is one of the most common errors: your code expects a JSON response, but `JSON.parse` throws an exception and the console fills with red errors.  
 This article breaks down **10 typical JSON parsing errors** from real-world debugging scenarios, and provides actionable troubleshooting steps and prevention tips to help you quickly locate and fix the root cause.
 
-> If you have a "parse failed" JSON sample on hand, you can paste it directly into the [JSON Editor](/) on the homepage to automatically check syntax and highlight the error location.
+> If you have a "parse failed" JSON sample on hand, paste it into the [JSON Editor](/tools/format/json-editor) to automatically check syntax and highlight the exact error position.
 
 ## Overview of Typical Error Messages
 
@@ -90,10 +90,7 @@ HTML usually starts with `<!DOCTYPE html>` or `<html>`, so the first character i
 
 ### Solutions
 
-- On the backend, consistently set:  
-  ```http
-  Content-Type: application/json; charset=utf-8
-  ```
+- On the backend, consistently return `Content-Type: application/json` and encode the body as UTF-8. Many frameworks also emit `application/json; charset=utf-8`; the important part is that the response body is actually valid JSON and uses a consistent UTF-8 encoding.
 - On the frontend, be cautious when parsing responses whose `Content-Type` is not `application/json`, or at least log them first.
 
 ---
@@ -133,7 +130,7 @@ HTML usually starts with `<!DOCTYPE html>` or `<html>`, so the first character i
 
 ### Debugging Steps
 
-1. Paste the raw response/text into the [JSON Editor](/).  
+1. Paste the raw response/text into the [JSON Editor](/tools/format/json-editor).  
 2. Let the tool auto-format and highlight error positions.  
 3. Fix according to the hints: remove trailing commas, switch to double quotes, delete comments.  
 
@@ -175,15 +172,23 @@ HTML usually starts with `<!DOCTYPE html>` or `<html>`, so the first character i
 ### Solutions
 
 - On the backend, avoid calling `JSON.stringify` on data that is already a JSON string.  
-- If you must support such an interface on the frontend:  
-  ```js
-  const data = JSON.parse(JSON.parse(text));
+- If you must support such an interface on the frontend, parse the outer layer first and explicitly verify the result is a string before parsing again. Do not blindly call `JSON.parse` twice on every response — fix the API contract whenever possible:  
+  ```ts
+  export function parsePossiblyDoubleEncodedJson(text: string): unknown {
+    const first = JSON.parse(text)
+    if (typeof first !== 'string') {
+      return first
+    }
+    return JSON.parse(first)
+  }
   ```
-  but it's better to fix the backend logic at the source.
+  Use this only when your API contract explicitly documents double encoding. Otherwise, treat it as a backend contract bug.
 
 ---
 
 ## Scenario 5: Large JSON Causing Timeouts / Memory Issues
+
+A large payload is often valid JSON. The failure is usually a performance, memory, or transport problem — not a JSON syntax error.
 
 ### Symptoms
 
@@ -223,7 +228,7 @@ HTML usually starts with `<!DOCTYPE html>` or `<html>`, so the first character i
 ### Causes
 
 - Some backends/proxies output UTF-8 with BOM or other encodings.  
-- JSON standard recommends UTF-8 without BOM.  
+- For JSON exchanged between systems, UTF-8 is the required interoperable encoding. Producers must not add a byte order mark (BOM); parsers may choose whether to ignore one, so BOM-prefixed JSON can fail in strict parsers.  
 
 ### Debugging Steps
 
@@ -233,7 +238,8 @@ HTML usually starts with `<!DOCTYPE html>` or `<html>`, so the first character i
 ### Solutions
 
 - Ensure the backend outputs JSON as UTF-8 without BOM.  
-- Configure gateways/proxies not to add BOM or change encoding.
+- Configure gateways/proxies not to add BOM or change encoding.  
+- In browser Fetch scenarios, the decoding chain handles some BOM cases, but the real issue may be: the server outputting non-UTF-8, the file content entering JavaScript string as `U+FEFF`, proxy/transcoding corruption, unescaped control characters in JSON strings, or incorrect text decoding. Don't attribute all "vague parse errors" to BOM.
 
 ---
 
@@ -289,12 +295,13 @@ HTML usually starts with `<!DOCTYPE html>` or `<html>`, so the first character i
 ### Solutions
 
 - Fix at the source if possible: ensure responses are pure JSON.  
-- If you can't change the backend immediately, add a cleaning layer on the frontend:  
-  ```js
-  const jsonText = text.match(/\{[\s\S]*\}/); // simple example[0]
-  const data = JSON.parse(jsonText);
-  ```
-  Note: this regex is not universal and only works for simple structures.
+- **Do not use a regex to extract arbitrary JSON from a mixed response in production.** JSON is nested and strings can contain braces, so a simple regular expression cannot reliably identify the intended JSON value. Problems include: top-level arrays `[]`, braces inside string fields, multiple JSON fragments, greedy matching, and masking of protocol-layer bugs.  
+- Reliable alternatives:  
+  1. Fix the API so the response body is always pure JSON.  
+  2. Design separate endpoints for different content types.  
+  3. If the protocol uses a known wrapper format (SSE, NDJSON, JSONP, specific log format), use the corresponding parser.  
+  4. For ad-hoc debugging, copy the raw content into the [JSON Editor](/tools/format/json-editor) and manually identify the JSON boundaries.  
+  5. Log limited, sanitized response fragments in code — don't guess JSON boundaries.
 
 ---
 
@@ -343,21 +350,26 @@ HTML usually starts with `<!DOCTYPE html>` or `<html>`, so the first character i
 1. Review all `JSON.parse` call sites in your code:  
    - Is the data source trusted?  
    - Is it wrapped in `try...catch`?  
-2. For failing samples, paste them into the [JSON Editor](/) to see specific errors.  
+2. For failing samples, paste them into the [JSON Editor](/tools/format/json-editor) to see specific errors.  
 
 ### Solutions
 
 - For all external input:  
-  - Apply length limits (e.g., max 1MB);  
-  - Perform basic character validation (e.g., printable ASCII / UTF-8);  
-  - Wrap `JSON.parse` in `try...catch`.  
-- For critical data, validate structure using JSON Schema / Zod / Joi, etc.
+  - Set a realistic byte-size limit before parsing untrusted input (e.g., max 1MB).  
+  - Decode input as UTF-8.  
+  - Reject malformed encoding where your platform exposes decoding errors.  
+  - Parse inside `try...catch`.  
+  - Validate the parsed value against a schema or application rules.  
+  - Avoid logging full untrusted payloads, especially if they may contain secrets.  
+- JSON allows Unicode strings — don't restrict to "printable ASCII" only, as that would reject valid international data like `"São Paulo"` or `"日本語"`.
+
+Once text can be parsed successfully, syntax validation is only the first step. Use [JSON Schema validation to check required fields, data types, and allowed values](/blog/json-validation-syntax-vs-schema) before accepting the data in your application.
 
 ---
 
 ## Troubleshooting Checklist (Worth Bookmarking)
 
-When you hit a "JSON parse failed" error, you can quickly排查 in this order:
+When you hit a "JSON parse failed" error, troubleshoot in this order:
 
 1. **Check status code**: is it 2xx?  
 2. **Check Content-Type**: is it `application/json`?  
@@ -366,7 +378,7 @@ When you hit a "JSON parse failed" error, you can quickly排查 in this order:
    - Are there extra characters before/after?  
 4. **Check size**: is it unusually large (several MB+)?  
 5. **Validate with a tool**:  
-   - Paste the response into the [JSON Editor](/) to automatically check syntax errors.  
+   - Paste the response into the [JSON Editor](/tools/format/json-editor) to automatically check syntax errors.  
 6. **Check encoding**: is there a BOM or non-UTF-8 encoding?  
 7. **Check logs**: does the backend log show exception stacks written to the response?  
 8. **Check code**:  
@@ -398,8 +410,8 @@ When you hit a "JSON parse failed" error, you can quickly排查 in this order:
 
 4. **Use Tools Effectively**  
    - During development:  
-     - Use the [JSON Editor](/) to quickly validate API responses.  
-     - Format complex structures before reading them.  
+     - Use the [JSON Editor](/tools/format/json-editor) to quickly validate API responses.  
+     - [Format complex structures](/tools/format/json-editor) before reading them.  
    - For production issues:  
      - Paste problematic samples into the editor to quickly locate syntax errors.  
 
@@ -411,4 +423,10 @@ When you hit a "JSON parse failed" error, you can quickly排查 in this order:
 - A systematic troubleshooting flow (status code → Content-Type → response content → tool validation) can significantly reduce debugging time.  
 - In the long run, standardizing API contracts, encapsulating parsing logic, and using validation tools are key to minimizing these issues.  
 
-> Next time you hit a JSON parse error, try pasting the response into the [JSON Editor](/) first to quickly confirm whether it's a syntax issue, then decide whether to fix it on the frontend or escalate to backend debugging.
+> Next time you hit a JSON parse error, try pasting the response into the [JSON Editor](/tools/format/json-editor) first to quickly confirm whether it's a syntax issue, then decide whether to fix it on the frontend or escalate to backend debugging.
+
+## What's Next?
+
+- Once the text can be parsed, syntax validation is only the first layer. Learn how to use [JSON Schema validation to check structure, required fields, and data types](/blog/json-validation-syntax-vs-schema).
+- For a foundational overview of JSON structure and syntax rules, see [What Is JSON?](/blog/what-is-json).
+- For API design patterns and response structure best practices, see [JSON Best Practices](/blog/json-best-practices).
