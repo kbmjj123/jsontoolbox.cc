@@ -442,5 +442,17 @@
     "sharedBanner": "You are viewing a shared JSON snapshot.",
     "sharedBannerDescription": "Editing happens only in your browser.",
     "nativeShareText": "Shared via JsonToolBox"
+  },
+  "largeFile": {
+    "warning_title": "Large File Warning",
+    "warning_desc": "This file is very large ({size}). Parsing may be slow or crash your browser.",
+    "continue": "Continue anyway",
+    "parse_partial": "Parse first 20 MB",
+    "cancel": "Cancel",
+    "mode_standard": "Standard mode",
+    "mode_large": "Large file mode: some features are simplified to keep the page responsive.",
+    "mode_huge": "Very large file: performance may be limited. Consider using a local tool.",
+    "parsing": "Parsing…",
+    "show_more": "Show more ({count} more items)"
   }
 }

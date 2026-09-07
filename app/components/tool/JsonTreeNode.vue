@@ -2,7 +2,8 @@
   <div class="font-mono text-sm">
     <!-- Object -->
     <template v-if="isObject(data)">
-      <div v-for="(value, key) in data" :key="key">
+      <template v-for="(value, key, idx) in data" :key="key">
+        <div v-if="idx < visibleCount">
         <div
           :ref="(el) => markRow(getFullPath(key), el as HTMLElement)"
           :class="[
@@ -75,12 +76,23 @@
         <div v-if="isNodeExpanded(key) && isExpandable(value)" class="ml-4 border-l border-surface-200 dark:border-surface-700 pl-0">
           <JsonTreeNode :data="value" :path="getFullPath(key)" :depth="depth + 1" />
         </div>
+        </div>
+      </template>
+      <!-- Show more button for objects -->
+      <div v-if="hiddenCount > 0" class="py-1 px-1">
+        <button
+          @click="showMore"
+          class="text-xs text-primary-600 hover:text-primary-700 dark:text-primary-400 dark:hover:text-primary-300 hover:underline"
+        >
+          {{ $t('largeFile.show_more', { count: hiddenCount }) }}
+        </button>
       </div>
     </template>
 
     <!-- Array -->
     <template v-else-if="isArray(data)">
-      <div v-for="(item, index) in data" :key="index">
+      <template v-for="(item, index) in data" :key="index">
+        <div v-if="index < visibleCount">
         <div
           :ref="(el) => markRow(getFullPath(index), el as HTMLElement)"
           :class="[
@@ -152,6 +164,16 @@
         <div v-if="isNodeExpanded(index) && isExpandable(item)" class="ml-4 border-l border-surface-200 dark:border-surface-700 pl-0">
           <JsonTreeNode :data="item" :path="getFullPath(index)" :depth="depth + 1" />
         </div>
+        </div>
+      </template>
+      <!-- Show more button for arrays -->
+      <div v-if="hiddenCount > 0" class="py-1 px-1">
+        <button
+          @click="showMore"
+          class="text-xs text-primary-600 hover:text-primary-700 dark:text-primary-400 dark:hover:text-primary-300 hover:underline"
+        >
+          {{ $t('largeFile.show_more', { count: hiddenCount }) }}
+        </button>
       </div>
     </template>
 
@@ -219,6 +241,28 @@ const props = withDefaults(defineProps<{
 }>(), {
   depth: 0,
 })
+
+// ── File size category (for child node pagination) ─────────
+const fileSizeCategory = inject<Ref<'small' | 'medium' | 'large'>>('fileSizeCategory', ref('small'))
+const MAX_CHILDREN = 500
+const visibleExtra = ref(0) // additional children shown via "Show more"
+
+const totalChildren = computed(() => {
+  if (isObject(props.data)) return Object.keys(props.data).length
+  if (isArray(props.data)) return (props.data as unknown[]).length
+  return 0
+})
+
+const visibleCount = computed(() => {
+  if (fileSizeCategory.value === 'small') return Infinity
+  return MAX_CHILDREN + visibleExtra.value
+})
+
+const hiddenCount = computed(() => Math.max(0, totalChildren.value - visibleCount.value))
+
+function showMore() {
+  visibleExtra.value += MAX_CHILDREN
+}
 
 // ── Shared expanded state (inject + re-provide) ────────────────
 const expanded = inject<Ref<Set<string>>>('richExpanded', ref(new Set()))

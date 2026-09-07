@@ -288,6 +288,7 @@ const emit = defineEmits<{
   locateError: []
   copyError: []
   'example-loaded': [input: string]
+  'file-size': [info: { bytes: number; category: 'small' | 'medium' | 'large' }]
 }>()
 
 // Example dropdown (built-in when exampleSlug is provided)
@@ -313,6 +314,7 @@ const gutterRef = ref<HTMLDivElement>()
 const textareaRef = ref<HTMLTextAreaElement>()
 const highlightBackdropRef = ref<HTMLPreElement>()
 const fileInputRef = ref<HTMLInputElement>()
+const { detectSize, fileSizeCategory, fileSizeBytes } = useFileSize()
 const cmRef = ref<InstanceType<typeof CodeMirrorEditor>>()
 const dragging = ref(false)
 const fileInfo = ref<{ name: string; size: string } | null>(null)
@@ -345,6 +347,8 @@ const processFile = (file: File) => {
   const reader = new FileReader()
   reader.onload = (ev) => {
     const text = ev.target?.result as string
+    detectSize(text, file)
+    emit('file-size', { bytes: fileSizeBytes.value, category: fileSizeCategory.value })
     emit('update:modelValue', text)
     emit('upload', text)
     fileInfo.value = { name: file.name, size: formatFileSize(file.size) }
@@ -439,7 +443,11 @@ const onScroll = () => {
 
 const onPaste = (e: ClipboardEvent) => {
   const text = e.clipboardData?.getData('text') ?? ''
-  if (text) emit('paste', text)
+  if (text) {
+    detectSize(text)
+    emit('file-size', { bytes: fileSizeBytes.value, category: fileSizeCategory.value })
+    emit('paste', text)
+  }
 }
 
 const pasted = ref(false)

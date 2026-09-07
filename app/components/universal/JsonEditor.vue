@@ -25,6 +25,13 @@
     <!-- Input editor -->
     <template #first>
       <div class="h-full pr-3 overflow-hidden">
+        <!-- Parsing indicator -->
+        <div v-if="isParsing" class="absolute inset-0 z-20 flex items-center justify-center bg-surface-50/80 dark:bg-surface-800/80 backdrop-blur-sm rounded-xl">
+          <div class="flex items-center gap-3 px-4 py-3 rounded-lg bg-white dark:bg-surface-900 shadow-lg border border-surface-200 dark:border-surface-700">
+            <div class="w-5 h-5 border-2 border-primary-600 border-t-transparent rounded-full animate-spin" />
+            <span class="text-sm font-medium text-surface-700 dark:text-surface-300">{{ $t('largeFile.parsing') }}</span>
+          </div>
+        </div>
         <JsonInputEditor
           ref="inputEditorRef"
           v-model="inputJson"
@@ -46,6 +53,7 @@
           @locate-error="onLocateFromPanel"
           @copy-error="copyErrorMessage"
           @example-loaded="onExampleLoaded"
+          @file-size="onFileSize"
         />
       </div>
     </template>
@@ -68,6 +76,7 @@
           :empty-text="$t('system.emptyOutput')"
           :masked="masked"
           :sensitive-paths="sensitivePathSet"
+          :file-size-category="fileSizeCategory"
           @update:view-mode="viewMode = $event"
           @update:masked="masked = $event"
           @copy="copyOutput"
@@ -81,6 +90,17 @@
 
     <!-- Toolbar left: indent + action buttons -->
     <template #toolbar-left>
+      <!-- File size mode indicator -->
+      <div
+        v-if="fileSizeCategory !== 'small'"
+        class="flex items-center gap-1.5 px-2 py-1 rounded-lg text-xs font-medium"
+        :class="fileSizeCategory === 'large'
+          ? 'bg-red-50 text-red-700 dark:bg-red-900/20 dark:text-red-400'
+          : 'bg-amber-50 text-amber-700 dark:bg-amber-900/20 dark:text-amber-400'"
+      >
+        <Icon name="lucide:hard-drive" class="w-3.5 h-3.5" />
+        {{ $t('largeFile.mode_' + fileSizeCategory) }}
+      </div>
       <div class="flex items-center gap-2">
         <label class="text-xs font-bold text-surface-600 dark:text-surface-400">{{ tool.ui?.option_indent || 'Indent:' }}</label>
         <select v-model="indent" class="rounded-lg border border-surface-200 bg-white px-2 py-1 text-xs dark:border-surface-700 dark:bg-surface-800">
@@ -166,6 +186,15 @@
     <SensitiveFieldWarning :fields="sensitiveFields" @dismiss="dismissSensitiveWarning" />
   </div>
 
+  <!-- Large file warning -->
+  <LargeFileWarning
+    :visible="showLargeFileWarning"
+    :formatted-size="formatBytes(fileSizeBytes)"
+    @continue="handleLargeFileContinue"
+    @parse-partial="handleLargeFilePartial"
+    @cancel="handleLargeFileCancel"
+  />
+
   <!-- Share Modal -->
   <ShareModal
     :state="share.modalState.value"
@@ -191,6 +220,7 @@
 
 <script setup lang="ts">
 import type { ParseError, FieldError } from '~/types/jsonErrors'
+import type { FileSizeCategory } from '~/composables/useFileSize'
 
 const { tool, showViewToggle = true, defaultViewMode = 'rich' } = defineProps<{
   tool: any
@@ -272,6 +302,8 @@ function computeEndLine(path: string): number {
 const { repairJson, getJsonError } = useJsonFixer()
 const share = useShareJson()
 const sharedPayloadLoader = useSharedPayloadLoader()
+const { parseInWorker, isParsing } = useWorkerParser()
+const { detectSize, formatBytes, fileSizeCategory, fileSizeBytes, isLargeFile, getPartialText } = useFileSize()
 
 // Sensitive field detection
 const { scanJson, detectedFields: sensitiveFields, clear: clearSensitiveFields } = useSensitiveFieldDetection()
@@ -417,6 +449,14 @@ const toast = useToast()
 
 const formatJson = (silent = false) => {
   if (!inputJson.value.trim()) { error.value = ''; parseError.value = null; outputJson.value = ''; return }
+
+  // Large files: use Worker (async path)
+  if (isLargeFile(inputJson.value)) {
+    formatJsonAsync(silent)
+    return
+  }
+
+  // Small files: synchronous parse on main thread
   try {
     const parsed = JSON.parse(inputJson.value)
     const space = indent.value === 'tab' ? '\t' : Number(indent.value)
@@ -426,7 +466,6 @@ const formatJson = (silent = false) => {
     parseError.value = null
     if (!silent) toast.success(Number(indent.value) === 0 ? t('toast.minified') : t('toast.formatted'))
   } catch {
-    // Auto-repair using jsonrepair library
     const repaired = repairJson(inputJson.value)
     if (repaired) {
       inputJson.value = repaired
@@ -439,8 +478,38 @@ const formatJson = (silent = false) => {
       if (!silent) toast.success(Number(indent.value) === 0 ? t('toast.minified') : t('toast.formatted'))
       return
     }
-    // Repair failed — show error
     const err = getJsonError(inputJson.value)
+    parseError.value = err
+    error.value = err ? t('errors.lineCol', { line: err.line, col: err.column }) + ': ' + err.message : t('formatter.invalidJson')
+    if (!silent) toast.error(error.value)
+  }
+}
+
+// Async format for large files (Worker-based)
+async function formatJsonAsync(silent: boolean) {
+  const result = await parseInWorker(inputJson.value)
+  if (result.data !== null) {
+    const space = indent.value === 'tab' ? '\t' : Number(indent.value)
+    outputJson.value = JSON.stringify(result.data, null, space)
+    lastAction.value = Number(indent.value) === 0 ? 'minified' : 'formatted'
+    error.value = ''
+    parseError.value = null
+    if (!silent) toast.success(Number(indent.value) === 0 ? t('toast.minified') : t('toast.formatted'))
+  }
+  else {
+    const repaired = repairJson(inputJson.value)
+    if (repaired) {
+      inputJson.value = repaired
+      const parsed = JSON.parse(repaired)
+      const space = indent.value === 'tab' ? '\t' : Number(indent.value)
+      outputJson.value = JSON.stringify(parsed, null, space)
+      lastAction.value = Number(indent.value) === 0 ? 'minified' : 'formatted'
+      error.value = ''
+      parseError.value = null
+      if (!silent) toast.success(Number(indent.value) === 0 ? t('toast.minified') : t('toast.formatted'))
+      return
+    }
+    const err = result.error ? { message: result.error, line: result.line, column: result.column, errorKey: '' } : getJsonError(inputJson.value)
     parseError.value = err
     error.value = err ? t('errors.lineCol', { line: err.line, col: err.column }) + ': ' + err.message : t('formatter.invalidJson')
     if (!silent) toast.error(error.value)
@@ -463,6 +532,12 @@ const setFormatted = () => {
 
 const validateJson = () => {
   if (!inputJson.value.trim()) { error.value = ''; parseError.value = null; outputJson.value = ''; return }
+
+  if (isLargeFile(inputJson.value)) {
+    validateJsonAsync()
+    return
+  }
+
   try {
     JSON.parse(inputJson.value)
     outputJson.value = tool.ui?.status_valid || t('formatter.validJson')
@@ -479,10 +554,69 @@ const validateJson = () => {
   }
 }
 
+async function validateJsonAsync() {
+  const result = await parseInWorker(inputJson.value)
+  if (result.data !== null) {
+    outputJson.value = tool.ui?.status_valid || t('formatter.validJson')
+    lastAction.value = 'validated'
+    error.value = ''
+    parseError.value = null
+    toast.success(t('toast.validated'))
+  }
+  else {
+    const err = result.error ? { message: result.error, line: result.line, column: result.column, errorKey: '' } : getJsonError(inputJson.value)
+    parseError.value = err
+    error.value = err ? t('errors.lineCol', { line: err.line, col: err.column }) + ': ' + err.message : t('formatter.invalidJson')
+    outputJson.value = ''
+    toast.error(error.value)
+  }
+}
+
 const clearAll = () => {
   outputJson.value = ''
   error.value = ''
   parseError.value = null
+}
+
+// ── Large file handling ─────────────────────────────────────
+const showLargeFileWarning = ref(false)
+const pendingLargeText = ref('')
+const pendingPartialParse = ref(false)
+
+const onFileSize = (info: { bytes: number; category: FileSizeCategory }) => {
+  detectSize(
+    inputJson.value,
+    undefined
+  )
+  if (info.category === 'large') {
+    showLargeFileWarning.value = true
+    pendingLargeText.value = inputJson.value
+  }
+}
+
+const handleLargeFileContinue = () => {
+  showLargeFileWarning.value = false
+  pendingLargeText.value = ''
+  // Re-trigger format with the current input
+  nextTick(() => formatJson())
+}
+
+const handleLargeFilePartial = () => {
+  showLargeFileWarning.value = false
+  pendingPartialParse.value = true
+  const partial = getPartialText(inputJson.value, 20 * 1024 * 1024)
+  inputJson.value = partial
+  nextTick(() => formatJson())
+}
+
+const handleLargeFileCancel = () => {
+  showLargeFileWarning.value = false
+  pendingLargeText.value = ''
+  inputJson.value = ''
+  outputJson.value = ''
+  error.value = ''
+  parseError.value = null
+  parsedData.value = null
 }
 
 // Locate error from the output panel "Jump to Error" button
@@ -510,11 +644,25 @@ const locateTarget = ref('')
 // In-place format: replace inputJson with formatted version
 const formatInputInPlace = () => {
   if (!inputJson.value.trim()) return
+
+  if (isLargeFile(inputJson.value)) {
+    formatInputInPlaceAsync()
+    return
+  }
+
   try {
     const parsed = JSON.parse(inputJson.value)
     const space = indent.value === 'tab' ? '\t' : Number(indent.value)
     inputJson.value = JSON.stringify(parsed, null, space)
   } catch {}
+}
+
+async function formatInputInPlaceAsync() {
+  const result = await parseInWorker(inputJson.value)
+  if (result.data !== null) {
+    const space = indent.value === 'tab' ? '\t' : Number(indent.value)
+    inputJson.value = JSON.stringify(result.data, null, space)
+  }
 }
 
 // Paste: immediately format input in-place

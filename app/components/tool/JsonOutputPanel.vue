@@ -222,6 +222,18 @@
       v-show="currentMode === 'rich'"
       class="flex-1 min-h-0 overflow-auto rounded-xl border border-surface-200 bg-surface-50 p-4 dark:border-surface-700 dark:bg-surface-800"
     >
+      <!-- Large file mode indicator -->
+      <div
+        v-if="fileSizeCategory !== 'small' && parsedData !== null"
+        class="mb-3 flex items-center gap-2 px-3 py-2 rounded-lg text-xs"
+        :class="fileSizeCategory === 'large'
+          ? 'bg-red-50 text-red-700 dark:bg-red-900/20 dark:text-red-400 border border-red-200 dark:border-red-800'
+          : 'bg-amber-50 text-amber-700 dark:bg-amber-900/20 dark:text-amber-400 border border-amber-200 dark:border-amber-800'"
+      >
+        <Icon name="lucide:info" class="w-3.5 h-3.5 shrink-0" />
+        {{ $t('largeFile.mode_' + fileSizeCategory) }}
+      </div>
+
       <JsonTreeNode
         v-if="parsedData !== null"
         :data="parsedData"
@@ -305,6 +317,8 @@ interface Props {
   masked?: boolean
   /** Set of sensitive field paths to mask */
   sensitivePaths?: Set<string>
+  /** File size category for performance-aware rendering */
+  fileSizeCategory?: 'small' | 'medium' | 'large'
 }
 
 const props = withDefaults(defineProps<Props>(), {
@@ -327,6 +341,7 @@ const props = withDefaults(defineProps<Props>(), {
   highlight: '',
   masked: false,
   sensitivePaths: () => new Set(),
+  fileSizeCategory: 'small',
 })
 
 const emit = defineEmits<{
@@ -421,6 +436,9 @@ onMounted(() => {
 // Provide search state to tree nodes
 provide('treeSearch', treeSearch)
 
+// Provide file size category to tree nodes for child node pagination
+provide('fileSizeCategory', computed(() => props.fileSizeCategory))
+
 // Provide masked state for sensitive fields
 provide('maskedFields', computed(() => props.masked ? props.sensitivePaths : new Set()))
 
@@ -441,17 +459,21 @@ function isObject(v: unknown): v is Record<string, unknown> { return typeof v ==
 function isArray(v: unknown): v is unknown[] { return Array.isArray(v) }
 function isExpandable(v: unknown): boolean { return isObject(v) || isArray(v) }
 
-function getAllExpandablePaths(data: unknown, parentPath = ''): string[] {
+function getAllExpandablePaths(data: unknown, parentPath = '', depth = 0): string[] {
+  // Limit expand depth for large files
+  const maxDepth = props.fileSizeCategory === 'large' ? 2 : props.fileSizeCategory === 'medium' ? 3 : Infinity
+  if (depth >= maxDepth) return []
+
   const paths: string[] = []
   if (isObject(data)) {
     for (const key of Object.keys(data)) {
       const childPath = parentPath ? `${parentPath}.${key}` : key
-      if (isExpandable(data[key])) { paths.push(childPath); paths.push(...getAllExpandablePaths(data[key], childPath)) }
+      if (isExpandable(data[key])) { paths.push(childPath); paths.push(...getAllExpandablePaths(data[key], childPath, depth + 1)) }
     }
   } else if (isArray(data)) {
     data.forEach((item, i) => {
       const childPath = `${parentPath}[${i}]`
-      if (isExpandable(item)) { paths.push(childPath); paths.push(...getAllExpandablePaths(item, childPath)) }
+      if (isExpandable(item)) { paths.push(childPath); paths.push(...getAllExpandablePaths(item, childPath, depth + 1)) }
     })
   }
   return paths

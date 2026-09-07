@@ -1,5 +1,6 @@
 <script setup lang="ts">
 import type { ParseError, FieldError } from '~/types/jsonErrors'
+import type { FileSizeCategory } from '~/composables/useFileSize'
 
 definePageMeta({ layout: 'embed' })
 
@@ -78,6 +79,8 @@ const fullscreen = ref(false)
 const inputEditorRef = ref<InstanceType<typeof import('~/components/tool/JsonInputEditor.vue').default>>()
 
 const { repairJson, getJsonError } = useJsonFixer()
+const { parseInWorker, isParsing } = useWorkerParser()
+const { detectSize, formatBytes, fileSizeCategory, fileSizeBytes, isLargeFile, getPartialText } = useFileSize()
 
 const friendlyMessage = computed(() => {
   if (!parseError.value?.errorKey) return ''
@@ -91,11 +94,52 @@ const parsedData = computed(() => {
   try { return JSON.parse(inputJson.value) } catch { return null }
 })
 
+// ── Large file handling ─────────────────────────────────────
+const showLargeFileWarning = ref(false)
+const pendingLargeText = ref('')
+
+const onFileSize = (info: { bytes: number; category: FileSizeCategory }) => {
+  detectSize(inputJson.value)
+  if (info.category === 'large') {
+    showLargeFileWarning.value = true
+    pendingLargeText.value = inputJson.value
+  }
+}
+
+const handleLargeFileContinue = () => {
+  showLargeFileWarning.value = false
+  pendingLargeText.value = ''
+  nextTick(() => formatJson())
+}
+
+const handleLargeFilePartial = () => {
+  showLargeFileWarning.value = false
+  const partial = getPartialText(inputJson.value, 20 * 1024 * 1024)
+  inputJson.value = partial
+  nextTick(() => formatJson())
+}
+
+const handleLargeFileCancel = () => {
+  showLargeFileWarning.value = false
+  pendingLargeText.value = ''
+  inputJson.value = ''
+  outputJson.value = ''
+  error.value = ''
+  parseError.value = null
+  parsedData.value = null
+}
+
 // ── Format / Minify / Validate ───────────────────────────────
 const formatJson = (silent = false) => {
   if (!inputJson.value.trim()) {
     error.value = ''; parseError.value = null; outputJson.value = ''; return
   }
+
+  if (isLargeFile(inputJson.value)) {
+    formatJsonAsync(silent)
+    return
+  }
+
   try {
     const parsed = JSON.parse(inputJson.value)
     const space = indent.value === 'tab' ? '\t' : Number(indent.value)
@@ -122,10 +166,44 @@ const formatJson = (silent = false) => {
   }
 }
 
+async function formatJsonAsync(silent: boolean) {
+  const result = await parseInWorker(inputJson.value)
+  if (result.data !== null) {
+    const space = indent.value === 'tab' ? '\t' : Number(indent.value)
+    outputJson.value = JSON.stringify(result.data, null, space)
+    error.value = ''
+    parseError.value = null
+    if (!silent) toast.success(Number(indent.value) === 0 ? t('toast.minified') : t('toast.formatted'))
+  }
+  else {
+    const repaired = repairJson(inputJson.value)
+    if (repaired) {
+      inputJson.value = repaired
+      const parsed = JSON.parse(repaired)
+      const space = indent.value === 'tab' ? '\t' : Number(indent.value)
+      outputJson.value = JSON.stringify(parsed, null, space)
+      error.value = ''
+      parseError.value = null
+      if (!silent) toast.success(Number(indent.value) === 0 ? t('toast.minified') : t('toast.formatted'))
+      return
+    }
+    const err = result.error ? { message: result.error, line: result.line, column: result.column, errorKey: '' } : getJsonError(inputJson.value)
+    parseError.value = err
+    error.value = err ? t('errors.lineCol', { line: err.line, col: err.column }) + ': ' + err.message : t('formatter.invalidJson')
+    if (!silent) toast.error(error.value)
+  }
+}
+
 const validateJson = () => {
   if (!inputJson.value.trim()) {
     error.value = ''; parseError.value = null; outputJson.value = ''; return
   }
+
+  if (isLargeFile(inputJson.value)) {
+    validateJsonAsync()
+    return
+  }
+
   try {
     JSON.parse(inputJson.value)
     outputJson.value = t('formatter.validJson')
@@ -134,6 +212,23 @@ const validateJson = () => {
     toast.success(t('toast.validated'))
   } catch {
     const err = getJsonError(inputJson.value)
+    parseError.value = err
+    error.value = err ? t('errors.lineCol', { line: err.line, col: err.column }) + ': ' + err.message : t('formatter.invalidJson')
+    outputJson.value = ''
+    toast.error(error.value)
+  }
+}
+
+async function validateJsonAsync() {
+  const result = await parseInWorker(inputJson.value)
+  if (result.data !== null) {
+    outputJson.value = t('formatter.validJson')
+    error.value = ''
+    parseError.value = null
+    toast.success(t('toast.validated'))
+  }
+  else {
+    const err = result.error ? { message: result.error, line: result.line, column: result.column, errorKey: '' } : getJsonError(inputJson.value)
     parseError.value = err
     error.value = err ? t('errors.lineCol', { line: err.line, col: err.column }) + ': ' + err.message : t('formatter.invalidJson')
     outputJson.value = ''
@@ -173,11 +268,25 @@ const setFormatted = () => {
 // ── Paste / auto-format ─────────────────────────────────────
 const formatInputInPlace = () => {
   if (!inputJson.value.trim()) return
+
+  if (isLargeFile(inputJson.value)) {
+    formatInputInPlaceAsync()
+    return
+  }
+
   try {
     const parsed = JSON.parse(inputJson.value)
     const space = indent.value === 'tab' ? '\t' : Number(indent.value)
     inputJson.value = JSON.stringify(parsed, null, space)
   } catch {}
+}
+
+async function formatInputInPlaceAsync() {
+  const result = await parseInWorker(inputJson.value)
+  if (result.data !== null) {
+    const space = indent.value === 'tab' ? '\t' : Number(indent.value)
+    inputJson.value = JSON.stringify(result.data, null, space)
+  }
 }
 
 const onInputPaste = () => {
@@ -269,7 +378,14 @@ const fullEditorUrl = computed(() => {
         </template>
 
         <template #first>
-          <div class="h-full pr-3 overflow-hidden">
+          <div class="h-full pr-3 overflow-hidden relative">
+            <!-- Parsing indicator -->
+            <div v-if="isParsing" class="absolute inset-0 z-20 flex items-center justify-center bg-surface-50/80 dark:bg-surface-800/80 backdrop-blur-sm rounded-xl">
+              <div class="flex items-center gap-3 px-4 py-3 rounded-lg bg-white dark:bg-surface-900 shadow-lg border border-surface-200 dark:border-surface-700">
+                <div class="w-5 h-5 border-2 border-primary-600 border-t-transparent rounded-full animate-spin" />
+                <span class="text-sm font-medium text-surface-700 dark:text-surface-300">{{ $t('largeFile.parsing') }}</span>
+              </div>
+            </div>
             <JsonInputEditor
               ref="inputEditorRef"
               v-model="inputJson"
@@ -288,6 +404,7 @@ const fullEditorUrl = computed(() => {
               @paste="onInputPaste"
               @locate-error="onLocateFromPanel"
               @example-loaded="onExampleLoaded"
+              @file-size="onFileSize"
             />
           </div>
         </template>
@@ -306,6 +423,7 @@ const fullEditorUrl = computed(() => {
               :show-download="false"
               :show-view-toggle="true"
               :empty-text="$t('system.emptyOutput')"
+              :file-size-category="fileSizeCategory"
               @update:view-mode="viewMode = $event"
               @copy="copyOutput"
               @download="downloadOutput"
@@ -316,6 +434,17 @@ const fullEditorUrl = computed(() => {
         </template>
 
         <template v-if="showToolbar && !isReadonly" #toolbar-left>
+          <!-- File size mode indicator -->
+          <div
+            v-if="fileSizeCategory !== 'small'"
+            class="flex items-center gap-1.5 px-2 py-1 rounded-lg text-xs font-medium"
+            :class="fileSizeCategory === 'large'
+              ? 'bg-red-50 text-red-700 dark:bg-red-900/20 dark:text-red-400'
+              : 'bg-amber-50 text-amber-700 dark:bg-amber-900/20 dark:text-amber-400'"
+          >
+            <Icon name="lucide:hard-drive" class="w-3.5 h-3.5" />
+            {{ $t('largeFile.mode_' + fileSizeCategory) }}
+          </div>
           <!-- Indent selector -->
           <div class="flex items-center gap-2">
             <label class="text-xs font-bold text-surface-600 dark:text-surface-400">{{ $t('embed.indent') || 'Indent:' }}</label>
@@ -415,12 +544,22 @@ const fullEditorUrl = computed(() => {
         :editable="!isReadonly"
         :placeholder="$t('embed.viewerPlaceholder') || 'Paste JSON here to view...'"
         :empty-text="$t('embed.viewerEmpty') || 'Paste or type JSON to view its structure'"
+        :file-size-category="fileSizeCategory"
         highlight="json"
         @update:view-mode="viewMode = $event"
         @copy="copyOutput"
         @download="downloadOutput"
       />
     </div>
+
+    <!-- Large file warning -->
+    <LargeFileWarning
+      :visible="showLargeFileWarning"
+      :formatted-size="formatBytes(fileSizeBytes)"
+      @continue="handleLargeFileContinue"
+      @parse-partial="handleLargeFilePartial"
+      @cancel="handleLargeFileCancel"
+    />
 
     <!-- Bottom branding -->
     <div
