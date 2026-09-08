@@ -1,7 +1,7 @@
 <template>
   <div>
     <!-- Hero Section -->
-    <section class="relative overflow-hidden py-16 sm:py-24">
+    <section class="relative py-16 sm:py-24">
       <div class="mx-auto max-w-[1200px] px-5">
         <div class="text-center">
 

@@ -629,9 +629,9 @@ html.dark .prose pre.shiki {
 @media (max-width: 767px) {
   .rp-responsive .rp-panels {
     flex-direction: column !important;
-    min-height: 0 !important;
+    min-height: 20rem !important;
     max-height: none !important;
-    height: calc(100dvh - 4rem);
+    height: calc(100dvh - 4rem) !important;
   }
   .rp-responsive .rp-panel-first,
   .rp-responsive .rp-panel-second {
