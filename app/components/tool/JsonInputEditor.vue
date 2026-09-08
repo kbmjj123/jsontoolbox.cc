@@ -1,7 +1,7 @@
 <template>
   <div class="h-full flex flex-col">
     <!-- Header -->
-    <div v-if="showHeader" class="flex items-center justify-between mb-2">
+    <div v-if="showHeader" class="flex items-center justify-between mb-2 overflow-x-auto scrollbar-hide">
       <label class="text-sm font-bold text-surface-700 dark:text-surface-300">{{ label }}</label>
       <div class="flex gap-2 items-center">
         <!-- Built-in example dropdown -->

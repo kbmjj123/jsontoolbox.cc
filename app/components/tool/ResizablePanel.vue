@@ -62,7 +62,7 @@
     </div>
 
     <!-- Bottom toolbar -->
-    <div class="mt-3 flex items-center flex-wrap gap-2">
+    <div class="mt-3 flex items-center gap-2 overflow-x-auto scrollbar-hide">
       <slot name="toolbar-left" />
       <slot name="toolbar-right" />
     </div>

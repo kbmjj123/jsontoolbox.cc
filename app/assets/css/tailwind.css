@@ -629,16 +629,16 @@ html.dark .prose pre.shiki {
 @media (max-width: 767px) {
   .rp-responsive .rp-panels {
     flex-direction: column !important;
-    min-height: 20rem !important;
+    min-height: 0 !important;
     max-height: none !important;
-    height: calc(100dvh - 4rem) !important;
+    height: auto !important;
   }
   .rp-responsive .rp-panel-first,
   .rp-responsive .rp-panel-second {
-    flex: 1 1 0 !important;
+    flex: 0 0 80dvh !important;
     min-height: 0 !important;
     width: 100% !important;
-    height: auto !important;
+    height: 80dvh !important;
   }
   .rp-responsive .rp-panel-first { width: 100% !important; }
   .rp-responsive .rp-handle { display: none !important; }
@@ -648,6 +648,17 @@ html.dark .prose pre.shiki {
 .esc-hint-leave-active { transition: opacity 0.2s ease, transform 0.2s ease; }
 .esc-hint-enter-from,
 .esc-hint-leave-to { opacity: 0; transform: translateY(-4px); }
+
+/* ══════════════════════════════════════════════════
+   Scrollbar hide — keep scrollable, hide scrollbar
+   ══════════════════════════════════════════════════ */
+.scrollbar-hide {
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+}
+.scrollbar-hide::-webkit-scrollbar {
+  display: none;
+}
 
 /* ══════════════════════════════════════════════════
    PrivacyNotice — popover transition
