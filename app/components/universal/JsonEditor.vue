@@ -90,72 +90,73 @@
 
     <!-- Toolbar left: indent + action buttons -->
     <template #toolbar-left>
-      <!-- File size mode indicator -->
-      <div
-        v-if="fileSizeCategory !== 'small'"
-        class="flex items-center gap-1.5 px-2 py-1 rounded-lg text-xs font-medium"
-        :class="fileSizeCategory === 'large'
-          ? 'bg-red-50 text-red-700 dark:bg-red-900/20 dark:text-red-400'
-          : 'bg-amber-50 text-amber-700 dark:bg-amber-900/20 dark:text-amber-400'"
-      >
-        <Icon name="lucide:hard-drive" class="w-3.5 h-3.5" />
-        {{ $t('largeFile.mode_' + fileSizeCategory) }}
-      </div>
-      <div class="flex items-center gap-2">
-        <label class="text-xs font-bold text-surface-600 dark:text-surface-400">{{ tool.ui?.option_indent || 'Indent:' }}</label>
-        <select v-model="indent" class="rounded-lg border border-surface-200 bg-white px-2 py-1 text-xs dark:border-surface-700 dark:bg-surface-800">
-          <option :value="1">{{ $t('formatter.1space') }}</option>
-          <option :value="2">{{ tool.ui?.option_2_spaces || $t('formatter.2spaces') }}</option>
-          <option :value="3">{{ $t('formatter.3spaces') }}</option>
-          <option :value="4">{{ tool.ui?.option_4_spaces || $t('formatter.4spaces') }}</option>
-          <option :value="6">{{ $t('formatter.6spaces') }}</option>
-          <option :value="8">{{ $t('formatter.8spaces') }}</option>
-          <option value="tab">{{ $t('formatter.tab') }}</option>
-        </select>
-      </div>
-
-      <!-- Minify / Format toggle -->
-      <div class="inline-flex rounded-lg border border-surface-200 dark:border-surface-700 overflow-hidden">
-        <button
-          @click="setMinified"
-          :class="isMinified
-            ? 'bg-primary-600 text-white dark:bg-primary-500'
-            : 'bg-white text-surface-600 hover:bg-surface-50 dark:bg-surface-800 dark:text-surface-400 dark:hover:bg-surface-700'"
-          class="px-2.5 py-1 text-[11px] font-bold transition-colors"
+      <div class="flex items-center gap-2 shrink-0">
+        <!-- File size mode indicator -->
+        <div
+          v-if="fileSizeCategory !== 'small'"
+          class="flex items-center gap-1.5 px-2 py-1 rounded-lg text-xs font-medium"
+          :class="fileSizeCategory === 'large'
+            ? 'bg-red-50 text-red-700 dark:bg-red-900/20 dark:text-red-400'
+            : 'bg-amber-50 text-amber-700 dark:bg-amber-900/20 dark:text-amber-400'"
         >
-          {{ $t('system.minify') }}
-        </button>
-        <button
-          @click="setFormatted"
-          :class="!isMinified
-            ? 'bg-primary-600 text-white dark:bg-primary-500'
-            : 'bg-white text-surface-600 hover:bg-surface-50 dark:bg-surface-800 dark:text-surface-400 dark:hover:bg-surface-700'"
-          class="px-2.5 py-1 text-[11px] font-bold transition-colors"
-        >
-          {{ $t('system.format') || 'Format' }}
-        </button>
+          <Icon name="lucide:hard-drive" class="w-3.5 h-3.5" />
+          {{ $t('largeFile.mode_' + fileSizeCategory) }}
+        </div>
+        <div class="flex items-center gap-2">
+          <label class="text-xs font-bold text-surface-600 dark:text-surface-400">{{ tool.ui?.option_indent || 'Indent:' }}</label>
+          <select v-model="indent" class="rounded-lg border border-surface-200 bg-white px-2 py-1 text-xs dark:border-surface-700 dark:bg-surface-800">
+            <option :value="1">{{ $t('formatter.1space') }}</option>
+            <option :value="2">{{ tool.ui?.option_2_spaces || $t('formatter.2spaces') }}</option>
+            <option :value="3">{{ $t('formatter.3spaces') }}</option>
+            <option :value="4">{{ tool.ui?.option_4_spaces || $t('formatter.4spaces') }}</option>
+            <option :value="6">{{ $t('formatter.6spaces') }}</option>
+            <option :value="8">{{ $t('formatter.8spaces') }}</option>
+            <option value="tab">{{ $t('formatter.tab') }}</option>
+          </select>
+        </div>
+        <!-- Minify / Format toggle -->
+        <div class="inline-flex rounded-lg border border-surface-200 dark:border-surface-700 overflow-hidden">
+          <button
+            @click="setMinified"
+            :class="isMinified
+              ? 'bg-primary-600 text-white dark:bg-primary-500'
+              : 'bg-white text-surface-600 hover:bg-surface-50 dark:bg-surface-800 dark:text-surface-400 dark:hover:bg-surface-700'"
+            class="px-2.5 py-1 text-[11px] font-bold transition-colors"
+          >
+            {{ $t('system.minify') }}
+          </button>
+          <button
+            @click="setFormatted"
+            :class="!isMinified
+              ? 'bg-primary-600 text-white dark:bg-primary-500'
+              : 'bg-white text-surface-600 hover:bg-surface-50 dark:bg-surface-800 dark:text-surface-400 dark:hover:bg-surface-700'"
+            class="px-2.5 py-1 text-[11px] font-bold transition-colors"
+          >
+            {{ $t('system.format') || 'Format' }}
+          </button>
+        </div>
+        <!-- Auto-format toggle -->
+        <label class="flex items-center gap-1.5 cursor-pointer select-none">
+          <span class="text-xs text-surface-600 dark:text-surface-400">{{ $t('system.autoFormat') }}</span>
+          <button
+            @click="autoFormat = !autoFormat"
+            :class="autoFormat ? 'bg-primary-600' : 'bg-surface-300 dark:bg-surface-600'"
+            class="relative inline-flex h-5 w-9 items-center rounded-full transition-colors"
+            role="switch"
+            :aria-checked="autoFormat"
+          >
+            <span
+              :class="autoFormat ? 'translate-x-4' : 'translate-x-0.5'"
+              class="inline-block h-4 w-4 rounded-full bg-white transition-transform"
+            />
+          </button>
+        </label>
       </div>
-      <!-- Auto-format toggle -->
-      <label class="flex items-center gap-1.5 cursor-pointer select-none ml-2">
-        <span class="text-xs text-surface-600 dark:text-surface-400">{{ $t('system.autoFormat') }}</span>
-        <button
-          @click="autoFormat = !autoFormat"
-          :class="autoFormat ? 'bg-primary-600' : 'bg-surface-300 dark:bg-surface-600'"
-          class="relative inline-flex h-5 w-9 items-center rounded-full transition-colors"
-          role="switch"
-          :aria-checked="autoFormat"
-        >
-          <span
-            :class="autoFormat ? 'translate-x-4' : 'translate-x-0.5'"
-            class="inline-block h-4 w-4 rounded-full bg-white transition-transform"
-          />
-        </button>
-      </label>
     </template>
 
     <!-- Toolbar right: copy + download + share -->
     <template #toolbar-right>
-      <div class="flex items-center gap-2 ml-auto">
+      <div class="flex items-center gap-2 shrink-0">
         <button
           v-if="outputJson"
           @click="copyOutput"
