@@ -1,7 +1,7 @@
 <template>
   <div class="flex-1 min-h-0 flex flex-col">
     <!-- Header -->
-    <div class="flex items-center justify-between mb-2 gap-3 overflow-x-auto scrollbar-hide">
+    <div class="flex items-center mb-2 gap-2 overflow-x-auto scrollbar-hide">
       <div class="flex items-center gap-2 shrink-0">
         <label class="text-sm font-bold text-surface-700 dark:text-surface-300">{{ label }}</label>
         <!-- View mode toggle -->
@@ -47,7 +47,7 @@
           <span class="hidden sm:inline">{{ masked ? $t('privacy_notice.unmask_toggle') : $t('privacy_notice.mask_toggle') }}</span>
         </button>
       </div>
-      <div class="flex gap-2 items-center flex-1 justify-end">
+      <div class="flex gap-2 items-center shrink-0">
 
         <!-- Search bar (rich mode only) -->
         <template v-if="currentMode === 'rich' && parsedData !== null">

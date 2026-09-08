@@ -1,9 +1,9 @@
 <template>
   <div class="h-full flex flex-col">
     <!-- Header -->
-    <div v-if="showHeader" class="flex items-center justify-between mb-2 overflow-x-auto scrollbar-hide">
-      <label class="text-sm font-bold text-surface-700 dark:text-surface-300">{{ label }}</label>
-      <div class="flex gap-2 items-center">
+    <div v-if="showHeader" class="flex items-center mb-2 gap-2 overflow-x-auto scrollbar-hide">
+      <label class="text-sm font-bold text-surface-700 dark:text-surface-300 shrink-0">{{ label }}</label>
+      <div class="flex gap-2 items-center shrink-0">
         <!-- Built-in example dropdown -->
         <div v-if="hasExamples" ref="exampleMenuRef" class="relative">
           <button @click="showExampleMenu = !showExampleMenu"
