@@ -251,7 +251,7 @@ interface Props {
   errorCopied?: boolean
   /** Tool slug for loading examples (e.g. 'json-minifier') */
   exampleSlug?: string
-  /** Editor implementation: 'textarea' (default) or 'codemirror' */
+  /** Editor implementation: 'codemirror' (default) or 'textarea' */
   editorMode?: 'textarea' | 'codemirror'
   /** Enable JSON syntax highlighting in textarea mode */
   syntaxHighlight?: boolean
@@ -274,7 +274,7 @@ const props = withDefaults(defineProps<Props>(), {
   error: '',
   errorCopied: false,
   exampleSlug: '',
-  editorMode: 'textarea',
+  editorMode: 'codemirror',
   syntaxHighlight: false,
   readonly: false,
 })
