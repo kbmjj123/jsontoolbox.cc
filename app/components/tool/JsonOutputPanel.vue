@@ -47,7 +47,7 @@
           <span class="hidden sm:inline">{{ masked ? $t('privacy_notice.unmask_toggle') : $t('privacy_notice.mask_toggle') }}</span>
         </button>
       </div>
-      <div class="flex gap-2 items-center shrink-0">
+      <div class="flex gap-2 items-center shrink-0 sm:ml-auto">
 
         <!-- Search bar (rich mode only) -->
         <template v-if="currentMode === 'rich' && parsedData !== null">
