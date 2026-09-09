@@ -36,3 +36,6 @@ public/1.md
 gsc-service-account.json
 # SEO CLI cache
 .seo-cache/
+
+# Generated test data
+public/test-data/
