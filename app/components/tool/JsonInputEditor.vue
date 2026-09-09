@@ -3,7 +3,7 @@
     <!-- Header -->
     <div v-if="showHeader" class="flex items-center mb-2 gap-2 overflow-x-auto scrollbar-hide">
       <label class="text-sm font-bold text-surface-700 dark:text-surface-300 shrink-0">{{ label }}</label>
-      <div class="flex gap-2 items-center shrink-0">
+      <div class="flex gap-2 items-center shrink-0 sm:ml-auto">
         <!-- Built-in example dropdown -->
         <div v-if="hasExamples" ref="exampleMenuRef" class="relative">
           <button @click="showExampleMenu = !showExampleMenu"
