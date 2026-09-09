@@ -561,6 +561,10 @@ function updateHighlightPosition() {
 }
 
 function scrollToLine(line: number) {
+  if (props.editorMode === 'codemirror') {
+    cmRef.value?.scrollToLine(line)
+    return
+  }
   if (!textareaRef.value) return
   const targetScroll = Math.max(0, (line - 1) * LINE_HEIGHT - textareaRef.value.clientHeight / 3)
   textareaRef.value.scrollTop = targetScroll
@@ -578,6 +582,10 @@ function scrollToLine(line: number) {
 let flashTimers: ReturnType<typeof setTimeout>[] = []
 
 function highlightLine(line: number, style: 'flash' | 'subtle') {
+  if (props.editorMode === 'codemirror') {
+    cmRef.value?.highlightLine(line, style)
+    return
+  }
   // Clear pending flash timers
   flashTimers.forEach(clearTimeout)
   flashTimers = []
@@ -601,6 +609,10 @@ function highlightLine(line: number, style: 'flash' | 'subtle') {
 }
 
 function highlightLines(startLine: number, endLine: number, style: 'flash' | 'subtle') {
+  if (props.editorMode === 'codemirror') {
+    cmRef.value?.highlightLines(startLine, endLine, style)
+    return
+  }
   flashTimers.forEach(clearTimeout)
   flashTimers = []
 
