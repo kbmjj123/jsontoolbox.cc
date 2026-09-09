@@ -1,8 +1,11 @@
 import { generateOrders } from './orders'
 import { generateUsers } from './users'
 import { generateLogs } from './logs'
+import { generateIssues } from './issues'
+import { generatePayments } from './payments'
+import { generateProducts } from './products'
 
-export type GeneratorType = 'orders' | 'users' | 'logs'
+export type GeneratorType = 'orders' | 'users' | 'logs' | 'issues' | 'payments' | 'products'
 
 function estimateSize(obj: any): number {
   return JSON.stringify(obj).length
@@ -13,6 +16,9 @@ export function generateJson(type: GeneratorType, targetCount: number): any[] {
     case 'orders': return generateOrders(targetCount)
     case 'users': return generateUsers(targetCount)
     case 'logs': return generateLogs(targetCount)
+    case 'issues': return generateIssues(targetCount)
+    case 'payments': return generatePayments(targetCount)
+    case 'products': return generateProducts(targetCount)
     default: throw new Error(`Unknown generator type: ${type}`)
   }
 }

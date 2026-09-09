@@ -149,3 +149,19 @@ export function fakeISODate(offsetDays?: number): string {
 export function fakeTimestamp(): number {
   return Date.now() - Math.floor(Math.random() * 1000 * 60 * 60 * 24 * 30)
 }
+
+const ISSUE_TYPES = ['Bug', 'Story', 'Task', 'Epic', 'Sub-task', 'Improvement']
+const ISSUE_STATUSES = ['Open', 'In Progress', 'In Review', 'Done', 'Closed', 'Blocked', 'Reopened']
+const PRIORITIES = ['Lowest', 'Low', 'Medium', 'High', 'Critical', 'Blocker']
+
+export function fakeIssueType(): string {
+  return ISSUE_TYPES[Math.floor(Math.random() * ISSUE_TYPES.length)]
+}
+
+export function fakeIssueStatus(): string {
+  return ISSUE_STATUSES[Math.floor(Math.random() * ISSUE_STATUSES.length)]
+}
+
+export function fakePriority(): string {
+  return PRIORITIES[Math.floor(Math.random() * PRIORITIES.length)]
+}
