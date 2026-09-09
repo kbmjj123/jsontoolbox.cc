@@ -635,10 +635,10 @@ html.dark .prose pre.shiki {
   }
   .rp-responsive .rp-panel-first,
   .rp-responsive .rp-panel-second {
-    flex: 0 0 80dvh !important;
+    flex: 0 0 60dvh !important;
     min-height: 0 !important;
     width: 100% !important;
-    height: 80dvh !important;
+    height: 60dvh !important;
   }
   .rp-responsive .rp-panel-first { width: 100% !important; }
   .rp-responsive .rp-handle { display: none !important; }
