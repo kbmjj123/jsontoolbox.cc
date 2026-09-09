@@ -27,9 +27,19 @@
       <div class="h-full pr-3 overflow-hidden">
         <!-- Parsing indicator -->
         <div v-if="isParsing" class="absolute inset-0 z-20 flex items-center justify-center bg-surface-50/80 dark:bg-surface-800/80 backdrop-blur-sm rounded-xl">
-          <div class="flex items-center gap-3 px-4 py-3 rounded-lg bg-white dark:bg-surface-900 shadow-lg border border-surface-200 dark:border-surface-700">
-            <div class="w-5 h-5 border-2 border-primary-600 border-t-transparent rounded-full animate-spin" />
-            <span class="text-sm font-medium text-surface-700 dark:text-surface-300">{{ $t('largeFile.parsing') }}</span>
+          <div class="flex flex-col items-center gap-2 px-4 py-3 rounded-lg bg-white dark:bg-surface-900 shadow-lg border border-surface-200 dark:border-surface-700">
+            <div class="flex items-center gap-3">
+              <div class="w-5 h-5 border-2 border-primary-600 border-t-transparent rounded-full animate-spin" />
+              <span class="text-sm font-medium text-surface-700 dark:text-surface-300">{{ $t('largeFile.parsing') }}</span>
+            </div>
+            <div v-if="parseProgress > 0" class="w-full">
+              <div class="h-1.5 w-40 rounded-full bg-surface-200 dark:bg-surface-700 overflow-hidden">
+                <div class="h-full rounded-full bg-primary-500 transition-all duration-300" :style="{ width: parseProgress + '%' }" />
+              </div>
+              <div class="mt-1 text-xs text-surface-500 dark:text-surface-400 text-center">
+                {{ lazyTree.state.value.nodeCount.toLocaleString() }} nodes
+              </div>
+            </div>
           </div>
         </div>
         <JsonInputEditor
@@ -77,6 +87,8 @@
           :masked="masked"
           :sensitive-paths="sensitivePathSet"
           :file-size-category="fileSizeCategory"
+          :lazy-index="lazyTree.state.value.index"
+          :node-count="lazyTree.state.value.nodeCount"
           @update:view-mode="viewMode = $event"
           @update:masked="masked = $event"
           @copy="copyOutput"
@@ -303,8 +315,9 @@ function computeEndLine(path: string): number {
 const { repairJson, getJsonError } = useJsonFixer()
 const share = useShareJson()
 const sharedPayloadLoader = useSharedPayloadLoader()
-const { parseInWorker, isParsing } = useWorkerParser()
+const { parseInWorker, parseStream, isParsing, parseProgress } = useWorkerParser()
 const { detectSize, formatBytes, fileSizeCategory, fileSizeBytes, isLargeFile, getPartialText } = useFileSize()
+const lazyTree = useLazyTree()
 
 // Sensitive field detection
 const { scanJson, detectedFields: sensitiveFields, clear: clearSensitiveFields } = useSensitiveFieldDetection()
@@ -487,33 +500,76 @@ const formatJson = (silent = false) => {
 }
 
 // Async format for large files (Worker-based)
+// Uses streaming parser (clarinet) for huge files (≥50MB), normal Worker for medium files
 async function formatJsonAsync(silent: boolean) {
-  const result = await parseInWorker(inputJson.value)
-  if (result.data !== null) {
-    const space = indent.value === 'tab' ? '\t' : Number(indent.value)
-    outputJson.value = JSON.stringify(result.data, null, space)
-    lastAction.value = Number(indent.value) === 0 ? 'minified' : 'formatted'
+  const isHuge = fileSizeCategory.value === 'large'
+
+  if (isHuge) {
+    // Streaming mode: build lazy index
+    lazyTree.reset()
+    const streamResult = await parseStream(
+      inputJson.value,
+      (nodeCount, percent) => lazyTree.updateProgress(nodeCount, percent),
+    )
+
+    if (streamResult.error) {
+      const repaired = repairJson(inputJson.value)
+      if (repaired) {
+        inputJson.value = repaired
+        lazyTree.reset()
+        // Retry with repaired text
+        const retry = await parseStream(repaired, (n, p) => lazyTree.updateProgress(n, p))
+        if (!retry.error) {
+          lazyTree.initFromIndex(retry.rootType, retry.nodeCount, retry.index)
+          outputJson.value = '' // streaming mode doesn't produce formatted text
+          error.value = ''
+          parseError.value = null
+          if (!silent) toast.success(t('toast.formatted'))
+          return
+        }
+      }
+      const err = { message: streamResult.error, line: streamResult.line, column: streamResult.column, errorKey: '' }
+      parseError.value = err
+      error.value = err.line ? t('errors.lineCol', { line: err.line, col: err.column }) + ': ' + err.message : err.message
+      if (!silent) toast.error(error.value)
+      return
+    }
+
+    lazyTree.initFromIndex(streamResult.rootType, streamResult.nodeCount, streamResult.index)
+    outputJson.value = ''
     error.value = ''
     parseError.value = null
-    if (!silent) toast.success(Number(indent.value) === 0 ? t('toast.minified') : t('toast.formatted'))
-  }
-  else {
-    const repaired = repairJson(inputJson.value)
-    if (repaired) {
-      inputJson.value = repaired
-      const parsed = JSON.parse(repaired)
+    if (!silent) toast.success(t('toast.formatted'))
+  } else {
+    // Medium files: normal Worker parse
+    lazyTree.reset()
+    const result = await parseInWorker(inputJson.value)
+    if (result.data !== null) {
       const space = indent.value === 'tab' ? '\t' : Number(indent.value)
-      outputJson.value = JSON.stringify(parsed, null, space)
+      outputJson.value = JSON.stringify(result.data, null, space)
       lastAction.value = Number(indent.value) === 0 ? 'minified' : 'formatted'
       error.value = ''
       parseError.value = null
       if (!silent) toast.success(Number(indent.value) === 0 ? t('toast.minified') : t('toast.formatted'))
-      return
     }
-    const err = result.error ? { message: result.error, line: result.line, column: result.column, errorKey: '' } : getJsonError(inputJson.value)
-    parseError.value = err
-    error.value = err ? t('errors.lineCol', { line: err.line, col: err.column }) + ': ' + err.message : t('formatter.invalidJson')
-    if (!silent) toast.error(error.value)
+    else {
+      const repaired = repairJson(inputJson.value)
+      if (repaired) {
+        inputJson.value = repaired
+        const parsed = JSON.parse(repaired)
+        const space = indent.value === 'tab' ? '\t' : Number(indent.value)
+        outputJson.value = JSON.stringify(parsed, null, space)
+        lastAction.value = Number(indent.value) === 0 ? 'minified' : 'formatted'
+        error.value = ''
+        parseError.value = null
+        if (!silent) toast.success(Number(indent.value) === 0 ? t('toast.minified') : t('toast.formatted'))
+        return
+      }
+      const err = result.error ? { message: result.error, line: result.line, column: result.column, errorKey: '' } : getJsonError(inputJson.value)
+      parseError.value = err
+      error.value = err ? t('errors.lineCol', { line: err.line, col: err.column }) + ': ' + err.message : t('formatter.invalidJson')
+      if (!silent) toast.error(error.value)
+    }
   }
 }
 

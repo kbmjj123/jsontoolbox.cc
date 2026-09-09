@@ -1,7 +1,69 @@
 <template>
   <div class="font-mono text-sm">
-    <!-- Object -->
-    <template v-if="isObject(data)">
+    <!-- Lazy mode: render from lazy index -->
+    <template v-if="isLazy && lazyNode">
+      <template v-for="(entry, idx) in childrenEntries" :key="entry.childPath">
+        <div v-if="idx < visibleCount">
+          <div
+            :ref="(el) => markRow(entry.childPath, el as HTMLElement)"
+            :class="[
+              'flex rounded px-1 cursor-pointer group transition-colors',
+              flashPath === entry.childPath
+                ? 'bg-orange-200 dark:bg-orange-700/50 ring-2 ring-orange-400 dark:ring-orange-500 animate-pulse'
+                : isCurrentMatch(entry.childPath)
+                  ? 'bg-amber-200 dark:bg-amber-700/60 ring-1 ring-amber-400 dark:ring-amber-500'
+                  : isMatch(entry.childPath)
+                    ? 'bg-yellow-100 dark:bg-yellow-800/40'
+                    : isSelected(entry.childPath)
+                      ? 'bg-primary-50 dark:bg-primary-900/30 border-l-2 border-primary-500 dark:border-primary-400'
+                      : 'hover:bg-surface-100 dark:hover:bg-surface-700',
+            ]"
+            @click="entry.expandable ? toggle(entry.key) : selectAndCopy(entry.childPath)"
+            @mouseenter="!entry.expandable && onNodeInteraction(entry.childPath, 'hover')"
+            @mouseleave="onNodeInteraction('', 'hover')"
+          >
+            <div class="flex items-start gap-1 min-w-0 leading-[1.5] flex-1">
+              <button
+                v-if="entry.expandable"
+                @click.stop="toggle(entry.key)"
+                class="w-4 h-4 flex items-center justify-center text-surface-400 hover:text-surface-600 shrink-0"
+              >
+                <Icon :name="isNodeExpanded(entry.key) ? 'lucide:chevron-down' : 'lucide:chevron-right'" class="w-3 h-3" />
+              </button>
+              <span v-else class="w-4 shrink-0"></span>
+
+              <!-- Key display -->
+              <span v-if="lazyNode.type === 'object'" class="text-purple-600 dark:text-purple-400">"{{ entry.key }}"</span>
+              <span v-else class="text-blue-500 dark:text-blue-400">[{{ entry.key }}]</span>
+              <span class="text-surface-400">:</span>
+
+              <!-- Value display -->
+              <span v-if="!entry.expandable" :class="lazyTypeColorClass(lazyIndex?.get(entry.childPath)?.type || 'null')">{{ entry.preview || 'null' }}</span>
+              <span v-else class="text-surface-400">
+                {{ lazyIndex?.get(entry.childPath)?.type === 'array' ? `[${lazyIndex?.get(entry.childPath)?.childCount || 0}]` : '{…}' }}
+              </span>
+            </div>
+          </div>
+
+          <!-- Expanded children (lazy) -->
+          <div v-if="entry.expandable && isNodeExpanded(entry.key)" class="ml-4 border-l border-surface-200 dark:border-surface-700 pl-0">
+            <JsonTreeNode :data="null" :path="entry.childPath" :depth="depth + 1" :lazy-index="lazyIndex" />
+          </div>
+        </div>
+      </template>
+      <!-- Show more button -->
+      <div v-if="hiddenCount > 0" class="py-1 px-1">
+        <button
+          @click="showMore"
+          class="text-xs text-primary-600 hover:text-primary-700 dark:text-primary-400 dark:hover:text-primary-300 hover:underline"
+        >
+          {{ $t('largeFile.show_more', { count: hiddenCount }) }}
+        </button>
+      </div>
+    </template>
+
+    <!-- Object (normal mode) -->
+    <template v-else-if="isObject(data)">
       <template v-for="(value, key, idx) in data" :key="key">
         <div v-if="idx < visibleCount">
         <div
@@ -233,13 +295,16 @@
 import type { PreviewImage } from '~/composables/useImagePreview'
 import type { useTreeSearch } from '~/composables/useTreeSearch'
 import type { FieldError } from '~/types/jsonErrors'
+import type { LazyNode } from '~/workers/jsonStream.worker'
 
 const props = withDefaults(defineProps<{
   data: unknown
   path: string
   depth?: number
+  lazyIndex?: Map<string, LazyNode> | null
 }>(), {
   depth: 0,
+  lazyIndex: null,
 })
 
 // ── File size category (for child node pagination) ─────────
@@ -247,10 +312,67 @@ const fileSizeCategory = inject<Ref<'small' | 'medium' | 'large'>>('fileSizeCate
 const MAX_CHILDREN = 500
 const visibleExtra = ref(0) // additional children shown via "Show more"
 
+// ── Lazy mode support ──────────────────────────────────────
+const isLazy = computed(() => props.lazyIndex !== null && props.lazyIndex!.size > 0)
+const lazyNode = computed(() => props.lazyIndex?.get(props.path))
+
 const totalChildren = computed(() => {
+  if (isLazy.value && lazyNode.value) {
+    return lazyNode.value.childCount
+  }
   if (isObject(props.data)) return Object.keys(props.data).length
   if (isArray(props.data)) return (props.data as unknown[]).length
   return 0
+})
+
+// ── Unified children entries (works for both lazy and normal mode) ──
+interface ChildEntry {
+  key: string | number
+  value: unknown
+  expandable: boolean
+  preview?: string
+  childPath: string
+  isLazyChild: boolean
+}
+
+const childrenEntries = computed<ChildEntry[]>(() => {
+  if (isLazy.value && lazyNode.value && props.lazyIndex) {
+    // Lazy mode: build entries from lazy index
+    return lazyNode.value.children.map(childPath => {
+      const node = props.lazyIndex!.get(childPath)
+      if (!node) return null
+      const expandable = node.type === 'object' || node.type === 'array'
+      return {
+        key: node.key,
+        value: expandable ? null : node.preview, // primitives: preview; expandables: null
+        expandable,
+        preview: node.preview,
+        childPath,
+        isLazyChild: true,
+      }
+    }).filter((e): e is ChildEntry => e !== null)
+  }
+
+  // Normal mode: build entries from data
+  if (isObject(props.data)) {
+    return Object.entries(props.data).map(([key, value]) => ({
+      key,
+      value,
+      expandable: isExpandable(value),
+      childPath: getFullPath(key),
+      isLazyChild: false,
+    }))
+  }
+  if (isArray(props.data)) {
+    return (props.data as unknown[]).map((value, index) => ({
+      key: index,
+      value,
+      expandable: isExpandable(value),
+      childPath: getFullPath(index),
+      isLazyChild: false,
+    }))
+  }
+  return []
 })
 
 const visibleCount = computed(() => {
@@ -510,6 +632,16 @@ function valueColorClass(val: unknown): string {
     case 'string': return 'text-emerald-600 dark:text-emerald-400'
     case 'number': return 'text-blue-600 dark:text-blue-400'
     case 'boolean': return 'text-orange-600 dark:text-orange-400'
+    default: return 'text-surface-700 dark:text-surface-300'
+  }
+}
+
+function lazyTypeColorClass(type: string): string {
+  switch (type) {
+    case 'string': return 'text-emerald-600 dark:text-emerald-400'
+    case 'number': return 'text-blue-600 dark:text-blue-400'
+    case 'boolean': return 'text-orange-600 dark:text-orange-400'
+    case 'null': return 'text-surface-400 italic'
     default: return 'text-surface-700 dark:text-surface-300'
   }
 }

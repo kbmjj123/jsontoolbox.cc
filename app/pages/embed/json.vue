@@ -79,8 +79,9 @@ const fullscreen = ref(false)
 const inputEditorRef = ref<InstanceType<typeof import('~/components/tool/JsonInputEditor.vue').default>>()
 
 const { repairJson, getJsonError } = useJsonFixer()
-const { parseInWorker, isParsing } = useWorkerParser()
+const { parseInWorker, parseStream, isParsing, parseProgress } = useWorkerParser()
 const { detectSize, formatBytes, fileSizeCategory, fileSizeBytes, isLargeFile, getPartialText } = useFileSize()
+const lazyTree = useLazyTree()
 
 const friendlyMessage = computed(() => {
   if (!parseError.value?.errorKey) return ''
@@ -167,30 +168,69 @@ const formatJson = (silent = false) => {
 }
 
 async function formatJsonAsync(silent: boolean) {
-  const result = await parseInWorker(inputJson.value)
-  if (result.data !== null) {
-    const space = indent.value === 'tab' ? '\t' : Number(indent.value)
-    outputJson.value = JSON.stringify(result.data, null, space)
+  const isHuge = fileSizeCategory.value === 'large'
+
+  if (isHuge) {
+    lazyTree.reset()
+    const streamResult = await parseStream(
+      inputJson.value,
+      (nodeCount, percent) => lazyTree.updateProgress(nodeCount, percent),
+    )
+
+    if (streamResult.error) {
+      const repaired = repairJson(inputJson.value)
+      if (repaired) {
+        inputJson.value = repaired
+        lazyTree.reset()
+        const retry = await parseStream(repaired, (n, p) => lazyTree.updateProgress(n, p))
+        if (!retry.error) {
+          lazyTree.initFromIndex(retry.rootType, retry.nodeCount, retry.index)
+          outputJson.value = ''
+          error.value = ''
+          parseError.value = null
+          if (!silent) toast.success(t('toast.formatted'))
+          return
+        }
+      }
+      const err = { message: streamResult.error, line: streamResult.line, column: streamResult.column, errorKey: '' }
+      parseError.value = err
+      error.value = err.line ? t('errors.lineCol', { line: err.line, col: err.column }) + ': ' + err.message : err.message
+      if (!silent) toast.error(error.value)
+      return
+    }
+
+    lazyTree.initFromIndex(streamResult.rootType, streamResult.nodeCount, streamResult.index)
+    outputJson.value = ''
     error.value = ''
     parseError.value = null
-    if (!silent) toast.success(Number(indent.value) === 0 ? t('toast.minified') : t('toast.formatted'))
-  }
-  else {
-    const repaired = repairJson(inputJson.value)
-    if (repaired) {
-      inputJson.value = repaired
-      const parsed = JSON.parse(repaired)
+    if (!silent) toast.success(t('toast.formatted'))
+  } else {
+    lazyTree.reset()
+    const result = await parseInWorker(inputJson.value)
+    if (result.data !== null) {
       const space = indent.value === 'tab' ? '\t' : Number(indent.value)
-      outputJson.value = JSON.stringify(parsed, null, space)
+      outputJson.value = JSON.stringify(result.data, null, space)
       error.value = ''
       parseError.value = null
       if (!silent) toast.success(Number(indent.value) === 0 ? t('toast.minified') : t('toast.formatted'))
-      return
     }
-    const err = result.error ? { message: result.error, line: result.line, column: result.column, errorKey: '' } : getJsonError(inputJson.value)
-    parseError.value = err
-    error.value = err ? t('errors.lineCol', { line: err.line, col: err.column }) + ': ' + err.message : t('formatter.invalidJson')
-    if (!silent) toast.error(error.value)
+    else {
+      const repaired = repairJson(inputJson.value)
+      if (repaired) {
+        inputJson.value = repaired
+        const parsed = JSON.parse(repaired)
+        const space = indent.value === 'tab' ? '\t' : Number(indent.value)
+        outputJson.value = JSON.stringify(parsed, null, space)
+        error.value = ''
+        parseError.value = null
+        if (!silent) toast.success(Number(indent.value) === 0 ? t('toast.minified') : t('toast.formatted'))
+        return
+      }
+      const err = result.error ? { message: result.error, line: result.line, column: result.column, errorKey: '' } : getJsonError(inputJson.value)
+      parseError.value = err
+      error.value = err ? t('errors.lineCol', { line: err.line, col: err.column }) + ': ' + err.message : t('formatter.invalidJson')
+      if (!silent) toast.error(error.value)
+    }
   }
 }
 
@@ -424,6 +464,8 @@ const fullEditorUrl = computed(() => {
               :show-view-toggle="true"
               :empty-text="$t('system.emptyOutput')"
               :file-size-category="fileSizeCategory"
+              :lazy-index="lazyTree.state.value.index"
+              :node-count="lazyTree.state.value.nodeCount"
               @update:view-mode="viewMode = $event"
               @copy="copyOutput"
               @download="downloadOutput"

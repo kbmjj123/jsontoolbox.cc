@@ -1,7 +1,10 @@
 /**
  * Worker Parser Composable
- * Manages a Web Worker for off-main-thread JSON parsing
+ * Manages Web Workers for off-main-thread JSON parsing.
+ * Supports both normal (JSON.parse) and streaming (clarinet) modes.
  */
+import type { LazyNode } from '~/workers/jsonStream.worker'
+
 export interface WorkerParseResult {
   data: unknown | null
   error: string | null
@@ -9,12 +12,30 @@ export interface WorkerParseResult {
   column: number
 }
 
+export interface StreamParseResult {
+  rootType: 'object' | 'array' | null
+  nodeCount: number
+  index: Record<string, LazyNode>
+  error: string | null
+  line: number
+  column: number
+}
+
+export type StreamProgressCallback = (nodeCount: number, percent: number) => void
+
 export const useWorkerParser = () => {
   const isParsing = ref(false)
+  const parseProgress = ref(0)
   let worker: Worker | null = null
+  let streamWorker: Worker | null = null
   let requestId = 0
   const pending = new Map<number, {
     resolve: (result: WorkerParseResult) => void
+    timer: ReturnType<typeof setTimeout>
+  }>()
+  const streamPending = new Map<number, {
+    resolve: (result: StreamParseResult) => void
+    onProgress?: StreamProgressCallback
     timer: ReturnType<typeof setTimeout>
   }>()
 
@@ -38,18 +59,15 @@ export const useWorkerParser = () => {
           pendingReq.resolve({ data: null, error, line, column })
         }
 
-        // Update parsing state
         if (pending.size === 0) isParsing.value = false
       }
       worker.onerror = (e) => {
-        // Reject all pending requests
         for (const [id, { resolve, timer }] of pending) {
           clearTimeout(timer)
           resolve({ data: null, error: e.message || 'Worker error', line: 0, column: 0 })
         }
         pending.clear()
         isParsing.value = false
-        // Reset worker so it gets recreated on next use
         worker?.terminate()
         worker = null
       }
@@ -57,9 +75,54 @@ export const useWorkerParser = () => {
     return worker
   }
 
+  function getStreamWorker(): Worker {
+    if (!streamWorker) {
+      streamWorker = new Worker(
+        new URL('../workers/jsonStream.worker.ts', import.meta.url),
+        { type: 'module' }
+      )
+      streamWorker.onmessage = (e: MessageEvent) => {
+        const { id, type, rootType, nodeCount, index, percent, error, line, column } = e.data
+        const pendingReq = streamPending.get(id)
+        if (!pendingReq) return
+
+        if (type === 'progress') {
+          pendingReq.onProgress?.(nodeCount, percent)
+          parseProgress.value = percent
+          return
+        }
+
+        clearTimeout(pendingReq.timer)
+        streamPending.delete(id)
+
+        if (type === 'done') {
+          pendingReq.resolve({ rootType, nodeCount, index, error: null, line: 0, column: 0 })
+        } else {
+          pendingReq.resolve({ rootType: null, nodeCount: 0, index: {}, error, line, column })
+        }
+
+        if (streamPending.size === 0) {
+          isParsing.value = false
+          parseProgress.value = 0
+        }
+      }
+      streamWorker.onerror = (e) => {
+        for (const [id, { resolve, timer }] of streamPending) {
+          clearTimeout(timer)
+          resolve({ rootType: null, nodeCount: 0, index: {}, error: e.message || 'Worker error', line: 0, column: 0 })
+        }
+        streamPending.clear()
+        isParsing.value = false
+        parseProgress.value = 0
+        streamWorker?.terminate()
+        streamWorker = null
+      }
+    }
+    return streamWorker
+  }
+
   /**
-   * Parse JSON text in a Web Worker
-   * Returns a promise that resolves with the parsed data or error
+   * Parse JSON text using JSON.parse in a Web Worker
    */
   function parseInWorker(text: string, timeoutMs = 30000): Promise<WorkerParseResult> {
     return new Promise((resolve) => {
@@ -79,7 +142,36 @@ export const useWorkerParser = () => {
   }
 
   /**
-   * Terminate the worker and reject all pending requests
+   * Parse JSON text using streaming parser (clarinet) in a Web Worker.
+   * Builds a LazyNodeIndex instead of a full JS object.
+   */
+  function parseStream(
+    text: string,
+    onProgress?: StreamProgressCallback,
+    timeoutMs = 120000,
+  ): Promise<StreamParseResult> {
+    return new Promise((resolve) => {
+      const id = ++requestId
+      const timer = setTimeout(() => {
+        streamPending.delete(id)
+        if (streamPending.size === 0) {
+          isParsing.value = false
+          parseProgress.value = 0
+        }
+        resolve({ rootType: null, nodeCount: 0, index: {}, error: 'Stream parse timeout', line: 0, column: 0 })
+      }, timeoutMs)
+
+      streamPending.set(id, { resolve, onProgress, timer })
+      isParsing.value = true
+      parseProgress.value = 0
+
+      const w = getStreamWorker()
+      w.postMessage({ id, text, mode: 'stream' })
+    })
+  }
+
+  /**
+   * Terminate all workers and reject all pending requests
    */
   function terminate() {
     for (const [, { resolve, timer }] of pending) {
@@ -87,19 +179,28 @@ export const useWorkerParser = () => {
       resolve({ data: null, error: 'Terminated', line: 0, column: 0 })
     }
     pending.clear()
+    for (const [, { resolve, timer }] of streamPending) {
+      clearTimeout(timer)
+      resolve({ rootType: null, nodeCount: 0, index: {}, error: 'Terminated', line: 0, column: 0 })
+    }
+    streamPending.clear()
     worker?.terminate()
     worker = null
+    streamWorker?.terminate()
+    streamWorker = null
     isParsing.value = false
+    parseProgress.value = 0
   }
 
-  // Cleanup on unmount
   onUnmounted(() => {
     terminate()
   })
 
   return {
     parseInWorker,
+    parseStream,
     terminate,
     isParsing: readonly(isParsing),
+    parseProgress: readonly(parseProgress),
   }
 }

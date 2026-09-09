@@ -232,12 +232,14 @@
       >
         <Icon name="lucide:info" class="w-3.5 h-3.5 shrink-0" />
         {{ $t('largeFile.mode_' + fileSizeCategory) }}
+        <span v-if="nodeCount > 0" class="ml-1 opacity-70">({{ nodeCount.toLocaleString() }} nodes)</span>
       </div>
 
       <JsonTreeNode
-        v-if="parsedData !== null"
+        v-if="parsedData !== null || hasLazyIndex"
         :data="parsedData"
         :path="''"
+        :lazy-index="lazyIndex"
       />
       <div v-else-if="error" class="flex flex-col items-center justify-center h-full gap-3 p-6 text-center">
         <span class="i-lucide-alert-circle w-8 h-8 text-red-400 dark:text-red-500" />
@@ -286,6 +288,7 @@
 
 <script setup lang="ts">
 import type { FieldError } from '~/types/jsonErrors'
+import type { LazyNode } from '~/workers/jsonStream.worker'
 
 const { t } = useI18n()
 
@@ -319,6 +322,10 @@ interface Props {
   sensitivePaths?: Set<string>
   /** File size category for performance-aware rendering */
   fileSizeCategory?: 'small' | 'medium' | 'large'
+  /** Lazy node index from streaming parser (for large files) */
+  lazyIndex?: Map<string, LazyNode> | null
+  /** Total node count from streaming parser */
+  nodeCount?: number
 }
 
 const props = withDefaults(defineProps<Props>(), {
@@ -342,6 +349,8 @@ const props = withDefaults(defineProps<Props>(), {
   masked: false,
   sensitivePaths: () => new Set(),
   fileSizeCategory: 'small',
+  lazyIndex: null,
+  nodeCount: 0,
 })
 
 const emit = defineEmits<{
@@ -482,8 +491,31 @@ function getAllExpandablePaths(data: unknown, parentPath = '', depth = 0): strin
 const richExpanded = ref<Set<string>>(new Set())
 provide('richExpanded', richExpanded)
 
-watch(() => props.parsedData, (data) => {
-  if (data !== null && data !== undefined) {
+// Provide lazy index to tree nodes
+const hasLazyIndex = computed(() => props.lazyIndex !== null && props.lazyIndex!.size > 0)
+provide('lazyIndex', computed(() => props.lazyIndex))
+provide('hasLazyIndex', hasLazyIndex)
+
+// Expand nodes: use lazy index for large files, parsedData for small files
+watch(() => [props.parsedData, props.lazyIndex], ([data, lazy]) => {
+  const lazyMap = lazy as Map<string, LazyNode> | null
+  if (lazyMap && lazyMap.size > 0) {
+    // Lazy mode: expand root and depth-1 nodes
+    const paths = new Set<string>()
+    const root = lazyMap.get('')
+    if (root) {
+      for (const childPath of root.children) {
+        paths.add(childPath)
+        const child = lazyMap.get(childPath)
+        if (child && (child.type === 'object' || child.type === 'array')) {
+          for (const grandchild of child.children) {
+            paths.add(grandchild)
+          }
+        }
+      }
+    }
+    richExpanded.value = paths
+  } else if (data !== null && data !== undefined) {
     richExpanded.value = new Set(getAllExpandablePaths(data))
   } else {
     richExpanded.value = new Set()
