@@ -24,23 +24,24 @@ function generateFile(type: GeneratorType, sizeMB: number, filename: string, out
 function main() {
   const args = process.argv.slice(2)
 
-  if (args.length < 3) {
-    console.log('Usage: tsx scripts/generate.ts <type> <sizeMB> <outputDir>')
+  if (args.length < 2) {
+    console.log('Usage: tsx scripts/generate.ts <type> <sizeMB> [outputDir]')
     console.log('')
     console.log('  type    : orders | users | logs')
     console.log('  sizeMB  : target size in MB (e.g. 1, 5, 10, 50)')
-    console.log('  outputDir: output directory (e.g. ../../public/test-data)')
+    console.log('  outputDir: output directory (default: ../output)')
     console.log('')
     console.log('Examples:')
-    console.log('  tsx scripts/generate.ts orders 10 ../../public/test-data')
-    console.log('  tsx scripts/generate.ts users 5 ../../public/test-data')
-    console.log('  tsx scripts/generate.ts logs 50 ../../public/test-data')
+    console.log('  tsx scripts/generate.ts orders 10')
+    console.log('  tsx scripts/generate.ts users 5')
+    console.log('  tsx scripts/generate.ts logs 50')
     process.exit(1)
   }
 
-  const [typeArg, sizeArg, outputDir] = args
+  const [typeArg, sizeArg, outputDirArg] = args
   const type = typeArg as GeneratorType
   const sizeMB = parseFloat(sizeArg)
+  const outputDir = outputDirArg || join(import.meta.dirname, '..', 'output')
 
   if (!['orders', 'users', 'logs'].includes(type)) {
     console.error('❌ Invalid type. Must be one of: orders, users, logs')

@@ -38,4 +38,4 @@ gsc-service-account.json
 .seo-cache/
 
 # Generated test data
-public/test-data/
+libs/json-generator/output/
