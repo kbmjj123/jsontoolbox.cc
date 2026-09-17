@@ -193,7 +193,7 @@ promo:
 - [JSON 转 Excel](/tools/convert/json-to-excel) — 将 JSON 数组直接转换为 Excel 表格
 - [JSON 转义/反转义](/tools/format/json-escape) — 处理引号、反斜杠、换行等特殊字符
 - [JSON 压缩](/tools/format/json-minifier) — 移除空白压缩 JSON
-- [JSON 比较](/tools/format/json-compare) — 高亮两个 JSON 文档的差异
+- [JSON 比较](/tools/convert/json-compare) — 高亮两个 JSON 文档的差异
 - [JSON 转 TypeScript](/tools/convert/json-to-typescript) — 从 JSON 生成 TypeScript 接口
 
 JsonToolBox 专为浏览器端 JSON 工作流设计，数据在本地处理，无需注册或上传文件。

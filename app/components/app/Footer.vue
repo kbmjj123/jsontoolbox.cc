@@ -47,7 +47,7 @@
 				<div class="flex-1">
 					<div class="grid grid-cols-1 sm:grid-cols-3 gap-x-8 gap-y-10">
 
-						<div v-for="cat in categoriesWithSub" :key="cat.id">
+						<div v-for="cat in allCategories" :key="cat.id">
 							<strong
 								class="mb-5 text-xs font-bold uppercase tracking-widest text-surface-900 dark:text-surface-100 flex items-center gap-2">
 								<NuxtLinkLocale :title="cat.pdesc" :to="'/tools/'+cat.type">{{ cat.h2 }}</NuxtLinkLocale>
@@ -127,17 +127,5 @@
 </template>
 
 <script setup lang="ts">
-const { allCategories, subTools } = useTools()
-
-// 将 sub 工具合并到对应分类的工具列表中
-const categoriesWithSub = computed(() => {
-  return allCategories.value.map(cat => {
-    const subInCat = subTools.value.filter(t => t.category === cat.type)
-    if (subInCat.length === 0) return cat
-    return {
-      ...cat,
-      tools: [...cat.tools, ...subInCat].sort((a: any, b: any) => a.sort - b.sort),
-    }
-  })
-})
+const { allCategories } = useTools()
 </script>

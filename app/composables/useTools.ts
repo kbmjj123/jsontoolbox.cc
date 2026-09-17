@@ -106,16 +106,10 @@ export const useTools = () => {
   }
 
   // 核心计算属性
-  const filteredTools = (subOnly: boolean) =>
-    computed<ProcessedTool[]>(() => {
-      const currentLang = locale.value
-      return rawToolList
-        .filter(tool => subOnly ? tool.isSub === true : !tool.isSub)
-        .map(tool => toProcessedTool(tool, currentLang))
-    })
-
-  const allTools = filteredTools(false)
-  const subTools = filteredTools(true)
+  const allTools = computed<ProcessedTool[]>(() => {
+    const currentLang = locale.value
+    return rawToolList.map(tool => toProcessedTool(tool, currentLang))
+  })
 
   // 分类列表
   const categories = computed<ToolCategory[]>(() => {
@@ -124,7 +118,7 @@ export const useTools = () => {
     const result: ToolCategory[] = []
 
     categoryMetaList.forEach(meta => {
-      const filteredTools = allTools.value.filter(tool => {
+      const tools = allTools.value.filter(tool => {
         const isCategoryMatch = tool.category === meta.slug
         const isSearchMatch = !query ||
           tool.name.toLowerCase().includes(query) ||
@@ -133,21 +127,14 @@ export const useTools = () => {
         return isCategoryMatch && isSearchMatch
       })
 
-      const subToolsForCategory = subTools.value.filter(t =>
-        t.category === meta.slug &&
-        (!query || t.name.toLowerCase().includes(query) || t.description.toLowerCase().includes(query))
-      )
-
-      const combined = [...filteredTools, ...subToolsForCategory]
-
-      if (combined.length > 0) {
+      if (tools.length > 0) {
         result.push({
           slug: meta.slug,
           type: meta.slug,
           theme: meta.theme,
           sort: meta.sort,
           icon: meta.icon,
-          tools: combined,
+          tools,
           ...getLangContent(meta, currentLang)
         })
       }
@@ -214,23 +201,10 @@ export const useTools = () => {
     }).filter(Boolean) as (ProcessedTool & { badge: any })[]
   })
 
-  const getToolDetail = (category: string, slug: string, subOnly?: boolean) => {
-    const tool = rawToolList.find(t =>
-      t.category === category && t.slug === slug &&
-      (subOnly ? t.isSub === true : true)
-    )
+  const getToolDetail = (category: string, slug: string) => {
+    const tool = rawToolList.find(t => t.category === category && t.slug === slug)
     if (!tool) return null
     return toProcessedTool(tool, locale.value)
-  }
-
-  const getSubToolDetail = (category: string, slug: string) =>
-    getToolDetail(category, slug, true)
-
-  const getSubToolsByCategory = (category: string) => {
-    const currentLang = locale.value
-    return rawToolList
-      .filter(t => t.category === category && t.isSub === true)
-      .map(tool => toProcessedTool(tool, currentLang))
   }
 
   const getCategories = () => {
@@ -246,17 +220,14 @@ export const useTools = () => {
   }
 
   const getSiblings = (slug: string) => {
-    const tool = allTools.value.find(t => t.slug === slug) || subTools.value.find(t => t.slug === slug)
+    const tool = allTools.value.find(t => t.slug === slug)
     if (!tool) return []
-    const pool = allTools.value.filter(t => t.category === tool.category)
-    const subPool = subTools.value.filter(t => t.category === tool.category)
-    return [...pool, ...subPool].filter(t => t.slug !== slug)
+    return allTools.value.filter(t => t.category === tool.category && t.slug !== slug)
   }
 
   return {
     searchQuery,
     allTools,
-    subTools,
     allCategories,
     categories,
     getToolsByCategory,
@@ -264,8 +235,6 @@ export const useTools = () => {
     getToolBySingleSlug,
     featuredTools,
     getToolDetail,
-    getSubToolDetail,
-    getSubToolsByCategory,
     getCategories,
     getCategoryBySlug,
     getSiblings

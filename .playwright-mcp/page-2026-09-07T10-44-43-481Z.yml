@@ -1,0 +1,9 @@
+- generic [active] [ref=f1e1]:
+  - generic [ref=f1e3]:
+    - generic [ref=f1e4]:
+      - generic [ref=f1e5]: Cockpit
+      - generic [ref=f1e6]: Enter your password to continue
+    - generic [ref=f1e8]:
+      - textbox "Password" [ref=f1e9]
+      - button "Login" [ref=f1e10]
+  - alert [ref=f1e11]

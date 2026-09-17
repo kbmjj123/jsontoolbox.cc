@@ -210,7 +210,7 @@ Useful tools include:
 - [JSON to Excel](/tools/convert/json-to-excel) for converting JSON arrays directly to Excel spreadsheets.
 - [JSON Escape and Unescape](/tools/format/json-escape) for handling quotes, backslashes, newlines, and other special characters.
 - [JSON Minifier](/tools/format/json-minifier) for compressing JSON by removing whitespace.
-- [JSON Compare](/tools/format/json-compare) for highlighting differences between two JSON documents.
+- [JSON Compare](/tools/convert/json-compare) for highlighting differences between two JSON documents.
 - [JSON to TypeScript](/tools/convert/json-to-typescript) for generating TypeScript interfaces from JSON data.
 
 JsonToolBox is designed for browser-based JSON workflows. Data can be processed locally in the browser without creating an account or uploading files to a remote service.
