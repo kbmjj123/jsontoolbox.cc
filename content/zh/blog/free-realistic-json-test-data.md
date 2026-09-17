@@ -38,10 +38,10 @@ promo:
 
 电商订单数据包含客户、地址、商品行、商品图片、税费、折扣、支付状态、履约状态和订单元数据。
 
-- [下载订单 — 1 MB](https://github.com/kbmjj123/jsontoolbox.cc/raw/develop/libs/json-generator/output/orders-1mb.json)
-- [下载订单 — 5 MB](https://github.com/kbmjj123/jsontoolbox.cc/raw/develop/libs/json-generator/output/orders-5mb.json)
-- [下载订单 — 10 MB](https://github.com/kbmjj123/jsontoolbox.cc/raw/develop/libs/json-generator/output/orders-10mb.json)
-- [下载订单 — 20 MB](https://github.com/kbmjj123/jsontoolbox.cc/raw/develop/libs/json-generator/output/orders-20mb.json)
+- [下载订单 — 1 MB](https://resources.jsontoolsbox.cc/orders-1mb.json)
+- [下载订单 — 5 MB](https://resources.jsontoolsbox.cc/orders-5mb.json)
+- [下载订单 — 10 MB](https://resources.jsontoolsbox.cc/orders-10mb.json)
+- [下载订单 — 20 MB](https://resources.jsontoolsbox.cc/orders-20mb.json)
 
 示例结构：
 
@@ -78,9 +78,9 @@ promo:
 
 用户数据集包含真实感的用户资料，含姓名、邮箱、头像、地址、公司、职位、偏好、角色和可选的社交链接。
 
-- [下载用户 — 1 MB](https://github.com/kbmjj123/jsontoolbox.cc/raw/develop/libs/json-generator/output/users-1mb.json)
-- [下载用户 — 15 MB](https://github.com/kbmjj123/jsontoolbox.cc/raw/develop/libs/json-generator/output/users-15mb.json)
-- [下载用户 — 40 MB](https://github.com/kbmjj123/jsontoolbox.cc/raw/develop/libs/json-generator/output/users-40mb.json)
+- [下载用户 — 1 MB](https://resources.jsontoolsbox.cc/users-1mb.json)
+- [下载用户 — 15 MB](https://resources.jsontoolsbox.cc/users-15mb.json)
+- [下载用户 — 40 MB](https://resources.jsontoolsbox.cc/users-40mb.json)
 
 可用于测试：
 
@@ -95,10 +95,10 @@ promo:
 
 日志数据集模拟 Web 应用和后端服务产生的日志记录。
 
-- [下载日志 — 1 MB](https://github.com/kbmjj123/jsontoolbox.cc/raw/develop/libs/json-generator/output/logs-1mb.json)
-- [下载日志 — 10 MB](https://github.com/kbmjj123/jsontoolbox.cc/raw/develop/libs/json-generator/output/logs-10mb.json)
-- [下载日志 — 30 MB](https://github.com/kbmjj123/jsontoolbox.cc/raw/develop/libs/json-generator/output/logs-30mb.json)
-- [下载日志 — 50 MB](https://github.com/kbmjj123/jsontoolbox.cc/raw/develop/libs/json-generator/output/logs-50mb.json)
+- [下载日志 — 1 MB](https://resources.jsontoolsbox.cc/logs-1mb.json)
+- [下载日志 — 10 MB](https://resources.jsontoolsbox.cc/logs-10mb.json)
+- [下载日志 — 30 MB](https://resources.jsontoolsbox.cc/logs-30mb.json)
+- [下载日志 — 50 MB](https://resources.jsontoolsbox.cc/logs-50mb.json)
 
 日志记录可能包含：
 
@@ -116,10 +116,10 @@ promo:
 
 工单数据集模拟项目管理和问题跟踪记录。
 
-- [下载工单 — 1 MB](https://github.com/kbmjj123/jsontoolbox.cc/raw/develop/libs/json-generator/output/issues-1mb.json)
-- [下载工单 — 10 MB](https://github.com/kbmjj123/jsontoolbox.cc/raw/develop/libs/json-generator/output/issues-10mb.json)
-- [下载工单 — 20 MB](https://github.com/kbmjj123/jsontoolbox.cc/raw/develop/libs/json-generator/output/issues-20mb.json)
-- [下载工单 — 40 MB](https://github.com/kbmjj123/jsontoolbox.cc/raw/develop/libs/json-generator/output/issues-40mb.json)
+- [下载工单 — 1 MB](https://resources.jsontoolsbox.cc/issues-1mb.json)
+- [下载工单 — 10 MB](https://resources.jsontoolsbox.cc/issues-10mb.json)
+- [下载工单 — 20 MB](https://resources.jsontoolsbox.cc/issues-20mb.json)
+- [下载工单 — 40 MB](https://resources.jsontoolsbox.cc/issues-40mb.json)
 
 每条工单可能包含：
 
@@ -139,10 +139,10 @@ promo:
 
 支付数据集表示常见的支付相关对象，如扣款、支付意向、客户、支付方式和付款。
 
-- [下载支付 — 1 MB](https://github.com/kbmjj123/jsontoolbox.cc/raw/develop/libs/json-generator/output/payments-1mb.json)
-- [下载支付 — 10 MB](https://github.com/kbmjj123/jsontoolbox.cc/raw/develop/libs/json-generator/output/payments-10mb.json)
-- [下载支付 — 20 MB](https://github.com/kbmjj123/jsontoolbox.cc/raw/develop/libs/json-generator/output/payments-20mb.json)
-- [下载支付 — 40 MB](https://github.com/kbmjj123/jsontoolbox.cc/raw/develop/libs/json-generator/output/payments-40mb.json)
+- [下载支付 — 1 MB](https://resources.jsontoolsbox.cc/payments-1mb.json)
+- [下载支付 — 10 MB](https://resources.jsontoolsbox.cc/payments-10mb.json)
+- [下载支付 — 20 MB](https://resources.jsontoolsbox.cc/payments-20mb.json)
+- [下载支付 — 40 MB](https://resources.jsontoolsbox.cc/payments-40mb.json)
 
 生成的记录可能包含：
 
@@ -162,10 +162,10 @@ promo:
 
 商品数据集包含目录数据，含商品图片、选项、变体、价格、库存、标签、SEO 元数据和发布状态。
 
-- [下载商品 — 1 MB](https://github.com/kbmjj123/jsontoolbox.cc/raw/develop/libs/json-generator/output/products-1mb.json)
-- [下载商品 — 10 MB](https://github.com/kbmjj123/jsontoolbox.cc/raw/develop/libs/json-generator/output/products-10mb.json)
-- [下载商品 — 20 MB](https://github.com/kbmjj123/jsontoolbox.cc/raw/develop/libs/json-generator/output/products-20mb.json)
-- [下载商品 — 40 MB](https://github.com/kbmjj123/jsontoolbox.cc/raw/develop/libs/json-generator/output/products-40mb.json)
+- [下载商品 — 1 MB](https://resources.jsontoolsbox.cc/products-1mb.json)
+- [下载商品 — 10 MB](https://resources.jsontoolsbox.cc/products-10mb.json)
+- [下载商品 — 20 MB](https://resources.jsontoolsbox.cc/products-20mb.json)
+- [下载商品 — 40 MB](https://resources.jsontoolsbox.cc/products-40mb.json)
 
 一个商品可能包含：
 

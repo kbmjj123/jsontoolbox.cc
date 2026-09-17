@@ -38,10 +38,10 @@ The collection includes several common business scenarios:
 
 E-commerce order data includes customers, addresses, line items, product images, taxes, discounts, payment states, fulfillment states, and order metadata.
 
-- [Download Orders — 1 MB](https://github.com/kbmjj123/jsontoolbox.cc/raw/develop/libs/json-generator/output/orders-1mb.json)
-- [Download Orders — 5 MB](https://github.com/kbmjj123/jsontoolbox.cc/raw/develop/libs/json-generator/output/orders-5mb.json)
-- [Download Orders — 10 MB](https://github.com/kbmjj123/jsontoolbox.cc/raw/develop/libs/json-generator/output/orders-10mb.json)
-- [Download Orders — 20 MB](https://github.com/kbmjj123/jsontoolbox.cc/raw/develop/libs/json-generator/output/orders-20mb.json)
+- [Download Orders — 1 MB](https://resources.jsontoolsbox.cc/orders-1mb.json)
+- [Download Orders — 5 MB](https://resources.jsontoolsbox.cc/orders-5mb.json)
+- [Download Orders — 10 MB](https://resources.jsontoolsbox.cc/orders-10mb.json)
+- [Download Orders — 20 MB](https://resources.jsontoolsbox.cc/orders-20mb.json)
 
 Example structure:
 
@@ -95,9 +95,9 @@ This dataset is useful for testing expandable trees, nested arrays, totals, filt
 
 The users dataset contains realistic-looking user profiles with names, emails, avatars, addresses, companies, job titles, preferences, roles, and optional social links.
 
-- [Download Users — 1 MB](https://github.com/kbmjj123/jsontoolbox.cc/raw/develop/libs/json-generator/output/users-1mb.json)
-- [Download Users — 15 MB](https://github.com/kbmjj123/jsontoolbox.cc/raw/develop/libs/json-generator/output/users-15mb.json)
-- [Download Users — 40 MB](https://github.com/kbmjj123/jsontoolbox.cc/raw/develop/libs/json-generator/output/users-40mb.json)
+- [Download Users — 1 MB](https://resources.jsontoolsbox.cc/users-1mb.json)
+- [Download Users — 15 MB](https://resources.jsontoolsbox.cc/users-15mb.json)
+- [Download Users — 40 MB](https://resources.jsontoolsbox.cc/users-40mb.json)
 
 It can be used to test:
 
@@ -112,10 +112,10 @@ It can be used to test:
 
 The logs dataset simulates records produced by web applications and backend services.
 
-- [Download Logs — 1 MB](https://github.com/kbmjj123/jsontoolbox.cc/raw/develop/libs/json-generator/output/logs-1mb.json)
-- [Download Logs — 10 MB](https://github.com/kbmjj123/jsontoolbox.cc/raw/develop/libs/json-generator/output/logs-10mb.json)
-- [Download Logs — 30 MB](https://github.com/kbmjj123/jsontoolbox.cc/raw/develop/libs/json-generator/output/logs-30mb.json)
-- [Download Logs — 50 MB](https://github.com/kbmjj123/jsontoolbox.cc/raw/develop/libs/json-generator/output/logs-50mb.json)
+- [Download Logs — 1 MB](https://resources.jsontoolsbox.cc/logs-1mb.json)
+- [Download Logs — 10 MB](https://resources.jsontoolsbox.cc/logs-10mb.json)
+- [Download Logs — 30 MB](https://resources.jsontoolsbox.cc/logs-30mb.json)
+- [Download Logs — 50 MB](https://resources.jsontoolsbox.cc/logs-50mb.json)
 
 Log records may contain:
 
@@ -133,10 +133,10 @@ This makes the dataset suitable for testing log viewers, JSON search, syntax hig
 
 The issues dataset simulates project management and issue-tracking records.
 
-- [Download Issues — 1 MB](https://github.com/kbmjj123/jsontoolbox.cc/raw/develop/libs/json-generator/output/issues-1mb.json)
-- [Download Issues — 10 MB](https://github.com/kbmjj123/jsontoolbox.cc/raw/develop/libs/json-generator/output/issues-10mb.json)
-- [Download Issues — 20 MB](https://github.com/kbmjj123/jsontoolbox.cc/raw/develop/libs/json-generator/output/issues-20mb.json)
-- [Download Issues — 40 MB](https://github.com/kbmjj123/jsontoolbox.cc/raw/develop/libs/json-generator/output/issues-40mb.json)
+- [Download Issues — 1 MB](https://resources.jsontoolsbox.cc/issues-1mb.json)
+- [Download Issues — 10 MB](https://resources.jsontoolsbox.cc/issues-10mb.json)
+- [Download Issues — 20 MB](https://resources.jsontoolsbox.cc/issues-20mb.json)
+- [Download Issues — 40 MB](https://resources.jsontoolsbox.cc/issues-40mb.json)
 
 Each issue may include:
 
@@ -156,10 +156,10 @@ This scenario is particularly useful for testing inconsistent object shapes and 
 
 The payments dataset represents common payment-related objects such as charges, payment intents, customers, payment methods, and payouts.
 
-- [Download Payments — 1 MB](https://github.com/kbmjj123/jsontoolbox.cc/raw/develop/libs/json-generator/output/payments-1mb.json)
-- [Download Payments — 10 MB](https://github.com/kbmjj123/jsontoolbox.cc/raw/develop/libs/json-generator/output/payments-10mb.json)
-- [Download Payments — 20 MB](https://github.com/kbmjj123/jsontoolbox.cc/raw/develop/libs/json-generator/output/payments-20mb.json)
-- [Download Payments — 40 MB](https://github.com/kbmjj123/jsontoolbox.cc/raw/develop/libs/json-generator/output/payments-40mb.json)
+- [Download Payments — 1 MB](https://resources.jsontoolsbox.cc/payments-1mb.json)
+- [Download Payments — 10 MB](https://resources.jsontoolsbox.cc/payments-10mb.json)
+- [Download Payments — 20 MB](https://resources.jsontoolsbox.cc/payments-20mb.json)
+- [Download Payments — 40 MB](https://resources.jsontoolsbox.cc/payments-40mb.json)
 
 The generated records may include:
 
@@ -179,10 +179,10 @@ All payment records are synthetic. They are not connected to real payment accoun
 
 The products dataset contains catalog data with product images, options, variants, prices, inventory, tags, SEO metadata, and publication status.
 
-- [Download Products — 1 MB](https://github.com/kbmjj123/jsontoolbox.cc/raw/develop/libs/json-generator/output/products-1mb.json)
-- [Download Products — 10 MB](https://github.com/kbmjj123/jsontoolbox.cc/raw/develop/libs/json-generator/output/products-10mb.json)
-- [Download Products — 20 MB](https://github.com/kbmjj123/jsontoolbox.cc/raw/develop/libs/json-generator/output/products-20mb.json)
-- [Download Products — 40 MB](https://github.com/kbmjj123/jsontoolbox.cc/raw/develop/libs/json-generator/output/products-40mb.json)
+- [Download Products — 1 MB](https://resources.jsontoolsbox.cc/products-1mb.json)
+- [Download Products — 10 MB](https://resources.jsontoolsbox.cc/products-10mb.json)
+- [Download Products — 20 MB](https://resources.jsontoolsbox.cc/products-20mb.json)
+- [Download Products — 40 MB](https://resources.jsontoolsbox.cc/products-40mb.json)
 
 A product may contain:
 
