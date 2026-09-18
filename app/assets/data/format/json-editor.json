@@ -14,149 +14,180 @@
     "json-schema-validator"
   ],
   "en": {
-    "name": "JSON Editor",
-    "description": "Edit JSON data online with syntax highlighting, live validation, formatting, and helpful visual cues. This free JSON editor online works as a .json editor and JSON online editor for developers, testers, students, and anyone working with structured data — entirely in your browser.",
-    "ui": {
-      "label_input": "Input JSON",
-      "label_output": "Formatted Output",
-      "option_indent": "Indent:",
-      "option_indent_2": "2 spaces",
-      "option_indent_4": "4 spaces",
-      "option_indent_minified": "Minified",
-      "option_sort_keys": "Sort keys",
-      "status_valid": "✅ Valid JSON",
-      "placeholder_output": "Formatted output will appear here..."
-    },
-    "hero": {
-      "trustHtml": "100% client-side editing. Your JSON data never leaves your browser."
-    },
-    "meta": {
-      "title": "JSON Editor — Free Online JSON Editor & Formatter",
-      "description": "Edit JSON data online with syntax highlighting, live validation, formatting, and key sorting. Use this free browser-based JSON editor to modify, beautify, copy, or download JSON without uploading files or creating an account.",
-      "keywords": [
-        "json editor",
-        "json editor online",
-        "online json editor",
-        "json edit online",
-        "edit json",
-        ".json editor",
-        "json online editor",
-        "json code editor",
-        "json editor with validation",
-        "json editor formatter",
-        "free json editor",
-        "json editing tool",
-        "browser json editor",
-        "json editor no upload"
-      ]
-    },
-    "features": [
-      {
-        "icon": "lucide:edit",
-        "title": "Syntax Highlighting",
-        "description": "Edit JSON with color-coded keys, strings, numbers, booleans, arrays, and objects. Syntax highlighting makes nested data easier to scan and helps you identify values while editing."
-      },
-      {
-        "icon": "lucide:check-circle",
-        "title": "Live Validation",
-        "description": "Get instant feedback on JSON syntax errors as you type or paste data. Quickly find common problems such as missing commas, unmatched brackets, invalid quotes, or incorrectly formatted values."
-      },
-      {
-        "icon": "lucide:sparkles",
-        "title": "Smart Type Detection",
-        "description": "Automatically detects URLs, images, emails, dates, and colors when they appear in your JSON values. Helpful data types are visually identified so structured content is easier to understand."
-      },
-      {
-        "icon": "lucide:copy",
-        "title": "Copy & Download",
-        "description": "Copy edited JSON to your clipboard or download it as a .json file. Export the result after cleaning API responses, updating configuration files, or preparing test data."
-      },
-      {
-        "icon": "lucide:settings",
-        "title": "Format Options",
-        "description": "Choose two-space indentation, four-space indentation, or a minified layout. You can also sort object keys to make JSON easier to compare, review, and maintain."
-      },
-      {
-        "icon": "lucide:shield-check",
-        "title": "Private",
-        "description": "All editing, validation, and formatting happen in your browser. Your JSON is not uploaded to a server, making the tool suitable for configuration data, API responses, and other private content."
-      }
-    ],
-    "guide": [
-      {
-        "title": "Paste or type JSON",
-        "description": "Paste JSON from an API response, configuration file, database export, or code project, or type directly in the editor. The tool accepts objects, arrays, strings, numbers, booleans, and null values."
-      },
-      {
-        "title": "Edit and validate your JSON",
-        "description": "Modify values, add or remove keys, update arrays, or restructure nested objects. Live validation helps you identify syntax problems before you copy or export the result."
-      },
-      {
-        "title": "Format and organize the data",
-        "description": "Select your preferred indentation style and optionally sort object keys. Formatting turns compact or difficult-to-read JSON into a clearer structure that is easier to review and edit."
-      },
-      {
-        "title": "Copy or download",
-        "description": "Copy the edited JSON for use in your application, request, or documentation, or download it as a .json file for local storage and later use."
-      }
-    ],
-    "example": {
-      "title": "JSON Editing Example",
-      "description": "This example shows how the JSON Editor formats minified JSON into a readable structure with proper indentation. You can then change existing values, add new properties, remove unnecessary fields, or restructure nested objects directly in the editor.",
-      "inputLabel": "Minified JSON",
-      "input": "{\"name\":\"Alice\",\"age\":30,\"skills\":[\"JavaScript\",\"TypeScript\",\"Vue\"],\"address\":{\"city\":\"Shanghai\",\"country\":\"CN\"}}",
-      "inputExplanation": "This minified JSON is valid, but its compact layout makes individual properties and nested objects difficult to inspect or edit. Paste it into the editor to get a formatted view.",
-      "outputLabel": "Formatted JSON",
-      "output": "{\n  \"name\": \"Alice\",\n  \"age\": 30,\n  \"skills\": [\n    \"JavaScript\",\n    \"TypeScript\",\n    \"Vue\"\n  ],\n  \"address\": {\n    \"city\": \"Shanghai\",\n    \"country\": \"CN\"\n  }\n}",
-      "outputExplanation": "The editor formats JSON with consistent indentation, making the object hierarchy, arrays, and nested address properties easier to read and modify. After editing, you can copy the result or download it as a JSON file."
-    },
-    "faq": [
-      {
-        "question": "Is my JSON data uploaded to a server?",
-        "answer": "No. JSON editing, validation, and formatting are performed locally in your browser. Your JSON data does not leave your device or need to be uploaded to a server."
-      },
-      {
-        "question": "Does it validate JSON while I edit?",
-        "answer": "Yes. The editor provides live syntax validation while you type or paste JSON. It can help you detect common errors such as missing commas, mismatched braces, invalid quotation marks, and malformed values."
-      },
-      {
-        "question": "Can I format JSON in the editor?",
-        "answer": "Yes. You can format and beautify JSON with two-space indentation, four-space indentation, or another available layout. Formatting adds whitespace and line breaks without changing the underlying JSON values."
-      },
-      {
-        "question": "Can I sort JSON keys?",
-        "answer": "Yes. Enable the sort keys option to organize object properties alphabetically. This can make large JSON objects easier to review and can help reduce visual differences when comparing similar data."
-      },
-      {
-        "question": "Can I copy or download the edited JSON?",
-        "answer": "Yes. After editing and formatting your data, you can copy the JSON to your clipboard or download it as a .json file for use in a code project, API request, configuration file, or local workflow."
-      },
-      {
-        "question": "Can I edit large JSON files?",
-        "answer": "The tool is designed for browser-based editing, so the practical limit depends on your browser's available memory, device performance, and the complexity of the JSON structure. Very large files may take longer to parse or format."
-      },
-      {
-        "question": "What is the difference between JSON editor and JSON formatter?",
-        "answer": "A JSON editor lets you interactively modify JSON data, including changing values, adding properties, removing fields, and restructuring objects or arrays. A JSON formatter mainly restructures existing JSON with indentation and line breaks to improve readability."
-      },
-      {
-        "question": "Can I use this tool to edit a JSON configuration file?",
-        "answer": "Yes. You can paste the contents of a JSON configuration file into the editor, update the required properties, validate the syntax, and download the edited result as a .json file. Keep a backup of the original file before replacing it."
-      },
-      {
-        "question": "Can I edit API response data with this JSON editor?",
-        "answer": "Yes. Paste an API response into the editor to inspect its structure, update values, remove unnecessary fields, or prepare sample data for testing and documentation. The editor works with valid JSON objects and arrays."
-      },
-      {
-        "question": "Is this a free online JSON editor?",
-        "answer": "Yes. This is a free online JSON editor for editing, formatting, validating, and organizing JSON in your browser. You can edit JSON online without signing up, uploading a file, or installing desktop software."
-      }
-    ],
-    "article": {
-      "title": "How to Edit JSON Online with Syntax Highlighting",
-      "content": "<h2>What Is a JSON Editor?</h2><p>A JSON editor is a tool for viewing, modifying, validating, and formatting data written in JSON, or JavaScript Object Notation. JSON is widely used for API responses, application settings, configuration files, data exchange, and test fixtures. Unlike a basic text editor, a JSON editor recognizes the structure of objects, arrays, strings, numbers, booleans, and null values.</p><p>Using a browser-based JSON editor makes it possible to make quick changes without installing software or configuring a development environment. You can paste JSON, inspect its hierarchy, update values, and export the corrected result from one place.</p><h2>Why Use an Online JSON Editor?</h2><p>Raw JSON is often difficult to work with when it has been minified onto a single line or contains deeply nested objects. An online JSON editor improves readability with indentation and syntax highlighting while providing validation feedback during editing.</p><ul><li><strong>Read structured data:</strong> Expand the visual structure of objects and arrays through clear indentation</li><li><strong>Make quick changes:</strong> Update values, add properties, remove fields, or modify array items</li><li><strong>Reduce syntax mistakes:</strong> Receive feedback about invalid JSON while editing</li><li><strong>Prepare development data:</strong> Clean API responses, test fixtures, and configuration values</li><li><strong>Work without installation:</strong> Open the tool in a browser and start editing immediately</li></ul><h2>Key Features</h2><ul><li><strong>Syntax Highlighting:</strong> Color-coded keys, values, strings, numbers, arrays, and objects make JSON easier to scan</li><li><strong>Live Validation:</strong> Instant feedback helps locate missing commas, unmatched brackets, invalid quotes, and other syntax problems</li><li><strong>Formatting:</strong> Beautify compact JSON with consistent indentation and line breaks</li><li><strong>Key Sorting:</strong> Organize object properties to make large JSON structures easier to review</li><li><strong>Smart Type Detection:</strong> Recognize useful value types such as URLs, images, emails, dates, and colors</li><li><strong>Copy and Download:</strong> Copy the final JSON or save it as a .json file</li><li><strong>Client-Side Processing:</strong> Edit and format data locally without uploading it to a remote server</li></ul><h2>How to Edit JSON Online</h2><ol><li><strong>Paste or type JSON:</strong> Add an object or array to the input area. You can use data from an API response, configuration file, or development project.</li><li><strong>Review the structure:</strong> Use syntax highlighting and indentation to identify keys, values, nested objects, and arrays.</li><li><strong>Edit the data:</strong> Change strings, numbers, booleans, or null values. You can also add new keys, remove properties, or modify array items.</li><li><strong>Check for errors:</strong> Use the live validation status to identify invalid syntax before exporting the result.</li><li><strong>Format the JSON:</strong> Select two spaces, four spaces, or minified output depending on whether you need readability or a compact file.</li><li><strong>Organize keys:</strong> Enable key sorting when you want object properties arranged consistently for review or comparison.</li><li><strong>Export the result:</strong> Copy the edited JSON to another application or download it as a .json file.</li></ol><h2>Common JSON Editing Tasks</h2><p>A JSON editor can be useful for many everyday development and data tasks. You can update environment settings, correct sample API responses, prepare mock data, edit localization files, inspect browser or application output, and create small JSON documents for testing.</p><ul><li>Change a user's name, status, identifier, or account settings</li><li>Add or remove fields from an API response example</li><li>Update arrays containing tags, permissions, products, or other records</li><li>Inspect nested configuration options before using them in an application</li><li>Convert minified JSON into a readable format for code review</li><li>Sort keys to make similar JSON objects easier to compare</li></ul><h2>JSON Editor vs JSON Formatter</h2><p>Although the terms are sometimes used together, a JSON editor and a JSON formatter serve different primary purposes.</p><ul><li><strong>JSON editor:</strong> Lets you modify JSON content interactively, including values, keys, objects, and arrays</li><li><strong>JSON formatter:</strong> Adds indentation and line breaks to improve the readability of existing JSON</li><li><strong>JSON validator:</strong> Checks whether the text follows valid JSON syntax and reports errors</li><li><strong>JSON minifier:</strong> Removes unnecessary whitespace to create a compact JSON representation</li></ul><p>Many practical tools combine these functions. A JSON editor with formatting and validation allows you to change data while checking that the final result remains valid.</p><h2>Best Practices for Editing JSON</h2><ul><li><strong>Validate first:</strong> Confirm that the input is valid before making extensive changes</li><li><strong>Use double quotes:</strong> JSON property names and string values must use double quotation marks</li><li><strong>Keep formatting consistent:</strong> Choose an indentation style that matches your project or team convention</li><li><strong>Check data types:</strong> Make sure numbers, booleans, null, and strings are represented correctly</li><li><strong>Review nested structures:</strong> Verify that every opening brace or bracket has a matching closing character</li><li><strong>Save a backup:</strong> Keep the original JSON file before replacing it with an edited version</li><li><strong>Test after editing:</strong> If the JSON is used by an application or API, test the updated data in the target environment</li></ul><h2>Privacy and Browser-Based Editing</h2><p>This JSON editor processes data in your browser rather than requiring an upload to a remote service. That workflow is convenient for private configuration snippets, API responses, and development data. Even with client-side tools, you should avoid sharing sensitive credentials, access tokens, passwords, or personal information in any online editor.</p><h2>Frequently Used JSON Tools</h2><p>After editing JSON, you may need additional tools to complete a data workflow. Use a JSON minifier when you need a compact version, a JSON Schema Validator when you need to check data against a defined schema, or a JSON to CSV converter when you need to analyze tabular records.</p>"
-    }
+  "name": "JSON Editor",
+  "description": "Edit, validate, format, and minify JSON online in your browser. Paste or open a JSON file, make changes in a syntax-highlighted editor, sort object keys when needed, and copy or download the result without an account.",
+  "ui": {
+    "label_input": "JSON Editor",
+    "label_output": "Formatted JSON",
+    "option_indent": "Indent:",
+    "option_indent_2": "2 spaces",
+    "option_indent_4": "4 spaces",
+    "option_indent_minified": "Minified",
+    "option_sort_keys": "Sort object keys",
+    "btn_format": "Format",
+    "btn_validate": "Validate",
+    "btn_minify": "Minify",
+    "btn_example": "Load Example",
+    "btn_copy": "Copy JSON",
+    "btn_download": "Download JSON",
+    "status_valid": "Valid JSON",
+    "status_invalid": "Invalid JSON",
+    "status_error_at": "Error at line {line}, column {column}",
+    "placeholder_input": "Paste or type JSON here...",
+    "placeholder_output": "Formatted JSON will appear here...",
+    "error_empty_input": "Enter JSON or open a file first",
+    "error_invalid_json": "The input is not valid JSON"
   },
+  "hero": {
+    "trustHtml": "Runs in your browser. Your JSON is not uploaded by this tool."
+  },
+  "meta": {
+    "title": "JSON Editor Online – Edit, Validate and Format JSON",
+    "description": "Edit JSON online with syntax highlighting, live syntax validation, formatting, minifying, and key sorting. Copy or download valid JSON in your browser without an account or server upload.",
+    "keywords": [
+      "json editor",
+      "json editor online",
+      "online json editor",
+      "edit json online",
+      "json edit online",
+      "json file editor",
+      "json editor with validation",
+      "free json editor"
+    ]
+  },
+  "features": [
+    {
+      "icon": "lucide:code-2",
+      "title": "Syntax-Aware Editing",
+      "description": "Edit JSON with syntax highlighting for property names, strings, numbers, booleans, null, arrays, and objects. The editor makes structured data easier to scan without changing its meaning."
+    },
+    {
+      "icon": "lucide:circle-check",
+      "title": "Live Syntax Validation",
+      "description": "Check JSON syntax while editing and identify common problems such as missing commas, unmatched brackets, invalid quotation marks, and malformed values. Syntax validation does not validate a JSON Schema."
+    },
+    {
+      "icon": "lucide:sparkles",
+      "title": "Readable Value Hints",
+      "description": "Recognize selected value patterns such as URLs or email-like strings when supported by the interface. These hints are visual conveniences and are not a substitute for runtime or schema validation."
+    },
+    {
+      "icon": "lucide:copy",
+      "title": "Copy and Download",
+      "description": "Copy the edited JSON to your clipboard or download it as a .json file for configuration, API testing, documentation, fixtures, and local development."
+    },
+    {
+      "icon": "lucide:indent-increase",
+      "title": "Format and Minify",
+      "description": "Beautify valid JSON with two-space or four-space indentation, or remove unnecessary whitespace to create a compact representation for transport or storage."
+    },
+    {
+      "icon": "lucide:arrow-down-up",
+      "title": "Optional Key Sorting",
+      "description": "Sort object keys recursively when you need a consistent order for inspection or comparison. Sorting can change the original property order, so use it only when order is not meaningful to your workflow."
+    },
+    {
+      "icon": "lucide:upload",
+      "title": "Paste or Open JSON",
+      "description": "Paste JSON from an API response, configuration file, database export, or code project, or open a local .json file if file input is available."
+    },
+    {
+      "icon": "lucide:shield-check",
+      "title": "Browser-Based Editing",
+      "description": "Editing, parsing, validation, formatting, and minification happen in your browser. The page does not require an account or upload your JSON to a remote service."
+    }
+  ],
+  "guide": [
+    {
+      "title": "Paste or open JSON",
+      "description": "Enter a JSON object, array, scalar value, or local .json file in the editor. The input must use standard JSON syntax before it can be formatted or exported."
+    },
+    {
+      "title": "Edit the structure",
+      "description": "Change values, add or remove properties, update array items, or modify nested objects. Syntax highlighting and matching brackets help you navigate the document."
+    },
+    {
+      "title": "Validate and format",
+      "description": "Run validation to check syntax, then choose two-space, four-space, or minified output. Fix any reported error before copying or downloading the result."
+    },
+    {
+      "title": "Organize keys if needed",
+      "description": "Enable Sort object keys only when property order is not meaningful. Sorting can make comparable documents easier to review but changes the original ordering."
+    },
+    {
+      "title": "Copy or download",
+      "description": "Copy the valid JSON to another application or download it as a .json file. Keep a backup of the original file before replacing it."
+    }
+  ],
+  "example": {
+    "title": "JSON Editing Example",
+    "description": "Format and edit a minified JSON document, then export the readable result.",
+    "inputLabel": "Minified JSON",
+    "input": "{\"name\":\"Alice\",\"age\":30,\"skills\":[\"JavaScript\",\"TypeScript\",\"Vue\"],\"address\":{\"city\":\"Shanghai\",\"country\":\"CN\"}}",
+    "inputExplanation": "The input is valid JSON, but its compact layout makes individual properties and nested values harder to inspect.",
+    "outputLabel": "Formatted JSON",
+    "output": "{\n  \"name\": \"Alice\",\n  \"age\": 30,\n  \"skills\": [\n    \"JavaScript\",\n    \"TypeScript\",\n    \"Vue\"\n  ],\n  \"address\": {\n    \"city\": \"Shanghai\",\n    \"country\": \"CN\"\n  }\n}",
+    "outputExplanation": "The formatted result preserves the JSON data while adding indentation and line breaks. You can edit values, add properties, remove fields, or download the updated file."
+  },
+  "faq": [
+    {
+      "question": "Is my JSON uploaded to a server?",
+      "answer": "This page is designed to edit, parse, validate, and format JSON in your browser without requiring a server upload. You should still avoid entering passwords, API keys, access tokens, personal information, or confidential production data into any browser-based editor."
+    },
+    {
+      "question": "Does it validate JSON while I edit?",
+      "answer": "It can validate standard JSON syntax while you type or after you run validation. It can identify errors such as missing commas, unmatched braces, invalid quotes, and malformed values. Syntax validation is different from validating data against a JSON Schema."
+    },
+    {
+      "question": "Can I format and beautify JSON?",
+      "answer": "Yes. Valid JSON can be formatted with the available indentation options. Formatting changes whitespace and line breaks, not the parsed data values."
+    },
+    {
+      "question": "Can I minify JSON?",
+      "answer": "Yes. Minified output removes unnecessary whitespace and line breaks while retaining the same parsed JSON structure. Minified JSON is smaller to display or transmit but harder to edit manually."
+    },
+    {
+      "question": "Can I sort JSON keys?",
+      "answer": "Yes, when the option is available. Key sorting is useful for consistent review or comparison, but it changes property order. JSON object order should not normally be treated as meaningful data, but some tools or human workflows may still rely on the original presentation."
+    },
+    {
+      "question": "Can I edit JSON configuration files?",
+      "answer": "Yes. Paste the file contents or open a local .json file, make the changes, validate the result, and download a new copy. Keep the original file as a backup before replacing it."
+    },
+    {
+      "question": "Can I edit API response data?",
+      "answer": "Yes. You can use the editor to inspect an API response, change values, remove fields, or prepare a mock payload. The editor does not confirm that the modified data meets the API's schema or business rules unless a separate schema validation feature is used."
+    },
+    {
+      "question": "What kinds of JSON values can I edit?",
+      "answer": "Standard JSON supports objects, arrays, strings, numbers, booleans, and null. Comments, trailing commas, single-quoted strings, and unquoted keys are not valid standard JSON unless the page explicitly supports a JSON5 or JSONC mode."
+    },
+    {
+      "question": "Can I edit large JSON files?",
+      "answer": "The practical limit depends on browser memory, editor implementation, device performance, nesting depth, and the amount of syntax highlighting or validation work required. Large files may become slower to edit, format, or validate."
+    },
+    {
+      "question": "Does it support JSON Schema validation?",
+      "answer": "Syntax validation only checks whether the text is valid JSON. JSON Schema validation checks whether the parsed data matches a separate schema. Use a JSON Schema validator when you need required fields, data constraints, formats, or application-specific structure checks."
+    },
+    {
+      "question": "Does it repair invalid JSON?",
+      "answer": "Not automatically unless a repair function is explicitly provided. The editor can report syntax errors, but automatically changing quotes, commas, or values may alter the intended data. Review any repair suggestion before applying it."
+    },
+    {
+      "question": "Can I use a tree or table view?",
+      "answer": "The current page is primarily a syntax-aware text editor. A tree, table, grid, or form view requires a separate structured editing interface and may be available in another tool or a future version."
+    },
+    {
+      "question": "Is this a free online JSON editor?",
+      "answer": "Yes. You can edit, validate, format, minify, copy, and download JSON in the browser without creating an account."
+    }
+  ],
+  "article": {
+    "title": "How to Edit JSON Online",
+    "content": "<h2>What Is an Online JSON Editor?</h2><p>An online JSON editor is a browser-based workspace for writing, changing, formatting, and validating JSON. It is useful for API responses, configuration files, test fixtures, database exports, and small structured documents.</p><p>Unlike a basic text box, a syntax-aware editor can highlight JSON tokens, match brackets, report syntax errors, and format valid data. It does not automatically know the business rules or schema required by the application that will consume the JSON.</p><h2>How to Edit JSON Online</h2><ol><li><strong>Enter JSON:</strong> Paste a JSON document or open a local .json file.</li><li><strong>Inspect the structure:</strong> Use indentation, syntax highlighting, and bracket matching to locate objects, arrays, keys, and values.</li><li><strong>Make changes:</strong> Edit strings, numbers, booleans, null values, object properties, or array items.</li><li><strong>Validate the syntax:</strong> Run validation or review the live status to find missing commas, unmatched brackets, invalid quotes, and other syntax errors.</li><li><strong>Format or minify:</strong> Choose readable indentation for editing or minified output for compact transport.</li><li><strong>Export:</strong> Copy the valid result or download a new JSON file.</li></ol><h2>JSON Syntax Rules to Remember</h2><ul><li><strong>Double quotes:</strong> Property names and string values use double quotation marks.</li><li><strong>Commas:</strong> Properties and array items are separated by commas, but the final item normally has no trailing comma.</li><li><strong>Objects:</strong> Use curly braces and key-value pairs.</li><li><strong>Arrays:</strong> Use square brackets and ordered values.</li><li><strong>Primitive values:</strong> Valid JSON supports strings, numbers, booleans, and null.</li><li><strong>No comments:</strong> Standard JSON does not allow comments. JSONC or JSON5 require a different parser.</li></ul><h2>Editor vs Formatter vs Validator</h2><ul><li><strong>JSON editor:</strong> Lets you change keys, values, arrays, and nested objects.</li><li><strong>JSON formatter:</strong> Adds indentation and line breaks to an existing valid document.</li><li><strong>JSON validator:</strong> Checks whether the text follows JSON syntax.</li><li><strong>JSON Schema validator:</strong> Checks whether parsed data satisfies a separate structure and constraint definition.</li><li><strong>JSON minifier:</strong> Removes unnecessary whitespace for a compact representation.</li></ul><p>Many tools combine these capabilities, but they answer different questions. A document can be valid JSON and still fail a JSON Schema or application-specific validation.</p><h2>Formatting and Minifying JSON</h2><p>Formatting makes nested objects and arrays easier to read. Minifying removes whitespace without changing the parsed values. Keep formatted JSON during development and review, and use minified output only when compact transport or storage is useful.</p><h2>Sorting Object Keys</h2><p>Sorting keys recursively can make similar documents easier to compare and review. However, it changes the source ordering and can make diffs noisy if a project intentionally preserves a particular presentation order. Sort keys only when object property order is not meaningful to the surrounding workflow.</p><h2>Editing Configuration Files Safely</h2><p>Before editing a configuration file, create a backup and understand how the consuming application interprets values. A value such as <code>\"false\"</code> is a string, while <code>false</code> is a boolean. Similarly, a numeric-looking identifier may need to remain a string if leading zeros or exact formatting matter.</p><p>After editing, validate the JSON syntax and test the configuration in a safe environment. Valid JSON does not guarantee that the application accepts the field names, types, or values.</p><h2>Editing API Responses and Test Fixtures</h2><p>An editor can help prepare mock API data, remove fields from a response, or change values for a test case. For reliable fixtures, preserve the expected data types and validate the result against the API schema or runtime parser used by the application.</p><h2>Large JSON Files</h2><p>Browser editors usually need to hold the input text and parsed or highlighted representation in memory. Syntax highlighting, validation, formatting, and rendering can become expensive for large files. For very large JSON documents, use a local editor, a streaming parser, or a tool designed for large-file inspection.</p><h2>Browser-Based Privacy</h2><p>This editor is designed to process JSON in the browser rather than sending it to a remote service. That can be useful for private development data, but it is not a secret-management system. Avoid entering passwords, access tokens, private keys, customer data, or confidential production configuration into any online editor.</p><h2>Advanced Editing Workflows</h2><p>Structured data users may need tree, table, grid, form, query, repair, schema validation, or graph views in addition to a text editor. Those views can be useful for large or unfamiliar documents, but they are separate capabilities and should be clearly distinguished from standard syntax editing.</p>"
+  }
+},
   "zh": {
     "name": "JSON 编辑器",
     "description": "在线编辑 JSON 数据，支持语法高亮、实时验证、格式化和键名排序。这个免费的在线 JSON 编辑器适用于 API 响应、配置文件、测试数据和 JSON 文档，可直接在浏览器中修改、整理、复制或下载 JSON，无需安装软件或上传文件。",

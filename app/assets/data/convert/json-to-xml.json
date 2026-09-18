@@ -13,142 +13,177 @@
     "json-editor"
   ],
   "en": {
-		"name": "JSON to XML Converter",
-		"description": "Convert JSON data to XML format online. This JSON to XML converter and JSON to XML online tool transforms JSON objects and arrays into structured XML documents, with customizable root element, indentation, and encoding — all in your browser.",
-		"hero": {
-			"trustHtml": "100% client-side conversion. Your data never leaves your browser."
-		},
-		"meta": {
-			"title": "JSON to XML — Free Online Converter",
-			"description": "Convert JSON to XML format online. Transform JSON objects and arrays into XML. Customize root element, indentation, and encoding. Free, 100% client-side. No upload required.",
-			"keywords": [
-				"json to xml",
-				"json to xml converter",
-				"convert json to xml",
-				"json xml converter",
-				"json to xml online",
-				"json to xml tool",
-				"json to xml transformer",
-				"json to xml generator",
-				"json to xml parser",
-				"online json to xml",
-				"free json to xml",
-				"json to xml converter online",
-				"json to xml format",
-				"json to xml api"
-			]
-		},
-		"features": [
-			{
-				"icon": "lucide:code",
-				"title": "XML Export",
-				"description": "Convert JSON to well-formatted XML documents with proper nesting and indentation. The output is suitable for enterprise systems, SOAP APIs, and legacy integrations."
-			},
-			{
-				"icon": "lucide:download",
-				"title": "Download",
-				"description": "Download the generated XML as a .xml file. Use it directly in your integration workflows, configuration management, or data exchange processes."
-			},
-			{
-				"icon": "lucide:settings",
-				"title": "Customizable",
-				"description": "Customize the root element name, indentation style (2 or 4 spaces), and XML encoding. This helps match your target system's requirements and coding standards."
-			},
-			{
-				"icon": "lucide:copy",
-				"title": "Copy Output",
-				"description": "Copy the XML output to your clipboard with one click. Paste it into configuration files, API payloads, documentation, or other XML-compatible destinations."
-			},
-			{
-				"icon": "lucide:layers",
-				"title": "Nested Support",
-				"description": "Handles deeply nested JSON objects and arrays. Nested structures are converted to nested XML elements, preserving the original hierarchy."
-			},
-			{
-				"icon": "lucide:shield-check",
-				"title": "Private",
-				"description": "All conversion happens in your browser. Your JSON data is not uploaded to a server, which is useful when working with private API responses or configuration data."
-			}
-		],
-		"guide": [
-			{
-				"title": "Paste your JSON",
-				"description": "Paste your JSON object or array into the input field. You can use API responses, configuration snippets, or any JSON structure you need to convert to XML."
-			},
-			{
-				"title": "Configure options",
-				"description": "Set a custom root element name (default: root), choose indentation (2 or 4 spaces), and select the XML encoding. Adjust these to match your target system's expectations."
-			},
-			{
-				"title": "Click Convert",
-				"description": "Click Convert to XML to transform the JSON into an XML document. The tool preserves the structure and converts arrays to repeated elements."
-			},
-			{
-				"title": "Copy or Download",
-				"description": "Copy the XML output to your clipboard or download it as a .xml file. Use the result in enterprise integrations, SOAP APIs, or other XML-based workflows."
-			}
-		],
-		"example": {
-			"input": "{\n  \"user\": {\n    \"name\": \"Alice\",\n    \"age\": 30\n  }\n}",
-			"output": "<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n<user>\n  <name>Alice</name>\n  <age>30</age>\n</user>",
-			"useCase": "Convert JSON data to XML format for legacy system integration."
-		},
-		"faq": [
-			{
-				"question": "Is my JSON data uploaded to a server?",
-				"answer": "No. All conversion happens locally in your browser. Your JSON data never leaves your device and is not stored or transmitted anywhere."
-			},
-			{
-				"question": "How are JSON arrays handled in XML?",
-				"answer": "JSON arrays are converted to repeated XML elements with the same tag name. For example, an array of items becomes multiple <item> elements under the parent node."
-			},
-			{
-				"question": "Can I customize the root element?",
-				"answer": "Yes. You can specify a custom root element name. The default is 'root', but you can change it to match your schema or integration requirements."
-			},
-			{
-				"question": "Can I convert XML back to JSON?",
-				"answer": "Yes. Use an XML to JSON converter tool to transform XML documents back into JSON format. This is useful when you need to move data between JSON-based and XML-based systems."
-			},
-			{
-				"question": "Does it support nested JSON objects?",
-				"answer": "Yes. Nested JSON objects become nested XML elements, preserving the original structure. Deeply nested hierarchies are converted faithfully into corresponding XML trees."
-			},
-			{
-				"question": "Can I convert large JSON files?",
-				"answer": "You can convert larger JSON files as long as they can be loaded and processed by your browser. The practical limit depends on available memory, device performance, and the complexity of the JSON structure."
-			},
-			{
-				"question": "How do I convert JSON to XML?",
-				"answer": "Simply paste your JSON data and click Convert. This free online tool lets you convert JSON to XML instantly in your browser — no upload required."
-			},
-			{
-				"question": "What happens to JSON keys with special characters?",
-				"answer": "JSON keys that are not valid XML element names are typically sanitized or wrapped to produce valid XML tags. The exact behavior may vary, so review the output if your keys contain unusual characters."
-			},
-			{
-				"question": "Is this a free JSON to XML converter?",
-				"answer": "Yes. This is a free online JSON to XML converter. You can paste JSON, configure options, and copy or download the XML output without creating an account or uploading data to a server."
-			}
-		],
-		"ui": {
-			"label_input": "Input JSON",
-			"label_output": "XML Output",
-			"btn_convert": "Convert to XML",
-			"btn_example": "Load Example",
-			"option_root_element": "Root Element:",
-			"option_indent": "Indent:",
-			"option_indent_2": "2 spaces",
-			"option_indent_4": "4 spaces",
-			"option_encoding": "Encoding:",
-			"placeholder_root": "root",
-			"placeholder_output": "XML output will appear here..."
-		},
-		"article": {
-			"title": "How to Convert JSON to XML Online",
-			"content": "<h2>Why Convert JSON to XML?</h2><p>While JSON is the dominant format for modern web APIs, XML is still widely used in enterprise systems, SOAP web services, and legacy applications. Converting JSON to XML allows you to integrate modern JSON-based services with existing XML infrastructure.</p><h2>Common Use Cases</h2><ul><li><strong>Enterprise integration:</strong> Connect modern REST APIs with legacy XML-based enterprise systems</li><li><strong>SOAP web services:</strong> Convert JSON payloads into XML format required by SOAP endpoints</li><li><strong>Configuration files:</strong> Transform JSON configuration into XML format for systems that expect XML configs</li><li><strong>Data exchange:</strong> Share data with partners or systems that use XML as their standard interchange format</li><li><strong>Migration projects:</strong> Move data from JSON-based storage to XML-based archives or vice versa</li></ul><h2>JSON vs XML</h2><ul><li><strong>JSON:</strong> Lightweight, concise, easy to read, and native to JavaScript environments</li><li><strong>XML:</strong> More verbose, supports attributes and namespaces, and has mature schema validation tools (XSD)</li></ul><p>JSON is generally preferred for new web APIs due to its simplicity, but XML remains important in many enterprise and regulated environments.</p><h2>How to Convert JSON to XML</h2><ol><li><strong>Paste JSON:</strong> Add your JSON object or array to the input field.</li><li><strong>Set root element:</strong> Optionally specify a custom root element name (default: root).</li><li><strong>Configure options:</strong> Choose indentation (2 or 4 spaces) and XML encoding to match your requirements.</li><li><strong>Click Convert:</strong> Transform the JSON into a well-formed XML document.</li><li><strong>Copy or download:</strong> Copy the XML to your clipboard or save it as a .xml file for use in your integration workflows.</li></ol><h2>How JSON Structures Map to XML</h2><ul><li><strong>Objects:</strong> Become nested XML elements, preserving the hierarchy.</li><li><strong>Arrays:</strong> Are converted to repeated elements with the same tag name under a parent node.</li><li><strong>Primitive values:</strong> Strings, numbers, and booleans become text content of XML elements.</li><li><strong>Null values:</strong> May be represented as empty elements or omitted, depending on the conversion strategy.</li></ul><h2>Best Practices</h2><ul><li><strong>Choose good root names:</strong> Use descriptive element names that reflect the data's purpose.</li><li><strong>Validate output:</strong> Check that the generated XML is well-formed and, if needed, validate it against an XSD schema.</li><li><strong>Consider attributes:</strong> JSON does not have attributes, so all data becomes elements. If your target system expects attributes, you may need post-processing.</li><li><strong>Handle special characters:</strong> Review how keys with special characters are transformed to ensure they produce valid XML tags.</li><li><strong>Keep a backup:</strong> Retain the original JSON in case you need to regenerate XML with different options.</li></ul><h2>Client-Side Privacy</h2><p>This JSON to XML converter processes input in your browser instead of requiring an upload to a remote service. That can be convenient for development data and private configuration snippets. However, you should still avoid entering passwords, API keys, access tokens, or other highly sensitive information into any browser-based tool.</p>"
-		}
-	},
+  "name": "JSON to XML Converter",
+  "description": "Convert JSON objects and arrays to XML online in your browser. Choose a root element, configure repeated array items, format the output, and copy or download a well-formed XML document. Special characters are escaped during conversion, but JSON-to-XML mappings may require adjustments for attributes and target schemas.",
+  "hero": {
+    "trustHtml": "Runs in your browser. Your JSON is not uploaded by this tool."
+  },
+  "meta": {
+    "title": "JSON to XML Converter – Free Online Tool",
+    "description": "Convert JSON to XML online. Paste JSON, choose a root element and array item name, format the XML, and copy or download the result. Free, fast, and browser-based.",
+    "keywords": [
+      "json to xml",
+      "json to xml converter",
+      "convert json to xml",
+      "json to xml online",
+      "online json to xml",
+      "free json to xml",
+      "json to xml tool",
+      "json array to xml"
+    ]
+  },
+  "features": [
+    {
+      "icon": "lucide:code-2",
+      "title": "Well-Formed XML Output",
+      "description": "Convert valid JSON objects, arrays, and scalar values into indented XML markup with escaped text content and an optional XML declaration."
+    },
+    {
+      "icon": "lucide:settings-2",
+      "title": "Custom Root and Array Elements",
+      "description": "Choose the root element for the generated document and define the element name used for repeated items in JSON arrays."
+    },
+    {
+      "icon": "lucide:indent-increase",
+      "title": "Readable Formatting",
+      "description": "Choose 2 or 4 spaces for indentation so the generated XML is easier to inspect, copy, validate, and maintain."
+    },
+    {
+      "icon": "lucide:file-code-2",
+      "title": "XML Declaration and Encoding",
+      "description": "Configure whether the output includes an XML declaration and select the encoding label supported by the page. The actual downloaded text encoding should match the declared value."
+    },
+    {
+      "icon": "lucide:copy",
+      "title": "Copy or Download XML",
+      "description": "Copy the generated XML to your clipboard or download it as a .xml file for development, integration testing, documentation, or data exchange workflows."
+    },
+    {
+      "icon": "lucide:layers-2",
+      "title": "Nested Objects and Arrays",
+      "description": "Nested JSON objects become nested XML elements, while array items become repeated elements using the configured item name or conversion rule."
+    },
+    {
+      "icon": "lucide:shield-check",
+      "title": "Browser-Based Processing",
+      "description": "JSON parsing and XML generation happen in your browser. The page does not require an account or upload the source JSON to a remote conversion service."
+    }
+  ],
+  "guide": [
+    {
+      "title": "Enter JSON",
+      "description": "Paste a valid JSON object or array into the input field, or open a .json file if file input is available. API responses, configuration data, and structured records can be used as examples."
+    },
+    {
+      "title": "Choose the XML structure",
+      "description": "Set a valid root element name and, when converting arrays, choose the element name used for repeated items. Check that these names match the XML schema or receiving system."
+    },
+    {
+      "title": "Configure formatting",
+      "description": "Choose 2 or 4 spaces for indentation and configure the XML declaration or encoding options supported by the interface."
+    },
+    {
+      "title": "Convert and review",
+      "description": "Click Convert to XML, then inspect element names, array output, escaped values, empty or null values, and the overall document structure."
+    },
+    {
+      "title": "Copy or download",
+      "description": "Copy the XML output or download it as a .xml file. Validate the result against the target application's schema before using it in production."
+    }
+  ],
+  "example": {
+    "input": "{\n  \"user\": {\n    \"name\": \"Alice\",\n    \"age\": 30\n  }\n}",
+    "output": "<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n<user>\n  <name>Alice</name>\n  <age>30</age>\n</user>",
+    "useCase": "Convert JSON data into XML for testing, documentation, or integration with a system that expects XML."
+  },
+  "faq": [
+    {
+      "question": "Does this converter create a real XML document?",
+      "answer": "It generates XML markup with nested elements and escaped text values. Whether the result is accepted by a particular application depends on that application's schema, required namespaces, attributes, element names, ordering, and validation rules."
+    },
+    {
+      "question": "How are JSON objects converted to XML?",
+      "answer": "JSON object properties are normally converted into nested XML elements. For example, {\"user\":{\"name\":\"Alice\"}} may become <user><name>Alice</name></user>."
+    },
+    {
+      "question": "How are JSON arrays converted to XML?",
+      "answer": "JSON arrays are commonly represented as repeated XML elements. Because JSON arrays do not define an XML element name, the converter should use a configured array item name or another documented naming rule."
+    },
+    {
+      "question": "Can I customize the root element?",
+      "answer": "Yes. Enter a valid XML element name for the document root. The default may be root, but you can change it to match the vocabulary expected by your target system."
+    },
+    {
+      "question": "Can I customize the array item element name?",
+      "answer": "If the option is available, yes. This is useful when an array such as products must become repeated <product> elements rather than generic <item> elements. The correct name depends on the target XML schema."
+    },
+    {
+      "question": "Does JSON to XML conversion preserve data types?",
+      "answer": "Not completely. XML element content is text unless a schema or application-specific convention provides type information. Numbers, booleans, and null values may therefore need interpretation by the receiving application."
+    },
+    {
+      "question": "Can JSON properties become XML attributes?",
+      "answer": "Not automatically in a generic JSON-to-XML mapping unless the converter provides an attribute convention or explicit mapping options. JSON has no native attribute concept, so XML attributes require a documented convention such as a reserved key or mapping rule."
+    },
+    {
+      "question": "What happens to null values?",
+      "answer": "Null values may become empty elements, omitted properties, or an implementation-specific representation. Review the output and confirm the behavior expected by the target XML system."
+    },
+    {
+      "question": "What happens to JSON keys with special characters?",
+      "answer": "JSON keys used as XML element names must comply with XML naming rules. Keys containing spaces, punctuation, leading digits, or namespace-sensitive characters may need to be sanitized, rejected, or mapped to valid names. Review the output when keys are not conventional identifiers."
+    },
+    {
+      "question": "Are special characters in JSON values escaped?",
+      "answer": "Text values should be XML-escaped so characters such as ampersands, less-than signs, greater-than signs, and quotation marks do not create invalid markup. Escaping a value does not make an invalid element name valid."
+    },
+    {
+      "question": "Can I use the output for SOAP?",
+      "answer": "The generated XML may be useful as a payload fragment or starting point, but a SOAP request also requires the correct envelope, namespaces, operation structure, headers, authentication, and service-specific schema. JSON-to-XML conversion alone does not create a complete valid SOAP request."
+    },
+    {
+      "question": "Can I convert XML back to JSON?",
+      "answer": "Use an XML to JSON converter for the reverse direction. The round trip may not reproduce the original data exactly because XML attributes, namespaces, ordering, mixed content, and schema types do not have direct equivalents in ordinary JSON."
+    },
+    {
+      "question": "Can I convert a large JSON file?",
+      "answer": "The practical limit depends on browser memory, device performance, document depth, number of elements, and PDF or text generation requirements. Large inputs may take longer to parse and generate."
+    },
+    {
+      "question": "Is my JSON uploaded to a server?",
+      "answer": "This page is designed to parse JSON and generate XML in your browser without requiring a server upload. You should still avoid entering passwords, API keys, access tokens, private customer data, or confidential production data into any browser-based tool."
+    },
+    {
+      "question": "Is this a free JSON to XML converter?",
+      "answer": "Yes. You can paste or open JSON, configure the available XML options, and copy or download the output without creating an account."
+    }
+  ],
+  "ui": {
+    "label_input": "Input JSON",
+    "label_output": "XML Output",
+    "btn_convert": "Convert to XML",
+    "btn_example": "Load Example",
+    "option_root_element": "Root element:",
+    "option_array_item": "Array item element:",
+    "option_indent": "Indent:",
+    "option_indent_2": "2 spaces",
+    "option_indent_4": "4 spaces",
+    "option_declaration": "Include XML declaration",
+    "option_encoding": "Declaration encoding:",
+    "placeholder_root": "root",
+    "placeholder_array_item": "item",
+    "placeholder_output": "XML output will appear here...",
+    "error_invalid_json": "Input is not valid JSON",
+    "error_empty_input": "Enter JSON or open a JSON file first",
+    "error_invalid_root": "Root element name is not valid XML",
+    "error_invalid_array_item": "Array item element name is not valid XML",
+    "error_conversion": "The JSON could not be converted to XML"
+  },
+  "article": {
+    "title": "How to Convert JSON to XML Online",
+    "content": "<h2>What Is a JSON to XML Converter?</h2><p>A JSON to XML converter maps JSON objects, arrays, and scalar values to XML elements and text content. This can help when a modern JSON workflow needs to communicate with an older integration, XML-based configuration system, document format, or service that expects XML.</p><p>JSON and XML are different data models. JSON has objects and arrays, while XML has elements, attributes, namespaces, text nodes, mixed content, and document-level declarations. A conversion therefore follows a set of mapping rules rather than performing a perfectly lossless format swap.</p><h2>Common Use Cases</h2><ul><li><strong>Legacy integration:</strong> Prepare JSON data for a system that accepts XML rather than JSON.</li><li><strong>API and service testing:</strong> Convert sample JSON into XML for testing an XML endpoint or integration boundary.</li><li><strong>Configuration conversion:</strong> Create an XML representation for a tool that expects XML configuration.</li><li><strong>Documentation:</strong> Show the XML form of an example JSON object when documenting a data mapping.</li><li><strong>Data migration:</strong> Transform structured JSON into an XML starting point for a migration or import workflow.</li></ul><h2>How to Convert JSON to XML</h2><ol><li><strong>Enter JSON:</strong> Paste a valid JSON object, array, or supported scalar value.</li><li><strong>Choose a root element:</strong> Set a valid XML root name that matches the target document or schema.</li><li><strong>Choose array item names:</strong> If the input contains arrays, define the element name used for repeated items where supported.</li><li><strong>Configure formatting:</strong> Choose indentation and decide whether to include the XML declaration.</li><li><strong>Convert:</strong> Generate the XML and review the output for valid names, escaped text, null values, and repeated elements.</li><li><strong>Copy or download:</strong> Copy the XML or save it as a .xml file for testing or integration.</li></ol><h2>How JSON Structures Map to XML</h2><ul><li><strong>Objects:</strong> Object properties become nested XML elements.</li><li><strong>Arrays:</strong> Array values are commonly represented by repeated sibling elements.</li><li><strong>Strings:</strong> Strings become XML text content after special characters are escaped.</li><li><strong>Numbers and booleans:</strong> Values become text, so the receiving system must interpret their types or apply an XML schema.</li><li><strong>Null:</strong> Null may become an empty element, be omitted, or use a documented convention.</li></ul><h2>Arrays Need an XML Naming Rule</h2><p>JSON arrays contain values but do not assign an element name to each item. XML requires element names, so a converter must choose a rule. For example:</p><pre><code>{\"products\":[{\"name\":\"Laptop\"},{\"name\":\"Mouse\"}]}</code></pre><p>may become:</p><pre><code>&lt;products&gt;\n  &lt;product&gt;\n    &lt;name&gt;Laptop&lt;/name&gt;\n  &lt;/product&gt;\n  &lt;product&gt;\n    &lt;name&gt;Mouse&lt;/name&gt;\n  &lt;/product&gt;\n&lt;/products&gt;</code></pre><p>Some converters use <code>item</code>, some derive a singular form such as <code>product</code>, and others allow an explicit item name. If the output must satisfy an XSD or API schema, configure the array item name deliberately.</p><h2>XML Element Names and Escaping</h2><p>JSON keys become XML element names only when they follow XML naming rules. Keys containing spaces, invalid punctuation, or leading digits may need sanitization or may produce a conversion error. Text values have a separate requirement: characters such as <code>&amp;</code>, <code>&lt;</code>, and <code>&gt;</code> must be escaped so they do not break the XML document.</p><p>Escaping text values does not solve invalid tag names. If the source JSON contains arbitrary user-generated keys, review or map those keys before relying on the XML output.</p><h2>XML Declaration and Encoding</h2><p>An XML declaration can identify the document version and declared encoding:</p><pre><code>&lt;?xml version=\"1.0\" encoding=\"UTF-8\"?&gt;</code></pre><p>The declared encoding should match the actual bytes in the downloaded file. A text string displayed in a browser may be Unicode, while a downloaded file can use a different encoding depending on the implementation. Do not let users select an encoding label that the exporter does not actually produce.</p><h2>Attributes and JSON</h2><p>JSON does not have a built-in attribute type. A generic converter therefore usually represents JSON properties as XML elements rather than attributes. If a target system requires attributes, use an explicit mapping convention, such as reserved keys or a field-mapping configuration, and validate the output against the target schema.</p><h2>JSON to XML and SOAP</h2><p>XML can be used by SOAP services, but converting JSON into XML does not automatically create a valid SOAP request. SOAP also requires an envelope, namespaces, an operation-specific body, headers, authentication, and a service-defined schema. Use the generated XML as a payload or mapping reference only after checking the service documentation.</p><h2>JSON to XML Is Not Always Reversible</h2><p>Converting JSON to XML and then back to JSON may change the data shape. XML introduces attributes, namespaces, ordering, text nodes, and mixed content, while JSON distinguishes arrays and objects differently. Keep the original JSON and validate the generated XML when exact data preservation matters.</p><h2>Validation and Common Problems</h2><ul><li><strong>Invalid JSON:</strong> Missing commas, unmatched braces, invalid quotes, and trailing commas can prevent conversion.</li><li><strong>Invalid root name:</strong> The root element must follow XML naming rules.</li><li><strong>Ambiguous arrays:</strong> The generated repeated element name may not match the target schema.</li><li><strong>Null handling:</strong> Empty or omitted values may not be interpreted the same way by every receiving system.</li><li><strong>Attributes missing:</strong> Generic JSON-to-XML conversion usually creates elements, not XML attributes.</li><li><strong>Schema mismatch:</strong> Well-formed XML can still fail validation against an XSD or service-specific schema.</li></ul><h2>Browser-Based Privacy</h2><p>This converter is designed to parse JSON and generate XML in the browser instead of sending the source data to a remote conversion service. That is convenient for one-off transformations and integration tests, but it is not a replacement for secure secret management. Avoid entering credentials, access tokens, private customer information, or production secrets into any web-based tool.</p><h2>When to Use a Local or Schema-Aware Converter</h2><p>A browser tool is suitable for quick transformations and inspection. Use a local library, command-line tool, or schema-aware integration workflow for repeatable automation, confidential data, large files, strict XSD validation, namespaces, SOAP envelopes, or precise attribute mappings.</p>"
+  }
+},
   "zh": {
 		"name": "JSON 转 XML",
 		"description": "在线将 JSON 数据转换为 XML 格式。这个 JSON 转 XML 转换器支持自定义根元素、缩进和编码，将 JSON 对象和数组转换为结构化的 XML 文档，全部在浏览器中完成。",

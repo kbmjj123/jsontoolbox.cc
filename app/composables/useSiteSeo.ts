@@ -42,10 +42,10 @@ export const useSiteSeo = () => {
 
 		if (umamiAnalyticsId) {
 			scripts.push({
-				src: `https://cdn.jsontoolbox.cc/script/script.js`,
+				src: `https://cdn.bulkpictools.com/script/script.js`,
 				defer: true,
 				'data-website-id': umamiAnalyticsId,
-				'data-host-url': 'https://umami.jsontoolbox.cc'
+				'data-host-url': 'https://umami.bulkpictools.com'
 			})
 		}
 

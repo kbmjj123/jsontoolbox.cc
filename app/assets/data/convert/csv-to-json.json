@@ -8,140 +8,224 @@
   "nextSteps": ["json-editor", "json-to-csv"],
   "recommends": [],
   "en": {
-		"name": "CSV to JSON Converter",
-		"description": "Convert CSV data to JSON array format online. This CSV to JSON converter and CSV to JSON formatter lets you import CSV files or paste CSV text, configure delimiters and headers, and export structured JSON — all in your browser.",
-		"hero": {
-			"trustHtml": "100% client-side conversion. Your data never leaves your browser."
-		},
-		"meta": {
-			"title": "CSV to JSON — Free Online Converter",
-			"description": "Convert CSV to JSON format online. Transform CSV files and text into JSON arrays with configurable delimiters, headers, and type inference. Free, fast, and runs in your browser. No upload required.",
-			"keywords": [
-				"csv to json",
-				"csv to json converter",
-				"convert csv to json",
-				"csv to json online",
-				"csv to json format",
-				"csv to json formatter",
-				"csv to json array",
-				"csv to json converter online",
-				"free csv to json",
-				"csv to json tool"
-			]
-		},
-		"ui": {
-			"label_input": "Input CSV",
-			"label_output": "JSON Output",
-			"btn_convert": "Convert to JSON",
-			"btn_example": "Load Example",
-			"option_delimiter": "Delimiter:",
-			"option_has_header": "First row is header",
-			"option_indent": "Indent:",
-			"placeholder_output": "JSON output will appear here...",
-			"error_no_data": "No data to convert"
-		},
-		"features": [
-			{
-				"icon": "lucide:file-spreadsheet",
-				"title": "CSV Import",
-				"description": "Paste CSV data directly or upload a CSV file to convert. The tool supports common CSV exports from Excel, Google Sheets, databases, and other data sources."
-			},
-			{
-				"icon": "lucide:download",
-				"title": "JSON Export",
-				"description": "Download the converted JSON as a .json file or copy the output to your clipboard. Use the result in APIs, scripts, configuration files, or frontend applications."
-			},
-			{
-				"icon": "lucide:settings",
-				"title": "Smart Options",
-				"description": "Auto-detect delimiters such as comma, semicolon, tab, or pipe. Configure whether the first row contains headers and choose indentation for readable JSON output."
-			},
-			{
-				"icon": "lucide:upload",
-				"title": "File Upload",
-				"description": "Upload .csv, .tsv, or .txt files directly from your device. The converter reads the file locally without uploading it to a server."
-			},
-			{
-				"icon": "lucide:code",
-				"title": "Type Inference",
-				"description": "Automatically convert numeric strings to numbers, 'true'/'false' to booleans, and empty cells to null. This produces more natural JSON for programmatic use."
-			},
-			{
-				"icon": "lucide:shield-check",
-				"title": "Private",
-				"description": "All CSV parsing and JSON conversion happen in your browser. Your data is not uploaded to a server, which is useful when working with sensitive or internal datasets."
-			}
-		],
-		"guide": [
-			{
-				"title": "Paste CSV data",
-				"description": "Paste your CSV content into the input field or upload a .csv, .tsv, or .txt file. You can use data exported from spreadsheets, databases, logs, or other sources."
-			},
-			{
-				"title": "Configure options",
-				"description": "Select the delimiter (or use auto-detect), indicate whether the first row is a header, and choose the JSON indentation style. Enable type inference if you want numbers and booleans converted automatically."
-			},
-			{
-				"title": "Click Convert",
-				"description": "Click Convert to JSON to parse the CSV and generate a JSON array of objects. Each row becomes an object, and column headers (or generated keys) become property names."
-			},
-			{
-				"title": "Copy or Download",
-				"description": "Copy the JSON output to your clipboard or download it as a .json file. Use the result in APIs, scripts, frontend code, or other data processing workflows."
-			}
-		],
-		"example": {
-			"input": "name,age,city\nAlice,30,New York\nBob,25,London",
-			"output": "[\n  { \"name\": \"Alice\", \"age\": 30, \"city\": \"New York\" },\n  { \"name\": \"Bob\", \"age\": 25, \"city\": \"London\" }\n]",
-			"useCase": "Convert Excel-exported CSV data to JSON for programmatic processing."
-		},
-		"faq": [
-			{
-				"question": "Is my CSV data uploaded to a server?",
-				"answer": "No. All CSV parsing and JSON conversion happen locally in your browser. Your data is not uploaded to a remote server and does not leave your device."
-			},
-			{
-				"question": "Does it handle quoted fields?",
-				"answer": "Yes. The converter correctly handles quoted fields, commas inside quotes, newlines within quoted cells, and escaped characters according to common CSV rules."
-			},
-			{
-				"question": "Can I convert large CSV files?",
-				"answer": "You can convert larger CSV files as long as they can be loaded and processed by your browser. The practical limit depends on available memory, device performance, and the complexity of the data."
-			},
-			{
-				"question": "What format does the JSON output use?",
-				"answer": "The output is a JSON array of objects. Each CSV row becomes one object, and the column headers (or generated keys if no header) become the property names."
-			},
-			{
-				"question": "Does it support different delimiters?",
-				"answer": "Yes. You can choose comma, semicolon, tab, pipe, or let the tool auto-detect the delimiter based on the input content."
-			},
-			{
-				"question": "Does it infer data types?",
-				"answer": "Yes. When type inference is enabled, numeric strings are converted to numbers, 'true' and 'false' (case-insensitive) to booleans, and empty cells to null."
-			},
-			{
-				"question": "What if my CSV has no header row?",
-				"answer": "If you disable the 'First row is header' option, the converter will generate generic keys such as column0, column1, etc. You can then rename keys in the JSON if needed."
-			},
-			{
-				"question": "Can I use this tool for TSV files?",
-				"answer": "Yes. TSV (tab-separated values) files are supported. Select the tab delimiter or use auto-detect, then convert the TSV to JSON as usual."
-			},
-			{
-				"question": "Can I convert JSON back to CSV?",
-				"answer": "This tool focuses on CSV to JSON conversion. For JSON to CSV conversion, use a dedicated JSON to CSV converter tool in the same toolbox."
-			},
-			{
-				"question": "Is this a free CSV to JSON converter?",
-				"answer": "Yes. This is a free online CSV to JSON converter. You can paste CSV text or upload files, configure options, and export JSON without creating an account or uploading data to a server."
-			}
-		],
-		"article": {
-			"title": "How to Convert CSV to JSON Online",
-			"content": "<h2>What Is CSV to JSON Conversion?</h2><p>CSV (Comma-Separated Values) is a simple tabular format widely used for exporting data from spreadsheets, databases, and analytics tools. JSON (JavaScript Object Notation) is a structured, hierarchical format commonly used in APIs, web applications, and modern data pipelines.</p><p>Converting CSV to JSON transforms flat, row-based data into an array of objects, where each row becomes an object and each column becomes a property. This makes the data easier to work with in JavaScript, frontend frameworks, and API-driven workflows.</p><h2>Why Convert CSV to JSON?</h2><ul><li><strong>API integration:</strong> Many APIs expect JSON payloads instead of CSV</li><li><strong>Frontend development:</strong> JSON is the native data format for JavaScript and frameworks like React, Vue, and Angular</li><li><strong>Data transformation:</strong> JSON supports nested structures, making it easier to reshape data for specific use cases</li><li><strong>Configuration files:</strong> JSON is commonly used for application settings and feature flags</li><li><strong>Programmatic processing:</strong> JSON is easier to parse and manipulate in most programming languages</li></ul><h2>How to Convert CSV to JSON</h2><ol><li><strong>Paste or upload CSV:</strong> Add your CSV content by pasting text or uploading a .csv, .tsv, or .txt file.</li><li><strong>Configure options:</strong> Select the delimiter (comma, semicolon, tab, pipe, or auto-detect), indicate whether the first row is a header, and choose JSON indentation.</li><li><strong>Enable type inference (optional):</strong> If enabled, numeric strings become numbers, 'true'/'false' become booleans, and empty cells become null.</li><li><strong>Click Convert:</strong> The tool parses the CSV and generates a JSON array of objects.</li><li><strong>Copy or download:</strong> Copy the JSON to your clipboard or save it as a .json file for use in your project.</li></ol><h2>Understanding the Output Format</h2><p>The default output is a JSON array where each CSV row becomes an object. If your CSV has a header row, the header values are used as property names. For example:</p><pre>name,age,city\nAlice,30,New York\nBob,25,London</pre><p>becomes:</p><pre>[\n  { \"name\": \"Alice\", \"age\": 30, \"city\": \"New York\" },\n  { \"name\": \"Bob\", \"age\": 25, \"city\": \"London\" }\n]</pre><p>If there is no header row, the converter generates generic keys such as column0, column1, etc. You can later rename these keys in the JSON if needed.</p><h2>Handling Special Cases</h2><ul><li><strong>Quoted fields:</strong> The converter correctly handles fields enclosed in quotes, including commas and newlines inside quoted cells.</li><li><strong>Escaped characters:</strong> Common CSV escape sequences and quoted quotes are preserved correctly in the JSON output.</li><li><strong>Different delimiters:</strong> Semicolon-separated, tab-separated (TSV), and pipe-separated files are all supported.</li><li><strong>Empty cells:</strong> Empty values can be converted to null when type inference is enabled, or kept as empty strings if preferred.</li></ul><h2>Best Practices</h2><ul><li><strong>Use header rows:</strong> Including a header row makes the resulting JSON more readable and self-describing.</li><li><strong>Check data types:</strong> Review the output to ensure numbers, booleans, and strings are represented as expected.</li><li><strong>Validate JSON:</strong> After conversion, use a JSON validator to confirm the output is well-formed before using it in production.</li><li><strong>Keep a backup:</strong> Retain the original CSV file in case you need to re-import or adjust the conversion settings.</li><li><strong>Consider encoding:</strong> For non-ASCII characters, ensure your CSV file uses UTF-8 encoding to avoid character issues in the JSON output.</li></ul><h2>Common Use Cases</h2><ul><li><strong>Spreadsheet exports:</strong> Convert Excel or Google Sheets exports into JSON for use in web applications</li><li><strong>Database dumps:</strong> Transform CSV exports from databases into JSON for API consumption</li><li><strong>Analytics data:</strong> Convert analytics or reporting CSVs into JSON for visualization libraries</li><li><strong>Test data:</strong> Generate JSON test fixtures from CSV datasets for automated testing</li><li><strong>Migration scripts:</strong> Prepare data for migration by converting legacy CSV formats to JSON</li></ul><h2>Client-Side Privacy</h2><p>This CSV to JSON converter processes input in your browser instead of requiring an upload to a remote service. That can be convenient for internal datasets, sensitive reports, or development data. However, you should still avoid entering passwords, API keys, access tokens, or other highly sensitive information into any browser-based tool.</p>"
-		}
-	},
+  "name": "CSV to JSON Converter",
+  "description": "Convert CSV, TSV, or delimited text into JSON online in your browser. Paste data or open a file, choose the delimiter and header behavior, preview the parsed rows, and export an array of JSON objects with optional type inference.",
+  "hero": {
+    "trustHtml": "Runs in your browser. Your CSV is not uploaded by this tool."
+  },
+  "meta": {
+    "title": "CSV to JSON Converter – Free Online Tool",
+    "description": "Convert CSV to JSON online. Paste CSV or open a file, choose the delimiter, use the first row as headers, preview the result, and download a formatted JSON array. Free and browser-based.",
+    "keywords": [
+      "csv to json",
+      "csv to json converter",
+      "convert csv to json",
+      "csv to json online",
+      "csv to json array",
+      "csv to json converter online",
+      "free csv to json",
+      "tsv to json"
+    ]
+  },
+  "ui": {
+    "label_input": "Input CSV",
+    "label_output": "JSON Output",
+    "btn_convert": "Convert to JSON",
+    "btn_example": "Load Example",
+    "btn_download": "Download JSON",
+    "option_delimiter": "Delimiter:",
+    "option_auto_delimiter": "Auto-detect",
+    "option_delimiter_comma": "Comma (,)",
+    "option_delimiter_semicolon": "Semicolon (;)",
+    "option_delimiter_tab": "Tab",
+    "option_delimiter_pipe": "Pipe (|)",
+    "option_has_header": "First row is header",
+    "option_infer_types": "Infer basic types",
+    "option_empty_as_null": "Convert empty cells to null",
+    "option_trim_values": "Trim surrounding whitespace",
+    "option_indent": "Indent:",
+    "option_indent_2": "2 spaces",
+    "option_indent_4": "4 spaces",
+    "placeholder_output": "Converted JSON will appear here...",
+    "error_no_data": "Enter CSV data or open a file first",
+    "error_parse": "The CSV could not be parsed",
+    "error_inconsistent_columns": "Some rows have a different number of columns",
+    "error_no_headers": "No usable column headers were found"
+  },
+  "features": [
+    {
+      "icon": "lucide:file-spreadsheet",
+      "title": "CSV, TSV, and Delimited Text",
+      "description": "Paste CSV text or open a supported delimited file. Use comma, semicolon, tab, or pipe delimiters according to the structure of your data."
+    },
+    {
+      "icon": "lucide:table-2",
+      "title": "Rows and Headers Preview",
+      "description": "Preview the parsed columns and records before generating JSON. This helps identify delimiter mistakes, missing headers, uneven rows, and unexpected values."
+    },
+    {
+      "icon": "lucide:settings-2",
+      "title": "Delimiter and Header Options",
+      "description": "Choose a delimiter manually or use auto-detection when available, then decide whether the first row should become the JSON property names."
+    },
+    {
+      "icon": "lucide:braces",
+      "title": "JSON Array of Objects",
+      "description": "Convert each tabular row into a JSON object and use the header row as property names. When no header exists, generated column names are used."
+    },
+    {
+      "icon": "lucide:badge-check",
+      "title": "Optional Type Inference",
+      "description": "Convert values that clearly represent numbers or booleans when type inference is enabled. Keep inference disabled when identifiers, postal codes, or formatted values must remain strings."
+    },
+    {
+      "icon": "lucide:download",
+      "title": "Copy or Download JSON",
+      "description": "Copy the generated JSON to your clipboard or download it as a .json file for APIs, scripts, frontend applications, testing, and data-processing workflows."
+    },
+    {
+      "icon": "lucide:upload",
+      "title": "Local File Input",
+      "description": "Open a .csv, .tsv, or supported text file from your device. The file is read in the browser without requiring an upload to a conversion server."
+    },
+    {
+      "icon": "lucide:shield-check",
+      "title": "Browser-Based Processing",
+      "description": "CSV parsing and JSON generation happen in your browser. The page does not require an account or transmit the input data to a remote converter."
+    }
+  ],
+  "guide": [
+    {
+      "title": "Enter or open delimited data",
+      "description": "Paste CSV, TSV, or delimited text into the input editor, or open a supported local file. Include a header row when you want meaningful JSON property names."
+    },
+    {
+      "title": "Choose parsing options",
+      "description": "Select the delimiter or use auto-detection, indicate whether the first row contains headers, and choose whether basic types and empty cells should be inferred."
+    },
+    {
+      "title": "Preview the parsed rows",
+      "description": "Review the detected columns and records before conversion. Check quoted fields, line breaks, missing values, leading zeros, and rows with inconsistent column counts."
+    },
+    {
+      "title": "Convert and export JSON",
+      "description": "Click Convert to JSON, then copy the result or download it as a .json file. Validate the output before sending it to an API or using it in application code."
+    }
+  ],
+  "example": {
+    "input": "name,age,city\nAlice,30,New York\nBob,25,London",
+    "output": "[\n  {\n    \"name\": \"Alice\",\n    \"age\": 30,\n    \"city\": \"New York\"\n  },\n  {\n    \"name\": \"Bob\",\n    \"age\": 25,\n    \"city\": \"London\"\n  }\n]",
+    "useCase": "Convert spreadsheet-exported CSV records into a JSON array for a frontend or API workflow."
+  },
+  "features": [
+    {
+      "icon": "lucide:file-spreadsheet",
+      "title": "CSV, TSV, and Delimited Text",
+      "description": "Paste CSV text or open a supported delimited file. Use comma, semicolon, tab, or pipe delimiters according to the structure of your data."
+    },
+    {
+      "icon": "lucide:table-2",
+      "title": "Rows and Headers Preview",
+      "description": "Preview the parsed columns and records before generating JSON. This helps identify delimiter mistakes, missing headers, uneven rows, and unexpected values."
+    },
+    {
+      "icon": "lucide:settings-2",
+      "title": "Delimiter and Header Options",
+      "description": "Choose a delimiter manually or use auto-detection when available, then decide whether the first row should become the JSON property names."
+    },
+    {
+      "icon": "lucide:braces",
+      "title": "JSON Array of Objects",
+      "description": "Convert each tabular row into a JSON object and use the header row as property names. When no header exists, generated column names are used."
+    },
+    {
+      "icon": "lucide:badge-check",
+      "title": "Optional Type Inference",
+      "description": "Convert values that clearly represent numbers or booleans when type inference is enabled. Keep inference disabled when identifiers, postal codes, or formatted values must remain strings."
+    },
+    {
+      "icon": "lucide:download",
+      "title": "Copy or Download JSON",
+      "description": "Copy the generated JSON to your clipboard or download it as a .json file for APIs, scripts, frontend applications, testing, and data-processing workflows."
+    },
+    {
+      "icon": "lucide:upload",
+      "title": "Local File Input",
+      "description": "Open a .csv, .tsv, or supported text file from your device. The file is read in the browser without requiring an upload to a conversion server."
+    },
+    {
+      "icon": "lucide:shield-check",
+      "title": "Browser-Based Processing",
+      "description": "CSV parsing and JSON generation happen in your browser. The page does not require an account or transmit the input data to a remote converter."
+    }
+  ],
+  "faq": [
+    {
+      "question": "What JSON format does this CSV converter create?",
+      "answer": "The default output is a JSON array of objects. Each data row becomes one object, and the header values become property names. If there is no header row, the converter uses generated column names according to its configured naming rule."
+    },
+    {
+      "question": "Does it correctly handle quoted CSV fields?",
+      "answer": "A CSV parser should handle delimiters inside quoted fields, escaped double quotes, and line breaks inside quoted fields. Review the preview when the source contains complex quoted text because malformed quoting can change how rows and columns are detected."
+    },
+    {
+      "question": "Which delimiters are supported?",
+      "answer": "The page can support comma, semicolon, tab, and pipe delimiters when those options are implemented. Use manual selection when the file contains ambiguous data, and treat auto-detection as a convenience rather than a guarantee."
+    },
+    {
+      "question": "Can I convert a TSV file to JSON?",
+      "answer": "Yes. TSV is tab-separated data. Open the file or paste its contents and select Tab as the delimiter, unless the page detects it correctly."
+    },
+    {
+      "question": "What happens if the CSV has no header row?",
+      "answer": "Disable First row is header. The converter then generates property names such as column0, column1, or another documented naming convention. Generated names are functional but less descriptive than real headers."
+    },
+    {
+      "question": "Does it infer numbers and booleans?",
+      "answer": "When Infer basic types is enabled, values that clearly match supported numeric or boolean patterns may be converted from strings into JSON numbers or booleans. Review the result because values such as postal codes, account IDs, version strings, and dates may need to remain strings."
+    },
+    {
+      "question": "Should empty CSV cells become null or empty strings?",
+      "answer": "That depends on the selected option. Empty cells can remain empty strings or become JSON null values. Choose the behavior that matches the schema expected by the receiving application."
+    },
+    {
+      "question": "How are leading zeros handled?",
+      "answer": "Identifiers such as 00123 may lose their leading zeros if type inference converts them into numbers. Disable type inference or configure the field as a string when leading zeros are meaningful."
+    },
+    {
+      "question": "What happens when rows have different column counts?",
+      "answer": "The parser may report an error, pad missing cells, or ignore extra values depending on its configuration. Review the row preview and error message before using the output, especially when the input contains malformed or manually edited records."
+    },
+    {
+      "question": "Can CSV columns become nested JSON properties?",
+      "answer": "The default output is usually a flat array of objects. Some converters support nested keys such as user.name or a separate mapping mode, but this page should not promise nested JSON unless that behavior is implemented explicitly."
+    },
+    {
+      "question": "Can I generate JSON Lines instead of a JSON array?",
+      "answer": "This page outputs a JSON array unless a JSONL or NDJSON mode is provided. JSON Lines writes one JSON object per line and is useful for streaming or line-oriented data pipelines."
+    },
+    {
+      "question": "Can I convert JSON back to CSV?",
+      "answer": "This page focuses on CSV to JSON. Use the related JSON to CSV converter when you need to turn JSON records into spreadsheet-compatible CSV."
+    },
+    {
+      "question": "Can I convert a large CSV file?",
+      "answer": "The practical limit depends on browser memory, file size, row count, column count, quoted multiline fields, and preview rendering. Very large files may need chunked or streaming processing rather than loading the entire file at once."
+    },
+    {
+      "question": "Is my CSV uploaded to a server?",
+      "answer": "This page is designed to read and parse the CSV in your browser without requiring a server upload. You should still avoid entering passwords, API keys, private customer records, or confidential production data into any browser-based tool."
+    },
+    {
+      "question": "Is this a free CSV to JSON converter?",
+      "answer": "Yes. You can paste or open delimited data, configure the parser, preview the result, and copy or download JSON without creating an account."
+    }
+  ],
+  "article": {
+    "title": "How to Convert CSV to JSON Online",
+    "content": "<h2>What Is CSV to JSON Conversion?</h2><p>CSV is a row-and-column format commonly used by spreadsheets, databases, analytics tools, and reporting systems. JSON is a structured format commonly used by APIs, web applications, and programming languages. CSV to JSON conversion maps each tabular row into a JSON record and each column into a property.</p><p>The most common output is a JSON array of objects. For example, a header row containing <code>name,age,city</code> becomes property names, and each following row becomes one object in the array.</p><h2>How to Convert CSV to JSON</h2><ol><li><strong>Enter the data:</strong> Paste CSV, TSV, or another supported delimited format, or open a local file.</li><li><strong>Select the delimiter:</strong> Choose comma, semicolon, tab, pipe, or auto-detection when available.</li><li><strong>Configure headers:</strong> Enable First row is header when the first row contains column names.</li><li><strong>Choose type handling:</strong> Decide whether values that look like numbers, booleans, or null should be converted from strings.</li><li><strong>Preview the rows:</strong> Check the detected columns, quoted values, empty cells, and inconsistent records.</li><li><strong>Generate JSON:</strong> Convert the parsed table into an array of JSON objects.</li><li><strong>Copy or download:</strong> Copy the output or save it as a .json file for use in code or data workflows.</li></ol><h2>Example: CSV to JSON Array</h2><pre><code>name,age,city\nAlice,30,New York\nBob,25,London</code></pre><p>With the first row treated as headers, the result is:</p><pre><code>[\n  {\"name\":\"Alice\",\"age\":30,\"city\":\"New York\"},\n  {\"name\":\"Bob\",\"age\":25,\"city\":\"London\"}\n]</code></pre><h2>Quoted Fields and Commas</h2><p>CSV values may contain the delimiter itself when they are enclosed in double quotes. For example:</p><pre><code>name,address,notes\n\"Alice\",\"123 Main St, Apt 4\",\"Called on Monday\"</code></pre><p>A correct CSV parser must not treat the comma inside the quoted address as a new column. It should also handle escaped double quotes and, when supported, line breaks inside quoted fields.</p><h2>Headers and Generated Property Names</h2><p>Headers make the resulting JSON easier to understand because they become property names. If a file has no header row, the converter needs a naming rule such as <code>column0</code>, <code>column1</code>, or <code>field_1</code>. Generated names are useful for raw data, but renaming them later may be necessary for production code.</p><h2>Type Inference Requires Review</h2><p>CSV itself does not define strong data types. Most values begin as text, even when they look like numbers or booleans. Type inference can make the JSON more convenient, but it can also change meaningful strings:</p><ul><li><strong>Leading-zero identifiers:</strong> 00123 may become the number 123.</li><li><strong>Version strings:</strong> 1.10 may be interpreted differently than the original text.</li><li><strong>Postal codes:</strong> Numeric conversion may remove leading zeros.</li><li><strong>Dates:</strong> Date-like text may be interpreted differently by downstream tools.</li><li><strong>Boolean-looking values:</strong> yes, no, TRUE, or FALSE may not have the same meaning across systems.</li></ul><p>When exact text preservation matters, disable type inference or use field-specific conversion rules.</p><h2>Empty Cells and Null Values</h2><p>An empty CSV cell can represent missing data, an empty string, or a value that should become null. There is no universal answer. Choose an explicit policy and verify the JSON schema expected by the receiving application.</p><h2>Delimiter Detection</h2><p>Comma, semicolon, tab, and pipe are common separators. Automatic detection can inspect the first rows and estimate which delimiter produces a consistent table, but ambiguous input may produce an incorrect guess. Manual selection is safer when the file contains multiple punctuation characters, quoted text, or inconsistent rows.</p><h2>CSV Encoding</h2><p>CSV files may use different character encodings. UTF-8 is a good default for modern workflows, but older exports may use another encoding. If non-ASCII characters appear corrupted, check the source file encoding and provide an import or encoding option rather than assuming every file is UTF-8.</p><h2>Flat JSON, Nested JSON, and JSONL</h2><p>A basic CSV-to-JSON converter creates a flat array of objects. Some tools support additional modes, such as converting dotted column names into nested objects, creating keyed JSON by a selected ID column, or writing JSON Lines with one object per line. These are separate output models and should be clearly labeled if implemented.</p><h2>Large CSV Files</h2><p>Loading and parsing a large CSV file entirely in the browser can use significant memory. Quoted multiline fields make streaming more complex, and rendering every row in a preview can slow down the page. A production-grade large-file workflow may need chunked parsing, Web Workers, virtualized preview, and an explicit row or file-size limit.</p><h2>Common CSV Conversion Problems</h2><ul><li><strong>All data appears in one field:</strong> The selected delimiter does not match the file.</li><li><strong>Columns shift unexpectedly:</strong> A quoted field contains a delimiter or an unescaped quote.</li><li><strong>Rows have different lengths:</strong> The source contains missing delimiters, extra delimiters, or malformed lines.</li><li><strong>Identifiers change:</strong> Type inference converted a string with leading zeros into a number.</li><li><strong>Characters are corrupted:</strong> The source encoding was detected incorrectly.</li><li><strong>Header names are unusable:</strong> The first row may contain duplicate, blank, or whitespace-heavy column names.</li></ul><h2>Browser-Based Privacy</h2><p>This converter is designed to parse CSV and generate JSON in the browser instead of uploading the source file to a remote service. That can be useful for development data and internal exports, but it is not a substitute for secure data handling. Avoid entering credentials, access tokens, private customer information, or confidential production data into any web tool.</p><h2>When to Use a Local or Streaming Tool</h2><p>For very large files, automated pipelines, repeated transformations, or sensitive data, use a trusted local parser or a streaming data-processing workflow. Browser tools are most suitable for quick conversions, inspection, and small-to-medium datasets.</p>"
+  }
+},
   "zh": {
 		"name": "CSV 转 JSON",
 		"description": "在线将 CSV 数据转换为 JSON 数组格式。这个 CSV 转 JSON 转换器支持粘贴 CSV 文本或上传 CSV/TSV 文件，配置分隔符、表头和缩进选项，并导出结构化 JSON，全部在浏览器中完成。",
