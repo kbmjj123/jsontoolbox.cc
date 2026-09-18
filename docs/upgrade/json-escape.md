@@ -1,18 +1,47 @@
+下面是基于原始 Semrush 报告和本次真实 SERP 结果升级后的 JSON 配置。
+
+这个页面的关键词方向可以做，但原配置里有几个需要先纠正的技术问题：
+
+- `JSON Escape` 主要处理的是“字符串内容转为 JSON-safe string literal”，不等于把任意 JSON 文档重新序列化。
+- `JSON Unescape` 需要区分：输入是带外层双引号的 JSON string literal，还是只包含内部 escaped content。
+- “所有 Unicode 字符使用 `\uXXXX`”不是默认 JSON escaping 行为，普通 Unicode 字符可以直接保留。
+- `\uXXXX` 只覆盖一个 UTF-16 code unit；emoji 等非 BMP 字符可能涉及 surrogate pair。
+- `URL Input` 不建议默认实现，涉及 CORS、远程内容读取和敏感 URL。
+- JSONL “逐行处理”不能简单保证，因为引号内换行、嵌套 JSON 字符串和多重转义都可能改变处理边界。
+- `Download`、`Swap` 和 `Copy` 是合理功能，但 SEO 核心应放在 `json escape`、`json unescape`、`escaped json string`、`double escaped json` 等明确意图上。
+
+真实 SERP 中，OpenReplay、JSONFiddle、JSON Tools、JSONLint、Jsonic 和 JSONToTable 主要强调：
+
+- quotes、backslashes、newlines、tabs、Unicode。
+- 外层引号可有可无。
+- 双重转义。
+- JSON.stringify / JSON.parse 语义。
+- 日志、数据库字段、API response 中嵌套 JSON 字符串。
+- 与 HTML encoding、JavaScript string escaping 的区别。
+
+ [openreplay](https://openreplay.com/tools/json-escape/)
+
+Semrush 报告中相关关键词包括：
+
+- `json string to json object`：480，KD 15。
+- `convert string to json`：480，KD 29。
+- `json stringify online`：590，KD 34。
+- `convert json to string`：390，KD 30。
+- `string json to json`：480，KD 23。
+- `escaped json`：480，KD 32。
+- `json encode`：390，KD 33。
+- `json stringify to json`：590，KD 35。 [ppl-ai-file-upload.s3.amazonaws](https://ppl-ai-file-upload.s3.amazonaws.com/web/direct-files/attachments/47793863/cead9249-d099-47e8-9ae3-ab6c9d646078/kd-json-1.md?AWSAccessKeyId=ASIA2F3EMEYE3WQ3OVAW&Signature=uDzfhO9l3E9J1ig8szVxqcwE4MY%3D&x-amz-security-token=IQoJb3JpZ2luX2VjEHYaCXVzLWVhc3QtMSJHMEUCIQCeEFF%2FLnAtgBBBcnrwP1QimZawKb1G0Pt5fzqVxwZBegIgEpibMx8MiWlW4wYmLkk0pNFc3kC4Drqh0Zj7rjX6644q8wQIPhABGgw2OTk3NTMzMDk3MDUiDJjJEEZMemrCDriaSyrQBKFBfrwaogiX%2FqfEmWsyG1j4wFi%2FSyosmLyROtU%2FhBV2c5LATDPIqcRc9IzYei6VgHnwwNxA7wVqV%2FDgZ1nUqeuppCs%2F4fIMC9fY%2BCAy6oOfWUaO5xL8gZEiShChGjpwyTRzw%2BAjv%2FYv6HIglw4J5V%2F467qsHqKZNEwHyO5ktQ%2Boqo%2BaUUnoxReEsf%2FlOeCfq%2BaB2E9KhENPacn%2F6nC1xhE0qZkoh8nO8tPlq%2BdImHxM8TpImw0dW7oPMpoEwNkA8550YRZS3KBl8u8nP7J%2Bo68Dawu2T0pPAK%2BLxSASHZ9OiT7UGpiw7nD5O9dg0mITvtenkWZw3%2FlSzeVKA1diAV%2BygvamhXP8FWcYki2r9CzuPNSp7Xq%2BV1r4k1ExIOawXqwGHVfuikKIq8EHQRrWU4JPteng8GsLhxile3iRKzLUYTqVDlO9TppYOQCFNZh32rB8TcQ3v1Z4J6R%2F7KoYoKmHyDV7188ZYzrH53P1Vk4szAvZg3RBq4ZjE%2FMkDC7bK1TZ0E%2BUp7UV2F7mPUU1fmehk%2BamGowN%2BDVrrzo3AIpz0XPs7UoSWQpIjLxJ1ybuFOmUj2N9wDWVAzo1fwPYVgpqewqVofrdxWUT3CWcrFT9qxbuPwDVTOOIkxl6nHvaPlLjnt9xsxeR8Dhhy%2FSniR1C48c0SeiTUWgx%2B%2B%2F%2F%2BoPmhbKBvh0IklQ05iGgdj71CET6tihatX71zRd75IjxvLL2LSIzLyGD6dKSBZHXcuKm1P827OKnRXaTucmY3931ThrLq606JE34OgNWJpui2FgwvqWz1QY6mAHr%2FB9djWsCKRNY5Nt9lf9cprbpIR4o2RdiPbjwGRAtULwrHutiMbHtOFFdfu8xby4Taixh4KgHyZDCh0sTKQC5J1mybA9ocBNm%2B3QR5kk5HQLNM6ISU5O9nQUNn1jbw1yk9MH%2FDn9iarFT%2Bx0cPoGM%2F6XtFouSpcfWzthfQK%2FoXN4CtEsMfDdinMR39fRYI2j1%2B5P3gpT%2Biw%3D%3D&Expires=1789714577)
+
+这说明用户需求不只是“escape/unescape”两个动作，还包括：
+
+- escaped JSON string → JSON object。
+- JSON object → escaped string。
+- double escaping。
+- JSON.stringify / JSON.parse 调试。
+- 日志和 API 字段中的嵌套 JSON。
+
+```json
 {
-  "slug": "json-escape",
-  "category": "format",
-  "component": "JsonEscape",
-  "icon": "lucide:shield",
-  "sort": 3,
-  "applicationCategory": "DeveloperApplication",
-  "nextSteps": [
-    "json-editor"
-  ],
-  "recommends": [
-    "json-minifier",
-    "json-to-csv"
-  ],
-  "en": {
   "name": "JSON Escape & Unescape",
   "description": "Escape raw text or JSON content into a JSON-safe string and unescape JSON string literals back to readable text. Handle quotes, backslashes, line breaks, tabs, control characters, and Unicode escapes directly in your browser.",
   "hero": {
@@ -187,146 +216,339 @@
     "status_invalid": "Input is not a valid JSON string representation",
     "placeholder_output": "Output will appear here..."
   }
-},
-  "zh": {
-    "name": "JSON 转义/反转义",
-    "description": "在线 JSON 转义或 JSON 反转义字符串。处理 JSON 特殊字符，包括引号、反斜杠和换行符。",
-    "hero": {
-      "trustHtml": "100% 本地处理，你的 JSON 数据永远不会离开浏览器。"
-    },
-    "meta": {
-      "title": "JSON 转义反转义 — 免费在线工具",
-      "description": "在线转义和反转义 JSON 字符串。处理特殊字符、引号、反斜杠和换行符。免费、快速，浏览器中运行。无需上传。",
-      "keywords": [
-        "json 转义",
-        "json 反转义",
-        "转义 json",
-        "反转义 json",
-        "json 特殊字符处理",
-        "转义特殊字符 json",
-        "json 字符串格式化",
-        "json 转义工具",
-        "json 字符串转义",
-        "json 字符串反转义"
-      ]
-    },
-    "features": [
-      {
-        "icon": "lucide:shield",
-        "title": "转义与反转义",
-        "description": "在转义和反转义的 JSON 字符串之间即时转换。"
-      },
-      {
-        "icon": "lucide:copy",
-        "title": "一键复制",
-        "description": "一键复制结果到剪贴板。"
-      },
-      {
-        "icon": "lucide:download",
-        "title": "下载",
-        "description": "下载处理后的字符串文件。"
-      },
-      {
-        "icon": "lucide:refresh-cw",
-        "title": "交换",
-        "description": "快速交换输入和输出以进行重复操作。"
-      },
-      {
-        "icon": "lucide:link",
-        "title": "URL 输入",
-        "description": "使用 ?url= 参数从 URL 加载 JSON。"
-      },
-      {
-        "icon": "lucide:shield-check",
-        "title": "私密安全",
-        "description": "所有处理在浏览器中完成，不上传数据。"
-      }
-    ],
-    "guide": [
-      {
-        "title": "粘贴 JSON 字符串",
-        "description": "将转义或未转义的 JSON 字符串粘贴到输入框中。也可以上传 .json 文件或从 URL 加载。"
-      },
-      {
-        "title": "点击转义或反转义",
-        "description": "选择转义在引号、换行符等特殊字符前添加反斜杠，或选择反转义移除反斜杠还原原始文本。"
-      },
-      {
-        "title": "复制或下载结果",
-        "description": "一键复制处理后的字符串到剪贴板，或下载为 .txt 文件。使用交换将输出移回输入框进行反向操作。"
-      }
-    ],
-    "example": {
-      "title": "JSON 转义示例",
-      "description": "看看 JSON 对象字符串转义前后的变化。引号、反斜杠和特殊字符都被正确转义。",
-      "input": "{\"name\": \"Alice\", \"msg\": \"She said \\\"OK\\\"\", \"path\": \"C:\\\\Users\\\\test\"}",
-      "output": "{\\\"name\\\": \\\"Alice\\\", \\\"msg\\\": \\\"She said \\\\\\\"OK\\\\\\\"\\\", \\\"path\\\": \\\"C\\\\\\\\Users\\\\\\\\test\\\"}",
-      "inputLabel": "JSON 字符串（未转义）",
-      "outputLabel": "转义后的字符串",
-      "note": "注意引号变成 \\\"，反斜杠变成 \\\\，嵌套结构被保留。这个转义后的字符串可以安全地嵌入另一个 JSON 文档或 JavaScript 代码中。",
-      "useCase": "转义 JSON 对象字符串 — 内部引号、反斜杠和特殊字符被正确转义，可安全嵌入代码或配置文件。"
-    },
-    "faq": [
-      {
-        "question": "我的 JSON 数据会上传到服务器吗？",
-        "answer": "不会。所有处理直接在浏览器中完成，JSON 数据不会离开你的设备 — 没有服务器上传，没有追踪，没有 Cookie。"
-      },
-      {
-        "question": "JSON 转义是什么意思？",
-        "answer": "JSON 转义在特殊字符（引号、反斜杠、换行符、制表符）前添加反斜杠，使其可以安全地包含在 JSON 字符串中，不会破坏结构。"
-      },
-      {
-        "question": "JSON 反转义是什么意思？",
-        "answer": "JSON 反转义移除反斜杠转义字符，将 \\\" 和 \\n 等转义序列还原为原始字符（引号和换行符）。当你有转义的 JSON 字符串需要查看实际内容时使用。"
-      },
-      {
-        "question": "什么时候应该转义 JSON？",
-        "answer": "在将 JSON 字符串嵌入另一个 JSON 文档时、在 JavaScript 代码中包含 JSON 时、将 JSON 写入日志文件时、或将 JSON 粘贴到需要转义字符串的配置文件中时。"
-      },
-      {
-        "question": "什么时候应该反转义 JSON？",
-        "answer": "当你从 API 响应、Webhook 请求体、日志文件或错误消息中收到转义的 JSON 字符串，需要查看实际的 JSON 内容进行调试或进一步处理时。"
-      },
-      {
-        "question": "哪些特殊字符需要转义？",
-        "answer": "JSON 字符串中必须转义的字符有：双引号（\"）、反斜杠（\\）、换行符（\\n）、制表符（\\t）、回车符（\\r）、退格符（\\b）、换页符（\\f）以及任何使用 \\uXXXX 的 Unicode 转义。"
-      },
-      {
-        "question": "JSON 转义和 HTML 编码有什么区别？",
-        "answer": "JSON 转义使用反斜杠（\\\"）处理 JSON 字符串中的特殊字符，HTML 编码使用 &amp;quot; 处理 HTML 中的特殊字符。目的相同（防止语法冲突），但使用不同的转义字符，不能互换。"
-      },
-      {
-        "question": "可以转义整个 JSON 对象而不只是字符串吗？",
-        "answer": "可以。粘贴像 {\"key\": \"value\"} 这样的 JSON 对象后，转义功能会转换所有引号和特殊字符，使整个对象可以安全地作为字符串嵌入另一个 JSON 文档或 JavaScript 代码中。"
-      },
-      {
-        "question": "为什么转义后的 JSON 有太多反斜杠？",
-        "answer": "通常是因为输入在转义之前已经是转义过的 — 这叫双重转义。先用反转义按钮去除多余的反斜杠，检查输入后再重新转义。"
-      },
-      {
-        "question": "如何处理 JSON 字符串中的 Unicode 字符？",
-        "answer": "Unicode 字符（如 é、ñ、中文、emoji）可以直接出现在 JSON 字符串中，不需要转义。如果需要转义，使用 \\uXXXX 格式加 4 位十六进制编码。例如 é 变成 \\u00e9。"
-      },
-      {
-        "question": "这个工具支持 JSONL（JSON Lines）格式吗？",
-        "answer": "支持。可以粘贴多行 JSONL 内容进行转义或反转义，每行都会按相同的转义规则处理。适合处理 JSONL 日志数据或批量处理。"
-      },
-      {
-        "question": "可以处理的 JSON 有大小限制吗？",
-        "answer": "没有人为的大小限制。工具完全在浏览器中运行，性能取决于你的设备。大多数场景（几 MB 以内）可以即时处理，超大文件（100MB+）可能会让浏览器变慢。"
-      }
-    ],
-    "ui": {
-      "label_input": "输入文本",
-      "label_output": "输出结果",
-      "placeholder_output": "输出将显示在这里...",
-      "btn_escape": "转义",
-      "btn_unescape": "反转义",
-      "btn_swap": "交换"
-    },
-    "article": {
-      "title": "如何在线转义和反转义 JSON 字符串 — 完整指南",
-      "content": "<h2>什么是 JSON 转义？</h2><p>JSON 转义是在字符串中的特殊字符前添加反斜杠（\\），使其可以安全地包含在 JSON 文档中。双引号、反斜杠、换行符和制表符在 JSON 中有特殊含义 — 直接使用会破坏 JSON 结构。转义告诉解析器「把这个字符当作普通文本，不要当作语法」。</p><p>例如，字符串 <code>She said \"hello\"</code> 包含会破坏 JSON 的双引号。转义后变成 <code>She said \\\"hello\\\"</code> — 合法且可安全嵌入。</p><h2>JSON 中的常见转义字符</h2><p>JSON 定义了一组在字符串值中必须转义的字符：</p><ul><li><strong>\\\"</strong> — 双引号（必须，因为引号是字符串的定界符）</li><li><strong>\\\\</strong> — 反斜杠（必须，因为它是转义序列的前缀）</li><li><strong>\\n</strong> — 换行符</li><li><strong>\\t</strong> — 制表符</li><li><strong>\\r</strong> — 回车符</li><li><strong>\\uXXXX</strong> — Unicode 字符（4 位十六进制编码）</li></ul><p>其他字符（包括大部分 emoji 和非 ASCII 字符）可以直接出现在 JSON 字符串中，不需要转义。</p><h2>JSON 转义的真实使用场景</h2><h3>日志文件中的 JSON 转义</h3><p>当应用将 JSON 数据写入日志文件（CloudWatch、ELK、Datadog）时，日志条目本身通常也是 JSON。如果请求体包含嵌套的 JSON 字符串，内部字符串必须转义。例如，作为字符串记录在 JSON 日志中的 API 请求体需要正确转义，否则日志聚合器无法正确索引或拆分条目。</p><h3>在 JavaScript 代码中嵌入 JSON</h3><p>如果需要在 JavaScript 字符串中嵌入 JSON 对象（比如测试数据、配置模板或内联脚本），必须转义所有引号和反斜杠。常见错误是把原始 JSON 直接复制到 JS 字符串中而不转义 — 这会产生语法错误。使用我们的 JSON 转义工具一键将原始 JSON 转换为合法的 JavaScript 字符串。</p><h3>处理来自 Webhook 和 API 的转义 JSON</h3><p>很多 API 返回的 JSON 中，某些字段包含转义的 JSON 字符串。例如，Webhook 请求体中可能有一个 <code>payload</code> 字段，其值是编码为字符串的 JSON 对象。要读取实际数据，需要先反转义。这在 Stripe Webhook、Slack API 响应和事件驱动架构中很常见。</p><h3>配置文件中的 JSON</h3><p>配置文件（package.json、tsconfig.json、.eslintrc）是 JSON 格式，但有时包含特殊字符 — Windows 的反斜杠文件路径、正则表达式或多行描述。正确转义确保这些配置文件保持有效的 JSON 格式。</p><h2>JSON 转义的常见错误</h2><h3>双重转义</h3><p>最常见的错误是对已经转义的字符串再次转义。例如，对 <code>She said \\\"hello\\\"</code> 再次转义，会得到 <code>She said \\\\\\\"hello\\\\\\\"</code> — 反斜杠本身被转义，产生错误输出。如果输出有太多反斜杠，很可能就是双重转义了。先用反转义按钮还原，再只转义一次。</p><h3>忘记转义反斜杠</h3><p>反斜杠必须先于其他字符被转义。Windows 文件路径 <code>C:\\Users\\test</code> 在 JSON 中必须写成 <code>C:\\\\Users\\\\test</code>。常见错误是转义了引号但忘记转义反斜杠，产生看起来几乎正确但实际损坏的 JSON。</p><h3>使用错误的转义序列</h3><p>JSON 只支持有限的转义序列：<code>\\\"</code>、<code>\\\\</code>、<code>\\/</code>、<code>\\n</code>、<code>\\r</code>、<code>\\t</code>、<code>\\b</code>、<code>\\f</code> 和 <code>\\uXXXX</code>。<code>\\a</code>、<code>\\v</code>、<code>\\0</code> 在 JSON 中无效（虽然在某些编程语言中有效），使用无效序列会导致 <code>JSON.parse</code> 报错。</p><h3>混合转义和未转义内容</h3><p>如果粘贴的内容部分转义了（有些引号转义了，有些没有），转义或反转义操作会产生不一致的结果。操作前先确认输入是完全转义还是完全未转义的，然后选择对应的操作。</p><h2>如何使用 JSON 转义工具</h2><ol><li>将 JSON 字符串或文本<strong>粘贴</strong>到输入框（或上传文件 / 从 URL 加载）</li><li><strong>点击转义</strong>添加转义字符，或<strong>点击反转义</strong>移除转义字符</li><li><strong>复制</strong>结果或下载为文件</li><li>使用<strong>交换</strong>将输出移回输入框进行反向操作</li></ol><p>所有处理在浏览器中完成 — 数据不会发送到任何服务器。</p>"
-    }
-  }
 }
+```
+
+## 主要调整说明
+
+### 1. 重新定义“escape”对象
+
+原配置中：
+
+> Escape or unescape JSON strings
+
+这个方向对，但需要进一步区分：
+
+```text
+Raw text
+```
+
+和：
+
+```text
+JSON string literal
+```
+
+例如原始文本：
+
+```text
+She said "OK"
+```
+
+JSON string literal：
+
+```json
+"She said \"OK\""
+```
+
+如果输出只包含：
+
+```text
+She said \"OK\"
+```
+
+它是“escaped string content”，但还不是一个完整 JSON string literal，因为缺少外层双引号。
+
+OpenReplay 的实际工具明确支持两种输入形式：带外层引号的完整 literal，以及不带外层引号的内部 content。 因此新版增加： [openreplay](https://openreplay.com/tools/json-escape/)
+
+```text
+option_include_quotes
+```
+
+这是该页面非常值得加入的功能。
+
+### 2. 修正 JSON 转义字符说明
+
+原配置中的字符列表基本正确，但需要补充：
+
+- `\/` 是可选转义，不是必须转义。
+- 普通 Unicode 字符通常可以直接出现。
+- `\uXXXX` 不是所有 Unicode 字符的唯一表示方式。
+- emoji 可能需要 surrogate pair。
+- JSON 不支持 JavaScript、Python 或 C 风格的所有 escape sequence。
+
+Jsonic 的参考页面明确列出 JSON 支持的转义，包括 `\"`、`\\`、`\/`、`\b`、`\f`、`\n`、`\r`、`\t` 和 `\uXXXX`，并说明 `JSON.stringify()` 会自动处理这些规则。 [jsonic](https://jsonic.io/guides/json-string-escaping)
+
+因此新版将原来的：
+
+> any character using the `\uXXXX` Unicode escape
+
+改成：
+
+> A Unicode escape such as `\uXXXX` may be used when needed.
+
+### 3. 增加“unescape 一层”的概念
+
+现实中经常出现多重嵌套：
+
+```json
+{
+  "payload": "{\"id\":1,\"status\":\"ok\"}"
+}
+```
+
+甚至：
+
+```text
+"{\\\"id\\\":1}"
+```
+
+这时用户不能简单点击一次 unescape 就期望直接得到 object。JSON Tools 和 JSONFiddle 的真实 SERP 内容已经把：
+
+- outer quotes。
+- double-escaped strings。
+- one layer / multiple layers。
+- database column。
+- logs。
+- API response。
+
+作为明确场景。 [jsonfiddle](https://www.jsonfiddle.com/tools/escape)
+
+因此新版增加：
+
+```text
+option_decode_layers
+```
+
+并将操作描述为：
+
+> Decode one layer
+
+而不是承诺一次处理所有多重转义。
+
+### 4. 删除 URL Input feature
+
+原配置中：
+
+```text
+Load JSON from URL using ?url= parameter
+```
+
+对于 Escape/Unescape 工具而言价值较低，风险较高：
+
+- URL 可能带 token。
+- URL 内容可能很大。
+- CORS 可能失败。
+- 远程内容可能不是 JSON。
+- 页面可能被误用来读取私有数据。
+
+新版将其删除，并保留 FAQ 解释。如果以后确实支持 URL，应至少加入：
+
+- URL scheme 校验。
+- 响应大小限制。
+- Content-Type 检查。
+- CORS 失败提示。
+- 不携带 credentials。
+- 禁止本地或私有网络地址。
+- 不把 URL 参数写入日志。
+
+### 5. JSONL 支持不能直接承诺
+
+原 FAQ：
+
+> Each line will be processed with the same escaping rules.
+
+这可能不准确，因为 JSONL 可能包含：
+
+- escaped newline。
+- quoted multiline field。
+- 一个 JSON object 中含有嵌套 JSON string。
+- 不是每一行都合法。
+- 文件末尾空行。
+- 不同层级的 escaping。
+
+因此新版改为：
+
+> Only when the input is processed as independent lines and each line is valid for the selected operation.
+
+如果要真正支持 JSONL，建议单独增加 UI：
+
+```text
+Input mode:
+- Text/String
+- JSON document
+- JSONL / NDJSON
+```
+
+并逐行报告：
+
+```text
+Line 17: invalid JSON string
+```
+
+### 6. 增加 `JSON.stringify()` / `JSON.parse()` 说明
+
+这是非常重要的技术边界。
+
+开发者不应该在生产代码中手工做：
+
+```js
+text.replaceAll('"', '\\"')
+```
+
+而应该使用：
+
+```js
+JSON.stringify(value)
+JSON.parse(text)
+```
+
+OpenReplay、JSONFiddle 和 Jsonic 的 SERP 内容都将标准库序列化/解析作为正确实现方式。 [openreplay](https://openreplay.com/tools/json-escape/)
+
+因此新版文章专门加入：
+
+> Use JSON.stringify and JSON.parse When Coding
+
+这个内容既有教育价值，也避免把在线工具包装成生产编码替代品。
+
+## 真实 SERP 下的竞争情况
+
+当前 SERP 已经不是简单的“加反斜杠工具”，主要竞争方向包括：
+
+| 竞争方向 | 典型能力 |
+|---|---|
+| 基础 Escape/Unescape | quotes、backslashes、newlines、tabs |
+| JSON string literal | outer quotes 可选 |
+| Double escaping | 多重序列化层处理 |
+| JSON parsing | unescape 后直接解析为 object |
+| Unicode | `\uXXXX`、surrogate pairs |
+| Logs/API | 嵌套 JSON 字符串 |
+| 双向操作 | Escape/Unescape toggle |
+| 本地处理 | browser-only/no upload |
+| 编程参考 | JSON.stringify / JSON.parse 示例 |
+
+ [openreplay](https://openreplay.com/tools/json-escape/)
+
+因此，基础功能最低应包括：
+
+1. Escape raw text。
+2. Unescape valid JSON string。
+3. 外层引号可选。
+4. 正确处理 quotes/backslashes/control characters。
+5. Unicode 不被无意义地破坏。
+6. 明确区分 string content 和 JSON document。
+7. 一层一层处理 double escaping。
+8. 错误提示。
+9. Copy/download。
+10. 浏览器本地处理。
+
+## SEO 关键词和落地页策略
+
+这个页面的主词较具体，适合做独立工具页：
+
+```text
+/tools/json-escape
+```
+
+建议主关键词：
+
+```text
+json escape
+json unescape
+escape json
+unescape json
+json string escape
+json string unescape
+escaped json
+```
+
+报告中的其他词适合做相关内容或 FAQ：
+
+```text
+convert string to json
+json string to json object
+json stringify online
+convert json to string
+json stringify to json
+json encode
+```
+
+不建议把这些词全部放进当前页面的 meta keywords，因为它们对应不同的操作：
+
+- `json stringify online`：用户可能想把 object stringify 成 string。
+- `json string to json object`：用户想 parse，而不只是 unescape。
+- `convert json to string`：可能需要普通序列化或 JSON.stringify。
+- `json encode`：可能涉及 URL encoding、Base64 或 HTML encoding。
+
+更好的页面集群是：
+
+```text
+/tools/json-escape
+/tools/json-unescape
+/tools/json-stringify
+/tools/json-parse
+/tools/json-encode
+```
+
+其中 Escape/Unescape 可以先合并，Stringify/Parse 则建议以后单独建立页面，因为用户意图不同。
+
+## 建议的未来产品规划
+
+### 第一阶段：正确实现基础语义
+
+- Escape raw text。
+- Unescape JSON string literal。
+- 选项：是否包含外层引号。
+- 处理 quotes、backslashes、`\n`、`\r`、`\t`、`\b`、`\f`。
+- 正确处理 Unicode。
+- Copy/download。
+- 输入错误提示。
+- 处理一个 escape layer。
+
+### 第二阶段：开发者常见场景
+
+- Double escaping detection。
+- Decode one layer / multiple layers。
+- Unescape 后自动检测是否为 JSON document。
+- Unescape → Parse → Format。
+- `JSON.stringify` 模式。
+- `JSON.parse` 模式。
+- JSONL / NDJSON 模式。
+- 输入文件。
+- 多行错误定位。
+
+### 第三阶段：上下文编码工具
+
+- JSON string escape。
+- JavaScript string escape。
+- Python string literal。
+- SQL string escaping。
+- HTML attribute escaping。
+- URL encoding。
+- Base64 encode/decode。
+- CSS/Regex escaping。
+
+这些功能必须拆成明确的 context，因为 JSON escaping、HTML encoding、URL encoding、SQL escaping 并不可互换。不能将它们全部统称为“escape”。
+
+## 页面优先级判断
+
+| 维度 | 评价 |
+|---|---|
+| 搜索需求 | 中等 |
+| 工具意图 | 很强 |
+| 主词竞争 | 中等 |
+| 技术实现难度 | 中等 |
+| 产品匹配度 | 很高 |
+| 初期流量难度 | 中等 |
+| 长尾扩展空间 | 高 |
+| 与其他 JSON 工具复用度 | 很高 |
+
+这个页面的初期流量难度低于 JSON Editor、JSON Formatter 和 JSON Schema Generator，但单个关键词的搜索量通常不如 JSON to CSV、JSON Viewer 等大词。它的价值在于：
+
+- 需求非常明确。
+- 用户通常立即使用工具。
+- 页面容易实现。
+- 可以与 JSON Parser、Formatter、Viewer、Stringify 形成内部工具链。
+- 多重转义和 API/log 场景有较好的长尾扩展空间。
+
+最终判断是：**JSON Escape & Unescape 值得做，但页面必须严格区分字符串转义、JSON 文档序列化、JSON 解析和其他上下文编码。** 真实竞争者已经开始支持外层引号、多重转义和 JSON parse 联动；如果只做简单的字符串替换，能覆盖基础关键词，但很难建立长期竞争力。

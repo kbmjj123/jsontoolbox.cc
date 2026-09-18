@@ -1,17 +1,41 @@
+下面是基于原始 Semrush 报告和本次真实 SERP 结果升级后的 JSON 配置。
+
+这个页面的核心方向成立，但原配置需要做几项客观修正：
+
+- JSON minification 不是传统意义上的压缩算法，不一定像 gzip、Brotli 那样显著减少体积。
+- 不能笼统使用 `JSON compressor`、`JSON compression tool`，否则容易让用户误以为支持 gzip/Brotli。
+- `URL Input` 不是核心功能，而且涉及 CORS、远程数据读取和隐私风险。
+- “preserving the original data and structure”需要限定为：解析后的 JSON 值和结构保持不变；原始文本格式不会保留。
+- 仅显示字符数不够，真实 SERP 中已经有工具显示 bytes、saved bytes 和 savings percentage。
+- `Beautify First` 不一定需要，因为标准 minifier 本身应直接解析并重新序列化合法 JSON。
+- 是否删除 comments 需要单独区分标准 JSON 与 JSONC/JSON5 输入。
+
+真实 SERP 中，DebugBear、JSONLint、DevKits、JSON Tools、CodeLint、Static.app 等页面普遍强调：
+
+- 解析后再重新序列化。
+- 只移除 token 之间的无意义空白。
+- 不改变字符串内部空格。
+- 显示原始/压缩后的字节数。
+- 语法错误定位。
+- 本地处理。
+- 部分工具支持 JSONC comments、key sorting 或 multi-line compact mode。
+
+ [debugbear](https://www.debugbear.com/tool/minify-json)
+
+Semrush 报告中相关关键词包括：
+
+- `json minify`：480，KD 34。
+- `json minifier`：报告中有相关工具意图。
+- `compress json online`：报告中有明确搜索需求。
+- `json compressor`：属于高意图但语义较泛的词。
+- `json compact`：480，KD 29。
+- `json size reducer`：低量长尾。
+- `json to one line`：低量但意图非常明确。 [ppl-ai-file-upload.s3.amazonaws](https://ppl-ai-file-upload.s3.amazonaws.com/web/direct-files/attachments/47793863/cead9249-d099-47e8-9ae3-ab6c9d646078/kd-json-1.md?AWSAccessKeyId=ASIA2F3EMEYEXTG235J2&Signature=1GtA2ZjC4mb4xk8kMOGCLiM9aEE%3D&x-amz-security-token=IQoJb3JpZ2luX2VjEHYaCXVzLWVhc3QtMSJHMEUCIQCthX91YE40m6Qf0b6r3qANGB9wpMfCBcX1Tn%2FDhib1NgIgajlPa%2B%2B7e6W58vV4X2sHfMa3ylNrQfZjz7ID06FZ1d8q8wQIPhABGgw2OTk3NTMzMDk3MDUiDF3yjNVZ322RVD4kGirQBAQx0rYMO91qNhVnE120TQw5SVmiuoEEgxusfqwPVVQVeCtz05Mltn%2BxQtusgnrCaVQ3cm0cGHOsxEH25NMRjsa4Pn4QphnV5uTQ7dUgtHTVV5yg7%2FWUEYCR2ImjziMcPdQJ4BSs2b4x32YBfjxZPOK15IW30utRDCGW5HDqP1sWOSYCXQrBvSvCycrte6KuN6yDaexmjqsdWfxWwIEqyaAQF90YIBdYCTtzprkbUsXZxzgGIlbZjASbL%2FnTxAZvj1mG1nemyCRw3VIui%2F8RCFi1KTkjJKRhjisIMSiRgio8R1QLhyrG%2FVeRrbNJbc5zM%2BCY4w5E56eM94tYXcDYaC1JcSHJfyDDEryH3L2UD8QKv34TTxR3c8WX81M6WkUVI0gOS7ub5yVIEFGKTTBnvHq1r0hdmhRcjVcu5ZRO4jbt5TB%2BMgi5BpCdzckFXf1rHdmCYDw7Bb7u48CmHQKClSuV3BWpmOlG0cshZaSJBCL7wXc07vFuzcaSt4sHcW7E5ARLzzW6Skt816KCiV%2F7lH88%2FeJ6tYFiiEe3NC48zpheEyHLJiyeQGx7USkRiLjtrGJsfRCn0fFWm3%2FKqLS2JInJ606t124xMo3kLYco7mj6sNk6YOLp5Ex17OD6NidxO%2BBDHspkrBuCkFTdhymN2DKijHVlUzmDJfPd%2FS3h5wRxbOqFEypl3en4rZMDn3DdlxcUR%2FxnHa%2FZhkgoPSjuslZoBbPzfoqzXAP6gXgS65cgH4pcnkRARjUHqWA%2Bd1YONrLnYCoPgaTfWMLToiCtp2MwhqCz1QY6mAG4Mi0bRPTf0JwwJ%2BLzFpZO%2F5k8u6PKzy256%2FtkUHeboJwBIgIm8r3bpVYhrmRdDIXGUNNzs0RfsjLgrwQDbvYcpuUwVupltMl%2FvuZ%2Bapn2%2F0wiqC60CsS10Yy4V2q8eWYY1vkT99XqIm6QIWtI0zj%2BiAWeiulrqHVDzAQm0EDKDTHgGT93MIJqZ8a06uaeY1koS6P3JW%2FENA%3D%3D&Expires=1789713881)
+
+下面版本保留原有数据架构，同时将 SEO 和产品描述改得更准确。
+
+```json
 {
-  "slug": "json-minifier",
-  "category": "format",
-  "component": "JsonMinifier",
-  "icon": "lucide:minimize",
-  "sort": 2,
-  "applicationCategory": "DeveloperApplication",
-  "nextSteps": [
-    "json-editor"
-  ],
-  "recommends": [
-    "json-to-csv"
-  ],
-  "en": {
   "name": "JSON Minifier",
   "description": "Minify valid JSON by removing insignificant whitespace between JSON tokens. Create compact, single-line output without changing parsed values or structure, compare character and byte sizes, and copy or download the result directly in your browser.",
   "hero": {
@@ -180,147 +204,325 @@
     "title": "How to Minify JSON Online",
     "content": "<h2>What Is JSON Minification?</h2><p>JSON minification removes insignificant whitespace from valid JSON and produces a compact representation. The output commonly appears on one line, but the important property is that whitespace between JSON tokens is removed without changing the parsed data.</p><p>A standard minifier parses the input and serializes it again. This is safer than deleting every space character because spaces inside JSON string values are meaningful and must remain unchanged.</p><h2>How to Minify JSON</h2><ol><li><strong>Enter JSON:</strong> Paste formatted JSON or open a local .json file.</li><li><strong>Validate the input:</strong> Confirm that the source is valid standard JSON.</li><li><strong>Minify:</strong> Parse and serialize the document without indentation or unnecessary token spacing.</li><li><strong>Compare sizes:</strong> Review original and minified character or byte counts.</li><li><strong>Copy or download:</strong> Use the compact output in an API, application asset, configuration workflow, or local file.</li></ol><h2>What Does a JSON Minifier Remove?</h2><p>It normally removes whitespace between JSON tokens, including indentation, line breaks, and spaces around structural punctuation. For example:</p><pre><code>{\n  \"name\": \"Alice\",\n  \"active\": true\n}</code></pre><p>can become:</p><pre><code>{\"name\":\"Alice\",\"active\":true}</code></pre><p>The space inside a value such as <code>\"New York\"</code> is not removed because it is part of the string data.</p><h2>JSON Minification vs Compression</h2><p>Minification and compression are different operations. Minification changes the JSON text by removing formatting overhead. Network compression such as gzip or Brotli encodes the resulting bytes using a compression algorithm. Many HTTP servers can apply gzip or Brotli automatically even when the source JSON is formatted or minified.</p><p>Minification may still be useful for static assets, embedded payloads, storage, or workflows where the raw JSON text itself is transmitted or measured. Do not assume that minification alone provides the same benefit as HTTP compression.</p><h2>How to Measure Savings</h2><p>Character count and byte count are not always identical. For ASCII-only JSON they may be similar under common encodings, but non-ASCII text can occupy multiple bytes in UTF-8. A useful size comparison should identify whether it measures JavaScript string length, encoded UTF-8 bytes, or file bytes.</p><p>Percentage savings can be calculated as:</p><pre><code>savings = (originalSize - minifiedSize) / originalSize × 100</code></pre><p>Always compare the same measurement unit before interpreting the percentage.</p><h2>Minification Does Not Change String Content</h2><p>A safe minifier must preserve whitespace and escape sequences inside quoted strings. Consider:</p><pre><code>{\"message\":\"Line one\\nLine two\",\"title\":\"New York\"}</code></pre><p>The newline escape and the space inside <code>New York</code> are data. Removing them would change the value and make the operation incorrect.</p><h2>JSON, JSONC, and JSON5</h2><p>Standard JSON does not permit comments or trailing commas. JSONC and JSON5 are related formats that add features such as comments, single-quoted strings, or relaxed syntax. A strict JSON minifier should reject those inputs unless it explicitly supports a JSONC or JSON5 parsing mode.</p><p>Some specialized minifiers remove comments from JSON-like content, but that is a transformation beyond standard JSON minification. It should be clearly labeled because comments may contain important documentation.</p><h2>When to Minify JSON</h2><ul><li><strong>Production assets:</strong> Reduce raw file size for static JSON resources.</li><li><strong>Embedded data:</strong> Place compact JSON inside generated code or templates.</li><li><strong>Storage:</strong> Store a compact representation when human readability is not needed.</li><li><strong>Fixtures:</strong> Create one-line test data when that format is useful for a test harness.</li><li><strong>Build pipelines:</strong> Automate minification during deployment while preserving a readable source file.</li></ul><h2>When Not to Minify JSON</h2><p>Keep formatted JSON when people need to review or edit it, when it is maintained in version control, or when clear diffs are more valuable than raw text size. A common workflow is to keep a readable source version and generate minified output as a build artifact.</p><h2>Browser-Based Privacy</h2><p>This minifier is designed to parse and serialize JSON in the browser instead of sending the input to a remote service. That is convenient for development data and configuration snippets, but it is not a secret-management system. Avoid entering credentials, tokens, private customer data, or confidential production information into any online tool.</p><h2>Production Alternatives</h2><p>For repeatable builds, use a local formatter, a CI step, or a command-line tool such as <code>jq -c</code>. A production workflow should validate the output, retain a readable source copy, and test the minified file in the target application.</p>"
   }
-},
-  "zh": {
-		"name": "JSON 压缩器",
-		"description": "在线压缩 JSON 数据，移除不必要的空格、换行和缩进，将格式化 JSON 转换为紧凑的单行内容。这个免费的 JSON 压缩器支持一键压缩、大小对比、复制和下载，并可直接在浏览器中完成处理，无需上传文件。",
-		"hero": {
-			"trustHtml": "100% 本地处理。你的 JSON 数据始终保留在浏览器中。"
-		},
-		"meta": {
-			"title": "JSON 压缩器 — 在线压缩 JSON 为单行",
-			"description": "在线压缩和最小化 JSON 数据，移除不必要的空白、换行和缩进，生成紧凑的单行 JSON。比较压缩前后的字符数和大小，支持复制与下载，无需上传，100% 客户端处理。",
-			"keywords": [
-				"json压缩",
-				"json压缩器",
-				"压缩json",
-				"json最小化",
-				"在线压缩json",
-				"json大小缩减器",
-				"json紧凑化",
-				"json优化器",
-				"在线minify json",
-				"json压缩工具",
-				"免费json压缩器",
-				"json文件压缩",
-				"json转单行",
-				"json压缩在线工具"
-			]
-		},
-		"features": [
-			{
-				"icon": "lucide:minimize",
-				"title": "即时压缩",
-				"description": "粘贴有效的 JSON 后即可快速生成紧凑输出。工具会移除不必要的空格、制表符、换行和缩进，同时保留原始数据、键名、值和结构不变。"
-			},
-			{
-				"icon": "lucide:copy",
-				"title": "一键复制",
-				"description": "一键将压缩后的 JSON 复制到剪贴板，方便用于 API 请求、应用代码、配置文件、数据库记录、构建产物或开发文档。"
-			},
-			{
-				"icon": "lucide:download",
-				"title": "下载文件",
-				"description": "将压缩后的 JSON 下载为 .json 文件，用于本地保存、生产部署、自动化流程、测试数据或其他开发场景。"
-			},
-			{
-				"icon": "lucide:bar-chart",
-				"title": "大小对比",
-				"description": "对比原始 JSON 和压缩后 JSON 的字符数及大小，查看实际减少的内容。压缩比率可以帮助你了解格式化空白对文件体积的影响。"
-			},
-			{
-				"icon": "lucide:link",
-				"title": "URL 输入",
-				"description": "支持通过 ?url= 参数从公开可访问的 URL 加载 JSON。加载后可以先检查内容，再进行压缩处理。"
-			},
-			{
-				"icon": "lucide:shield-check",
-				"title": "私密安全",
-				"description": "JSON 的解析和压缩都在浏览器本地完成，不需要将数据上传到服务器。适合处理开发数据、配置片段和其他不希望离开设备的内容。"
-			}
-		],
-		"guide": [
-			{
-				"title": "粘贴 JSON",
-				"description": "将 JSON 对象或数组粘贴到输入框中，可以使用代码编辑器、API 响应、配置文件或数据导出中的格式化 JSON。"
-			},
-			{
-				"title": "点击压缩",
-				"description": "点击压缩按钮，移除 JSON 中不必要的空白、换行和缩进，生成紧凑的单行内容。如果输入内容较难处理，可以先使用“先美化”统一格式。"
-			},
-			{
-				"title": "查看大小变化",
-				"description": "比较压缩前后的字符数和大小，了解本次处理实际减少了多少内容。JSON 中的数据和结构不会改变，只有格式化空白被移除。"
-			},
-			{
-				"title": "复制或下载",
-				"description": "将单行 JSON 复制到其他工具或应用中，也可以下载为 .json 文件，用于部署、存储、测试或后续开发流程。"
-			}
-		],
-		"example": {
-			"title": "JSON 压缩示例",
-			"description": "以下示例展示了带有缩进和换行的格式化 JSON 如何被压缩为单行内容。JSON 压缩通常用于生产环境，以移除格式化开销并减少传输或存储数据的体积。",
-			"inputLabel": "格式化 JSON（带缩进）",
-			"input": "{\n  \"name\": \"Alice\",\n  \"age\": 28,\n  \"active\": true\n}",
-			"inputExplanation": "这段格式化 JSON 在开发和调试时更容易阅读，但其中的空格、缩进和换行会增加网络传输或文件存储时的字节数。",
-			"outputLabel": "压缩后的 JSON（单行）",
-			"output": "{\"name\":\"Alice\",\"age\":28,\"active\":true}",
-			"outputExplanation": "压缩后，不必要的空白和换行被移除。键名、值、数据类型和结构完全保持不变，只是去除了格式化内容。这个示例的文件体积约减少 40%。",
-			"note": "压缩后的 JSON 适合生产环境中的 API、CDN 响应、浏览器存储和其他注重体积的场景。需要恢复可读性时，可以使用 JSON 格式化工具或美化工具。"
-		},
-		"faq": [
-			{
-				"question": "我的 JSON 数据会上传到服务器吗？",
-				"answer": "不会。JSON 的解析和压缩都在浏览器本地完成，数据不会上传到远程服务器，也不会离开你的设备。"
-			},
-			{
-				"question": "JSON 压缩是什么意思？",
-				"answer": "JSON 压缩会移除数据中不必要的空白、换行、制表符和缩进，使 JSON 变得更加紧凑。压缩后的内容通常显示为单行，但键名、值、数据类型和整体结构不会改变。"
-			},
-			{
-				"question": "JSON 压缩会改变数据内容吗？",
-				"answer": "不会。JSON 压缩只会改变格式，不会修改 JSON 中的对象、数组、属性、字符串、数字、布尔值或 null。字符串值内部有意义的空格也会被保留。"
-			},
-			{
-				"question": "什么时候应该压缩 JSON？",
-				"answer": "在网络传输、生产环境部署、API 请求或响应、数据库存储、浏览器存储，以及将 JSON 嵌入代码或其他资源时，都可以考虑压缩 JSON，以减少格式化空白带来的额外体积。"
-			},
-			{
-				"question": "JSON 压缩后能缩小多少？",
-				"answer": "缩小幅度取决于原始 JSON 的格式和结构。包含大量缩进、换行和嵌套内容的格式化 JSON 通常能明显缩小，而本身已经紧凑的 JSON 变化可能很小。工具会显示实际字符数和大小变化。"
-			},
-			{
-				"question": "可以压缩大型 JSON 文件吗？",
-				"answer": "可以，只要浏览器能够加载和处理该文件。实际限制取决于设备性能、浏览器可用内存以及 JSON 结构的复杂程度。非常大的文件可能需要更长的解析和压缩时间。"
-			},
-			{
-				"question": "JSON 压缩器和 JSON 格式化工具有什么区别？",
-				"answer": "JSON 压缩器会移除不必要的空白，生成紧凑的单行 JSON；JSON 格式化工具则会添加缩进和换行，让 JSON 更容易阅读。两者的处理方向相反。"
-			},
-			{
-				"question": "可以从 URL 加载 JSON 吗？",
-				"answer": "可以。你可以使用支持的 ?url= 参数，从公开可访问的 URL 加载 JSON。该地址需要允许浏览器访问，并且返回内容必须是有效的 JSON。"
-			},
-			{
-				"question": "可以下载压缩后的 JSON 文件吗？",
-				"answer": "可以。压缩完成后，你可以复制紧凑输出，也可以将结果下载为 .json 文件，用于本地保存、部署、测试、存储或其他开发流程。"
-			},
-			{
-				"question": "压缩后的 JSON 一定比格式化 JSON 更好吗？",
-				"answer": "不一定。压缩后的 JSON 更适合生产环境传输和存储，因为它减少了格式化开销；格式化 JSON 则更适合开发、调试、代码审查和人工编辑。常见做法是在开发阶段保留格式化版本，在发布或传输阶段生成压缩版本。"
-			}
-		],
-		"ui": {
-			"label_input": "输入 JSON",
-			"label_output": "压缩输出",
-			"placeholder_output": "压缩后的输出将显示在这里...",
-			"unit_chars": "字符",
-			"unit_smaller": "更小",
-			"btn_beautify": "先美化"
-		},
-		"article": {
-			"title": "如何在线压缩 JSON 并减小文件大小",
-			"content": "<h2>什么是 JSON 压缩？</h2><p>JSON 压缩是指从有效的 JSON 数据中移除不必要的空格、换行、制表符和缩进。处理后的结果通常是紧凑的单行 JSON，同时保留原始的键名、值、数据类型和结构。</p><p>格式化 JSON 方便人们阅读和编辑，但其中的换行和缩进会增加文件的额外字节。JSON 压缩器可以去除这些格式化开销，让数据在传输和存储时更加紧凑。</p><h2>为什么要压缩 JSON？</h2><p>压缩 JSON 可以减少浏览器、应用程序、API 和服务器之间传输的数据量。实际缩小幅度取决于原始格式和 JSON 文档的复杂程度，但层级较深、缩进较多的 JSON 通常包含更多可以移除的空白字符。</p><ul><li><strong>减少负载体积：</strong>移除 API 请求和响应中的格式化字符</li><li><strong>提高传输效率：</strong>通过网络发送更少的字节</li><li><strong>节省存储空间：</strong>在不需要人工阅读时保存更紧凑的 JSON 文档</li><li><strong>准备生产数据：</strong>生成适合部署和应用交付的紧凑文件</li><li><strong>优化嵌入内容：</strong>减少脚本、配置或网页资源中 JSON 数据的体积</li></ul><h2>什么时候应该压缩 JSON？</h2><ul><li><strong>生产环境部署：</strong>减小静态 JSON 资源和应用数据文件的体积</li><li><strong>API 响应：</strong>减少发送给客户端的格式化内容</li><li><strong>数据库存储：</strong>当大型 JSON 文档不需要保持可读格式时节省空间</li><li><strong>浏览器存储：</strong>将更紧凑的数据保存到本地存储等客户端存储系统</li><li><strong>构建流程：</strong>在 CI/CD 中自动生成适合生产环境的 JSON</li><li><strong>嵌入配置：</strong>将紧凑 JSON 放入代码或其他生成资源中</li></ul><h2>如何在线压缩 JSON</h2><ol><li><strong>粘贴 JSON：</strong>将有效的 JSON 对象或数组添加到输入框。</li><li><strong>检查输入：</strong>确认内容符合 JSON 语法，例如属性名和字符串值使用双引号。</li><li><strong>点击压缩：</strong>工具会移除不必要的空格、换行和缩进。</li><li><strong>比较大小：</strong>查看压缩前后的字符数和实际大小变化。</li><li><strong>复制或下载：</strong>复制紧凑的 JSON，或将其保存为 .json 文件。</li></ol><h2>JSON 压缩器会移除什么？</h2><p>JSON 压缩器会移除 JSON 标记之间不必要的空白字符，通常包括属性之间的空格、嵌套内容前的缩进，以及对象或数组项目之间的换行。</p><p>压缩器不会删除字符串值内部有意义的字符。例如，人名、地址、消息或其他字符串中的空格属于数据内容，必须保留。属性名、标点符号、数字、布尔值和 null 也会保持不变。</p><h2>JSON 压缩和 JSON 格式化的区别</h2><ul><li><strong>压缩：</strong>移除不必要的空白，生成紧凑 JSON</li><li><strong>格式化：</strong>添加缩进和换行，生成易读 JSON</li><li><strong>压缩后的 JSON：</strong>更适合生产环境传输和节省存储空间</li><li><strong>格式化后的 JSON：</strong>更适合开发、调试、审查和手动编辑</li></ul><p>开发或审查数据时可以使用格式化 JSON；当需要更小的交付体积时，再将其压缩为生产版本。</p><h2>JSON 压缩最佳实践</h2><ul><li><strong>先验证：</strong>压缩前确认源数据是有效 JSON</li><li><strong>保留可读版本：</strong>保存一份格式化 JSON，方便后续维护和调试</li><li><strong>比较实际大小：</strong>查看准确字符数，不要假设所有 JSON 都能达到固定压缩比例</li><li><strong>测试输出：</strong>在目标应用程序或 API 流程中解析压缩后的结果</li><li><strong>自动化生产构建：</strong>在适合的项目中将压缩步骤加入构建流程或 CI/CD</li><li><strong>谨慎使用 URL 参数：</strong>不要将密码、访问令牌或私密信息放入 URL 参数中</li></ul><h2>浏览器本地处理与隐私</h2><p>这个 JSON 压缩器在浏览器中处理输入内容，不要求将数据上传到远程服务。对于开发数据和私密配置片段来说，本地处理更加方便。不过，仍然不建议在任何浏览器工具中输入密码、API 密钥、访问令牌或其他高度敏感的信息。</p><h2>压缩 JSON 后可以做什么？</h2><p>生成紧凑 JSON 后，你可以将它复制到 API 请求中，保存为生产环境资源，下载到本地，或交给其他开发工具继续处理。如果之后需要查看或编辑压缩后的结果，可以使用 JSON 格式化工具或 JSON 编辑器恢复可读的布局。</p>"
-		}
-	}
 }
+```
+
+## 主要调整说明
+
+### 1. 不再把 Minify 等同于 Compression
+
+原配置同时使用：
+
+```text
+JSON Minifier
+JSON Compressor
+Compress JSON
+JSON compression tool
+```
+
+实际需要区分：
+
+```text
+Minification:
+删除 JSON token 之间的无意义空白。
+
+Compression:
+gzip、Brotli、zstd 等算法压缩字节。
+
+Serialization:
+重新生成 JSON 文本。
+```
+
+DebugBear 和 JSONLint 的 SERP 描述都明确将 minification定义为解析后重新序列化，并强调功能等价、空白删除，而不是 gzip/Brotli 压缩。 [debugbear](https://www.debugbear.com/tool/minify-json)
+
+因此新版保留 `compress json online` 作为辅助关键词，但删除了更容易造成误解的 `json compression tool`。
+
+### 2. 不能直接删除所有空格
+
+原文虽然提到“unnecessary whitespace”，但应该更明确：
+
+```json
+{
+  "message": "Hello World"
+}
+```
+
+压缩后：
+
+```json
+{"message":"Hello World"}
+```
+
+`Hello World` 中的空格必须保留。
+
+实际实现应该使用：
+
+```js
+JSON.stringify(JSON.parse(input))
+```
+
+而不是：
+
+```js
+input.replace(/\s+/g, '')
+```
+
+JSONLint 的 SERP 直接给出了 `JSON.stringify(JSON.parse(jsonString))` 的实现方式。 [jsonlint](https://jsonlint.com/json-minify)
+
+### 3. 增加 byte size，而不是只显示 character count
+
+原配置显示：
+
+```text
+original and minified character counts
+```
+
+这不够严谨，因为：
+
+- JavaScript `.length` 是 UTF-16 code unit 数量。
+- UTF-8 文件大小是 byte 数。
+- 中文、emoji 等非 ASCII 字符会影响 byte size。
+- 不同编码的文件大小可能不同。
+
+因此新版 UI 增加：
+
+```text
+unit_chars
+unit_bytes
+label_original_size
+label_minified_size
+label_savings
+```
+
+并在文章中说明：
+
+> character count and byte count are not always identical.
+
+DevKits、JSON Tools 和 CodeLint 等竞争页面都强调 exact bytes、bytes saved 或 percentage saved。 [devkits](https://devkits.vip/tools/json-minifier)
+
+实际实现建议同时显示：
+
+```text
+Characters: 128 → 73
+UTF-8 bytes: 134 → 79
+Saved: 55 bytes / 41.0%
+```
+
+### 4. 删除 URL Input feature
+
+原配置中 URL Input 是一个明显的复用型功能，但对于 JSON Minifier 来说不是必要核心能力。
+
+真实 SERP 中 Code Beautify、JSON Formatter 和 Minifier.org 确实提供 URL 输入，但这类功能涉及：
+
+- CORS。
+- 远程文件大小。
+- URL 中的 token。
+- 私有资源意外暴露。
+- 重定向。
+- 非 JSON 响应。
+- 页面被滥用读取远程地址。
+
+ [codebeautify](https://codebeautify.org/jsonminifier)
+
+因此新版从 features 和 guide 中删除 URL Input，只在 FAQ 中保留谨慎说明。如果未来加入，应增加：
+
+- HTTPS only。
+- URL 长度限制。
+- 响应大小限制。
+- Content-Type 检查。
+- CORS 错误。
+- 不携带 credentials。
+- 禁止 localhost、私有 IP、内网地址。
+- 不将 URL 写入 analytics。
+
+### 5. `Beautify First` 不是必须步骤
+
+原 guide：
+
+> If the input is formatted or difficult to read, use Beautify First to normalize it before minifying.
+
+这对 minify 没有必要。合法 JSON 无论是否格式化，都可以直接：
+
+```js
+JSON.parse(input)
+JSON.stringify(value)
+```
+
+如果输入无效，Beautify 也不能解决所有问题。
+
+新版将其改成独立的 `btn_beautify`，作为可选相关操作，而不是 minify 的前置步骤。
+
+### 6. 标准 JSON 与 JSONC/JSON5 分开
+
+真实生态中存在两类输入：
+
+```json
+{
+  // comment
+  "name": "Alice",
+}
+```
+
+这不是标准 JSON，而是 JSONC/JSON5 或类似扩展格式。
+
+GitHub 上的 JSON.minify 工具专门支持移除 comments 和 whitespace，但这不是普通 JSON minifier 的标准行为。 [github](https://github.com/getify/JSON.minify)
+
+因此新版明确：
+
+- 标准 JSON minifier 应拒绝 comments 和 trailing commas。
+- 如果支持 JSONC/JSON5，应单独显示模式。
+- “remove comments”不能悄悄发生。
+- 删除 comments 是数据内容变换，不只是 whitespace minification。
+
+建议未来 UI 增加：
+
+```text
+Input mode:
+- Strict JSON
+- JSONC
+- JSON5
+```
+
+而不是默认兼容所有语法。
+
+## 真实 SERP 下的竞争情况
+
+当前 JSON Minifier SERP 的竞争页面大多已具备基础功能：
+
+| 竞争能力 | SERP 表现 |
+|---|---|
+| 解析并重新序列化 | DebugBear、JSONLint、JSON Tools |
+| 上传文件 | Code Beautify、Minifier.org、Static.app |
+| URL 输入 | Code Beautify、JSONFormatter、Minifier.org |
+| 字符/字节大小 | DevKits、JSON Tools、CodeLint |
+| 错误定位 | DevKits、CodeLint |
+| JSONC/comment removal | JSON.minify、JSON Tools |
+| key sorting | JSON Tools |
+| local/no upload | Chrome extension、DevKits、Static.app |
+| 自动输出 | CodeLint、部分编辑器工具 |
+
+ [debugbear](https://www.debugbear.com/tool/minify-json)
+
+因此第一版至少应具备：
+
+1. Strict JSON parsing。
+2. Correct token whitespace removal。
+3. Preserve spaces inside strings。
+4. Invalid JSON error。
+5. Copy/download。
+6. Original/minified size comparison。
+7. UTF-8 byte measurement。
+8. Local file input。
+9. Clear distinction between minify and compression。
+10. Keep formatted source recommendation。
+
+## SEO 关键词和落地页策略
+
+建议主页面：
+
+```text
+/tools/json-minifier
+```
+
+主关键词：
+
+```text
+json minifier
+json minify
+minify json
+minify json online
+free json minifier
+```
+
+辅助关键词：
+
+```text
+compress json online
+json compact
+json to one line
+json size reducer
+```
+
+不建议将下列词作为核心关键词：
+
+```text
+json compressor
+json compression tool
+json optimizer
+```
+
+原因是这些词可能引导用户寻找：
+
+- gzip/Brotli。
+- 网络压缩。
+- API payload optimization。
+- JSON key shortening。
+- 删除 null/empty fields。
+- 数据重编码。
+
+如果未来支持“remove nulls”“remove empty strings”“sort keys”“shorten keys”，那已经不再只是标准 JSON minification，应单独命名和说明。
+
+## 建议的未来产品规划
+
+### 第一阶段：正确的标准 Minifier
+
+- Strict JSON parse。
+- `JSON.stringify(JSON.parse(input))`。
+- 保留 string 内部空格。
+- Copy/download。
+- Invalid syntax error。
+- Original/minified characters。
+- UTF-8 bytes。
+- Savings percentage。
+- Local file input。
+- Beautify 反向操作。
+
+### 第二阶段：开发者效率功能
+
+- 行列错误定位。
+- 自动输出。
+- 大文件 Web Worker。
+- 虚拟化预览。
+- 文件大小限制提示。
+- JSONL/NDJSON 单独模式。
+- JSONC/JSON5 明确模式。
+- key sorting。
+- deterministic output。
+- hash/checksum。
+
+### 第三阶段：构建与部署能力
+
+- CLI 命令生成。
+- npm script 示例。
+- `jq -c` 示例。
+- CI/CD 集成。
+- gzip/Brotli 对比。
+- minify + gzip size comparison。
+- source/output 下载包。
+- build pipeline 文档。
+
+## 页面优先级判断
+
+| 维度 | 评价 |
+|---|---|
+| 搜索需求 | 中高 |
+| 工具意图 | 很强 |
+| 主词竞争 | 中等 |
+| 实现难度 | 低—中等 |
+| 产品匹配度 | 很高 |
+| 初期流量难度 | 中等 |
+| 长尾扩展空间 | 高 |
+| 与 Editor/Formatter 复用度 | 极高 |
+
+这个页面适合作为 JsonToolBox 的基础工具之一，因为实现成本低、使用意图明确，而且可以和以下页面互相导流：
+
+```text
+/tools/json-editor
+/tools/json-formatter
+/tools/json-validator
+/tools/json-escape
+/tools/json-size
+/tools/json-to-csv
+```
+
+最终判断是：**JSON Minifier 值得做，而且比 JSON Editor 更容易快速上线并获取长尾流量；但文案必须清楚区分 minification、compression、JSONC comment removal 和删除数据字段。** 最有价值的差异化不是简单生成一行 JSON，而是提供可靠的 byte size 对比、错误定位、严格语法处理和可解释的压缩结果。
