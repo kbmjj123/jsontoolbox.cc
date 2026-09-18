@@ -494,77 +494,45 @@ const formatJson = (silent = false) => {
 // Uses streaming parser (clarinet) for huge files (≥50MB), normal Worker for medium files
 async function formatJsonAsync(silent: boolean) {
   workerData.value = null
-  const isHuge = fileSizeCategory.value === 'large'
+  // Every file >= 5MB (medium AND huge) is parsed by the streaming parser into a
+  // lazy node index. The full JSON object is therefore kept OFF the main thread:
+  // the tree renders it in a windowed/virtualized fashion and search runs inside
+  // the Worker. This removes the main-thread freeze and the OOM that occurred when
+  // a multi-MB file was materialized and then walked synchronously on the UI thread.
+  lazyTree.reset()
+  const streamResult = await parseStream(
+    inputJson.value,
+    (nodeCount, percent) => lazyTree.updateProgress(nodeCount, percent),
+  )
 
-  if (isHuge) {
-    // Streaming mode: build lazy index
-    lazyTree.reset()
-    const streamResult = await parseStream(
-      inputJson.value,
-      (nodeCount, percent) => lazyTree.updateProgress(nodeCount, percent),
-    )
-
-    if (streamResult.error) {
-      const repaired = repairJson(inputJson.value)
-      if (repaired) {
-        inputJson.value = repaired
-        lazyTree.reset()
-        // Retry with repaired text
-        const retry = await parseStream(repaired, (n, p) => lazyTree.updateProgress(n, p))
-        if (!retry.error) {
-          lazyTree.initFromIndex(retry.rootType, retry.nodeCount, retry.index)
-          outputJson.value = '' // streaming mode doesn't produce formatted text
-          error.value = ''
-          parseError.value = null
-          if (!silent) toast.success(t('toast.formatted'))
-          return
-        }
-      }
-      const err = { message: streamResult.error, line: streamResult.line, column: streamResult.column, errorKey: '' }
-      parseError.value = err
-      error.value = err.line ? t('errors.lineCol', { line: err.line, col: err.column }) + ': ' + err.message : err.message
-      if (!silent) toast.error(error.value)
-      return
-    }
-
-    lazyTree.initFromIndex(streamResult.rootType, streamResult.nodeCount, streamResult.index)
-    outputJson.value = ''
-    error.value = ''
-    parseError.value = null
-    if (!silent) toast.success(t('toast.formatted'))
-  } else {
-    // Medium files: normal Worker parse
-    lazyTree.reset()
-    const result = await parseInWorker(inputJson.value)
-    if (result.data !== null) {
-      const space = indent.value === 'tab' ? '\t' : Number(indent.value)
-      outputJson.value = JSON.stringify(result.data, null, space)
-      workerData.value = result.data
-      lastAction.value = Number(indent.value) === 0 ? 'minified' : 'formatted'
-      error.value = ''
-      parseError.value = null
-      if (!silent) toast.success(Number(indent.value) === 0 ? t('toast.minified') : t('toast.formatted'))
-    }
-    else {
-      const repaired = repairJson(inputJson.value)
-      if (repaired) {
-        inputJson.value = repaired
-        const parsed = JSON.parse(repaired)
-        const space = indent.value === 'tab' ? '\t' : Number(indent.value)
-        outputJson.value = JSON.stringify(parsed, null, space)
-        workerData.value = parsed
-        lastAction.value = Number(indent.value) === 0 ? 'minified' : 'formatted'
+  if (streamResult.error) {
+    const repaired = repairJson(inputJson.value)
+    if (repaired) {
+      inputJson.value = repaired
+      lazyTree.reset()
+      // Retry with repaired text
+      const retry = await parseStream(repaired, (n, p) => lazyTree.updateProgress(n, p))
+      if (!retry.error) {
+        lazyTree.initFromIndex(retry.rootType, retry.nodeCount, retry.index)
+        outputJson.value = '' // streaming mode doesn't produce formatted text
         error.value = ''
         parseError.value = null
-        if (!silent) toast.success(Number(indent.value) === 0 ? t('toast.minified') : t('toast.formatted'))
+        if (!silent) toast.success(t('toast.formatted'))
         return
       }
-      const err = result.error ? { message: result.error, line: result.line, column: result.column, errorKey: '' } : getJsonError(inputJson.value)
-      parseError.value = err
-      error.value = err ? t('errors.lineCol', { line: err.line, col: err.column }) + ': ' + err.message : t('formatter.invalidJson')
-      if (!silent) toast.error(error.value)
     }
+    const err = { message: streamResult.error, line: streamResult.line, column: streamResult.column, errorKey: '' }
+    parseError.value = err
+    error.value = err.line ? t('errors.lineCol', { line: err.line, col: err.column }) + ': ' + err.message : err.message
+    if (!silent) toast.error(error.value)
+    return
   }
+
+  lazyTree.initFromIndex(streamResult.rootType, streamResult.nodeCount, streamResult.index)
+  outputJson.value = ''
+  error.value = ''
+  parseError.value = null
+  if (!silent) toast.success(t('toast.formatted'))
 }
 
 const isMinified = computed(() => Number(indent.value) === 0)

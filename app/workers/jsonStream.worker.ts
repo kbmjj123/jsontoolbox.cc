@@ -46,8 +46,93 @@ export interface StreamError {
 
 type WorkerResponse = StreamProgress | StreamDone | StreamError
 
-self.onmessage = (e: MessageEvent<StreamRequest>) => {
-  const { id, text } = e.data
+export interface SearchRequest {
+  id: number
+  mode: 'search'
+  query: string
+  searchMode: 'key' | 'value' | 'path'
+  limit: number
+  maxNodes: number
+}
+
+export interface SearchResult {
+  id: number
+  type: 'searchResult'
+  matchPaths: string[]
+  truncated: boolean
+  scannedNodes: number
+}
+
+// The most recently built index is retained in the Worker so search requests can
+// be served off the main thread — without re-parsing or re-transferring the data.
+let retainedIndex: Record<string, LazyNode> | null = null
+
+/**
+ * Search the retained index in the Worker. Iterative (stack-based) traversal,
+ * bounded by a node-visit budget + result limit so a huge file can't run away.
+ */
+function searchIndexLogic(
+  index: Record<string, LazyNode> | null,
+  query: string,
+  mode: 'key' | 'value' | 'path',
+  limit: number,
+  maxNodes: number,
+): { matchPaths: string[]; truncated: boolean; scannedNodes: number } {
+  const matchPaths: string[] = []
+  const seen = new Set<string>()
+  if (!index) return { matchPaths, truncated: false, scannedNodes: 0 }
+  const root = index['']
+  if (!root) return { matchPaths, truncated: false, scannedNodes: 0 }
+
+  let visited = 0
+  const stack: string[] = [...root.children]
+  while (stack.length && visited < maxNodes && matchPaths.length < limit) {
+    const path = stack.pop() as string
+    const node = index[path]
+    if (!node) continue
+    visited++
+
+    let matched = false
+    if (mode === 'key') {
+      matched = String(node.key).toLowerCase().includes(query)
+    } else if (mode === 'value') {
+      matched = !!(node.preview && node.preview.toLowerCase().includes(query))
+    } else {
+      matched = path.toLowerCase().includes(query)
+    }
+
+    if (matched && !seen.has(path)) {
+      seen.add(path)
+      matchPaths.push(path)
+    }
+
+    if (node.type === 'object' || node.type === 'array') {
+      for (const child of node.children) stack.push(child)
+    }
+  }
+
+  const truncated = stack.length > 0
+  return { matchPaths, truncated, scannedNodes: visited }
+}
+
+self.onmessage = (e: MessageEvent<StreamRequest | SearchRequest>) => {
+  const data = e.data
+
+  // ── Search request: serve from the retained index, off the main thread ──
+  if (data.mode === 'search') {
+    const { matchPaths, truncated, scannedNodes } = searchIndexLogic(
+      retainedIndex,
+      data.query,
+      data.searchMode,
+      data.limit,
+      data.maxNodes,
+    )
+    const result: SearchResult = { id: data.id, type: 'searchResult', matchPaths, truncated, scannedNodes }
+    self.postMessage(result)
+    return
+  }
+
+  const { id, text } = data
 
   const index: Record<string, LazyNode> = {}
   let nodeCount = 0
@@ -205,6 +290,7 @@ self.onmessage = (e: MessageEvent<StreamRequest>) => {
   }
 
   p.onend = () => {
+    retainedIndex = index
     const response: WorkerResponse = {
       id,
       type: 'done',

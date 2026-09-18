@@ -93,7 +93,13 @@
               class="w-48 rounded-lg border border-surface-200 bg-white pl-8 pr-14 py-1.5 text-xs dark:border-surface-700 dark:bg-surface-800 dark:text-surface-100 focus:outline-none focus:ring-1 focus:ring-primary-400"
             />
             <span
-              v-if="treeSearch.query.value"
+              v-if="treeSearch.isSearching.value"
+              class="absolute right-2 top-1/2 -translate-y-1/2"
+            >
+              <span class="block w-3.5 h-3.5 border-2 border-primary-500 border-t-transparent rounded-full animate-spin" />
+            </span>
+            <span
+              v-else-if="treeSearch.query.value"
               class="absolute right-2 top-1/2 -translate-y-1/2 text-[10px] font-mono"
               :class="treeSearch.totalCount.value > 0 ? 'text-surface-400' : 'text-red-400'"
             >

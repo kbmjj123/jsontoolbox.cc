@@ -100,44 +100,15 @@ function walkTree(
 }
 
 /**
- * Walk the streaming-parser index (large-file / lazy mode) to find matching
- * paths. The index contains every node, so we can search without materializing
- * the full object. Bounded by the same node + result budget.
+ * Search the streaming-parser index in the Worker (large-file / lazy mode) to
+ * find matching paths. Runs entirely off the main thread, so the UI never blocks.
  */
-function searchLazyIndex(
-  lazyMap: Map<string, LazyNode>,
+async function searchLazyIndexInWorker(
   query: string,
   mode: SearchMode,
-  limit: number,
-  maxNodes: number,
-): string[] {
-  const results: string[] = []
-  const seen = new Set<string>()
-  const root = lazyMap.get('')
-  if (!root) return results
-
-  let visited = 0
-  const stack: string[] = [...root.children]
-  while (stack.length && visited < maxNodes && results.length < limit) {
-    const path = stack.pop() as string
-    const node = lazyMap.get(path)
-    if (!node) continue
-    visited++
-
-    if (mode === 'key') {
-      if (String(node.key).toLowerCase().includes(query)) addMatch(path, results, seen)
-    } else if (mode === 'value') {
-      if (node.preview && node.preview.toLowerCase().includes(query)) addMatch(path, results, seen)
-    } else if (mode === 'path') {
-      if (path.toLowerCase().includes(query)) addMatch(path, results, seen)
-    }
-
-    // Descend into containers so deeper nodes get visited.
-    if (node.type === 'object' || node.type === 'array') {
-      for (const child of node.children) stack.push(child)
-    }
-  }
-  return results
+): Promise<string[]> {
+  const { searchIndex } = useWorkerParser()
+  return searchIndex(query, mode, MAX_SEARCH_RESULTS, MAX_SEARCH_NODES)
 }
 
 export function useTreeSearch(
@@ -145,7 +116,7 @@ export function useTreeSearch(
   lazyIndex?: Ref<Map<string, LazyNode> | null | undefined>,
 ) {
   const query = ref('')
-  // Debounce the actual search so we never traverse the tree on every keystroke.
+  // Debounce the actual search so we never fire a search on every keystroke.
   const debouncedQuery = ref('')
   let debounceTimer: ReturnType<typeof setTimeout> | null = null
   watch(query, (val) => {
@@ -155,23 +126,44 @@ export function useTreeSearch(
 
   const mode = ref<SearchMode>('key')
   const currentIndex = ref(-1)
+  const isSearching = ref(false)
+  // `matches` is populated asynchronously (Worker search for large files, or a
+  // fast main-thread walk for small files) so the UI stays responsive.
+  const matches = ref<string[]>([])
 
-  const matches = computed<string[]>(() => {
+  let searchToken = 0
+  async function runSearch() {
     const q = debouncedQuery.value.trim().toLowerCase()
-    if (!q) return []
-
-    const idx = lazyIndex?.value
-    if (idx && idx.size > 0) {
-      return searchLazyIndex(idx, q, mode.value, MAX_SEARCH_RESULTS, MAX_SEARCH_NODES)
+    const token = ++searchToken
+    if (!q) {
+      matches.value = []
+      isSearching.value = false
+      return
     }
-    if (!data.value) return []
 
-    const results: string[] = []
-    const seen = new Set<string>()
-    const budget: SearchBudget = { visited: 0, max: MAX_SEARCH_NODES, limit: MAX_SEARCH_RESULTS }
-    walkTree(data.value, '', q, mode.value, results, seen, budget)
-    return results
-  })
+    isSearching.value = true
+    try {
+      let results: string[]
+      const idx = lazyIndex?.value
+      if (idx && idx.size > 0) {
+        // Large / lazy files: search runs in the Worker (off main thread).
+        results = await searchLazyIndexInWorker(q, mode.value)
+      } else if (data.value) {
+        // Small files: a quick synchronous walk is fine (no freeze).
+        const seen = new Set<string>()
+        const budget: SearchBudget = { visited: 0, max: MAX_SEARCH_NODES, limit: MAX_SEARCH_RESULTS }
+        results = []
+        walkTree(data.value, '', q, mode.value, results, seen, budget)
+      } else {
+        results = []
+      }
+      if (token === searchToken) matches.value = results
+    } finally {
+      if (token === searchToken) isSearching.value = false
+    }
+  }
+
+  watch([debouncedQuery, mode, lazyIndex], runSearch)
 
   const matchSet = computed(() => new Set(matches.value))
   const totalCount = computed(() => matches.value.length)
@@ -235,6 +227,7 @@ export function useTreeSearch(
     currentMatchPath,
     matchSet,
     searchExpandedPaths,
+    isSearching,
     next,
     prev,
     isMatch,
