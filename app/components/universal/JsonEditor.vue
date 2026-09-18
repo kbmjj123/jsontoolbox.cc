@@ -371,6 +371,7 @@ function exitReadonly() {
 function clearAndReset() {
   inputJson.value = ''
   outputJson.value = ''
+  workerData.value = null
   error.value = ''
   parseError.value = null
   shareLoadError.value = null
@@ -425,11 +426,18 @@ async function loadSharedContent() {
   }
 }
 
-// For large files the streaming parser builds a lazy index (no full object in
-// memory), so we must NOT JSON.parse the whole input on the main thread here —
-// that would defeat the point of off-thread streaming and freeze the UI.
+// Parsed data for files handled off-thread (medium/huge):
+//  - medium (5–50MB): the Worker returns the full parsed object → stored here
+//  - huge   (>=50MB): streaming builds a lazy index instead → stays null, the
+//                     tree reads from `lazyIndex`
+// For small files (<5MB) we parse synchronously on the main thread below.
+const workerData = ref<unknown>(null)
+
+// For files >= 5MB we must NOT JSON.parse the whole input on the main thread —
+// that would defeat the point of off-thread parsing and freeze the UI. Those
+// files are parsed in a Worker and surfaced via workerData (or the lazy index).
 const parsedData = computed(() => {
-  if (isLargeFile(inputJson.value)) return null
+  if (isLargeFile(inputJson.value)) return workerData.value
   try {
     return JSON.parse(inputJson.value)
   } catch {
@@ -485,6 +493,7 @@ const formatJson = (silent = false) => {
 // Async format for large files (Worker-based)
 // Uses streaming parser (clarinet) for huge files (≥50MB), normal Worker for medium files
 async function formatJsonAsync(silent: boolean) {
+  workerData.value = null
   const isHuge = fileSizeCategory.value === 'large'
 
   if (isHuge) {
@@ -530,6 +539,7 @@ async function formatJsonAsync(silent: boolean) {
     if (result.data !== null) {
       const space = indent.value === 'tab' ? '\t' : Number(indent.value)
       outputJson.value = JSON.stringify(result.data, null, space)
+      workerData.value = result.data
       lastAction.value = Number(indent.value) === 0 ? 'minified' : 'formatted'
       error.value = ''
       parseError.value = null
@@ -542,6 +552,7 @@ async function formatJsonAsync(silent: boolean) {
         const parsed = JSON.parse(repaired)
         const space = indent.value === 'tab' ? '\t' : Number(indent.value)
         outputJson.value = JSON.stringify(parsed, null, space)
+        workerData.value = parsed
         lastAction.value = Number(indent.value) === 0 ? 'minified' : 'formatted'
         error.value = ''
         parseError.value = null
@@ -614,6 +625,7 @@ async function validateJsonAsync() {
 
 const clearAll = () => {
   outputJson.value = ''
+  workerData.value = null
   error.value = ''
   parseError.value = null
 }
@@ -654,9 +666,9 @@ const handleLargeFileCancel = () => {
   pendingLargeText.value = ''
   inputJson.value = ''
   outputJson.value = ''
+  workerData.value = null
   error.value = ''
   parseError.value = null
-  parsedData.value = null
 }
 
 // Locate error from the output panel "Jump to Error" button
