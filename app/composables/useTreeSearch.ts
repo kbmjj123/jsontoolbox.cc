@@ -1,6 +1,13 @@
 import type { Ref } from 'vue'
+import type { LazyNode } from '~/workers/jsonStream.worker'
 
 export type SearchMode = 'key' | 'value' | 'path'
+
+// Guardrails so searching a huge file can never freeze the main thread:
+//  - MAX_SEARCH_RESULTS: max matches we keep (navigation aid, not exhaustive)
+//  - MAX_SEARCH_NODES:   max nodes we visit per search pass (time budget)
+const MAX_SEARCH_RESULTS = 5000
+const MAX_SEARCH_NODES = 400_000
 
 /**
  * Build the full path for a child key/index.
@@ -33,8 +40,22 @@ function ancestorPaths(path: string): string[] {
   return result
 }
 
+interface SearchBudget {
+  visited: number
+  max: number
+  limit: number
+}
+
+function addMatch(path: string, results: string[], seen: Set<string>) {
+  if (seen.has(path)) return
+  seen.add(path)
+  results.push(path)
+}
+
 /**
- * Recursively walk the JSON tree and collect paths that match the query.
+ * Recursively walk the JSON tree and collect matching paths.
+ * Bounded by a node-visit budget + result limit so a huge file can't freeze
+ * the UI on every keystroke.
  */
 function walkTree(
   data: unknown,
@@ -42,59 +63,113 @@ function walkTree(
   query: string,
   mode: SearchMode,
   results: string[],
+  seen: Set<string>,
+  budget: SearchBudget,
 ): void {
+  if (budget.visited >= budget.max || results.length >= budget.limit) return
+  budget.visited++
+
   if (data === null || data === undefined) {
-    if (mode === 'value' && 'null'.includes(query)) {
-      results.push(currentPath)
-    }
+    if (mode === 'value' && 'null'.includes(query)) addMatch(currentPath, results, seen)
     return
   }
 
   if (Array.isArray(data)) {
-    if (mode === 'path' && currentPath.toLowerCase().includes(query)) {
-      results.push(currentPath)
-    }
+    if (mode === 'path' && currentPath.toLowerCase().includes(query)) addMatch(currentPath, results, seen)
     for (let i = 0; i < data.length; i++) {
-      walkTree(data[i], childPath(currentPath, i), query, mode, results)
+      if (budget.visited >= budget.max || results.length >= budget.limit) return
+      walkTree(data[i], childPath(currentPath, i), query, mode, results, seen, budget)
     }
     return
   }
 
   if (typeof data === 'object') {
-    if (mode === 'path' && currentPath.toLowerCase().includes(query)) {
-      results.push(currentPath)
-    }
+    if (mode === 'path' && currentPath.toLowerCase().includes(query)) addMatch(currentPath, results, seen)
     for (const [key, value] of Object.entries(data as Record<string, unknown>)) {
+      if (budget.visited >= budget.max || results.length >= budget.limit) return
       const fullPath = childPath(currentPath, key)
-      if (mode === 'key' && key.toLowerCase().includes(query)) {
-        results.push(fullPath)
-      }
-      walkTree(value, fullPath, query, mode, results)
+      if (mode === 'key' && key.toLowerCase().includes(query)) addMatch(fullPath, results, seen)
+      walkTree(value, fullPath, query, mode, results, seen, budget)
     }
     return
   }
 
   // Primitive
-  if (mode === 'value' && String(data).toLowerCase().includes(query)) {
-    results.push(currentPath)
-  }
-  if (mode === 'path' && currentPath.toLowerCase().includes(query)) {
-    if (!results.includes(currentPath)) {
-      results.push(currentPath)
-    }
-  }
+  if (mode === 'value' && String(data).toLowerCase().includes(query)) addMatch(currentPath, results, seen)
+  if (mode === 'path' && currentPath.toLowerCase().includes(query)) addMatch(currentPath, results, seen)
 }
 
-export function useTreeSearch(data: Ref<unknown>) {
+/**
+ * Walk the streaming-parser index (large-file / lazy mode) to find matching
+ * paths. The index contains every node, so we can search without materializing
+ * the full object. Bounded by the same node + result budget.
+ */
+function searchLazyIndex(
+  lazyMap: Map<string, LazyNode>,
+  query: string,
+  mode: SearchMode,
+  limit: number,
+  maxNodes: number,
+): string[] {
+  const results: string[] = []
+  const seen = new Set<string>()
+  const root = lazyMap.get('')
+  if (!root) return results
+
+  let visited = 0
+  const stack: string[] = [...root.children]
+  while (stack.length && visited < maxNodes && results.length < limit) {
+    const path = stack.pop() as string
+    const node = lazyMap.get(path)
+    if (!node) continue
+    visited++
+
+    if (mode === 'key') {
+      if (String(node.key).toLowerCase().includes(query)) addMatch(path, results, seen)
+    } else if (mode === 'value') {
+      if (node.preview && node.preview.toLowerCase().includes(query)) addMatch(path, results, seen)
+    } else if (mode === 'path') {
+      if (path.toLowerCase().includes(query)) addMatch(path, results, seen)
+    }
+
+    // Descend into containers so deeper nodes get visited.
+    if (node.type === 'object' || node.type === 'array') {
+      for (const child of node.children) stack.push(child)
+    }
+  }
+  return results
+}
+
+export function useTreeSearch(
+  data: Ref<unknown>,
+  lazyIndex?: Ref<Map<string, LazyNode> | null | undefined>,
+) {
   const query = ref('')
+  // Debounce the actual search so we never traverse the tree on every keystroke.
+  const debouncedQuery = ref('')
+  let debounceTimer: ReturnType<typeof setTimeout> | null = null
+  watch(query, (val) => {
+    if (debounceTimer) clearTimeout(debounceTimer)
+    debounceTimer = setTimeout(() => { debouncedQuery.value = val }, 250)
+  })
+
   const mode = ref<SearchMode>('key')
   const currentIndex = ref(-1)
 
   const matches = computed<string[]>(() => {
-    const q = query.value.trim().toLowerCase()
-    if (!q || !data.value) return []
+    const q = debouncedQuery.value.trim().toLowerCase()
+    if (!q) return []
+
+    const idx = lazyIndex?.value
+    if (idx && idx.size > 0) {
+      return searchLazyIndex(idx, q, mode.value, MAX_SEARCH_RESULTS, MAX_SEARCH_NODES)
+    }
+    if (!data.value) return []
+
     const results: string[] = []
-    walkTree(data.value, '', q, mode.value, results)
+    const seen = new Set<string>()
+    const budget: SearchBudget = { visited: 0, max: MAX_SEARCH_NODES, limit: MAX_SEARCH_RESULTS }
+    walkTree(data.value, '', q, mode.value, results, seen, budget)
     return results
   })
 
@@ -147,6 +222,7 @@ export function useTreeSearch(data: Ref<unknown>) {
 
   function clear() {
     query.value = ''
+    debouncedQuery.value = ''
     currentIndex.value = -1
   }
 

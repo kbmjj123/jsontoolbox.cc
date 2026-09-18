@@ -1,7 +1,7 @@
 <template>
   <div class="font-mono text-sm">
     <!-- Children list (lazy / object / array unified) -->
-    <template v-if="childrenEntries.length > 0">
+    <template v-if="totalChildren > 0">
       <!-- Virtualized viewport for large lists -->
       <div
         v-if="useVirtual"
@@ -304,19 +304,79 @@ const childrenEntries = computed<ChildEntry[]>(() => {
 
 const useVirtual = computed(() => totalChildren.value > VIRTUAL_THRESHOLD)
 
+// Cache Object.entries for object nodes (used by buildEntry / indexOfChildPath
+// in virtual mode). Built once per node mount; only matters for object nodes.
+const objectEntriesCache = computed(() =>
+  isObject(props.data) ? Object.entries(props.data as Record<string, unknown>) : [],
+)
+
+/**
+ * Build a single child entry by index WITHOUT materializing the whole sibling
+ * list. For huge arrays/objects this avoids allocating millions of entry objects
+ * at once (the old `childrenEntries` did `.map` over the entire list), which is
+ * what previously froze / OOM'd the tab when a giant list got expanded.
+ */
+function buildEntry(index: number): ChildEntry | null {
+  if (isLazy.value && lazyNode.value && props.lazyIndex) {
+    const childPath = lazyNode.value.children[index]
+    if (childPath === undefined) return null
+    const node = props.lazyIndex.get(childPath)
+    if (!node) return null
+    const expandable = node.type === 'object' || node.type === 'array'
+    return {
+      key: node.key,
+      value: expandable ? null : node.preview,
+      expandable,
+      preview: node.preview,
+      childPath,
+      isLazyChild: true,
+      isArrayIndex: node.type === 'array',
+    }
+  }
+  if (isArray(props.data)) {
+    const value = (props.data as unknown[])[index]
+    return {
+      key: index,
+      value,
+      expandable: isExpandable(value),
+      childPath: getFullPath(index),
+      isLazyChild: false,
+      isArrayIndex: true,
+    }
+  }
+  if (isObject(props.data)) {
+    const kv = objectEntriesCache.value[index]
+    if (!kv) return null
+    const [key, value] = kv
+    return {
+      key,
+      value,
+      expandable: isExpandable(value),
+      childPath: getFullPath(key),
+      isLazyChild: false,
+      isArrayIndex: false,
+    }
+  }
+  return null
+}
+
 // ── Virtual scrolling (only active for large sibling lists) ──
 const listRef = ref<HTMLElement | null>(null)
 const { virtualItems, totalHeight, measure, scrollToIndex } = useVirtualList(listRef, {
-  itemCount: () => childrenEntries.value.length,
+  itemCount: () => totalChildren.value,
   estimateHeight: 28,
   overscan: 12,
 })
 
-// Bridge virtualItems → entries for the template
-const virtualEntries = computed(() => virtualItems.value.map(vi => ({
-  entry: childrenEntries.value[vi.index],
-  vi,
-})))
+// Bridge virtualItems → entries for the template (windowed, no full build)
+const virtualEntries = computed<{ entry: ChildEntry; vi: { index: number; offset: number } }[]>(() => {
+  const result: { entry: ChildEntry; vi: { index: number; offset: number } }[] = []
+  for (const vi of virtualItems.value) {
+    const entry = buildEntry(vi.index)
+    if (entry) result.push({ entry, vi })
+  }
+  return result
+})
 
 // ── Shared expanded state (inject + re-provide) ────────────────
 const expanded = inject<Ref<Set<string>>>('richExpanded', ref(new Set()))
@@ -370,12 +430,32 @@ const flashPath = ref('')
 
 // Registry of virtualized child lists so locate/search can scroll them into view.
 const childScrollers = inject<Map<string, (childPath: string) => void>>('childScrollers', null)
+
+// Map a child path → its index within THIS node's sibling list, WITHOUT
+// materializing the whole list (the old code used childrenEntries.findIndex,
+// which forced a full build and OOM'd on giant arrays).
+function indexOfChildPath(childPath: string): number | null {
+  if (isLazy.value && lazyNode.value) {
+    const idx = lazyNode.value.children.indexOf(childPath)
+    return idx >= 0 ? idx : null
+  }
+  if (isArray(props.data)) {
+    const m = /\[(\d+)\]$/.exec(childPath)
+    return m ? Number(m[1]) : null
+  }
+  if (isObject(props.data)) {
+    const idx = objectEntriesCache.value.findIndex(([k]) => getFullPath(k) === childPath)
+    return idx >= 0 ? idx : null
+  }
+  return null
+}
+
 function registerContainer(path: string, el: HTMLElement | null) {
   if (!childScrollers) return
   if (el) {
     childScrollers.set(path, (childPath: string) => {
-      const idx = childrenEntries.value.findIndex(e => e.childPath === childPath)
-      if (idx >= 0) scrollToIndex(idx)
+      const idx = indexOfChildPath(childPath)
+      if (idx !== null) scrollToIndex(idx)
     })
   } else {
     childScrollers.delete(path)
@@ -494,10 +574,20 @@ function tryScroll(path: string): boolean | 'pending' {
   return false
 }
 
-// Root instance: auto-scroll current match into view
+// Root instance: auto-scroll current match into view.
+// Retry across several ticks so ancestors (auto-expanded by the search) and
+// any virtualized lists have time to render before we scroll to the node.
 if (!props.path && search) {
   watch(() => search.currentMatchPath.value, (path) => {
-    if (path) nextTick(() => tryScroll(path))
+    if (!path) return
+    const attempt = (tries: number) => {
+      if (tries <= 0) return
+      nextTick(() => {
+        const r = tryScroll(path)
+        if (r !== true && r !== 'pending') attempt(tries - 1)
+      })
+    }
+    attempt(5)
   })
 }
 

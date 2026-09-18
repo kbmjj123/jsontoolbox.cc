@@ -49,8 +49,8 @@
       </div>
       <div class="flex gap-2 items-center shrink-0 sm:ml-auto">
 
-        <!-- Search bar (rich mode only) -->
-        <template v-if="currentMode === 'rich' && parsedData !== null">
+        <!-- Search bar (rich mode only; shown for normal AND large/lazy files) -->
+        <template v-if="currentMode === 'rich' && (parsedData !== null || hasLazyIndex)">
           <button
             @click="toggleExpandAll"
             class="text-xs text-surface-500 hover:text-surface-700 dark:text-surface-400 dark:hover:text-surface-200 whitespace-nowrap"
@@ -404,7 +404,8 @@ function syncLineNumbers() {
 
 // Search
 const parsedDataRef = computed(() => props.parsedData)
-const treeSearch = useTreeSearch(parsedDataRef)
+const lazyIndexRef = computed(() => props.lazyIndex)
+const treeSearch = useTreeSearch(parsedDataRef, lazyIndexRef)
 
 const modes = computed(() => [
   { value: 'key' as const, label: t('tree.searchByKey') },
@@ -500,16 +501,25 @@ provide('hasLazyIndex', hasLazyIndex)
 watch(() => [props.parsedData, props.lazyIndex], ([data, lazy]) => {
   const lazyMap = lazy as Map<string, LazyNode> | null
   if (lazyMap && lazyMap.size > 0) {
-    // Lazy mode: expand root and depth-1 nodes
+    // Lazy mode: expand root children, their children, and one level deeper.
+    // The deepest level is bounded — containers with too many siblings are not
+    // auto-expanded, to avoid blowing up the expanded set on giant arrays.
     const paths = new Set<string>()
+    const DEEP_EXPAND_CAP = 300
     const root = lazyMap.get('')
     if (root) {
-      for (const childPath of root.children) {
-        paths.add(childPath)
-        const child = lazyMap.get(childPath)
-        if (child && (child.type === 'object' || child.type === 'array')) {
-          for (const grandchild of child.children) {
-            paths.add(grandchild)
+      for (const d1 of root.children) {
+        paths.add(d1)
+        const n1 = lazyMap.get(d1)
+        if (n1 && (n1.type === 'object' || n1.type === 'array')) {
+          for (const d2 of n1.children) {
+            paths.add(d2)
+            const n2 = lazyMap.get(d2)
+            if (n2 && (n2.type === 'object' || n2.type === 'array') && n2.childCount <= DEEP_EXPAND_CAP) {
+              for (const d3 of n2.children) {
+                paths.add(d3)
+              }
+            }
           }
         }
       }
