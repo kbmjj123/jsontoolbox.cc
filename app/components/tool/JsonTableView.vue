@@ -1,54 +1,62 @@
 <template>
-  <div ref="containerRef" class="h-full overflow-auto rounded-xl border border-surface-200 bg-white dark:border-surface-700 dark:bg-surface-900 relative">
-    <table v-if="columns.length > 0" class="w-full text-xs font-mono">
-      <thead>
-        <tr class="sticky top-0 z-10 bg-surface-50 dark:bg-surface-800 border-b border-surface-200 dark:border-surface-700">
-          <th class="w-12 px-2 py-2 text-center text-surface-400 dark:text-surface-500 font-medium">#</th>
-          <th
-            v-for="col in columns"
-            :key="col"
-            @click="toggleSort(col)"
-            class="px-3 py-2 text-left font-bold text-surface-700 dark:text-surface-300 cursor-pointer select-none hover:bg-surface-100 dark:hover:bg-surface-700 transition-colors whitespace-nowrap"
-          >
-            <span class="inline-flex items-center gap-1">
-              {{ col }}
-              <span v-if="sortKey === col && sortDir === 'asc'" class="text-primary-500">↑</span>
-              <span v-else-if="sortKey === col && sortDir === 'desc'" class="text-primary-500">↓</span>
-            </span>
-          </th>
-        </tr>
-      </thead>
-      <tbody>
-        <tr
-          v-for="(row, displayIndex) in sortedRows"
-          :key="row.__originalIndex"
-          class="border-b border-surface-100 dark:border-surface-800 last:border-0 transition-colors cursor-pointer"
-          :class="selectedRow === row.__originalIndex
-            ? 'bg-primary-100 dark:bg-primary-900/30 ring-1 ring-inset ring-primary-300 dark:ring-primary-700'
-            : hoveredRow === row.__originalIndex
-              ? 'bg-primary-50 dark:bg-primary-900/15'
-              : 'hover:bg-surface-50 dark:hover:bg-surface-800'"
-          @click="onRowSelect(row.__originalIndex)"
-          @mouseenter="hoveredRow = row.__originalIndex"
-          @mouseleave="hoveredRow = -1"
+  <div ref="containerRef" class="h-full flex flex-col overflow-hidden rounded-xl border border-surface-200 bg-white dark:border-surface-700 dark:bg-surface-900 relative">
+    <template v-if="columns.length > 0">
+      <!-- Fixed header -->
+      <div
+        class="grid shrink-0 border-b border-surface-200 bg-surface-50 dark:bg-surface-800 dark:border-surface-700 font-bold text-surface-700 dark:text-surface-300"
+        :style="{ gridTemplateColumns }"
+      >
+        <div class="w-12 px-2 py-2 text-center text-surface-400 dark:text-surface-500 font-medium">#</div>
+        <div
+          v-for="col in columns"
+          :key="col"
+          @click="toggleSort(col)"
+          class="px-3 py-2 text-left cursor-pointer select-none hover:bg-surface-100 dark:hover:bg-surface-700 transition-colors whitespace-nowrap"
         >
-          <td class="w-12 px-2 py-2 text-center text-surface-400 dark:text-surface-500">
-            {{ row.__originalIndex + 1 }}
-          </td>
-          <td
-            v-for="col in columns"
-            :key="col"
-            class="px-3 py-2 text-surface-700 dark:text-surface-300 max-w-[300px] truncate"
-            :class="isComplexValue(row[col]) ? 'cursor-pointer hover:text-primary-600 dark:hover:text-primary-400' : ''"
-            @mouseenter="isComplexValue(row[col]) && showPopover(row.__originalIndex, col, $event)"
-            @mouseleave="hidePopover"
+          <span class="inline-flex items-center gap-1">
+            {{ col }}
+            <span v-if="sortKey === col && sortDir === 'asc'" class="text-primary-500">↑</span>
+            <span v-else-if="sortKey === col && sortDir === 'desc'" class="text-primary-500">↓</span>
+          </span>
+        </div>
+      </div>
+
+      <!-- Virtualized scroll body -->
+      <div ref="bodyRef" class="relative flex-1 min-h-0 overflow-auto">
+        <div :style="{ height: totalHeight + 'px', position: 'relative' }">
+          <div
+            v-for="vi in virtualItems"
+            :key="sortedRows[vi.index].__originalIndex"
+            :ref="(el) => measure(vi.index, el as HTMLElement | null)"
+            class="grid absolute left-0 right-0 border-b border-surface-100 dark:border-surface-800 transition-colors cursor-pointer"
+            :style="{ transform: `translateY(${vi.offset}px)`, gridTemplateColumns }"
+            :class="selectedRow === sortedRows[vi.index].__originalIndex
+              ? 'bg-primary-100 dark:bg-primary-900/30 ring-1 ring-inset ring-primary-300 dark:ring-primary-700'
+              : hoveredRow === sortedRows[vi.index].__originalIndex
+                ? 'bg-primary-50 dark:bg-primary-900/15'
+                : 'hover:bg-surface-50 dark:hover:bg-surface-800'"
+            @click="onRowSelect(sortedRows[vi.index].__originalIndex)"
+            @mouseenter="hoveredRow = sortedRows[vi.index].__originalIndex"
+            @mouseleave="hoveredRow = -1"
           >
-            <span :class="cellColorClass(row[col])">{{ formatCellDisplay(row[col]) }}</span>
-            <span v-if="isComplexValue(row[col])" class="ml-1 text-surface-400 dark:text-surface-500">▾</span>
-          </td>
-        </tr>
-      </tbody>
-    </table>
+            <div class="w-12 px-2 py-2 text-center text-surface-400 dark:text-surface-500">
+              {{ sortedRows[vi.index].__originalIndex + 1 }}
+            </div>
+            <div
+              v-for="col in columns"
+              :key="col"
+              class="jt-cell px-3 py-2 text-surface-700 dark:text-surface-300 max-w-[300px] truncate"
+              :class="isComplexValue(sortedRows[vi.index][col]) ? 'cursor-pointer hover:text-primary-600 dark:hover:text-primary-400' : ''"
+              @mouseenter="isComplexValue(sortedRows[vi.index][col]) && showPopover(sortedRows[vi.index].__originalIndex, col, $event)"
+              @mouseleave="hidePopover"
+            >
+              <span :class="cellColorClass(sortedRows[vi.index][col])">{{ formatCellDisplay(sortedRows[vi.index][col]) }}</span>
+              <span v-if="isComplexValue(sortedRows[vi.index][col])" class="ml-1 text-surface-400 dark:text-surface-500">▾</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </template>
     <div v-else class="flex items-center justify-center h-full text-surface-400 dark:text-surface-500 text-sm">
       No array data to display
     </div>
@@ -73,6 +81,8 @@
 </template>
 
 <script setup lang="ts">
+import { useVirtualList } from '~/composables/useVirtualList'
+
 const props = defineProps<{
   data: unknown[]
   parentPath?: string
@@ -160,7 +170,16 @@ const popover = reactive({
 
 const popoverRef = ref<HTMLElement>()
 const containerRef = ref<HTMLElement>()
+const bodyRef = ref<HTMLElement | null>(null)
 let hideTimer: ReturnType<typeof setTimeout> | null = null
+
+// ── Virtual scrolling ────────────────────────────────────────
+const gridTemplateColumns = computed(() => `3rem repeat(${columns.value.length}, minmax(0, 1fr))`)
+const { virtualItems, totalHeight, measure } = useVirtualList(bodyRef, {
+  itemCount: () => sortedRows.value.length,
+  estimateHeight: 36,
+  overscan: 10,
+})
 
 function isComplexValue(value: unknown): boolean {
   return value !== null && typeof value === 'object'
@@ -179,7 +198,7 @@ function showPopover(rowIndex: number, col: string, event: MouseEvent) {
   popover.cellValue = value
 
   // Position below the cell
-  const td = (event.target as HTMLElement).closest('td')
+  const td = (event.target as HTMLElement).closest('.jt-cell')
   if (td) {
     const rect = td.getBoundingClientRect()
     popover.x = rect.left

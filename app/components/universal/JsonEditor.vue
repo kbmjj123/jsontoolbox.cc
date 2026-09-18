@@ -425,7 +425,11 @@ async function loadSharedContent() {
   }
 }
 
+// For large files the streaming parser builds a lazy index (no full object in
+// memory), so we must NOT JSON.parse the whole input on the main thread here —
+// that would defeat the point of off-thread streaming and freeze the UI.
 const parsedData = computed(() => {
+  if (isLargeFile(inputJson.value)) return null
   try {
     return JSON.parse(inputJson.value)
   } catch {
