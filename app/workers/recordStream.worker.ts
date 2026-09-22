@@ -177,6 +177,7 @@ interface ScanHooks {
  * reported through hooks, so memory stays flat regardless of file size.
  */
 function scanJson(text: string, hooks: ScanHooks = {}): { rootType: 'object' | 'array' | null } {
+  if (!text.trim()) throw new Error('The file is empty')
   let i = 0
   let rootType: 'object' | 'array' | null = null
   const stack: Frame[] = []
@@ -303,6 +304,10 @@ function scanJson(text: string, hooks: ScanHooks = {}): { rootType: 'object' | '
       if (top && top.type === 'array' && !top.inElem) { top.curStart = i; top.inElem = true }
       openContainer(c === '{' ? 'object' : 'array')
       expectValue = false
+      // A container is real content after a comma — clear the flag, otherwise
+      // the closer of an empty container (`"key": []`) is rejected as a
+      // trailing comma.
+      sawComma = false
       i++
       continue
     }
@@ -333,6 +338,7 @@ function scanJson(text: string, hooks: ScanHooks = {}): { rootType: 'object' | '
       i++
       expectColon = false
       expectValue = true
+      sawComma = false
       continue
     }
 
@@ -344,6 +350,9 @@ function scanJson(text: string, hooks: ScanHooks = {}): { rootType: 'object' | '
         pendingSeg = text.slice(start + 1, i - 1)
         expectKey = false
         expectColon = true
+        // The key is real content after a comma — clear the flag so an empty
+        // container value (`"key": []`) is not mistaken for a trailing comma.
+        sawComma = false
       } else {
         if (expectColon) throw new Error(`Unexpected token at position ${i}`)
         noteElementEnd(i)
@@ -610,6 +619,21 @@ self.onmessage = (e: MessageEvent<Request>) => {
         const m = (ex as Error).message || String(ex)
         const pm = m.match(/position (\d+)/)
         err = { message: m, position: pm ? parseInt(pm[1]) : 0 }
+      }
+
+      if (err) {
+        // Safety net: scanJson is a hand-written scanner and may not understand
+        // every construct. If the document is in fact valid JSON, never report
+        // "Invalid JSON" — that would be a false claim about the user's file.
+        let parses = false
+        try { JSON.parse(docText); parses = true } catch { /* genuinely invalid */ }
+        if (parses) {
+          console.warn('[recordStream] scanner failed on valid JSON:', err.message)
+          err = {
+            message: 'This file is valid JSON, but the structure scanner could not read it. CSV export needs that scan — try the JSON Editor for smaller files, or report this document so the scanner can be fixed.',
+            position: 0,
+          }
+        }
       }
 
       if (err) {

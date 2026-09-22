@@ -39,6 +39,119 @@ export function useLargeFileHandoff() {
   return useState<LargeFileHandoff>('largeFileHandoff', () => ({}))
 }
 
+/**
+ * The single size rule of the whole site.
+ *
+ * - <= LARGE_FILE_MAX_BYTES → handled by the regular tools (plain `JSON.parse`
+ *   on the main thread, full editing / formatting / tree browsing).
+ * - >  LARGE_FILE_MAX_BYTES → the regular tools refuse the input and hand it
+ *   over to the Large JSON Explorer, the only page that owns large-file
+ *   machinery (Web Worker scanning, streaming parse, record search, CSV export).
+ *
+ * Change the number here and every entry point follows — no page keeps its own
+ * threshold any more.
+ */
+export const LARGE_FILE_MAX_BYTES = 5 * 1024 * 1024
+
+/** The one page that owns every large-file capability. */
+export const LARGE_FILE_EXPLORER_PATH = '/tools/convert/large-json-csv'
+
+/** UTF-8 byte length of a string. Uses Blob when available (native, fast). */
+export function byteLength(text: string): number {
+  if (typeof Blob !== 'undefined') return new Blob([text]).size
+  let bytes = 0
+  for (let i = 0; i < text.length; i++) {
+    const code = text.charCodeAt(i)
+    if (code < 0x80) bytes += 1
+    else if (code < 0x800) bytes += 2
+    else if (code >= 0xd800 && code <= 0xdbff) { bytes += 4; i++ }
+    else bytes += 3
+  }
+  return bytes
+}
+
+/**
+ * Tell NDJSON apart from plain JSON: in NDJSON every line is a complete JSON
+ * value, so the first two lines each parse on their own. A pretty-printed
+ * document fails that test because its first line is only an opening brace.
+ */
+export function detectDocumentFormat(text: string): FileFormat {
+  const firstBreak = text.indexOf('\n')
+  if (firstBreak === -1) return 'json'
+  const head = text.slice(firstBreak + 1, firstBreak + 4096)
+  const secondBreak = head.indexOf('\n')
+  const firstLine = text.slice(0, firstBreak).trim()
+  const secondLine = (secondBreak === -1 ? head : head.slice(0, secondBreak)).trim()
+  if (!firstLine || !secondLine) return 'json'
+  try {
+    JSON.parse(firstLine)
+    JSON.parse(secondLine)
+    return 'ndjson'
+  } catch {
+    return 'json'
+  }
+}
+
+/**
+ * Gate used by every "normal" tool page: check a freshly loaded input and, when
+ * it is over the limit, offer to hand it off to the Large JSON Explorer instead
+ * of trying to parse it on the main thread.
+ */
+export function useLargeFileGate() {
+  const handoff = useLargeFileHandoff()
+
+  /** Show the hand-off prompt (drives `<LargeFileWarning>`). */
+  const visible = ref(false)
+  /**
+   * True while the current editor content is over the limit. Callers must skip
+   * every normal parse path while this is set — including after the prompt is
+   * dismissed towards the Explorer, because the oversized text is still in the
+   * editor until navigation completes.
+   */
+  const blocked = ref(false)
+  /** Size of the oversized input, for the prompt copy. */
+  const bytes = ref(0)
+  const pendingText = ref('')
+  const pendingFileName = ref('data.json')
+
+  /** Returns `true` when the input is over the limit. */
+  function check(text: string, fileName = 'data.json', knownBytes?: number): boolean {
+    if (!text) return false
+    const size = knownBytes ?? byteLength(text)
+    if (size <= LARGE_FILE_MAX_BYTES) return false
+    bytes.value = size
+    pendingText.value = text
+    pendingFileName.value = fileName
+    visible.value = true
+    blocked.value = true
+    return true
+  }
+
+  /** Carry the content over to the Large JSON Explorer and navigate there. */
+  async function openExplorer() {
+    const text = pendingText.value
+    const name = pendingFileName.value
+    visible.value = false
+    if (!text) { blocked.value = false; return }
+    handoff.value = {
+      text,
+      format: detectDocumentFormat(text),
+      fileName: name,
+    }
+    await navigateTo(LARGE_FILE_EXPLORER_PATH)
+  }
+
+  /** Back out: the caller clears the editor, so parsing can resume normally. */
+  function close() {
+    visible.value = false
+    blocked.value = false
+    pendingText.value = ''
+    bytes.value = 0
+  }
+
+  return { visible, blocked, bytes, check, openExplorer, close }
+}
+
 interface PendingReq {
   resolve: (v: unknown) => void
   reject: (e: unknown) => void
@@ -69,6 +182,9 @@ export function useLargeFile() {
   const fileName = ref('')
   const fileSize = ref(0)
   const format = ref<FileFormat>('json')
+  /** Raw document text, kept in the Worker world as far as possible. Exposed so
+   *  the tree view can stream-parse it without re-reading the file. */
+  const rawText = ref('')
   const scan = ref<ScanResult | null>(null)
   const scanError = ref<ScanErrorInfo | null>(null)
   const fields = ref<FieldStat[]>([])
@@ -193,6 +309,7 @@ export function useLargeFile() {
     format.value = detected
     const text = await file.text()
     heldText = text
+    rawText.value = text
     return runScan(text, detected)
   }
 
@@ -200,7 +317,8 @@ export function useLargeFile() {
     heldText = text
     heldName = name
     heldFile = null
-    fileSize.value = text.length * 2
+    fileSize.value = byteLength(text)
+    rawText.value = text
     fileName.value = name
     heldFormat = fmt
     format.value = fmt
@@ -326,6 +444,7 @@ export function useLargeFile() {
 
   function reset() {
     cancel()
+    rawText.value = ''
     scan.value = null
     scanError.value = null
     fields.value = []
@@ -348,6 +467,7 @@ export function useLargeFile() {
     fileName,
     fileSize,
     format,
+    rawText,
     scan,
     scanError,
     fields,

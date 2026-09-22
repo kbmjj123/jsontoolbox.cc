@@ -9,6 +9,8 @@
           placeholder='[{"name": "Alice", "age": 30}, {"name": "Bob", "age": 25}]'
           example-slug="json-to-csv"
           class="flex-1 min-h-0"
+          block-oversized
+          @file-size="onFileSize"
         />
       </div>
     </template>
@@ -55,6 +57,14 @@
       </div>
     </template>
   </ResizablePanel>
+
+  <!-- Over the size limit → Large JSON Explorer -->
+  <LargeFileWarning
+    :visible="largeFile.visible.value"
+    :formatted-size="formatBytes(largeFile.bytes.value)"
+    @open-explorer="largeFile.openExplorer()"
+    @cancel="handleLargeFileCancel"
+  />
 </template>
 
 <script setup lang="ts">
@@ -73,16 +83,30 @@ const csvCopied = ref(false)
 
 const { flattenArray, getFlattenedKeys, hasNestedObjects } = useJsonFlatten()
 const { prepareForExcel, generateCsv } = useExcelCompat()
+const { formatBytes } = useFileSize()
+// Big record sets are not converted here — they go to the Large JSON Explorer.
+const largeFile = useLargeFileGate()
 
 const parsedData = computed(() => {
   if (!outputJson.value.trim()) return null
   try { return JSON.parse(outputJson.value) } catch { return null }
 })
 
+const onFileSize = (info: { bytes: number; oversized: boolean; text: string; fileName?: string }) => {
+  if (!info.oversized) return
+  largeFile.check(info.text, info.fileName || 'data.json', info.bytes)
+}
+
+const handleLargeFileCancel = () => {
+  largeFile.close()
+}
+
 const convert = () => {
   error.value = ''
   outputJson.value = ''
   outputCsv.value = ''
+
+  if (largeFile.blocked.value) return
 
   if (!inputJson.value.trim()) {
     error.value = props.tool.ui?.error_no_data || 'No data to convert'

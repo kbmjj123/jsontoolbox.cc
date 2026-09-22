@@ -6,7 +6,7 @@
   "featured": false,
   "en": {
     "name": "Large JSON / NDJSON Explorer",
-    "description": "Open large JSON and NDJSON files directly in your browser. Validate, browse the structure, search records, and export rows to CSV locally — no upload, no size limits on the page.",
+    "description": "Open large JSON and NDJSON files directly in your browser. Validate, browse the structure, search records, and export rows to CSV locally — no upload, and no fixed cap for the files the regular tools cannot handle.",
     "meta": {
       "title": "Large JSON to CSV — Explore & Export Big JSON/NDJSON Files Online",
       "description": "Convert large JSON and NDJSON files to CSV in your browser. Validate, preview the structure, search records, flatten nested fields, and download CSV locally for files up to 20 MB and beyond.",
@@ -29,6 +29,11 @@
         "icon": "lucide:list-tree",
         "title": "Structure overview",
         "desc": "Detect record collections (root array, data.items, features, NDJSON lines), record counts, and sampled fields with types and example values."
+      },
+      {
+        "icon": "lucide:network",
+        "title": "Lazy structure tree",
+        "desc": "Stream the whole document through a Worker and browse it as an expandable tree, without ever materialising the file as one giant object in memory."
       },
       {
         "icon": "lucide:columns",
@@ -72,7 +77,11 @@
     "faq": [
       {
         "q": "What file sizes are supported?",
-        "a": "Large File Mode is optimized for JSON files up to 20 MB. Larger files can also be processed locally; actual performance depends on the file structure and your device memory."
+        "a": "This page handles every input that is too large for the regular tools (above 5 MB), and files up to about 20 MB are comfortable. Larger files still work locally, but the actual speed depends on the file structure and your device memory."
+      },
+      {
+        "q": "Why was I sent here from the JSON Editor or JSON to CSV?",
+        "a": "Those pages target everyday, smaller documents. When an input is above the limit, it is handed over to this page, which processes big files inside a Web Worker so the browser stays responsive. Your content is carried over automatically — you do not have to upload it again."
       },
       {
         "q": "What is NDJSON / JSONL?",
@@ -109,6 +118,7 @@
     "features": [
       { "icon": "lucide:shield-check", "title": "本地验证", "desc": "整个文件在 Web Worker 中扫描，语法错误会报告精确行号、列号与失败行预览。" },
       { "icon": "lucide:list-tree", "title": "结构概览", "desc": "识别记录集合（根数组、data.items、features、NDJSON 行）、记录数，并对字段采样给出类型与示例值。" },
+      { "icon": "lucide:network", "title": "懒加载结构树", "desc": "通过 Worker 流式解析整个文件并以可展开的树形浏览，不会在内存中生成完整对象。" },
       { "icon": "lucide:columns", "title": "选列导出", "desc": "精确选择哪些字段成为 CSV 列，嵌套字段（如 customer.email）自动展平。" },
       { "icon": "lucide:search", "title": "记录搜索", "desc": "按值或字段名在记录中搜索，结果列出记录序号与路径。" },
       { "icon": "lucide:file-down", "title": "流式 CSV 导出", "desc": "CSV 分块生成并以 Blob 下载，数万行也能保持低内存。" },
@@ -121,7 +131,8 @@
       { "h": "预览并导出", "p": "先预览 50 行确认，再导出完整 CSV，下载在本地生成并写入设备。" }
     ],
     "faq": [
-      { "q": "支持多大的文件？", "a": "Large File Mode 针对 20 MB 以内的 JSON 优化；更大的文件也可在本地处理，实际速度取决于文件结构与设备内存。" },
+      { "q": "支持多大的文件？", "a": "本页承接所有超出常规工具处理能力（5 MB 以上）的输入，20 MB 以内体验最佳；更大的文件仍可在本地处理，实际速度取决于文件结构与设备内存。" },
+      { "q": "为什么我从 JSON 编辑器 / JSON 转 CSV 被引导到这里？", "a": "这些页面面向日常的小文件。当输入超过限制时会自动交由本页处理：大文件在 Web Worker 中解析，浏览器不会卡死。内容会自动带过来，无需重新上传。" },
       { "q": "什么是 NDJSON / JSONL？", "a": "NDJSON（又称 JSON Lines 或 JSONL）每行一个 JSON 值，每行即一条记录，非常适合日志与事件导出。本工具逐行独立验证。" },
       { "q": "我的数据会被上传吗？", "a": "不会。验证、搜索、结构浏览与 CSV 导出都在浏览器内的 Web Worker 中完成，文件不会离开你的设备。" },
       { "q": "为什么不能在这里编辑文件？", "a": "在浏览器中编辑超大文本既慢又占内存。本工具专注于验证、浏览、搜索与导出；更小的文件请使用 JSON Editor。" }

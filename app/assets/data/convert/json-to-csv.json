@@ -139,7 +139,7 @@
       },
       {
         "question": "Can I convert a large JSON file?",
-        "answer": "The practical limit depends on available browser memory, the number of records and columns, and the complexity of nested values. Large files may take longer to parse, preview, and download. A preview limit can improve responsiveness, but it does not necessarily limit the size of the final export."
+        "answer": "This page converts small and medium documents (up to 5 MB). Above that it does not try to parse the file — it hands the content over to the Large JSON Explorer, which scans big files in a Web Worker and exports CSV from them. The content is carried over automatically, so you do not upload it twice."
       },
       {
         "question": "Is my JSON data uploaded to a server?",
@@ -272,7 +272,7 @@
       },
       {
         "question": "有记录数量限制吗？",
-        "answer": "没有人为设置的限制。所有处理都在浏览器中完成，实际限制取决于设备内存。通常转换数千条记录没有问题。"
+        "answer": "本页面处理 5 MB 以内的日常文档。超过这个规模不会再尝试解析，而是把内容交给「大文件 JSON / NDJSON 浏览器」，由它在 Web Worker 中扫描并导出 CSV；内容会自动带过去，无需重新上传。5 MB 以内没有人为的记录数限制，实际取决于设备内存。"
       },
       {
         "question": "JSON 数组中对象的键不同时怎么处理？",

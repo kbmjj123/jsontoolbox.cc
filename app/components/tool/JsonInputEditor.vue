@@ -239,6 +239,13 @@ interface Props {
   showUpload?: boolean
   showLoadUrl?: boolean
   accept?: string
+  /**
+   * Refuse content above LARGE_FILE_MAX_BYTES: only `file-size` is emitted, the
+   * text is never loaded into the editor. Used by pages that hand oversized
+   * input over to the Large JSON Explorer — loading it first would freeze the
+   * editor for no reason.
+   */
+  blockOversized?: boolean
   /** Line number with a parse error (1-based) */
   errorLine?: number
   /** Column number of the error within the line (1-based) */
@@ -268,6 +275,7 @@ const props = withDefaults(defineProps<Props>(), {
   showUpload: false,
   showLoadUrl: true,
   accept: '.json,.txt,.jsonl,.geojson,.ndjson',
+  blockOversized: false,
   errorLine: 0,
   errorColumn: 0,
   friendlyMessage: '',
@@ -288,7 +296,9 @@ const emit = defineEmits<{
   locateError: []
   copyError: []
   'example-loaded': [input: string]
-  'file-size': [info: { bytes: number; category: 'small' | 'medium' | 'large' }]
+  /** Emitted whenever content enters the editor (upload / paste). `text` is
+   *  included so the parent can hand it off without reading a stale v-model. */
+  'file-size': [info: { bytes: number; oversized: boolean; text: string; fileName?: string }]
 }>()
 
 // Example dropdown (built-in when exampleSlug is provided)
@@ -314,7 +324,7 @@ const gutterRef = ref<HTMLDivElement>()
 const textareaRef = ref<HTMLTextAreaElement>()
 const highlightBackdropRef = ref<HTMLPreElement>()
 const fileInputRef = ref<HTMLInputElement>()
-const { detectSize, fileSizeCategory, fileSizeBytes } = useFileSize()
+const { detectSize } = useFileSize()
 const cmRef = ref<InstanceType<typeof CodeMirrorEditor>>()
 const dragging = ref(false)
 const fileInfo = ref<{ name: string; size: string } | null>(null)
@@ -332,6 +342,9 @@ const onCmReady = () => {
 }
 
 const onUrlLoaded = (text: string) => {
+  const size = detectSize(text)
+  emit('file-size', { ...size, text })
+  if (size.oversized && props.blockOversized) { showUrlModal.value = false; return }
   emit('update:modelValue', text)
   emit('loadUrl', text)
   showUrlModal.value = false
@@ -347,8 +360,10 @@ const processFile = (file: File) => {
   const reader = new FileReader()
   reader.onload = (ev) => {
     const text = ev.target?.result as string
-    detectSize(text, file)
-    emit('file-size', { bytes: fileSizeBytes.value, category: fileSizeCategory.value })
+    const size = detectSize(text, file)
+    emit('file-size', { ...size, text, fileName: file.name })
+    // Oversized content stays out of the editor entirely.
+    if (size.oversized && props.blockOversized) return
     emit('update:modelValue', text)
     emit('upload', text)
     fileInfo.value = { name: file.name, size: formatFileSize(file.size) }
@@ -444,8 +459,9 @@ const onScroll = () => {
 const onPaste = (e: ClipboardEvent) => {
   const text = e.clipboardData?.getData('text') ?? ''
   if (text) {
-    detectSize(text)
-    emit('file-size', { bytes: fileSizeBytes.value, category: fileSizeCategory.value })
+    const size = detectSize(text)
+    emit('file-size', { ...size, text })
+    if (size.oversized && props.blockOversized) return
     emit('paste', text)
   }
 }

@@ -49,8 +49,8 @@
       </div>
       <div class="flex gap-2 items-center shrink-0 sm:ml-auto">
 
-        <!-- Search bar (rich mode only; shown for normal AND large/lazy files) -->
-        <template v-if="currentMode === 'rich' && (parsedData !== null || hasLazyIndex)">
+        <!-- Search bar (rich mode only) -->
+        <template v-if="currentMode === 'rich' && parsedData !== null">
           <button
             @click="toggleExpandAll"
             class="text-xs text-surface-500 hover:text-surface-700 dark:text-surface-400 dark:hover:text-surface-200 whitespace-nowrap"
@@ -229,24 +229,10 @@
       ref="richRef"
       class="flex-1 min-h-0 overflow-auto rounded-xl border border-surface-200 bg-surface-50 p-4 dark:border-surface-700 dark:bg-surface-800"
     >
-      <!-- Large file mode indicator -->
-      <div
-        v-if="fileSizeCategory !== 'small' && parsedData !== null"
-        class="mb-3 flex items-center gap-2 px-3 py-2 rounded-lg text-xs"
-        :class="fileSizeCategory === 'large'
-          ? 'bg-red-50 text-red-700 dark:bg-red-900/20 dark:text-red-400 border border-red-200 dark:border-red-800'
-          : 'bg-amber-50 text-amber-700 dark:bg-amber-900/20 dark:text-amber-400 border border-amber-200 dark:border-amber-800'"
-      >
-        <Icon name="lucide:info" class="w-3.5 h-3.5 shrink-0" />
-        {{ $t('largeFile.mode_' + fileSizeCategory) }}
-        <span v-if="nodeCount > 0" class="ml-1 opacity-70">({{ nodeCount.toLocaleString() }} nodes)</span>
-      </div>
-
       <JsonTreeNode
-        v-if="parsedData !== null || hasLazyIndex"
+        v-if="parsedData !== null"
         :data="parsedData"
         :path="''"
-        :lazy-index="lazyIndex"
       />
       <div v-else-if="error" class="flex flex-col items-center justify-center h-full gap-3 p-6 text-center">
         <span class="i-lucide-alert-circle w-8 h-8 text-red-400 dark:text-red-500" />
@@ -295,7 +281,6 @@
 
 <script setup lang="ts">
 import type { FieldError } from '~/types/jsonErrors'
-import type { LazyNode } from '~/workers/jsonStream.worker'
 
 // Single scroll viewport for the rich tree. Virtualized subtree lists window
 // against this element instead of creating a scroll box of their own, which is
@@ -333,14 +318,6 @@ interface Props {
   masked?: boolean
   /** Set of sensitive field paths to mask */
   sensitivePaths?: Set<string>
-  /** File size category for performance-aware rendering */
-  fileSizeCategory?: 'small' | 'medium' | 'large'
-  /** Raw file size in bytes (drives the Worker-search size threshold) */
-  sizeBytes?: number
-  /** Lazy node index from streaming parser (for large files) */
-  lazyIndex?: Map<string, LazyNode> | null
-  /** Total node count from streaming parser */
-  nodeCount?: number
 }
 
 const props = withDefaults(defineProps<Props>(), {
@@ -363,10 +340,6 @@ const props = withDefaults(defineProps<Props>(), {
   highlight: '',
   masked: false,
   sensitivePaths: () => new Set(),
-  fileSizeCategory: 'small',
-  sizeBytes: 0,
-  lazyIndex: null,
-  nodeCount: 0,
 })
 
 const emit = defineEmits<{
@@ -420,9 +393,7 @@ function syncLineNumbers() {
 
 // Search
 const parsedDataRef = computed(() => props.parsedData)
-const lazyIndexRef = computed(() => props.lazyIndex)
-const sizeBytesRef = computed(() => props.sizeBytes ?? 0)
-const treeSearch = useTreeSearch(parsedDataRef, lazyIndexRef, sizeBytesRef)
+const treeSearch = useTreeSearch(parsedDataRef)
 
 const modes = computed(() => [
   { value: 'key' as const, label: t('tree.searchByKey') },
@@ -463,9 +434,6 @@ onMounted(() => {
 // Provide search state to tree nodes
 provide('treeSearch', treeSearch)
 
-// Provide file size category to tree nodes for child node pagination
-provide('fileSizeCategory', computed(() => props.fileSizeCategory))
-
 // Provide masked state for sensitive fields
 provide('maskedFields', computed(() => props.masked ? props.sensitivePaths : new Set()))
 
@@ -487,10 +455,6 @@ function isArray(v: unknown): v is unknown[] { return Array.isArray(v) }
 function isExpandable(v: unknown): boolean { return isObject(v) || isArray(v) }
 
 function getAllExpandablePaths(data: unknown, parentPath = '', depth = 0): string[] {
-  // Limit expand depth for large files
-  const maxDepth = props.fileSizeCategory === 'large' ? 2 : props.fileSizeCategory === 'medium' ? 3 : Infinity
-  if (depth >= maxDepth) return []
-
   const paths: string[] = []
   if (isObject(data)) {
     for (const key of Object.keys(data)) {
@@ -509,40 +473,9 @@ function getAllExpandablePaths(data: unknown, parentPath = '', depth = 0): strin
 const richExpanded = ref<Set<string>>(new Set())
 provide('richExpanded', richExpanded)
 
-// Provide lazy index to tree nodes
-const hasLazyIndex = computed(() => props.lazyIndex !== null && props.lazyIndex!.size > 0)
-provide('lazyIndex', computed(() => props.lazyIndex))
-provide('hasLazyIndex', hasLazyIndex)
-
-// Expand nodes: use lazy index for large files, parsedData for small files
-watch(() => [props.parsedData, props.lazyIndex], ([data, lazy]) => {
-  const lazyMap = lazy as Map<string, LazyNode> | null
-  if (lazyMap && lazyMap.size > 0) {
-    // Lazy mode: expand root children, their children, and one level deeper.
-    // The deepest level is bounded — containers with too many siblings are not
-    // auto-expanded, to avoid blowing up the expanded set on giant arrays.
-    const paths = new Set<string>()
-    const DEEP_EXPAND_CAP = 300
-    const root = lazyMap.get('')
-    if (root) {
-      for (const d1 of root.children) {
-        paths.add(d1)
-        const n1 = lazyMap.get(d1)
-        if (n1 && (n1.type === 'object' || n1.type === 'array')) {
-          for (const d2 of n1.children) {
-            paths.add(d2)
-            const n2 = lazyMap.get(d2)
-            if (n2 && (n2.type === 'object' || n2.type === 'array') && n2.childCount <= DEEP_EXPAND_CAP) {
-              for (const d3 of n2.children) {
-                paths.add(d3)
-              }
-            }
-          }
-        }
-      }
-    }
-    richExpanded.value = paths
-  } else if (data !== null && data !== undefined) {
+// Expand nodes in rich view whenever the data changes
+watch(() => props.parsedData, (data) => {
+  if (data !== null && data !== undefined) {
     richExpanded.value = new Set(getAllExpandablePaths(data))
   } else {
     richExpanded.value = new Set()

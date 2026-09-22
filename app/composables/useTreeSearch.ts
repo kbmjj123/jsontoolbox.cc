@@ -1,17 +1,15 @@
 import type { Ref } from 'vue'
-import type { LazyNode } from '~/workers/jsonStream.worker'
 
 export type SearchMode = 'key' | 'value' | 'path'
 
-// Guardrails so searching a huge file can never freeze the main thread:
+// Guardrails for the plain main-thread walk used by the regular tools:
 //  - MAX_SEARCH_RESULTS: max matches we keep (navigation aid, not exhaustive)
 //  - MAX_SEARCH_NODES:   max nodes we visit per search pass (time budget)
+//
+// Anything beyond these budgets belongs to the Large JSON Explorer, the only
+// page that searches big documents (inside a Web Worker).
 const MAX_SEARCH_RESULTS = 5000
 const MAX_SEARCH_NODES = 400_000
-// Above this, cloning the full parsed object into the Worker would itself block
-// the main thread, so the non-lazy search skips the Worker and uses the original
-// synchronous walk instead.
-const WORKER_TREE_MAX_BYTES = 20 * 1024 * 1024
 
 /**
  * Build the full path for a child key/index.
@@ -103,23 +101,7 @@ function walkTree(
   if (mode === 'path' && currentPath.toLowerCase().includes(query)) addMatch(currentPath, results, seen)
 }
 
-/**
- * Search the streaming-parser index in the Worker (large-file / lazy mode) to
- * find matching paths. Runs entirely off the main thread, so the UI never blocks.
- */
-async function searchLazyIndexInWorker(
-  query: string,
-  mode: SearchMode,
-): Promise<string[]> {
-  const { searchIndex } = useWorkerParser()
-  return searchIndex(query, mode, MAX_SEARCH_RESULTS, MAX_SEARCH_NODES)
-}
-
-export function useTreeSearch(
-  data: Ref<unknown>,
-  lazyIndex?: Ref<Map<string, LazyNode> | null | undefined>,
-  sizeBytes?: Ref<number>,
-) {
+export function useTreeSearch(data: Ref<unknown>) {
   const query = ref('')
   // Debounce the actual search so we never fire a search on every keystroke.
   const debouncedQuery = ref('')
@@ -132,18 +114,14 @@ export function useTreeSearch(
   const mode = ref<SearchMode>('key')
   const currentIndex = ref(-1)
   const isSearching = ref(false)
-  // `matches` is populated asynchronously (Worker search for large files, or a
-  // fast main-thread walk for small files) so the UI stays responsive.
+  // `matches` is populated by a bounded, synchronous walk. Regular tools only
+  // ever hold documents below LARGE_FILE_MAX_BYTES, so this stays well inside
+  // the node budget and never needs a Worker.
   const matches = ref<string[]>([])
 
   let searchToken = 0
 
-  // The full tree is cached in the Worker once per parse. We clear this flag
-  // whenever the data changes so the next search re-sends it (otherwise stale).
-  const treeCacheDirty = ref(true)
-  watch(data, () => { treeCacheDirty.value = true })
-
-  async function runSearch() {
+  function runSearch() {
     const q = debouncedQuery.value.trim().toLowerCase()
     const token = ++searchToken
     if (!q) {
@@ -154,41 +132,11 @@ export function useTreeSearch(
 
     isSearching.value = true
     try {
-      let results: string[]
-      const idx = lazyIndex?.value
-      if (idx && idx.size > 0) {
-        // Large / lazy files: search runs in the Worker (off main thread).
-        results = await searchLazyIndexInWorker(q, mode.value)
-      } else if (data.value) {
-        // For very large full objects, cloning into the Worker would itself block
-        // the main thread, so skip the Worker and use the original synchronous walk.
-        if (sizeBytes?.value && sizeBytes.value > WORKER_TREE_MAX_BYTES) {
-          const seen = new Set<string>()
-          const budget: SearchBudget = { visited: 0, max: MAX_SEARCH_NODES, limit: MAX_SEARCH_RESULTS }
-          results = []
-          walkTree(data.value, '', q, mode.value, results, seen, budget)
-        } else {
-          // Rich mode with no lazy index: search off the main thread via the Worker.
-          // The full tree is cached there once; only the query string travels per
-          // keystroke, so the UI never blocks. Falls back to the original
-          // synchronous walk if the Worker is unavailable.
-          try {
-            if (treeCacheDirty.value) {
-              const { setSearchTree } = useWorkerParser()
-              setSearchTree(data.value)
-              treeCacheDirty.value = false
-            }
-            const { searchTree } = useWorkerParser()
-            results = await searchTree(q, mode.value, MAX_SEARCH_RESULTS, MAX_SEARCH_NODES)
-          } catch {
-            const seen = new Set<string>()
-            const budget: SearchBudget = { visited: 0, max: MAX_SEARCH_NODES, limit: MAX_SEARCH_RESULTS }
-            results = []
-            walkTree(data.value, '', q, mode.value, results, seen, budget)
-          }
-        }
-      } else {
-        results = []
+      const results: string[] = []
+      if (data.value) {
+        const seen = new Set<string>()
+        const budget: SearchBudget = { visited: 0, max: MAX_SEARCH_NODES, limit: MAX_SEARCH_RESULTS }
+        walkTree(data.value, '', q, mode.value, results, seen, budget)
       }
       if (token === searchToken) matches.value = results
     } finally {
@@ -196,7 +144,7 @@ export function useTreeSearch(
     }
   }
 
-  watch([debouncedQuery, mode, lazyIndex], runSearch)
+  watch([debouncedQuery, mode], runSearch)
 
   const matchSet = computed(() => new Set(matches.value))
   const totalCount = computed(() => matches.value.length)

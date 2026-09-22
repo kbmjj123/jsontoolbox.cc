@@ -16,21 +16,8 @@
 
       <div class="flex flex-col gap-2">
         <button
-          @click="emit('continue')"
-          class="w-full rounded-lg bg-primary-600 px-4 py-2.5 text-sm font-medium text-white hover:bg-primary-700 dark:bg-primary-500 dark:hover:bg-primary-600 transition-colors"
-        >
-          {{ $t('largeFile.continue') }}
-        </button>
-        <button
-          @click="emit('parse-partial')"
-          class="w-full rounded-lg border border-surface-200 bg-white px-4 py-2.5 text-sm font-medium text-surface-700 hover:bg-surface-50 dark:border-surface-700 dark:bg-surface-800 dark:text-surface-300 dark:hover:bg-surface-700 transition-colors"
-        >
-          {{ $t('largeFile.parse_partial') }}
-        </button>
-        <button
-          v-if="showExplorer"
           @click="emit('open-explorer')"
-          class="w-full rounded-lg border border-primary-200 bg-primary-50 px-4 py-2.5 text-sm font-medium text-primary-700 hover:bg-primary-100 dark:border-primary-800 dark:bg-primary-900/20 dark:text-primary-300 dark:hover:bg-primary-900/30 transition-colors"
+          class="w-full rounded-lg bg-primary-600 px-4 py-2.5 text-sm font-medium text-white hover:bg-primary-700 dark:bg-primary-500 dark:hover:bg-primary-600 transition-colors"
         >
           {{ $t('largeFile.open_explorer') }}
         </button>
@@ -46,18 +33,19 @@
 </template>
 
 <script setup lang="ts">
-withDefaults(defineProps<{
+/**
+ * Shown when an input exceeds LARGE_FILE_MAX_BYTES.
+ *
+ * Regular tools never parse oversized content themselves — the only action is
+ * to hand the content over to the Large JSON Explorer (or back out). The
+ * content is carried across in memory, so the user never re-uploads.
+ */
+defineProps<{
   visible: boolean
   formattedSize: string
-  /** Opt-in third action: hand the file off to the Large JSON / NDJSON Explorer. */
-  showExplorer?: boolean
-}>(), {
-  showExplorer: false,
-})
+}>()
 
 const emit = defineEmits<{
-  continue: []
-  'parse-partial': []
   'open-explorer': []
   cancel: []
 }>()

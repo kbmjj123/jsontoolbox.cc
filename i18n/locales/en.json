@@ -444,17 +444,9 @@
     "nativeShareText": "Shared via JsonToolBox"
   },
   "largeFile": {
-    "warning_title": "Large File Warning",
-    "warning_desc": "This file is very large ({size}). Parsing may be slow or crash your browser.",
-    "continue": "Continue anyway",
-    "parse_partial": "Parse first 20 MB",
+    "warning_title": "File too large for this tool",
+    "warning_desc": "This input is {size}, which is larger than this page is designed to handle. Open it in the Large JSON Explorer instead: it validates, browses, searches and exports big JSON and NDJSON files locally, without uploading anything.",
     "open_explorer": "Open in Large JSON Explorer",
-    "explore": "Explore",
-    "cancel": "Cancel",
-    "mode_standard": "Standard mode",
-    "mode_large": "Large file mode: some features are simplified to keep the page responsive.",
-    "mode_huge": "Very large file: performance may be limited. Consider using a local tool.",
-    "parsing": "Parsing…",
-    "show_more": "Show more ({count} more items)"
+    "cancel": "Cancel"
   }
 }

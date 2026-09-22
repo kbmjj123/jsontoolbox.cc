@@ -164,7 +164,7 @@
     },
     {
       "question": "Can I edit large JSON files?",
-      "answer": "The practical limit depends on browser memory, editor implementation, device performance, nesting depth, and the amount of syntax highlighting or validation work required. Large files may become slower to edit, format, or validate."
+      "answer": "This editor targets everyday documents up to 5 MB. Above that it hands the content over to the Large JSON Explorer, which validates, browses, searches and exports big JSON and NDJSON files locally instead of editing them here — editing multi-megabyte text in a browser is slow and memory-heavy."
     },
     {
       "question": "Does it support JSON Schema validation?",
@@ -308,7 +308,7 @@
       },
       {
         "question": "可以编辑大型 JSON 文件吗？",
-        "answer": "可以尝试编辑较大的 JSON 文件，但实际处理能力取决于浏览器可用内存、设备性能以及 JSON 结构的复杂程度。非常大的文件可能需要更长的解析和格式化时间。"
+        "answer": "本编辑器面向 5 MB 以内的日常文档。超过后会交由「大文件 JSON / NDJSON 浏览器」处理：在那里完成校验、结构浏览、搜索与导出，而不是在这里编辑——在浏览器里编辑数 MB 以上的文本既慢又占内存。"
       },
       {
         "question": "JSON 编辑器和 JSON 格式化工具有什么区别？",

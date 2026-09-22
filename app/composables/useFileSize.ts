@@ -1,34 +1,37 @@
 /**
  * File Size Detection Composable
- * Detects and classifies JSON file sizes for performance-aware processing
+ *
+ * There is exactly one size rule in the app, and it lives in `useLargeFile`:
+ *
+ *   - <= LARGE_FILE_MAX_BYTES → "normal" pages handle it with `JSON.parse`
+ *     on the main thread (full editing, formatting, tree browsing).
+ *   - >  LARGE_FILE_MAX_BYTES → the input is handed off to the Large JSON
+ *     Explorer, the single page that owns large-file machinery.
+ *
+ * This composable only measures and reports. It never decides how to parse.
  */
-export type FileSizeCategory = 'small' | 'medium' | 'large'
+import { LARGE_FILE_MAX_BYTES, byteLength } from './useLargeFile'
+
+export interface FileSizeInfo {
+  bytes: number
+  /** True when the input must go to the Large JSON Explorer instead. */
+  oversized: boolean
+}
 
 export const useFileSize = () => {
-  const SIZE_THRESHOLDS = {
-    SMALL: 5 * 1024 * 1024,    // 5 MB
-    MEDIUM: 50 * 1024 * 1024,  // 50 MB
-  }
-
   const fileSizeBytes = ref(0)
-  const fileSizeCategory = ref<FileSizeCategory>('small')
+  const isOversized = ref(false)
 
   /**
-   * Detect file size from text and/or File object
-   * File.size is more accurate; text.length * 2 is a fallback estimate
+   * Measure an input. `File.size` is exact; the text fallback measures the real
+   * UTF-8 length instead of the old `length * 2` estimate, so a 5 MB ASCII file
+   * is no longer reported as 10 MB.
    */
-  function detectSize(text: string, file?: File) {
-    const bytes = file ? file.size : text.length * 2
+  function detectSize(text: string, file?: File): FileSizeInfo {
+    const bytes = file ? file.size : byteLength(text)
     fileSizeBytes.value = bytes
-    if (bytes < SIZE_THRESHOLDS.SMALL) {
-      fileSizeCategory.value = 'small'
-    }
-    else if (bytes < SIZE_THRESHOLDS.MEDIUM) {
-      fileSizeCategory.value = 'medium'
-    }
-    else {
-      fileSizeCategory.value = 'large'
-    }
+    isOversized.value = bytes > LARGE_FILE_MAX_BYTES
+    return { bytes, oversized: isOversized.value }
   }
 
   /**
@@ -41,44 +44,11 @@ export const useFileSize = () => {
     return `${(bytes / (1024 * 1024 * 1024)).toFixed(1)} GB`
   }
 
-  /**
-   * Check if text is a large file (>= 5 MB)
-   */
-  function isLargeFile(text: string): boolean {
-    return text.length * 2 >= SIZE_THRESHOLDS.SMALL
-  }
-
-  /**
-   * Get the first N bytes of text (for partial parsing)
-   */
-  function getPartialText(text: string, maxBytes: number): string {
-    const maxChars = Math.floor(maxBytes / 2)
-    if (text.length <= maxChars) return text
-    // Find a valid JSON break point (try to end at a comma or array element boundary)
-    let cutPoint = maxChars
-    const bracketStack: string[] = []
-    for (let i = 0; i < maxChars; i++) {
-      if (text[i] === '{' || text[i] === '[') bracketStack.push(text[i])
-      else if (text[i] === '}') bracketStack.pop()
-      else if (text[i] === ']') bracketStack.pop()
-    }
-    // Try to find a clean break at a comma
-    for (let i = maxChars - 1; i > maxChars - 1000 && i > 0; i--) {
-      if (text[i] === ',' && bracketStack.length === 0) {
-        cutPoint = i
-        break
-      }
-    }
-    return text.substring(0, cutPoint)
-  }
-
   return {
     fileSizeBytes: readonly(fileSizeBytes),
-    fileSizeCategory: readonly(fileSizeCategory),
+    isOversized: readonly(isOversized),
     detectSize,
     formatBytes,
-    isLargeFile,
-    getPartialText,
-    SIZE_THRESHOLDS,
+    LARGE_FILE_MAX_BYTES,
   }
 }

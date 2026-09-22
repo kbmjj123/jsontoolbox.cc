@@ -1,10 +1,49 @@
 <script setup lang="ts">
-import { computed, onMounted, ref, watch } from 'vue'
+import { computed, onMounted, provide, ref, watch } from 'vue'
 import { useLargeFile, useLargeFileHandoff, type ExportOptions } from '~/composables/useLargeFile'
+import { useLazyTree } from '~/composables/useLazyTree'
+import { useWorkerParser } from '~/composables/useWorkerParser'
 import type { ArrayMode } from '~/workers/recordStream.worker'
 
 const lf = useLargeFile()
 const handoff = useLargeFileHandoff()
+
+// Streaming structure tree. This is the only place in the app that builds a
+// lazy node index for a big document — regular tools never do.
+const { parseStream } = useWorkerParser()
+const tree = useLazyTree()
+const treeLoading = ref(false)
+const treeError = ref('')
+const treeBuilt = ref(false)
+// Shared scroll viewport so virtualized child lists window against this box
+// instead of creating their own scrollbars.
+const treeViewport = ref<HTMLElement | null>(null)
+provide('treeViewport', treeViewport)
+
+async function buildTree() {
+  const text = lf.rawText.value
+  if (!text || treeLoading.value) return
+  treeLoading.value = true
+  treeError.value = ''
+  treeBuilt.value = false
+  tree.reset()
+  const result = await parseStream(text, (n, p) => tree.updateProgress(n, p))
+  treeLoading.value = false
+  if (result.error) {
+    treeError.value = result.line
+      ? `Line ${result.line}:${result.column} — ${result.error}`
+      : result.error
+    return
+  }
+  tree.initFromIndex(result.rootType, result.nodeCount, result.index)
+  treeBuilt.value = true
+}
+
+watch(() => lf.rawText.value, () => {
+  tree.reset()
+  treeBuilt.value = false
+  treeError.value = ''
+})
 
 const formatChoice = ref<'auto' | 'json' | 'ndjson'>('auto')
 const dragOver = ref(false)
@@ -306,6 +345,40 @@ onMounted(async () => {
             <input v-model="bom" type="checkbox"> <span class="text-xs text-muted">UTF-8 BOM</span>
           </label>
         </div>
+      </section>
+
+      <!-- structure tree -->
+      <section class="rounded-xl border border-border p-5">
+        <div class="mb-3 flex items-center justify-between gap-3">
+          <h3 class="font-semibold">Structure tree</h3>
+          <button class="btn btn-outline" :disabled="treeLoading" @click="buildTree">
+            {{ treeBuilt ? 'Rebuild tree' : 'Browse as tree' }}
+          </button>
+        </div>
+        <p class="mb-3 text-sm text-muted">
+          Streams the whole document through a Worker and builds a lazy node index, so the file is
+          never materialised as one giant object on the main thread.
+        </p>
+
+        <div v-if="treeLoading" class="space-y-2 py-2">
+          <p class="text-sm text-muted">
+            Indexing… {{ tree.progress.value }}% · {{ tree.state.value.nodeCount.toLocaleString() }} nodes
+          </p>
+          <div class="h-2 w-full overflow-hidden rounded-full bg-surface-200">
+            <div class="h-full bg-primary transition-all" :style="{ width: tree.progress.value + '%' }" />
+          </div>
+        </div>
+        <p v-else-if="treeError" class="text-sm text-red-600">{{ treeError }}</p>
+        <div
+          v-else-if="treeBuilt"
+          ref="treeViewport"
+          class="max-h-96 overflow-auto rounded-lg border border-border bg-surface-200/40 p-3"
+        >
+          <JsonTreeNode :data="null" :path="''" :lazy-index="tree.state.value.index" />
+        </div>
+        <p v-else class="text-sm text-muted">
+          {{ lf.scan.value?.recordCount.toLocaleString() }} records · not indexed yet
+        </p>
       </section>
 
       <!-- search -->

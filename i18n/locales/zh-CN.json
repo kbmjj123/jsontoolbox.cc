@@ -435,17 +435,9 @@
     "nativeShareText": "通过 JsonToolBox 分享"
   },
   "largeFile": {
-    "warning_title": "大文件警告",
-    "warning_desc": "此文件非常大（{size}）。解析可能很慢或导致浏览器崩溃。",
-    "continue": "继续解析",
-    "parse_partial": "仅解析前 20 MB",
+    "warning_title": "文件超出本工具的处理范围",
+    "warning_desc": "当前输入为 {size}，已超过本页面的处理能力。请改在大文件浏览器中打开：它会在本地完成校验、结构浏览、搜索与导出，文件不会上传。",
     "open_explorer": "在大文件浏览器中打开",
-    "explore": "浏览",
-    "cancel": "取消",
-    "mode_standard": "标准模式",
-    "mode_large": "大文件模式：部分功能已简化以保持页面响应。",
-    "mode_huge": "超大文件：性能可能受限。建议使用本地工具。",
-    "parsing": "解析中…",
-    "show_more": "显示更多（还有 {count} 项）"
+    "cancel": "取消"
   }
 }
