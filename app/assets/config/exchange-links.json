@@ -36,12 +36,12 @@
 		"alt": "Featured on LaunchClash"
 	},
 	{
-		"name": "Builders.to",
-		"url": "https://builders.to/projects/jsontoolbox?utm_source=badge",
+		"name": "LaunchNest",
+		"url": "https://launchnest.io/p/json-toolbox",
 		"type": "image",
-		"imageUrl": "https://builders.to/badges/featured-on-builders.svg",
+		"imageUrl": "https://launchnest.io/badge/json-toolbox.svg?variant=featured",
 		"imageWidth": 150,
 		"imageHeight": 54,
-		"alt": "JsonToolbox - Featured on Builders.to"
+		"alt": "JSON Toolbox on LaunchNest"
 	}
 ]
