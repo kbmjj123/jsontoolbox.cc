@@ -1,0 +1,140 @@
+{
+  "slug": "large-json-csv",
+  "category": "convert",
+  "component": "LargeJsonExplorer",
+  "icon": "lucide:table-2",
+  "featured": false,
+  "en": {
+    "name": "Large JSON / NDJSON Explorer",
+    "description": "Open large JSON and NDJSON files directly in your browser. Validate, browse the structure, search records, and export rows to CSV locally — no upload, no size limits on the page.",
+    "meta": {
+      "title": "Large JSON to CSV — Explore & Export Big JSON/NDJSON Files Online",
+      "description": "Convert large JSON and NDJSON files to CSV in your browser. Validate, preview the structure, search records, flatten nested fields, and download CSV locally for files up to 20 MB and beyond.",
+      "keywords": [
+        "large json to csv",
+        "big json file to csv",
+        "jsonl to csv",
+        "ndjson to csv",
+        "convert large json file to csv",
+        "view large json online"
+      ]
+    },
+    "features": [
+      {
+        "icon": "lucide:shield-check",
+        "title": "Local validation",
+        "desc": "The whole file is scanned in a Web Worker. Syntax errors are reported with the exact line, column, and a preview of the failing line."
+      },
+      {
+        "icon": "lucide:list-tree",
+        "title": "Structure overview",
+        "desc": "Detect record collections (root array, data.items, features, NDJSON lines), record counts, and sampled fields with types and example values."
+      },
+      {
+        "icon": "lucide:columns",
+        "title": "Column selection",
+        "desc": "Pick exactly which fields become CSV columns. Nested fields like customer.email are flattened automatically."
+      },
+      {
+        "icon": "lucide:search",
+        "title": "Record search",
+        "desc": "Search across records by value or field name. Matches are listed with their record index and path."
+      },
+      {
+        "icon": "lucide:file-down",
+        "title": "Streaming CSV export",
+        "desc": "CSV is generated in chunks and downloaded as a Blob, so memory stays low even for tens of thousands of rows."
+      },
+      {
+        "icon": "lucide:lock",
+        "title": "Private by design",
+        "desc": "Everything runs in your browser. Your file is never uploaded to a server."
+      }
+    ],
+    "guide": [
+      {
+        "h": "Upload your file",
+        "p": "Drag a .json, .ndjson, .jsonl or .jsonlines file onto the page, or click to choose one. Format is detected from the extension, or pick it manually."
+      },
+      {
+        "h": "Review the structure",
+        "p": "The tool scans the file and shows the record count and candidate collections. Choose the array that represents your rows."
+      },
+      {
+        "h": "Choose columns",
+        "p": "Select the fields to export. Nested objects are flattened (customer.email becomes its own column). Arrays can be exported as JSON, the first item, or skipped."
+      },
+      {
+        "h": "Preview and export",
+        "p": "Preview 50 rows to confirm, then export the full CSV. The download is generated locally and streamed to your device."
+      }
+    ],
+    "faq": [
+      {
+        "q": "What file sizes are supported?",
+        "a": "Large File Mode is optimized for JSON files up to 20 MB. Larger files can also be processed locally; actual performance depends on the file structure and your device memory."
+      },
+      {
+        "q": "What is NDJSON / JSONL?",
+        "a": "NDJSON (also called JSON Lines or JSONL) stores one JSON value per line. Each line is a record, which makes it ideal for logs and event exports. This tool validates each line independently."
+      },
+      {
+        "q": "Is my data uploaded?",
+        "a": "No. Validation, search, structure browsing and CSV export all run in your browser using a Web Worker. The file never leaves your device."
+      },
+      {
+        "q": "Why can't I edit the file here?",
+        "a": "Editing very large text in the browser is slow and memory-heavy. This tool is focused on validation, browsing, search and export. For smaller files, use the JSON Editor."
+      }
+    ],
+    "article": {
+      "title": "Convert large JSON and NDJSON files to CSV in your browser",
+      "headline": "A private, local workflow for big record exports",
+      "body": "Exporting a large JSON array or an NDJSON log file to a spreadsheet should not require uploading your data. This page validates, previews and converts files locally.\n\nThe most common path: upload a 20–50 MB orders or events export, pick the record array, choose your columns (including nested fields like customer.email), preview 50 rows, then download a CSV you can open in Excel, Google Sheets or a BI tool.\n\nFor files above 100 MB, a command-line tool such as jq, Python or DuckDB is usually faster. This tool targets the practical middle ground where a quick, private, in-browser check and export is exactly what you need."
+    }
+  },
+  "zh": {
+    "name": "大文件 JSON / NDJSON 浏览器",
+    "description": "在浏览器中直接打开大型 JSON 与 NDJSON 文件：本地验证、浏览结构、搜索记录并导出为 CSV，文件不上传。",
+    "meta": {
+      "title": "大文件 JSON 转 CSV — 在线浏览与导出大型 JSON / NDJSON",
+      "description": "在浏览器中将大型 JSON 与 NDJSON 转为 CSV。验证、预览结构、搜索记录、展平嵌套字段并本地下载 CSV。",
+      "keywords": [
+        "大文件 json 转 csv",
+        "jsonl 转 csv",
+        "ndjson 转 csv",
+        "在线浏览大 json"
+      ]
+    },
+    "features": [
+      { "icon": "lucide:shield-check", "title": "本地验证", "desc": "整个文件在 Web Worker 中扫描，语法错误会报告精确行号、列号与失败行预览。" },
+      { "icon": "lucide:list-tree", "title": "结构概览", "desc": "识别记录集合（根数组、data.items、features、NDJSON 行）、记录数，并对字段采样给出类型与示例值。" },
+      { "icon": "lucide:columns", "title": "选列导出", "desc": "精确选择哪些字段成为 CSV 列，嵌套字段（如 customer.email）自动展平。" },
+      { "icon": "lucide:search", "title": "记录搜索", "desc": "按值或字段名在记录中搜索，结果列出记录序号与路径。" },
+      { "icon": "lucide:file-down", "title": "流式 CSV 导出", "desc": "CSV 分块生成并以 Blob 下载，数万行也能保持低内存。" },
+      { "icon": "lucide:lock", "title": "隐私优先", "desc": "全部在浏览器中运行，文件不会上传到服务器。" }
+    ],
+    "guide": [
+      { "h": "上传文件", "p": "将 .json / .ndjson / .jsonl / .jsonlines 文件拖入页面，或点击选择。格式按扩展名自动识别，也可手动选择。" },
+      { "h": "查看结构", "p": "工具扫描文件并显示记录数与候选集合，选择代表行的数组。" },
+      { "h": "选择列", "p": "选择要导出的字段，嵌套对象会被展平（customer.email 成为独立列）。数组可导出为 JSON、首项或忽略。" },
+      { "h": "预览并导出", "p": "先预览 50 行确认，再导出完整 CSV，下载在本地生成并写入设备。" }
+    ],
+    "faq": [
+      { "q": "支持多大的文件？", "a": "Large File Mode 针对 20 MB 以内的 JSON 优化；更大的文件也可在本地处理，实际速度取决于文件结构与设备内存。" },
+      { "q": "什么是 NDJSON / JSONL？", "a": "NDJSON（又称 JSON Lines 或 JSONL）每行一个 JSON 值，每行即一条记录，非常适合日志与事件导出。本工具逐行独立验证。" },
+      { "q": "我的数据会被上传吗？", "a": "不会。验证、搜索、结构浏览与 CSV 导出都在浏览器内的 Web Worker 中完成，文件不会离开你的设备。" },
+      { "q": "为什么不能在这里编辑文件？", "a": "在浏览器中编辑超大文本既慢又占内存。本工具专注于验证、浏览、搜索与导出；更小的文件请使用 JSON Editor。" }
+    ],
+    "article": {
+      "title": "在浏览器中将大型 JSON 与 NDJSON 转为 CSV",
+      "headline": "针对大型记录导出的本地私有工作流",
+      "body": "把大型 JSON 数组或 NDJSON 日志导出到表格，没必要上传数据。本页在本地完成验证、预览与转换。\n\n最常见的路径是：上传 20–50 MB 的订单或事件导出，选择记录数组，挑选列（含 customer.email 这类嵌套字段），预览 50 行，然后下载可在 Excel、Google Sheets 或 BI 工具中打开的 CSV。\n\n超过 100 MB 的文件，命令行工具（如 jq、Python、DuckDB）通常更快。本工具面向的是「快速、私密、在浏览器里完成检查与导出」这一中间场景。"
+    }
+  },
+  "recommends": [
+    { "slug": "json-to-csv", "category": "convert" },
+    { "slug": "csv-to-json", "category": "convert" },
+    { "slug": "json-editor", "category": "format" }
+  ]
+}
