@@ -293,9 +293,10 @@ export function accumulateValue(v: unknown, counts: JsonTypeCounts): void {
   else if (t === 'boolean') counts.boolean++
 }
 
-/** Container nesting depth of a parsed value (root container = 1). */
+/** Container nesting depth of a parsed value (root container = 1; scalars = 0).
+ *  Mirrors the scanner's `onValue` max-depth so JSON and NDJSON agree. */
 export function valueDepth(v: unknown): number {
-  if (v === null || typeof v !== 'object') return 1
+  if (v === null || typeof v !== 'object') return 0
   if (Array.isArray(v)) { let m = 1; for (const e of v) m = Math.max(m, 1 + valueDepth(e)); return m }
   let m = 1
   for (const k in v) m = Math.max(m, 1 + valueDepth((v as Record<string, unknown>)[k]))
