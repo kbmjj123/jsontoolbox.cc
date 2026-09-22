@@ -1,0 +1,40 @@
+{
+  "slug": "view",
+  "sort": 4,
+  "icon": "lucide:eye",
+  "theme": {
+    "bg": "from-purple-50 to-violet-50 dark:from-purple-950/30 dark:to-violet-950/30",
+    "text": "text-purple-600 dark:text-purple-400",
+    "iconBg": "bg-purple-100 dark:bg-purple-900/50"
+  },
+  "en": {
+    "title": "JSON View & Search Tools",
+    "description": "Open, inspect and search JSON documents in your browser, including files that are too large for a normal editor.",
+    "keywords": ["json viewer", "view large json", "search json online", "large json viewer"],
+    "h2": "View & Search",
+    "pdesc": "Open and search JSON locally — including large files — without uploading anything.",
+    "highlights": [
+      { "icon": "lucide:eye", "title": "Read-only viewing", "description": "Open large JSON and NDJSON files as read-only text with line numbers." },
+      { "icon": "lucide:search", "title": "Local search", "description": "Search keys, values or paths inside a Web Worker, with progress and cancel." },
+      { "icon": "lucide:shield-check", "title": "Private & Secure", "description": "All processing happens in your browser. No data is uploaded." }
+    ],
+    "faq": [
+      { "q": "Is my data uploaded?", "a": "No. The file is opened and searched entirely in your browser." }
+    ]
+  },
+  "zh": {
+    "title": "JSON 查看与搜索工具",
+    "description": "在浏览器中打开、查看并搜索 JSON 文档，包括普通编辑器无法承载的大文件。",
+    "keywords": ["json查看器", "查看大json", "在线搜索json", "大文件json查看"],
+    "h2": "查看与搜索",
+    "pdesc": "在本地打开并搜索 JSON，包括大文件，全程不上传。",
+    "highlights": [
+      { "icon": "lucide:eye", "title": "只读查看", "description": "以只读文本方式打开大型 JSON 与 NDJSON 文件，带行号。" },
+      { "icon": "lucide:search", "title": "本地搜索", "description": "在 Web Worker 中按键名、值或路径搜索，带进度可取消。" },
+      { "icon": "lucide:shield-check", "title": "私密安全", "description": "所有处理在浏览器中完成，不会上传数据。" }
+    ],
+    "faq": [
+      { "q": "我的数据会被上传吗？", "a": "不会。文件的打开与搜索全部在你的浏览器中完成。" }
+    ]
+  }
+}

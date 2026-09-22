@@ -6,7 +6,7 @@
   "sort": 1,
   "applicationCategory": "DeveloperApplication",
   "nextSteps": ["json-to-yaml", "json-to-xml"],
-  "recommends": ["json-editor", "large-json-csv"],
+  "recommends": ["json-editor", "large-json-viewer"],
   "en": {
     "name": "JSON to CSV Converter",
     "description": "Convert JSON records to CSV online for Excel, Google Sheets, and other spreadsheet tools. Paste JSON or open a file, preview the detected columns, optionally flatten nested objects, and download a CSV file directly from your browser.",

@@ -23,7 +23,7 @@
       </div>
       <slot name="header-right">
         <button
-          @click="isFullscreen = !isFullscreen"
+          @click="toggle"
           class="rp-fullscreen-btn text-surface-400 hover:text-surface-600 dark:text-surface-500 dark:hover:text-surface-300"
           :title="isFullscreen ? 'Exit fullscreen' : 'Fullscreen'"
         >
@@ -92,10 +92,12 @@ const props = withDefaults(defineProps<Props>(), {
 
 const emit = defineEmits<{ 'update:fullscreen': [value: boolean] }>()
 
-const isFullscreen = computed({
-  get: () => props.fullscreen,
-  set: v => emit('update:fullscreen', v)
-})
+// Fullscreen state/behaviour is shared with the Large JSON Viewer via
+// useFullscreen(), so the button, the ESC hint and the body scroll lock behave
+// identically everywhere.
+const { isFullscreen, toggle } = useFullscreen(props.fullscreen)
+watch(isFullscreen, v => emit('update:fullscreen', v))
+watch(() => props.fullscreen, v => { isFullscreen.value = v })
 
 const containerClass = computed(() => props.class)
 
@@ -109,18 +111,6 @@ onMounted(() => {
     window.addEventListener('resize', check)
     onUnmounted(() => window.removeEventListener('resize', check))
   }
-})
-
-// Escape to exit fullscreen
-useEventListener('keydown', (e: KeyboardEvent) => {
-  if (e.key === 'Escape' && isFullscreen.value) {
-    isFullscreen.value = false
-  }
-})
-
-// Lock body scroll in fullscreen
-watch(isFullscreen, (v) => {
-  document.body.style.overflow = v ? 'hidden' : ''
 })
 
 const containerRef = ref<HTMLDivElement>()

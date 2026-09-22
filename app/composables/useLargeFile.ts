@@ -1,14 +1,16 @@
-import { ref } from 'vue'
+import { ref, computed } from 'vue'
 import type {
   ScanResult,
   FieldsResult,
   CsvChunk,
-  SearchResultMsg,
+  SearchTextResultMsg,
+  SearchTextProgressMsg,
   FileFormat,
   FieldStat,
-  SearchHit,
   ArrayMode,
 } from '~/workers/recordStream.worker'
+import type { SearchTextHit } from '~/utils/textSearch'
+import { offsetToLineCol } from '~/utils/textSearch'
 
 export type LfStatus =
   | 'idle'
@@ -54,7 +56,7 @@ export function useLargeFileHandoff() {
 export const LARGE_FILE_MAX_BYTES = 5 * 1024 * 1024
 
 /** The one page that owns every large-file capability. */
-export const LARGE_FILE_EXPLORER_PATH = '/tools/convert/large-json-csv'
+export const LARGE_FILE_EXPLORER_PATH = '/tools/view/large-json-viewer'
 
 /** UTF-8 byte length of a string. Uses Blob when available (native, fast). */
 export function byteLength(text: string): number {
@@ -155,7 +157,7 @@ export function useLargeFileGate() {
 interface PendingReq {
   resolve: (v: unknown) => void
   reject: (e: unknown) => void
-  kind: 'scan' | 'fields' | 'search' | 'export' | 'preview'
+  kind: 'scan' | 'fields' | 'searchText' | 'export' | 'preview'
 }
 
 export interface ExportOptions {
@@ -192,10 +194,15 @@ export function useLargeFile() {
   const selectedColumns = ref<string[]>([])
   const previewCsv = ref('')
   const csvHeaders = ref<string[]>([])
-  const searchHits = ref<SearchHit[]>([])
+  const searchHits = ref<SearchTextHit[]>([])
   const searchQuery = ref('')
-  const searchMode = ref<'key' | 'value'>('value')
+  const searchScope = ref<'key' | 'value' | 'path'>('value')
+  const searchCaseSensitive = ref(false)
+  const searchProgress = ref<{ scanned: number; total: number; matches: number }>({ scanned: 0, total: 0, matches: 0 })
   const searchTruncated = ref(false)
+  const currentHit = ref(0)
+  /** Start offset of each top-level array element (JSON root arrays only). */
+  const topArray = ref<Uint32Array | null>(null)
   const exportTotal = ref(0)
   const exportDone = ref(false)
   const errorMsg = ref('')
@@ -232,6 +239,7 @@ export function useLargeFile() {
         scanError.value = null
         // Default to the biggest record collection (root array or NDJSON lines).
         selectedCollection.value = data.candidates[0]?.path ?? ''
+        topArray.value = data.topArray ?? null
         status.value = 'ready'
       }
       p?.resolve(data)
@@ -247,11 +255,16 @@ export function useLargeFile() {
       csvChunks.push(chunk.chunk)
       exportTotal.value = chunk.total
       if (chunk.done) finishStream()
-    } else if (data.type === 'search') {
+    } else if (data.type === 'searchTextProgress') {
+      const msg = data as SearchTextProgressMsg
+      searchProgress.value = { scanned: msg.scanned, total: msg.total, matches: msg.matches }
+    } else if (data.type === 'searchTextResult') {
       const p = pending.get(data.id)
       pending.delete(data.id)
-      searchHits.value = (data as SearchResultMsg).hits
-      searchTruncated.value = (data as SearchResultMsg).truncated
+      searchHits.value = (data as SearchTextResultMsg).hits
+      searchTruncated.value = (data as SearchTextResultMsg).truncated
+      searchProgress.value = { scanned: 0, total: 0, matches: searchHits.value.length }
+      currentHit.value = searchHits.value.length ? 0 : -1
       status.value = 'ready'
       p?.resolve(data)
     }
@@ -410,23 +423,70 @@ export function useLargeFile() {
     })
   }
 
-  async function search(query: string, mode: 'key' | 'value' = 'value', limit = 200) {
-    if (!scan.value?.ok || !query.trim()) {
+  async function searchText(
+    query: string,
+    scope: 'key' | 'value' | 'path' = 'value',
+    caseSensitive = false,
+    limit = 5000,
+  ) {
+    if (!query.trim()) {
       searchHits.value = []
+      searchProgress.value = { scanned: 0, total: 0, matches: 0 }
       return
     }
     status.value = 'searching'
+    searchQuery.value = query
+    searchScope.value = scope
+    searchCaseSensitive.value = caseSensitive
+    searchProgress.value = { scanned: 0, total: 0, matches: 0 }
     const id = ++reqId
-    return new Promise<SearchResultMsg>((resolve, reject) => {
-      pending.set(id, { resolve: resolve as any, reject, kind: 'search' })
+    return new Promise<SearchTextResultMsg>((resolve, reject) => {
+      pending.set(id, { resolve: resolve as any, reject, kind: 'searchText' })
       post(id, {
-        mode: 'search',
-        rowPath: selectedCollection.value || undefined,
+        mode: 'searchText',
         query,
-        searchMode: mode,
+        searchMode: scope,
+        caseSensitive,
         limit,
       })
     })
+  }
+
+  /** Stop an in-flight search. The worker is terminated and re-scanned so the
+   *  page keeps working afterwards. */
+  function cancelSearch() {
+    cancel()
+    reload()
+  }
+
+  function gotoHit(index: number) {
+    if (!searchHits.value.length) return
+    currentHit.value = Math.max(0, Math.min(searchHits.value.length - 1, index))
+  }
+
+  function nextHit() { gotoHit(currentHit.value + 1) }
+  function prevHit() { gotoHit(currentHit.value - 1) }
+
+  /** Whether the document is a paged sequence (NDJSON lines or a JSON root array). */
+  const arrayKind = computed<'ndjson' | 'json-array' | null>(() =>
+    format.value === 'ndjson' ? 'ndjson'
+      : topArray.value && topArray.value.length ? 'json-array'
+      : null,
+  )
+  /** Number of top-level items, for the pager. */
+  const arrayCount = computed(() =>
+    arrayKind.value === 'ndjson'
+      ? (scan.value?.lineOffsets?.length ?? 0)
+      : (topArray.value?.length ?? 0),
+  )
+  /** 1-based line of the i-th top-level element (0-based input). Returns 0 when
+   *  out of range so callers can ignore it. */
+  function elementLine(i: number): number {
+    if (arrayKind.value === 'ndjson') return i + 1
+    const offs = topArray.value
+    const lineOffsets = scan.value?.lineOffsets
+    if (!offs || !lineOffsets || i < 0 || i >= offs.length) return 0
+    return offsetToLineCol(lineOffsets, offs[i]).line
   }
 
   function cancel() {
@@ -452,6 +512,7 @@ export function useLargeFile() {
     selectedColumns.value = []
     previewCsv.value = ''
     searchHits.value = []
+    topArray.value = null
     status.value = 'idle'
   }
 
@@ -477,8 +538,14 @@ export function useLargeFile() {
     csvHeaders,
     searchHits,
     searchQuery,
-    searchMode,
+    searchScope,
+    searchCaseSensitive,
+    searchProgress,
     searchTruncated,
+    currentHit,
+    arrayKind,
+    arrayCount,
+    elementLine,
     exportTotal,
     exportDone,
     errorMsg,
@@ -489,7 +556,11 @@ export function useLargeFile() {
     fetchFields,
     runPreview,
     startExport,
-    search,
+    searchText,
+    cancelSearch,
+    gotoHit,
+    nextHit,
+    prevHit,
     cancel,
     reset,
     updatePreviewHeaders,
