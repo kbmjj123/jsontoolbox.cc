@@ -1,6 +1,7 @@
 import { ref, computed } from 'vue'
 import type {
   ScanResult,
+  ScanFailReason,
   FieldsResult,
   CsvChunk,
   SearchTextResultMsg,
@@ -26,6 +27,7 @@ export interface ScanErrorInfo {
   line?: number
   column?: number
   snippet?: string
+  reason?: ScanFailReason
 }
 
 export interface LargeFileHandoff {
@@ -231,6 +233,7 @@ export function useLargeFile() {
           line: data.line,
           column: data.column,
           snippet: data.snippet,
+          reason: data.reason,
         }
         scan.value = data as ScanResult
         status.value = 'invalid'

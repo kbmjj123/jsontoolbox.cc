@@ -18,7 +18,7 @@
       </div>
       <h3 class="text-lg font-semibold text-surface-900 dark:text-surface-100">{{ t('largeViewer.invalidTitle') }}</h3>
       <p class="max-w-md text-sm text-surface-600 dark:text-surface-400">
-        {{ lf.scanError.value?.message }}
+        {{ invalidMessage }}
       </p>
       <pre
         v-if="lf.scanError.value?.snippet"
@@ -101,6 +101,11 @@
             <Icon :name="isFullscreen ? 'lucide:minimize' : 'lucide:maximize'" class="w-4 h-4" />
           </button>
         </div>
+      </div>
+
+      <!-- structure overview -->
+      <div v-if="lf.scan.value?.ok" class="mt-2">
+        <LargeFileStructure :scan="lf.scan.value" />
       </div>
 
       <!-- search bar -->
@@ -192,6 +197,7 @@ import LargeFileTextViewer from '~/components/tool/LargeFileTextViewer.vue'
 import LargeFileSearchBar from '~/components/tool/LargeFileSearchBar.vue'
 import LargeFileResults from '~/components/tool/LargeFileResults.vue'
 import LargeFileNodePreview from '~/components/tool/LargeFileNodePreview.vue'
+import LargeFileStructure from '~/components/tool/LargeFileStructure.vue'
 import type { FileFormat } from '~/workers/recordStream.worker'
 import type { SearchTextHit } from '~/utils/textSearch'
 import { toJsonPath } from '~/utils/textSearch'
@@ -226,6 +232,14 @@ const activeMatch = computed<SearchTextHit | null>(
   () => lf.searchHits.value[lf.currentHit.value] ?? null,
 )
 const currentLine = computed(() => activeMatch.value?.line ?? focusLine.value)
+const invalidMessage = computed(() => {
+  const r = lf.scanError.value?.reason
+  if (r === 'eof') return t('largeViewer.invalidReasonEof')
+  if (r === 'token') return t('largeViewer.invalidReasonToken')
+  if (r === 'empty') return t('largeViewer.invalidReasonEmpty')
+  if (r === 'scanner') return t('largeViewer.invalidReasonScanner')
+  return lf.scanError.value?.message ?? ''
+})
 const progressPct = computed(() => {
   const p = lf.searchProgress.value
   if (!p.total) return 0

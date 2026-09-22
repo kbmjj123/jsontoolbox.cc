@@ -491,6 +491,26 @@
     "nodeTooLarge": "Node is large; preview truncated to the first {n} KB.",
     "first": "First",
     "last": "Last",
-    "arrayItem": "Item {n} of {m}"
+    "arrayItem": "Item {n} of {m}",
+    "structure": "Structure",
+    "structRoot": "Root",
+    "structMaxDepth": "Max depth",
+    "structTypes": "Value types",
+    "structComplete": "Complete",
+    "structCompleteYes": "Complete",
+    "structCompleteNo": "Incomplete",
+    "structIllegal": "Illegal chars",
+    "structIllegalYes": "Present",
+    "structIllegalNo": "None",
+    "typeObject": "Object",
+    "typeArray": "Array",
+    "typeString": "String",
+    "typeNumber": "Number",
+    "typeBoolean": "Boolean",
+    "typeNull": "Null",
+    "invalidReasonEof": "The JSON is incomplete — the file ends before the value is closed.",
+    "invalidReasonToken": "Illegal character found — the file is not valid JSON.",
+    "invalidReasonEmpty": "The file is empty.",
+    "invalidReasonScanner": "This file is valid JSON, but the structure scanner could not read it. CSV export needs that scan — try the JSON Editor for smaller files, or report this document so the scanner can be fixed."
   }
 }

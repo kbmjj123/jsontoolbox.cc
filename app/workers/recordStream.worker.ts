@@ -17,6 +17,7 @@
  * need an index and belong to the small-file page).
  */
 import { buildLineOffsets, searchStructured, collectRootArrayElementOffsets, type SearchTextHit } from '~/utils/textSearch'
+import { scanJson, emptyTypeCounts, accumulateValue, valueDepth, type JsonTypeCounts } from '~/utils/jsonScanner'
 
 export type FileFormat = 'json' | 'ndjson'
 
@@ -30,11 +31,17 @@ export interface Candidate {
   sampleKeys: string[]
 }
 
+/** Why a scan failed — lets the UI show a localized message instead of a raw
+ *  scanner exception. */
+export type ScanFailReason = 'eof' | 'token' | 'empty' | 'scanner'
+
 export interface ScanResult {
   id: number
   type: 'scan'
   ok: boolean
   error?: string
+  /** Localized-friendliness reason for a failed scan (only when `ok` is false). */
+  reason?: ScanFailReason
   line?: number
   column?: number
   snippet?: string
@@ -50,6 +57,10 @@ export interface ScanResult {
   recordCount: number
   candidates: Candidate[]
   bytes: number
+  /** Max container nesting depth of the document (root container = 1). */
+  maxDepth: number
+  /** Count of each JSON value type encountered while scanning. */
+  typeCounts: JsonTypeCounts
 }
 
 export interface FieldStat {
@@ -176,262 +187,7 @@ const MAX_CANDIDATE_DEPTH = 5
 const MIN_CANDIDATE_COUNT = 1
 const MAX_CANDIDATES = 50
 
-function isWs(c: string): boolean {
-  return c === ' ' || c === '\t' || c === '\r' || c === '\n'
-}
-function isNumberChar(c: string): boolean {
-  return (c >= '0' && c <= '9') || c === '-' || c === '+' || c === '.' || c === 'e' || c === 'E'
-}
-function joinPath(segs: string[]): string {
-  let p = ''
-  for (const s of segs) {
-    if (!s) continue
-    if (s.startsWith('[')) p += s
-    else p = p ? `${p}.${s}` : s
-  }
-  return p
-}
-
-interface Frame {
-  type: 'object' | 'array'
-  count: number
-  nextIndex: number
-  depth: number
-  curStart: number
-  inElem: boolean
-  firstStart: number
-  firstEnd: number
-}
-
-interface ScanHooks {
-  /** Called when an array closes, with its path/element count/first element offsets. */
-  onArrayClose?: (path: string, count: number, firstStart: number, firstEnd: number, depth: number) => void
-  /** Called for each top-level element of the target array. */
-  onElement?: (index: number, start: number, end: number) => void
-  targetPath?: string
-}
-
-/**
- * Single-pass validating scanner. No index is built; only offsets/edges are
- * reported through hooks, so memory stays flat regardless of file size.
- */
-function scanJson(text: string, hooks: ScanHooks = {}): { rootType: 'object' | 'array' | null } {
-  if (!text.trim()) throw new Error('The file is empty')
-  let i = 0
-  let rootType: 'object' | 'array' | null = null
-  const stack: Frame[] = []
-  const segs: string[] = []
-  let pendingSeg = ''
-  let expectKey = false
-  let expectColon = false
-  let expectValue = false
-  let sawRoot = false
-  /** True right after a comma — lets us reject trailing commas. */
-  let sawComma = false
-  /** True right after a value — next token must be a separator, not a value. */
-  let awaitingSeparator = false
-
-  const n = text.length
-
-  function openContainer(type: 'object' | 'array') {
-    const parent = stack.length > 0 ? stack[stack.length - 1] : null
-    if (parent) {
-      if (parent.type === 'array') pendingSeg = `[${parent.nextIndex}]`
-      segs.push(pendingSeg)
-    } else {
-      rootType = type
-    }
-    const path = joinPath(segs)
-    stack.push({
-      type,
-      count: 0,
-      nextIndex: 0,
-      depth: stack.length,
-      curStart: -1,
-      inElem: false,
-      firstStart: -1,
-      firstEnd: -1,
-    })
-    if (type === 'array') {
-      // remember where this array is, in case it becomes the target
-      void path
-      expectKey = false
-    } else {
-      expectKey = true
-    }
-  }
-
-  function closeContainer(end: number) {
-    const frame = stack.pop()
-    if (!frame) throw new Error(`Unexpected token at position ${i}`)
-    const path = joinPath(segs)
-
-    if (frame.type === 'array' && hooks.onArrayClose) {
-      hooks.onArrayClose(path, frame.count, frame.firstStart, frame.firstEnd, frame.depth)
-    }
-
-    if (!segs.length && !stack.length) segs.length = 0
-    else segs.pop()
-
-    const parent = stack.length > 0 ? stack[stack.length - 1] : null
-    if (parent) {
-      parent.count++
-      if (parent.type === 'array') {
-        if (hooks.onElement && hooks.targetPath !== undefined) {
-          const ppath = joinPath(segs)
-          if (ppath === hooks.targetPath) {
-            hooks.onElement(parent.nextIndex, parent.curStart, end)
-          }
-        }
-        if (parent.count === 1) { parent.firstStart = parent.curStart; parent.firstEnd = end }
-        parent.nextIndex++
-        parent.inElem = false
-      }
-    }
-    expectKey = false
-  }
-
-  function noteElementEnd(end: number) {
-    const top = stack.length > 0 ? stack[stack.length - 1] : null
-    if (top && top.type === 'array' && top.inElem) {
-      const ppath = joinPath(segs)
-      if (hooks.onElement && hooks.targetPath !== undefined && ppath === hooks.targetPath) {
-        hooks.onElement(top.nextIndex, top.curStart, end)
-      }
-      top.count++
-      if (top.count === 1) { top.firstStart = top.curStart; top.firstEnd = end }
-      top.nextIndex++
-      top.inElem = false
-    }
-  }
-
-  function readString(): string {
-    i++
-    let out = ''
-    while (i < n) {
-      const c = text[i]
-      if (c === '\\') {
-        const nx = text[i + 1]
-        i += 2
-        if (nx === 'n') out += '\n'
-        else if (nx === 't') out += '\t'
-        else if (nx === 'r') out += '\r'
-        else if (nx === 'b') out += '\b'
-        else if (nx === 'f') out += '\f'
-        else if (nx === 'u') { out += String.fromCharCode(parseInt(text.substr(i, 4), 16)); i += 4 }
-        else out += nx ?? ''
-        continue
-      }
-      if (c === '"') { i++; break }
-      out += c
-      i++
-    }
-    return out
-  }
-
-  while (i < n) {
-    const c = text[i]
-
-    if (isWs(c)) { i++; continue }
-
-    const top = stack.length > 0 ? stack[stack.length - 1] : null
-
-    if (c === '{' || c === '[') {
-      if (expectColon) throw new Error(`Unexpected token at position ${i}`)
-      if (sawRoot && !stack.length) throw new Error(`Unexpected token at position ${i}`)
-      if (!stack.length) sawRoot = true
-      if (top && top.type === 'array' && !top.inElem) { top.curStart = i; top.inElem = true }
-      openContainer(c === '{' ? 'object' : 'array')
-      expectValue = false
-      // A container is real content after a comma — clear the flag, otherwise
-      // the closer of an empty container (`"key": []`) is rejected as a
-      // trailing comma.
-      sawComma = false
-      i++
-      continue
-    }
-
-    if (c === '}' || c === ']') {
-      if (expectValue || expectColon || sawComma) throw new Error(`Unexpected token at position ${i}`)
-      i++
-      closeContainer(i)
-      expectValue = false
-      expectColon = false
-      sawComma = false
-      continue
-    }
-
-    if (c === ',') {
-      if (expectValue || expectColon || sawComma) throw new Error(`Unexpected token at position ${i}`)
-      i++
-      sawComma = true
-      if (top) {
-        if (top.type === 'array') { top.inElem = false }
-        else expectKey = true
-      }
-      continue
-    }
-
-    if (c === ':') {
-      if (!expectColon) throw new Error(`Unexpected token at position ${i}`)
-      i++
-      expectColon = false
-      expectValue = true
-      sawComma = false
-      continue
-    }
-
-    if (c === '"') {
-      if (top && top.type === 'array' && !top.inElem) { top.curStart = i; top.inElem = true }
-      const start = i
-      readString()
-      if (expectKey) {
-        pendingSeg = text.slice(start + 1, i - 1)
-        expectKey = false
-        expectColon = true
-        // The key is real content after a comma — clear the flag so an empty
-        // container value (`"key": []`) is not mistaken for a trailing comma.
-        sawComma = false
-      } else {
-        if (expectColon) throw new Error(`Unexpected token at position ${i}`)
-        noteElementEnd(i)
-        expectValue = false
-        sawComma = false
-      }
-      continue
-    }
-
-    if (c === 't' || c === 'f' || c === 'n') {
-      if (expectColon) throw new Error(`Unexpected token at position ${i}`)
-      if (top && top.type === 'array' && !top.inElem) { top.curStart = i; top.inElem = true }
-      if (text.startsWith('true', i)) i += 4
-      else if (text.startsWith('false', i)) i += 5
-      else if (text.startsWith('null', i)) i += 4
-      else throw new Error(`Unexpected token at position ${i}`)
-      noteElementEnd(i)
-      expectValue = false
-      sawComma = false
-      continue
-    }
-
-    if (isNumberChar(c)) {
-      if (expectColon) throw new Error(`Unexpected token at position ${i}`)
-      if (top && top.type === 'array' && !top.inElem) { top.curStart = i; top.inElem = true }
-      const start = i
-      while (i < n && isNumberChar(text[i])) i++
-      if (Number.isNaN(Number(text.slice(start, i)))) throw new Error(`Invalid number at position ${start}`)
-      noteElementEnd(i)
-      expectValue = false
-      sawComma = false
-      continue
-    }
-
-    throw new Error(`Unexpected token at position ${i}`)
-  }
-
-  if (stack.length > 0) throw new Error('Unexpected end of input')
-  return { rootType }
-}
+// `accumulateValue` / `valueDepth` are imported from ~/utils/jsonScanner.
 
 /** Offsets of each non-empty line (NDJSON validation only). */
 function buildRecordLineOffsets(text: string): number[] {
@@ -631,10 +387,12 @@ self.onmessage = (e: MessageEvent<Request>) => {
 
       if (docFormat === 'ndjson') {
         lineOffsets = buildRecordLineOffsets(docText)
-        // validate every line
+        // validate every line; accumulate type counts + max depth along the way
         let bad: { line: number; message: string } | null = null
         let valid = 0
         let sampleKeys: string[] = []
+        const typeCounts = emptyTypeCounts()
+        let maxDepth = 0
         for (let li = 0; li < lineOffsets.length; li++) {
           const off = lineOffsets[li]
           const raw = docText.slice(off, lineEnd(docText, off))
@@ -645,6 +403,9 @@ self.onmessage = (e: MessageEvent<Request>) => {
             if (!sampleKeys.length && v && typeof v === 'object' && !Array.isArray(v)) {
               sampleKeys = Object.keys(v).slice(0, 8)
             }
+            accumulateValue(v, typeCounts)
+            const d = valueDepth(v)
+            if (d > maxDepth) maxDepth = d
           } catch (err) {
             if (!bad) bad = { line: li + 1, message: (err as Error).message }
           }
@@ -654,11 +415,12 @@ self.onmessage = (e: MessageEvent<Request>) => {
         rootType = 'array'
         if (bad) {
           const res: ScanResult = {
-            id: data.id, type: 'scan', ok: false, error: bad.message,
+            id: data.id, type: 'scan', ok: false, error: bad.message, reason: 'token',
             line: bad.line, column: 1,
             snippet: docText.slice(lineOffsets[bad.line - 1] ?? 0, lineEnd(docText, lineOffsets[bad.line - 1] ?? 0)).slice(0, 120),
-            rootType, format: docFormat, recordCount, candidates,       lineOffsets: allLineOffsets,
-          bytes: docText.length,
+            rootType, format: docFormat, recordCount, candidates,
+            bytes: docText.length, lineOffsets: allLineOffsets,
+            maxDepth, typeCounts,
           }
           self.postMessage(res)
           return
@@ -666,7 +428,7 @@ self.onmessage = (e: MessageEvent<Request>) => {
         const res: ScanResult = {
           id: data.id, type: 'scan', ok: true, rootType, format: docFormat,
           recordCount, candidates, bytes: docText.length,
-          lineOffsets: allLineOffsets,
+          lineOffsets: allLineOffsets, maxDepth, typeCounts,
         }
         self.postMessage(res)
         return
@@ -674,7 +436,9 @@ self.onmessage = (e: MessageEvent<Request>) => {
 
       // ── JSON ──
       const seen: { path: string; count: number; start: number; end: number; depth: number }[] = []
-      let err: { message: string; position: number } | null = null
+      const typeCounts = emptyTypeCounts()
+      let maxDepth = 0
+      let err: { message: string; position: number; reason?: ScanFailReason } | null = null
       try {
         const r = scanJson(docText, {
           onArrayClose: (path, count, firstStart, firstEnd, depth) => {
@@ -682,12 +446,20 @@ self.onmessage = (e: MessageEvent<Request>) => {
               seen.push({ path, count, start: firstStart, end: firstEnd, depth })
             }
           },
+          onValue: (type, depth) => {
+            typeCounts[type]++
+            if ((type === 'object' || type === 'array') && depth > maxDepth) maxDepth = depth
+          },
         })
         rootType = r.rootType
       } catch (ex) {
         const m = (ex as Error).message || String(ex)
         const pm = m.match(/position (\d+)/)
-        err = { message: m, position: pm ? parseInt(pm[1]) : 0 }
+        err = {
+          message: m,
+          position: pm ? parseInt(pm[1]) : 0,
+          reason: m === 'Unexpected end of input' ? 'eof' : 'token',
+        }
       }
 
       if (err) {
@@ -701,6 +473,7 @@ self.onmessage = (e: MessageEvent<Request>) => {
           err = {
             message: 'This file is valid JSON, but the structure scanner could not read it. CSV export needs that scan — try the JSON Editor for smaller files, or report this document so the scanner can be fixed.',
             position: 0,
+            reason: 'scanner',
           }
         }
       }
@@ -708,11 +481,11 @@ self.onmessage = (e: MessageEvent<Request>) => {
       if (err) {
         const lines = docText.slice(0, err.position).split('\n')
         const res: ScanResult = {
-          id: data.id, type: 'scan', ok: false, error: err.message,
+          id: data.id, type: 'scan', ok: false, error: err.message, reason: err.reason,
           line: lines.length, column: lines[lines.length - 1].length + 1,
           snippet: docText.slice(Math.max(0, err.position - 40), err.position + 40),
           rootType: null, format: docFormat, recordCount: 0, candidates: [], bytes: docText.length,
-          lineOffsets: allLineOffsets,
+          lineOffsets: allLineOffsets, maxDepth: 0, typeCounts: emptyTypeCounts(),
         }
         self.postMessage(res)
         return
@@ -743,15 +516,15 @@ self.onmessage = (e: MessageEvent<Request>) => {
       const res: ScanResult = {
         id: data.id, type: 'scan', ok: true, rootType, format: docFormat,
         recordCount, candidates, bytes: docText.length,
-        lineOffsets: allLineOffsets,
+        lineOffsets: allLineOffsets, maxDepth, typeCounts,
         topArray: rootType === 'array' ? new Uint32Array(collectRootArrayElementOffsets(docText)) : undefined,
       }
       self.postMessage(res)
     } catch (outer) {
       const res: ScanResult = {
-        id: data.id, type: 'scan', ok: false, error: (outer as Error).message || String(outer),
+        id: data.id, type: 'scan', ok: false, error: (outer as Error).message || String(outer), reason: 'scanner',
         rootType: null, format: docFormat, recordCount: 0, candidates: [], bytes: docText.length,
-        lineOffsets: allLineOffsets,
+        lineOffsets: allLineOffsets, maxDepth: 0, typeCounts: emptyTypeCounts(),
       }
       self.postMessage(res)
     }
