@@ -439,6 +439,8 @@
     "warning_desc": "此文件非常大（{size}）。解析可能很慢或导致浏览器崩溃。",
     "continue": "继续解析",
     "parse_partial": "仅解析前 20 MB",
+    "open_explorer": "在大文件浏览器中打开",
+    "explore": "浏览",
     "cancel": "取消",
     "mode_standard": "标准模式",
     "mode_large": "大文件模式：部分功能已简化以保持页面响应。",

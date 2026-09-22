@@ -25,7 +25,7 @@
  *     </div>
  *   </div>
  */
-import { computed, onBeforeUnmount, onMounted, ref, type Ref } from 'vue'
+import { computed, onBeforeUnmount, onMounted, ref, watch, type Ref } from 'vue'
 
 export interface VirtualItem {
   index: number
@@ -42,6 +42,14 @@ export interface UseVirtualListOptions {
   estimateHeight?: number
   /** Extra rows rendered above/below the viewport. */
   overscan?: number
+  /**
+   * External scroll viewport. When given, the window is computed against this
+   * element and the list itself stays a plain, non-scrolling spacer. That is
+   * what keeps a nested list from introducing a second scrollbar.
+   */
+  viewportRef?: Ref<HTMLElement | null>
+  /** Distance from the top of the viewport's scrollable content to the list top. */
+  offsetTop?: () => number
 }
 
 export function useVirtualList(
@@ -124,9 +132,22 @@ export function useVirtualList(
     return items
   })
 
-  function onScroll() {
+  /** Recompute the visible window from the current scroll position. */
+  function refresh() {
+    const vp = options.viewportRef?.value ?? null
+    if (vp) {
+      viewportHeight.value = vp.clientHeight
+      scrollTop.value = Math.max(0, vp.scrollTop - (options.offsetTop?.() ?? 0))
+      return
+    }
     const el = containerRef.value
-    if (el) scrollTop.value = el.scrollTop
+    if (!el) return
+    viewportHeight.value = el.clientHeight
+    scrollTop.value = el.scrollTop
+  }
+
+  function onScroll() {
+    refresh()
   }
 
   function measure(index: number, el: HTMLElement | null) {
@@ -151,12 +172,19 @@ export function useVirtualList(
 
   /** Smoothly scroll so the given item is visible (used by locate features). */
   function scrollToIndex(index: number, align: 'start' | 'center' = 'center') {
-    const el = containerRef.value
-    if (!el) return
     const arr = getOffsets()
     if (index < 0 || index >= arr.length - 1) return
     const offset = arr[index]
     const h = getItemHeight(index)
+    const vp = options.viewportRef?.value ?? null
+    if (vp) {
+      const target = (options.offsetTop?.() ?? 0) + offset
+      vp.scrollTop = align === 'center' ? target - (vp.clientHeight - h) / 2 : target
+      refresh()
+      return
+    }
+    const el = containerRef.value
+    if (!el) return
     if (align === 'center') {
       el.scrollTop = offset - (el.clientHeight - h) / 2
     } else {
@@ -164,12 +192,22 @@ export function useVirtualList(
     }
   }
 
+  let vpRo: ResizeObserver | null = null
+
   onMounted(() => {
     const el = containerRef.value
-    if (!el) return
-    scrollTop.value = el.scrollTop
-    viewportHeight.value = el.clientHeight
-    el.addEventListener('scroll', onScroll, { passive: true })
+    const vp = options.viewportRef?.value ?? null
+    refresh()
+    if (vp) {
+      vp.addEventListener('scroll', onScroll, { passive: true })
+      if (typeof ResizeObserver !== 'undefined') {
+        vpRo = new ResizeObserver(() => refresh())
+        vpRo.observe(vp)
+        if (el) vpRo.observe(el)
+      }
+    } else if (el) {
+      el.addEventListener('scroll', onScroll, { passive: true })
+    }
     if (typeof ResizeObserver !== 'undefined') {
       ro = new ResizeObserver((entries) => {
         for (const entry of entries) {
@@ -185,14 +223,20 @@ export function useVirtualList(
     }
   })
 
+  // Re-window whenever measured heights change (rows expanding, images loading).
+  watch(version, refresh)
+
   onBeforeUnmount(() => {
     const el = containerRef.value
     if (el) el.removeEventListener('scroll', onScroll)
+    options.viewportRef?.value?.removeEventListener('scroll', onScroll)
     ro?.disconnect()
     ro = null
+    vpRo?.disconnect()
+    vpRo = null
     measured.clear()
     indexToEl.clear()
   })
 
-  return { virtualItems, totalHeight, measure, scrollToIndex }
+  return { virtualItems, totalHeight, measure, scrollToIndex, refresh }
 }

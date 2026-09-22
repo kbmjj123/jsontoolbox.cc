@@ -1,9 +1,9 @@
 /**
  * Worker Parser Composable
  * Manages Web Workers for off-main-thread JSON parsing.
- * Supports both normal (JSON.parse) and streaming (clarinet) modes.
+ * Supports both normal (JSON.parse) and streaming (in-worker scanner) modes.
  */
-import type { LazyNode } from '~/workers/jsonStream.worker'
+import type { LazyNode, WorkerChildEntry } from '~/workers/jsonStream.worker'
 
 export interface WorkerParseResult {
   data: unknown | null
@@ -14,11 +14,17 @@ export interface WorkerParseResult {
 
 export interface StreamParseResult {
   rootType: 'object' | 'array' | null
+  /** Number of direct children of the root node. */
+  rootChildCount: number
   nodeCount: number
-  index: Record<string, LazyNode>
   error: string | null
   line: number
   column: number
+}
+
+export interface ChildrenResult {
+  childCount: number
+  entries: WorkerChildEntry[]
 }
 
 export type StreamProgressCallback = (nodeCount: number, percent: number) => void
@@ -48,6 +54,14 @@ const streamPending = new Map<number, {
 }>()
 const searchPending = new Map<number, {
   resolve: (paths: string[]) => void
+  timer: ReturnType<typeof setTimeout>
+}>()
+const childrenPending = new Map<number, {
+  resolve: (result: ChildrenResult) => void
+  timer: ReturnType<typeof setTimeout>
+}>()
+const nodePending = new Map<number, {
+  resolve: (entry: WorkerChildEntry | null) => void
   timer: ReturnType<typeof setTimeout>
 }>()
 
@@ -94,7 +108,7 @@ function getStreamWorker(): Worker {
       { type: 'module' }
     )
     streamWorker.onmessage = (e: MessageEvent) => {
-      const { id, type, rootType, nodeCount, index, percent, error, line, column, matchPaths } = e.data
+      const { id, type, rootType, nodeCount, rootChildCount, percent, error, line, column, matchPaths, entries, childCount, entry } = e.data
 
       // Search responses resolve separately from stream-parse responses.
       if (type === 'searchResult') {
@@ -103,6 +117,26 @@ function getStreamWorker(): Worker {
         clearTimeout(sp.timer)
         searchPending.delete(id)
         sp.resolve(matchPaths ?? [])
+        return
+      }
+
+      // Children responses (windowed subtree fetch, on demand).
+      if (type === 'children') {
+        const cp = childrenPending.get(id)
+        if (!cp) return
+        clearTimeout(cp.timer)
+        childrenPending.delete(id)
+        cp.resolve({ childCount: childCount ?? 0, entries: entries ?? [] })
+        return
+      }
+
+      // Single node responses (used to expand/scroll to a path).
+      if (type === 'node') {
+        const np = nodePending.get(id)
+        if (!np) return
+        clearTimeout(np.timer)
+        nodePending.delete(id)
+        np.resolve(entry ?? null)
         return
       }
 
@@ -119,9 +153,9 @@ function getStreamWorker(): Worker {
       streamPending.delete(id)
 
       if (type === 'done') {
-        pendingReq.resolve({ rootType, nodeCount, index, error: null, line: 0, column: 0 })
+        pendingReq.resolve({ rootType, rootChildCount: rootChildCount ?? 0, nodeCount, error: null, line: 0, column: 0 })
       } else {
-        pendingReq.resolve({ rootType: null, nodeCount: 0, index: {}, error, line, column })
+        pendingReq.resolve({ rootType: null, rootChildCount: 0, nodeCount: 0, error, line, column })
       }
 
       if (streamPending.size === 0) {
@@ -132,7 +166,7 @@ function getStreamWorker(): Worker {
     streamWorker.onerror = (e) => {
       for (const [id, { resolve, timer }] of streamPending) {
         clearTimeout(timer)
-        resolve({ rootType: null, nodeCount: 0, index: {}, error: e.message || 'Worker error', line: 0, column: 0 })
+        resolve({ rootType: null, rootChildCount: 0, nodeCount: 0, error: e.message || 'Worker error', line: 0, column: 0 })
       }
       streamPending.clear()
       isParsing.value = false
@@ -142,6 +176,16 @@ function getStreamWorker(): Worker {
         resolve([])
       }
       searchPending.clear()
+      for (const [id, { resolve, timer }] of childrenPending) {
+        clearTimeout(timer)
+        resolve({ childCount: 0, entries: [] })
+      }
+      childrenPending.clear()
+      for (const [id, { resolve, timer }] of nodePending) {
+        clearTimeout(timer)
+        resolve(null)
+      }
+      nodePending.clear()
       streamWorker?.terminate()
       streamWorker = null
     }
@@ -170,7 +214,7 @@ function parseInWorker(text: string, timeoutMs = 30000): Promise<WorkerParseResu
 }
 
 /**
- * Parse JSON text using streaming parser (clarinet) in a Web Worker.
+ * Parse JSON text using the streaming scanner in a Web Worker.
  * Builds a LazyNodeIndex instead of a full JS object.
  */
 function parseStream(
@@ -186,7 +230,7 @@ function parseStream(
         isParsing.value = false
         parseProgress.value = 0
       }
-      resolve({ rootType: null, nodeCount: 0, index: {}, error: 'Stream parse timeout', line: 0, column: 0 })
+      resolve({ rootType: null, rootChildCount: 0, nodeCount: 0, error: 'Stream parse timeout', line: 0, column: 0 })
     }, timeoutMs)
 
     streamPending.set(id, { resolve, onProgress, timer })
@@ -221,37 +265,44 @@ function searchIndex(
 }
 
 /**
- * Cache a full parsed object in the streaming Worker so subsequent searches can
- * be served off the main thread. The data is cloned into the Worker once; the
- * queries after that only send the short query string.
+ * Fetch a window of a node's direct children from the Worker (off the main
+ * thread, so a huge array never transfers its full content to the UI thread).
  */
-function setSearchTree(tree: unknown): void {
-  const w = getStreamWorker()
-  w.postMessage({ id: ++requestId, mode: 'setSearchTree', tree })
-}
-
-/**
- * Search the cached full tree in the streaming Worker (off the main thread).
- */
-function searchTree(
-  query: string,
-  mode: 'key' | 'value' | 'path',
-  limit: number = MAX_SEARCH_RESULTS,
-  maxNodes: number = MAX_SEARCH_WORKER_NODES,
-): Promise<string[]> {
+export function fetchChildren(
+  path: string,
+  offset: number,
+  limit: number,
+  timeoutMs = 30000,
+): Promise<ChildrenResult> {
   return new Promise((resolve) => {
     const id = ++requestId
     const timer = setTimeout(() => {
-      const sp = searchPending.get(id)
-      if (sp) {
-        clearTimeout(sp.timer)
-        searchPending.delete(id)
-        sp.resolve([])
-      }
-    }, 30000)
-    searchPending.set(id, { resolve, timer })
+      childrenPending.delete(id)
+      resolve({ childCount: 0, entries: [] })
+    }, timeoutMs)
+    childrenPending.set(id, { resolve, timer })
     const w = getStreamWorker()
-    w.postMessage({ id, mode: 'searchTree', query, searchMode: mode, limit, maxNodes })
+    w.postMessage({ id, mode: 'children', path, offset, limit })
+  })
+}
+
+/**
+ * Fetch a single node's metadata by path (used to expand/scroll to a deep node
+ * without materializing its siblings).
+ */
+export function fetchNode(
+  path: string,
+  timeoutMs = 30000,
+): Promise<WorkerChildEntry | null> {
+  return new Promise((resolve) => {
+    const id = ++requestId
+    const timer = setTimeout(() => {
+      nodePending.delete(id)
+      resolve(null)
+    }, timeoutMs)
+    nodePending.set(id, { resolve, timer })
+    const w = getStreamWorker()
+    w.postMessage({ id, mode: 'node', path })
   })
 }
 
@@ -287,8 +338,8 @@ export const useWorkerParser = () => {
     parseInWorker,
     parseStream,
     searchIndex,
-    setSearchTree,
-    searchTree,
+    fetchChildren,
+    fetchNode,
     terminate,
     isParsing: readonly(isParsing),
     parseProgress: readonly(parseProgress),

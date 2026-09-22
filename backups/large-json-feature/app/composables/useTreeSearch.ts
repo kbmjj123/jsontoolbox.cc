@@ -1,5 +1,6 @@
 import type { Ref } from 'vue'
-import type { LazyNode } from '~/workers/jsonStream.worker'
+import type { LazyTreeApi } from '~/composables/useLazyTree'
+import { useWorkerParser } from '~/composables/useWorkerParser'
 
 export type SearchMode = 'key' | 'value' | 'path'
 
@@ -8,10 +9,6 @@ export type SearchMode = 'key' | 'value' | 'path'
 //  - MAX_SEARCH_NODES:   max nodes we visit per search pass (time budget)
 const MAX_SEARCH_RESULTS = 5000
 const MAX_SEARCH_NODES = 400_000
-// Above this, cloning the full parsed object into the Worker would itself block
-// the main thread, so the non-lazy search skips the Worker and uses the original
-// synchronous walk instead.
-const WORKER_TREE_MAX_BYTES = 20 * 1024 * 1024
 
 /**
  * Build the full path for a child key/index.
@@ -31,10 +28,8 @@ function childPath(parent: string, key: string | number): string {
  */
 function ancestorPaths(path: string): string[] {
   const result: string[] = []
-  // Normalize: "store.book[0].title" → ["store", "book", "0", "title"]
   const segments = path.replace(/\[(\d+)\]/g, '.$1').split('.')
   for (let i = 1; i < segments.length; i++) {
-    // Rebuild path up to segment i
     let p = segments[0]
     for (let j = 1; j < i; j++) {
       p = /^\d+$/.test(segments[j]) ? `${p}[${segments[j]}]` : `${p}.${segments[j]}`
@@ -98,7 +93,6 @@ function walkTree(
     return
   }
 
-  // Primitive
   if (mode === 'value' && String(data).toLowerCase().includes(query)) addMatch(currentPath, results, seen)
   if (mode === 'path' && currentPath.toLowerCase().includes(query)) addMatch(currentPath, results, seen)
 }
@@ -117,8 +111,7 @@ async function searchLazyIndexInWorker(
 
 export function useTreeSearch(
   data: Ref<unknown>,
-  lazyIndex?: Ref<Map<string, LazyNode> | null | undefined>,
-  sizeBytes?: Ref<number>,
+  lazy?: LazyTreeApi | null,
 ) {
   const query = ref('')
   // Debounce the actual search so we never fire a search on every keystroke.
@@ -137,12 +130,6 @@ export function useTreeSearch(
   const matches = ref<string[]>([])
 
   let searchToken = 0
-
-  // The full tree is cached in the Worker once per parse. We clear this flag
-  // whenever the data changes so the next search re-sends it (otherwise stale).
-  const treeCacheDirty = ref(true)
-  watch(data, () => { treeCacheDirty.value = true })
-
   async function runSearch() {
     const q = debouncedQuery.value.trim().toLowerCase()
     const token = ++searchToken
@@ -155,38 +142,15 @@ export function useTreeSearch(
     isSearching.value = true
     try {
       let results: string[]
-      const idx = lazyIndex?.value
-      if (idx && idx.size > 0) {
+      if (lazy?.isLazy) {
         // Large / lazy files: search runs in the Worker (off main thread).
         results = await searchLazyIndexInWorker(q, mode.value)
       } else if (data.value) {
-        // For very large full objects, cloning into the Worker would itself block
-        // the main thread, so skip the Worker and use the original synchronous walk.
-        if (sizeBytes?.value && sizeBytes.value > WORKER_TREE_MAX_BYTES) {
-          const seen = new Set<string>()
-          const budget: SearchBudget = { visited: 0, max: MAX_SEARCH_NODES, limit: MAX_SEARCH_RESULTS }
-          results = []
-          walkTree(data.value, '', q, mode.value, results, seen, budget)
-        } else {
-          // Rich mode with no lazy index: search off the main thread via the Worker.
-          // The full tree is cached there once; only the query string travels per
-          // keystroke, so the UI never blocks. Falls back to the original
-          // synchronous walk if the Worker is unavailable.
-          try {
-            if (treeCacheDirty.value) {
-              const { setSearchTree } = useWorkerParser()
-              setSearchTree(data.value)
-              treeCacheDirty.value = false
-            }
-            const { searchTree } = useWorkerParser()
-            results = await searchTree(q, mode.value, MAX_SEARCH_RESULTS, MAX_SEARCH_NODES)
-          } catch {
-            const seen = new Set<string>()
-            const budget: SearchBudget = { visited: 0, max: MAX_SEARCH_NODES, limit: MAX_SEARCH_RESULTS }
-            results = []
-            walkTree(data.value, '', q, mode.value, results, seen, budget)
-          }
-        }
+        // Small files: a quick synchronous walk is fine (no freeze).
+        const seen = new Set<string>()
+        const budget: SearchBudget = { visited: 0, max: MAX_SEARCH_NODES, limit: MAX_SEARCH_RESULTS }
+        results = []
+        walkTree(data.value, '', q, mode.value, results, seen, budget)
       } else {
         results = []
       }
@@ -196,21 +160,49 @@ export function useTreeSearch(
     }
   }
 
-  watch([debouncedQuery, mode, lazyIndex], runSearch)
+  watch([debouncedQuery, mode, () => lazy?.isLazy], runSearch)
 
   const matchSet = computed(() => new Set(matches.value))
   const totalCount = computed(() => matches.value.length)
   const currentMatchPath = computed(() => matches.value[currentIndex.value] ?? '')
 
-  // All ancestor paths that need to be expanded to reveal matches
+  // Expand ONLY the ancestors of the *current* match. Expanding every match at
+  // once would materialize thousands of subtrees and freeze the UI on a common
+  // query (e.g. searching "id" in a huge array). Navigation (next/prev) walks
+  // through matches one at a time, expanding each as it becomes current.
   const searchExpandedPaths = computed(() => {
-    const paths = new Set<string>()
-    for (const match of matches.value) {
-      for (const ancestor of ancestorPaths(match)) {
-        paths.add(ancestor)
-      }
+    const path = currentMatchPath.value
+    if (!path) return new Set<string>()
+    return new Set(ancestorPaths(path))
+  })
+
+  // For lazy trees, make sure the whole ancestor chain (and the match itself) is
+  // actually fetched — both each node's metadata AND its parent's child window —
+  // so the match is revealed + expanded when the current match changes.
+  function parentPathOf(path: string): string {
+    if (path.endsWith(']')) {
+      const i = path.lastIndexOf('[')
+      return i > 0 ? path.slice(0, i) : ''
     }
-    return paths
+    const i = path.lastIndexOf('.')
+    return i > 0 ? path.slice(0, i) : ''
+  }
+
+  watch(currentMatchPath, async (path) => {
+    if (!path || !lazy?.isLazy) return
+    const chain = [...ancestorPaths(path), path]
+    for (const node of chain) {
+      await lazy.ensureNode(node)
+      const parent = parentPathOf(node)
+      if (!parent) continue
+      const childCount = lazy.getNodeSummary(parent)?.childCount ?? 0
+      const m = /\[(\d+)\]$/.exec(node)
+      const idx = m ? Number(m[1]) : 0
+      const limit = 200
+      const offset = m ? Math.max(0, idx - Math.floor(limit / 2)) : 0
+      await lazy.ensureChildren(parent, offset, limit)
+      void childCount
+    }
   })
 
   // Auto-select first match when results change

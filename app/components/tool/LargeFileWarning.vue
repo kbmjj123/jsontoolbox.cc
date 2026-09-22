@@ -28,6 +28,13 @@
           {{ $t('largeFile.parse_partial') }}
         </button>
         <button
+          v-if="showExplorer"
+          @click="emit('open-explorer')"
+          class="w-full rounded-lg border border-primary-200 bg-primary-50 px-4 py-2.5 text-sm font-medium text-primary-700 hover:bg-primary-100 dark:border-primary-800 dark:bg-primary-900/20 dark:text-primary-300 dark:hover:bg-primary-900/30 transition-colors"
+        >
+          {{ $t('largeFile.open_explorer') }}
+        </button>
+        <button
           @click="emit('cancel')"
           class="w-full rounded-lg px-4 py-2 text-sm text-surface-500 hover:text-surface-700 dark:text-surface-400 dark:hover:text-surface-200 transition-colors"
         >
@@ -39,14 +46,19 @@
 </template>
 
 <script setup lang="ts">
-defineProps<{
+withDefaults(defineProps<{
   visible: boolean
   formattedSize: string
-}>()
+  /** Opt-in third action: hand the file off to the Large JSON / NDJSON Explorer. */
+  showExplorer?: boolean
+}>(), {
+  showExplorer: false,
+})
 
 const emit = defineEmits<{
   continue: []
   'parse-partial': []
+  'open-explorer': []
   cancel: []
 }>()
 </script>

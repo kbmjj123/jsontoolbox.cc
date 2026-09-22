@@ -87,6 +87,7 @@
           :masked="masked"
           :sensitive-paths="sensitivePathSet"
           :file-size-category="fileSizeCategory"
+          :size-bytes="fileSizeBytes"
           :lazy-index="lazyTree.state.value.index"
           :node-count="lazyTree.state.value.nodeCount"
           @update:view-mode="viewMode = $event"
@@ -113,6 +114,13 @@
         >
           <Icon name="lucide:hard-drive" class="w-3.5 h-3.5" />
           {{ $t('largeFile.mode_' + fileSizeCategory) }}
+          <button
+            type="button"
+            class="underline underline-offset-2 hover:text-primary-600 dark:hover:text-primary-400"
+            @click="openInLargeExplorer"
+          >
+            {{ $t('largeFile.explore') }}
+          </button>
         </div>
         <div class="flex items-center gap-2">
           <label class="text-xs font-bold text-surface-600 dark:text-surface-400">{{ tool.ui?.option_indent || 'Indent:' }}</label>
@@ -203,8 +211,10 @@
   <LargeFileWarning
     :visible="showLargeFileWarning"
     :formatted-size="formatBytes(fileSizeBytes)"
+    :show-explorer="true"
     @continue="handleLargeFileContinue"
     @parse-partial="handleLargeFilePartial"
+    @open-explorer="openInLargeExplorer"
     @cancel="handleLargeFileCancel"
   />
 
@@ -234,6 +244,7 @@
 <script setup lang="ts">
 import type { ParseError, FieldError } from '~/types/jsonErrors'
 import type { FileSizeCategory } from '~/composables/useFileSize'
+import { useLargeFileHandoff } from '~/composables/useLargeFile'
 
 const { tool, showViewToggle = true, defaultViewMode = 'rich' } = defineProps<{
   tool: any
@@ -602,6 +613,47 @@ const clearAll = () => {
 const showLargeFileWarning = ref(false)
 const pendingLargeText = ref('')
 const pendingPartialParse = ref(false)
+
+// Shared, in-memory handoff to the dedicated Large JSON / NDJSON Explorer page.
+// The content is already loaded here, so we carry it across instead of asking
+// the user to upload the same file a second time.
+const handoff = useLargeFileHandoff()
+const EXPLORER_ROUTE = '/tools/convert/large-json-csv'
+
+/**
+ * Tell NDJSON apart from plain JSON: in NDJSON every line is a complete JSON
+ * value, so the first two lines each parse on their own. A pretty-printed
+ * document fails that test because its first line is only an opening brace.
+ */
+function detectDocumentFormat(text: string): 'json' | 'ndjson' {
+  const firstBreak = text.indexOf('\n')
+  if (firstBreak === -1) return 'json'
+  const head = text.slice(firstBreak + 1, firstBreak + 4096)
+  const secondBreak = head.indexOf('\n')
+  const firstLine = text.slice(0, firstBreak).trim()
+  const secondLine = (secondBreak === -1 ? head : head.slice(0, secondBreak)).trim()
+  if (!firstLine || !secondLine) return 'json'
+  try {
+    JSON.parse(firstLine)
+    JSON.parse(secondLine)
+    return 'ndjson'
+  } catch {
+    return 'json'
+  }
+}
+
+function openInLargeExplorer() {
+  const text = pendingLargeText.value || inputJson.value
+  showLargeFileWarning.value = false
+  pendingLargeText.value = ''
+  if (!text.trim()) return
+  handoff.value = {
+    text,
+    format: detectDocumentFormat(text),
+    fileName: 'data.json',
+  }
+  void navigateTo(EXPLORER_ROUTE)
+}
 
 const onFileSize = (info: { bytes: number; category: FileSizeCategory }) => {
   detectSize(

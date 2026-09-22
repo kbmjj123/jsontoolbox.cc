@@ -46,7 +46,7 @@ export interface StreamError {
 
 type WorkerResponse = StreamProgress | StreamDone | StreamError
 
-export interface SearchRequest {
+export interface SearchIndexRequest {
   id: number
   mode: 'search'
   query: string
@@ -54,6 +54,23 @@ export interface SearchRequest {
   limit: number
   maxNodes: number
 }
+
+export interface SetSearchTreeRequest {
+  id: number
+  mode: 'setSearchTree'
+  tree: unknown
+}
+
+export interface SearchTreeRequest {
+  id: number
+  mode: 'searchTree'
+  query: string
+  searchMode: 'key' | 'value' | 'path'
+  limit: number
+  maxNodes: number
+}
+
+export type SearchRequest = SearchIndexRequest | SetSearchTreeRequest | SearchTreeRequest
 
 export interface SearchResult {
   id: number
@@ -66,6 +83,60 @@ export interface SearchResult {
 // The most recently built index is retained in the Worker so search requests can
 // be served off the main thread — without re-parsing or re-transferring the data.
 let retainedIndex: Record<string, LazyNode> | null = null
+
+// A full parsed object (small/medium files in rich mode) is cached here once so
+// search queries can be served off the main thread without re-cloning the data
+// on every keystroke.
+let retainedSearchTree: unknown = null
+
+/**
+ * Walk a plain JS value (the full parsed object) and collect matching paths.
+ * Mirrors the main-thread `walkTree` in useTreeSearch so the path format and
+ * match semantics stay identical. Runs entirely in the Worker.
+ */
+function searchTreeLogic(
+  value: unknown,
+  query: string,
+  mode: 'key' | 'value' | 'path',
+  limit: number,
+  maxNodes: number,
+): string[] {
+  const matchPaths: string[] = []
+  const seen = new Set<string>()
+  const pushMatch = (p: string) => {
+    if (!seen.has(p)) {
+      seen.add(p)
+      matchPaths.push(p)
+    }
+  }
+  if (value === null || value === undefined) {
+    if (mode === 'value' && 'null'.includes(query)) pushMatch('')
+    return matchPaths
+  }
+  const stack: { value: unknown; path: string }[] = [{ value, path: '' }]
+  let visited = 0
+  while (stack.length && visited < maxNodes && matchPaths.length < limit) {
+    const { value: v, path } = stack.pop() as { value: unknown; path: string }
+    visited++
+    if (Array.isArray(v)) {
+      if (mode === 'path' && path.toLowerCase().includes(query)) pushMatch(path)
+      for (let i = 0; i < v.length; i++) {
+        stack.push({ value: v[i], path: path ? `${path}[${i}]` : `${i}` })
+      }
+    } else if (v !== null && typeof v === 'object') {
+      if (mode === 'path' && path.toLowerCase().includes(query)) pushMatch(path)
+      for (const [k, val] of Object.entries(v as Record<string, unknown>)) {
+        const full = path ? `${path}.${k}` : k
+        if (mode === 'key' && k.toLowerCase().includes(query)) pushMatch(full)
+        stack.push({ value: val, path: full })
+      }
+    } else {
+      if (mode === 'value' && String(v).toLowerCase().includes(query)) pushMatch(path)
+      if (mode === 'path' && path.toLowerCase().includes(query)) pushMatch(path)
+    }
+  }
+  return matchPaths
+}
 
 /**
  * Search the retained index in the Worker. Iterative (stack-based) traversal,
@@ -128,6 +199,26 @@ self.onmessage = (e: MessageEvent<StreamRequest | SearchRequest>) => {
       data.maxNodes,
     )
     const result: SearchResult = { id: data.id, type: 'searchResult', matchPaths, truncated, scannedNodes }
+    self.postMessage(result)
+    return
+  }
+
+  // ── Cache a full parsed tree for off-main-thread search (small/medium files) ──
+  if (data.mode === 'setSearchTree') {
+    retainedSearchTree = data.tree
+    return
+  }
+
+  // ── Search the cached full tree in the Worker (mirrors the main-thread walk) ──
+  if (data.mode === 'searchTree') {
+    const matchPaths = searchTreeLogic(
+      retainedSearchTree,
+      data.query,
+      data.searchMode,
+      data.limit,
+      data.maxNodes,
+    )
+    const result: SearchResult = { id: data.id, type: 'searchResult', matchPaths, truncated: false, scannedNodes: 0 }
     self.postMessage(result)
     return
   }
