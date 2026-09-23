@@ -82,7 +82,15 @@
               </button>
             </div>
           </div>
-          <span class="w-full truncate font-mono text-[12px] text-surface-600 dark:text-surface-400">{{ row.hit.preview }}</span>
+          <span
+            v-if="row.segs"
+            class="w-full truncate font-mono text-[12px] text-surface-600 dark:text-surface-400"
+          ><span
+            v-for="(s, si) in row.segs"
+            :key="si"
+            :class="s.match ? 'rounded bg-amber-200 text-surface-900 dark:bg-amber-700/70 dark:text-surface-50' : ''"
+          >{{ s.text }}</span></span>
+          <span v-else class="w-full truncate font-mono text-[12px] text-surface-600 dark:text-surface-400">{{ row.hit.preview }}</span>
         </div>
       </div>
       <p v-if="!hits.length" class="px-3 py-6 text-center text-sm text-surface-400 dark:text-surface-500">
@@ -103,6 +111,9 @@ const props = defineProps<{
   truncated: boolean
   text: string
   lineOffsets: Uint32Array | null
+  query: string
+  isRegex: boolean
+  caseSensitive: boolean
   fileName: string
   format: FileFormat
 }>()
@@ -127,12 +138,54 @@ const visibleRows = computed(() => {
   const vh = listRef.value?.clientHeight ?? 300
   const start = Math.max(0, Math.floor(scrollTop.value / ROW_H) - 4)
   const end = Math.min(props.hits.length - 1, Math.ceil((scrollTop.value + vh) / ROW_H) + 4)
-  const out = []
+  const out: { index: number; hit: SearchTextHit; top: number; segs: { text: string; match: boolean }[] | null }[] = []
   for (let i = start; i <= end; i++) {
-    out.push({ index: i, hit: props.hits[i], top: i * ROW_H })
+    out.push({ index: i, hit: props.hits[i], top: i * ROW_H, segs: lineSegs(props.hits[i]) })
   }
   return out
 })
+
+/**
+ * Build the matched line's text split into highlighted segments. We derive the
+ * line from `text`/`lineOffsets`, then locate the exact match inside it using
+ * `hit.offset` (the absolute match start) so the highlight lands on the right
+ * substring even for regex queries.
+ */
+function lineSegs(hit: SearchTextHit): { text: string; match: boolean }[] | null {
+  const offs = props.lineOffsets
+  if (!offs || !props.query) return null
+  const ls = offs[hit.line - 1] ?? 0
+  const le = hit.line < offs.length ? offs[hit.line] : props.text.length
+  let line = props.text.slice(ls, le).replace(/\r?\n$/, '')
+  const local = hit.offset - ls
+  if (local < 0 || local > line.length) return null
+  let start = -1
+  let end = -1
+  if (props.isRegex) {
+    try {
+      const re = new RegExp(props.query, props.caseSensitive ? '' : 'i')
+      let m: RegExpExecArray | null
+      while ((m = re.exec(line))) {
+        if (m.index === local) { start = m.index; end = m.index + m[0].length; break }
+        if (m.index > local) break
+        if (m.index === re.lastIndex) re.lastIndex++
+      }
+    } catch {
+      /* leave unhighlighted if the pattern is somehow invalid here */
+    }
+  } else {
+    const q = props.caseSensitive ? props.query : props.query.toLowerCase()
+    const hay = props.caseSensitive ? line : line.toLowerCase()
+    const idx = hay.indexOf(q, local)
+    if (idx === local) { start = idx; end = idx + props.query.length }
+  }
+  if (start < 0) return null
+  return [
+    { text: line.slice(0, start), match: false },
+    { text: line.slice(start, end), match: true },
+    { text: line.slice(end), match: false },
+  ]
+}
 
 function onScroll() {
   if (listRef.value) scrollTop.value = listRef.value.scrollTop

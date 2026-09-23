@@ -34,7 +34,8 @@
     </div>
 
     <!-- ready / searching -->
-    <div v-else class="flex min-h-0 flex-1 flex-col">
+    <div v-else class="flex min-h-0 flex-1">
+      <div class="flex min-w-0 flex-1 flex-col">
       <!-- toolbar -->
       <div class="flex flex-wrap items-center gap-2">
         <div class="flex min-w-0 items-center gap-2 text-sm">
@@ -167,12 +168,14 @@
           :query="lf.searchQuery.value"
           :scope="lf.searchScope.value"
           :case-sensitive="lf.searchCaseSensitive.value"
+          :regex="searchRegex"
           :searching="lf.status.value === 'searching'"
           :hit-count="lf.searchHits.value.length"
           :current-index="lf.currentHit.value"
           @update:query="lf.searchQuery.value = $event"
           @update:scope="lf.searchScope.value = $event"
           @update:case-sensitive="lf.searchCaseSensitive.value = $event"
+          @update:regex="searchRegex = $event"
           @search="runSearch"
           @cancel="lf.cancelSearch()"
           @prev="lf.prevHit()"
@@ -185,6 +188,12 @@
             :style="{ width: progressPct + '%' }"
           />
         </div>
+        <p
+          v-if="lf.searchError.value"
+          class="mt-1 text-xs text-red-600 dark:text-red-400"
+        >
+          {{ lf.searchError.value.text }}
+        </p>
       </div>
 
       <!-- go-to-path bar -->
@@ -239,107 +248,71 @@
           >
             <button type="button" class="flex items-center gap-1 hover:text-surface-700 dark:hover:text-surface-200" @click="resultsOpen = !resultsOpen">
               <Icon :name="resultsOpen ? 'lucide:chevron-down' : 'lucide:chevron-up'" class="w-4 h-4" />
-              {{ previewHit ? t('largeViewer.preview') : t('largeViewer.results') }}
+              {{ t('largeViewer.results') }}
             </button>
             <span>{{ lf.searchHits.value.length ? `${lf.currentHit.value + 1}/${lf.searchHits.value.length}` : '' }}</span>
           </div>
-          <!-- inline node inspector (replaces the old modal) -->
-          <div v-if="resultsOpen && previewHit" class="flex h-[calc(100%-34px)] min-h-0 flex-col">
-            <div class="flex items-center gap-2 border-b border-surface-200 px-3 py-1.5 dark:border-surface-700">
-              <Icon name="lucide:file-json" class="h-4 w-4 shrink-0 text-primary-600 dark:text-primary-400" />
-              <code class="min-w-0 flex-1 truncate rounded bg-surface-100 px-2 py-0.5 font-mono text-xs text-surface-600 dark:bg-surface-800 dark:text-surface-300">{{ previewJsonPath }}</code>
-              <div class="flex shrink-0 items-center gap-1">
-                <button
-                  type="button"
-                  class="rounded-md border border-surface-200 px-2 py-1 text-xs hover:text-surface-700 disabled:opacity-40 dark:border-surface-700 dark:bg-surface-800 dark:text-surface-400"
-                  :disabled="!previewJsonPath || previewJsonPath === '$'"
-                  :title="t('largeViewer.copyJsonPath')"
-                  @click="copyJsonPath"
-                >
-                  {{ copiedPath === 'path' ? '✓' : t('largeViewer.copyJsonPath') }}
-                </button>
-                <button
-                  type="button"
-                  class="rounded-md border border-surface-200 px-2 py-1 text-xs hover:text-surface-700 disabled:opacity-40 dark:border-surface-700 dark:bg-surface-800 dark:text-surface-400"
-                  :disabled="!previewJsonPath || previewJsonPath === '$'"
-                  :title="t('largeViewer.copyParentPath')"
-                  @click="copyParentPath"
-                >
-                  {{ copiedPath === 'parent' ? '✓' : t('largeViewer.copyParentPath') }}
-                </button>
-                <button
-                  v-if="previewNodeType === 'array' && previewHit"
-                  type="button"
-                  class="flex items-center gap-1 rounded-md border border-primary-300 px-2 py-1 text-xs text-primary-700 hover:bg-primary-50 dark:border-primary-700 dark:bg-surface-800 dark:text-primary-300"
-                  :title="t('largeViewer.arrayBrowse')"
-                  @click="enterArray(previewJsonPath, previewHit.offset)"
-                >
-                  <Icon name="lucide:list" class="h-3.5 w-3.5" />
-                  {{ t('largeViewer.arrayBrowse') }}
-                </button>
-                <button
-                  type="button"
-                  class="rounded-md p-1 text-surface-500 hover:text-surface-700 dark:text-surface-400"
-                  :title="t('largeViewer.closeInspector')"
-                  @click="previewHit = null"
-                >
-                  <Icon name="lucide:x" class="h-4 w-4" />
-                </button>
+
+          <div v-if="resultsOpen" class="flex min-h-0 flex-1 flex-col">
+            <!-- tabs -->
+            <div class="flex shrink-0 items-center gap-1 border-b border-surface-200 px-2 dark:border-surface-700">
+              <button
+                type="button"
+                class="px-3 py-1.5 text-sm"
+                :class="previewTab === 'results' ? 'border-b-2 border-primary-500 font-medium text-primary-600 dark:text-primary-400' : 'text-surface-500 hover:text-surface-700 dark:text-surface-400 dark:hover:text-surface-200'"
+                @click="previewTab = 'results'"
+              >
+                {{ t('largeViewer.results') }}
+              </button>
+              <button
+                type="button"
+                class="px-3 py-1.5 text-sm disabled:opacity-40"
+                :class="previewTab === 'preview' ? 'border-b-2 border-primary-500 font-medium text-primary-600 dark:text-primary-400' : 'text-surface-500 hover:text-surface-700 dark:text-surface-400 dark:hover:text-surface-200'"
+                :disabled="!previewHit"
+                @click="previewTab = 'preview'"
+              >
+                {{ t('largeViewer.preview') }}
+              </button>
+            </div>
+
+            <!-- results list -->
+            <div v-show="previewTab === 'results'" class="min-h-0 flex-1">
+              <LargeFileResults
+                class="h-full"
+                :hits="lf.searchHits.value"
+                :current-index="lf.currentHit.value"
+                :truncated="lf.searchTruncated.value"
+                :text="lf.rawText.value"
+                :line-offsets="lineOffsets"
+                :query="lf.searchQuery.value"
+                :is-regex="searchRegex"
+                :case-sensitive="lf.searchCaseSensitive.value"
+                :file-name="lf.fileName.value"
+                :format="lf.format.value"
+                @select="onSelectHit"
+                @export-records="exportRecords"
+                @preview="openPreview"
+              />
+            </div>
+
+            <!-- node preview -->
+            <div v-if="previewTab === 'preview'" class="min-h-0 flex-1">
+              <NodeInspector
+                v-if="previewHit"
+                class="h-full"
+                :hit="previewHit"
+                :raw-text="lf.rawText.value"
+                :file-name="lf.fileName.value"
+                @browse-array="enterArray"
+                @close="previewTab = 'results'"
+              />
+              <div v-else class="flex h-full items-center justify-center px-4 text-center text-sm text-surface-400 dark:text-surface-500">
+                {{ t('largeViewer.selectToPreview') }}
               </div>
             </div>
-
-            <!-- node metadata -->
-            <div class="flex flex-wrap items-center gap-x-4 gap-y-1 border-b border-surface-200 px-3 py-1.5 text-xs dark:border-surface-700">
-              <span class="flex items-center gap-1.5 text-surface-500 dark:text-surface-400">
-                <span class="font-medium text-surface-600 dark:text-surface-300">{{ t('largeViewer.nodeType') }}</span>
-                <code class="rounded bg-surface-100 px-1.5 py-0.5 font-mono text-surface-600 dark:bg-surface-800 dark:text-surface-300">{{ previewNodeType }}</code>
-              </span>
-              <span class="flex items-center gap-1.5 text-surface-500 dark:text-surface-400">
-                <span class="font-medium text-surface-600 dark:text-surface-300">{{ t('largeViewer.nodeSize') }}</span>
-                <span class="font-mono text-surface-600 dark:text-surface-300">{{ formatBytes(previewNodeSize) }}</span>
-              </span>
-              <span class="flex items-center gap-1.5 text-surface-500 dark:text-surface-400">
-                <span class="font-medium text-surface-600 dark:text-surface-300">{{ t('largeViewer.childCount') }}</span>
-                <span class="font-mono text-surface-600 dark:text-surface-300">{{ previewChildCount === null ? '—' : previewChildCount }}</span>
-              </span>
-            </div>
-
-            <JsonOutputPanel
-              class="min-h-0 flex-1"
-              :label="t('largeViewer.preview')"
-              :content="previewPretty"
-              :parsed-data="previewParsed"
-              :view-mode="previewViewMode"
-              :show-view-toggle="previewParsed !== null"
-              :show-copy="true"
-              :show-download="true"
-              :download-filename="inspectorFilename"
-              highlight="json"
-              @update:view-mode="previewViewMode = $event"
-            />
-            <p
-              v-if="previewTruncated"
-              class="border-t border-surface-200 bg-amber-100 px-3 py-2 text-xs text-amber-700 dark:border-surface-700 dark:bg-amber-900/30 dark:text-amber-300"
-            >
-              {{ t('largeViewer.nodeTooLarge', { n: 200 }) }}
-            </p>
           </div>
-
-          <LargeFileResults
-            v-else-if="resultsOpen"
-            class="h-[calc(100%-34px)]"
-            :hits="lf.searchHits.value"
-            :current-index="lf.currentHit.value"
-            :truncated="lf.searchTruncated.value"
-            :text="lf.rawText.value"
-            :line-offsets="lineOffsets"
-            :file-name="lf.fileName.value"
-            :format="lf.format.value"
-            @select="onSelectHit"
-            @export-records="exportRecords"
-            @preview="openPreview"
-          />
         </div>
+      </div>
       </div>
     </div>
   </div>
@@ -350,11 +323,11 @@ import LargeFileDropzone from '~/components/tool/LargeFileDropzone.vue'
 import LargeFileTextViewer from '~/components/tool/LargeFileTextViewer.vue'
 import LargeFileSearchBar from '~/components/tool/LargeFileSearchBar.vue'
 import LargeFileResults from '~/components/tool/LargeFileResults.vue'
-import JsonOutputPanel from '~/components/tool/JsonOutputPanel.vue'
 import LargeFileStructure from '~/components/tool/LargeFileStructure.vue'
+import NodeInspector from '~/components/tool/NodeInspector.vue'
 import type { FileFormat } from '~/workers/recordStream.worker'
 import type { SearchTextHit } from '~/utils/textSearch'
-import { toJsonPath, extractNodeAt } from '~/utils/textSearch'
+import { toJsonPath, validateRegex } from '~/utils/textSearch'
 
 const { t } = useI18n()
 const { isFullscreen, toggle } = useFullscreen()
@@ -373,8 +346,10 @@ const focusLine = ref(0)
 const resultsOpen = ref(true)
 const resultsHeight = ref(300)
 const previewHit = ref<SearchTextHit | null>(null)
+const previewTab = ref<'results' | 'preview'>('results')
 const arrayIndex = ref(0)
 const pathInput = ref('')
+const searchRegex = ref(false)
 const pathMessage = ref<{ kind: 'error' | 'approx'; text: string } | null>(null)
 
 const lineOffsets = computed<Uint32Array | null>(() => lf.scan.value?.lineOffsets ?? null)
@@ -414,7 +389,19 @@ function onSelect(payload: { file: File; format: 'auto' | FileFormat }) {
 }
 
 function runSearch() {
-  lf.searchText(lf.searchQuery.value, lf.searchScope.value, lf.searchCaseSensitive.value)
+  const q = lf.searchQuery.value
+  if (searchRegex.value) {
+    const v = validateRegex(q, lf.searchCaseSensitive.value ? '' : 'i')
+    if (!v.ok) {
+      lf.searchError.value = {
+        kind: 'error',
+        text: v.error === 'regexTooComplex' ? t('largeViewer.regexTooComplex') : (v.error || t('largeViewer.regexInvalid')),
+      }
+      return
+    }
+  }
+  const job = lf.searchText(lf.searchQuery.value, lf.searchScope.value, lf.searchCaseSensitive.value, 5000, searchRegex.value)
+  if (job instanceof Promise) job.catch(() => {})
 }
 
 function onLineClick(line: number) {
@@ -468,13 +455,14 @@ function onPageInput(e: Event) {
 
 function openPreview(hit: SearchTextHit) {
   previewHit.value = hit
+  previewTab.value = 'preview'
 }
 
 /** Scroll to and preview a node located by an offset/line/path triple. */
 function openPathResult(r: { offset: number; line: number; path: string }) {
   focusLine.value = r.line
   previewHit.value = { index: 0, line: r.line, column: 1, offset: r.offset, path: r.path, preview: '' }
-  if (!resultsOpen.value) resultsOpen.value = true
+  previewTab.value = 'preview'
 }
 
 /** Clicking a search result row both jumps the viewport and opens the node
@@ -482,82 +470,10 @@ function openPathResult(r: { offset: number; line: number; path: string }) {
 function onSelectHit(index: number) {
   lf.gotoHit(index)
   const hit = lf.searchHits.value[index]
-  if (hit) previewHit.value = hit
+  if (hit) { previewHit.value = hit; previewTab.value = 'preview' }
 }
 
-// --- inline node inspector (replaces the old modal) ---
-const previewViewMode = ref<'text' | 'rich' | 'table'>('rich')
-const copiedPath = ref<'' | 'path' | 'parent'>('')
 
-const previewExtract = computed(() =>
-  previewHit.value ? extractNodeAt(lf.rawText.value, previewHit.value.offset) : null,
-)
-const previewRaw = computed(() => previewExtract.value?.raw ?? '')
-const previewTruncated = computed(() => previewExtract.value?.truncated ?? false)
-const previewJsonPath = computed(() => (previewHit.value ? toJsonPath(previewHit.value.path ?? '') : ''))
-const previewPretty = computed(() => {
-  const raw = previewRaw.value
-  if (!raw || raw.length > 200_000) return raw
-  try { return JSON.stringify(JSON.parse(raw), null, 2) } catch { return raw }
-})
-const previewParsed = computed(() => {
-  const raw = previewRaw.value
-  if (!raw || raw.length > 200_000) return null
-  try { return JSON.parse(raw) } catch { return null }
-})
-const inspectorFilename = computed(() => (lf.fileName.value || 'node') + '.node.json')
-
-const previewNodeSize = computed(() => previewExtract.value?.size ?? 0)
-const previewNodeType = computed<string>(() => {
-  const p = previewParsed.value
-  if (p !== null) {
-    if (Array.isArray(p)) return 'array'
-    if (typeof p === 'object') return 'object'
-    return typeof p
-  }
-  const raw = previewRaw.value.trimStart()
-  if (!raw) return '—'
-  const c = raw[0]
-  if (c === '{') return 'object'
-  if (c === '[') return 'array'
-  if (c === '"') return 'string'
-  if (c === 't' || c === 'f') return 'boolean'
-  if (c === 'n') return 'null'
-  if (c === '-' || (c >= '0' && c <= '9')) return 'number'
-  return '—'
-})
-const previewChildCount = computed<number | null>(() => {
-  const p = previewParsed.value
-  if (p === null) return null
-  if (Array.isArray(p)) return p.length
-  if (typeof p === 'object' && p !== null) return Object.keys(p).length
-  return 0
-})
-
-function parentOf(p: string): string {
-  if (!p || p === '$') return '$'
-  const m = p.match(/(.*)(?:\.([^.\[\]]+)|\[(\d+)\])$/)
-  if (!m) return '$'
-  return m[1] || '$'
-}
-
-function flashPath(which: 'path' | 'parent') {
-  copiedPath.value = which
-  setTimeout(() => { if (copiedPath.value === which) copiedPath.value = '' }, 1200)
-}
-async function copyJsonPath() {
-  if (!previewJsonPath.value || previewJsonPath.value === '$') return
-  try { await navigator.clipboard.writeText(previewJsonPath.value); flashPath('path') } catch {}
-}
-async function copyParentPath() {
-  if (!previewJsonPath.value || previewJsonPath.value === '$') return
-  try { await navigator.clipboard.writeText(parentOf(previewJsonPath.value)); flashPath('parent') } catch {}
-}
-
-watch(previewHit, () => {
-  copiedPath.value = ''
-  previewViewMode.value = previewParsed.value ? 'rich' : 'text'
-})
 
 /** Resolve a typed JSONPath and jump to it. */
 function onGoPath() {

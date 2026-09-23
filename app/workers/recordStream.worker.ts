@@ -155,6 +155,13 @@ export interface SearchTextRequest {
   searchMode: 'key' | 'value' | 'path' | 'all'
   caseSensitive: boolean
   limit: number
+  isRegex?: boolean
+  regexFlags?: string
+}
+export interface SearchTextErrorMsg {
+  id: number
+  type: 'searchTextError'
+  error: string
 }
 export interface SearchTextProgressMsg {
   id: number
@@ -349,11 +356,25 @@ self.onmessage = (e: MessageEvent<Request>) => {
   //    line/column so the viewer can jump straight to them.
   if (data.mode === 'searchText') {
     const offsets = allLineOffsets.length ? allLineOffsets : (allLineOffsets = buildLineOffsets(docText))
+    // Validate the regex up front so a bad/risky pattern never reaches the
+    // scanner (which would otherwise hang the worker on catastrophic backtracking).
+    if (data.isRegex) {
+      try {
+        // eslint-disable-next-line no-new
+        new RegExp(data.query, data.regexFlags ?? (data.caseSensitive ? '' : 'i'))
+      } catch (e) {
+        self.postMessage({
+          id: data.id, type: 'searchTextError',
+          error: (e as Error).message || 'invalid regex',
+        } as SearchTextErrorMsg)
+        return
+      }
+    }
     const r = searchStructured(
       docText,
       offsets,
       data.query,
-      { mode: data.searchMode, caseSensitive: data.caseSensitive, limit: data.limit },
+      { mode: data.searchMode, caseSensitive: data.caseSensitive, limit: data.limit, isRegex: data.isRegex, regexFlags: data.regexFlags },
       (p) => {
         self.postMessage({
           id: data.id, type: 'searchTextProgress',

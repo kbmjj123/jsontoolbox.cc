@@ -41,6 +41,19 @@
       Aa
     </button>
 
+    <!-- regex toggle -->
+    <button
+      type="button"
+      :title="t('largeViewer.regex')"
+      class="rounded-lg border px-2.5 py-2 text-sm font-semibold font-mono transition-colors"
+      :class="regex
+        ? 'border-primary-400 bg-primary-50 text-primary-700 dark:bg-primary-900/30 dark:text-primary-300 dark:border-primary-500'
+        : 'border-surface-200 text-surface-500 hover:text-surface-700 dark:border-surface-700 dark:bg-surface-800 dark:text-surface-400'"
+      @click="emit('update:regex', !regex)"
+    >
+      .*
+    </button>
+
     <!-- prev / next -->
     <div class="flex items-center rounded-lg border border-surface-200 dark:border-surface-700">
       <button
@@ -84,15 +97,26 @@
       {{ t('largeViewer.search') }}
     </button>
   </div>
+
+  <!-- regex validation feedback (live) -->
+  <p
+    v-if="regexError"
+    class="w-full text-xs text-red-600 dark:text-red-400"
+  >
+    {{ regexError }}
+  </p>
 </template>
 
 <script setup lang="ts">
+import { validateRegex } from '~/utils/textSearch'
+
 type Scope = 'key' | 'value' | 'path' | 'all'
 
-defineProps<{
+const props = defineProps<{
   query: string
   scope: Scope
   caseSensitive: boolean
+  regex: boolean
   searching: boolean
   hitCount: number
   currentIndex: number
@@ -102,6 +126,7 @@ const emit = defineEmits<{
   'update:query': [value: string]
   'update:scope': [value: Scope]
   'update:caseSensitive': [value: boolean]
+  'update:regex': [value: boolean]
   search: []
   cancel: []
   prev: []
@@ -109,4 +134,14 @@ const emit = defineEmits<{
 }>()
 
 const { t } = useI18n()
+
+/** Live regex syntax/complexity feedback shown as the user types. */
+const regexError = computed(() => {
+  if (!props.regex || !props.query) return ''
+  const v = validateRegex(props.query, props.caseSensitive ? '' : 'i')
+  if (v.ok) return ''
+  return v.error === 'regexTooComplex'
+    ? t('largeViewer.regexTooComplex')
+    : (v.error || t('largeViewer.regexInvalid'))
+})
 </script>

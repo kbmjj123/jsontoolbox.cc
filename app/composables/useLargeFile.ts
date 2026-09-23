@@ -1,10 +1,12 @@
 import { ref, computed } from 'vue'
+import { useI18n } from 'vue-i18n'
 import type {
   ScanResult,
   ScanFailReason,
   FieldsResult,
   CsvChunk,
   SearchTextResultMsg,
+  SearchTextErrorMsg,
   SearchTextProgressMsg,
   FileFormat,
   FieldStat,
@@ -186,6 +188,9 @@ export function useLargeFile() {
   let heldText: string | null = null
   let heldFormat: FileFormat = 'json'
   let heldName = ''
+  const { t } = useI18n()
+  /** Timer backing the regex search timeout guard (see searchText). */
+  let searchTimer: ReturnType<typeof setTimeout> | null = null
 
   const status = ref<LfStatus>('idle')
   const fileName = ref('')
@@ -207,6 +212,8 @@ export function useLargeFile() {
   const searchCaseSensitive = ref(false)
   const searchProgress = ref<{ scanned: number; total: number; matches: number }>({ scanned: 0, total: 0, matches: 0 })
   const searchTruncated = ref(false)
+  /** Regex syntax/complexity error, or a search timeout notice. Shown by the UI. */
+  const searchError = ref<{ kind: 'error'; text: string } | null>(null)
   const currentHit = ref(0)
   /** Start offset of each top-level array element (JSON root arrays only). */
   const topArray = ref<Uint32Array | null>(null)
@@ -269,12 +276,21 @@ export function useLargeFile() {
     } else if (data.type === 'searchTextResult') {
       const p = pending.get(data.id)
       pending.delete(data.id)
+      if (searchTimer) { clearTimeout(searchTimer); searchTimer = null }
+      searchError.value = null
       searchHits.value = (data as SearchTextResultMsg).hits
       searchTruncated.value = (data as SearchTextResultMsg).truncated
       searchProgress.value = { scanned: 0, total: 0, matches: searchHits.value.length }
       currentHit.value = searchHits.value.length ? 0 : -1
       status.value = 'ready'
       p?.resolve(data)
+    } else if (data.type === 'searchTextError') {
+      const p = pending.get(data.id)
+      pending.delete(data.id)
+      if (searchTimer) { clearTimeout(searchTimer); searchTimer = null }
+      searchError.value = { kind: 'error', text: (data as SearchTextErrorMsg).error }
+      status.value = 'ready'
+      p?.reject(new Error((data as SearchTextErrorMsg).error))
     }
   }
 
@@ -436,10 +452,12 @@ export function useLargeFile() {
     scope: 'key' | 'value' | 'path' | 'all' = 'all',
     caseSensitive = false,
     limit = 5000,
+    isRegex = false,
   ) {
     if (!query.trim()) {
       searchHits.value = []
       searchProgress.value = { scanned: 0, total: 0, matches: 0 }
+      searchError.value = null
       return
     }
     status.value = 'searching'
@@ -447,6 +465,19 @@ export function useLargeFile() {
     searchScope.value = scope
     searchCaseSensitive.value = caseSensitive
     searchProgress.value = { scanned: 0, total: 0, matches: 0 }
+    searchError.value = null
+    // Regex search runs unsandboxed in the worker, so a pathological pattern could
+    // backtrack for a very long time. Bound it with a hard timeout: if the worker
+    // hasn't reported back, terminate it and tell the user the search stopped.
+    if (searchTimer) { clearTimeout(searchTimer); searchTimer = null }
+    if (isRegex) {
+      searchTimer = setTimeout(() => {
+        searchTimer = null
+        cancelSearch()
+        // cancelSearch() clears searchError, so set the timeout notice afterwards.
+        searchError.value = { kind: 'error', text: t('largeViewer.regexTimeout') }
+      }, 8000)
+    }
     const id = ++reqId
     return new Promise<SearchTextResultMsg>((resolve, reject) => {
       pending.set(id, { resolve: resolve as any, reject, kind: 'searchText' })
@@ -456,6 +487,8 @@ export function useLargeFile() {
         searchMode: scope,
         caseSensitive,
         limit,
+        isRegex,
+        regexFlags: caseSensitive ? '' : 'i',
       })
     })
   }
@@ -463,6 +496,8 @@ export function useLargeFile() {
   /** Stop an in-flight search. The worker is terminated and re-scanned so the
    *  page keeps working afterwards. */
   function cancelSearch() {
+    if (searchTimer) { clearTimeout(searchTimer); searchTimer = null }
+    searchError.value = null
     cancel()
     reload()
   }
@@ -666,6 +701,7 @@ export function useLargeFile() {
     searchCaseSensitive,
     searchProgress,
     searchTruncated,
+    searchError,
     currentHit,
     arrayKind,
     arrayCount,

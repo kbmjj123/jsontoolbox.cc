@@ -21,6 +21,10 @@ export interface SearchTextOptions {
   mode: 'key' | 'value' | 'path' | 'all'
   caseSensitive?: boolean
   limit?: number
+  /** When true, `query` is treated as a regular expression (compiled with the
+   *  given `regexFlags`, defaulting to `i` unless `caseSensitive`). */
+  isRegex?: boolean
+  regexFlags?: string
 }
 
 export interface SearchTextProgress {
@@ -98,6 +102,73 @@ export function searchTextScan(
   return { hits, truncated: hits.length >= limit }
 }
 
+export interface RegexValidation {
+  ok: boolean
+  /** For `ok: false`: either the raw JS RegExp error message (syntax), or the
+   *  key `regexTooComplex` when the pattern looks like it could backtrack
+   *  catastrophically. */
+  error?: string
+}
+
+/**
+ * Heuristic guard against patterns that can trigger catastrophic backtracking
+ * (e.g. `(a+)+`, `(a*)*`, `(a|a)+`, `(\w+)*`). Returns `regexTooComplex` when a
+ * group is quantified AND its body itself contains a quantifier or an
+ * alternation — the classic runaway-backtracking shape. It is intentionally
+ * conservative: a risky-looking pattern is refused rather than allowed to hang
+ * the worker. The main-thread timeout in the viewer is the second line of
+ * defence for anything this misses.
+ */
+export function regexComplexityRisk(pattern: string): string | null {
+  const stack: { hasQuant: boolean; hasAlt: boolean }[] = []
+  for (let i = 0; i < pattern.length; i++) {
+    const ch = pattern[i]
+    if (ch === '\\') { i++; continue }
+    if (ch === '[') {
+      i++
+      if (pattern[i] === '^') i++
+      if (pattern[i] === ']') i++
+      while (i < pattern.length && pattern[i] !== ']') {
+        if (pattern[i] === '\\') i++
+        i++
+      }
+      continue
+    }
+    if (ch === '(') { stack.push({ hasQuant: false, hasAlt: false }); continue }
+    if (ch === ')') {
+      const g = stack.pop()
+      const nxt = pattern[i + 1]
+      if (g && (nxt === '*' || nxt === '+' || nxt === '{')) {
+        if (g.hasQuant || g.hasAlt) return 'regexTooComplex'
+      }
+      continue
+    }
+    if (ch === '|') { if (stack.length) stack[stack.length - 1].hasAlt = true; continue }
+    if ((ch === '*' || ch === '+') && stack.length) { stack[stack.length - 1].hasQuant = true; continue }
+    if (ch === '{' && stack.length) {
+      const m = /^\{\d+(,\d*)?\}/.exec(pattern.slice(i))
+      if (m) { stack[stack.length - 1].hasQuant = true; i += m[0].length - 1 }
+      continue
+    }
+  }
+  return null
+}
+
+/** Validate a regex pattern (syntax + complexity). Safe to call on every
+ *  keystroke; returns the reason when the pattern must not be run. */
+export function validateRegex(pattern: string, flags: string): RegexValidation {
+  if (!pattern) return { ok: true }
+  try {
+    // eslint-disable-next-line no-new
+    new RegExp(pattern, flags)
+  } catch (e) {
+    return { ok: false, error: (e as Error).message || 'invalid regex' }
+  }
+  const risk = regexComplexityRisk(pattern)
+  if (risk) return { ok: false, error: risk }
+  return { ok: true }
+}
+
 /**
  * Structured full-document search that honours the key/value/path scope.
  *
@@ -121,6 +192,10 @@ export function searchStructured(
 
   const needle = opts.caseSensitive ? query : query.toLowerCase()
   const mode = opts.mode
+  // Compile the regex once (caller has already validated syntax + complexity).
+  const regex = opts.isRegex
+    ? new RegExp(query, opts.regexFlags ?? (opts.caseSensitive ? '' : 'i'))
+    : null
   const n = text.length
   let i = 0
   const prefixStack: string[] = ['']
@@ -145,9 +220,16 @@ export function searchStructured(
   function test(tokenText: string, tokenStart: number, path: string, kind: 'key' | 'value' | 'path') {
     if (hits.length >= limit) { truncated = true; return }
     const hay = kind === 'path' ? path : tokenText
-    const hayLc = opts.caseSensitive ? hay : hay.toLowerCase()
-    const inner = hayLc.indexOf(needle)
-    if (inner === -1) return
+    let inner: number
+    if (regex) {
+      const m = regex.exec(hay)
+      if (!m) return
+      inner = m.index
+    } else {
+      const hayLc = opts.caseSensitive ? hay : hay.toLowerCase()
+      inner = hayLc.indexOf(needle)
+      if (inner === -1) return
+    }
     const offset = kind === 'path' ? tokenStart : tokenStart + inner
     const lc = offsetToLineCol(lineOffsets, offset)
     const display = kind === 'value' ? tokenText.slice(0, 120)
