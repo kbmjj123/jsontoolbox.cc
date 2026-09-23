@@ -495,6 +495,8 @@
     "copyJsonPath": "Copy JSONPath",
     "copyParentPath": "Copy parent path",
     "copyNode": "Copy node",
+    "copyValue": "Copy value",
+    "arrayIndex": "Index",
     "closeInspector": "Close inspector",
     "pathPlaceholder": "JSONPath, e.g. $.users[0].email",
     "pathGo": "Go",
@@ -506,6 +508,7 @@
     "pathApprox": "Jumped to the closest container; deep sub-path navigation is approximate.",
     "preview": "Preview node",
     "selectToPreview": "Select a match to preview its node",
+    "matchedPath": "Matched",
     "nodeTooLarge": "Node is large; preview truncated to the first {n} KB.",
     "nodeType": "Type",
     "nodeSize": "Size",
@@ -542,6 +545,18 @@
     "invalidReasonEof": "The JSON is incomplete — the file ends before the value is closed.",
     "invalidReasonToken": "Illegal character found — the file is not valid JSON.",
     "invalidReasonEmpty": "The file is empty.",
-    "invalidReasonScanner": "This file is valid JSON, but the structure scanner could not read it. CSV export needs that scan — try the JSON Editor for smaller files, or report this document so the scanner can be fixed."
+    "invalidReasonScanner": "This file is valid JSON, but the structure scanner could not read it. CSV export needs that scan — try the JSON Editor for smaller files, or report this document so the scanner can be fixed.",
+    "table": {
+      "viewAsTable": "As table",
+      "columns": "Columns",
+      "filterPlaceholder": "Filter rows…",
+      "copyRow": "Copy row",
+      "copyRowPath": "Copy row path",
+      "copyCellPath": "Copy cell path",
+      "exportCsv": "Export CSV",
+      "matching": "matching",
+      "emptyHint": "No array data to display",
+      "noMatch": "No matching rows"
+    }
   }
 }

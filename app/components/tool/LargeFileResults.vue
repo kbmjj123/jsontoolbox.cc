@@ -102,7 +102,7 @@
 
 <script setup lang="ts">
 import type { SearchTextHit } from '~/utils/textSearch'
-import { toJsonPath } from '~/utils/textSearch'
+import { lineMatchSegments, toJsonPath } from '~/utils/textSearch'
 import type { FileFormat } from '~/workers/recordStream.worker'
 
 const props = defineProps<{
@@ -145,46 +145,15 @@ const visibleRows = computed(() => {
   return out
 })
 
-/**
- * Build the matched line's text split into highlighted segments. We derive the
- * line from `text`/`lineOffsets`, then locate the exact match inside it using
- * `hit.offset` (the absolute match start) so the highlight lands on the right
- * substring even for regex queries.
- */
+/** Split the matched line into highlighted segments — shared with the context
+ *  panel so both highlight the exact same substring. */
 function lineSegs(hit: SearchTextHit): { text: string; match: boolean }[] | null {
   const offs = props.lineOffsets
   if (!offs || !props.query) return null
   const ls = offs[hit.line - 1] ?? 0
   const le = hit.line < offs.length ? offs[hit.line] : props.text.length
-  let line = props.text.slice(ls, le).replace(/\r?\n$/, '')
-  const local = hit.offset - ls
-  if (local < 0 || local > line.length) return null
-  let start = -1
-  let end = -1
-  if (props.isRegex) {
-    try {
-      const re = new RegExp(props.query, props.caseSensitive ? '' : 'i')
-      let m: RegExpExecArray | null
-      while ((m = re.exec(line))) {
-        if (m.index === local) { start = m.index; end = m.index + m[0].length; break }
-        if (m.index > local) break
-        if (m.index === re.lastIndex) re.lastIndex++
-      }
-    } catch {
-      /* leave unhighlighted if the pattern is somehow invalid here */
-    }
-  } else {
-    const q = props.caseSensitive ? props.query : props.query.toLowerCase()
-    const hay = props.caseSensitive ? line : line.toLowerCase()
-    const idx = hay.indexOf(q, local)
-    if (idx === local) { start = idx; end = idx + props.query.length }
-  }
-  if (start < 0) return null
-  return [
-    { text: line.slice(0, start), match: false },
-    { text: line.slice(start, end), match: true },
-    { text: line.slice(end), match: false },
-  ]
+  const line = props.text.slice(ls, le).replace(/\r?\n$/, '')
+  return lineMatchSegments(line, hit.offset - ls, props.query, props.isRegex, props.caseSensitive)
 }
 
 function onScroll() {

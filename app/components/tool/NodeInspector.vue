@@ -1,8 +1,28 @@
 <template>
   <div class="flex h-full min-h-0 flex-col">
-    <div class="flex items-center gap-2 border-b border-surface-200 px-3 py-1.5 dark:border-surface-700">
+    <!-- path + node metadata + actions on one row (wraps when the panel is narrow) -->
+    <div class="flex flex-wrap items-center gap-x-2 gap-y-1 border-b border-surface-200 px-3 py-1.5 dark:border-surface-700">
       <Icon name="lucide:file-json" class="h-4 w-4 shrink-0 text-primary-600 dark:text-primary-400" />
       <code class="min-w-0 flex-1 truncate rounded bg-surface-100 px-2 py-0.5 font-mono text-xs text-surface-600 dark:bg-surface-800 dark:text-surface-300">{{ previewJsonPath }}</code>
+
+      <span class="lf-chip shrink-0">
+        <span class="opacity-60">{{ t('largeViewer.nodeType') }}</span>
+        <span class="font-mono">{{ previewNodeType }}</span>
+      </span>
+      <span class="lf-chip shrink-0">
+        <span class="opacity-60">{{ t('largeViewer.nodeSize') }}</span>
+        <span class="font-mono">{{ formatBytes(previewNodeSize) }}</span>
+      </span>
+      <span class="lf-chip shrink-0">
+        <span class="opacity-60">{{ t('largeViewer.childCount') }}</span>
+        <span class="font-mono">{{ previewChildCount === null ? '—' : previewChildCount }}</span>
+      </span>
+      <!-- only when a leaf match was promoted to its container -->
+      <span v-if="previewPromoted" class="lf-chip shrink-0">
+        <span class="opacity-60">{{ t('largeViewer.matchedPath') }}</span>
+        <span class="font-mono">{{ matchedJsonPath }}</span>
+      </span>
+
       <div ref="pathMenuRef" class="relative flex shrink-0 items-center gap-1">
         <!-- single copy action; the two path variants live in its menu -->
         <button
@@ -48,22 +68,6 @@
       </div>
     </div>
 
-    <!-- node metadata -->
-    <div class="flex flex-wrap items-center gap-1.5 border-b border-surface-200 px-3 py-1.5 dark:border-surface-700">
-      <span class="lf-chip">
-        <span class="opacity-60">{{ t('largeViewer.nodeType') }}</span>
-        <span class="font-mono">{{ previewNodeType }}</span>
-      </span>
-      <span class="lf-chip">
-        <span class="opacity-60">{{ t('largeViewer.nodeSize') }}</span>
-        <span class="font-mono">{{ formatBytes(previewNodeSize) }}</span>
-      </span>
-      <span class="lf-chip">
-        <span class="opacity-60">{{ t('largeViewer.childCount') }}</span>
-        <span class="font-mono">{{ previewChildCount === null ? '—' : previewChildCount }}</span>
-      </span>
-    </div>
-
     <JsonOutputPanel
       class="min-h-0 flex-1"
       :label="''"
@@ -89,7 +93,7 @@
 
 <script setup lang="ts">
 import { ref, computed, watch } from 'vue'
-import { extractNodeAt, toJsonPath, type SearchTextHit } from '~/utils/textSearch'
+import { enclosingContainerStart, extractNodeAt, toJsonPath, type SearchTextHit } from '~/utils/textSearch'
 
 const props = defineProps<{
   hit: SearchTextHit
@@ -118,10 +122,38 @@ onMounted(() => {
   onUnmounted(() => document.removeEventListener('click', handler))
 })
 
-const previewExtract = computed(() => extractNodeAt(props.rawText, props.hit.offset))
+// `hit.offset` points at the matched character (inside a string/primitive) and
+// is not a valid node start — `nodeOffset` is the enclosing node's start.
+const nodeOffset = computed(() => props.hit.nodeOffset ?? props.hit.offset)
+
+/**
+ * A leaf match (`"account-000097"`, `42`, …) is already visible on the match
+ * line, so previewing it alone adds nothing — promote to the object/array that
+ * contains it, which is the "node" worth inspecting.
+ */
+const previewOffset = computed(() => {
+  const base = nodeOffset.value
+  const t = props.rawText
+  let i = base
+  while (i < t.length && (t[i] === ' ' || t[i] === '\t' || t[i] === '\n' || t[i] === '\r')) i++
+  if (t[i] === '{' || t[i] === '[') return base
+  const parent = enclosingContainerStart(t, base)
+  // Promoting into a container larger than the extraction cap would render a
+  // truncated fragment — in that case the leaf itself is the better preview.
+  if (parent >= 0 && !extractNodeAt(t, parent).truncated) return parent
+  return base
+})
+
+/** True when the panel shows the container instead of the matched leaf. */
+const previewPromoted = computed(() => previewOffset.value !== nodeOffset.value)
+
+const previewExtract = computed(() => extractNodeAt(props.rawText, previewOffset.value))
 const previewRaw = computed(() => previewExtract.value?.raw ?? '')
 const previewTruncated = computed(() => previewExtract.value?.truncated ?? false)
-const previewJsonPath = computed(() => toJsonPath(props.hit.path ?? ''))
+const matchedJsonPath = computed(() => toJsonPath(props.hit.path ?? ''))
+const previewJsonPath = computed(() =>
+  previewPromoted.value ? parentOf(matchedJsonPath.value) : matchedJsonPath.value,
+)
 const previewPretty = computed(() => {
   const raw = previewRaw.value
   if (!raw || raw.length > 200_000) return raw
@@ -192,6 +224,8 @@ async function copyParentPath() {
 watch(() => props.hit, () => {
   copiedPath.value = ''
   showPathMenu.value = false
+  // Nodes that are too large to parse have no rich view — fall back to text so
+  // the panel never opens on an empty "no data" state.
   previewViewMode.value = previewParsed.value ? 'rich' : 'text'
-})
+}, { immediate: true })
 </script>

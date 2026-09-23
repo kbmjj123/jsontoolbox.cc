@@ -1,6 +1,11 @@
 import type { Ref } from 'vue'
 
-export type SearchMode = 'key' | 'value' | 'path'
+export type SearchMode = 'key' | 'value' | 'path' | 'all'
+
+export interface MatchDetail {
+  snippet: string
+  kind: SearchMode
+}
 
 // Guardrails for the plain main-thread walk used by the regular tools:
 //  - MAX_SEARCH_RESULTS: max matches we keep (navigation aid, not exhaustive)
@@ -67,38 +72,57 @@ function walkTree(
   results: string[],
   seen: Set<string>,
   budget: SearchBudget,
+  details: Map<string, MatchDetail>,
 ): void {
   if (budget.visited >= budget.max || results.length >= budget.limit) return
   budget.visited++
 
   if (data === null || data === undefined) {
-    if (mode === 'value' && 'null'.includes(query)) addMatch(currentPath, results, seen)
+    if ((mode === 'value' || mode === 'all') && 'null'.includes(query)) {
+      addMatch(currentPath, results, seen)
+      details.set(currentPath, { snippet: 'null', kind: 'value' })
+    }
     return
   }
 
   if (Array.isArray(data)) {
-    if (mode === 'path' && currentPath.toLowerCase().includes(query)) addMatch(currentPath, results, seen)
+    if ((mode === 'path' || mode === 'all') && currentPath.toLowerCase().includes(query)) {
+      addMatch(currentPath, results, seen)
+      if (!details.has(currentPath)) details.set(currentPath, { snippet: currentPath, kind: 'path' })
+    }
     for (let i = 0; i < data.length; i++) {
       if (budget.visited >= budget.max || results.length >= budget.limit) return
-      walkTree(data[i], childPath(currentPath, i), query, mode, results, seen, budget)
+      walkTree(data[i], childPath(currentPath, i), query, mode, results, seen, budget, details)
     }
     return
   }
 
   if (typeof data === 'object') {
-    if (mode === 'path' && currentPath.toLowerCase().includes(query)) addMatch(currentPath, results, seen)
+    if ((mode === 'path' || mode === 'all') && currentPath.toLowerCase().includes(query)) {
+      addMatch(currentPath, results, seen)
+      if (!details.has(currentPath)) details.set(currentPath, { snippet: currentPath, kind: 'path' })
+    }
     for (const [key, value] of Object.entries(data as Record<string, unknown>)) {
       if (budget.visited >= budget.max || results.length >= budget.limit) return
       const fullPath = childPath(currentPath, key)
-      if (mode === 'key' && key.toLowerCase().includes(query)) addMatch(fullPath, results, seen)
-      walkTree(value, fullPath, query, mode, results, seen, budget)
+      if ((mode === 'key' || mode === 'all') && key.toLowerCase().includes(query)) {
+        addMatch(fullPath, results, seen)
+        details.set(fullPath, { snippet: key, kind: 'key' })
+      }
+      walkTree(value, fullPath, query, mode, results, seen, budget, details)
     }
     return
   }
 
   // Primitive
-  if (mode === 'value' && String(data).toLowerCase().includes(query)) addMatch(currentPath, results, seen)
-  if (mode === 'path' && currentPath.toLowerCase().includes(query)) addMatch(currentPath, results, seen)
+  if ((mode === 'value' || mode === 'all') && String(data).toLowerCase().includes(query)) {
+    addMatch(currentPath, results, seen)
+    details.set(currentPath, { snippet: String(data), kind: 'value' })
+  }
+  if ((mode === 'path' || mode === 'all') && currentPath.toLowerCase().includes(query)) {
+    addMatch(currentPath, results, seen)
+    if (!details.has(currentPath)) details.set(currentPath, { snippet: currentPath, kind: 'path' })
+  }
 }
 
 export function useTreeSearch(data: Ref<unknown>) {
@@ -118,6 +142,7 @@ export function useTreeSearch(data: Ref<unknown>) {
   // ever hold documents below LARGE_FILE_MAX_BYTES, so this stays well inside
   // the node budget and never needs a Worker.
   const matches = ref<string[]>([])
+  const matchDetails = ref<Map<string, MatchDetail>>(new Map())
 
   let searchToken = 0
 
@@ -126,6 +151,7 @@ export function useTreeSearch(data: Ref<unknown>) {
     const token = ++searchToken
     if (!q) {
       matches.value = []
+      matchDetails.value = new Map()
       isSearching.value = false
       return
     }
@@ -133,12 +159,16 @@ export function useTreeSearch(data: Ref<unknown>) {
     isSearching.value = true
     try {
       const results: string[] = []
+      const details: Map<string, MatchDetail> = new Map()
       if (data.value) {
         const seen = new Set<string>()
         const budget: SearchBudget = { visited: 0, max: MAX_SEARCH_NODES, limit: MAX_SEARCH_RESULTS }
-        walkTree(data.value, '', q, mode.value, results, seen, budget)
+        walkTree(data.value, '', q, mode.value, results, seen, budget, details)
       }
-      if (token === searchToken) matches.value = results
+      if (token === searchToken) {
+        matches.value = results
+        matchDetails.value = details
+      }
     } finally {
       if (token === searchToken) isSearching.value = false
     }
@@ -203,6 +233,7 @@ export function useTreeSearch(data: Ref<unknown>) {
     query,
     mode,
     matches,
+    matchDetails,
     currentIndex,
     totalCount,
     currentMatchPath,

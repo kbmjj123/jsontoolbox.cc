@@ -1,7 +1,7 @@
 <template>
-  <div :class="rootClass">
+  <div ref="rootEl" :class="rootClass">
     <!-- IDLE: upload -->
-    <div v-if="showDropzone" class="flex flex-1 items-center justify-center p-2">
+    <div v-if="showDropzone" class="flex items-center justify-center py-6">
       <LargeFileDropzone @select="onSelect" />
     </div>
 
@@ -245,7 +245,7 @@
         <!-- results panel -->
         <div
           class="flex shrink-0 flex-col overflow-hidden border-t border-surface-200 dark:border-surface-700"
-          :style="{ height: resultsOpen ? resultsHeight + 'px' : '36px' }"
+          :style="{ height: resultsOpen && hasPanelContent ? resultsHeight + 'px' : '36px' }"
         >
           <!-- merged header: drag grip + tabs + hit counter + collapse -->
           <div class="flex h-9 shrink-0 items-center gap-2 border-b border-surface-200 px-2 dark:border-surface-700">
@@ -261,21 +261,31 @@
               <button
                 type="button"
                 class="relative flex h-full items-center px-2.5 text-xs font-medium transition-colors"
-                :class="previewTab === 'results' ? 'text-primary-600 dark:text-primary-400' : 'text-surface-500 hover:text-surface-700 dark:text-surface-400 dark:hover:text-surface-200'"
-                @click="previewTab = 'results'"
+                :class="panelTab === 'results' ? 'text-primary-600 dark:text-primary-400' : 'text-surface-500 hover:text-surface-700 dark:text-surface-400 dark:hover:text-surface-200'"
+                @click="panelTab = 'results'"
               >
                 {{ t('largeViewer.results') }}
-                <span v-if="previewTab === 'results'" class="absolute inset-x-1.5 -bottom-px h-0.5 rounded-full bg-primary-500" />
+                <span v-if="panelTab === 'results'" class="absolute inset-x-1.5 -bottom-px h-0.5 rounded-full bg-primary-500" />
               </button>
               <button
                 type="button"
                 class="relative flex h-full items-center px-2.5 text-xs font-medium transition-colors disabled:opacity-40"
-                :class="previewTab === 'preview' ? 'text-primary-600 dark:text-primary-400' : 'text-surface-500 hover:text-surface-700 dark:text-surface-400 dark:hover:text-surface-200'"
+                :class="panelTab === 'preview' ? 'text-primary-600 dark:text-primary-400' : 'text-surface-500 hover:text-surface-700 dark:text-surface-400 dark:hover:text-surface-200'"
                 :disabled="!previewHit"
-                @click="previewTab = 'preview'"
+                @click="panelTab = 'preview'"
               >
                 {{ t('largeViewer.preview') }}
-                <span v-if="previewTab === 'preview'" class="absolute inset-x-1.5 -bottom-px h-0.5 rounded-full bg-primary-500" />
+                <span v-if="panelTab === 'preview'" class="absolute inset-x-1.5 -bottom-px h-0.5 rounded-full bg-primary-500" />
+              </button>
+              <button
+                type="button"
+                class="relative flex h-full items-center px-2.5 text-xs font-medium transition-colors disabled:opacity-40"
+                :class="panelTab === 'context' ? 'text-primary-600 dark:text-primary-400' : 'text-surface-500 hover:text-surface-700 dark:text-surface-400 dark:hover:text-surface-200'"
+                :disabled="!activeMatch"
+                @click="panelTab = 'context'"
+              >
+                {{ t('largeViewer.context') }}
+                <span v-if="panelTab === 'context'" class="absolute inset-x-1.5 -bottom-px h-0.5 rounded-full bg-primary-500" />
               </button>
             </div>
 
@@ -292,9 +302,9 @@
             </button>
           </div>
 
-          <div v-if="resultsOpen" class="flex min-h-0 flex-1 flex-col">
+          <div v-if="resultsOpen && hasPanelContent" class="flex min-h-0 flex-1 flex-col">
             <!-- results list -->
-            <div v-show="previewTab === 'results'" class="min-h-0 flex-1">
+            <div v-show="panelTab === 'results'" class="min-h-0 flex-1">
               <LargeFileResults
                 class="h-full"
                 :hits="lf.searchHits.value"
@@ -314,7 +324,7 @@
             </div>
 
             <!-- node preview -->
-            <div v-if="previewTab === 'preview'" class="min-h-0 flex-1">
+            <div v-if="panelTab === 'preview'" class="min-h-0 flex-1">
               <NodeInspector
                 v-if="previewHit"
                 class="h-full"
@@ -326,6 +336,19 @@
               <div v-else class="flex h-full items-center justify-center px-4 text-center text-sm text-surface-400 dark:text-surface-500">
                 {{ t('largeViewer.selectToPreview') }}
               </div>
+            </div>
+
+            <!-- context lines around the current match -->
+            <div v-if="panelTab === 'context'" class="min-h-0 flex-1">
+              <LargeFileContext
+                class="h-full"
+                :hit="activeMatch"
+                :text="lf.rawText.value"
+                :line-offsets="lineOffsets"
+                :query="lf.searchQuery.value"
+                :is-regex="searchRegex"
+                :case-sensitive="lf.searchCaseSensitive.value"
+              />
             </div>
           </div>
         </div>
@@ -340,6 +363,7 @@ import LargeFileDropzone from '~/components/tool/LargeFileDropzone.vue'
 import LargeFileTextViewer from '~/components/tool/LargeFileTextViewer.vue'
 import LargeFileSearchBar from '~/components/tool/LargeFileSearchBar.vue'
 import LargeFileResults from '~/components/tool/LargeFileResults.vue'
+import LargeFileContext from '~/components/tool/LargeFileContext.vue'
 import LargeFileStructure from '~/components/tool/LargeFileStructure.vue'
 import NodeInspector from '~/components/tool/NodeInspector.vue'
 import type { FileFormat } from '~/workers/recordStream.worker'
@@ -347,13 +371,29 @@ import type { SearchTextHit } from '~/utils/textSearch'
 import { toJsonPath, validateRegex } from '~/utils/textSearch'
 
 const { t } = useI18n()
+// Shared CSS fullscreen state (same composable `ResizablePanel` uses): it locks
+// body scroll while active and exits on ESC. It takes a boolean initial value —
+// not a DOM target.
 const { isFullscreen, toggle } = useFullscreen()
+/** Root element ref — used to scroll the loaded viewer into view. */
+const rootEl = ref<HTMLElement>()
 
 // Anchor the component to a definite height. The tool page renders universal
 // components inside a normal-flow card (no height constraint), so without this
 // the `flex-1` chains collapse, the text viewer expands to its full content
 // height and the virtual list renders every line — freezing the tab.
-const rootClass = 'flex h-[calc(100vh_-_9rem)] min-h-0 flex-col'
+// While "fullscreen" the component becomes a fixed overlay filling the viewport.
+const rootClass = computed(() => {
+  if (isFullscreen.value) {
+    return 'fixed inset-0 z-50 flex h-screen min-h-0 flex-col bg-white p-4 dark:bg-surface-900'
+  }
+  // Idle state: the dropzone must not reserve a full viewport of height — it
+  // would leave a tall empty card and push the rest of the page far down.
+  // `scroll-mt-20` offsets the scroll target below the sticky site header
+  // (h-16 + border) so the whole viewer lands inside the viewport.
+  if (showDropzone.value) return 'flex min-h-0 flex-col scroll-mt-20'
+  return 'flex h-[calc(100vh_-_9rem)] min-h-0 flex-col scroll-mt-20'
+})
 
 const lf = useLargeFile()
 const handoff = useLargeFileHandoff()
@@ -365,7 +405,7 @@ const focusLine = ref(0)
 const resultsOpen = ref(true)
 const resultsHeight = ref(300)
 const previewHit = ref<SearchTextHit | null>(null)
-const previewTab = ref<'results' | 'preview'>('results')
+const panelTab = ref<'results' | 'preview' | 'context'>('results')
 const arrayIndex = ref(0)
 const pathInput = ref('')
 const searchRegex = ref(false)
@@ -381,7 +421,21 @@ const arrayCount = computed(() => lf.currentArrayCount.value)
 const activeMatch = computed<SearchTextHit | null>(
   () => lf.searchHits.value[lf.currentHit.value] ?? null,
 )
+/** Nothing to list or preview until a search produced hits or a node was
+ *  picked — until then the results panel collapses to just its tab row. */
+const hasPanelContent = computed(() => lf.searchHits.value.length > 0 || !!previewHit.value)
 const currentLine = computed(() => activeMatch.value?.line ?? focusLine.value)
+
+/** True once a document is loaded and scanned (i.e. the working view exists). */
+const contentReady = computed(
+  () => !!lf.rawText.value && !loading.value && lf.status.value !== 'invalid',
+)
+// Bring the freshly loaded viewer into view so the toolbar, search bar, text
+// viewport and results panel are all visible without manual scrolling.
+watch(contentReady, (ready) => {
+  if (!ready) return
+  nextTick(() => rootEl.value?.scrollIntoView({ behavior: 'smooth', block: 'start' }))
+})
 const invalidMessage = computed(() => {
   const r = lf.scanError.value?.reason
   if (r === 'eof') return t('largeViewer.invalidReasonEof')
@@ -402,9 +456,8 @@ function formatBytes(n: number): string {
   return `${(n / 1024 / 1024).toFixed(1)} MB`
 }
 
-function onSelect(payload: { file: File; format: 'auto' | FileFormat }) {
-  const fmt = payload.format === 'auto' ? undefined : payload.format
-  lf.loadFile(payload.file, fmt)
+function onSelect(file: File) {
+  lf.loadFile(file)
 }
 
 function runSearch() {
@@ -474,14 +527,14 @@ function onPageInput(e: Event) {
 
 function openPreview(hit: SearchTextHit) {
   previewHit.value = hit
-  previewTab.value = 'preview'
+  panelTab.value = 'preview'
 }
 
 /** Scroll to and preview a node located by an offset/line/path triple. */
 function openPathResult(r: { offset: number; line: number; path: string }) {
   focusLine.value = r.line
   previewHit.value = { index: 0, line: r.line, column: 1, offset: r.offset, path: r.path, preview: '' }
-  previewTab.value = 'preview'
+  panelTab.value = 'preview'
 }
 
 /** Clicking a search result row both jumps the viewport and opens the node
@@ -489,7 +542,7 @@ function openPathResult(r: { offset: number; line: number; path: string }) {
 function onSelectHit(index: number) {
   lf.gotoHit(index)
   const hit = lf.searchHits.value[index]
-  if (hit) { previewHit.value = hit; previewTab.value = 'preview' }
+  if (hit) { previewHit.value = hit; panelTab.value = 'preview' }
 }
 
 
@@ -521,7 +574,7 @@ async function exportRecords() {
 }
 
 function onDragStart(e: MouseEvent) {
-  if (!resultsOpen.value) return
+  if (!resultsOpen.value || !hasPanelContent.value) return
   e.preventDefault()
   const startY = e.clientY
   const startH = resultsHeight.value

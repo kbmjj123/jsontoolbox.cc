@@ -72,6 +72,11 @@
       "description": "Recognize selected value patterns such as URLs or email-like strings when supported by the interface. These hints are visual conveniences and are not a substitute for runtime or schema validation."
     },
     {
+      "icon": "lucide:binary",
+      "title": "Copy Node Path & Value",
+      "description": "Right-click any node in the tree view to copy its JSONPath (e.g. $.users[0].name), the raw value, the full node, or the parent path. Each leaf also shows its JSON type and array index so you can locate fields without expanding everything."
+    },
+    {
       "icon": "lucide:copy",
       "title": "Copy and Download",
       "description": "Copy the edited JSON to your clipboard or download it as a .json file for configuration, API testing, documentation, fixtures, and local development."
@@ -95,6 +100,16 @@
       "icon": "lucide:shield-check",
       "title": "Browser-Based Editing",
       "description": "Editing, parsing, validation, formatting, and minification happen in your browser. The page does not require an account or upload your JSON to a remote service."
+    },
+    {
+      "icon": "lucide:search",
+      "title": "Search & Jump to Node",
+      "description": "Search the tree by key, value, path, or all scopes at once. Open the results list to see every match with its path, value type, and parent array, then jump straight to the node in the tree."
+    },
+    {
+      "icon": "lucide:table",
+      "title": "Array Table View",
+      "description": "Turn any object array into a sortable table. Hide or resize columns, filter rows by text, copy a selected row or its JSONPath, and export the full array as CSV — all in your browser."
     }
   ],
   "guide": [
@@ -176,7 +191,7 @@
     },
     {
       "question": "Can I use a tree or table view?",
-      "answer": "The current page is primarily a syntax-aware text editor. A tree, table, grid, or form view requires a separate structured editing interface and may be available in another tool or a future version."
+      "answer": "Yes. When the output is a JSON array of objects, the output panel offers a Table view. You can sort columns, hide or resize columns, filter rows, copy a row or its JSONPath, and export the array as CSV. Tree nodes can also open any nested array directly as a table."
     },
     {
       "question": "Is this a free online JSON editor?",
@@ -242,6 +257,11 @@
         "description": "自动识别 JSON 值中的 URL、图片地址、邮箱、日期和颜色等常见类型，以更直观的方式展示结构化内容，方便快速理解数据。"
       },
       {
+        "icon": "lucide:binary",
+        "title": "复制节点路径与值",
+        "description": "在树形视图中右键任意节点，即可复制它的 JSONPath（如 $.users[0].name）、原始值、整个节点或父节点路径。每个叶子节点还会显示其 JSON 类型与数组下标，方便你快速定位字段，无需逐层展开。"
+      },
+      {
         "icon": "lucide:copy",
         "title": "复制与下载",
         "description": "将编辑后的 JSON 一键复制到剪贴板，或下载为 .json 文件。适合保存修改后的配置文件、API 数据、测试数据和开发示例。"
@@ -255,8 +275,18 @@
         "icon": "lucide:shield-check",
         "title": "私密安全",
         "description": "所有编辑、验证和格式化操作都在浏览器本地完成，不需要将 JSON 上传到服务器。适合处理配置片段、API 响应和其他不希望离开设备的数据。"
-      }
-    ],
+      },
+      {
+      "icon": "lucide:search",
+      "title": "搜索并跳转到节点",
+      "description": "在树形视图中按键名、值、路径或全部范围进行搜索。打开结果列表可查看每条匹配的路径、值类型与所属数组，并一键跳转到树中对应节点。"
+    },
+    {
+      "icon": "lucide:table",
+      "title": "数组表格视图",
+      "description": "把任意对象数组转换为可排序的表格。你可以隐藏或拖拽调整列宽、按文本筛选行、复制选中的整行或其 JSONPath，并把整个数组导出为 CSV——全部在浏览器本地完成。"
+    }
+  ],
     "guide": [
       {
         "title": "粘贴或输入 JSON",

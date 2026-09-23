@@ -35,6 +35,7 @@
               @click="ve.entry.expandable ? toggle(ve.entry.childPath) : selectAndCopy(ve.entry.childPath)"
               @mouseenter="!ve.entry.expandable && onNodeInteraction(ve.entry.childPath, 'hover')"
               @mouseleave="onNodeInteraction('', 'hover')"
+              @contextmenu.prevent="onRowMenu(ve.entry, $event)"
             >
               <div class="flex items-start gap-1 min-w-0 leading-[1.5] flex-1">
                 <button
@@ -52,17 +53,40 @@
                 <span v-else class="text-purple-600 dark:text-purple-400">"{{ ve.entry.key }}"</span>
                 <span class="text-surface-400">:</span>
 
-                <span v-if="!ve.entry.expandable" :class="ve.entry.isLazyChild ? lazyTypeColorClass(lazyIndex?.get(ve.entry.childPath)?.type || 'null') : valueColorClass(ve.entry.value)">{{ ve.entry.isLazyChild ? (ve.entry.preview || 'null') : formatValue(ve.entry.value, ve.entry.childPath) }}</span>
+                <span v-if="!ve.entry.expandable" class="flex items-center gap-1.5 min-w-0 flex-wrap">
+                <span
+                  v-if="colorStyleOf(ve.entry.value)"
+                  class="inline-block w-3.5 h-3.5 rounded border border-surface-300 dark:border-surface-600 shrink-0"
+                  :style="{ backgroundColor: colorStyleOf(ve.entry.value) || undefined }"
+                />
+                <span :class="ve.entry.isLazyChild ? lazyTypeColorClass(lazyIndex?.get(ve.entry.childPath)?.type || 'null') : valueColorClass(ve.entry.value)">{{ ve.entry.isLazyChild ? (ve.entry.preview || 'null') : formatValue(ve.entry.value, ve.entry.childPath) }}</span>
+              </span>
                 <span v-else class="text-surface-400">
                   {{ ve.entry.isLazyChild
                     ? (lazyIndex?.get(ve.entry.childPath)?.type === 'array' ? `[${lazyIndex?.get(ve.entry.childPath)?.childCount || 0}]` : '{…}')
                     : (isArray(ve.entry.value) ? `[${ve.entry.value.length}]` : '{…}') }}
                 </span>
 
-                <span
-                  v-if="hasError(ve.entry.childPath)"
-                  class="relative group/error shrink-0 ml-1"
-                >
+              <span class="ml-1.5 text-[10px] text-surface-400 dark:text-surface-500 select-none">{{ typeLabel(ve.entry.value) }}</span>
+              <button
+                v-if="!ve.entry.isLazyChild && isArray(ve.entry.value)"
+                @click.stop="showArrayAsTable(ve.entry.childPath)"
+                class="opacity-0 group-hover:opacity-100 ml-0.5 text-surface-400 hover:text-surface-600 dark:hover:text-surface-300"
+                :title="$t('largeViewer.table.viewAsTable')"
+              >
+                <Icon name="lucide:table" class="w-3.5 h-3.5" />
+              </button>
+              <button
+                @click.stop="onRowMenu(ve.entry, $event)"
+                class="opacity-0 group-hover:opacity-100 ml-0.5 text-surface-400 hover:text-surface-600 dark:hover:text-surface-300"
+                :title="$t('largeViewer.copyJsonPath')"
+              >
+                <Icon name="lucide:more-vertical" class="w-3.5 h-3.5" />
+              </button>
+              <span
+                v-if="hasError(ve.entry.childPath)"
+                class="relative group/error shrink-0 ml-1"
+              >
                   <span class="inline-block w-2 h-2 rounded-full bg-red-500 animate-pulse" />
                   <span class="absolute bottom-full left-1/2 -translate-x-1/2 mb-1 px-2 py-1 rounded bg-red-600 text-white text-[10px] whitespace-nowrap opacity-0 group-hover/error:opacity-100 transition-opacity pointer-events-none z-50">
                     {{ getNodeErrors(ve.entry.childPath)[0]?.message }}
@@ -111,6 +135,7 @@
             @click="entry.expandable ? toggle(entry.childPath) : selectAndCopy(entry.childPath)"
             @mouseenter="!entry.expandable && onNodeInteraction(entry.childPath, 'hover')"
             @mouseleave="onNodeInteraction('', 'hover')"
+            @contextmenu.prevent="onRowMenu(entry, $event)"
           >
             <div class="flex items-start gap-1 min-w-0 leading-[1.5] flex-1">
               <button
@@ -128,13 +153,36 @@
               <span v-else class="text-purple-600 dark:text-purple-400">"{{ entry.key }}"</span>
               <span class="text-surface-400">:</span>
 
-              <span v-if="!entry.expandable" :class="entry.isLazyChild ? lazyTypeColorClass(lazyIndex?.get(entry.childPath)?.type || 'null') : valueColorClass(entry.value)">{{ entry.isLazyChild ? (entry.preview || 'null') : formatValue(entry.value, entry.childPath) }}</span>
+              <span v-if="!entry.expandable" class="flex items-center gap-1.5 min-w-0 flex-wrap">
+                <span
+                  v-if="colorStyleOf(entry.value)"
+                  class="inline-block w-3.5 h-3.5 rounded border border-surface-300 dark:border-surface-600 shrink-0"
+                  :style="{ backgroundColor: colorStyleOf(entry.value) || undefined }"
+                />
+                <span :class="entry.isLazyChild ? lazyTypeColorClass(lazyIndex?.get(entry.childPath)?.type || 'null') : valueColorClass(entry.value)">{{ entry.isLazyChild ? (entry.preview || 'null') : formatValue(entry.value, entry.childPath) }}</span>
+              </span>
               <span v-else class="text-surface-400">
                 {{ entry.isLazyChild
                   ? (lazyIndex?.get(entry.childPath)?.type === 'array' ? `[${lazyIndex?.get(entry.childPath)?.childCount || 0}]` : '{…}')
                   : (isArray(entry.value) ? `[${entry.value.length}]` : '{…}') }}
               </span>
 
+              <span class="ml-1.5 text-[10px] text-surface-400 dark:text-surface-500 select-none">{{ typeLabel(entry.value) }}</span>
+              <button
+                v-if="!entry.isLazyChild && isArray(entry.value)"
+                @click.stop="showArrayAsTable(entry.childPath)"
+                class="opacity-0 group-hover:opacity-100 ml-0.5 text-surface-400 hover:text-surface-600 dark:hover:text-surface-300"
+                :title="$t('largeViewer.table.viewAsTable')"
+              >
+                <Icon name="lucide:table" class="w-3.5 h-3.5" />
+              </button>
+              <button
+                @click.stop="onRowMenu(entry, $event)"
+                class="opacity-0 group-hover:opacity-100 ml-0.5 text-surface-400 hover:text-surface-600 dark:hover:text-surface-300"
+                :title="$t('largeViewer.copyJsonPath')"
+              >
+                <Icon name="lucide:more-vertical" class="w-3.5 h-3.5" />
+              </button>
               <span
                 v-if="hasError(entry.childPath)"
                 class="relative group/error shrink-0 ml-1"
@@ -170,7 +218,7 @@
       <div
         :ref="(el) => markRow(props.path, el as HTMLElement | null)"
         :class="[
-          'flex rounded px-1 transition-colors',
+          'flex rounded px-1 group transition-colors',
           flashPath === props.path
             ? 'bg-orange-200 dark:bg-orange-700/50 ring-2 ring-orange-400 dark:ring-orange-500 animate-pulse'
             : isCurrentMatch(props.path)
@@ -181,18 +229,27 @@
                   ? 'bg-primary-50 dark:bg-primary-900/30 border-l-2 border-primary-500 dark:border-primary-400'
                   : '',
         ]"
+        @contextmenu.prevent="onRootMenu($event)"
       >
         <div class="flex items-start gap-1 leading-[1.5] flex-1">
           <span class="w-4 shrink-0"></span>
           <span class="flex items-center gap-1.5">
             <span
-              v-if="isColorValue(data)"
+              v-if="colorStyleOf(data)"
               class="inline-block w-3.5 h-3.5 rounded border border-surface-300 dark:border-surface-600 shrink-0"
-              :style="{ backgroundColor: getColorStyle(data) || undefined }"
+              :style="{ backgroundColor: colorStyleOf(data) || undefined }"
             />
             <span :class="valueColorClass(data)">{{ formatValue(data, props.path) }}</span>
           </span>
 
+          <span class="ml-1.5 text-[10px] text-surface-400 dark:text-surface-500 select-none">{{ typeLabel(props.data) }}</span>
+          <button
+            @click.stop="onRootMenu($event)"
+            class="opacity-0 group-hover:opacity-100 ml-0.5 text-surface-400 hover:text-surface-600 dark:hover:text-surface-300"
+            :title="$t('largeViewer.copyJsonPath')"
+          >
+            <Icon name="lucide:more-vertical" class="w-3.5 h-3.5" />
+          </button>
           <span
             v-if="hasError(props.path)"
             class="relative group/error shrink-0 ml-1"
@@ -213,6 +270,15 @@
       :start-index="previewIndex"
       @close="showPreview = false"
     />
+
+    <!-- Node action menu (right-click / "⋯"): Copy JSONPath, value, node, parent -->
+    <JsonNodeMenu
+      v-if="!props.path && menuState.node"
+      :node="menuState.node"
+      :x="menuState.x"
+      :y="menuState.y"
+      @close="closeNodeMenu"
+    />
   </div>
 </template>
 
@@ -222,6 +288,8 @@ import type { PreviewImage } from '~/composables/useImagePreview'
 import type { useTreeSearch } from '~/composables/useTreeSearch'
 import type { FieldError } from '~/types/jsonErrors'
 import type { LazyNode } from '~/workers/jsonStream.worker'
+import { toJsonPath, jsonTypeLabel } from '~/utils/jsonPath'
+import { isColorValue } from '~/composables/useSmartJsonValue'
 
 const props = withDefaults(defineProps<{
   data: unknown
@@ -405,6 +473,9 @@ provide('richSelectedPath', selectedPath)
 // ── Node interaction callback (click/hover → source line) ────
 const onNodeInteraction = inject<(path: string, type: 'click' | 'hover') => void>('onNodeInteraction', () => {})
 
+// ── "View as table" request (array node → JsonOutputPanel table view) ──
+const showArrayAsTable = inject<(path: string) => void>('showArrayAsTable', () => {})
+
 // ── Expand/collapse all signals ────────────────────────────────
 const expandAllSignal = inject<Ref<number>>('expandAllSignal', ref(0))
 const collapseAllSignal = inject<Ref<number>>('collapseAllSignal', ref(0))
@@ -487,6 +558,61 @@ const search = inject<ReturnType<typeof useTreeSearch> | null>('treeSearch', nul
 // ── Masked state for sensitive fields ─────────────────────────
 const maskedFields = inject<ComputedRef<Set<string>>>('maskedFields', computed(() => new Set()))
 provide('maskedFields', maskedFields)
+
+// ── Node action menu (right-click / "⋯"): Copy JSONPath, value, node, parent ──
+interface NodeMenuInfo {
+  path: string
+  parentPath: string
+  value: unknown
+  type: string
+  isArrayIndex: boolean
+  index?: number
+}
+const menuState = reactive<{ node: NodeMenuInfo | null; x: number; y: number }>({ node: null, x: 0, y: 0 })
+function openNodeMenu(info: NodeMenuInfo, x: number, y: number) {
+  menuState.node = info
+  menuState.x = x
+  menuState.y = y
+}
+function closeNodeMenu() {
+  menuState.node = null
+}
+provide('nodeMenu', { open: openNodeMenu, close: closeNodeMenu })
+
+const nodeMenu = inject<{ open: (info: NodeMenuInfo, x: number, y: number) => void; close: () => void }>('nodeMenu', null)
+
+function typeLabel(v: unknown): string {
+  return jsonTypeLabel(v)
+}
+
+function buildNodeInfo(entry: { childPath: string; value: unknown; isArrayIndex: boolean; key: string | number }): NodeMenuInfo {
+  return {
+    path: entry.childPath,
+    parentPath: parentPathOf(entry.childPath),
+    value: entry.value,
+    type: typeLabel(entry.value),
+    isArrayIndex: entry.isArrayIndex,
+    index: entry.isArrayIndex ? Number(entry.key) : undefined,
+  }
+}
+
+function onRowMenu(entry: { childPath: string; value: unknown; isArrayIndex: boolean; key: string | number }, event: MouseEvent) {
+  nodeMenu?.open(buildNodeInfo(entry), event.clientX, event.clientY)
+}
+
+function onRootMenu(event: MouseEvent) {
+  nodeMenu?.open(
+    {
+      path: props.path,
+      parentPath: parentPathOf(props.path),
+      value: props.data,
+      type: typeLabel(props.data),
+      isArrayIndex: false,
+    },
+    event.clientX,
+    event.clientY,
+  )
+}
 
 // Root instance: provide child-scroller registry + watch expand/collapse/locate/search
 if (!props.path) {
@@ -715,6 +841,15 @@ function formatValue(val: unknown, path?: string): string {
   if (val === undefined) return 'undefined'
   if (typeof val === 'string') return `"${val}"`
   return String(val)
+}
+
+// Resolve a CSS color string for inline swatch rendering. Strips surrounding
+// quotes so both normal-mode raw values ("#ff0000") and lazy-mode previews
+// ('"#ff0000"') are detected. Returns null when the value is not a CSS color.
+function colorStyleOf(val: unknown): string | null {
+  if (typeof val !== 'string') return null
+  const s = val.startsWith('"') && val.endsWith('"') ? val.slice(1, -1) : val
+  return isColorValue(s) ? s : null
 }
 
 function valueColorClass(val: unknown): string {

@@ -27,22 +27,29 @@ import { EditorView, Decoration, lineNumbers } from '@codemirror/view'
 import { RangeSetBuilder, type Extension } from '@codemirror/state'
 import { syntaxHighlighting, HighlightStyle } from '@codemirror/language'
 import { tags } from '@lezer/highlight'
+import { LARGE_FILE_MAX_BYTES, byteLength } from '~/composables/useLargeFile'
 
 const props = withDefaults(defineProps<{
   modelValue: string
   placeholder?: string
   readonly?: boolean
   disabled?: boolean
+  /** When true, paste events carrying more than LARGE_FILE_MAX_BYTES are
+   *  refused (and reported via `file-size`) instead of being inserted. */
+  blockOversized?: boolean
 }>(), {
   placeholder: '',
   readonly: false,
   disabled: false,
+  blockOversized: false,
 })
 
 const emit = defineEmits<{
   'update:modelValue': [value: string]
   scroll: [info: { scrollTop: number; scrollHeight: number; clientHeight: number }]
   ready: [view: EditorView]
+  /** Reported when a pasted value exceeds the large-file limit. */
+  'file-size': [info: { bytes: number; oversized: boolean; text: string }]
 }>()
 
 const cmRef = ref<any>()
@@ -141,6 +148,24 @@ const extensions: Extension[] = [
     { tag: tags.punctuation, color: '#94a3b8' },                 // brackets, commas — slate-400 (dark)
     { tag: tags.separator, color: '#94a3b8' },                   // colon — slate-400 (dark)
   ], { dark: true })),
+  // Hand off oversized pastes to the Large JSON Explorer instead of letting
+  // CodeMirror insert (and freeze on) multi-MB content. Checked before the
+  // default paste handler runs, so the oversized text never enters the editor.
+  EditorView.domEventHandlers({
+    paste(event) {
+      if (!props.blockOversized) return false
+      const clip = event as ClipboardEvent
+      const text = clip.clipboardData?.getData('text') ?? ''
+      if (!text) return false
+      const bytes = byteLength(text)
+      if (bytes > LARGE_FILE_MAX_BYTES) {
+        event.preventDefault()
+        emit('file-size', { bytes, oversized: true, text })
+        return true
+      }
+      return false
+    },
+  }),
 ]
 
 // ── Ready handler ──

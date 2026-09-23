@@ -1,8 +1,8 @@
 <template>
   <div
-    class="rounded-xl border border-surface-200 bg-surface-50 dark:border-surface-700 dark:bg-surface-800 p-8"
+    class="rounded-xl border-2 border-dashed border-surface-300 bg-transparent p-8 transition-colors dark:border-surface-600"
     :class="[
-      dragging ? 'border-primary-400 dark:border-primary-500 bg-primary-50/50 dark:bg-primary-900/20' : '',
+      dragging ? 'border-primary-400 bg-primary-50/50 dark:border-primary-500 dark:bg-primary-900/20' : '',
     ]"
     @dragover.prevent="dragging = true"
     @dragleave.prevent="dragging = false"
@@ -22,27 +22,9 @@
         </p>
       </div>
 
-      <div class="flex flex-wrap items-center justify-center gap-3">
-        <button
-          type="button"
-          class="rounded-lg bg-primary-600 px-4 py-2 text-sm font-medium text-white hover:bg-primary-700 dark:bg-primary-500 dark:hover:bg-primary-600 transition-colors"
-          @click="fileInput?.click()"
-        >
-          {{ t('largeViewer.chooseFile') }}
-        </button>
-
-        <label class="flex items-center gap-2 text-sm text-surface-600 dark:text-surface-400">
-          <span>{{ t('largeViewer.format') }}</span>
-          <select
-            v-model="format"
-            class="rounded-md border border-surface-200 bg-white px-2 py-1.5 text-sm text-surface-800 dark:border-surface-700 dark:bg-surface-900 dark:text-surface-200"
-          >
-            <option value="auto">{{ t('largeViewer.formatAuto') }}</option>
-            <option value="json">JSON</option>
-            <option value="ndjson">NDJSON</option>
-          </select>
-        </label>
-      </div>
+      <button type="button" class="lf-btn-primary" @click="fileInput?.click()">
+        {{ t('largeViewer.chooseFile') }}
+      </button>
 
       <p class="text-xs text-surface-400 dark:text-surface-500">
         .json · .ndjson · .jsonl · .jsonlines
@@ -60,21 +42,20 @@
 </template>
 
 <script setup lang="ts">
-import type { FileFormat } from '~/workers/recordStream.worker'
-
 const { t } = useI18n()
 
+// Format is auto-detected from the file name (see `detectFormatFromName` in
+// `useLargeFile`), so the dropzone only ever hands over the file itself.
 const emit = defineEmits<{
-  select: [payload: { file: File; format: 'auto' | FileFormat }]
+  select: [file: File]
 }>()
 
 const fileInput = ref<HTMLInputElement>()
 const dragging = ref(false)
-const format = ref<'auto' | FileFormat>('auto')
 
 function pick(file: File) {
   if (!file) return
-  emit('select', { file, format: format.value })
+  emit('select', file)
 }
 
 function onFileChange(e: Event) {

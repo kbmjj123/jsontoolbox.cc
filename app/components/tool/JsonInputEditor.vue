@@ -177,6 +177,9 @@
         :model-value="modelValue"
         @update:model-value="emit('update:modelValue', $event)"
         :placeholder="placeholder"
+        :block-oversized="blockOversized"
+        :readonly="readonly"
+        @file-size="(info) => emit('file-size', info)"
         @scroll="onCmScroll"
         @ready="onCmReady"
       />
@@ -225,10 +228,22 @@
       @close="showUrlModal = false"
       @loaded="onUrlLoaded"
     />
+
+    <!-- Sensitive field privacy reminder -->
+    <SensitiveFieldWarning
+      v-if="showSensitiveWarning && sensitiveFields.length > 0"
+      class="mt-2"
+      :fields="sensitiveFields"
+      @dismiss="dismissSensitiveWarning"
+    />
   </div>
 </template>
 
 <script setup lang="ts">
+import SensitiveFieldWarning from '~/components/tool/SensitiveFieldWarning.vue'
+import { useSensitiveFieldDetection } from '~/composables/useSensitiveFieldDetection'
+import { useDebounceFn } from '@vueuse/core'
+
 interface Props {
   modelValue: string
   label?: string
@@ -264,6 +279,13 @@ interface Props {
   syntaxHighlight?: boolean
   /** Make the editor read-only */
   readonly?: boolean
+  /**
+   * Show the sensitive-field privacy reminder when detected in the input.
+   * Enabled by default so every tool page benefits; pages that render their
+   * own warning (e.g. the main JSON editor, which also feeds the share modal)
+   * should pass `false` to avoid a duplicate prompt.
+   */
+  showSensitiveWarning?: boolean
 }
 
 const props = withDefaults(defineProps<Props>(), {
@@ -285,6 +307,7 @@ const props = withDefaults(defineProps<Props>(), {
   editorMode: 'codemirror',
   syntaxHighlight: false,
   readonly: false,
+  showSensitiveWarning: true,
 })
 
 const emit = defineEmits<{
@@ -325,6 +348,29 @@ const textareaRef = ref<HTMLTextAreaElement>()
 const highlightBackdropRef = ref<HTMLPreElement>()
 const fileInputRef = ref<HTMLInputElement>()
 const { detectSize } = useFileSize()
+
+// ── Sensitive field detection (privacy reminder) ──
+const { detectedFields: sensitiveFields, scanJson, clear: clearSensitive } = useSensitiveFieldDetection()
+const sensitiveDismissed = ref(false)
+
+function dismissSensitiveWarning() {
+  sensitiveDismissed.value = true
+  clearSensitive()
+}
+
+const debouncedSensitiveScan = useDebounceFn((val: string) => {
+  if (!props.showSensitiveWarning) { clearSensitive(); return }
+  if (sensitiveDismissed.value) return
+  if (!val.trim()) { clearSensitive(); return }
+  scanJson(val)
+}, 500)
+
+watch(() => props.modelValue, (val) => {
+  // Re-show the reminder when the input changes (a dismissed warning is for
+  // the previous content only).
+  sensitiveDismissed.value = false
+  debouncedSensitiveScan(val)
+})
 const cmRef = ref<InstanceType<typeof CodeMirrorEditor>>()
 const dragging = ref(false)
 const fileInfo = ref<{ name: string; size: string } | null>(null)
@@ -491,6 +537,11 @@ const handlePaste = async () => {
     try {
       const text = await navigator.clipboard.readText()
       if (text) {
+        const size = detectSize(text)
+        emit('file-size', { ...size, text })
+        // Oversized content is handed off to the Large JSON Explorer; never
+        // load it here or CodeMirror would freeze inserting multi-MB text.
+        if (size.oversized && props.blockOversized) return
         emit('update:modelValue', text)
         emit('paste', text)
         pasted.value = true

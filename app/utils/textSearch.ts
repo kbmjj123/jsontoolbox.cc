@@ -12,6 +12,13 @@ export interface SearchTextHit {
   /** 1-based */
   column: number
   offset: number
+  /**
+   * Offset of the first character of the *node* the match belongs to — for a
+   * key match, the offset of that key's value. `offset` points at the matched
+   * character (which sits inside a string/primitive and is therefore not a
+   * valid node start), so node preview resolves against this instead.
+   */
+  nodeOffset?: number
   /** JSONPath — filled in a later phase; optional for now */
   path?: string
   preview: string
@@ -217,7 +224,7 @@ export function searchStructured(
 
   // tokenStart is the offset of the first character of the matched token (for a
   // string, just inside the opening quote). kind selects what we match against.
-  function test(tokenText: string, tokenStart: number, path: string, kind: 'key' | 'value' | 'path') {
+  function test(tokenText: string, tokenStart: number, nodeStart: number, path: string, kind: 'key' | 'value' | 'path') {
     if (hits.length >= limit) { truncated = true; return }
     const hay = kind === 'path' ? path : tokenText
     let inner: number
@@ -240,6 +247,9 @@ export function searchStructured(
       line: lc.line,
       column: lc.column,
       offset,
+      // A key match previews that key's value; value/path matches preview the
+      // token itself (strings start at their opening quote).
+      nodeOffset: kind === 'key' ? keyValueStart(text, nodeStart) : nodeStart,
       path,
       preview: display,
     })
@@ -264,7 +274,7 @@ export function searchStructured(
 
     if (c === '{') {
       const vp = valuePath()
-      if (mode === 'path' || mode === 'all') test(vp, i, vp, 'path')
+      if (mode === 'path' || mode === 'all') test(vp, i, i, vp, 'path')
       prefixStack.push(vp)
       containerTypes.push('o')
       pendingKey = null
@@ -280,7 +290,7 @@ export function searchStructured(
     }
     if (c === '[') {
       const vp = valuePath()
-      if (mode === 'path' || mode === 'all') test(vp, i, vp, 'path')
+      if (mode === 'path' || mode === 'all') test(vp, i, i, vp, 'path')
       prefixStack.push(vp)
       containerTypes.push('a')
       arrIdx = 0
@@ -317,11 +327,11 @@ export function searchStructured(
         expectKey = false
         // The key's own JSONPath is the parent prefix plus this key name.
         const kp = curPrefix() ? `${curPrefix()}.${s}` : s
-        if (mode === 'key' || mode === 'all') test(s, keyOffset, kp, 'key')
+        if (mode === 'key' || mode === 'all') test(s, keyOffset, start, kp, 'key')
       } else {
         const vp = valuePath()
-        if (mode === 'value' || mode === 'all') test(s, keyOffset, vp, 'value')
-        if (mode === 'path' || mode === 'all') test(vp, keyOffset, vp, 'path')
+        if (mode === 'value' || mode === 'all') test(s, keyOffset, start, vp, 'value')
+        if (mode === 'path' || mode === 'all') test(vp, keyOffset, start, vp, 'path')
       }
       continue
     }
@@ -336,8 +346,8 @@ export function searchStructured(
         s += ch; i++
       }
       const vp = valuePath()
-      if (mode === 'value' || mode === 'all') test(s, start, vp, 'value')
-      if (mode === 'path' || mode === 'all') test(vp, start, vp, 'path')
+      if (mode === 'value' || mode === 'all') test(s, start, start, vp, 'value')
+      if (mode === 'path' || mode === 'all') test(vp, start, start, vp, 'path')
       continue
     }
 
@@ -476,6 +486,84 @@ export function extractNodeAt(
     truncated = true
   }
   return { raw, truncated, size }
+}
+
+/**
+ * Split one line of text into plain/highlighted segments around the match whose
+ * offset inside the line is `localOffset`.
+ *
+ * Shared by the results list and the context panel so both highlight the exact
+ * same substring. Returns null when the match cannot be located in the line.
+ *
+ * The regex is compiled with `g` so `exec` advances — without it the scan would
+ * keep returning the first match and never terminate when that match sits
+ * before `localOffset`.
+ */
+export function lineMatchSegments(
+  line: string,
+  localOffset: number,
+  query: string,
+  isRegex: boolean,
+  caseSensitive: boolean,
+): { text: string; match: boolean }[] | null {
+  if (!query || localOffset < 0 || localOffset > line.length) return null
+  let start = -1
+  let end = -1
+  if (isRegex) {
+    try {
+      const re = new RegExp(query, (caseSensitive ? '' : 'i') + 'g')
+      let m: RegExpExecArray | null
+      while ((m = re.exec(line))) {
+        if (m.index === localOffset) { start = m.index; end = m.index + m[0].length; break }
+        if (m.index > localOffset) break
+        if (m[0].length === 0) re.lastIndex++
+      }
+    } catch {
+      /* invalid pattern — leave the line unhighlighted */
+    }
+  } else {
+    const q = caseSensitive ? query : query.toLowerCase()
+    const hay = caseSensitive ? line : line.toLowerCase()
+    const idx = hay.indexOf(q, localOffset)
+    if (idx === localOffset) { start = idx; end = idx + query.length }
+  }
+  if (start < 0) return null
+  return [
+    { text: line.slice(0, start), match: false },
+    { text: line.slice(start, end), match: true },
+    { text: line.slice(end), match: false },
+  ]
+}
+
+/**
+ * Start offset of the innermost object/array that contains `offset`.
+ *
+ * A single forward pass tracks string state and a container stack, so the
+ * answer is exact (unlike a backwards scan, which cannot tell an opening quote
+ * from a closing one). Returns -1 when `offset` sits in a top-level scalar, and
+ * for documents large enough that the scan would block the main thread.
+ */
+export function enclosingContainerStart(text: string, offset: number): number {
+  const end = Math.min(offset, text.length)
+  if (end > 20_000_000) return -1
+  const stack: number[] = []
+  let i = 0
+  while (i < end) {
+    const c = text[i]
+    if (c === '"') {
+      i++ // opening quote
+      while (i < text.length) {
+        if (text[i] === '\\') { i += 2; continue }
+        if (text[i] === '"') { i++; break }
+        i++
+      }
+      continue
+    }
+    if (c === '{' || c === '[') { stack.push(i); i++; continue }
+    if (c === '}' || c === ']') { stack.pop(); i++; continue }
+    i++
+  }
+  return stack.length ? stack[stack.length - 1] : -1
 }
 
 /**

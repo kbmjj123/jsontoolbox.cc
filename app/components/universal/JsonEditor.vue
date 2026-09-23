@@ -42,6 +42,7 @@
           :show-clear="!isSharedReadonly"
           example-slug="json-editor"
           block-oversized
+          :show-sensitive-warning="false"
           @clear="clearAll"
           @paste="onInputPaste"
           @locate-error="onLocateFromPanel"

@@ -1,5 +1,5 @@
 <template>
-  <div class="flex-1 min-h-0 flex flex-col">
+  <div class="flex-1 min-h-0 flex flex-col relative">
     <!-- Header -->
     <div class="flex items-center mb-2 gap-2 overflow-x-auto scrollbar-hide">
       <div class="flex items-center gap-2 shrink-0">
@@ -109,6 +109,14 @@
 
           <template v-if="treeSearch.query.value">
             <button
+              @click="showResultsDrawer = !showResultsDrawer"
+              :title="t('search.results')"
+              class="w-7 h-7 flex items-center justify-center rounded-lg border border-surface-200 bg-white text-surface-500 hover:bg-surface-50 dark:border-surface-700 dark:bg-surface-800 dark:text-surface-400 dark:hover:bg-surface-700"
+              :class="showResultsDrawer ? 'text-primary-600 dark:text-primary-400' : ''"
+            >
+              <Icon name="lucide:list" class="w-3.5 h-3.5" />
+            </button>
+            <button
               @click="treeSearch.prev()"
               :disabled="treeSearch.totalCount.value === 0"
               class="w-7 h-7 flex items-center justify-center rounded-lg border border-surface-200 bg-white text-surface-500 hover:bg-surface-50 disabled:opacity-30 disabled:cursor-not-allowed dark:border-surface-700 dark:bg-surface-800 dark:text-surface-400 dark:hover:bg-surface-700"
@@ -158,6 +166,33 @@
           {{ $t('system.download') }}
         </button>
       </div>
+    </div>
+
+    <!-- Search results drawer -->
+    <div
+      v-if="showResultsDrawer && resultList.length"
+      class="absolute left-2 right-2 top-11 z-50 max-h-80 overflow-auto rounded-lg border border-surface-200 bg-white shadow-lg dark:border-surface-700 dark:bg-surface-800"
+    >
+      <div class="sticky top-0 flex items-center justify-between border-b border-surface-200 bg-surface-50 px-3 py-1.5 text-xs font-medium text-surface-600 dark:border-surface-700 dark:bg-surface-800 dark:text-surface-300">
+        <span>{{ t('search.results') }} ({{ resultList.length }})</span>
+        <button class="text-surface-400 hover:text-surface-600 dark:hover:text-surface-300" @click="showResultsDrawer = false">
+          <Icon name="lucide:x" class="w-3.5 h-3.5" />
+        </button>
+      </div>
+      <button
+        v-for="(item, i) in resultList"
+        :key="item.path"
+        @click="jumpTo(item.path, i)"
+        class="block w-full border-b border-surface-100 px-3 py-1.5 text-left last:border-0 hover:bg-surface-50 dark:border-surface-800 dark:hover:bg-surface-700"
+      >
+        <div class="flex flex-wrap items-center gap-1.5 text-xs">
+          <span class="font-mono text-primary-600 dark:text-primary-400">{{ item.snippet }}</span>
+          <span class="rounded bg-surface-100 px-1 text-[10px] text-surface-500 dark:bg-surface-700">{{ item.kindLabel }}</span>
+          <span class="rounded bg-surface-100 px-1 text-[10px] text-surface-500 dark:bg-surface-700">{{ item.type }}</span>
+          <span v-if="item.parentArray" class="rounded bg-surface-100 px-1 text-[10px] text-surface-500 dark:bg-surface-700">@{{ item.parentArray }}</span>
+        </div>
+        <div class="mt-0.5 truncate font-mono text-[10px] text-surface-400 dark:text-surface-500">{{ item.path }}</div>
+      </button>
     </div>
 
     <!-- Text view -->
@@ -281,6 +316,8 @@
 
 <script setup lang="ts">
 import type { FieldError } from '~/types/jsonErrors'
+import type { SearchMode } from '~/composables/useTreeSearch'
+import { jsonTypeLabel } from '~/utils/jsonPath'
 
 // Single scroll viewport for the rich tree. Virtualized subtree lists window
 // against this element instead of creating a scroll box of their own, which is
@@ -370,12 +407,29 @@ const currentMode = computed(() => props.viewMode)
 const hasContent = computed(() => !!props.content)
 
 // Table mode helpers
-const isArrayData = computed(() => Array.isArray(props.parsedData))
+// Non-root array tables: a tree node can request any nested array to be shown
+// as a table. `tableOverride` wins over the root-array fallback.
+const tableOverride = ref<{ data: unknown[]; parentPath: string } | null>(null)
+
+function showArrayAsTable(path: string) {
+  const arr = valueAtPath(parsedDataRef.value, path)
+  if (Array.isArray(arr)) {
+    tableOverride.value = { data: arr, parentPath: path }
+    emit('update:viewMode', 'table')
+  }
+}
+provide('showArrayAsTable', showArrayAsTable)
+
+// Clear a stale override once the underlying document changes.
+watch(() => props.parsedData, () => { tableOverride.value = null })
+
+const isArrayData = computed(() => Array.isArray(tableOverride.value?.data ?? props.parsedData))
 const tableData = computed(() => {
+  if (tableOverride.value) return tableOverride.value.data
   if (!isArrayData.value) return null
   return props.parsedData as unknown[]
 })
-const tableParentPath = computed(() => '')
+const tableParentPath = computed(() => tableOverride.value?.parentPath ?? '')
 const lineCount = computed(() => {
   const lines = (props.content || '').split('\n')
   return Math.max(lines.length, 1)
@@ -398,7 +452,56 @@ function syncLineNumbers() {
 const parsedDataRef = computed(() => props.parsedData)
 const treeSearch = useTreeSearch(parsedDataRef)
 
+// ── Search results drawer (P0-4): list + jump to node ──
+const showResultsDrawer = ref(false)
+
+function valueAtPath(data: unknown, path: string): unknown {
+  if (data === null || data === undefined || !path) return data
+  const segs = path.replace(/\[(\d+)\]/g, '.$1').split('.').filter(Boolean)
+  let cur: any = data
+  for (const s of segs) {
+    if (cur == null) return undefined
+    cur = cur[s]
+  }
+  return cur
+}
+
+function arrayNameOf(path: string): string {
+  const m = /(.*)\[(\d+)\]/.exec(path)
+  if (!m) return ''
+  const parts = m[1].split('.')
+  return parts[parts.length - 1] || m[1]
+}
+
+function kindLabel(k: SearchMode): string {
+  if (k === 'key') return t('largeViewer.scopeKey')
+  if (k === 'value') return t('largeViewer.scopeValue')
+  if (k === 'path') return t('largeViewer.scopePath')
+  return t('largeViewer.scopeAll')
+}
+
+const resultList = computed(() => {
+  const list: { path: string; snippet: string; kindLabel: string; type: string; parentArray: string }[] = []
+  for (const [path, d] of treeSearch.matchDetails.value) {
+    list.push({
+      path,
+      snippet: d.snippet,
+      kindLabel: kindLabel(d.kind),
+      type: jsonTypeLabel(valueAtPath(parsedDataRef.value, path)),
+      parentArray: arrayNameOf(path),
+    })
+  }
+  return list
+})
+
+function jumpTo(path: string, index: number) {
+  treeSearch.currentIndex.value = index
+  locatePath.value = path
+  showResultsDrawer.value = false
+}
+
 const modes = computed(() => [
+  { value: 'all' as const, label: t('largeViewer.scopeAll') },
   { value: 'key' as const, label: t('tree.searchByKey') },
   { value: 'value' as const, label: t('tree.searchByValue') },
   { value: 'path' as const, label: t('tree.searchByPath') },

@@ -486,6 +486,8 @@
     "copyJsonPath": "复制 JSONPath",
     "copyParentPath": "复制父路径",
     "copyNode": "复制节点",
+    "copyValue": "复制值",
+    "arrayIndex": "下标",
     "closeInspector": "关闭检视",
     "pathPlaceholder": "JSONPath，例如 $.users[0].email",
     "pathGo": "跳转",
@@ -497,6 +499,7 @@
     "pathApprox": "已跳转到最接近的上层节点；深层子路径为近似跳转。",
     "preview": "预览节点",
     "selectToPreview": "选择一条匹配以预览其节点",
+    "matchedPath": "命中",
     "nodeTooLarge": "节点较大，预览已截断为前 {n} KB。",
     "nodeType": "类型",
     "nodeSize": "大小",
@@ -533,6 +536,18 @@
     "invalidReasonEof": "JSON 不完整：文件在值闭合前就结束了。",
     "invalidReasonToken": "发现非法字符：文件不是合法 JSON。",
     "invalidReasonEmpty": "文件为空。",
-    "invalidReasonScanner": "该文件是合法 JSON，但结构扫描器无法读取。CSV 导出依赖该扫描——请对小文件使用 JSON 编辑器，或反馈此文档以便修复扫描器。"
+    "invalidReasonScanner": "该文件是合法 JSON，但结构扫描器无法读取。CSV 导出依赖该扫描——请对小文件使用 JSON 编辑器，或反馈此文档以便修复扫描器。",
+    "table": {
+      "viewAsTable": "转表格",
+      "columns": "列",
+      "filterPlaceholder": "筛选行…",
+      "copyRow": "复制行",
+      "copyRowPath": "复制行路径",
+      "copyCellPath": "复制单元格路径",
+      "exportCsv": "导出 CSV",
+      "matching": "条匹配",
+      "emptyHint": "暂无可展示的数组数据",
+      "noMatch": "无匹配行"
+    }
   }
 }
