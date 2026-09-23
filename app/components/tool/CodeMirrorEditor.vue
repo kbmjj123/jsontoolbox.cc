@@ -23,7 +23,7 @@
 <script setup lang="ts">
 import CodeMirror from 'vue-codemirror6'
 import { json, jsonParseLinter } from '@codemirror/lang-json'
-import { EditorView, Decoration } from '@codemirror/view'
+import { EditorView, Decoration, lineNumbers } from '@codemirror/view'
 import { RangeSetBuilder, type Extension } from '@codemirror/state'
 import { syntaxHighlighting, HighlightStyle } from '@codemirror/language'
 import { tags } from '@lezer/highlight'
@@ -89,6 +89,12 @@ const extensions: Extension[] = [
     '.cm-gutters': {
       backgroundColor: 'transparent',
       border: 'none',
+      borderRight: '1px solid rgba(148, 163, 184, 0.25)',
+      color: '#94a3b8',
+    },
+    '.cm-lineNumbers .cm-gutterElement': {
+      padding: '0 8px 0 12px',
+      minWidth: '32px',
     },
     '.cm-activeLineGutter': {
       backgroundColor: 'transparent',
@@ -115,6 +121,7 @@ const extensions: Extension[] = [
     },
   }),
   EditorView.lineWrapping,
+  lineNumbers(),
   // JSON syntax colors — aligned with JsonOutputPanel
   syntaxHighlighting(HighlightStyle.define([
     { tag: tags.propertyName, color: '#7c3aed' },               // key — purple-600
