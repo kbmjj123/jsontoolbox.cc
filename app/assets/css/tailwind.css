@@ -681,6 +681,12 @@ html.dark .prose pre.shiki {
   min-height: 0;
   max-height: none;
 }
+/* When the compare tool owns fullscreen on its outer wrapper, let the inner
+   ResizablePanel also expand to fill the available height. */
+.cmp-fullscreen .rp-panels {
+  min-height: 0;
+  max-height: none;
+}
 @media (max-width: 767px) {
   .rp-responsive .rp-panels {
     flex-direction: column !important;

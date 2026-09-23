@@ -2,14 +2,22 @@ import { diff as jsonDiff } from 'jsondiffpatch'
 
 export interface DiffEntry {
   path: string
-  type: 'added' | 'removed' | 'changed'
+  type: 'added' | 'removed' | 'changed' | 'typeChanged'
   oldValue?: any
   newValue?: any
+  /** Only for typeChanged: e.g. "number → string" */
+  typeChange?: string
 }
 
 export interface LineDecoration {
   line: number
-  type: 'added' | 'removed' | 'changed'
+  type: 'added' | 'removed' | 'changed' | 'typeChanged'
+}
+
+export interface DiffOptions {
+  ignoreArrayOrder?: boolean
+  ignorePaths?: string[]
+  sortKeys?: boolean
 }
 
 export function useDiffLineMapping() {
@@ -19,15 +27,41 @@ export function useDiffLineMapping() {
   function computeAndMap(
     leftText: string,
     rightText: string,
-    ignoreArrayOrder = false
-  ): { diffs: DiffEntry[], leftLines: LineDecoration[], rightLines: LineDecoration[], leftPathLine: Map<string, number>, rightPathLine: Map<string, number> } {
-    const empty = { diffs: [] as DiffEntry[], leftLines: [] as LineDecoration[], rightLines: [] as LineDecoration[], leftPathLine: new Map<string, number>(), rightPathLine: new Map<string, number>() }
+    options: DiffOptions = {}
+  ): {
+    diffs: DiffEntry[]
+    leftLines: LineDecoration[]
+    rightLines: LineDecoration[]
+    leftPathLine: Map<string, number>
+    rightPathLine: Map<string, number>
+  } {
+    const empty = {
+      diffs: [] as DiffEntry[],
+      leftLines: [] as LineDecoration[],
+      rightLines: [] as LineDecoration[],
+      leftPathLine: new Map<string, number>(),
+      rightPathLine: new Map<string, number>(),
+    }
     let leftObj: any, rightObj: any
     try { leftObj = JSON.parse(leftText) } catch { return empty }
     try { rightObj = JSON.parse(rightText) } catch { return empty }
 
-    const options = ignoreArrayOrder ? { arrays: { detectMove: true, includeValueOnMove: false } } : {}
-    const delta = jsonDiff(leftObj, rightObj, undefined, undefined, options as any)
+    // ── Pre-normalization ──
+    let l = leftObj
+    let r = rightObj
+    if (options.sortKeys) {
+      l = normalizeKeys(l)
+      r = normalizeKeys(r)
+    }
+    if (options.ignorePaths && options.ignorePaths.length) {
+      l = stripIgnored(l, options.ignorePaths)
+      r = stripIgnored(r, options.ignorePaths)
+    }
+
+    const jdpOptions = options.ignoreArrayOrder
+      ? { arrays: { detectMove: true, includeValueOnMove: false } }
+      : {}
+    const delta = jsonDiff(l, r, undefined, undefined, jdpOptions as any)
 
     if (!delta) return empty
 
@@ -46,7 +80,7 @@ export function useDiffLineMapping() {
    * Delta format:
    *   Added:   [newValue]            — 1-element array
    *   Removed: [oldValue, 0, 0]     — 3-element array, last two are 0
-   *   Modified: [oldValue, newValue] — 2-element array
+   *   Modified: [oldValue, newValue] — 2-element array (typeChange if types differ)
    *   Nested:  { key: delta, ... }   — object (arrays have `_t: "a"`)
    */
   function flattenDelta(delta: any, basePath: string): DiffEntry[] {
@@ -57,7 +91,19 @@ export function useDiffLineMapping() {
       if (delta.length === 1) {
         results.push({ path: basePath, type: 'added', newValue: delta[0] })
       } else if (delta.length === 2) {
-        results.push({ path: basePath, type: 'changed', oldValue: delta[0], newValue: delta[1] })
+        const oldV = delta[0]
+        const newV = delta[1]
+        if (jsonTypeOf(oldV) !== jsonTypeOf(newV)) {
+          results.push({
+            path: basePath,
+            type: 'typeChanged',
+            oldValue: oldV,
+            newValue: newV,
+            typeChange: `${jsonTypeOf(oldV)} → ${jsonTypeOf(newV)}`,
+          })
+        } else {
+          results.push({ path: basePath, type: 'changed', oldValue: oldV, newValue: newV })
+        }
       } else if (delta.length === 3 && delta[1] === 0 && delta[2] === 0) {
         results.push({ path: basePath, type: 'removed', oldValue: delta[0] })
       }
@@ -93,11 +139,12 @@ export function useDiffLineMapping() {
 
   /**
    * Map diff entries to line numbers in a formatted JSON text.
+   * typeChanged is colored the same as changed (yellow).
    */
   function mapToLines(jsonText: string, diffs: DiffEntry[], side: 'left' | 'right'): { decorations: LineDecoration[], pathLine: Map<string, number> } {
     const pathTypeMap = new Map<string, 'added' | 'removed' | 'changed'>()
     for (const d of diffs) {
-      if (d.type === 'changed') {
+      if (d.type === 'changed' || d.type === 'typeChanged') {
         pathTypeMap.set(d.path, 'changed')
       } else if (side === 'left' && d.type === 'removed') {
         pathTypeMap.set(d.path, 'removed')
@@ -251,4 +298,71 @@ export function useDiffLineMapping() {
   }
 
   return { computeAndMap }
+}
+
+/**
+ * Stable JSON type name for comparison (null / array / object / string / number / boolean).
+ */
+function jsonTypeOf(v: any): string {
+  if (v === null) return 'null'
+  if (Array.isArray(v)) return 'array'
+  if (typeof v === 'object') return 'object'
+  return typeof v
+}
+
+/**
+ * Deep-recursively sort object keys (arrays keep their order), so that key
+ * order differences are not reported as changes when sortKeys is enabled.
+ */
+function normalizeKeys(value: any): any {
+  if (Array.isArray(value)) return value.map(normalizeKeys)
+  if (value && typeof value === 'object') {
+    const out: Record<string, any> = {}
+    for (const k of Object.keys(value).sort()) out[k] = normalizeKeys(value[k])
+    return out
+  }
+  return value
+}
+
+/**
+ * Return a copy of `value` with any path matching one of `patterns` removed.
+ * Pattern forms (matched against dot-paths like `users.profile.updatedAt`):
+ *   - `updatedAt`               → ignore any key named updatedAt (any depth)
+ *   - `*.updatedAt`             → same as above (leading wildcard prefix)
+ *   - `users.profile.updatedAt` → exact path only
+ */
+function stripIgnored(value: any, patterns: string[], basePath = ''): any {
+  if (Array.isArray(value)) {
+    return value.map((v, i) => stripIgnored(v, patterns, basePath ? `${basePath}.${i}` : String(i)))
+  }
+  if (value && typeof value === 'object') {
+    const out: Record<string, any> = {}
+    for (const k of Object.keys(value)) {
+      const cp = basePath ? `${basePath}.${k}` : k
+      if (isIgnored(cp, patterns)) continue
+      out[k] = stripIgnored(value[k], patterns, cp)
+    }
+    return out
+  }
+  return value
+}
+
+function isIgnored(path: string, patterns: string[]): boolean {
+  if (!patterns.length) return false
+  const segs = path.split('.')
+  for (const p of patterns) {
+    const ps = p.split('.').filter(Boolean)
+    if (ps.length === 0) continue
+    let start = 0
+    if (ps[0] === '*') {
+      // Standalone '*' would ignore everything — skip it intentionally.
+      if (ps.length === 1) continue
+      start = 1
+    }
+    const suffix = ps.slice(start)
+    if (suffix.length > segs.length) continue
+    const pathSuffix = segs.slice(segs.length - suffix.length)
+    if (suffix.every((s, i) => s === '*' || s === pathSuffix[i])) return true
+  }
+  return false
 }
