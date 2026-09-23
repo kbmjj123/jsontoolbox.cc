@@ -49,8 +49,8 @@
       </div>
       <div class="flex gap-2 items-center shrink-0 sm:ml-auto">
 
-        <!-- Search bar (rich mode only) -->
-        <template v-if="currentMode === 'rich' && parsedData !== null">
+        <!-- Search bar (rich mode only; hidden in compact contexts via `enableTreeSearch`) -->
+        <template v-if="currentMode === 'rich' && parsedData !== null && enableTreeSearch">
           <button
             @click="toggleExpandAll"
             class="text-xs text-surface-500 hover:text-surface-700 dark:text-surface-400 dark:hover:text-surface-200 whitespace-nowrap"
@@ -318,6 +318,8 @@ interface Props {
   masked?: boolean
   /** Set of sensitive field paths to mask */
   sensitivePaths?: Set<string>
+  /** Show the in-tree search controls in rich mode (expand all, mode picker, query, prev/next) */
+  enableTreeSearch?: boolean
 }
 
 const props = withDefaults(defineProps<Props>(), {
@@ -340,6 +342,7 @@ const props = withDefaults(defineProps<Props>(), {
   highlight: '',
   masked: false,
   sensitivePaths: () => new Set(),
+  enableTreeSearch: true,
 })
 
 const emit = defineEmits<{

@@ -3,65 +3,71 @@
     <div class="flex items-center gap-2 border-b border-surface-200 px-3 py-1.5 dark:border-surface-700">
       <Icon name="lucide:file-json" class="h-4 w-4 shrink-0 text-primary-600 dark:text-primary-400" />
       <code class="min-w-0 flex-1 truncate rounded bg-surface-100 px-2 py-0.5 font-mono text-xs text-surface-600 dark:bg-surface-800 dark:text-surface-300">{{ previewJsonPath }}</code>
-      <div class="flex shrink-0 items-center gap-1">
+      <div ref="pathMenuRef" class="relative flex shrink-0 items-center gap-1">
+        <!-- single copy action; the two path variants live in its menu -->
         <button
           type="button"
-          class="rounded-md border border-surface-200 px-2 py-1 text-xs hover:text-surface-700 disabled:opacity-40 dark:border-surface-700 dark:bg-surface-800 dark:text-surface-400"
+          class="lf-btn-sm"
           :disabled="!previewJsonPath || previewJsonPath === '$'"
-          :title="t('largeViewer.copyJsonPath')"
-          @click="copyJsonPath"
+          :title="t('largeViewer.copyPath')"
+          @click="showPathMenu = !showPathMenu"
         >
-          {{ copiedPath === 'path' ? '✓' : t('largeViewer.copyJsonPath') }}
+          <Icon :name="copiedPath ? 'lucide:check' : 'lucide:copy'" class="h-3.5 w-3.5" />
+          {{ t('largeViewer.copyPath') }}
         </button>
-        <button
-          type="button"
-          class="rounded-md border border-surface-200 px-2 py-1 text-xs hover:text-surface-700 disabled:opacity-40 dark:border-surface-700 dark:bg-surface-800 dark:text-surface-400"
-          :disabled="!previewJsonPath || previewJsonPath === '$'"
-          :title="t('largeViewer.copyParentPath')"
-          @click="copyParentPath"
+        <div
+          v-if="showPathMenu"
+          class="absolute right-0 top-full z-20 mt-1 w-48 rounded-lg border border-surface-200 bg-white p-1 shadow-lg dark:border-surface-700 dark:bg-surface-800"
         >
-          {{ copiedPath === 'parent' ? '✓' : t('largeViewer.copyParentPath') }}
-        </button>
+          <button
+            type="button"
+            class="block w-full rounded-md px-2 py-1.5 text-left text-xs text-surface-600 hover:bg-surface-100 dark:text-surface-300 dark:hover:bg-surface-700"
+            @click="copyJsonPath"
+          >
+            {{ t('largeViewer.copyJsonPath') }}
+          </button>
+          <button
+            type="button"
+            class="block w-full rounded-md px-2 py-1.5 text-left text-xs text-surface-600 hover:bg-surface-100 dark:text-surface-300 dark:hover:bg-surface-700"
+            @click="copyParentPath"
+          >
+            {{ t('largeViewer.copyParentPath') }}
+          </button>
+        </div>
+
         <button
           v-if="previewNodeType === 'array'"
           type="button"
-          class="flex items-center gap-1 rounded-md border border-primary-300 px-2 py-1 text-xs text-primary-700 hover:bg-primary-50 dark:border-primary-700 dark:bg-surface-800 dark:text-primary-300"
+          class="lf-btn-sm-primary"
           :title="t('largeViewer.arrayBrowse')"
           @click="emit('browse-array', previewJsonPath, props.hit.offset)"
         >
           <Icon name="lucide:list" class="h-3.5 w-3.5" />
           {{ t('largeViewer.arrayBrowse') }}
         </button>
-        <button
-          type="button"
-          class="rounded-md p-1 text-surface-500 hover:text-surface-700 dark:text-surface-400"
-          :title="t('largeViewer.closeInspector')"
-          @click="emit('close')"
-        >
-          <Icon name="lucide:x" class="h-4 w-4" />
-        </button>
       </div>
     </div>
 
     <!-- node metadata -->
-    <div class="flex flex-wrap items-center gap-x-4 gap-y-1 border-b border-surface-200 px-3 py-1.5 text-xs dark:border-surface-700">
-      <span class="flex items-center gap-1.5 text-surface-500 dark:text-surface-400">
-        <span class="font-medium text-surface-600 dark:text-surface-300">{{ t('largeViewer.nodeType') }}</span>
-        <code class="rounded bg-surface-100 px-1.5 py-0.5 font-mono text-surface-600 dark:bg-surface-800 dark:text-surface-300">{{ previewNodeType }}</code>
+    <div class="flex flex-wrap items-center gap-1.5 border-b border-surface-200 px-3 py-1.5 dark:border-surface-700">
+      <span class="lf-chip">
+        <span class="opacity-60">{{ t('largeViewer.nodeType') }}</span>
+        <span class="font-mono">{{ previewNodeType }}</span>
       </span>
-      <span class="flex items-center gap-1.5 text-surface-500 dark:text-surface-400">
-        <span class="font-medium text-surface-600 dark:text-surface-300">{{ t('largeViewer.nodeSize') }}</span>
-        <span class="font-mono text-surface-600 dark:text-surface-300">{{ formatBytes(previewNodeSize) }}</span>
+      <span class="lf-chip">
+        <span class="opacity-60">{{ t('largeViewer.nodeSize') }}</span>
+        <span class="font-mono">{{ formatBytes(previewNodeSize) }}</span>
       </span>
-      <span class="flex items-center gap-1.5 text-surface-500 dark:text-surface-400">
-        <span class="font-medium text-surface-600 dark:text-surface-300">{{ t('largeViewer.childCount') }}</span>
-        <span class="font-mono text-surface-600 dark:text-surface-300">{{ previewChildCount === null ? '—' : previewChildCount }}</span>
+      <span class="lf-chip">
+        <span class="opacity-60">{{ t('largeViewer.childCount') }}</span>
+        <span class="font-mono">{{ previewChildCount === null ? '—' : previewChildCount }}</span>
       </span>
     </div>
 
     <JsonOutputPanel
       class="min-h-0 flex-1"
-      :label="t('largeViewer.preview')"
+      :label="''"
+      :enable-tree-search="false"
       :content="previewPretty"
       :parsed-data="previewParsed"
       :view-mode="previewViewMode"
@@ -93,13 +99,24 @@ const props = defineProps<{
 
 const emit = defineEmits<{
   'browse-array': [path: string, offset: number]
-  close: []
 }>()
 
 const { t } = useI18n()
 
 const previewViewMode = ref<'text' | 'rich' | 'table'>('rich')
 const copiedPath = ref<'' | 'path' | 'parent'>('')
+const showPathMenu = ref(false)
+const pathMenuRef = ref<HTMLElement>()
+
+onMounted(() => {
+  const handler = (e: MouseEvent) => {
+    if (pathMenuRef.value && !pathMenuRef.value.contains(e.target as Node)) {
+      showPathMenu.value = false
+    }
+  }
+  document.addEventListener('click', handler)
+  onUnmounted(() => document.removeEventListener('click', handler))
+})
 
 const previewExtract = computed(() => extractNodeAt(props.rawText, props.hit.offset))
 const previewRaw = computed(() => previewExtract.value?.raw ?? '')
@@ -162,16 +179,19 @@ function flashPath(which: 'path' | 'parent') {
   setTimeout(() => { if (copiedPath.value === which) copiedPath.value = '' }, 1200)
 }
 async function copyJsonPath() {
+  showPathMenu.value = false
   if (!previewJsonPath.value || previewJsonPath.value === '$') return
   try { await navigator.clipboard.writeText(previewJsonPath.value); flashPath('path') } catch {}
 }
 async function copyParentPath() {
+  showPathMenu.value = false
   if (!previewJsonPath.value || previewJsonPath.value === '$') return
   try { await navigator.clipboard.writeText(parentOf(previewJsonPath.value)); flashPath('parent') } catch {}
 }
 
 watch(() => props.hit, () => {
   copiedPath.value = ''
+  showPathMenu.value = false
   previewViewMode.value = previewParsed.value ? 'rich' : 'text'
 })
 </script>

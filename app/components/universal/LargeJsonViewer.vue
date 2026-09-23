@@ -26,7 +26,7 @@
       >{{ lf.scanError.value.snippet }}</pre>
       <button
         type="button"
-        class="rounded-lg bg-primary-600 px-4 py-2 text-sm font-medium text-white hover:bg-primary-700 dark:bg-primary-500 dark:hover:bg-primary-600"
+        class="lf-btn-primary"
         @click="lf.reset()"
       >
         {{ t('largeViewer.chooseAnother') }}
@@ -38,15 +38,12 @@
       <div class="flex min-w-0 flex-1 flex-col">
       <!-- toolbar -->
       <div class="flex flex-wrap items-center gap-2">
-        <div class="flex min-w-0 items-center gap-2 text-sm">
-          <Icon :name="format === 'ndjson' ? 'lucide:list' : 'lucide:braces'" class="w-4 h-4 text-primary-600 dark:text-primary-400" />
+        <div class="flex min-w-0 items-center gap-1.5 text-sm">
+          <Icon :name="format === 'ndjson' ? 'lucide:list' : 'lucide:braces'" class="h-4 w-4 shrink-0 text-primary-600 dark:text-primary-400" />
           <span class="truncate font-medium text-surface-800 dark:text-surface-200">{{ lf.fileName.value }}</span>
-          <span class="text-surface-400 dark:text-surface-500">·</span>
-          <span class="text-surface-500 dark:text-surface-400">{{ formatBytes(lf.fileSize.value) }}</span>
-          <span class="text-surface-400 dark:text-surface-500">·</span>
-          <span class="uppercase text-surface-500 dark:text-surface-400">{{ format }}</span>
-          <span class="text-surface-400 dark:text-surface-500">·</span>
-          <span class="text-surface-500 dark:text-surface-400">{{ lineCount.toLocaleString() }} {{ t('largeViewer.lines') }}</span>
+          <span class="lf-chip">{{ formatBytes(lf.fileSize.value) }}</span>
+          <span class="lf-chip uppercase">{{ format }}</span>
+          <span class="lf-chip">{{ lineCount.toLocaleString() }} {{ t('largeViewer.lines') }}</span>
         </div>
 
         <!-- array pager (root sequence or a focused nested array) -->
@@ -60,11 +57,7 @@
               <span class="text-surface-400 dark:text-surface-500">·</span>
               <span class="font-mono">{{ arrayCount.toLocaleString() }}</span>
             </span>
-            <button
-              type="button"
-              class="rounded border border-surface-200 px-2 py-1 text-xs hover:text-surface-700 dark:border-surface-700 dark:bg-surface-800 dark:text-surface-400"
-              @click="exitArray"
-            >
+            <button type="button" class="lf-btn-sm" @click="exitArray">
               {{ t('largeViewer.backToRoot') }}
             </button>
           </template>
@@ -75,10 +68,10 @@
           <!-- jump to index -->
           <span class="text-xs text-surface-500 dark:text-surface-400">{{ t('largeViewer.jumpToIndex') }}</span>
           <div class="flex items-center gap-0.5">
-            <button type="button" class="rounded p-1 text-surface-500 hover:text-surface-700 disabled:opacity-30 dark:text-surface-400" :title="t('largeViewer.first')" @click="gotoElement(0)">
+            <button type="button" class="lf-btn-icon-sm" :title="t('largeViewer.first')" @click="gotoElement(0)">
               <Icon name="lucide:chevrons-left" class="h-4 w-4" />
             </button>
-            <button type="button" class="rounded p-1 text-surface-500 hover:text-surface-700 disabled:opacity-30 dark:text-surface-400" :disabled="arrayIndex <= 0" @click="gotoElement(arrayIndex - 1)">
+            <button type="button" class="lf-btn-icon-sm" :disabled="arrayIndex <= 0" @click="gotoElement(arrayIndex - 1)">
               <Icon name="lucide:chevron-left" class="h-4 w-4" />
             </button>
             <input
@@ -86,13 +79,13 @@
               min="1"
               :max="arrayCount"
               :value="arrayIndex + 1"
-              class="w-20 rounded border border-surface-200 bg-white px-2 py-1 text-center text-xs text-surface-700 dark:border-surface-700 dark:bg-surface-800 dark:text-surface-200"
+              class="lf-input-sm w-20 text-center"
               @change="onPageInput"
             >
-            <button type="button" class="rounded p-1 text-surface-500 hover:text-surface-700 disabled:opacity-30 dark:text-surface-400" :disabled="arrayIndex >= arrayCount - 1" @click="gotoElement(arrayIndex + 1)">
+            <button type="button" class="lf-btn-icon-sm" :disabled="arrayIndex >= arrayCount - 1" @click="gotoElement(arrayIndex + 1)">
               <Icon name="lucide:chevron-right" class="h-4 w-4" />
             </button>
-            <button type="button" class="rounded p-1 text-surface-500 hover:text-surface-700 disabled:opacity-30 dark:text-surface-400" :title="t('largeViewer.last')" @click="gotoElement(arrayCount - 1)">
+            <button type="button" class="lf-btn-icon-sm" :title="t('largeViewer.last')" @click="gotoElement(arrayCount - 1)">
               <Icon name="lucide:chevrons-right" class="h-4 w-4" />
             </button>
           </div>
@@ -100,18 +93,14 @@
           <!-- page size + page navigation + current range -->
           <span class="flex items-center gap-1 text-xs text-surface-500 dark:text-surface-400">
             {{ t('largeViewer.pageSize') }}
-            <select
-              :value="pageSize"
-              class="rounded border border-surface-200 bg-white px-1 py-1 text-xs text-surface-700 dark:border-surface-700 dark:bg-surface-800 dark:text-surface-200"
-              @change="onPageSize"
-            >
+            <select :value="pageSize" class="lf-select-sm" @change="onPageSize">
               <option v-for="s in pageSizes" :key="s" :value="s">{{ s }}</option>
             </select>
           </span>
           <div class="flex items-center gap-0.5">
             <button
               type="button"
-              class="rounded px-2 py-1 text-xs text-surface-600 hover:bg-surface-100 disabled:opacity-30 dark:text-surface-400 dark:hover:bg-surface-700"
+              class="lf-btn-sm"
               :disabled="pageStart <= 0"
               @click="gotoElement(Math.max(0, pageStart - pageSize))"
             >
@@ -119,7 +108,7 @@
             </button>
             <button
               type="button"
-              class="rounded px-2 py-1 text-xs text-surface-600 hover:bg-surface-100 disabled:opacity-30 dark:text-surface-400 dark:hover:bg-surface-700"
+              class="lf-btn-sm"
               :disabled="pageStart + pageSize >= arrayCount"
               @click="gotoElement(Math.min(arrayCount - 1, pageStart + pageSize))"
             >
@@ -131,34 +120,54 @@
           </span>
         </div>
 
-        <div class="ml-auto flex items-center gap-2">
+        <div class="ml-auto flex items-center gap-1.5">
+          <!-- structure overview toggle -->
+          <button
+            type="button"
+            class="lf-btn-icon-sm"
+            :class="structureOpen ? 'active' : ''"
+            :title="t('largeViewer.structure')"
+            @click="structureOpen = !structureOpen"
+          >
+            <Icon name="lucide:binary" class="h-4 w-4" />
+          </button>
+
+          <!-- go-to-path toggle -->
+          <button
+            type="button"
+            class="lf-btn-icon-sm"
+            :class="pathOpen ? 'active' : ''"
+            :title="t('largeViewer.pathTitle')"
+            @click="pathOpen = !pathOpen"
+          >
+            <Icon name="lucide:route" class="h-4 w-4" />
+          </button>
+
           <!-- wrap toggle -->
           <button
             type="button"
-            class="rounded-lg border px-2.5 py-1.5 text-xs transition-colors"
-            :class="wrap
-              ? 'border-primary-400 bg-primary-50 text-primary-700 dark:border-primary-500 dark:bg-primary-900/30 dark:text-primary-300'
-              : 'border-surface-200 text-surface-500 hover:text-surface-700 dark:border-surface-700 dark:bg-surface-800 dark:text-surface-400'"
+            class="lf-btn-icon-sm"
+            :class="wrap ? 'active' : ''"
             :title="t('largeViewer.wrap')"
             @click="wrap = !wrap"
           >
-            {{ t('largeViewer.wrap') }}
+            <Icon name="lucide:wrap-text" class="h-4 w-4" />
           </button>
 
           <!-- fullscreen -->
           <button
             type="button"
-            class="rounded-lg border border-surface-200 p-1.5 text-surface-500 hover:text-surface-700 dark:border-surface-700 dark:bg-surface-800 dark:text-surface-400"
+            class="lf-btn-icon-sm"
             :title="isFullscreen ? t('largeViewer.exitFullscreen') : t('largeViewer.fullscreen')"
             @click="toggle"
           >
-            <Icon :name="isFullscreen ? 'lucide:minimize' : 'lucide:maximize'" class="w-4 h-4" />
+            <Icon :name="isFullscreen ? 'lucide:minimize' : 'lucide:maximize'" class="h-4 w-4" />
           </button>
         </div>
       </div>
 
-      <!-- structure overview -->
-      <div v-if="lf.scan.value?.ok" class="mt-2">
+      <!-- structure overview (collapsed by default) -->
+      <div v-if="structureOpen && lf.scan.value?.ok" class="mt-2">
         <LargeFileStructure :scan="lf.scan.value" />
       </div>
 
@@ -196,22 +205,18 @@
         </p>
       </div>
 
-      <!-- go-to-path bar -->
-      <div class="mt-2 flex flex-wrap items-center gap-2">
-        <div class="flex min-w-0 flex-1 items-center gap-2 rounded-lg border border-surface-200 bg-surface-50 px-2 py-1 dark:border-surface-700 dark:bg-surface-900">
+      <!-- go-to-path bar (collapsed by default) -->
+      <div v-if="pathOpen" class="mt-2 flex flex-wrap items-center gap-2">
+        <div class="flex min-w-0 flex-1 items-center gap-2">
           <Icon name="lucide:route" class="h-4 w-4 shrink-0 text-surface-400" />
           <input
             v-model="pathInput"
             type="text"
             :placeholder="t('largeViewer.pathPlaceholder')"
-            class="min-w-0 flex-1 bg-transparent font-mono text-xs text-surface-700 outline-none dark:text-surface-200"
+            class="lf-input min-w-0 flex-1 font-mono"
             @keydown.enter="onGoPath"
           >
-          <button
-            type="button"
-            class="rounded-md bg-primary-600 px-2.5 py-1 text-xs font-medium text-white hover:bg-primary-700 dark:bg-primary-500"
-            @click="onGoPath"
-          >
+          <button type="button" class="lf-btn-primary" @click="onGoPath">
             {{ t('largeViewer.pathGo') }}
           </button>
         </div>
@@ -239,42 +244,55 @@
 
         <!-- results panel -->
         <div
-          class="shrink-0 overflow-hidden border-t border-surface-200 dark:border-surface-700"
-          :style="{ height: resultsOpen ? resultsHeight + 'px' : '34px' }"
+          class="flex shrink-0 flex-col overflow-hidden border-t border-surface-200 dark:border-surface-700"
+          :style="{ height: resultsOpen ? resultsHeight + 'px' : '36px' }"
         >
-          <div
-            class="flex h-[34px] cursor-row-resize items-center justify-between px-3 text-xs text-surface-500 dark:text-surface-400"
-            @mousedown="onDragStart"
-          >
-            <button type="button" class="flex items-center gap-1 hover:text-surface-700 dark:hover:text-surface-200" @click="resultsOpen = !resultsOpen">
-              <Icon :name="resultsOpen ? 'lucide:chevron-down' : 'lucide:chevron-up'" class="w-4 h-4" />
-              {{ t('largeViewer.results') }}
-            </button>
-            <span>{{ lf.searchHits.value.length ? `${lf.currentHit.value + 1}/${lf.searchHits.value.length}` : '' }}</span>
-          </div>
+          <!-- merged header: drag grip + tabs + hit counter + collapse -->
+          <div class="flex h-9 shrink-0 items-center gap-2 border-b border-surface-200 px-2 dark:border-surface-700">
+            <span
+              class="flex h-8 w-6 shrink-0 cursor-row-resize items-center justify-center rounded text-surface-400 hover:bg-surface-100 hover:text-surface-600 dark:hover:bg-surface-800"
+              :title="t('largeViewer.results')"
+              @mousedown="onDragStart"
+            >
+              <Icon name="lucide:grip-horizontal" class="h-4 w-4" />
+            </span>
 
-          <div v-if="resultsOpen" class="flex min-h-0 flex-1 flex-col">
-            <!-- tabs -->
-            <div class="flex shrink-0 items-center gap-1 border-b border-surface-200 px-2 dark:border-surface-700">
+            <div class="flex h-9 shrink-0 items-center gap-1">
               <button
                 type="button"
-                class="px-3 py-1.5 text-sm"
-                :class="previewTab === 'results' ? 'border-b-2 border-primary-500 font-medium text-primary-600 dark:text-primary-400' : 'text-surface-500 hover:text-surface-700 dark:text-surface-400 dark:hover:text-surface-200'"
+                class="relative flex h-full items-center px-2.5 text-xs font-medium transition-colors"
+                :class="previewTab === 'results' ? 'text-primary-600 dark:text-primary-400' : 'text-surface-500 hover:text-surface-700 dark:text-surface-400 dark:hover:text-surface-200'"
                 @click="previewTab = 'results'"
               >
                 {{ t('largeViewer.results') }}
+                <span v-if="previewTab === 'results'" class="absolute inset-x-1.5 -bottom-px h-0.5 rounded-full bg-primary-500" />
               </button>
               <button
                 type="button"
-                class="px-3 py-1.5 text-sm disabled:opacity-40"
-                :class="previewTab === 'preview' ? 'border-b-2 border-primary-500 font-medium text-primary-600 dark:text-primary-400' : 'text-surface-500 hover:text-surface-700 dark:text-surface-400 dark:hover:text-surface-200'"
+                class="relative flex h-full items-center px-2.5 text-xs font-medium transition-colors disabled:opacity-40"
+                :class="previewTab === 'preview' ? 'text-primary-600 dark:text-primary-400' : 'text-surface-500 hover:text-surface-700 dark:text-surface-400 dark:hover:text-surface-200'"
                 :disabled="!previewHit"
                 @click="previewTab = 'preview'"
               >
                 {{ t('largeViewer.preview') }}
+                <span v-if="previewTab === 'preview'" class="absolute inset-x-1.5 -bottom-px h-0.5 rounded-full bg-primary-500" />
               </button>
             </div>
 
+            <span class="ml-auto text-xs tabular-nums text-surface-500 dark:text-surface-400">
+              {{ lf.searchHits.value.length ? `${lf.currentHit.value + 1}/${lf.searchHits.value.length}` : '' }}
+            </span>
+            <button
+              type="button"
+              class="flex h-8 w-8 shrink-0 items-center justify-center rounded-lg text-surface-500 hover:bg-surface-100 dark:text-surface-400 dark:hover:bg-surface-800"
+              :title="resultsOpen ? t('largeViewer.collapse') : t('largeViewer.expand')"
+              @click="resultsOpen = !resultsOpen"
+            >
+              <Icon :name="resultsOpen ? 'lucide:chevron-down' : 'lucide:chevron-up'" class="h-4 w-4" />
+            </button>
+          </div>
+
+          <div v-if="resultsOpen" class="flex min-h-0 flex-1 flex-col">
             <!-- results list -->
             <div v-show="previewTab === 'results'" class="min-h-0 flex-1">
               <LargeFileResults
@@ -304,7 +322,6 @@
                 :raw-text="lf.rawText.value"
                 :file-name="lf.fileName.value"
                 @browse-array="enterArray"
-                @close="previewTab = 'results'"
               />
               <div v-else class="flex h-full items-center justify-center px-4 text-center text-sm text-surface-400 dark:text-surface-500">
                 {{ t('largeViewer.selectToPreview') }}
@@ -342,6 +359,8 @@ const lf = useLargeFile()
 const handoff = useLargeFileHandoff()
 
 const wrap = ref(false)
+const structureOpen = ref(false)
+const pathOpen = ref(false)
 const focusLine = ref(0)
 const resultsOpen = ref(true)
 const resultsHeight = ref(300)

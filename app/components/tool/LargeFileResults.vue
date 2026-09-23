@@ -14,7 +14,7 @@
 
         <button
           type="button"
-          class="rounded-md border border-surface-200 px-2 py-1 text-xs text-surface-600 hover:bg-surface-100 dark:border-surface-700 dark:bg-surface-800 dark:text-surface-300"
+          class="lf-btn-sm"
           @click="showExport = !showExport"
         >
           <Icon name="lucide:download" class="inline w-3.5 h-3.5" /> {{ t('largeViewer.export') }}
@@ -58,7 +58,7 @@
               <button
                 v-if="row.hit.path"
                 type="button"
-                class="rounded p-1 text-surface-400 hover:text-surface-700 dark:hover:text-surface-200"
+                class="lf-btn-icon-sm"
                 :title="t('largeViewer.copyPath')"
                 @click.stop="copyPath(row.hit.path!)"
               >
@@ -66,7 +66,7 @@
               </button>
               <button
                 type="button"
-                class="rounded p-1 text-surface-400 hover:text-surface-700 dark:hover:text-surface-200"
+                class="lf-btn-icon-sm"
                 :title="t('largeViewer.copyMatch')"
                 @click.stop="copyMatch(row.hit)"
               >
@@ -74,7 +74,7 @@
               </button>
               <button
                 type="button"
-                class="rounded p-1 text-surface-400 hover:text-surface-700 dark:hover:text-surface-200"
+                class="lf-btn-icon-sm"
                 :title="t('largeViewer.preview')"
                 @click.stop="emit('preview', row.hit)"
               >

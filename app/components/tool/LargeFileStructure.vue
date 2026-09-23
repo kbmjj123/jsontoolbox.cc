@@ -19,8 +19,8 @@
       <span
         v-for="t in typeEntries"
         :key="t.key"
-        class="rounded px-1.5 py-0.5 font-mono text-[11px]"
-        :class="t.count ? 'bg-surface-200 text-surface-700 dark:bg-surface-800 dark:text-surface-300' : 'text-surface-300 dark:text-surface-600'"
+        class="lf-chip font-mono"
+        :class="t.count ? '' : 'opacity-50'"
       >{{ t.label }}: {{ t.count }}</span>
     </span>
 
