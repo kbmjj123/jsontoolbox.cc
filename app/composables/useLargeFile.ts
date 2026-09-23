@@ -11,7 +11,7 @@ import type {
   ArrayMode,
 } from '~/workers/recordStream.worker'
 import type { SearchTextHit } from '~/utils/textSearch'
-import { offsetToLineCol } from '~/utils/textSearch'
+import { offsetToLineCol, parseJsonPath, keyValueStart, collectArrayChildOffsets } from '~/utils/textSearch'
 
 export type LfStatus =
   | 'idle'
@@ -171,6 +171,11 @@ export interface ExportOptions {
   maxRows?: number
 }
 
+/** Result of resolving a JSONPath to a concrete location in the document. */
+export type PathLocateResult =
+  | { ok: true; offset: number; line: number; path: string; approximate: boolean }
+  | { ok: false; messageKey: string; params?: Record<string, unknown> }
+
 export function useLargeFile() {
   let worker: Worker | null = null
   let reqId = 0
@@ -198,7 +203,7 @@ export function useLargeFile() {
   const csvHeaders = ref<string[]>([])
   const searchHits = ref<SearchTextHit[]>([])
   const searchQuery = ref('')
-  const searchScope = ref<'key' | 'value' | 'path'>('value')
+  const searchScope = ref<'key' | 'value' | 'path' | 'all'>('all')
   const searchCaseSensitive = ref(false)
   const searchProgress = ref<{ scanned: number; total: number; matches: number }>({ scanned: 0, total: 0, matches: 0 })
   const searchTruncated = ref(false)
@@ -428,7 +433,7 @@ export function useLargeFile() {
 
   async function searchText(
     query: string,
-    scope: 'key' | 'value' | 'path' = 'value',
+    scope: 'key' | 'value' | 'path' | 'all' = 'all',
     caseSensitive = false,
     limit = 5000,
   ) {
@@ -470,25 +475,141 @@ export function useLargeFile() {
   function nextHit() { gotoHit(currentHit.value + 1) }
   function prevHit() { gotoHit(currentHit.value - 1) }
 
+  /** Binary-search the top-level array element that contains the given 1-based
+   *  line. For NDJSON the line number itself is the element index. Returns -1
+   *  when the document is not a paged sequence or the line is out of range. */
+  function elementIndexAtLine(line: number): number {
+    const ak = arrayKind.value
+    if (ak === 'ndjson') return line - 1
+    const offs = topArray.value
+    const lo = scan.value?.lineOffsets
+    if (!offs || !lo || line < 1) return -1
+    const ch = lo[line - 1] ?? 0
+    let l = 0
+    let h = offs.length - 1
+    let ans = -1
+    while (l <= h) {
+      const mid = (l + h) >> 1
+      if (offs[mid] <= ch) { ans = mid; l = mid + 1 }
+      else h = mid - 1
+    }
+    return ans
+  }
+
+  /**
+   * Resolve a JSONPath to a concrete node and return where to scroll/preview.
+   *
+   * Supported precisely:
+   *  - root array / NDJSON element: `$[N]` (jumps to that element).
+   *  - object-rooted top-level key: `$.key` (jumps to the value, previews it).
+   *
+   * Deeper steps (e.g. `$.users[0].email`) are resolved to the closest
+   * container the viewer can locate; `approximate` is set so the UI can warn
+   * the jump is not exact. Returns an error key (localized by the caller) when
+   * the path is malformed or cannot be resolved.
+   */
+  function gotoPath(jsonPath: string): PathLocateResult {
+    if (!scan.value?.ok) return { ok: false, messageKey: 'largeViewer.pathInvalid' }
+    const segs = parseJsonPath(jsonPath)
+    if (segs === null) return { ok: false, messageKey: 'largeViewer.pathInvalid' }
+    const ak = arrayKind.value
+
+    if (ak === 'json-array' || ak === 'ndjson') {
+      const first = segs[0]
+      if (!first || first.kind !== 'index')
+        return { ok: false, messageKey: 'largeViewer.pathNeedIndex' }
+      const idx = first.value
+      let off: number
+      let line: number
+      if (ak === 'ndjson') {
+        const total = scan.value.lineOffsets?.length ?? 0
+        if (idx < 0 || idx >= total) return { ok: false, messageKey: 'largeViewer.pathOutOfRange' }
+        line = idx + 1
+        off = scan.value.lineOffsets![idx] ?? 0
+      } else {
+        const offs = topArray.value
+        if (!offs || idx < 0 || idx >= offs.length) return { ok: false, messageKey: 'largeViewer.pathOutOfRange' }
+        off = offs[idx]
+        line = elementLine(idx)
+      }
+      if (!off || line <= 0) return { ok: false, messageKey: 'largeViewer.pathOutOfRange' }
+      return { ok: true, offset: off, line, path: `[${idx}]`, approximate: segs.length > 1 }
+    }
+
+    // object-rooted document
+    const first = segs[0]
+    if (!first || first.kind !== 'key')
+      return { ok: false, messageKey: 'largeViewer.pathInvalid' }
+    const entry = scan.value.topKeys?.find(k => k.key === first.name)
+    if (!entry) return { ok: false, messageKey: 'largeViewer.pathKeyNotFound', params: { key: first.name } }
+    const lo = scan.value.lineOffsets
+    if (!lo) return { ok: false, messageKey: 'largeViewer.pathInvalid' }
+    const line = offsetToLineCol(lo, entry.offset).line
+    const off = keyValueStart(rawText.value, entry.offset)
+    return { ok: true, offset: off, line, path: first.name, approximate: segs.length > 1 }
+  }
+
   /** Whether the document is a paged sequence (NDJSON lines or a JSON root array). */
   const arrayKind = computed<'ndjson' | 'json-array' | null>(() =>
     format.value === 'ndjson' ? 'ndjson'
       : topArray.value && topArray.value.length ? 'json-array'
       : null,
   )
-  /** Number of top-level items, for the pager. */
+  /** Number of top-level items, for the pager (root sequence / NDJSON). */
   const arrayCount = computed(() =>
     arrayKind.value === 'ndjson'
       ? (scan.value?.lineOffsets?.length ?? 0)
       : (topArray.value?.length ?? 0),
   )
-  /** 1-based line of the i-th top-level element (0-based input). Returns 0 when
-   *  out of range so callers can ignore it. */
+
+  // --- "browse a large array" context ---------------------------------------
+  // When the user focuses a (possibly nested) array via its JSONPath, the pager
+  // switches from the root sequence to that array. `currentArrayOffsets` holds
+  // the start offsets of its direct children; `currentArrayTotal` is its length.
+  const currentArrayPath = ref<string | null>(null)
+  const currentArrayOffsets = ref<number[]>([])
+  const currentArrayStart = ref(0)
+  const currentArrayTotal = ref(0)
+  /** Number of items in the pager's current context (focused array or root). */
+  const currentArrayCount = computed(() =>
+    currentArrayPath.value ? currentArrayTotal.value : arrayCount.value,
+  )
+  function setCurrentArray(path: string, startOffset: number) {
+    currentArrayPath.value = path
+    currentArrayStart.value = startOffset
+    const res = collectArrayChildOffsets(rawText.value, startOffset)
+    currentArrayOffsets.value = res.offsets
+    currentArrayTotal.value = res.total
+  }
+  function clearCurrentArray() {
+    currentArrayPath.value = null
+    currentArrayOffsets.value = []
+    currentArrayStart.value = 0
+    currentArrayTotal.value = 0
+  }
+  /** Offset of the i-th child of the focused array. For indices beyond the
+   *  stored buffer, re-scan from the array start (O(i), fine for normal jumps). */
+  function focusArrayChildOffset(i: number): number | null {
+    const stored = currentArrayOffsets.value
+    if (i >= 0 && i < stored.length) return stored[i]
+    if (i < 0 || i >= currentArrayTotal.value) return null
+    const lim = collectArrayChildOffsets(rawText.value, currentArrayStart.value, i + 1, false)
+    return lim.offsets[i] ?? null
+  }
+
+  /** 1-based line of the i-th element of the pager's current context
+   *  (focused array or root sequence). Returns 0 when out of range. */
   function elementLine(i: number): number {
+    const lineOffsets = scan.value?.lineOffsets
+    if (!lineOffsets) return 0
+    if (currentArrayPath.value) {
+      const off = focusArrayChildOffset(i)
+      if (off == null) return 0
+      return offsetToLineCol(lineOffsets, off).line
+    }
     if (arrayKind.value === 'ndjson') return i + 1
     const offs = topArray.value
-    const lineOffsets = scan.value?.lineOffsets
-    if (!offs || !lineOffsets || i < 0 || i >= offs.length) return 0
+    if (!offs || i < 0 || i >= offs.length) return 0
     return offsetToLineCol(lineOffsets, offs[i]).line
   }
 
@@ -548,6 +669,11 @@ export function useLargeFile() {
     currentHit,
     arrayKind,
     arrayCount,
+    currentArrayPath,
+    currentArrayCount,
+    setCurrentArray,
+    clearCurrentArray,
+    topArray,
     elementLine,
     exportTotal,
     exportDone,
@@ -564,6 +690,8 @@ export function useLargeFile() {
     gotoHit,
     nextHit,
     prevHit,
+    gotoPath,
+    elementIndexAtLine,
     cancel,
     reset,
     updatePreviewHeaders,

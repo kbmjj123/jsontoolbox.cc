@@ -51,6 +51,9 @@ export interface ScanResult {
   /** Start offset of each top-level element of a root JSON array — powers the
    *  array pager. Absent for NDJSON (use lineOffsets) and object-rooted docs. */
   topArray?: Uint32Array
+  /** Offsets of top-level keys of an object-rooted document — powers "go to
+   *  path" ($["key"]). Empty/absent for root arrays and NDJSON. */
+  topKeys?: { key: string; offset: number }[]
   rootType: 'object' | 'array' | null
   format: FileFormat
   /** Records in the primary collection (root array or NDJSON lines). */
@@ -149,7 +152,7 @@ export interface SearchTextRequest {
   id: number
   mode: 'searchText'
   query: string
-  searchMode: 'key' | 'value' | 'path'
+  searchMode: 'key' | 'value' | 'path' | 'all'
   caseSensitive: boolean
   limit: number
 }
@@ -437,6 +440,7 @@ self.onmessage = (e: MessageEvent<Request>) => {
       // ── JSON ──
       const seen: { path: string; count: number; start: number; end: number; depth: number }[] = []
       const typeCounts = emptyTypeCounts()
+      const topKeys: { key: string; offset: number }[] = []
       let maxDepth = 0
       let err: { message: string; position: number; reason?: ScanFailReason } | null = null
       try {
@@ -449,6 +453,9 @@ self.onmessage = (e: MessageEvent<Request>) => {
           onValue: (type, depth) => {
             typeCounts[type]++
             if ((type === 'object' || type === 'array') && depth > maxDepth) maxDepth = depth
+          },
+          onKey: (key, offset, depth) => {
+            if (depth === 1) topKeys.push({ key, offset })
           },
         })
         rootType = r.rootType
@@ -518,6 +525,7 @@ self.onmessage = (e: MessageEvent<Request>) => {
         recordCount, candidates, bytes: docText.length,
         lineOffsets: allLineOffsets, maxDepth, typeCounts,
         topArray: rootType === 'array' ? new Uint32Array(collectRootArrayElementOffsets(docText)) : undefined,
+        topKeys: rootType === 'object' ? topKeys : undefined,
       }
       self.postMessage(res)
     } catch (outer) {

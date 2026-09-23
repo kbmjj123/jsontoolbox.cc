@@ -34,35 +34,6 @@
       </div>
     </div>
 
-    <!-- context of current hit -->
-    <div v-if="currentHit" class="border-b border-surface-200 bg-surface-50 px-3 py-2 dark:border-surface-700 dark:bg-surface-900">
-      <div class="mb-1 flex items-center justify-between">
-        <span class="text-xs text-surface-500 dark:text-surface-400">
-          {{ t('largeViewer.context') }} · {{ t('largeViewer.results') }} #{{ currentIndex + 1 }} ·
-          L{{ currentHit.line }}:{{ currentHit.column }}
-        </span>
-        <button
-          type="button"
-          class="rounded border border-surface-200 px-2 py-0.5 text-xs text-surface-600 hover:bg-surface-100 dark:border-surface-700 dark:bg-surface-800 dark:text-surface-300"
-          @click="copyContext"
-        >
-          {{ t('largeViewer.copyContext') }}
-        </button>
-        <button
-          type="button"
-          class="rounded border border-surface-200 px-2 py-0.5 text-xs text-surface-600 hover:bg-surface-100 dark:border-surface-700 dark:bg-surface-800 dark:text-surface-300"
-          @click="copyMatch(currentHit)"
-        >
-          {{ t('largeViewer.copyMatch') }}
-        </button>
-      </div>
-      <pre class="overflow-x-auto rounded bg-surface-100 p-2 font-mono text-[12px] leading-[18px] text-surface-700 dark:bg-surface-800 dark:text-surface-300"><span
-        v-for="ln in contextLines"
-        :key="ln.line"
-        :class="ln.isMatch ? 'block bg-amber-100 dark:bg-amber-900/40' : 'block'"
-      ><span class="mr-2 select-none text-surface-400">{{ ln.line }}</span>{{ ln.text }}</span></pre>
-    </div>
-
     <!-- list -->
     <div ref="listRef" class="min-h-0 flex-1 overflow-auto" @scroll.passive="onScroll">
       <div class="relative" :style="{ height: listHeight + 'px' }">
@@ -92,6 +63,14 @@
                 @click.stop="copyPath(row.hit.path!)"
               >
                 <Icon name="lucide:copy" class="h-3.5 w-3.5" />
+              </button>
+              <button
+                type="button"
+                class="rounded p-1 text-surface-400 hover:text-surface-700 dark:hover:text-surface-200"
+                :title="t('largeViewer.copyMatch')"
+                @click.stop="copyMatch(row.hit)"
+              >
+                <Icon name="lucide:clipboard-list" class="h-3.5 w-3.5" />
               </button>
               <button
                 type="button"
@@ -157,35 +136,6 @@ const visibleRows = computed(() => {
 
 function onScroll() {
   if (listRef.value) scrollTop.value = listRef.value.scrollTop
-}
-
-const currentHit = computed(() => props.hits[props.currentIndex] ?? null)
-
-const contextLines = computed(() => {
-  const h = currentHit.value
-  if (!h || !props.lineOffsets) return []
-  const total = props.lineOffsets.length
-  const from = Math.max(1, h.line - 3)
-  const to = Math.min(total, h.line + 3)
-  const out = []
-  for (let l = from; l <= to; l++) {
-    const start = props.lineOffsets[l - 1]
-    let end = l < props.lineOffsets.length ? props.lineOffsets[l] : props.text.length
-    let s = props.text.slice(start, end)
-    if (s.endsWith('\n')) s = s.slice(0, -1)
-    if (s.endsWith('\r')) s = s.slice(0, -1)
-    out.push({ line: l, text: s, isMatch: l === h.line })
-  }
-  return out
-})
-
-async function copyContext() {
-  const text = contextLines.value.map(l => `${l.line}\t${l.text}`).join('\n')
-  try {
-    await navigator.clipboard.writeText(text)
-  } catch {
-    /* clipboard may be unavailable; ignore */
-  }
 }
 
 async function copyMatch(hit: SearchTextHit | null) {

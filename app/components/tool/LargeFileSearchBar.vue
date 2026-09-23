@@ -22,6 +22,7 @@
       class="rounded-lg border border-surface-200 bg-white px-2 py-2 text-sm text-surface-700 dark:border-surface-700 dark:bg-surface-800 dark:text-surface-200"
       @change="emit('update:scope', ($event.target as HTMLSelectElement).value as Scope)"
     >
+      <option value="all">{{ t('largeViewer.scopeAll') }}</option>
       <option value="value">{{ t('largeViewer.scopeValue') }}</option>
       <option value="key">{{ t('largeViewer.scopeKey') }}</option>
       <option value="path">{{ t('largeViewer.scopePath') }}</option>
@@ -86,7 +87,7 @@
 </template>
 
 <script setup lang="ts">
-type Scope = 'key' | 'value' | 'path'
+type Scope = 'key' | 'value' | 'path' | 'all'
 
 defineProps<{
   query: string

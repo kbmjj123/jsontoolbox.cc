@@ -30,6 +30,10 @@ export interface ScanHooks {
   targetPath?: string
   /** Called for every JSON value read, with its type and container depth (root = 1). */
   onValue?: (type: JsonValueType, depth: number) => void
+  /** Called for each object key, with the key name, the offset of its opening
+   *  quote, and the depth of the containing object (root object = 1). Used to
+   *  build a top-level-key offset index for object-rooted documents. */
+  onKey?: (key: string, offset: number, depth: number) => void
 }
 
 interface Frame {
@@ -228,6 +232,7 @@ export function scanJson(text: string, hooks: ScanHooks = {}): { rootType: 'obje
       readString()
       if (expectKey) {
         pendingSeg = text.slice(start + 1, i - 1)
+        if (hooks.onKey) hooks.onKey(pendingSeg, start, stack.length)
         expectKey = false
         expectColon = true
         // The key is real content after a comma — clear the flag so an empty

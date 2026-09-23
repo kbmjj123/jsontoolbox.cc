@@ -18,7 +18,7 @@ export interface SearchTextHit {
 }
 
 export interface SearchTextOptions {
-  mode: 'key' | 'value' | 'path'
+  mode: 'key' | 'value' | 'path' | 'all'
   caseSensitive?: boolean
   limit?: number
 }
@@ -182,7 +182,7 @@ export function searchStructured(
 
     if (c === '{') {
       const vp = valuePath()
-      if (mode === 'path') test(vp, i, vp, 'path')
+      if (mode === 'path' || mode === 'all') test(vp, i, vp, 'path')
       prefixStack.push(vp)
       containerTypes.push('o')
       pendingKey = null
@@ -198,7 +198,7 @@ export function searchStructured(
     }
     if (c === '[') {
       const vp = valuePath()
-      if (mode === 'path') test(vp, i, vp, 'path')
+      if (mode === 'path' || mode === 'all') test(vp, i, vp, 'path')
       prefixStack.push(vp)
       containerTypes.push('a')
       arrIdx = 0
@@ -235,11 +235,11 @@ export function searchStructured(
         expectKey = false
         // The key's own JSONPath is the parent prefix plus this key name.
         const kp = curPrefix() ? `${curPrefix()}.${s}` : s
-        if (mode === 'key') test(s, keyOffset, kp, 'key')
+        if (mode === 'key' || mode === 'all') test(s, keyOffset, kp, 'key')
       } else {
         const vp = valuePath()
-        if (mode === 'value') test(s, keyOffset, vp, 'value')
-        else if (mode === 'path') test(vp, keyOffset, vp, 'path')
+        if (mode === 'value' || mode === 'all') test(s, keyOffset, vp, 'value')
+        if (mode === 'path' || mode === 'all') test(vp, keyOffset, vp, 'path')
       }
       continue
     }
@@ -254,8 +254,8 @@ export function searchStructured(
         s += ch; i++
       }
       const vp = valuePath()
-      if (mode === 'value') test(s, start, vp, 'value')
-      else if (mode === 'path') test(vp, start, vp, 'path')
+      if (mode === 'value' || mode === 'all') test(s, start, vp, 'value')
+      if (mode === 'path' || mode === 'all') test(vp, start, vp, 'path')
       continue
     }
 
@@ -282,6 +282,55 @@ export function toJsonPath(path: string): string {
   return path.startsWith('[') ? `$${path}` : `$.${path}`
 }
 
+export type JsonPathSeg = { kind: 'key'; name: string } | { kind: 'index'; value: number }
+
+/**
+ * Parse a JSONPath like `$.users[0].profile.email` into segments. Returns `null`
+ * for malformed input. The leading `$` is optional. Only `.key` and `[index]`
+ * steps are supported — the subset the large-file viewer can resolve.
+ */
+export function parseJsonPath(input: string): JsonPathSeg[] | null {
+  let s = input.trim()
+  if (s === '$' || s === '') return []
+  if (s.startsWith('$')) s = s.slice(1)
+  if (s.startsWith('.')) s = s.slice(1)
+  const segs: JsonPathSeg[] = []
+  const re = /\.([^.\[\]]+)|\[(\d+)\]/g
+  let m: RegExpExecArray | null
+  let last = 0
+  while ((m = re.exec(s))) {
+    if (m.index !== last) return null
+    if (m[1] !== undefined) segs.push({ kind: 'key', name: m[1] })
+    else segs.push({ kind: 'index', value: Number(m[2]) })
+    last = re.lastIndex
+  }
+  if (last !== s.length) return null
+  return segs
+}
+
+/**
+ * Given the offset of an object key's opening quote, return the offset of the
+ * value following the `:`. Falls back to the key offset when the structure
+ * cannot be confirmed. Powers "go to path" for object-rooted documents.
+ */
+export function keyValueStart(text: string, keyOffset: number): number {
+  const n = text.length
+  let i = keyOffset
+  if (text[i] !== '"') return keyOffset
+  i++ // skip opening quote
+  while (i < n && text[i] !== '"') {
+    if (text[i] === '\\') i += 2
+    else i++
+  }
+  if (i >= n) return keyOffset
+  i++ // skip closing quote
+  while (i < n && isWsChar(text[i])) i++
+  if (text[i] !== ':') return keyOffset
+  i++ // skip colon
+  while (i < n && isWsChar(text[i])) i++
+  return i
+}
+
 /**
  * Extract the single JSON value starting at `offset` (skipping leading
  * whitespace) and return its raw source slice. Used for the "node preview"
@@ -292,7 +341,7 @@ export function extractNodeAt(
   text: string,
   offset: number,
   capBytes = 200_000,
-): { raw: string; truncated: boolean } {
+): { raw: string; truncated: boolean; size: number } {
   let i = offset
   const n = text.length
   while (i < n && isWsChar(text[i])) i++
@@ -338,12 +387,86 @@ export function extractNodeAt(
   }
 
   let raw = text.slice(i, end)
+  const size = end - i
   let truncated = false
   if (raw.length > capBytes) {
     raw = raw.slice(0, capBytes)
     truncated = true
   }
-  return { raw, truncated }
+  return { raw, truncated, size }
+}
+
+/**
+ * Collect the start offsets of the direct children of the JSON array that
+ * begins at `start` (the `[` itself, or the first non-whitespace char). Powers
+ * "browse a large array" navigation for nested arrays (e.g. `$.orders`).
+ *
+ * The full child count is always computed (so the total is known even for huge
+ * arrays); only the first `storeLimit` start offsets are kept in memory to
+ * bound it. Callers that need an offset beyond `storeLimit` can re-scan with a
+ * higher limit (cost is O(target index), fine for reasonable jumps).
+ */
+export function collectArrayChildOffsets(
+  text: string,
+  start: number,
+  storeLimit = 200_000,
+  countTotal = true,
+): { offsets: number[]; total: number } {
+  const n = text.length
+  let i = start
+  while (i < n && isWsChar(text[i])) i++
+  if (text[i] !== '[') return { offsets: [], total: 0 }
+  i++
+  const offsets: number[] = []
+  let total = 0
+  let depth = 1
+  let inStr = false
+  let esc = false
+  let expectValue = true
+  while (i < n) {
+    if (!countTotal && offsets.length >= storeLimit) break
+    const ch = text[i]
+    if (inStr) {
+      if (esc) esc = false
+      else if (ch === '\\') esc = true
+      else if (ch === '"') inStr = false
+      i++
+      continue
+    }
+    if (ch === '"') {
+      inStr = true
+      if (expectValue) { if (offsets.length < storeLimit) offsets.push(i); total++; expectValue = false }
+      i++
+      continue
+    }
+    if (ch === '{' || ch === '[') {
+      if (depth === 1 && expectValue) { if (offsets.length < storeLimit) offsets.push(i); total++; expectValue = false }
+      depth++
+      i++
+      continue
+    }
+    if (ch === '}' || ch === ']') {
+      depth--
+      if (depth === 0) break
+      i++
+      continue
+    }
+    if (ch === ',') {
+      if (depth === 1) expectValue = true
+      i++
+      continue
+    }
+    if (isWsChar(ch)) { i++; continue }
+    if (depth === 1 && expectValue) {
+      if (offsets.length < storeLimit) offsets.push(i)
+      total++
+      expectValue = false
+      while (i < n && !isWsChar(text[i]) && text[i] !== ',' && text[i] !== ']' && text[i] !== '}') i++
+      continue
+    }
+    i++
+  }
+  return { offsets, total }
 }
 
 /**
