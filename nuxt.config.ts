@@ -171,6 +171,23 @@ export default defineNuxtConfig({
     '@nuxt/content/dist/module.mjs': fileURLToPath(new URL('./adapter-content.ts', import.meta.url))
   },
   vite: {
+    optimizeDeps: {
+      include: [
+        '@codemirror/lang-json',
+        '@codemirror/language',
+        '@codemirror/state',
+        '@codemirror/view',
+        '@lezer/highlight',
+        'ajv', // CJS
+        'dompurify',
+        'fflate',
+        'js-yaml',
+        'jsonrepair',
+        'marked',
+        'photoswipe',
+        'vue-codemirror6',
+      ]
+    },
     server: {
       hmr: {
         timeout: 30000

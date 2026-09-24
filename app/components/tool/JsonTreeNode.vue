@@ -77,6 +77,16 @@
                 <Icon name="lucide:table" class="w-3.5 h-3.5" />
               </button>
               <button
+                v-if="editing?.batchMode.value"
+                @click.stop="editing?.toggleBatch(ve.entry.childPath)"
+                class="ml-0.5 shrink-0"
+                :class="isBatchSelected(ve.entry.childPath) ? 'text-primary-600 dark:text-primary-400' : 'text-surface-300 hover:text-surface-500 dark:text-surface-600'"
+                :title="$t('edit.batch')"
+              >
+                <Icon :name="isBatchSelected(ve.entry.childPath) ? 'lucide:check-square' : 'lucide:square'" class="w-3.5 h-3.5" />
+              </button>
+              <JsonValuePreview :value="ve.entry.value" />
+              <button
                 @click.stop="onRowMenu(ve.entry, $event)"
                 class="opacity-0 group-hover:opacity-100 ml-0.5 text-surface-400 hover:text-surface-600 dark:hover:text-surface-300"
                 :title="$t('largeViewer.copyJsonPath')"
@@ -88,8 +98,11 @@
                 class="relative group/error shrink-0 ml-1"
               >
                   <span class="inline-block w-2 h-2 rounded-full bg-red-500 animate-pulse" />
-                  <span class="absolute bottom-full left-1/2 -translate-x-1/2 mb-1 px-2 py-1 rounded bg-red-600 text-white text-[10px] whitespace-nowrap opacity-0 group-hover/error:opacity-100 transition-opacity pointer-events-none z-50">
-                    {{ getNodeErrors(ve.entry.childPath)[0]?.message }}
+                  <span class="absolute bottom-full left-1/2 -translate-x-1/2 mb-1 px-2 py-1 rounded bg-red-600 text-white text-[10px] text-left opacity-0 group-hover/error:opacity-100 transition-opacity pointer-events-none z-50">
+                    <template v-for="(line, li) in errorTooltipLines(getNodeErrors(ve.entry.childPath), ve.entry.value)" :key="li">
+                      <div>{{ line.message }}</div>
+                      <div v-if="line.detail" class="opacity-80">{{ line.detail }}</div>
+                    </template>
                   </span>
                 </span>
               </div>
@@ -168,6 +181,7 @@
               </span>
 
               <span class="ml-1.5 text-[10px] text-surface-400 dark:text-surface-500 select-none">{{ typeLabel(entry.value) }}</span>
+              <JsonValuePreview :value="entry.value" />
               <button
                 v-if="!entry.isLazyChild && isArray(entry.value)"
                 @click.stop="showArrayAsTable(entry.childPath)"
@@ -175,6 +189,15 @@
                 :title="$t('largeViewer.table.viewAsTable')"
               >
                 <Icon name="lucide:table" class="w-3.5 h-3.5" />
+              </button>
+              <button
+                v-if="editing?.batchMode.value"
+                @click.stop="editing?.toggleBatch(entry.childPath)"
+                class="ml-0.5 shrink-0"
+                :class="isBatchSelected(entry.childPath) ? 'text-primary-600 dark:text-primary-400' : 'text-surface-300 hover:text-surface-500 dark:text-surface-600'"
+                :title="$t('edit.batch')"
+              >
+                <Icon :name="isBatchSelected(entry.childPath) ? 'lucide:check-square' : 'lucide:square'" class="w-3.5 h-3.5" />
               </button>
               <button
                 @click.stop="onRowMenu(entry, $event)"
@@ -188,8 +211,11 @@
                 class="relative group/error shrink-0 ml-1"
               >
                 <span class="inline-block w-2 h-2 rounded-full bg-red-500 animate-pulse" />
-                <span class="absolute bottom-full left-1/2 -translate-x-1/2 mb-1 px-2 py-1 rounded bg-red-600 text-white text-[10px] whitespace-nowrap opacity-0 group-hover/error:opacity-100 transition-opacity pointer-events-none z-50">
-                  {{ getNodeErrors(entry.childPath)[0]?.message }}
+                <span class="absolute bottom-full left-1/2 -translate-x-1/2 mb-1 px-2 py-1 rounded bg-red-600 text-white text-[10px] text-left opacity-0 group-hover/error:opacity-100 transition-opacity pointer-events-none z-50">
+                  <template v-for="(line, li) in errorTooltipLines(getNodeErrors(entry.childPath), entry.value)" :key="li">
+                    <div>{{ line.message }}</div>
+                    <div v-if="line.detail" class="opacity-80">{{ line.detail }}</div>
+                  </template>
                 </span>
               </span>
             </div>
@@ -243,6 +269,16 @@
           </span>
 
           <span class="ml-1.5 text-[10px] text-surface-400 dark:text-surface-500 select-none">{{ typeLabel(props.data) }}</span>
+          <JsonValuePreview :value="props.data" />
+          <button
+            v-if="editing?.batchMode.value"
+            @click.stop="editing?.toggleBatch(props.path)"
+            class="ml-0.5 shrink-0"
+            :class="isBatchSelected(props.path) ? 'text-primary-600 dark:text-primary-400' : 'text-surface-300 hover:text-surface-500 dark:text-surface-600'"
+            :title="$t('edit.batch')"
+          >
+            <Icon :name="isBatchSelected(props.path) ? 'lucide:check-square' : 'lucide:square'" class="w-3.5 h-3.5" />
+          </button>
           <button
             @click.stop="onRootMenu($event)"
             class="opacity-0 group-hover:opacity-100 ml-0.5 text-surface-400 hover:text-surface-600 dark:hover:text-surface-300"
@@ -255,8 +291,11 @@
             class="relative group/error shrink-0 ml-1"
           >
             <span class="inline-block w-2 h-2 rounded-full bg-red-500 animate-pulse" />
-            <span class="absolute bottom-full left-1/2 -translate-x-1/2 mb-1 px-2 py-1 rounded bg-red-600 text-white text-[10px] whitespace-nowrap opacity-0 group-hover/error:opacity-100 transition-opacity pointer-events-none z-50">
-              {{ getNodeErrors(props.path)[0]?.message }}
+            <span class="absolute bottom-full left-1/2 -translate-x-1/2 mb-1 px-2 py-1 rounded bg-red-600 text-white text-[10px] text-left opacity-0 group-hover/error:opacity-100 transition-opacity pointer-events-none z-50">
+              <template v-for="(line, li) in errorTooltipLines(getNodeErrors(props.path), props.data)" :key="li">
+                <div>{{ line.message }}</div>
+                <div v-if="line.detail" class="opacity-80">{{ line.detail }}</div>
+              </template>
             </span>
           </span>
         </div>
@@ -279,6 +318,11 @@
       :y="menuState.y"
       @close="closeNodeMenu"
     />
+    <JsonValueInspector
+      v-if="!props.path && inspectorValue !== null"
+      :value="inspectorValue"
+      @close="inspectorValue = null"
+    />
   </div>
 </template>
 
@@ -290,6 +334,9 @@ import type { FieldError } from '~/types/jsonErrors'
 import type { LazyNode } from '~/workers/jsonStream.worker'
 import { toJsonPath, jsonTypeLabel } from '~/utils/jsonPath'
 import { isColorValue } from '~/composables/useSmartJsonValue'
+import { useNodeEditing } from '~/composables/useNodeEditing'
+
+const { t } = useI18n()
 
 const props = withDefaults(defineProps<{
   data: unknown
@@ -577,9 +624,32 @@ function openNodeMenu(info: NodeMenuInfo, x: number, y: number) {
 function closeNodeMenu() {
   menuState.node = null
 }
-provide('nodeMenu', { open: openNodeMenu, close: closeNodeMenu })
+// Only the ROOT provides it. Every node used to provide it, which made a nested
+// node resolve to its PARENT instead of the root — and only the root renders the
+// menu, so "⋯" silently did nothing below the first level. Provides are inherited
+// down the tree, so descendants still resolve to this single instance.
+if (!props.path) {
+  provide('nodeMenu', { open: openNodeMenu, close: closeNodeMenu })
+}
 
 const nodeMenu = inject<{ open: (info: NodeMenuInfo, x: number, y: number) => void; close: () => void }>('nodeMenu', null)
+
+// ── Node editing context (provided by JsonEditor; null in read-only views) ──
+const editing = inject<ReturnType<typeof useNodeEditing> | null>('nodeEditing', null)
+function isBatchSelected(path: string): boolean {
+  return editing?.batchSelected.value.has(path) ?? false
+}
+
+// ── Value inspector (P1-3/P1-4) ────────────────────────────────
+// Only the ROOT provides it. Provides are inherited down the component tree,
+// so every descendant resolves to this single instance — providing from every
+// node would make nested nodes resolve to their parent instead (and nothing
+// would ever render).
+const inspectorValue = ref<unknown>(null)
+function openInspector(value: unknown) { inspectorValue.value = value }
+if (!props.path) {
+  provide('valueInspector', { open: openInspector })
+}
 
 function typeLabel(v: unknown): string {
   return jsonTypeLabel(v)
@@ -593,6 +663,7 @@ function buildNodeInfo(entry: { childPath: string; value: unknown; isArrayIndex:
     type: typeLabel(entry.value),
     isArrayIndex: entry.isArrayIndex,
     index: entry.isArrayIndex ? Number(entry.key) : undefined,
+    siblingCount: Array.isArray(props.data) ? props.data.length : undefined,
   }
 }
 
@@ -601,7 +672,8 @@ function onRowMenu(entry: { childPath: string; value: unknown; isArrayIndex: boo
 }
 
 function onRootMenu(event: MouseEvent) {
-  nodeMenu?.open(
+  // The root has no ancestor providing the menu, so call its own opener.
+  openNodeMenu(
     {
       path: props.path,
       parentPath: parentPathOf(props.path),
@@ -664,6 +736,18 @@ if (!props.path) {
 
 function getNodeErrors(path: string): FieldError[] {
   return errorMap.value[path] ?? []
+}
+
+// Build tooltip lines for a node's errors. For `type` mismatches, append the
+// expected vs actual JSON type so users see "期望/实际类型" inline.
+function errorTooltipLines(errors: FieldError[], value: unknown) {
+  return errors.map((e) => {
+    let detail: string | undefined
+    if (e.keyword === 'type' && e.params?.type) {
+      detail = `${t('schema.expected')}: ${e.params.type} · ${t('schema.actual')}: ${jsonTypeLabel(value)}`
+    }
+    return { message: e.message, detail }
+  })
 }
 
 function hasError(path: string): boolean {

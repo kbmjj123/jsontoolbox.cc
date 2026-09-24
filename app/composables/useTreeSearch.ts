@@ -1,6 +1,7 @@
 import type { Ref } from 'vue'
+import { evaluateJsonPath } from '~/composables/useJsonPath'
 
-export type SearchMode = 'key' | 'value' | 'path' | 'all'
+export type SearchMode = 'key' | 'value' | 'path' | 'all' | 'jsonpath'
 
 export interface MatchDetail {
   snippet: string
@@ -138,6 +139,44 @@ export function useTreeSearch(data: Ref<unknown>) {
   const mode = ref<SearchMode>('key')
   const currentIndex = ref(-1)
   const isSearching = ref(false)
+  /** Set when the JSONPath expression is invalid / unsupported. */
+  const invalidExpression = ref(false)
+
+  // ── Recent search history (localStorage, newest first) ────────
+  const HISTORY_KEY = 'jsontoolbox.searchHistory'
+  const HISTORY_MAX = 10
+  const history = ref<string[]>([])
+
+  function loadHistory() {
+    try {
+      const raw = localStorage.getItem(HISTORY_KEY)
+      const parsed = raw ? JSON.parse(raw) : []
+      history.value = Array.isArray(parsed) ? parsed.filter((v: unknown) => typeof v === 'string') : []
+    } catch {
+      history.value = []
+    }
+  }
+  loadHistory()
+
+  /** Record a query the user actually committed (Enter), not every keystroke. */
+  function rememberQuery(value: string) {
+    const entry = value.trim()
+    if (!entry) return
+    const next = [entry, ...history.value.filter((h) => h !== entry)].slice(0, HISTORY_MAX)
+    history.value = next
+    try {
+      localStorage.setItem(HISTORY_KEY, JSON.stringify(next))
+    } catch {
+      // Storage can be unavailable (private mode) — history is a convenience only.
+    }
+  }
+
+  function clearHistory() {
+    history.value = []
+    try {
+      localStorage.removeItem(HISTORY_KEY)
+    } catch {}
+  }
   // `matches` is populated by a bounded, synchronous walk. Regular tools only
   // ever hold documents below LARGE_FILE_MAX_BYTES, so this stays well inside
   // the node budget and never needs a Worker.
@@ -146,15 +185,61 @@ export function useTreeSearch(data: Ref<unknown>) {
 
   let searchToken = 0
 
+  /** Short, single-line preview of a matched value. */
+  function snippetFor(value: unknown): string {
+    let text: string
+    if (value === null) text = 'null'
+    else if (typeof value === 'object') text = JSON.stringify(value) ?? ''
+    else text = String(value)
+    return text.length > 120 ? `${text.slice(0, 120)}…` : text
+  }
+
   function runSearch() {
-    const q = debouncedQuery.value.trim().toLowerCase()
+    const raw = debouncedQuery.value.trim()
     const token = ++searchToken
-    if (!q) {
+    if (!raw) {
       matches.value = []
       matchDetails.value = new Map()
+      invalidExpression.value = false
       isSearching.value = false
       return
     }
+
+    // JSONPath: expressions are case-sensitive, so this mode bypasses the
+    // plain substring walk entirely (it would lowercase the query).
+    if (mode.value === 'jsonpath') {
+      isSearching.value = true
+      try {
+        const found = data.value == null ? [] : evaluateJsonPath(data.value, raw)
+        if (found === null) {
+          invalidExpression.value = true
+          if (token === searchToken) {
+            matches.value = []
+            matchDetails.value = new Map()
+          }
+          return
+        }
+        invalidExpression.value = false
+        const results: string[] = []
+        const details: Map<string, MatchDetail> = new Map()
+        for (const hit of found) {
+          if (results.length >= MAX_SEARCH_RESULTS) break
+          if (details.has(hit.path)) continue
+          results.push(hit.path)
+          details.set(hit.path, { snippet: snippetFor(hit.value), kind: 'jsonpath' })
+        }
+        if (token === searchToken) {
+          matches.value = results
+          matchDetails.value = details
+        }
+      } finally {
+        if (token === searchToken) isSearching.value = false
+      }
+      return
+    }
+
+    invalidExpression.value = false
+    const q = raw.toLowerCase()
 
     isSearching.value = true
     try {
@@ -240,6 +325,10 @@ export function useTreeSearch(data: Ref<unknown>) {
     matchSet,
     searchExpandedPaths,
     isSearching,
+    invalidExpression,
+    history,
+    rememberQuery,
+    clearHistory,
     next,
     prev,
     isMatch,

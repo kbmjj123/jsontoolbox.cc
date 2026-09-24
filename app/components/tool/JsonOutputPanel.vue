@@ -81,13 +81,14 @@
             </Transition>
           </div>
 
-          <div class="relative">
+          <div ref="searchBoxRef" class="relative">
             <Icon name="lucide:search" class="absolute left-2.5 top-1/2 -translate-y-1/2 w-3.5 h-3.5 text-surface-400" />
             <input
               :value="treeSearch.query.value"
               @input="onSearchInput"
               @keydown.enter.prevent="onEnter"
               @keydown.escape="treeSearch.clear()"
+              @focus="showHistory = true"
               type="text"
               :placeholder="searchPlaceholder"
               class="w-48 rounded-lg border border-surface-200 bg-white pl-8 pr-14 py-1.5 text-xs dark:border-surface-700 dark:bg-surface-800 dark:text-surface-100 focus:outline-none focus:ring-1 focus:ring-primary-400"
@@ -105,12 +106,40 @@
             >
               {{ treeSearch.totalCount.value > 0 ? `${treeSearch.currentIndex.value + 1}/${treeSearch.totalCount.value}` : '0/0' }}
             </span>
+            <!-- Unsupported / invalid JSONPath expression -->
+            <span
+              v-if="treeSearch.invalidExpression.value"
+              class="absolute right-0 top-full mt-1 whitespace-nowrap rounded bg-red-600 px-1.5 py-0.5 text-[10px] text-white shadow"
+            >
+              {{ t('largeViewer.pathInvalid') }}
+            </span>
+
+            <!-- Recent searches -->
+            <div
+              v-if="showHistory && treeSearch.history.value.length > 0"
+              class="absolute left-0 right-0 top-full mt-1 z-50 overflow-hidden rounded-lg border border-surface-200 bg-white shadow-lg dark:border-surface-700 dark:bg-surface-800"
+            >
+              <div class="flex items-center justify-between border-b border-surface-100 px-3 py-1 text-[10px] uppercase tracking-wider text-surface-400 dark:border-surface-700 dark:text-surface-500">
+                <span>{{ t('search.history') }}</span>
+                <button class="hover:text-surface-600 dark:hover:text-surface-300" @click="treeSearch.clearHistory()">
+                  {{ t('edit.clear') }}
+                </button>
+              </div>
+              <button
+                v-for="item in treeSearch.history.value"
+                :key="item"
+                @click="applyHistory(item)"
+                class="block w-full truncate px-3 py-1.5 text-left text-xs hover:bg-surface-100 dark:hover:bg-surface-700"
+              >
+                {{ item }}
+              </button>
+            </div>
           </div>
 
           <template v-if="treeSearch.query.value">
             <button
               @click="showResultsDrawer = !showResultsDrawer"
-              :title="t('search.results')"
+              :title="t('largeViewer.results')"
               class="w-7 h-7 flex items-center justify-center rounded-lg border border-surface-200 bg-white text-surface-500 hover:bg-surface-50 dark:border-surface-700 dark:bg-surface-800 dark:text-surface-400 dark:hover:bg-surface-700"
               :class="showResultsDrawer ? 'text-primary-600 dark:text-primary-400' : ''"
             >
@@ -174,10 +203,33 @@
       class="absolute left-2 right-2 top-11 z-50 max-h-80 overflow-auto rounded-lg border border-surface-200 bg-white shadow-lg dark:border-surface-700 dark:bg-surface-800"
     >
       <div class="sticky top-0 flex items-center justify-between border-b border-surface-200 bg-surface-50 px-3 py-1.5 text-xs font-medium text-surface-600 dark:border-surface-700 dark:bg-surface-800 dark:text-surface-300">
-        <span>{{ t('search.results') }} ({{ resultList.length }})</span>
-        <button class="text-surface-400 hover:text-surface-600 dark:hover:text-surface-300" @click="showResultsDrawer = false">
-          <Icon name="lucide:x" class="w-3.5 h-3.5" />
-        </button>
+        <span>{{ t('largeViewer.results') }} ({{ resultList.length }})</span>
+        <div class="flex items-center gap-1">
+          <button
+            class="rounded px-1 py-0.5 text-surface-400 hover:text-surface-600 hover:bg-surface-100 dark:hover:text-surface-300 dark:hover:bg-surface-700"
+            :title="t('largeViewer.exportTxt')"
+            @click="exportResults('txt')"
+          >
+            <Icon name="lucide:file-text" class="w-3.5 h-3.5" />
+          </button>
+          <button
+            class="rounded px-1 py-0.5 text-surface-400 hover:text-surface-600 hover:bg-surface-100 dark:hover:text-surface-300 dark:hover:bg-surface-700"
+            :title="t('largeViewer.exportJson')"
+            @click="exportResults('json')"
+          >
+            <Icon name="lucide:file-json" class="w-3.5 h-3.5" />
+          </button>
+          <button
+            class="rounded px-1 py-0.5 text-surface-400 hover:text-surface-600 hover:bg-surface-100 dark:hover:text-surface-300 dark:hover:bg-surface-700"
+            :title="t('largeViewer.exportCsv')"
+            @click="exportResults('csv')"
+          >
+            <Icon name="lucide:table" class="w-3.5 h-3.5" />
+          </button>
+          <button class="text-surface-400 hover:text-surface-600 dark:hover:text-surface-300" @click="showResultsDrawer = false">
+            <Icon name="lucide:x" class="w-3.5 h-3.5" />
+          </button>
+        </div>
       </div>
       <button
         v-for="(item, i) in resultList"
@@ -318,6 +370,7 @@
 import type { FieldError } from '~/types/jsonErrors'
 import type { SearchMode } from '~/composables/useTreeSearch'
 import { jsonTypeLabel } from '~/utils/jsonPath'
+import { generateCsv } from '~/composables/useExcelCompat'
 
 // Single scroll viewport for the rich tree. Virtualized subtree lists window
 // against this element instead of creating a scroll box of their own, which is
@@ -401,6 +454,8 @@ const emit = defineEmits<{
 const copied = ref(false)
 const showModeDropdown = ref(false)
 const modeDropdownRef = ref<HTMLElement>()
+const searchBoxRef = ref<HTMLElement>()
+const showHistory = ref(false)
 const textareaRef = ref<HTMLTextAreaElement>()
 
 const currentMode = computed(() => props.viewMode)
@@ -477,6 +532,7 @@ function kindLabel(k: SearchMode): string {
   if (k === 'key') return t('largeViewer.scopeKey')
   if (k === 'value') return t('largeViewer.scopeValue')
   if (k === 'path') return t('largeViewer.scopePath')
+  if (k === 'jsonpath') return t('largeViewer.jsonPath')
   return t('largeViewer.scopeAll')
 }
 
@@ -494,6 +550,34 @@ const resultList = computed(() => {
   return list
 })
 
+/** Download the current result list as .txt / .json / .csv. */
+function exportResults(kind: 'txt' | 'json' | 'csv') {
+  const rows = resultList.value
+  if (rows.length === 0) return
+
+  if (kind === 'txt') {
+    const content = rows.map((r) => `${r.path}=${r.snippet}`).join('\n')
+    downloadFile(content, 'search-results.txt', 'text/plain')
+    return
+  }
+
+  if (kind === 'json') {
+    const content = JSON.stringify(
+      rows.map((r) => ({ path: r.path, type: r.type, matchedBy: r.kindLabel, parentArray: r.parentArray, value: r.snippet })),
+      null,
+      2,
+    )
+    downloadFile(content, 'search-results.json', 'application/json')
+    return
+  }
+
+  const content = generateCsv(
+    ['path', 'type', 'matchedBy', 'value', 'parentArray'],
+    rows.map((r) => [r.path, r.type, r.kindLabel, r.snippet, r.parentArray]),
+  )
+  downloadFile(content, 'search-results.csv', 'text/csv')
+}
+
 function jumpTo(path: string, index: number) {
   treeSearch.currentIndex.value = index
   locatePath.value = path
@@ -505,6 +589,7 @@ const modes = computed(() => [
   { value: 'key' as const, label: t('tree.searchByKey') },
   { value: 'value' as const, label: t('tree.searchByValue') },
   { value: 'path' as const, label: t('tree.searchByPath') },
+  { value: 'jsonpath' as const, label: t('tree.searchByJsonPath') },
 ])
 
 const modeLabel = computed(() => modes.value.find(m => m.value === treeSearch.mode.value)?.label ?? 'Key')
@@ -514,6 +599,8 @@ const searchPlaceholder = computed(() => {
     case 'key': return t('tree.placeholderKey')
     case 'value': return t('tree.placeholderValue')
     case 'path': return t('tree.placeholderPath')
+    case 'jsonpath': return t('largeViewer.pathPlaceholder')
+    default: return t('tree.placeholderKey')
   }
 })
 
@@ -522,8 +609,16 @@ function onSearchInput(e: Event) {
 }
 
 function onEnter(e: KeyboardEvent) {
+  // Only a committed query (Enter) enters history — not every keystroke.
+  treeSearch.rememberQuery(treeSearch.query.value)
+  showHistory.value = false
   if (e.shiftKey) treeSearch.prev()
   else treeSearch.next()
+}
+
+function applyHistory(value: string) {
+  treeSearch.query.value = value
+  showHistory.value = false
 }
 
 // Close mode dropdown on outside click
@@ -531,6 +626,9 @@ onMounted(() => {
   const handler = (e: MouseEvent) => {
     if (modeDropdownRef.value && !modeDropdownRef.value.contains(e.target as Node)) {
       showModeDropdown.value = false
+    }
+    if (searchBoxRef.value && !searchBoxRef.value.contains(e.target as Node)) {
+      showHistory.value = false
     }
   }
   document.addEventListener('click', handler)

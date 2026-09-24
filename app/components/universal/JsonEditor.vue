@@ -56,7 +56,9 @@
     <!-- Output panel -->
     <template #second>
       <div class="h-full pl-3 flex flex-col overflow-hidden">
-        <JsonOutputPanel
+        <JsonSchemaPanel v-if="schemaMode" :parsed-data="parsedData" />
+        <JsonGeneratePanel v-else-if="generateMode" :parsed-data="parsedData" />
+        <JsonOutputPanel v-else
           :label="tool.ui?.label_output || 'Output'"
           :content="outputJson"
           :error="error"
@@ -84,7 +86,7 @@
 
     <!-- Toolbar left: indent + action buttons -->
     <template #toolbar-left>
-      <div class="flex items-center gap-2 shrink-0">
+      <div class="flex flex-wrap items-center gap-2 shrink-0">
         <div class="flex items-center gap-2">
           <label class="text-xs font-bold text-surface-600 dark:text-surface-400">{{ tool.ui?.option_indent || 'Indent:' }}</label>
           <select v-model="indent" class="rounded-lg border border-surface-200 bg-white px-2 py-1 text-xs dark:border-surface-700 dark:bg-surface-800">
@@ -134,6 +136,53 @@
             />
           </button>
         </label>
+
+        <!-- Schema validation mode -->
+        <button
+          @click="toggleSchema"
+          :class="schemaMode
+            ? 'bg-primary-600 text-white dark:bg-primary-500'
+            : 'bg-white text-surface-600 hover:bg-surface-50 dark:bg-surface-800 dark:text-surface-400 dark:hover:bg-surface-700'"
+          class="px-2.5 py-1 text-[11px] font-bold transition-colors"
+        >
+          {{ t('schema.toggle') }}
+        </button>
+
+        <!-- Generate panel: convert to TS/YAML/CSV/Schema, or build API snippets -->
+        <button
+          @click="toggleGenerate"
+          :class="generateMode
+            ? 'bg-primary-600 text-white dark:bg-primary-500'
+            : 'bg-white text-surface-600 hover:bg-surface-50 dark:bg-surface-800 dark:text-surface-400 dark:hover:bg-surface-700'"
+          class="px-2.5 py-1 text-[11px] font-bold transition-colors"
+        >
+          {{ t('generate.title') }}
+        </button>
+
+        <!-- Node editing: batch select + undo / redo -->
+        <button
+          @click="nodeEditing.batchMode.value = !nodeEditing.batchMode.value"
+          :class="nodeEditing.batchMode.value
+            ? 'bg-primary-600 text-white dark:bg-primary-500'
+            : 'bg-white text-surface-600 hover:bg-surface-50 dark:bg-surface-800 dark:text-surface-400 dark:hover:bg-surface-700'"
+          class="px-2.5 py-1 text-[11px] font-bold transition-colors"
+        >
+          {{ t('edit.batch') }}
+        </button>
+        <button
+          @click="nodeEditing.undo()"
+          :disabled="!nodeEditing.canUndo.value"
+          class="px-2.5 py-1 text-[11px] font-bold transition-colors bg-white text-surface-600 hover:bg-surface-50 disabled:opacity-40 disabled:cursor-not-allowed dark:bg-surface-800 dark:text-surface-400 dark:hover:bg-surface-700"
+        >
+          {{ t('edit.undo') }}
+        </button>
+        <button
+          @click="nodeEditing.redo()"
+          :disabled="!nodeEditing.canRedo.value"
+          class="px-2.5 py-1 text-[11px] font-bold transition-colors bg-white text-surface-600 hover:bg-surface-50 disabled:opacity-40 disabled:cursor-not-allowed dark:bg-surface-800 dark:text-surface-400 dark:hover:bg-surface-700"
+        >
+          {{ t('edit.redo') }}
+        </button>
       </div>
     </template>
 
@@ -145,7 +194,14 @@
           @click="copyOutput"
           class="text-xs text-primary-600 hover:text-primary-700 dark:text-primary-400"
         >
-          {{ copyJustCopied ? '✓ Copied!' : $t('system.copy') }}
+          {{ clipboard.copied.value ? '✓ Copied!' : $t('system.copy') }}
+        </button>
+        <button
+          v-if="outputJson"
+          @click="clipboard.copyMinified()"
+          class="text-xs text-surface-500 hover:text-surface-700 dark:text-surface-400"
+        >
+          {{ $t('clipboard.copyMinifiedLabel') }}
         </button>
         <button
           v-if="outputJson"
@@ -164,6 +220,28 @@
       </div>
     </template>
   </ResizablePanel>
+
+  <!-- Batch editing bar (P1-2): apply one value to every selected node -->
+  <div
+    v-if="nodeEditing.batchMode.value && nodeEditing.batchSelected.value.size > 0"
+    class="mt-2 flex flex-wrap items-center gap-2 rounded-lg border border-primary-200 bg-primary-50 px-3 py-2 dark:border-primary-800 dark:bg-primary-900/20"
+  >
+    <span class="text-xs font-medium text-primary-700 dark:text-primary-300">
+      {{ t('edit.selectedCount', { count: nodeEditing.batchSelected.value.size }) }}
+    </span>
+    <input
+      v-model="batchValue"
+      :placeholder="t('edit.newValue')"
+      @keydown.enter="applyBatch"
+      class="w-40 rounded border border-surface-200 bg-white px-2 py-1 text-xs dark:border-surface-700 dark:bg-surface-800 dark:text-surface-100 focus:outline-none focus:ring-1 focus:ring-primary-400"
+    />
+    <button @click="applyBatch" class="rounded bg-primary-600 px-2.5 py-1 text-[11px] font-medium text-white hover:bg-primary-700">
+      {{ t('edit.apply') }}
+    </button>
+    <button @click="nodeEditing.clearBatch(); batchValue = ''" class="rounded border border-surface-200 px-2.5 py-1 text-[11px] dark:border-surface-700">
+      {{ t('edit.clear') }}
+    </button>
+  </div>
 
   <!-- Sensitive field warning -->
   <div v-if="sensitiveFields.length > 0" class="mt-2">
@@ -204,6 +282,8 @@
 <script setup lang="ts">
 import type { ParseError, FieldError } from '~/types/jsonErrors'
 import { useLargeFileGate } from '~/composables/useLargeFile'
+import { useNodeEditing } from '~/composables/useNodeEditing'
+import { useClipboardActions } from '~/composables/useClipboardActions'
 
 const { tool, showViewToggle = true, defaultViewMode = 'rich' } = defineProps<{
   tool: any
@@ -217,7 +297,52 @@ const error = ref('')
 const parseError = ref<ParseError | null>(null)
 const indent = ref<number | string>(2)
 const autoFormat = ref(true)
+
+// ── Node-level editing (P1-2): every tree edit writes back into `inputJson`,
+// so the formatted output, validation and share payload all stay in sync. ──
+const nodeEditing = useNodeEditing(inputJson, indent)
+provide('nodeEditing', nodeEditing)
+
+// Clipboard workflow (F12): one place for copy formatted / minified JSON and
+// "replace node from clipboard" (writing back through node editing).
+const clipboard = useClipboardActions({
+  inputJson,
+  indent,
+  writeNode: (path, value) => nodeEditing.setValue(path, value),
+})
+provide('clipboardActions', clipboard)
+
+const batchValue = ref('')
+function applyBatch() {
+  const paths = [...nodeEditing.batchSelected.value]
+  if (paths.length === 0) return
+  let value: unknown = batchValue.value
+  try { value = JSON.parse(batchValue.value) } catch { value = batchValue.value }
+  if (nodeEditing.batchSetValue(paths, value)) {
+    toast.success(t('toast.edited'))
+    batchValue.value = ''
+    nodeEditing.clearBatch()
+  }
+}
+watch(() => nodeEditing.batchMode.value, (on) => {
+  if (!on) {
+    nodeEditing.clearBatch()
+    batchValue.value = ''
+  }
+})
 const viewMode = ref<'text' | 'rich' | 'table'>(defaultViewMode)
+const schemaMode = ref(false)
+const generateMode = ref(false)
+
+// The two right-panel modes are mutually exclusive.
+function toggleSchema() {
+  schemaMode.value = !schemaMode.value
+  if (schemaMode.value) generateMode.value = false
+}
+function toggleGenerate() {
+  generateMode.value = !generateMode.value
+  if (generateMode.value) schemaMode.value = false
+}
 const fullscreen = ref(false)
 const lastAction = ref<'formatted' | 'minified' | 'validated'>('formatted')
 
@@ -236,7 +361,7 @@ const friendlyMessage = computed(() => {
   }, { default: parseError.value.message })
 })
 
-const copyJustCopied = ref(false)
+
 // ── Input editor ref & source map ─────────────────────────────
 const inputEditorRef = ref<InstanceType<typeof import('~/components/tool/JsonInputEditor.vue').default>>()
 const sourceMap = ref<Map<string, number>>(new Map())
@@ -410,6 +535,10 @@ const parsedData = computed(() => {
   }
 })
 
+// Batch selections refer to paths in the previous document — drop them once it
+// changes so a stale path never writes into the wrong place.
+watch(parsedData, () => { nodeEditing.clearBatch() })
+
 const copyPath = async (path: string) => {
   await copyToClipboard(path)
 }
@@ -543,9 +672,11 @@ const formatInputInPlace = () => {
 
 // Paste: immediately format input in-place
 const onInputPaste = () => {
-  if (autoFormat.value) {
-    nextTick(() => formatInputInPlace())
-  }
+  nextTick(() => {
+    if (autoFormat.value) formatInputInPlace()
+    // Hint only — URL / Base64 are reported, never silently rewritten.
+    clipboard.hintAfterPaste(inputJson.value)
+  })
 }
 
 // 300ms debounce: update output panel only (non-intrusive)
@@ -578,11 +709,7 @@ useEventListener('keydown', (e: KeyboardEvent) => {
   }
 })
 
-const copyOutput = async () => {
-  await copyToClipboard(outputJson.value)
-  copyJustCopied.value = true
-  setTimeout(() => { copyJustCopied.value = false }, 2000)
-}
+const copyOutput = () => clipboard.copyFormatted()
 
 const downloadOutput = () => {
   const blob = new Blob([outputJson.value], { type: 'application/json' })

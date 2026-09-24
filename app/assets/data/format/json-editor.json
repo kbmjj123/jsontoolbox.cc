@@ -104,7 +104,47 @@
     {
       "icon": "lucide:search",
       "title": "Search & Jump to Node",
-      "description": "Search the tree by key, value, path, or all scopes at once. Open the results list to see every match with its path, value type, and parent array, then jump straight to the node in the tree."
+      "description": "Search the tree by key, value, path, all scopes, or a JSONPath expression. Open the results list to see every match with its path, value type, and parent array, then jump straight to the node in the tree. Export the matches as .txt, .json or .csv, and reuse one of your recent searches from the search history."
+    },
+    {
+      "icon": "lucide:file-check",
+      "title": "JSON Schema Validation",
+      "description": "Validate JSON against a JSON Schema (Draft-07 / 2020-12). Paste a schema or generate one from your JSON, then see each error with its path, expected type, and actual type, and jump straight to the node in the tree."
+    },
+    {
+      "icon": "lucide:edit",
+      "title": "Edit JSON in the Tree",
+      "description": "Edit JSON directly in the tree view: add or delete fields, rename keys, change a value's type, add, remove, or reorder array items, and copy or move nodes. Select several nodes to set the same value in one step, undo or redo any change, and every edit is validated immediately in your browser."
+    },
+    {
+      "icon": "lucide:image",
+      "title": "Media and Value Previews",
+      "description": "Inspect string values that look like images, audio, video, PDFs, colors, timestamps, JWTs, Base64, UUIDs, IP addresses, Markdown, or regular expressions. Audio, video and PDF previews load only after you ask for them, large Base64 payloads decode on demand, and remote resources are flagged as third-party requests."
+    },
+    {
+      "icon": "lucide:sparkles",
+      "title": "Smart Value Detection",
+      "description": "String values that look like timestamps, JWTs, Base64, URLs, colors, emails, UUIDs, IP addresses, Markdown, or regular expressions are labelled with a type chip and one-click actions: open or copy a link, start an email, decode a JWT or Base64 payload, and read a timestamp as local time, UTC, or ISO. Markdown values are previewed as rendered HTML that is sanitized in your browser."
+    },
+    {
+      "icon": "lucide:git-branch",
+      "title": "JSONPath Query",
+      "description": "Query the document with a basic JSONPath subset: property access, array indexes, the * wildcard, recursive descent ($..key), and simple [?(@.field==\"value\")] filters. Results list every match with its path and value and jump straight to the node. This is a partial subset, not a fully JSONPath-compliant engine — slices, unions and script expressions are not supported."
+    },
+    {
+      "icon": "lucide:code",
+      "title": "Convert to TypeScript, YAML, CSV or JSON Schema",
+      "description": "Turn the current JSON into a TypeScript interface or type alias, YAML, CSV, or a JSON Schema. Options control optional fields, null handling, nested interfaces, sample comments, camelCase keys, and singular array types. Copy or download the result."
+    },
+    {
+      "icon": "lucide:terminal",
+      "title": "Generate fetch, cURL, Axios and Python Requests",
+      "description": "Build request snippets using the current JSON as the body: choose a method, URL and headers, then copy or download ready-to-paste fetch, cURL, Axios, or Python requests code. Snippets are generated locally and never sent — this tool makes no network requests."
+    },
+    {
+      "icon": "lucide:clipboard",
+      "title": "Clipboard Workflow",
+      "description": "Pasted JSON is formatted automatically, and pasted text that looks like a URL or Base64 is flagged rather than silently rewritten. Copy the document as formatted or minified JSON, copy any tree node, or replace a node with whatever is currently on your clipboard."
     },
     {
       "icon": "lucide:table",
@@ -279,7 +319,47 @@
       {
       "icon": "lucide:search",
       "title": "搜索并跳转到节点",
-      "description": "在树形视图中按键名、值、路径或全部范围进行搜索。打开结果列表可查看每条匹配的路径、值类型与所属数组，并一键跳转到树中对应节点。"
+      "description": "在树形视图中按键名、值、路径、全部范围或 JSONPath 表达式进行搜索。打开结果列表可查看每条匹配的路径、值类型与所属数组，并一键跳转到树中对应节点。还可将匹配结果导出为 .txt、.json 或 .csv，并从搜索历史中快速复用之前的关键词。"
+    },
+    {
+      "icon": "lucide:file-check",
+      "title": "JSON Schema 校验",
+      "description": "使用 JSON Schema（Draft-07 / 2020-12）校验 JSON。粘贴 Schema 或从 JSON 一键生成，然后在树上查看每个错误的路径、期望类型与实际类型，并直接跳转到对应节点。"
+    },
+    {
+      "icon": "lucide:edit",
+      "title": "在树形视图中编辑",
+      "description": "直接在树形视图中编辑 JSON：增删字段、重命名键名、修改值的类型、添加/删除/上下移动数组元素，以及复制或移动节点。可多选节点一次性设为同一个值，支持撤销与重做，每次编辑都会立即在浏览器内完成校验。"
+    },
+    {
+      "icon": "lucide:image",
+      "title": "媒体与常见值预览",
+      "description": "检视看起来像图片、音频、视频、PDF、颜色、时间戳、JWT、Base64、UUID、IP、Markdown 或正则表达式的字符串值。音频、视频与 PDF 需你主动点击后才加载，较大的 Base64 按需解码，远程资源会标注为第三方请求。"
+    },
+    {
+      "icon": "lucide:sparkles",
+      "title": "值类型智能识别",
+      "description": "看起来像时间戳、JWT、Base64、URL、颜色、邮箱、UUID、IP、Markdown 或正则表达式的字符串值，会显示类型芯片与一键操作：打开或复制链接、发送邮件、解码 JWT 或 Base64，并以本地时间、UTC、ISO 三种形式查看时间戳。Markdown 值会在浏览器内渲染为经过净化的 HTML 预览。"
+    },
+    {
+      "icon": "lucide:git-branch",
+      "title": "JSONPath 查询",
+      "description": "使用 JSONPath 基础子集查询文档：属性访问、数组下标、* 通配符、递归下降（$..key），以及简单的 [?(@.field==\"value\")] 过滤。结果会列出每条匹配的路径与值，并可直接跳转到对应节点。这是部分子集，并非完全兼容 JSONPath 规范的引擎——不支持切片、并集与脚本表达式。"
+    },
+    {
+      "icon": "lucide:code",
+      "title": "转换为 TypeScript、YAML、CSV 或 JSON Schema",
+      "description": "把当前 JSON 转换为 TypeScript interface 或 type、YAML、CSV，或 JSON Schema。可控制可选字段、null 处理、嵌套接口、示例注释、键名驼峰化与数组类型单数化，并可复制或下载结果。"
+    },
+    {
+      "icon": "lucide:terminal",
+      "title": "生成 fetch、cURL、Axios 与 Python Requests 代码",
+      "description": "以当前 JSON 作为请求体生成代码片段：选择方法、URL 与请求头，即可复制或下载可直接粘贴的 fetch、cURL、Axios 或 Python requests 代码。代码在本地生成且从不发送——本工具不发起任何网络请求。"
+    },
+    {
+      "icon": "lucide:clipboard",
+      "title": "剪贴板工作流",
+      "description": "粘贴 JSON 会自动格式化；若粘贴内容看起来像 URL 或 Base64，会给出提示而不会擅自改写。可将文档复制为格式化或压缩 JSON，复制任意树节点，或用剪贴板中的内容替换某个节点。"
     },
     {
       "icon": "lucide:table",
