@@ -60,25 +60,34 @@
 
           <div class="relative" ref="modeDropdownRef">
             <button
-              @click="showModeDropdown = !showModeDropdown"
+              @click="toggleModeDropdown"
               class="flex items-center gap-1 rounded-lg border border-surface-200 bg-white px-2.5 py-1.5 text-xs font-medium text-surface-600 hover:bg-surface-50 dark:border-surface-700 dark:bg-surface-800 dark:text-surface-300 dark:hover:bg-surface-700"
             >
               {{ modeLabel }}
               <Icon name="lucide:chevron-down" class="w-3 h-3" />
             </button>
-            <Transition name="fade">
-              <div v-if="showModeDropdown" class="absolute top-full mt-1 left-0 z-50 rounded-lg border border-surface-200 bg-white shadow-lg dark:border-surface-700 dark:bg-surface-800 overflow-hidden">
-                <button
-                  v-for="m in modes"
-                  :key="m.value"
-                  @click="treeSearch.mode.value = m.value; showModeDropdown = false"
-                  class="block w-full text-left px-3 py-1.5 text-xs hover:bg-surface-100 dark:hover:bg-surface-700"
-                  :class="treeSearch.mode.value === m.value ? 'text-primary-600 dark:text-primary-400 font-medium' : 'text-surface-600 dark:text-surface-300'"
+            <!-- Rendered into `body`: the header is a horizontal scroll container
+                 (overflow-x-auto ⇒ overflow-y computes to auto), so an absolutely
+                 positioned dropdown inside it gets clipped instead of dropping down. -->
+            <Teleport to="body">
+              <Transition name="fade">
+                <div
+                  v-if="showModeDropdown && dropdownPos"
+                  :style="dropdownStyle"
+                  class="fixed z-[100] rounded-lg border border-surface-200 bg-white shadow-lg dark:border-surface-700 dark:bg-surface-800 overflow-hidden"
                 >
-                  {{ m.label }}
-                </button>
-              </div>
-            </Transition>
+                  <button
+                    v-for="m in modes"
+                    :key="m.value"
+                    @click="selectSearchMode(m.value)"
+                    class="block w-full text-left px-3 py-1.5 text-xs hover:bg-surface-100 dark:hover:bg-surface-700"
+                    :class="treeSearch.mode.value === m.value ? 'text-primary-600 dark:text-primary-400 font-medium' : 'text-surface-600 dark:text-surface-300'"
+                  >
+                    {{ m.label }}
+                  </button>
+                </div>
+              </Transition>
+            </Teleport>
           </div>
 
           <div ref="searchBoxRef" class="relative">
@@ -106,35 +115,47 @@
             >
               {{ treeSearch.totalCount.value > 0 ? `${treeSearch.currentIndex.value + 1}/${treeSearch.totalCount.value}` : '0/0' }}
             </span>
-            <!-- Unsupported / invalid JSONPath expression -->
-            <span
-              v-if="treeSearch.invalidExpression.value"
-              class="absolute right-0 top-full mt-1 whitespace-nowrap rounded bg-red-600 px-1.5 py-0.5 text-[10px] text-white shadow"
-            >
-              {{ t('largeViewer.pathInvalid') }}
-            </span>
+            <!-- Floating panels for this box (invalid-path hint + recent searches)
+                 are teleported to `body` — the header is a horizontal scroll
+                 container and clips anything below it. -->
+          </div>
 
-            <!-- Recent searches -->
+          <Teleport to="body">
             <div
-              v-if="showHistory && treeSearch.history.value.length > 0"
-              class="absolute left-0 right-0 top-full mt-1 z-50 overflow-hidden rounded-lg border border-surface-200 bg-white shadow-lg dark:border-surface-700 dark:bg-surface-800"
+              v-if="searchPanelVisible && searchPanelPos"
+              :style="searchPanelStyle"
+              class="fixed z-[100] flex flex-col items-stretch gap-1 pointer-events-none"
             >
-              <div class="flex items-center justify-between border-b border-surface-100 px-3 py-1 text-[10px] uppercase tracking-wider text-surface-400 dark:border-surface-700 dark:text-surface-500">
-                <span>{{ t('search.history') }}</span>
-                <button class="hover:text-surface-600 dark:hover:text-surface-300" @click="treeSearch.clearHistory()">
-                  {{ t('edit.clear') }}
+              <!-- Unsupported / invalid JSONPath expression -->
+              <div
+                v-if="treeSearch.invalidExpression.value"
+                class="pointer-events-auto self-end whitespace-nowrap rounded bg-red-600 px-1.5 py-0.5 text-[10px] text-white shadow"
+              >
+                {{ t('largeViewer.pathInvalid') }}
+              </div>
+
+              <!-- Recent searches -->
+              <div
+                v-if="showHistory && treeSearch.history.value.length > 0"
+                class="pointer-events-auto overflow-hidden rounded-lg border border-surface-200 bg-white shadow-lg dark:border-surface-700 dark:bg-surface-800"
+              >
+                <div class="flex items-center justify-between border-b border-surface-100 px-3 py-1 text-[10px] uppercase tracking-wider text-surface-400 dark:border-surface-700 dark:text-surface-500">
+                  <span>{{ t('search.history') }}</span>
+                  <button class="hover:text-surface-600 dark:hover:text-surface-300" @click="treeSearch.clearHistory()">
+                    {{ t('edit.clear') }}
+                  </button>
+                </div>
+                <button
+                  v-for="item in treeSearch.history.value"
+                  :key="item"
+                  @click="applyHistory(item)"
+                  class="block w-full truncate px-3 py-1.5 text-left text-xs hover:bg-surface-100 dark:hover:bg-surface-700"
+                >
+                  {{ item }}
                 </button>
               </div>
-              <button
-                v-for="item in treeSearch.history.value"
-                :key="item"
-                @click="applyHistory(item)"
-                class="block w-full truncate px-3 py-1.5 text-left text-xs hover:bg-surface-100 dark:hover:bg-surface-700"
-              >
-                {{ item }}
-              </button>
             </div>
-          </div>
+          </Teleport>
 
           <template v-if="treeSearch.query.value">
             <button
@@ -593,6 +614,84 @@ const modes = computed(() => [
 ])
 
 const modeLabel = computed(() => modes.value.find(m => m.value === treeSearch.mode.value)?.label ?? 'Key')
+
+// The dropdown lives in <Teleport to="body">, so it needs a viewport position
+// measured from its trigger.
+function measureAnchor(el: HTMLElement | undefined | null) {
+  if (!el) return null
+  const r = el.getBoundingClientRect()
+  return { top: r.bottom + 4, left: r.left, width: r.width }
+}
+
+function anchorStyle(pos: { top: number; left: number; width: number } | null) {
+  if (!pos) return {}
+  return { top: `${pos.top}px`, left: `${pos.left}px`, minWidth: `${pos.width}px` }
+}
+
+const dropdownPos = ref<{ top: number; left: number; width: number } | null>(null)
+const dropdownStyle = computed(() => anchorStyle(dropdownPos.value))
+
+function measureDropdown() {
+  const p = measureAnchor(modeDropdownRef.value)
+  if (p) dropdownPos.value = p
+}
+
+function toggleModeDropdown() {
+  if (showModeDropdown.value) {
+    showModeDropdown.value = false
+    return
+  }
+  measureDropdown()
+  showModeDropdown.value = true
+}
+
+function selectSearchMode(value: SearchMode) {
+  treeSearch.mode.value = value
+  showModeDropdown.value = false
+}
+
+// Recent searches + invalid-path hint share the search box as their anchor.
+const searchPanelPos = ref<{ top: number; left: number; width: number } | null>(null)
+const searchPanelStyle = computed(() => anchorStyle(searchPanelPos.value))
+const searchPanelVisible = computed(
+  () => treeSearch.invalidExpression.value || (showHistory.value && treeSearch.history.value.length > 0),
+)
+
+function measureSearchPanel() {
+  const p = measureAnchor(searchBoxRef.value)
+  if (p) searchPanelPos.value = p
+}
+
+// Keep both floating panels glued to their triggers while they are open.
+function onViewportChange() {
+  if (showModeDropdown.value) measureDropdown()
+  if (searchPanelVisible.value) measureSearchPanel()
+}
+
+watch([showModeDropdown, searchPanelVisible], ([modeOpen, panelOpen]) => {
+  if (modeOpen) {
+    measureDropdown()
+    window.addEventListener('scroll', measureDropdown, true)
+  } else {
+    window.removeEventListener('scroll', measureDropdown, true)
+  }
+
+  if (panelOpen) {
+    measureSearchPanel()
+    window.addEventListener('scroll', measureSearchPanel, true)
+  } else {
+    window.removeEventListener('scroll', measureSearchPanel, true)
+  }
+
+  if (modeOpen || panelOpen) window.addEventListener('resize', onViewportChange)
+  else window.removeEventListener('resize', onViewportChange)
+})
+
+onUnmounted(() => {
+  window.removeEventListener('scroll', measureDropdown, true)
+  window.removeEventListener('scroll', measureSearchPanel, true)
+  window.removeEventListener('resize', onViewportChange)
+})
 
 const searchPlaceholder = computed(() => {
   switch (treeSearch.mode.value) {
