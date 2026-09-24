@@ -368,12 +368,6 @@ function isWsChar(c: string): boolean {
   return c === ' ' || c === '\t' || c === '\r' || c === '\n'
 }
 
-/** Format an internal path ("obj.deep.leaf" / "items[0]") as a JSONPath. */
-export function toJsonPath(path: string): string {
-  if (!path) return '$'
-  return path.startsWith('[') ? `$${path}` : `$.${path}`
-}
-
 export type JsonPathSeg = { kind: 'key'; name: string } | { kind: 'index'; value: number }
 
 /**

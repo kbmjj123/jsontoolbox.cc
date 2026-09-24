@@ -219,7 +219,7 @@
 import { copyToClipboard } from '~/utils'
 import { toJsonPath } from '~/utils/jsonPath'
 import { useToast } from '~/composables/useToast'
-import { isColorValue, getColorStyle, isPossibleImageUrl } from '~/composables/useSmartJsonValue'
+import { isColorValue, getColorStyle, isPossibleImageUrl } from '~/utils/mediaPreview'
 import type { PreviewImage } from '~/composables/useImagePreview'
 
 const { t } = useI18n()

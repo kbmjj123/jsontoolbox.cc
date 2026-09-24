@@ -10,7 +10,7 @@ const MAX_HISTORY = 100
  * (`['users', 0, 'name']`). Keys containing `.` or `[` are not addressable —
  * the same limitation the tree itself has when building child paths.
  */
-export function parseJsonPath(path: string): JsonSegment[] {
+export function parseTreePath(path: string): JsonSegment[] {
   if (!path) return []
   const segs: JsonSegment[] = []
   const re = /([^.[\]]+)|\[(\d+)\]/g
@@ -132,7 +132,7 @@ export function useNodeEditing(inputJson: Ref<string>, indent: Ref<number | stri
   }
 
   function setValue(path: string, value: unknown) {
-    return commit((data) => setAt(data, parseJsonPath(path), value))
+    return commit((data) => setAt(data, parseTreePath(path), value))
   }
 
   function renameKey(path: string, newKey: string) {
@@ -142,7 +142,7 @@ export function useNodeEditing(inputJson: Ref<string>, indent: Ref<number | stri
       return false
     }
     return commit((data) => {
-      const segs = parseJsonPath(path)
+      const segs = parseTreePath(path)
       if (segs.length === 0) throw new Error(t('edit.cannotEditRoot'))
       const parentSegs = segs.slice(0, -1)
       const parent = getAt(data, parentSegs)
@@ -163,7 +163,7 @@ export function useNodeEditing(inputJson: Ref<string>, indent: Ref<number | stri
 
   function setType(path: string, type: JsonTypeName) {
     return commit((data) => {
-      const segs = parseJsonPath(path)
+      const segs = parseTreePath(path)
       const current = getAt(data, segs)
       let converted: unknown
       if (type === 'null') {
@@ -189,7 +189,7 @@ export function useNodeEditing(inputJson: Ref<string>, indent: Ref<number | stri
       return false
     }
     return commit((data) => {
-      const segs = parseJsonPath(path)
+      const segs = parseTreePath(path)
       const target = segs.length ? getAt(data, segs) : data
       if (target === null || typeof target !== 'object' || Array.isArray(target)) {
         throw new Error(t('edit.addFieldObjectOnly'))
@@ -206,12 +206,12 @@ export function useNodeEditing(inputJson: Ref<string>, indent: Ref<number | stri
       toast.error(t('edit.cannotEditRoot'))
       return false
     }
-    return commit((data) => removeAt(data, parseJsonPath(path)))
+    return commit((data) => removeAt(data, parseTreePath(path)))
   }
 
   function addArrayItem(path: string, value: unknown) {
     return commit((data) => {
-      const segs = parseJsonPath(path)
+      const segs = parseTreePath(path)
       const target = segs.length ? getAt(data, segs) : data
       if (!Array.isArray(target)) throw new Error(t('edit.addItemArrayOnly'))
       const copy = (target as unknown[]).concat([value])
@@ -220,12 +220,12 @@ export function useNodeEditing(inputJson: Ref<string>, indent: Ref<number | stri
   }
 
   function removeArrayItem(path: string, index: number) {
-    return commit((data) => removeAt(data, [...parseJsonPath(path), index]))
+    return commit((data) => removeAt(data, [...parseTreePath(path), index]))
   }
 
   function moveArrayItem(path: string, from: number, to: number) {
     return commit((data) => {
-      const segs = parseJsonPath(path)
+      const segs = parseTreePath(path)
       const target = segs.length ? getAt(data, segs) : data
       if (!Array.isArray(target)) throw new Error(t('edit.moveArrayOnly'))
       const arr = target as unknown[]
@@ -245,7 +245,7 @@ export function useNodeEditing(inputJson: Ref<string>, indent: Ref<number | stri
       toast.error(t('edit.targetRequired'))
       return false
     }
-    return commit((data) => setAt(data, parseJsonPath(dest), deepClone(getAt(data, parseJsonPath(path)))))
+    return commit((data) => setAt(data, parseTreePath(dest), deepClone(getAt(data, parseTreePath(path)))))
   }
 
   function moveNode(path: string, targetPath: string) {
@@ -255,8 +255,8 @@ export function useNodeEditing(inputJson: Ref<string>, indent: Ref<number | stri
       return false
     }
     return commit((data) => {
-      const srcSegs = parseJsonPath(path)
-      const withCopy = setAt(data, parseJsonPath(dest), deepClone(getAt(data, srcSegs)))
+      const srcSegs = parseTreePath(path)
+      const withCopy = setAt(data, parseTreePath(dest), deepClone(getAt(data, srcSegs)))
       return removeAt(withCopy, srcSegs)
     })
   }
@@ -266,7 +266,7 @@ export function useNodeEditing(inputJson: Ref<string>, indent: Ref<number | stri
     if (paths.length === 0) return false
     return commit((data) => {
       let next = data
-      for (const p of paths) next = setAt(next, parseJsonPath(p), value)
+      for (const p of paths) next = setAt(next, parseTreePath(p), value)
       return next
     })
   }

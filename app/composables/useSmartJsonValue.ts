@@ -3,8 +3,9 @@
  *
  * - Basic detection (url / image / email / date / color) is defined here.
  * - Extended detection + decoders (JWT, Base64, timestamp, media) live in
- *   `~/utils/mediaPreview` and are re-exported from this module, so consumers
- *   keep a single import site and every existing import path still resolves.
+ *   `~/utils/mediaPreview` and are imported here for the composable's return
+ *   API. They are NOT re-exported, so the single source of truth for those
+ *   symbols stays in `~/utils/mediaPreview` (avoids duplicate auto-imports).
  */
 
 import {
@@ -16,25 +17,8 @@ import {
   getColorStyle,
   isColorValue,
   isImageUrl,
-  isPossibleImageUrl,
   isRemoteResource,
-  type ValueKind,
 } from '~/utils/mediaPreview'
-
-// Re-export the shared primitives (non-breaking: existing imports keep working).
-export {
-  base64ByteLength,
-  decodeBase64,
-  decodeJwt,
-  detectValueKind,
-  formatTimestamps,
-  getColorStyle,
-  isColorValue,
-  isImageUrl,
-  isPossibleImageUrl,
-  isRemoteResource,
-}
-export type { ValueKind }
 
 export interface DetectedType {
   path: string

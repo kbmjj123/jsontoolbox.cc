@@ -368,7 +368,8 @@ import LargeFileStructure from '~/components/tool/LargeFileStructure.vue'
 import NodeInspector from '~/components/tool/NodeInspector.vue'
 import type { FileFormat } from '~/workers/recordStream.worker'
 import type { SearchTextHit } from '~/utils/textSearch'
-import { toJsonPath, validateRegex } from '~/utils/textSearch'
+import { validateRegex } from '~/utils/textSearch'
+import { toJsonPath } from '~/utils/jsonPath'
 
 const { t } = useI18n()
 // Shared CSS fullscreen state (same composable `ResizablePanel` uses): it locks

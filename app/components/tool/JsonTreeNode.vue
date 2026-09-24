@@ -333,7 +333,7 @@ import type { useTreeSearch } from '~/composables/useTreeSearch'
 import type { FieldError } from '~/types/jsonErrors'
 import type { LazyNode } from '~/workers/jsonStream.worker'
 import { toJsonPath, jsonTypeLabel } from '~/utils/jsonPath'
-import { isColorValue } from '~/composables/useSmartJsonValue'
+import { isColorValue } from '~/utils/mediaPreview'
 import { useNodeEditing } from '~/composables/useNodeEditing'
 
 const { t } = useI18n()

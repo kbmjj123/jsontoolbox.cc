@@ -102,7 +102,8 @@
 
 <script setup lang="ts">
 import type { SearchTextHit } from '~/utils/textSearch'
-import { lineMatchSegments, toJsonPath } from '~/utils/textSearch'
+import { lineMatchSegments } from '~/utils/textSearch'
+import { toJsonPath } from '~/utils/jsonPath'
 import type { FileFormat } from '~/workers/recordStream.worker'
 
 const props = defineProps<{
