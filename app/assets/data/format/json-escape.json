@@ -13,145 +13,181 @@
     "json-to-csv"
   ],
   "en": {
-    "name": "JSON Escape & Unescape",
-    "description": "Escape or unescape JSON strings online. This tool handles json escape, json unescape, json string escape, and json string unescape operations for special characters, quotes, and backslashes in JSON data.",
-    "hero": {
-      "trustHtml": "100% client-side processing. Your JSON data never leaves your browser."
-    },
-    "meta": {
-      "title": "JSON Escape Unescape — Free Online Tool",
-      "description": "Escape and unescape JSON strings online. Handle special characters, quotes, backslashes, and newlines. Free, fast, and runs in your browser. No upload required.",
-      "keywords": [
-        "json unescape",
-        "unescape json",
-        "json escape",
-        "escape json",
-        "json string escape",
-        "json string unescape",
-        "json special characters",
-        "escape special characters json",
-        "json escape tool"
-      ]
-    },
-    "features": [
-      {
-        "icon": "lucide:shield",
-        "title": "Escape & Unescape",
-        "description": "Convert between escaped and unescaped JSON strings instantly."
-      },
-      {
-        "icon": "lucide:copy",
-        "title": "One-Click Copy",
-        "description": "Copy the result to clipboard instantly."
-      },
-      {
-        "icon": "lucide:download",
-        "title": "Download",
-        "description": "Download the processed string as a file."
-      },
-      {
-        "icon": "lucide:refresh-cw",
-        "title": "Swap",
-        "description": "Quickly swap input and output for repeated operations."
-      },
-      {
-        "icon": "lucide:link",
-        "title": "URL Input",
-        "description": "Load JSON from URL using ?url= parameter."
-      },
-      {
-        "icon": "lucide:shield-check",
-        "title": "Private",
-        "description": "All processing happens in your browser. No data upload."
-      }
-    ],
-    "guide": [
-      {
-        "title": "Paste your JSON string",
-        "description": "Paste your escaped or unescaped JSON string into the input field. You can also upload a .json file or load from a URL."
-      },
-      {
-        "title": "Click Escape or Unescape",
-        "description": "Choose Escape to add backslash characters before quotes, newlines, and other special characters. Choose Unescape to remove them and restore the original text."
-      },
-      {
-        "title": "Copy or download the result",
-        "description": "Copy the processed string to clipboard with one click, or download it as a .txt file. Use Swap to move the output back to input for reverse operations."
-      }
-    ],
-    "example": {
-      "title": "JSON Escape Example",
-      "description": "See how a JSON object string looks before and after escaping. Quotes, backslashes, and special characters are all properly escaped.",
-      "input": "{\"name\": \"Alice\", \"msg\": \"She said \\\"OK\\\"\", \"path\": \"C:\\\\Users\\\\test\"}",
-      "output": "{\\\"name\\\": \\\"Alice\\\", \\\"msg\\\": \\\"She said \\\\\\\"OK\\\\\\\"\\\", \\\"path\\\": \\\"C\\\\\\\\Users\\\\\\\\test\\\"}",
-      "inputLabel": "JSON String (Unescaped)",
-      "outputLabel": "Escaped String",
-      "note": "Notice how quotes become \\\", backslashes become \\\\, and the nested structure is preserved. This escaped string can be safely embedded inside another JSON document or JavaScript code.",
-      "useCase": "Escape a JSON object string — inner quotes, backslashes and special characters are properly escaped for safe embedding in code or config."
-    },
-    "faq": [
-      {
-        "question": "Is my JSON data uploaded to a server?",
-        "answer": "No. All processing happens directly in your browser. Your JSON data never leaves your device — no server upload, no tracking, no cookies."
-      },
-      {
-        "question": "What does JSON escaping do?",
-        "answer": "JSON escaping adds backslash characters before special characters (quotes, backslashes, newlines, tabs) so they can be safely included inside a JSON string without breaking the structure."
-      },
-      {
-        "question": "What does JSON unescaping do?",
-        "answer": "JSON unescaping removes the backslash escape characters, converting escaped sequences like \\\" and \\n back into their original characters (quotes and newlines). Use this when you have an escaped JSON string and need to read the actual content."
-      },
-      {
-        "question": "When should I escape JSON?",
-        "answer": "Escape JSON when embedding a JSON string inside another JSON document, when including JSON in JavaScript code, when writing JSON to log files, or when pasting JSON into configuration files that require escaped strings."
-      },
-      {
-        "question": "When should I unescape JSON?",
-        "answer": "Unescape JSON when you receive escaped JSON strings from API responses, webhook payloads, log files, or error messages and need to see the actual JSON content for debugging or further processing."
-      },
-      {
-        "question": "What special characters are escaped in JSON?",
-        "answer": "The characters that must be escaped in JSON strings are: double quotes (\"), backslashes (\\), newlines (\\n), tabs (\\t), carriage returns (\\r), backspace (\\b), form feed (\\f), and any character using the \\uXXXX Unicode escape."
-      },
-      {
-        "question": "What is the difference between JSON escaping and HTML encoding?",
-        "answer": "JSON escaping uses backslashes (\\\") to handle special characters inside JSON strings. HTML encoding uses ampersands (&amp;quot;) to handle special characters in HTML. They serve the same purpose — preventing syntax conflicts — but use different escape characters and are not interchangeable."
-      },
-      {
-        "question": "Can I escape an entire JSON object, not just a string?",
-        "answer": "Yes. When you paste a JSON object like {\"key\": \"value\"}, the Escape function converts all quotes and special characters so the entire object can be safely embedded as a string inside another JSON document or JavaScript code."
-      },
-      {
-        "question": "Why does my escaped JSON have too many backslashes?",
-        "answer": "This usually means the input was already escaped before you ran the Escape function — a problem called double escaping. Use the Unescape button to remove the extra backslashes, then check your input before escaping again."
-      },
-      {
-        "question": "How do I handle Unicode characters in JSON strings?",
-        "answer": "Unicode characters (like é, ñ, 中文, emoji) can appear directly in JSON strings without escaping. However, if you need to escape them, use the \\uXXXX format with the 4-digit hex code. For example, é becomes \\u00e9."
-      },
-      {
-        "question": "Does this tool work with JSON Lines (JSONL) format?",
-        "answer": "Yes, you can paste multi-line JSONL content and escape or unescape it. Each line will be processed with the same escaping rules. This is useful for preparing JSONL log data or batch processing."
-      },
-      {
-        "question": "Is there a size limit for the JSON I can escape?",
-        "answer": "There is no artificial size limit. The tool runs entirely in your browser, so performance depends on your device. For most use cases (up to several MB), it works instantly. Very large files (100MB+) may slow down your browser."
-      }
-    ],
-    "article": {
-      "title": "How to Escape & Unescape JSON Strings Online — Complete Guide",
-      "content": "<h2>What is JSON Escaping?</h2><p>JSON escaping is the process of adding backslash characters (\\) before special characters in a string so it can be safely included inside a JSON document. Special characters like double quotes, backslashes, newlines, and tabs have special meaning in JSON — if you include them raw, the JSON becomes invalid. Escaping tells the parser to treat the character as literal text, not as syntax.</p><p>For example, the string <code>She said \"hello\"</code> contains double quotes that would break a JSON string. After escaping, it becomes <code>She said \\\"hello\\\"</code> — valid and safe to embed.</p><h2>Common Escaped Characters in JSON</h2><p>JSON defines a small set of characters that must be escaped when they appear inside a string value:</p><ul><li><strong>\\\"</strong> — Double quote (required, since quotes delimit strings)</li><li><strong>\\\\</strong> — Backslash (required, since it introduces escape sequences)</li><li><strong>\\n</strong> — Newline / line feed</li><li><strong>\\t</strong> — Tab / horizontal tab</li><li><strong>\\r</strong> — Carriage return</li><li><strong>\\uXXXX</strong> — Unicode character (4-digit hex code)</li></ul><p>All other characters can appear directly in a JSON string without escaping, including most emoji and non-ASCII letters.</p><h2>Real-World Scenarios for JSON Escaping</h2><h3>Escaping JSON for Log Files</h3><p>When your application writes JSON data to log files (CloudWatch, ELK, Datadog), the log entries themselves are often JSON. If the payload contains nested JSON strings, those inner strings must be escaped. For example, an API request body logged as a string inside a JSON log entry needs proper escaping to keep the log file parseable. Without escaping, your log aggregator will fail to index the entry or split it incorrectly.</p><h3>Embedding JSON in JavaScript Code</h3><p>If you need to embed a JSON object inside a JavaScript string (for example, in a test fixture, a config template, or an inline script), you must escape all quotes and backslashes. A common mistake is copying raw JSON into a JS string literal without escaping — this produces a syntax error. Use our JSON escape tool to convert the raw JSON into a valid JavaScript string in one click.</p><h3>Handling Escaped JSON from Webhooks and APIs</h3><p>Many APIs return JSON responses where some fields contain escaped JSON strings. For example, a webhook payload might include a <code>payload</code> field whose value is a JSON object encoded as a string. To read the actual data, you need to unescape that string first. This is common with Stripe webhooks, Slack API responses, and event-driven architectures where JSON is passed as a string inside another JSON document.</p><h3>Working with JSON in Configuration Files</h3><p>Configuration files (package.json, tsconfig.json, .eslintrc) are JSON, but they sometimes contain string values that include special characters — file paths with backslashes on Windows, regex patterns, or multi-line descriptions. Proper escaping ensures these config files remain valid JSON and can be parsed by tools without errors.</p><h2>Common Mistakes When Escaping JSON</h2><h3>Double Escaping</h3><p>The most common mistake is escaping an already-escaped string. For example, if you escape <code>She said \\\"hello\\\"</code> a second time, you get <code>She said \\\\\\\"hello\\\\\\\"</code> — now the backslashes themselves are escaped, producing incorrect output. If your output has more backslashes than expected, you likely double-escaped. Use the Unescape button to revert, then escape only once.</p><h3>Forgetting to Escape Backslashes</h3><p>Backslashes must be escaped first, before any other character. If you have a Windows file path like <code>C:\\Users\\test</code>, it must become <code>C:\\\\Users\\\\test</code> in JSON. A common error is escaping quotes but forgetting backslashes, which produces broken JSON that looks almost correct.</p><h3>Using Wrong Escape Sequences</h3><p>JSON only supports a limited set of escape sequences: <code>\\\"</code>, <code>\\\\</code>, <code>\\/</code>, <code>\\n</code>, <code>\\r</code>, <code>\\t</code>, <code>\\b</code>, <code>\\f</code>, and <code>\\uXXXX</code>. Sequences like <code>\\a</code>, <code>\\v</code>, or <code>\\0</code> are invalid in JSON (though valid in some programming languages). Using invalid sequences will cause <code>JSON.parse</code> to throw an error.</p><h3>Mixing Escaped and Unescaped Content</h3><p>If you paste a string that is partially escaped (some quotes are escaped, others are not), the escape or unescape operation will produce inconsistent results. Before processing, check whether your input is fully escaped or fully unescaped, and apply the matching operation.</p><h2>How to Use Our JSON Escape Tool</h2><ol><li><strong>Paste</strong> your JSON string or text into the input field (or upload a file / load from URL)</li><li><strong>Click Escape</strong> to add escape characters, or <strong>Click Unescape</strong> to remove them</li><li><strong>Copy</strong> the result or download it as a file</li><li>Use <strong>Swap</strong> to move the output back to input for reverse operations</li></ol><p>All processing happens in your browser — your data is never sent to any server.</p>"
-    },
-    "ui": {
-      "label_input": "Input Text",
-      "label_output": "Output",
-      "placeholder_output": "Output will appear here...",
-      "btn_escape": "Escape",
-      "btn_unescape": "Unescape",
-      "btn_swap": "Swap"
-    }
+  "name": "JSON Escape & Unescape",
+  "description": "Escape raw text or JSON content into a JSON-safe string and unescape JSON string literals back to readable text. Handle quotes, backslashes, line breaks, tabs, control characters, and Unicode escapes directly in your browser.",
+  "hero": {
+    "trustHtml": "Runs in your browser. Your input is not uploaded by this tool."
   },
+  "meta": {
+    "title": "JSON Escape and Unescape – Free Online Tool",
+    "description": "Escape or unescape JSON strings online. Convert quotes, backslashes, newlines, tabs, control characters, and Unicode escapes for nested JSON, logs, API fields, and code. Free and browser-based.",
+    "keywords": [
+      "json escape",
+      "json unescape",
+      "escape json",
+      "unescape json",
+      "json string escape",
+      "json string unescape",
+      "escaped json",
+      "json escape tool"
+    ]
+  },
+  "features": [
+    {
+      "icon": "lucide:shield",
+      "title": "Escape JSON Strings",
+      "description": "Convert raw text or JSON content into a JSON-safe string representation with escaped quotes, backslashes, line breaks, tabs, and other required control characters."
+    },
+    {
+      "icon": "lucide:undo-2",
+      "title": "Unescape JSON Strings",
+      "description": "Decode valid JSON string escape sequences such as \\\" , \\\\, \\n, \\t, \\r, and \\uXXXX back into readable text or JSON content."
+    },
+    {
+      "icon": "lucide:layers-2",
+      "title": "Handle Nested JSON Strings",
+      "description": "Work with JSON stored inside another JSON string, log field, database column, environment variable, or API response. Review the escaping depth before applying the operation again."
+    },
+    {
+      "icon": "lucide:braces",
+      "title": "JSON String and Document Modes",
+      "description": "Distinguish between escaping a string value and serializing an entire JSON document. The output mode should make clear whether surrounding JSON string quotes are included."
+    },
+    {
+      "icon": "lucide:copy",
+      "title": "Copy the Result",
+      "description": "Copy the escaped or unescaped output to your clipboard for use in JSON payloads, code, logs, tests, configuration files, and debugging workflows."
+    },
+    {
+      "icon": "lucide:download",
+      "title": "Download Text",
+      "description": "Download the result as a plain text file when the escaped content is large or needs to be reused in another tool."
+    },
+    {
+      "icon": "lucide:refresh-cw",
+      "title": "Swap Directions",
+      "description": "Move the output back into the input area to inspect the reverse operation. Repeated escaping increases the escaping depth, so use this only when another serialization layer is intentional."
+    },
+    {
+      "icon": "lucide:shield-check",
+      "title": "Browser-Based Processing",
+      "description": "Escaping and unescaping happen in your browser. The page does not require an account or upload the input to a remote service."
+    }
+  ],
+  "guide": [
+    {
+      "title": "Enter text or an escaped string",
+      "description": "Paste raw text, a JSON string literal, escaped JSON from a log, or a field copied from an API response. Choose the operation that matches the current representation."
+    },
+    {
+      "title": "Choose Escape or Unescape",
+      "description": "Use Escape to encode text for use inside a JSON string. Use Unescape to decode valid JSON escape sequences and recover the represented text."
+    },
+    {
+      "title": "Check the quoting mode",
+      "description": "Confirm whether the output should include the surrounding JSON string quotes or only return the inner escaped content. This distinction affects how the result is embedded."
+    },
+    {
+      "title": "Review nested escaping",
+      "description": "If the input already contains sequences such as \\\\\" or \\\\\\\\, it may be escaped more than once. Do not apply Escape repeatedly unless another JSON or string serialization layer is required."
+    },
+    {
+      "title": "Copy or download",
+      "description": "Copy the processed result or download it as text. Test the output with the parser or programming language that will consume it."
+    }
+  ],
+  "example": {
+    "title": "JSON Escape Example",
+    "description": "Escape a JSON document so it can be stored as the value of another JSON string.",
+    "input": "{\"name\":\"Alice\",\"message\":\"She said \\\"OK\\\"\",\"path\":\"C:\\\\Users\\\\test\"}",
+    "output": "\"{\\\"name\\\":\\\"Alice\\\",\\\"message\\\":\\\"She said \\\\\\\"OK\\\\\\\"\\\",\\\"path\\\":\\\"C:\\\\\\\\Users\\\\\\\\test\\\"}\"",
+    "inputLabel": "JSON Text",
+    "outputLabel": "JSON String Literal",
+    "note": "The output includes surrounding quotes because the entire JSON document is represented as one JSON string value. If your application expects only the inner content, use the output mode implemented by the page.",
+    "useCase": "Embed a JSON payload as a string inside another JSON document, log record, test fixture, or API field."
+  },
+  "faq": [
+    {
+      "question": "What does JSON escaping do?",
+      "answer": "JSON escaping encodes text so it can safely appear inside a JSON string. It adds escape sequences for characters that would otherwise change the string syntax, including double quotes, backslashes, line breaks, tabs, carriage returns, backspace, and form feed."
+    },
+    {
+      "question": "What does JSON unescaping do?",
+      "answer": "JSON unescaping decodes valid JSON escape sequences back into the characters they represent. For example, \\\" becomes a double quote, \\\\ becomes one backslash, and \\n becomes a line break."
+    },
+    {
+      "question": "Does Escape add surrounding double quotes?",
+      "answer": "There are two common outputs: a complete JSON string literal includes surrounding double quotes, while string content mode returns only the escaped characters inside the string. Check the selected mode or output description before embedding the result."
+    },
+    {
+      "question": "What is the difference between escaping a JSON string and escaping a JSON document?",
+      "answer": "A JSON string contains text and must escape characters that conflict with string syntax. A JSON document is already structured JSON. To embed the whole document inside another JSON string, serialize the document as text first and then escape or stringify that text."
+    },
+    {
+      "question": "Which characters must be escaped in a JSON string?",
+      "answer": "Double quotes and backslashes must be escaped. JSON also defines escapes for control characters including backspace, form feed, line feed, carriage return, and tab. A Unicode escape such as \\uXXXX may be used for characters when needed. Escaping the forward slash is optional in standard JSON."
+    },
+    {
+      "question": "Can Unicode characters appear directly in JSON?",
+      "answer": "Yes. Valid Unicode characters such as Chinese text, accented letters, and emoji can generally appear directly in a JSON string. They do not need to be converted to \\uXXXX unless a downstream system requires escaped Unicode or the output mode is configured to do so."
+    },
+    {
+      "question": "Why does my output contain too many backslashes?",
+      "answer": "The input may already be escaped, or the value may be nested inside more than one string serialization layer. Each additional JSON string layer adds another level of escaping. Inspect the actual representation and unescape one layer at a time."
+    },
+    {
+      "question": "How do I unescape JSON from an API response or log?",
+      "answer": "Copy the field containing the escaped JSON string, choose Unescape, and review whether the result becomes readable text or a valid JSON document. If it is still escaped, the value may contain multiple serialization layers."
+    },
+    {
+      "question": "Does this tool parse escaped JSON into an object?",
+      "answer": "Escaping and parsing are different operations. An unescape operation can recover the JSON text, but converting that text into an object requires JSON parsing. Use a JSON viewer or parser after unescaping when you need to inspect the structure."
+    },
+    {
+      "question": "What is the difference between JSON escaping and HTML encoding?",
+      "answer": "JSON escaping uses backslash sequences such as \\\" and \\\\ inside JSON strings. HTML encoding uses entities such as &quot; and &amp;. They solve different syntax and context problems and are not interchangeable."
+    },
+    {
+      "question": "Is JSON escaping the same as JavaScript string escaping?",
+      "answer": "They overlap but are not identical in every detail. JSON supports a specific set of escape sequences, while JavaScript string literals may support additional syntax such as single-quoted strings, hexadecimal escapes, or other language-specific forms. Use the escaping rules required by the target context."
+    },
+    {
+      "question": "Can I use this tool for JSONL?",
+      "answer": "Only when the input is processed as independent lines and each line is valid for the selected operation. JSONL may contain escaped newlines or multiline quoted content, so line-by-line processing is not always equivalent to parsing one JSON document."
+    },
+    {
+      "question": "Can I load input from a URL?",
+      "answer": "The recommended input is pasted text or a local file. Arbitrary URL loading can fail because of CORS and can expose remote or private data to the browser. Add URL input only if it is explicitly implemented with URL validation, size limits, and appropriate security controls."
+    },
+    {
+      "question": "Is there a size limit?",
+      "answer": "The practical limit depends on browser memory, input length, rendering, and the number of escaping layers. Small and medium strings should process quickly, while very large files may slow down the page or require local streaming tools."
+    },
+    {
+      "question": "Is my input uploaded to a server?",
+      "answer": "This page is designed to process the input in your browser without requiring a server upload. You should still avoid entering passwords, API keys, access tokens, private customer data, or confidential production logs into any browser-based tool."
+    }
+  ],
+  "article": {
+    "title": "How to Escape and Unescape JSON Strings",
+    "content": "<h2>What Is JSON String Escaping?</h2><p>JSON string escaping converts text into a representation that can safely appear inside a JSON string. Double quotes, backslashes, and control characters have special meaning in JSON, so they must be represented with escape sequences when they occur as content.</p><p>For example, the text <code>She said \"hello\"</code> contains double quotes. As JSON string content, it can be represented as <code>She said \\\"hello\\\"</code>. The escaping changes the representation, not the intended text.</p><h2>JSON Escape Sequences</h2><p>Standard JSON defines a limited set of escape sequences for string values:</p><ul><li><strong><code>\\\"</code>:</strong> double quote</li><li><strong><code>\\\\</code>:</strong> backslash</li><li><strong><code>\\n</code>:</strong> line feed</li><li><strong><code>\\r</code>:</strong> carriage return</li><li><strong><code>\\t</code>:</strong> horizontal tab</li><li><strong><code>\\b</code>:</strong> backspace</li><li><strong><code>\\f</code>:</strong> form feed</li><li><strong><code>\\uXXXX</code>:</strong> a Unicode escape using four hexadecimal digits</li></ul><p>Escaping the forward slash as <code>\\/</code> is allowed but not generally required. JSON does not support every escape syntax accepted by programming languages, so sequences such as <code>\\a</code>, <code>\\v</code>, and <code>\\0</code> should not be assumed to be valid JSON escapes.</p><h2>Escaping a String vs Escaping a JSON Document</h2><p>A raw text string and a complete JSON document are related but different inputs. If you want to embed a JSON document inside another JSON string, the document must become string content:</p><pre><code>{\"event\":\"created\"}</code></pre><p>may become a JSON string literal similar to:</p><pre><code>\"{\\\"event\\\":\\\"created\\\"}\"</code></pre><p>The outer quotes indicate that the entire document is now one JSON string value. If you only need the inner escaped content, the surrounding quotes may be omitted depending on the target context.</p><h2>How to Escape JSON</h2><ol><li><strong>Enter raw text or JSON:</strong> Paste the content you need to embed or serialize.</li><li><strong>Choose the output mode:</strong> Decide whether the result should include the complete JSON string literal or only its inner content.</li><li><strong>Escape once:</strong> Convert quotes, backslashes, and control characters according to JSON string rules.</li><li><strong>Review the output:</strong> Check the number of escaping layers and confirm that the destination expects a JSON string.</li><li><strong>Test with a parser:</strong> Use the target language or JSON parser to confirm that the result decodes to the intended value.</li></ol><h2>How to Unescape JSON</h2><ol><li><strong>Paste the escaped value:</strong> Use a string copied from a log, database field, environment variable, or API response.</li><li><strong>Identify the layer:</strong> Check whether the value includes outer quotes and whether it has been escaped more than once.</li><li><strong>Unescape one layer:</strong> Decode the JSON string representation.</li><li><strong>Inspect the result:</strong> Determine whether it is readable text or valid JSON that should be parsed next.</li><li><strong>Repeat only when necessary:</strong> Decode another layer only if the data was intentionally serialized multiple times.</li></ol><h2>Nested JSON and Double Escaping</h2><p>Nested JSON is common when one JSON field contains another JSON document as a string:</p><pre><code>{\"payload\":\"{\\\"id\\\":1,\\\"status\\\":\\\"ok\\\"}\"}</code></pre><p>The outer document contains a string, and the string's content happens to be JSON text. To inspect the inner object, decode the string value and then parse the resulting JSON. Removing backslashes manually without respecting the serialization layers can corrupt the data.</p><h2>Use JSON.stringify and JSON.parse When Coding</h2><p>When writing application code, prefer the standard JSON library instead of manually replacing characters. In JavaScript, <code>JSON.stringify(value)</code> produces a JSON representation with the required escaping, and <code>JSON.parse(text)</code> parses JSON and decodes valid string escapes. Similar standard-library functions exist in Python, Java, C#, Go, and other languages.</p><p>An online escape tool is useful for inspection and one-off transformations, but application code should rely on a tested serializer and parser.</p><h2>JSON Escaping Is Not HTML Encoding</h2><p>JSON escaping and HTML encoding target different contexts. JSON uses backslash sequences inside string values, while HTML uses entities such as <code>&amp;quot;</code> and <code>&amp;amp;</code>. Escaping a value for JSON does not automatically make it safe for HTML, JavaScript, SQL, URLs, or shell commands.</p><h2>Unicode and Surrogate Pairs</h2><p>Unicode characters can normally appear directly in JSON. A serializer may choose to leave them readable or emit Unicode escapes. Characters outside the Basic Multilingual Plane, including many emoji, may be represented using surrogate-pair escapes in UTF-16-based environments, so do not assume every visible character maps to one <code>\\uXXXX</code> sequence.</p><h2>Common Mistakes</h2><ul><li><strong>Double escaping:</strong> Applying Escape to content that is already escaped.</li><li><strong>Manual backslash removal:</strong> Deleting backslashes without parsing the JSON string.</li><li><strong>Wrong context:</strong> Using JSON escaping where HTML, SQL, URL, or JavaScript-specific encoding is required.</li><li><strong>Confusing text with an object:</strong> Unescaping a JSON string does not automatically parse the resulting text into an object.</li><li><strong>Invalid escape sequences:</strong> Using language-specific escapes that are not valid in JSON.</li><li><strong>Incorrect outer quotes:</strong> Embedding inner escaped content where the target expects a complete JSON string literal, or the reverse.</li></ul><h2>Browser-Based Privacy</h2><p>This tool is designed to escape and unescape input in the browser rather than sending it to a remote service. That is convenient for development data, logs, and test fixtures, but it is not a secret-management system. Avoid entering credentials, access tokens, private keys, customer information, or confidential production logs into any online tool.</p>"
+  },
+  "ui": {
+    "label_input": "Input Text",
+    "label_output": "Output",
+    "btn_escape": "Escape",
+    "btn_unescape": "Unescape",
+    "btn_swap": "Swap",
+    "btn_copy": "Copy",
+    "btn_download": "Download TXT",
+    "option_include_quotes": "Include surrounding quotes",
+    "option_decode_layers": "Decode one layer",
+    "status_escaped": "Escaped JSON string",
+    "status_unescaped": "Unescaped text",
+    "status_invalid": "Input is not a valid JSON string representation",
+    "placeholder_output": "Output will appear here..."
+  }
+},
   "zh": {
     "name": "JSON 转义/反转义",
     "description": "在线 JSON 转义或 JSON 反转义字符串。处理 JSON 特殊字符，包括引号、反斜杠和换行符。",

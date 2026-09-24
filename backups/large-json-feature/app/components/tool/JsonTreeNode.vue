@@ -1,0 +1,722 @@
+<template>
+  <div class="font-mono text-sm">
+    <!-- Children list (lazy / object / array unified) -->
+    <template v-if="totalChildren > 0">
+      <!-- Virtualized viewport for large lists -->
+      <div
+        v-if="useVirtual"
+        :ref="setListRef"
+        class="relative overflow-auto"
+        style="max-height: 480px"
+      >
+        <div :style="{ height: totalHeight + 'px', position: 'relative' }">
+          <div
+            v-for="ve in virtualEntries"
+            :key="ve.vi.index"
+            :ref="(el) => rowRef(ve.entry?.childPath ?? '', ve.vi.index, el as HTMLElement | null)"
+            class="absolute left-0 right-0"
+            :style="{ transform: `translateY(${ve.vi.offset}px)` }"
+          >
+            <template v-if="ve.loading">
+              <div class="h-3 mt-2 ml-5 rounded bg-surface-200 dark:bg-surface-700 animate-pulse w-1/3" />
+            </template>
+            <template v-else>
+              <!-- Row -->
+              <div
+                :class="[
+                  'flex rounded px-1 cursor-pointer group transition-colors',
+                  flashPath === ve.entry!.childPath
+                    ? 'bg-orange-200 dark:bg-orange-700/50 ring-2 ring-orange-400 dark:ring-orange-500 animate-pulse'
+                    : isCurrentMatch(ve.entry!.childPath)
+                      ? 'bg-amber-200 dark:bg-amber-700/60 ring-1 ring-amber-400 dark:ring-amber-500'
+                      : isMatch(ve.entry!.childPath)
+                        ? 'bg-yellow-100 dark:bg-yellow-800/40'
+                        : isSelected(ve.entry!.childPath)
+                          ? 'bg-primary-50 dark:bg-primary-900/30 border-l-2 border-primary-500 dark:border-primary-400'
+                          : 'hover:bg-surface-100 dark:hover:bg-surface-700',
+                ]"
+                @click="ve.entry!.expandable ? toggle(ve.entry!.childPath) : selectAndCopy(ve.entry!.childPath)"
+                @mouseenter="!ve.entry!.expandable && onNodeInteraction(ve.entry!.childPath, 'hover')"
+                @mouseleave="onNodeInteraction('', 'hover')"
+              >
+                <div class="flex items-start gap-1 min-w-0 leading-[1.5] flex-1">
+                  <button
+                    v-if="ve.entry!.expandable"
+                    @click.stop="toggle(ve.entry!.childPath)"
+                    class="w-4 h-4 flex items-center justify-center text-surface-400 hover:text-surface-600 shrink-0"
+                  >
+                    <Icon :name="isNodeExpanded(ve.entry!.childPath) ? 'lucide:chevron-down' : 'lucide:chevron-right'" class="w-3 h-3" />
+                  </button>
+                  <span v-else class="w-4 shrink-0"></span>
+
+                  <span v-if="ve.entry!.isLazyChild && ve.entry!.isArrayIndex" class="text-blue-500 dark:text-blue-400">[{{ ve.entry!.key }}]</span>
+                  <span v-else-if="ve.entry!.isLazyChild" class="text-purple-600 dark:text-purple-400">"{{ ve.entry!.key }}"</span>
+                  <span v-else-if="ve.entry!.isArrayIndex" class="text-surface-400">[{{ ve.entry!.key }}]</span>
+                  <span v-else class="text-purple-600 dark:text-purple-400">"{{ ve.entry!.key }}"</span>
+                  <span class="text-surface-400">:</span>
+
+                  <span v-if="!ve.entry!.expandable" :class="ve.entry!.isLazyChild ? lazyTypeColorClass(ve.entry!.type || 'null') : valueColorClass(ve.entry!.value)">{{ ve.entry!.isLazyChild ? (ve.entry!.preview || 'null') : formatValue(ve.entry!.value, ve.entry!.childPath) }}</span>
+                  <span v-else class="text-surface-400">
+                    {{ ve.entry!.isLazyChild
+                      ? (ve.entry!.type === 'array' ? `[${ve.entry!.childCount || 0}]` : '{…}')
+                      : (isArray(ve.entry!.value) ? `[${ve.entry!.value.length}]` : '{…}') }}
+                  </span>
+
+                  <span
+                    v-if="hasError(ve.entry!.childPath)"
+                    class="relative group/error shrink-0 ml-1"
+                  >
+                    <span class="inline-block w-2 h-2 rounded-full bg-red-500 animate-pulse" />
+                    <span class="absolute bottom-full left-1/2 -translate-x-1/2 mb-1 px-2 py-1 rounded bg-red-600 text-white text-[10px] whitespace-nowrap opacity-0 group-hover/error:opacity-100 transition-opacity pointer-events-none z-50">
+                      {{ getNodeErrors(ve.entry!.childPath)[0]?.message }}
+                    </span>
+                  </span>
+                </div>
+              </div>
+
+              <!-- Expanded children -->
+              <div v-if="ve.entry!.expandable && isNodeExpanded(ve.entry!.childPath)" class="ml-4 border-l border-surface-200 dark:border-surface-700 pl-0">
+                <JsonTreeNode :data="ve.entry!.isLazyChild ? null : ve.entry!.value" :path="ve.entry!.childPath" :depth="depth + 1" :lazy="lazy" :lazy-tree="lazyTree" />
+              </div>
+
+              <!-- Image preview (non-lazy only) -->
+              <div v-if="!ve.entry!.isLazyChild && isPossibleImageUrl(ve.entry!.value) && !isSensitive(ve.entry!.childPath)" class="flex">
+                <span class="w-8 shrink-0"></span>
+                <img
+                  :src="ve.entry!.value"
+                  :alt="String(ve.entry!.key)"
+                  class="max-w-[160px] max-h-[100px] rounded-lg border border-surface-200 dark:border-surface-700 object-contain mt-1 mb-1 cursor-zoom-in"
+                  @click.stop="openPreview(String(ve.entry!.key))"
+                  @error="(($event.target as HTMLImageElement).parentElement as HTMLElement).style.display = 'none'"
+                />
+              </div>
+            </template>
+          </div>
+        </div>
+      </div>
+
+      <!-- Plain list for small lists (keeps element-based locate/scroll working) -->
+      <template v-else>
+        <div v-for="entry in childrenEntries" :key="entry.childPath">
+          <div
+            :ref="(el) => rowRef(entry.childPath, null, el as HTMLElement | null)"
+            :class="[
+              'flex rounded px-1 cursor-pointer group transition-colors',
+              flashPath === entry.childPath
+                ? 'bg-orange-200 dark:bg-orange-700/50 ring-2 ring-orange-400 dark:ring-orange-500 animate-pulse'
+                : isCurrentMatch(entry.childPath)
+                  ? 'bg-amber-200 dark:bg-amber-700/60 ring-1 ring-amber-400 dark:ring-amber-500'
+                  : isMatch(entry.childPath)
+                    ? 'bg-yellow-100 dark:bg-yellow-800/40'
+                    : isSelected(entry.childPath)
+                      ? 'bg-primary-50 dark:bg-primary-900/30 border-l-2 border-primary-500 dark:border-primary-400'
+                      : 'hover:bg-surface-100 dark:hover:bg-surface-700',
+            ]"
+            @click="entry.expandable ? toggle(entry.childPath) : selectAndCopy(entry.childPath)"
+            @mouseenter="!entry.expandable && onNodeInteraction(entry.childPath, 'hover')"
+            @mouseleave="onNodeInteraction('', 'hover')"
+          >
+            <div class="flex items-start gap-1 min-w-0 leading-[1.5] flex-1">
+              <button
+                v-if="entry.expandable"
+                @click.stop="toggle(entry.childPath)"
+                class="w-4 h-4 flex items-center justify-center text-surface-400 hover:text-surface-600 shrink-0"
+              >
+                <Icon :name="isNodeExpanded(entry.childPath) ? 'lucide:chevron-down' : 'lucide:chevron-right'" class="w-3 h-3" />
+              </button>
+              <span v-else class="w-4 shrink-0"></span>
+
+              <span v-if="entry.isLazyChild && entry.isArrayIndex" class="text-blue-500 dark:text-blue-400">[{{ entry.key }}]</span>
+              <span v-else-if="entry.isLazyChild" class="text-purple-600 dark:text-purple-400">"{{ entry.key }}"</span>
+              <span v-else-if="entry.isArrayIndex" class="text-surface-400">[{{ entry.key }}]</span>
+              <span v-else class="text-purple-600 dark:text-purple-400">"{{ entry.key }}"</span>
+              <span class="text-surface-400">:</span>
+
+              <span v-if="!entry.expandable" :class="entry.isLazyChild ? lazyTypeColorClass(entry.type || 'null') : valueColorClass(entry.value)">{{ entry.isLazyChild ? (entry.preview || 'null') : formatValue(entry.value, entry.childPath) }}</span>
+              <span v-else class="text-surface-400">
+                {{ entry.isLazyChild
+                  ? (entry.type === 'array' ? `[${entry.childCount || 0}]` : '{…}')
+                  : (isArray(entry.value) ? `[${entry.value.length}]` : '{…}') }}
+              </span>
+
+              <span
+                v-if="hasError(entry.childPath)"
+                class="relative group/error shrink-0 ml-1"
+              >
+                <span class="inline-block w-2 h-2 rounded-full bg-red-500 animate-pulse" />
+                <span class="absolute bottom-full left-1/2 -translate-x-1/2 mb-1 px-2 py-1 rounded bg-red-600 text-white text-[10px] whitespace-nowrap opacity-0 group-hover/error:opacity-100 transition-opacity pointer-events-none z-50">
+                  {{ getNodeErrors(entry.childPath)[0]?.message }}
+                </span>
+              </span>
+            </div>
+          </div>
+
+          <div v-if="entry.expandable && isNodeExpanded(entry.childPath)" class="ml-4 border-l border-surface-200 dark:border-surface-700 pl-0">
+            <JsonTreeNode :data="entry.isLazyChild ? null : entry.value" :path="entry.childPath" :depth="depth + 1" :lazy="lazy" :lazy-tree="lazyTree" />
+          </div>
+
+          <div v-if="!entry.isLazyChild && isPossibleImageUrl(entry.value) && !isSensitive(entry.childPath)" class="flex">
+            <span class="w-8 shrink-0"></span>
+            <img
+              :src="entry.value"
+              :alt="String(entry.key)"
+              class="max-w-[160px] max-h-[100px] rounded-lg border border-surface-200 dark:border-surface-700 object-contain mt-1 mb-1 cursor-zoom-in"
+              @click.stop="openPreview(String(entry.key))"
+              @error="(($event.target as HTMLImageElement).parentElement as HTMLElement).style.display = 'none'"
+            />
+          </div>
+        </div>
+      </template>
+    </template>
+
+    <!-- Primitive (root-level) -->
+    <template v-else>
+      <div
+        :ref="(el) => markRow(props.path, el as HTMLElement | null)"
+        :class="[
+          'flex rounded px-1 transition-colors',
+          flashPath === props.path
+            ? 'bg-orange-200 dark:bg-orange-700/50 ring-2 ring-orange-400 dark:ring-orange-500 animate-pulse'
+            : isCurrentMatch(props.path)
+              ? 'bg-amber-200 dark:bg-amber-700/60 ring-1 ring-amber-400 dark:ring-amber-500'
+              : isMatch(props.path)
+                ? 'bg-yellow-100 dark:bg-yellow-800/40'
+                : isSelected(props.path)
+                  ? 'bg-primary-50 dark:bg-primary-900/30 border-l-2 border-primary-500 dark:border-primary-400'
+                  : '',
+        ]"
+      >
+        <div class="flex items-start gap-1 leading-[1.5] flex-1">
+          <span class="w-4 shrink-0"></span>
+          <span class="flex items-center gap-1.5">
+            <span
+              v-if="isColorValue(data)"
+              class="inline-block w-3.5 h-3.5 rounded border border-surface-300 dark:border-surface-600 shrink-0"
+              :style="{ backgroundColor: getColorStyle(data) || undefined }"
+            />
+            <span :class="valueColorClass(data)">{{ formatValue(data, props.path) }}</span>
+          </span>
+
+          <span
+            v-if="hasError(props.path)"
+            class="relative group/error shrink-0 ml-1"
+          >
+            <span class="inline-block w-2 h-2 rounded-full bg-red-500 animate-pulse" />
+            <span class="absolute bottom-full left-1/2 -translate-x-1/2 mb-1 px-2 py-1 rounded bg-red-600 text-white text-[10px] whitespace-nowrap opacity-0 group-hover/error:opacity-100 transition-opacity pointer-events-none z-50">
+              {{ getNodeErrors(props.path)[0]?.message }}
+            </span>
+          </span>
+        </div>
+      </div>
+    </template>
+
+    <!-- Image lightbox -->
+    <Preview
+      v-if="showPreview && previewFiles.length"
+      :files="previewFiles"
+      :start-index="previewIndex"
+      @close="showPreview = false"
+    />
+  </div>
+</template>
+
+<script setup lang="ts">
+import { useVirtualList } from '~/composables/useVirtualList'
+import type { PreviewImage } from '~/composables/useImagePreview'
+import type { useTreeSearch } from '~/composables/useTreeSearch'
+import type { FieldError } from '~/types/jsonErrors'
+import type { LazyTreeApi } from '~/composables/useLazyTree'
+
+const props = withDefaults(defineProps<{
+  data: unknown
+  path: string
+  depth?: number
+  /** Lazy (worker-backed) mode: children are fetched on demand. */
+  lazy?: boolean
+  lazyTree?: LazyTreeApi | null
+}>(), {
+  depth: 0,
+  lazy: false,
+  lazyTree: null,
+})
+
+// ── Threshold above which a sibling list is virtualized ──
+const VIRTUAL_THRESHOLD = 200
+
+// ── Lazy mode support ──────────────────────────────────────
+const isLazy = computed(() => props.lazy && !!props.lazyTree)
+const lazySummary = computed(() => isLazy.value ? props.lazyTree!.getNodeSummary(props.path) : null)
+
+const totalChildren = computed(() => {
+  if (isLazy.value && lazySummary.value) return lazySummary.value.childCount
+  if (isObject(props.data)) return Object.keys(props.data).length
+  if (isArray(props.data)) return (props.data as unknown[]).length
+  return 0
+})
+
+// ── Unified children entries (works for both lazy and normal mode) ──
+interface ChildEntry {
+  key: string | number
+  value: unknown
+  expandable: boolean
+  preview?: string
+  childPath: string
+  isLazyChild: boolean
+  isArrayIndex: boolean
+  /** Present only in lazy mode (from the worker). */
+  type?: 'object' | 'array' | 'string' | 'number' | 'boolean' | 'null'
+  childCount?: number
+}
+
+const childrenEntries = computed<ChildEntry[]>(() => {
+  if (isLazy.value) return []
+  if (isObject(props.data)) {
+    return Object.entries(props.data).map(([key, value]) => ({
+      key,
+      value,
+      expandable: isExpandable(value),
+      childPath: getFullPath(key),
+      isLazyChild: false,
+      isArrayIndex: false,
+    }))
+  }
+  if (isArray(props.data)) {
+    return (props.data as unknown[]).map((value, index) => ({
+      key: index,
+      value,
+      expandable: isExpandable(value),
+      childPath: getFullPath(index),
+      isLazyChild: false,
+      isArrayIndex: true,
+    }))
+  }
+  return []
+})
+
+const useVirtual = computed(() => isLazy.value ? true : totalChildren.value > VIRTUAL_THRESHOLD)
+
+// Cache Object.entries for object nodes (used by buildEntry / indexOfChildPath
+// in virtual mode). Built once per node mount; only matters for object nodes.
+const objectEntriesCache = computed(() =>
+  isObject(props.data) ? Object.entries(props.data as Record<string, unknown>) : [],
+)
+
+/**
+ * Build a single child entry by index WITHOUT materializing the whole sibling
+ * list. For lazy mode we read the (windowed) entry from the worker-backed
+ * provider; for normal mode we read from the in-memory data object.
+ */
+function buildEntry(index: number): ChildEntry | null {
+  if (isLazy.value && props.lazyTree) {
+    const e = props.lazyTree.getChildByIndex(props.path, index)
+    if (!e) return null
+    const expandable = e.type === 'object' || e.type === 'array'
+    return {
+      key: e.key,
+      value: expandable ? null : e.preview,
+      expandable,
+      preview: e.preview,
+      childPath: e.childPath,
+      isLazyChild: true,
+      isArrayIndex: e.type === 'array',
+      type: e.type,
+      childCount: e.childCount,
+    }
+  }
+  if (isArray(props.data)) {
+    const value = (props.data as unknown[])[index]
+    return {
+      key: index,
+      value,
+      expandable: isExpandable(value),
+      childPath: getFullPath(index),
+      isLazyChild: false,
+      isArrayIndex: true,
+    }
+  }
+  if (isObject(props.data)) {
+    const kv = objectEntriesCache.value[index]
+    if (!kv) return null
+    const [key, value] = kv
+    return {
+      key,
+      value,
+      expandable: isExpandable(value),
+      childPath: getFullPath(key),
+      isLazyChild: false,
+      isArrayIndex: false,
+    }
+  }
+  return null
+}
+
+// ── Virtual scrolling (only active for large sibling lists) ──
+const listRef = ref<HTMLElement | null>(null)
+const { virtualItems, totalHeight, measure, scrollToIndex } = useVirtualList(listRef, {
+  itemCount: () => totalChildren.value,
+  estimateHeight: 28,
+  overscan: 12,
+})
+
+// Bridge virtualItems → entries for the template (windowed, no full build).
+// `loading` marks rows whose entry hasn't been fetched from the worker yet.
+const virtualEntries = computed<{ entry: ChildEntry | null; vi: { index: number; offset: number }; loading: boolean }[]>(() => {
+  const result: { entry: ChildEntry | null; vi: { index: number; offset: number }; loading: boolean }[] = []
+  for (const vi of virtualItems.value) {
+    const entry = buildEntry(vi.index)
+    result.push({ entry, vi, loading: !entry })
+  }
+  return result
+})
+
+// When a virtualized lazy list becomes visible (expanded / scrolled), make sure
+// the rendered window of children is fetched from the worker.
+watch(virtualItems, (items) => {
+  if (!isLazy.value || !props.lazyTree) return
+  if (items.length === 0) return
+  const start = items[0].index
+  const end = items[items.length - 1].index
+  if (end >= start) props.lazyTree.ensureChildren(props.path, start, end - start + 1)
+}, { immediate: true })
+
+// ── Shared expanded state (inject + re-provide) ────────────────
+const expanded = inject<Ref<Set<string>>>('richExpanded', ref(new Set()))
+provide('richExpanded', expanded)
+
+// ── Selected path ──────────────────────────────────────────────
+const selectedPath = inject<Ref<string>>('richSelectedPath', ref(''))
+provide('richSelectedPath', selectedPath)
+
+// ── Node interaction callback (click/hover → source line) ────
+const onNodeInteraction = inject<(path: string, type: 'click' | 'hover') => void>('onNodeInteraction', () => {})
+
+// ── Expand/collapse all signals ────────────────────────────────
+const expandAllSignal = inject<Ref<number>>('expandAllSignal', ref(0))
+const collapseAllSignal = inject<Ref<number>>('collapseAllSignal', ref(0))
+provide('expandAllSignal', expandAllSignal)
+provide('collapseAllSignal', collapseAllSignal)
+
+// Collect all expandable paths for "expand all"
+function getAllExpandablePaths(data: unknown, parentPath = ''): string[] {
+  const paths: string[] = []
+  if (isObject(data)) {
+    for (const key of Object.keys(data)) {
+      const childPath = parentPath ? `${parentPath}.${key}` : key
+      const child = (data as Record<string, unknown>)[key]
+      if (isExpandable(child)) {
+        paths.push(childPath)
+        paths.push(...getAllExpandablePaths(child, childPath))
+      }
+    }
+  } else if (isArray(data)) {
+    for (let i = 0; i < data.length; i++) {
+      const childPath = `${parentPath}[${i}]`
+      if (isExpandable(data[i])) {
+        paths.push(childPath)
+        paths.push(...getAllExpandablePaths(data[i], childPath))
+      }
+    }
+  }
+  return paths
+}
+
+// ── Field errors (injected from JsonOutputPanel) ───────────────
+const errorMap = inject<Ref<Record<string, FieldError[]>>>('jsonErrors', ref({}))
+provide('jsonErrors', errorMap)
+
+// ── Locate path signal (click error → scroll to tree node) ─────────
+const locatePath = inject<Ref<string>>('locatePath', ref(''))
+provide('locatePath', locatePath)
+const flashPath = ref('')
+
+// Registry of virtualized child lists so locate/search can scroll them into view.
+const childScrollers = inject<Map<string, (childPath: string) => void>>('childScrollers', null)
+
+// Map a child path → its index within THIS node's sibling list, WITHOUT
+// materializing the whole list.
+function indexOfChildPath(childPath: string): number | null {
+  if (isLazy.value && props.lazyTree) {
+    // Only works once the parent's children window has been fetched; locate
+    // for huge files is best-effort (the search-driven fetch covers search).
+    return props.lazyTree.getChildIndex(props.path, childPath)
+  }
+  if (isArray(props.data)) {
+    const m = /\[(\d+)\]$/.exec(childPath)
+    return m ? Number(m[1]) : null
+  }
+  if (isObject(props.data)) {
+    const idx = objectEntriesCache.value.findIndex(([k]) => getFullPath(k) === childPath)
+    return idx >= 0 ? idx : null
+  }
+  return null
+}
+
+function registerContainer(path: string, el: HTMLElement | null) {
+  if (!childScrollers) return
+  if (el) {
+    childScrollers.set(path, (childPath: string) => {
+      const idx = indexOfChildPath(childPath)
+      if (idx !== null) scrollToIndex(idx)
+    })
+  } else {
+    childScrollers.delete(path)
+  }
+}
+
+function setListRef(el: HTMLElement | null) {
+  listRef.value = el
+  registerContainer(props.path, el)
+}
+
+// ── Search state (injected from JsonTreeViewer) ────────────────
+const search = inject<ReturnType<typeof useTreeSearch> | null>('treeSearch', null)
+
+// ── Masked state for sensitive fields ─────────────────────────
+const maskedFields = inject<ComputedRef<Set<string>>>('maskedFields', computed(() => new Set()))
+provide('maskedFields', maskedFields)
+
+// Root instance: provide child-scroller registry + watch expand/collapse/locate/search
+if (!props.path) {
+  const scrollers = new Map<string, (childPath: string) => void>()
+  provide('childScrollers', scrollers)
+
+  watch(expandAllSignal, () => {
+    expanded.value = new Set(getAllExpandablePaths(props.data))
+  })
+  watch(collapseAllSignal, () => {
+    expanded.value = new Set()
+  })
+
+  // Locate path: expand ancestors + scroll + flash
+  watch(() => locatePath.value, (target) => {
+    if (!target) return
+
+    const parts = target.split(/\.|\[|\]/).filter(Boolean)
+    const next = new Set(expanded.value)
+    let current = ''
+    for (let i = 0; i < parts.length - 1; i++) {
+      current = current ? `${current}.${parts[i]}` : parts[i]
+      next.add(current)
+    }
+    expanded.value = next
+
+    nextTick(() => {
+      const result = tryScroll(target)
+      if (result === 'pending') {
+        nextTick(() => {
+          const el = rowElements.get(target)
+          if (el) {
+            el.scrollIntoView({ behavior: 'smooth', block: 'center' })
+            flashPath.value = target
+            setTimeout(() => { flashPath.value = '' }, 2000)
+          }
+          locatePath.value = ''
+        })
+      } else {
+        if (result) {
+          flashPath.value = target
+          setTimeout(() => { flashPath.value = '' }, 2000)
+        }
+        locatePath.value = ''
+      }
+    })
+  })
+}
+
+function getNodeErrors(path: string): FieldError[] {
+  return errorMap.value[path] ?? []
+}
+
+function hasError(path: string): boolean {
+  return path in errorMap.value
+}
+
+function isMatch(path: string) {
+  return search?.isMatch(path) ?? false
+}
+
+function isCurrentMatch(path: string) {
+  return search?.isCurrentMatch(path) ?? false
+}
+
+// Row element refs for scroll-into-view (shared across all tree nodes)
+const rowElements = inject<Map<string, HTMLElement>>('treeRowElements', new Map())
+provide('treeRowElements', rowElements)
+
+function markRow(path: string, el: HTMLElement | null) {
+  if (el) rowElements.set(path, el)
+  else rowElements.delete(path)
+}
+
+function rowRef(path: string, index: number | null, el: HTMLElement | null) {
+  markRow(path, el)
+  if (index !== null && useVirtual.value) measure(index, el)
+}
+
+// Best-effort scroll of a path into view. Returns true if found & scrolled,
+// 'pending' if a virtualized parent list was told to scroll it into range,
+// or false if it cannot be reached.
+function parentPathOf(path: string): string {
+  if (path.endsWith(']')) {
+    const i = path.lastIndexOf('[')
+    return i > 0 ? path.slice(0, i) : ''
+  }
+  const i = path.lastIndexOf('.')
+  return i > 0 ? path.slice(0, i) : ''
+}
+
+function tryScroll(path: string): boolean | 'pending' {
+  const el = rowElements.get(path)
+  if (el) {
+    el.scrollIntoView({ behavior: 'smooth', block: 'center' })
+    return true
+  }
+  const parent = parentPathOf(path)
+  const scroller = childScrollers?.get(parent)
+  if (scroller) {
+    scroller(path)
+    return 'pending'
+  }
+  return false
+}
+
+// Root instance: auto-scroll current match into view.
+watch(() => search?.currentMatchPath.value, (path) => {
+  if (!path) return
+  const attempt = (tries: number) => {
+    if (tries <= 0) return
+    nextTick(() => {
+      const r = tryScroll(path)
+      if (r !== true && r !== 'pending') attempt(tries - 1)
+    })
+  }
+  attempt(5)
+})
+
+// ── Image preview state ────────────────────────────────────────
+const showPreview = ref(false)
+const previewIndex = ref(0)
+const previewFiles = ref<PreviewImage[]>([])
+
+const imageUrls = computed(() => {
+  const urls: { url: string; alt: string }[] = []
+  if (isObject(props.data)) {
+    for (const [k, v] of Object.entries(props.data)) {
+      if (typeof v === 'string' && isPossibleImageUrl(v)) urls.push({ url: v, alt: k })
+    }
+  } else if (isArray(props.data)) {
+    for (let i = 0; i < props.data.length; i++) {
+      const item = props.data[i]
+      if (typeof item === 'string' && isPossibleImageUrl(item)) urls.push({ url: item, alt: `[${i}]` })
+    }
+  }
+  return urls
+})
+
+function loadDimensions(url: string): Promise<{ width: number; height: number }> {
+  return new Promise((resolve) => {
+    const img = new Image()
+    img.onload = () => resolve({ width: img.naturalWidth, height: img.naturalHeight })
+    img.onerror = () => resolve({ width: 800, height: 600 })
+    img.src = url
+  })
+}
+
+async function openPreview(altKey: string) {
+  const sources = imageUrls.value
+  const idx = sources.findIndex(s => s.alt === altKey)
+  previewIndex.value = idx >= 0 ? idx : 0
+  const loaded = await Promise.all(
+    sources.map(async (s) => {
+      const dim = await loadDimensions(s.url)
+      return { url: s.url, alt: s.alt, ...dim }
+    }),
+  )
+  previewFiles.value = loaded
+  showPreview.value = true
+}
+
+// ── Helpers ────────────────────────────────────────────────────
+function isObject(val: unknown): val is Record<string, unknown> {
+  return val !== null && typeof val === 'object' && !Array.isArray(val)
+}
+
+function isArray(val: unknown): val is unknown[] {
+  return Array.isArray(val)
+}
+
+function isExpandable(val: unknown): val is Record<string, unknown> | unknown[] {
+  return isObject(val) || isArray(val)
+}
+
+function getFullPath(key: string | number) {
+  if (props.path) {
+    return typeof key === 'number' ? `${props.path}[${key}]` : `${props.path}.${key}`
+  }
+  return String(key)
+}
+
+// Expand state: manual expand OR search-driven auto-expand
+function isNodeExpanded(path: string) {
+  if (expanded.value.has(path)) return true
+  if (search?.searchExpandedPaths.value.has(path)) return true
+  return false
+}
+
+function toggle(path: string) {
+  const next = new Set(expanded.value)
+  if (next.has(path)) {
+    next.delete(path)
+  } else {
+    next.add(path)
+  }
+  expanded.value = next
+}
+
+function isSelected(path: string) {
+  return selectedPath.value === path
+}
+
+function selectAndCopy(path: string) {
+  selectedPath.value = path
+  copyToClipboard(path)
+  onNodeInteraction(path, 'click')
+}
+
+function isSensitive(path: string): boolean {
+  return maskedFields.value.has(path)
+}
+
+function formatValue(val: unknown, path?: string): string {
+  if (path && isSensitive(path)) {
+    if (typeof val === 'string') return '"****"'
+    if (typeof val === 'number') return '0'
+    if (typeof val === 'boolean') return 'false'
+    return '****'
+  }
+  if (val === null) return 'null'
+  if (val === undefined) return 'undefined'
+  if (typeof val === 'string') return `"${val}"`
+  return String(val)
+}
+
+function valueColorClass(val: unknown): string {
+  if (val === null || val === undefined) return 'text-surface-400 italic'
+  switch (typeof val) {
+    case 'string': return 'text-emerald-600 dark:text-emerald-400'
+    case 'number': return 'text-blue-600 dark:text-blue-400'
+    case 'boolean': return 'text-orange-600 dark:text-orange-400'
+    default: return 'text-surface-700 dark:text-surface-300'
+  }
+}
+
+function lazyTypeColorClass(type: string): string {
+  switch (type) {
+    case 'string': return 'text-emerald-600 dark:text-emerald-400'
+    case 'number': return 'text-blue-600 dark:text-blue-400'
+    case 'boolean': return 'text-orange-600 dark:text-orange-400'
+    case 'null': return 'text-surface-400 italic'
+    default: return 'text-surface-700 dark:text-surface-300'
+  }
+}
+</script>

@@ -35,15 +35,17 @@
     "@vueuse/nuxt": "^13.6.0",
     "ajv": "^8.20.0",
     "better-sqlite3": "^12.2.0",
+    "clarinet": "^0.12.6",
     "codemirror": "^6.0.2",
+    "dompurify": "^3.4.16",
     "eslint": "^9.0.0",
     "fflate": "^0.8.3",
     "html2canvas": "^1.4.1",
-    "i18n": "^0.15.1",
     "js-yaml": "^4.1.0",
     "jsondiffpatch": "^0.7.6",
     "jsonrepair": "^3.15.0",
     "jspdf": "^4.2.1",
+    "marked": "^18.0.14",
     "nuxt": "4.4.5",
     "photoswipe": "^5.4.4",
     "vue": "^3.5.18",
@@ -56,11 +58,8 @@
     "@iconify-json/circle-flags": "^1.2.10",
     "@iconify-json/lucide": "^1.2.81",
     "@tailwindcss/typography": "^0.5.19",
-    "chalk": "^5.6.2",
-    "dotenv": "^17.2.3",
     "nuxt-module-feed": "^1.1.4",
-    "nuxt-open-fetch": "^0.13.2",
-    "p-limit": "^7.2.0"
+    "nuxt-open-fetch": "^0.13.2"
   },
   "pnpm": {
     "overrides": {

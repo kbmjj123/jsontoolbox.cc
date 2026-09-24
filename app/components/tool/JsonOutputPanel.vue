@@ -1,5 +1,5 @@
 <template>
-  <div class="flex-1 min-h-0 flex flex-col">
+  <div class="flex-1 min-h-0 flex flex-col relative">
     <!-- Header -->
     <div class="flex items-center mb-2 gap-2 overflow-x-auto scrollbar-hide">
       <div class="flex items-center gap-2 shrink-0">
@@ -49,8 +49,8 @@
       </div>
       <div class="flex gap-2 items-center shrink-0 sm:ml-auto">
 
-        <!-- Search bar (rich mode only) -->
-        <template v-if="currentMode === 'rich' && parsedData !== null">
+        <!-- Search bar (rich mode only; hidden in compact contexts via `enableTreeSearch`) -->
+        <template v-if="currentMode === 'rich' && parsedData !== null && enableTreeSearch">
           <button
             @click="toggleExpandAll"
             class="text-xs text-surface-500 hover:text-surface-700 dark:text-surface-400 dark:hover:text-surface-200 whitespace-nowrap"
@@ -81,27 +81,70 @@
             </Transition>
           </div>
 
-          <div class="relative">
+          <div ref="searchBoxRef" class="relative">
             <Icon name="lucide:search" class="absolute left-2.5 top-1/2 -translate-y-1/2 w-3.5 h-3.5 text-surface-400" />
             <input
               :value="treeSearch.query.value"
               @input="onSearchInput"
               @keydown.enter.prevent="onEnter"
               @keydown.escape="treeSearch.clear()"
+              @focus="showHistory = true"
               type="text"
               :placeholder="searchPlaceholder"
               class="w-48 rounded-lg border border-surface-200 bg-white pl-8 pr-14 py-1.5 text-xs dark:border-surface-700 dark:bg-surface-800 dark:text-surface-100 focus:outline-none focus:ring-1 focus:ring-primary-400"
             />
             <span
-              v-if="treeSearch.query.value"
+              v-if="treeSearch.isSearching.value"
+              class="absolute right-2 top-1/2 -translate-y-1/2"
+            >
+              <span class="block w-3.5 h-3.5 border-2 border-primary-500 border-t-transparent rounded-full animate-spin" />
+            </span>
+            <span
+              v-else-if="treeSearch.query.value"
               class="absolute right-2 top-1/2 -translate-y-1/2 text-[10px] font-mono"
               :class="treeSearch.totalCount.value > 0 ? 'text-surface-400' : 'text-red-400'"
             >
               {{ treeSearch.totalCount.value > 0 ? `${treeSearch.currentIndex.value + 1}/${treeSearch.totalCount.value}` : '0/0' }}
             </span>
+            <!-- Unsupported / invalid JSONPath expression -->
+            <span
+              v-if="treeSearch.invalidExpression.value"
+              class="absolute right-0 top-full mt-1 whitespace-nowrap rounded bg-red-600 px-1.5 py-0.5 text-[10px] text-white shadow"
+            >
+              {{ t('largeViewer.pathInvalid') }}
+            </span>
+
+            <!-- Recent searches -->
+            <div
+              v-if="showHistory && treeSearch.history.value.length > 0"
+              class="absolute left-0 right-0 top-full mt-1 z-50 overflow-hidden rounded-lg border border-surface-200 bg-white shadow-lg dark:border-surface-700 dark:bg-surface-800"
+            >
+              <div class="flex items-center justify-between border-b border-surface-100 px-3 py-1 text-[10px] uppercase tracking-wider text-surface-400 dark:border-surface-700 dark:text-surface-500">
+                <span>{{ t('search.history') }}</span>
+                <button class="hover:text-surface-600 dark:hover:text-surface-300" @click="treeSearch.clearHistory()">
+                  {{ t('edit.clear') }}
+                </button>
+              </div>
+              <button
+                v-for="item in treeSearch.history.value"
+                :key="item"
+                @click="applyHistory(item)"
+                class="block w-full truncate px-3 py-1.5 text-left text-xs hover:bg-surface-100 dark:hover:bg-surface-700"
+              >
+                {{ item }}
+              </button>
+            </div>
           </div>
 
           <template v-if="treeSearch.query.value">
+            <button
+              @click="showResultsDrawer = !showResultsDrawer"
+              :title="t('largeViewer.results')"
+              class="w-7 h-7 flex items-center justify-center rounded-lg border border-surface-200 bg-white text-surface-500 hover:bg-surface-50 dark:border-surface-700 dark:bg-surface-800 dark:text-surface-400 dark:hover:bg-surface-700"
+              :class="showResultsDrawer ? 'text-primary-600 dark:text-primary-400' : ''"
+            >
+              <Icon name="lucide:list" class="w-3.5 h-3.5" />
+            </button>
             <button
               @click="treeSearch.prev()"
               :disabled="treeSearch.totalCount.value === 0"
@@ -152,6 +195,56 @@
           {{ $t('system.download') }}
         </button>
       </div>
+    </div>
+
+    <!-- Search results drawer -->
+    <div
+      v-if="showResultsDrawer && resultList.length"
+      class="absolute left-2 right-2 top-11 z-50 max-h-80 overflow-auto rounded-lg border border-surface-200 bg-white shadow-lg dark:border-surface-700 dark:bg-surface-800"
+    >
+      <div class="sticky top-0 flex items-center justify-between border-b border-surface-200 bg-surface-50 px-3 py-1.5 text-xs font-medium text-surface-600 dark:border-surface-700 dark:bg-surface-800 dark:text-surface-300">
+        <span>{{ t('largeViewer.results') }} ({{ resultList.length }})</span>
+        <div class="flex items-center gap-1">
+          <button
+            class="rounded px-1 py-0.5 text-surface-400 hover:text-surface-600 hover:bg-surface-100 dark:hover:text-surface-300 dark:hover:bg-surface-700"
+            :title="t('largeViewer.exportTxt')"
+            @click="exportResults('txt')"
+          >
+            <Icon name="lucide:file-text" class="w-3.5 h-3.5" />
+          </button>
+          <button
+            class="rounded px-1 py-0.5 text-surface-400 hover:text-surface-600 hover:bg-surface-100 dark:hover:text-surface-300 dark:hover:bg-surface-700"
+            :title="t('largeViewer.exportJson')"
+            @click="exportResults('json')"
+          >
+            <Icon name="lucide:file-json" class="w-3.5 h-3.5" />
+          </button>
+          <button
+            class="rounded px-1 py-0.5 text-surface-400 hover:text-surface-600 hover:bg-surface-100 dark:hover:text-surface-300 dark:hover:bg-surface-700"
+            :title="t('largeViewer.exportCsv')"
+            @click="exportResults('csv')"
+          >
+            <Icon name="lucide:table" class="w-3.5 h-3.5" />
+          </button>
+          <button class="text-surface-400 hover:text-surface-600 dark:hover:text-surface-300" @click="showResultsDrawer = false">
+            <Icon name="lucide:x" class="w-3.5 h-3.5" />
+          </button>
+        </div>
+      </div>
+      <button
+        v-for="(item, i) in resultList"
+        :key="item.path"
+        @click="jumpTo(item.path, i)"
+        class="block w-full border-b border-surface-100 px-3 py-1.5 text-left last:border-0 hover:bg-surface-50 dark:border-surface-800 dark:hover:bg-surface-700"
+      >
+        <div class="flex flex-wrap items-center gap-1.5 text-xs">
+          <span class="font-mono text-primary-600 dark:text-primary-400">{{ item.snippet }}</span>
+          <span class="rounded bg-surface-100 px-1 text-[10px] text-surface-500 dark:bg-surface-700">{{ item.kindLabel }}</span>
+          <span class="rounded bg-surface-100 px-1 text-[10px] text-surface-500 dark:bg-surface-700">{{ item.type }}</span>
+          <span v-if="item.parentArray" class="rounded bg-surface-100 px-1 text-[10px] text-surface-500 dark:bg-surface-700">@{{ item.parentArray }}</span>
+        </div>
+        <div class="mt-0.5 truncate font-mono text-[10px] text-surface-400 dark:text-surface-500">{{ item.path }}</div>
+      </button>
     </div>
 
     <!-- Text view -->
@@ -220,20 +313,9 @@
     <!-- Rich view -->
     <div
       v-show="currentMode === 'rich'"
+      ref="richRef"
       class="flex-1 min-h-0 overflow-auto rounded-xl border border-surface-200 bg-surface-50 p-4 dark:border-surface-700 dark:bg-surface-800"
     >
-      <!-- Large file mode indicator -->
-      <div
-        v-if="fileSizeCategory !== 'small' && parsedData !== null"
-        class="mb-3 flex items-center gap-2 px-3 py-2 rounded-lg text-xs"
-        :class="fileSizeCategory === 'large'
-          ? 'bg-red-50 text-red-700 dark:bg-red-900/20 dark:text-red-400 border border-red-200 dark:border-red-800'
-          : 'bg-amber-50 text-amber-700 dark:bg-amber-900/20 dark:text-amber-400 border border-amber-200 dark:border-amber-800'"
-      >
-        <Icon name="lucide:info" class="w-3.5 h-3.5 shrink-0" />
-        {{ $t('largeFile.mode_' + fileSizeCategory) }}
-      </div>
-
       <JsonTreeNode
         v-if="parsedData !== null"
         :data="parsedData"
@@ -286,6 +368,15 @@
 
 <script setup lang="ts">
 import type { FieldError } from '~/types/jsonErrors'
+import type { SearchMode } from '~/composables/useTreeSearch'
+import { jsonTypeLabel } from '~/utils/jsonPath'
+import { generateCsv } from '~/composables/useExcelCompat'
+
+// Single scroll viewport for the rich tree. Virtualized subtree lists window
+// against this element instead of creating a scroll box of their own, which is
+// what used to produce a second scrollbar inside the tree.
+const richRef = ref<HTMLElement | null>(null)
+provide('treeViewport', richRef)
 
 const { t } = useI18n()
 
@@ -317,8 +408,8 @@ interface Props {
   masked?: boolean
   /** Set of sensitive field paths to mask */
   sensitivePaths?: Set<string>
-  /** File size category for performance-aware rendering */
-  fileSizeCategory?: 'small' | 'medium' | 'large'
+  /** Show the in-tree search controls in rich mode (expand all, mode picker, query, prev/next) */
+  enableTreeSearch?: boolean
 }
 
 const props = withDefaults(defineProps<Props>(), {
@@ -341,7 +432,7 @@ const props = withDefaults(defineProps<Props>(), {
   highlight: '',
   masked: false,
   sensitivePaths: () => new Set(),
-  fileSizeCategory: 'small',
+  enableTreeSearch: true,
 })
 
 const emit = defineEmits<{
@@ -363,18 +454,37 @@ const emit = defineEmits<{
 const copied = ref(false)
 const showModeDropdown = ref(false)
 const modeDropdownRef = ref<HTMLElement>()
+const searchBoxRef = ref<HTMLElement>()
+const showHistory = ref(false)
 const textareaRef = ref<HTMLTextAreaElement>()
 
 const currentMode = computed(() => props.viewMode)
 const hasContent = computed(() => !!props.content)
 
 // Table mode helpers
-const isArrayData = computed(() => Array.isArray(props.parsedData))
+// Non-root array tables: a tree node can request any nested array to be shown
+// as a table. `tableOverride` wins over the root-array fallback.
+const tableOverride = ref<{ data: unknown[]; parentPath: string } | null>(null)
+
+function showArrayAsTable(path: string) {
+  const arr = valueAtPath(parsedDataRef.value, path)
+  if (Array.isArray(arr)) {
+    tableOverride.value = { data: arr, parentPath: path }
+    emit('update:viewMode', 'table')
+  }
+}
+provide('showArrayAsTable', showArrayAsTable)
+
+// Clear a stale override once the underlying document changes.
+watch(() => props.parsedData, () => { tableOverride.value = null })
+
+const isArrayData = computed(() => Array.isArray(tableOverride.value?.data ?? props.parsedData))
 const tableData = computed(() => {
+  if (tableOverride.value) return tableOverride.value.data
   if (!isArrayData.value) return null
   return props.parsedData as unknown[]
 })
-const tableParentPath = computed(() => '')
+const tableParentPath = computed(() => tableOverride.value?.parentPath ?? '')
 const lineCount = computed(() => {
   const lines = (props.content || '').split('\n')
   return Math.max(lines.length, 1)
@@ -397,10 +507,89 @@ function syncLineNumbers() {
 const parsedDataRef = computed(() => props.parsedData)
 const treeSearch = useTreeSearch(parsedDataRef)
 
+// ── Search results drawer (P0-4): list + jump to node ──
+const showResultsDrawer = ref(false)
+
+function valueAtPath(data: unknown, path: string): unknown {
+  if (data === null || data === undefined || !path) return data
+  const segs = path.replace(/\[(\d+)\]/g, '.$1').split('.').filter(Boolean)
+  let cur: any = data
+  for (const s of segs) {
+    if (cur == null) return undefined
+    cur = cur[s]
+  }
+  return cur
+}
+
+function arrayNameOf(path: string): string {
+  const m = /(.*)\[(\d+)\]/.exec(path)
+  if (!m) return ''
+  const parts = m[1].split('.')
+  return parts[parts.length - 1] || m[1]
+}
+
+function kindLabel(k: SearchMode): string {
+  if (k === 'key') return t('largeViewer.scopeKey')
+  if (k === 'value') return t('largeViewer.scopeValue')
+  if (k === 'path') return t('largeViewer.scopePath')
+  if (k === 'jsonpath') return t('largeViewer.jsonPath')
+  return t('largeViewer.scopeAll')
+}
+
+const resultList = computed(() => {
+  const list: { path: string; snippet: string; kindLabel: string; type: string; parentArray: string }[] = []
+  for (const [path, d] of treeSearch.matchDetails.value) {
+    list.push({
+      path,
+      snippet: d.snippet,
+      kindLabel: kindLabel(d.kind),
+      type: jsonTypeLabel(valueAtPath(parsedDataRef.value, path)),
+      parentArray: arrayNameOf(path),
+    })
+  }
+  return list
+})
+
+/** Download the current result list as .txt / .json / .csv. */
+function exportResults(kind: 'txt' | 'json' | 'csv') {
+  const rows = resultList.value
+  if (rows.length === 0) return
+
+  if (kind === 'txt') {
+    const content = rows.map((r) => `${r.path}=${r.snippet}`).join('\n')
+    downloadFile(content, 'search-results.txt', 'text/plain')
+    return
+  }
+
+  if (kind === 'json') {
+    const content = JSON.stringify(
+      rows.map((r) => ({ path: r.path, type: r.type, matchedBy: r.kindLabel, parentArray: r.parentArray, value: r.snippet })),
+      null,
+      2,
+    )
+    downloadFile(content, 'search-results.json', 'application/json')
+    return
+  }
+
+  const content = generateCsv(
+    ['path', 'type', 'matchedBy', 'value', 'parentArray'],
+    rows.map((r) => [r.path, r.type, r.kindLabel, r.snippet, r.parentArray]),
+  )
+  downloadFile(content, 'search-results.csv', 'text/csv')
+}
+
+function jumpTo(path: string, index: number) {
+  treeSearch.currentIndex.value = index
+  locatePath.value = path
+  showResultsDrawer.value = false
+}
+
 const modes = computed(() => [
+  { value: 'all' as const, label: t('largeViewer.scopeAll') },
   { value: 'key' as const, label: t('tree.searchByKey') },
   { value: 'value' as const, label: t('tree.searchByValue') },
   { value: 'path' as const, label: t('tree.searchByPath') },
+  { value: 'jsonpath' as const, label: t('tree.searchByJsonPath') },
 ])
 
 const modeLabel = computed(() => modes.value.find(m => m.value === treeSearch.mode.value)?.label ?? 'Key')
@@ -410,6 +599,8 @@ const searchPlaceholder = computed(() => {
     case 'key': return t('tree.placeholderKey')
     case 'value': return t('tree.placeholderValue')
     case 'path': return t('tree.placeholderPath')
+    case 'jsonpath': return t('largeViewer.pathPlaceholder')
+    default: return t('tree.placeholderKey')
   }
 })
 
@@ -418,8 +609,16 @@ function onSearchInput(e: Event) {
 }
 
 function onEnter(e: KeyboardEvent) {
+  // Only a committed query (Enter) enters history — not every keystroke.
+  treeSearch.rememberQuery(treeSearch.query.value)
+  showHistory.value = false
   if (e.shiftKey) treeSearch.prev()
   else treeSearch.next()
+}
+
+function applyHistory(value: string) {
+  treeSearch.query.value = value
+  showHistory.value = false
 }
 
 // Close mode dropdown on outside click
@@ -428,6 +627,9 @@ onMounted(() => {
     if (modeDropdownRef.value && !modeDropdownRef.value.contains(e.target as Node)) {
       showModeDropdown.value = false
     }
+    if (searchBoxRef.value && !searchBoxRef.value.contains(e.target as Node)) {
+      showHistory.value = false
+    }
   }
   document.addEventListener('click', handler)
   onUnmounted(() => document.removeEventListener('click', handler))
@@ -435,9 +637,6 @@ onMounted(() => {
 
 // Provide search state to tree nodes
 provide('treeSearch', treeSearch)
-
-// Provide file size category to tree nodes for child node pagination
-provide('fileSizeCategory', computed(() => props.fileSizeCategory))
 
 // Provide masked state for sensitive fields
 provide('maskedFields', computed(() => props.masked ? props.sensitivePaths : new Set()))
@@ -460,10 +659,6 @@ function isArray(v: unknown): v is unknown[] { return Array.isArray(v) }
 function isExpandable(v: unknown): boolean { return isObject(v) || isArray(v) }
 
 function getAllExpandablePaths(data: unknown, parentPath = '', depth = 0): string[] {
-  // Limit expand depth for large files
-  const maxDepth = props.fileSizeCategory === 'large' ? 2 : props.fileSizeCategory === 'medium' ? 3 : Infinity
-  if (depth >= maxDepth) return []
-
   const paths: string[] = []
   if (isObject(data)) {
     for (const key of Object.keys(data)) {
@@ -482,6 +677,7 @@ function getAllExpandablePaths(data: unknown, parentPath = '', depth = 0): strin
 const richExpanded = ref<Set<string>>(new Set())
 provide('richExpanded', richExpanded)
 
+// Expand nodes in rich view whenever the data changes
 watch(() => props.parsedData, (data) => {
   if (data !== null && data !== undefined) {
     richExpanded.value = new Set(getAllExpandablePaths(data))

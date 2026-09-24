@@ -1,0 +1,293 @@
+- generic [ref=f2e4]:
+  - banner [ref=f2e5]:
+    - generic [ref=f2e6]:
+      - link "JSON Toolbox Logo JSONToolbox" [ref=f2e7] [cursor=pointer]:
+        - /url: /
+        - img "JSON Toolbox Logo" [ref=f2e8]
+        - generic [ref=f2e9]: JSONToolbox
+      - navigation "Main navigation" [ref=f2e10]:
+        - link "Tools" [ref=f2e11] [cursor=pointer]:
+          - /url: /tools
+        - link "Blog" [ref=f2e12] [cursor=pointer]:
+          - /url: /blog
+        - link "Embed" [ref=f2e13] [cursor=pointer]:
+          - /url: /embed
+        - button "⌘K" [ref=f2e14] [cursor=pointer]
+      - generic [ref=f2e17]:
+        - generic [ref=f2e18]: Free · Open Source
+        - button "English" [ref=f2e21] [cursor=pointer]
+        - button "Toggle theme" [ref=f2e25] [cursor=pointer]
+        - link "GitHub" [ref=f2e27] [cursor=pointer]:
+          - /url: https://github.com/kbmjj123/jsontoolbox.cc
+  - generic [ref=f2e30]:
+    - generic [ref=f2e32]:
+      - generic [ref=f2e33]:
+        - heading "From JSON to any format you need." [level=1] [ref=f2e34]:
+          - generic [ref=f2e35]: From JSON to
+          - generic [ref=f2e36]: any format you need.
+        - paragraph [ref=f2e37]: Format, validate, convert, compare — all in your browser, nothing to install.
+      - generic [ref=f2e38]:
+        - generic [ref=f2e39]:
+          - button "Fullscreen" [ref=f2e41] [cursor=pointer]
+          - generic [ref=f2e43]:
+            - generic [ref=f2e46]:
+              - generic [ref=f2e47]:
+                - generic [ref=f2e48]: Input JSON
+                - generic [ref=f2e49]:
+                  - button "Example" [ref=f2e51] [cursor=pointer]
+                  - button "Load from URL" [ref=f2e52] [cursor=pointer]
+                  - button "Upload File" [ref=f2e53] [cursor=pointer]
+                  - button "Paste" [ref=f2e54] [cursor=pointer]
+                  - button "Clear" [ref=f2e55] [cursor=pointer]
+              - generic [ref=f2e56]:
+                - generic [ref=f2e58]: "1"
+                - 'textbox "{\"name\": \"JSON Toolbox\", \"version\": \"1.0\"}" [ref=f2e59]'
+            - generic [ref=f2e64]:
+              - generic [ref=f2e65]: Formatted Output
+              - generic [ref=f2e68]: Result will appear here
+          - generic [ref=f2e70]:
+            - generic [ref=f2e71]:
+              - generic [ref=f2e72]: "Indent:"
+              - combobox [ref=f2e73]:
+                - option "1 space"
+                - option "2 spaces" [selected]
+                - option "3 spaces"
+                - option "4 spaces"
+                - option "6 spaces"
+                - option "8 spaces"
+                - option "Tab"
+            - generic [ref=f2e74]:
+              - button "Minify" [ref=f2e75] [cursor=pointer]
+              - button "Format" [ref=f2e76] [cursor=pointer]
+            - generic [ref=f2e77] [cursor=pointer]:
+              - generic [ref=f2e78]: Format on type
+              - switch "Format on type" [checked] [ref=f2e79]
+            - button "Share" [ref=f2e82] [cursor=pointer]
+        - generic [ref=f2e84]:
+          - generic [ref=f2e86]: All processing happens in your browser. No JSON is sent to our servers.
+          - button "How to verify" [ref=f2e88] [cursor=pointer]
+        - button "Privacy & Security" [ref=f2e91] [cursor=pointer]
+    - generic [ref=f2e96]:
+      - generic [ref=f2e97]:
+        - heading "JSON Toolbox — All the Tools You Need" [level=2] [ref=f2e98]
+        - paragraph [ref=f2e99]: A complete set of JSON tools for developers, data analysts, and anyone working with JSON.
+      - generic [ref=f2e100]:
+        - link [ref=f2e101] [cursor=pointer]:
+          - /url: /tools/format/json-editor
+          - generic [ref=f2e105]:
+            - heading "JSON Editor" [level=3] [ref=f2e106]
+            - paragraph [ref=f2e107]: Edit JSON data online with syntax highlighting, live validation, formatting, and helpful visual cues. This free JSON editor online works as a .json editor and JSON online editor for developers, testers, students, and anyone working with structured data — entirely in your browser.
+        - link [ref=f2e108] [cursor=pointer]:
+          - /url: /tools/format/json-schema-validator
+          - generic [ref=f2e112]:
+            - heading "JSON Schema Validator" [level=3] [ref=f2e113]
+            - paragraph [ref=f2e114]: Validate JSON data against a JSON Schema. This online JSON Schema validator lets you validate JSON against schema, check structure, data types, required fields, and constraints, and get detailed error messages — all in your browser.
+        - link [ref=f2e115] [cursor=pointer]:
+          - /url: /tools/convert/json-to-csv
+          - generic [ref=f2e119]:
+            - heading "JSON to CSV Converter" [level=3] [ref=f2e120]
+            - paragraph [ref=f2e121]: Convert JSON arrays to CSV format for Excel and Google Sheets. This free JSON to CSV converter flattens nested objects, supports field selection and encoding options, and runs entirely in your browser — no upload needed.
+        - link [ref=f2e122] [cursor=pointer]:
+          - /url: /tools/convert/json-to-yaml
+          - generic [ref=f2e126]:
+            - heading "JSON to YAML Converter" [level=3] [ref=f2e127]
+            - paragraph [ref=f2e128]: Convert JSON data to YAML format online. This JSON to YAML converter and JSON to YAML online tool is perfect for configuration files, Kubernetes manifests, Docker Compose, and other DevOps workflows — all in your browser.
+        - link [ref=f2e129] [cursor=pointer]:
+          - /url: /tools/convert/json-to-typescript
+          - generic [ref=f2e133]:
+            - heading "JSON to TypeScript Converter" [level=3] [ref=f2e134]
+            - paragraph [ref=f2e135]: Convert JSON data to TypeScript interfaces automatically. Generate type definitions and JSON to TypeScript code from JSON examples — all in your browser, with support for nested objects, arrays, and customizable options.
+        - link [ref=f2e136] [cursor=pointer]:
+          - /url: /tools/convert/json-compare
+          - generic [ref=f2e140]:
+            - heading "JSON Compare" [level=3] [ref=f2e141]
+            - paragraph [ref=f2e142]: Compare two JSON documents and highlight differences. This online JSON compare tool and JSON comparer helps you compare JSON side by side and find every difference — added, removed, and changed values — instantly in your browser.
+        - link [ref=f2e143] [cursor=pointer]:
+          - /url: /tools/format/json-path-tester
+          - generic [ref=f2e147]:
+            - heading "JSONPath Tester" [level=3] [ref=f2e148]
+            - paragraph [ref=f2e149]: Test JSONPath expressions against your JSON data. This JSONPath tester, JSON path finder, and JSONPath online tool helps you find, extract, and validate values using JSONPath syntax — ideal for API responses, configuration files, and nested data structures.
+        - link [ref=f2e150] [cursor=pointer]:
+          - /url: /tools/format/json-minifier
+          - generic [ref=f2e154]:
+            - heading "JSON Minifier" [level=3] [ref=f2e155]
+            - paragraph [ref=f2e156]: Compress and minify JSON data by removing unnecessary whitespace, line breaks, and indentation. This free JSON minifier and JSON compressor lets you compress JSON online, compare the original and minified sizes, and copy or download compact JSON directly in your browser.
+        - link [ref=f2e157] [cursor=pointer]:
+          - /url: /tools/convert/json-to-xml
+          - generic [ref=f2e161]:
+            - heading "JSON to XML Converter" [level=3] [ref=f2e162]
+            - paragraph [ref=f2e163]: Convert JSON data to XML format online. This JSON to XML converter and JSON to XML online tool transforms JSON objects and arrays into structured XML documents, with customizable root element, indentation, and encoding — all in your browser.
+      - link "View All Tools" [ref=f2e165] [cursor=pointer]:
+        - /url: /tools
+    - generic [ref=f2e168]:
+      - generic [ref=f2e169]:
+        - heading "What is JSON Toolbox?" [level=2] [ref=f2e170]
+        - paragraph [ref=f2e171]: JSON Toolbox is a free, open-source collection of JSON tools built for developers, data analysts, and anyone who works with JSON. Every tool runs entirely in your browser — no data is ever uploaded to any server.
+      - generic [ref=f2e172]:
+        - generic [ref=f2e173]:
+          - heading "100% Client-Side" [level=3] [ref=f2e176]
+          - paragraph [ref=f2e177]: All processing happens locally in your browser. Your JSON data never leaves your device.
+        - generic [ref=f2e178]:
+          - heading "Fast & Free" [level=3] [ref=f2e181]
+          - paragraph [ref=f2e182]: No sign-up, no limits. Open any tool and start working instantly.
+        - generic [ref=f2e183]:
+          - heading "Multi-Language" [level=3] [ref=f2e186]
+          - paragraph [ref=f2e187]: Available in English and Chinese, with more languages coming soon.
+    - generic [ref=f2e190]:
+      - heading "Your Data Stays Private" [level=2] [ref=f2e193]
+      - paragraph [ref=f2e194]: We take your privacy seriously. Every JSON operation — formatting, validating, converting — happens entirely in your browser using JavaScript. Your data is never transmitted to our servers or any third party. You can even disconnect from the internet after loading the page, and all tools will continue to work.
+      - link "Read our full Privacy Policy" [ref=f2e195] [cursor=pointer]:
+        - /url: /privacy
+    - generic [ref=f2e198]:
+      - generic [ref=f2e199]:
+        - heading "Learn More About JSON" [level=2] [ref=f2e200]
+        - paragraph [ref=f2e201]: Explore guides, tips, and best practices for working with JSON data.
+      - generic [ref=f2e202]:
+        - link [ref=f2e203] [cursor=pointer]:
+          - /url: /en/blog/json-validation-syntax-vs-schema
+          - 'heading "JSON Validation Explained: Syntax Checks vs JSON Schema Validation" [level=3] [ref=f2e204]'
+          - paragraph [ref=f2e205]: Learn the difference between JSON syntax validation and JSON Schema validation. Understand three validation layers with practical JavaScript examples for validating API data safely.
+          - generic [ref=f2e206]: Learn more
+        - link [ref=f2e208] [cursor=pointer]:
+          - /url: /en/blog/json-best-practices
+          - 'heading "JSON Best Practices in Real Projects: API Design, Performance, and Security" [level=3] [ref=f2e209]'
+          - paragraph [ref=f2e210]: A practical guide to using JSON in real projects, covering API design patterns, performance tips, security considerations, and common anti-patterns.
+          - generic [ref=f2e211]: Learn more
+        - link [ref=f2e213] [cursor=pointer]:
+          - /url: /en/blog/json-parse-error-debug
+          - 'heading "JSON Parse Failed: 10 Common API Errors and How to Debug Them" [level=3] [ref=f2e214]'
+          - paragraph [ref=f2e215]: A practical guide to debugging JSON parse errors in real APIs, covering typical error messages, root causes, and step-by-step troubleshooting.
+          - generic [ref=f2e216]: Learn more
+    - generic [ref=f2e219]:
+      - heading "Frequently Asked Questions" [level=2] [ref=f2e221]
+      - generic [ref=f2e223]:
+        - group [ref=f2e224]:
+          - heading "Is my JSON data uploaded to a server?" [level=3] [ref=f2e226] [cursor=pointer]
+        - group [ref=f2e228]:
+          - heading "What are the file size limits?" [level=3] [ref=f2e230] [cursor=pointer]
+        - group [ref=f2e232]:
+          - heading "Which browsers are supported?" [level=3] [ref=f2e234] [cursor=pointer]
+        - group [ref=f2e236]:
+          - heading "Is JSON Toolbox free to use?" [level=3] [ref=f2e238] [cursor=pointer]
+        - group [ref=f2e240]:
+          - heading "Can I use it for commercial projects?" [level=3] [ref=f2e242] [cursor=pointer]
+  - contentinfo [ref=f2e244]:
+    - generic [ref=f2e245]:
+      - generic [ref=f2e246]:
+        - generic [ref=f2e247]:
+          - link "JSON Toolbox Logo JSONToolbox" [ref=f2e248] [cursor=pointer]:
+            - /url: /
+            - img "JSON Toolbox Logo" [ref=f2e249]
+            - generic [ref=f2e250]: JSONToolbox
+          - paragraph [ref=f2e251]: Free, client-side JSON tools for developers. Format, validate, compare, convert JSON data directly in your browser. No upload, no tracking — 100% local processing.
+          - generic [ref=f2e252]: All Systems Operational
+          - generic [ref=f2e260]:
+            - link [ref=f2e261] [cursor=pointer]:
+              - /url: https://openhunts.com
+              - img "OpenHunts Club Member" [ref=f2e262]
+            - generic [ref=f2e263]: ·
+            - link [ref=f2e264] [cursor=pointer]:
+              - /url: https://yo.directory
+              - img "Featured on Yo.directory" [ref=f2e265]
+            - generic [ref=f2e266]: ·
+            - link [ref=f2e267] [cursor=pointer]:
+              - /url: https://twelve.tools
+              - img "Featured on Twelve Tools" [ref=f2e268]
+            - generic [ref=f2e269]: ·
+            - link [ref=f2e270] [cursor=pointer]:
+              - /url: https://launchclash.com/product/jsontoolbox
+              - img "Featured on LaunchClash" [ref=f2e271]
+            - generic [ref=f2e272]: ·
+            - link [ref=f2e273] [cursor=pointer]:
+              - /url: https://builders.to/projects/jsontoolbox?utm_source=badge
+              - img "JsonToolbox - Featured on Builders.to" [ref=f2e274]
+            - generic [ref=f2e275]: ·
+            - link [ref=f2e276] [cursor=pointer]:
+              - /url: https://openhunts.com
+              - img "OpenHunts Club Member" [ref=f2e277]
+            - generic [ref=f2e278]: ·
+            - link [ref=f2e279] [cursor=pointer]:
+              - /url: https://yo.directory
+              - img "Featured on Yo.directory" [ref=f2e280]
+            - generic [ref=f2e281]: ·
+            - link [ref=f2e282] [cursor=pointer]:
+              - /url: https://twelve.tools
+              - img "Featured on Twelve Tools" [ref=f2e283]
+            - generic [ref=f2e284]: ·
+            - link [ref=f2e285] [cursor=pointer]:
+              - /url: https://launchclash.com/product/jsontoolbox
+              - img "Featured on LaunchClash" [ref=f2e286]
+            - generic [ref=f2e287]: ·
+            - link [ref=f2e288] [cursor=pointer]:
+              - /url: https://builders.to/projects/jsontoolbox?utm_source=badge
+              - img "JsonToolbox - Featured on Builders.to" [ref=f2e289]
+          - generic [ref=f2e290]:
+            - link "github" [ref=f2e291] [cursor=pointer]:
+              - /url: https://github.com/kbmjj123/jsontoolbox.cc
+            - link "twitter" [ref=f2e293] [cursor=pointer]:
+              - /url: https://twitter.com/jsontoolbox
+        - generic [ref=f2e296]:
+          - generic [ref=f2e297]:
+            - strong [ref=f2e298]:
+              - link "Format & Beautify" [ref=f2e299] [cursor=pointer]:
+                - /url: /tools/format
+            - list [ref=f2e300]:
+              - listitem [ref=f2e301]:
+                - link "JSON Editor" [ref=f2e302] [cursor=pointer]:
+                  - /url: /tools/format/json-editor
+              - listitem [ref=f2e303]:
+                - link "JSON Minifier" [ref=f2e304] [cursor=pointer]:
+                  - /url: /tools/format/json-minifier
+              - listitem [ref=f2e305]:
+                - link "JSONPath Tester" [ref=f2e306] [cursor=pointer]:
+                  - /url: /tools/format/json-path-tester
+              - listitem [ref=f2e307]:
+                - link "JSON Schema Validator" [ref=f2e308] [cursor=pointer]:
+                  - /url: /tools/format/json-schema-validator
+              - listitem [ref=f2e309]:
+                - link "JSON Escape & Unescape" [ref=f2e310] [cursor=pointer]:
+                  - /url: /tools/format/json-escape
+          - generic [ref=f2e311]:
+            - strong [ref=f2e312]:
+              - link "Conversion" [ref=f2e313] [cursor=pointer]:
+                - /url: /tools/convert
+            - list [ref=f2e314]:
+              - listitem [ref=f2e315]:
+                - link "JSON Compare" [ref=f2e316] [cursor=pointer]:
+                  - /url: /tools/convert/json-compare
+              - listitem [ref=f2e317]:
+                - link "JSON to CSV Converter" [ref=f2e318] [cursor=pointer]:
+                  - /url: /tools/convert/json-to-csv
+              - listitem [ref=f2e319]:
+                - link "CSV to JSON Converter" [ref=f2e320] [cursor=pointer]:
+                  - /url: /tools/convert/csv-to-json
+              - listitem [ref=f2e321]:
+                - link "JSON Schema Generator" [ref=f2e322] [cursor=pointer]:
+                  - /url: /tools/convert/json-schema-generator
+              - listitem [ref=f2e323]:
+                - link "JSON to Code Generator" [ref=f2e324] [cursor=pointer]:
+                  - /url: /tools/convert/json-to-code
+              - listitem [ref=f2e325]:
+                - link "View All" [ref=f2e326] [cursor=pointer]:
+                  - /url: /tools/convert
+          - generic [ref=f2e328]:
+            - strong [ref=f2e329]: Support
+            - list [ref=f2e330]:
+              - listitem [ref=f2e331]:
+                - link "About Us" [ref=f2e332] [cursor=pointer]:
+                  - /url: /about
+              - listitem [ref=f2e333]:
+                - link "Contact" [ref=f2e334] [cursor=pointer]:
+                  - /url: /contact
+              - listitem [ref=f2e335]:
+                - link "Privacy Policy" [ref=f2e336] [cursor=pointer]:
+                  - /url: /privacy
+              - listitem [ref=f2e337]:
+                - link "Terms of Service" [ref=f2e338] [cursor=pointer]:
+                  - /url: /terms-of-service
+      - generic [ref=f2e339]:
+        - generic [ref=f2e340]:
+          - generic [ref=f2e342]: All JSON processing runs in your browser. No data is sent to any server.
+          - link "Privacy Policy" [ref=f2e343] [cursor=pointer]:
+            - /url: /privacy
+        - paragraph [ref=f2e344]: © 2026 JSON Toolbox. All rights reserved.

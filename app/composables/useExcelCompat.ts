@@ -3,6 +3,51 @@
  * Handle encoding and formatting for Excel compatibility
  * Reusable for CSV, Excel, and other spreadsheet export tools
  */
+
+/**
+ * Escape value for CSV cell
+ * @param value - Cell value
+ * @param delimiter - Column delimiter
+ * @returns Escaped value
+ */
+export const escapeCsvValue = (value: any, delimiter: string = ','): string => {
+  if (value === null || value === undefined) return ''
+
+  const str = String(value)
+
+  // Check if escaping is needed
+  if (
+    str.includes(delimiter) ||
+    str.includes('"') ||
+    str.includes('\n') ||
+    str.includes('\r')
+  ) {
+    // Escape double quotes and wrap in quotes
+    return `"${str.replace(/"/g, '""')}"`
+  }
+
+  return str
+}
+
+/**
+ * Generate CSV with proper escaping
+ * @param headers - Column headers
+ * @param rows - Data rows
+ * @param delimiter - Column delimiter (default: ',')
+ * @returns CSV string
+ */
+export const generateCsv = (
+  headers: string[],
+  rows: any[][],
+  delimiter: string = ','
+): string => {
+  const headerLine = headers.map(h => escapeCsvValue(h, delimiter)).join(delimiter)
+  const dataLines = rows.map(row =>
+    row.map(cell => escapeCsvValue(cell, delimiter)).join(delimiter)
+  )
+  return [headerLine, ...dataLines].join('\n')
+}
+
 export const useExcelCompat = () => {
   /**
    * UTF-8 BOM for Excel compatibility
@@ -81,50 +126,6 @@ export const useExcelCompat = () => {
       mimeType,
       extension
     }
-  }
-
-  /**
-   * Escape value for CSV cell
-   * @param value - Cell value
-   * @param delimiter - Column delimiter
-   * @returns Escaped value
-   */
-  const escapeCsvValue = (value: any, delimiter: string = ','): string => {
-    if (value === null || value === undefined) return ''
-
-    const str = String(value)
-
-    // Check if escaping is needed
-    if (
-      str.includes(delimiter) ||
-      str.includes('"') ||
-      str.includes('\n') ||
-      str.includes('\r')
-    ) {
-      // Escape double quotes and wrap in quotes
-      return `"${str.replace(/"/g, '""')}"`
-    }
-
-    return str
-  }
-
-  /**
-   * Generate CSV with proper escaping
-   * @param headers - Column headers
-   * @param rows - Data rows
-   * @param delimiter - Column delimiter (default: ',')
-   * @returns CSV string
-   */
-  const generateCsv = (
-    headers: string[],
-    rows: any[][],
-    delimiter: string = ','
-  ): string => {
-    const headerLine = headers.map(h => escapeCsvValue(h, delimiter)).join(delimiter)
-    const dataLines = rows.map(row =>
-      row.map(cell => escapeCsvValue(cell, delimiter)).join(delimiter)
-    )
-    return [headerLine, ...dataLines].join('\n')
   }
 
   return {

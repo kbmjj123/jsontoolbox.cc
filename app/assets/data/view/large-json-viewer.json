@@ -1,0 +1,284 @@
+{
+  "slug": "large-json-viewer",
+  "category": "view",
+  "component": "LargeJsonViewer",
+  "icon": "lucide:eye",
+  "featured": false,
+  "recommends": ["json-to-csv", "json-editor"],
+  "en": {
+    "name": "Large JSON Viewer",
+    "description": "Open large JSON and NDJSON files in your browser and search them locally. Read-only viewing with line numbers, full-text search by key, value or path, jump-to-match, and exports — no upload.",
+    "meta": {
+      "title": "Large JSON Viewer – Search & View Big JSON/NDJSON Online",
+      "description": "Open large JSON and NDJSON files in your browser. Read-only viewing with line numbers, full-text search by key, value or path, jump to matches, context lines, and TXT/JSON/CSV export. Private and client-side.",
+      "keywords": [
+        "large json viewer",
+        "view large json",
+        "search json online",
+        "ndjson viewer",
+        "json file viewer",
+        "large json file viewer",
+        "inspect big json"
+      ]
+    },
+    "features": [
+      {
+        "icon": "lucide:eye",
+        "title": "Read-only JSON viewing",
+        "description": "Open large JSON and NDJSON files as read-only text with line numbers and a scrollable viewport. The file is rendered locally; nothing is edited or uploaded."
+      },
+      {
+        "icon": "lucide:list",
+        "title": "Line numbers & virtual scroll",
+        "description": "Every line is numbered and the viewport only renders visible rows, so even multi-megabyte documents open and scroll smoothly without loading the whole file into the editor."
+      },
+      {
+        "icon": "lucide:search",
+        "title": "Local full-text search",
+        "description": "Search the document by key, value or path inside a Web Worker, with case-sensitive matching, a live progress bar and a cancel button. The main thread stays responsive."
+      },
+      {
+        "icon": "lucide:regex",
+        "title": "Regular-expression search",
+        "description": "Flip the .* toggle to search with a regular expression. The pattern is validated while you type, so syntax errors surface immediately, and shapes prone to catastrophic backtracking (such as (a+)+) are rejected before they can freeze the page."
+      },
+      {
+        "icon": "lucide:binary",
+        "title": "Structure overview",
+        "description": "Open the structure panel to see the root type, the maximum nesting depth and a count of every JSON type (object, array, string, number, boolean, null) — a quick way to get oriented in an unfamiliar file."
+      },
+      {
+        "icon": "lucide:crosshair",
+        "title": "Jump to matches",
+        "description": "Each match reports its line, column and character offset. Use previous/next to move between matches and the viewer scrolls straight to the matching line and highlights it."
+      },
+      {
+        "icon": "lucide:rows-3",
+        "title": "Context lines & copy",
+        "description": "For the current match, see the surrounding lines (before and after) and copy that context to the clipboard for reference or reporting."
+      },
+      {
+        "icon": "lucide:download",
+        "title": "Export matches",
+        "description": "Export the matched lines as TXT, JSON or CSV. For record-style JSON or NDJSON you can also export the record array as CSV, the same output the JSON to CSV tool produces."
+      },
+      {
+        "icon": "lucide:shield-check",
+        "title": "Private & client-side",
+        "description": "All reading, searching and exporting happen in your browser. The file is never uploaded to a server."
+      },
+      {
+        "icon": "lucide:binary",
+        "title": "JSONPath, node preview & paging",
+        "description": "Copy a match's JSONPath, open a local pretty-printed preview of the matched node, and step through top-level array or NDJSON items with a pager — all without building a full node index."
+      }
+    ],
+    "guide": [
+      {
+        "title": "Open a file",
+        "description": "Drag a .json, .ndjson, .jsonl or .jsonlines file into the drop zone, or use the choose-file button. You can also open a file from another tool when it is too large for inline editing."
+      },
+      {
+        "title": "Browse the read-only view",
+        "description": "Scroll through the document with line numbers. Turn on wrap to fold long lines, or leave it off so very long lines are protected and shown in full only when you expand them."
+      },
+      {
+        "title": "Search keys, values or paths",
+        "description": "Type a query and pick whether to match values, keys or paths. Enable case-sensitive matching when needed, or turn on the .* toggle to search with a regular expression. Searching runs in a Web Worker with a progress bar you can cancel. Use the structure button for a quick overview of the document's shape."
+      },
+      {
+        "title": "Jump, inspect and export",
+        "description": "Click a match to jump to its line, review the surrounding context, and copy or export the matches as TXT, JSON or CSV."
+      }
+    ],
+    "faq": [
+      {
+        "question": "Is my JSON data uploaded to a server?",
+        "answer": "No. The file is opened, searched and exported entirely in your browser. Nothing is sent to a server, which is why it works for large local files."
+      },
+      {
+        "question": "What file types does it support?",
+        "answer": "JSON and NDJSON (also .jsonl and .jsonlines). NDJSON is treated as one JSON value per line, which suits line numbers and jump-to-line navigation."
+      },
+      {
+        "question": "Can it edit or reformat the file?",
+        "answer": "No. This is a read-only viewer and searcher. It does not edit, pretty-print or minify the document. For editing or formatting smaller files, use the JSON Editor; this page hands oversized files over from those tools automatically."
+      },
+      {
+        "question": "Is there a file size limit?",
+        "answer": "The viewer streams and searches in a Web Worker, so it is built for large files. Other tools on this site redirect files above 5 MB here instead of parsing them inline. Very small files work too — open them directly with the drop zone."
+      },
+      {
+        "question": "How does search report a match location?",
+        "answer": "Every match includes its line number, column and character offset. The viewer scrolls to that line and highlights the match, and you can step through matches with the previous/next controls."
+      },
+      {
+        "question": "Can I search with regular expressions?",
+        "answer": "Yes. Turn on the .* toggle and your query is treated as a regular expression. The pattern is validated as you type, so a syntax error is reported before you search, and patterns that could cause catastrophic backtracking are rejected rather than run on your file."
+      },
+      {
+        "question": "What does the structure overview show?",
+        "answer": "It reports the root type (object or array), the maximum nesting depth and how many values of each JSON type the file contains. It is collapsed by default so it never takes space away from the text — open it with the structure button when you want the summary."
+      },
+      {
+        "question": "Can I export the results?",
+        "answer": "Yes. You can export the matched lines as TXT, JSON or CSV. If the document is a record array or NDJSON stream, you can also export the records as a CSV table — the same kind of output the JSON to CSV tool produces."
+      },
+      {
+        "question": "Why does it show context lines?",
+        "answer": "For the current match the viewer shows a few lines before and after it so you can understand the match in place. You can copy that context block to the clipboard."
+      },
+      {
+        "question": "Can I copy a value's JSONPath or preview the node?",
+        "answer": "Yes. Each search hit shows its JSONPath (for example $.user.address.city). Use the copy button to copy that path, or the eye button to open a local pretty-printed preview of the matched node. Large nodes are truncated in the preview so the page stays responsive."
+      },
+      {
+        "question": "How do I step through array items?",
+        "answer": "When the document is an NDJSON stream or a JSON array at the root, a pager appears in the toolbar. Use first / previous / next / last or type an item number to jump straight to that element's line in the viewer."
+      }
+    ],
+    "article": {
+      "title": "Viewing and Searching Large JSON Locally",
+      "content": "<h2>What This Tool Does</h2><p>The Large JSON Viewer opens JSON and NDJSON files in your browser and lets you read and search them locally. It is a read-only viewer: it does not edit, pretty-print or minify the document. That focus keeps it fast and predictable for big files.</p><h2>Why a Separate Viewer</h2><p>Standard editors parse the whole document into memory so you can edit it. For very large files that blocks the page. This viewer streams the file in a Web Worker, shows it as numbered read-only text, and searches it there too — so the main thread stays responsive.</p><h2>Reading the Document</h2><p>The viewport renders only the visible rows, with a line number for each line. Wrap folds long lines; with wrap off, very long lines are protected and can be expanded individually so the page never tries to lay out one giant line. The structure button reveals the root type, the maximum nesting depth and a count of each JSON type, which helps when you open a file you have never seen before.</p><h2>Searching</h2><p>You can search by value, key or path, and matching can be case-sensitive. Turn on the <code>.*</code> toggle to search with a regular expression: the pattern is validated while you type, syntax errors are reported immediately, and patterns prone to catastrophic backtracking are rejected instead of being run. Either way the search runs in a Web Worker with a progress bar and a cancel button, so you can stop a search on a huge file at any time.</p><h2>Jumping and Context</h2><p>Every match carries its line, column and character offset. Click a match or use previous/next to move through them; the viewer scrolls to the line and highlights the match. The surrounding lines are shown as context, and you can copy that context.</p><h2>Exporting</h2><p>Matched lines can be exported as TXT, JSON or CSV. For record-style data (a JSON array of objects or an NDJSON stream) the records can also be exported as a CSV table — the same output the JSON to CSV converter produces.</p><h2>Privacy</h2><p>Everything happens in your browser. The file is opened, searched and exported locally and is not uploaded to a server. Still avoid pasting secrets you would not open in any local application.</p>"
+    },
+    "ui": {}
+  },
+  "zh": {
+    "name": "大文件 JSON 查看器",
+    "description": "在浏览器中打开大型 JSON 与 NDJSON 文件并本地搜索。只读查看，带行号、按键名/值/路径的全文搜索、跳转命中、上下文与导出，文件不上传。",
+    "meta": {
+      "title": "大文件 JSON 查看器 – 在线查看与搜索大型 JSON / NDJSON",
+      "description": "在浏览器中打开大型 JSON 与 NDJSON 文件。只读查看、带行号、按键名/值/路径的全文搜索、跳转命中、上下文行，以及 TXT / JSON / CSV 导出。本地处理，文件不上传。",
+      "keywords": [
+        "大文件json查看器",
+        "查看大json",
+        "在线搜索json",
+        "ndjson查看器",
+        "json文件查看器",
+        "大json文件查看",
+        "查看大型json"
+      ]
+    },
+    "features": [
+      {
+        "icon": "lucide:eye",
+        "title": "只读查看",
+        "description": "以只读文本方式打开大型 JSON 与 NDJSON 文件，带行号与可滚动视口。文件在本地渲染，不会被编辑或上传。"
+      },
+      {
+        "icon": "lucide:list",
+        "title": "行号与虚拟滚动",
+        "description": "每一行都有行号，视口只渲染可见的行，因此即使是数 MB 的文档也能流畅打开与滚动，无需把整个文件载入编辑器。"
+      },
+      {
+        "icon": "lucide:search",
+        "title": "本地全文搜索",
+        "description": "在 Web Worker 中按键名、值或路径搜索，支持区分大小写、实时进度条与取消按钮，主线程不会被阻塞。"
+      },
+      {
+        "icon": "lucide:regex",
+        "title": "正则搜索",
+        "description": "打开 .* 开关即可用正则表达式搜索。输入时实时校验：语法错误立刻提示，而像 (a+)+ 这种容易引发灾难性回溯的写法会在执行前被拦截，不会卡住页面。"
+      },
+      {
+        "icon": "lucide:binary",
+        "title": "结构概览",
+        "description": "打开结构面板可查看根类型、最大嵌套深度，以及每种 JSON 类型（对象、数组、字符串、数字、布尔、null）的数量——快速了解一个陌生文件的整体形态。"
+      },
+      {
+        "icon": "lucide:crosshair",
+        "title": "跳转命中",
+        "description": "每条命中都带有行号、列号与字符偏移。用上一个 / 下一个在命中之间移动，视口会直接滚动到对应行并高亮。"
+      },
+      {
+        "icon": "lucide:rows-3",
+        "title": "上下文与复制",
+        "description": "对当前命中，显示其前后若干行上下文，并可将上下文复制到剪贴板，便于核对或记录。"
+      },
+      {
+        "icon": "lucide:download",
+        "title": "导出命中",
+        "description": "可将命中行导出为 TXT、JSON 或 CSV。对于记录型 JSON 或 NDJSON，也可将记录数组导出为 CSV，即 JSON 转 CSV 工具产出同样的表格。"
+      },
+      {
+        "icon": "lucide:shield-check",
+        "title": "私密安全",
+        "description": "读取、搜索与导出全部在浏览器中完成，文件不会上传到服务器。"
+      },
+      {
+        "icon": "lucide:binary",
+        "title": "JSONPath、节点预览与分页",
+        "description": "复制命中的 JSONPath、打开匹配节点的本地美化预览，并用分页器在顶层数组或 NDJSON 记录之间逐步浏览——全程不构建完整节点索引。"
+      }
+    ],
+    "guide": [
+      {
+        "title": "打开文件",
+        "description": "把 .json、.ndjson、.jsonl 或 .jsonlines 文件拖入上传区，或点击“选择文件”。当文件过大、无法在其他工具中内联编辑时，也会自动跳转到这里。"
+      },
+      {
+        "title": "浏览只读视图",
+        "description": "带行号地滚动浏览文档。开启“自动折行”可折叠长行；关闭时超长行受到保护，只有在展开时才完整显示。"
+      },
+      {
+        "title": "按键名 / 值 / 路径搜索",
+        "description": "输入查询词并选择匹配值、键名还是路径；需要时开启区分大小写，或打开 .* 开关用正则表达式搜索。搜索在 Web Worker 中进行，带可取消的进度条。点“结构”按钮可快速查看文档的整体形态。"
+      },
+      {
+        "title": "跳转、查看与导出",
+        "description": "点击命中跳转到对应行，查看前后上下文，然后将命中复制或导出为 TXT、JSON 或 CSV。"
+      }
+    ],
+    "faq": [
+      {
+        "question": "我的 JSON 数据会被上传到服务器吗？",
+        "answer": "不会。文件的打开、搜索与导出全部在你的浏览器中完成，不会发送到任何服务器，因此也能处理本地的大文件。"
+      },
+      {
+        "question": "支持哪些文件类型？",
+        "answer": "支持 JSON 与 NDJSON（以及 .jsonl、.jsonlines）。NDJSON 按“每行一个 JSON 值”处理，非常适合行号与“跳转到第 N 行”的导航。"
+      },
+      {
+        "question": "它能编辑或格式化文件吗？",
+        "answer": "不能。这是一个只读查看与搜索工具，不会编辑、美化或压缩文档。较小的文件如需编辑或格式化，请使用 JSON 编辑器；其他工具会在文件过大时自动把内容转交到这里。"
+      },
+      {
+        "question": "有文件大小限制吗？",
+        "answer": "查看器在 Web Worker 中流式读取与搜索，因此是为大文件设计的。本站其他工具会在文件超过 5 MB 时将其转交到这里，而不是在页面内解析。非常小的文件也可以直接通过上传区打开。"
+      },
+      {
+        "question": "搜索结果如何标注位置？",
+        "answer": "每条命中都包含行号、列号与字符偏移。视口会滚动到该行并高亮命中，还可用上一个 / 下一个在命中之间切换。"
+      },
+      {
+        "question": "可以用正则表达式搜索吗？",
+        "answer": "可以。打开 .* 开关，查询词就会按正则表达式处理。输入时实时校验，语法错误在搜索之前就会提示；可能引发灾难性回溯的写法会被直接拦截，不会拿你的文件去跑。"
+      },
+      {
+        "question": "结构概览显示的是什么？",
+        "answer": "它显示根类型（对象或数组）、最大嵌套深度，以及文件中每种 JSON 类型各有多少个值。默认收起，不占用正文空间；需要时用“结构”按钮打开即可。"
+      },
+      {
+        "question": "可以导出结果吗？",
+        "answer": "可以。命中行可导出为 TXT、JSON 或 CSV。若文档是记录数组或 NDJSON 流，也可将记录导出为 CSV 表格——与 JSON 转 CSV 工具产出的结果相同。"
+      },
+      {
+        "question": "为什么会显示上下文行？",
+        "answer": "对当前命中，查看器会显示其前后若干行，帮助你在原位置理解命中内容。你可以把这段上下文复制到剪贴板。"
+      },
+      {
+        "question": "可以复制值的 JSONPath 或预览节点吗？",
+        "answer": "可以。每条命中都会显示其 JSONPath（例如 $.user.address.city）。用复制按钮即可得到该路径，或用预览按钮打开匹配节点的本地美化预览。较大的节点在预览中会截断，以保证页面响应流畅。"
+      },
+      {
+        "question": "如何逐步浏览数组项？",
+        "answer": "当文档是 NDJSON 流或根级 JSON 数组时，工具条会出现分页器。用首页 / 上一个 / 下一个 / 末页或输入序号，即可直接跳转到该项所在行。"
+      }
+    ],
+    "article": {
+      "title": "在本地查看与搜索大型 JSON",
+      "content": "<h2>这个工具做什么</h2><p>大文件 JSON 查看器在浏览器中打开 JSON 与 NDJSON 文件，让你在本地阅读与搜索。它是只读查看器：不编辑、不美化、也不压缩文档。这种专注让它在处理大文件时快速且可预期。</p><h2>为什么需要单独的查看器</h2><p>普通编辑器会把整个文档解析进内存以便编辑。对非常大的文件来说，这会卡住页面。本查看器在 Web Worker 中流式读取文件，以带行号的只读文本展示，并在 Worker 中搜索，从而让主线程保持响应。</p><h2>阅读文档</h2><p>视口只渲染可见的行，每行都有行号。开启折行可折叠长行；关闭时，超长行受到保护，可单独展开，页面不会尝试一次性排版一整行超长内容。“结构”按钮会显示根类型、最大嵌套深度与各类 JSON 类型的数量，便于快速了解一个没见过的文件。</p><h2>搜索</h2><p>你可以按值、键名或路径搜索，并可区分大小写。打开 <code>.*</code> 开关还能用正则表达式搜索：输入时实时校验，语法错误立即提示，容易引发灾难性回溯的写法会被拦截而不是执行。无论哪种方式，搜索都在 Web Worker 中进行，带进度条与取消按钮，因此随时可以停止对超大文件的搜索。</p><h2>跳转与上下文</h2><p>每条命中都带有行号、列号与字符偏移。点击命中或用上一个 / 下一个切换，视口会滚动到对应行并高亮；同时显示前后上下文行，可复制到剪贴板。</p><h2>导出</h2><p>命中行可导出为 TXT、JSON 或 CSV。对于记录型数据（JSON 对象数组或 NDJSON 流），记录也可导出为 CSV 表格——即 JSON 转 CSV 转换器产出的结果。</p><h2>隐私</h2><p>一切都在浏览器中完成。文件在本地被打开、搜索与导出，不会上传到服务器。但也不要在其中粘贴你不会在任何本地程序中打开的密钥等敏感信息。</p>"
+    },
+    "ui": {}
+  }
+}

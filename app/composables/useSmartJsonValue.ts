@@ -1,8 +1,24 @@
 /**
- * Smart JSON value type detection composable
- * Detects URLs, images, emails, dates, colors in JSON string values
- * Useful for enhanced visualization in editors and viewers
+ * Smart JSON value type detection composable.
+ *
+ * - Basic detection (url / image / email / date / color) is defined here.
+ * - Extended detection + decoders (JWT, Base64, timestamp, media) live in
+ *   `~/utils/mediaPreview` and are imported here for the composable's return
+ *   API. They are NOT re-exported, so the single source of truth for those
+ *   symbols stays in `~/utils/mediaPreview` (avoids duplicate auto-imports).
  */
+
+import {
+  base64ByteLength,
+  decodeBase64,
+  decodeJwt,
+  detectValueKind,
+  formatTimestamps,
+  getColorStyle,
+  isColorValue,
+  isImageUrl,
+  isRemoteResource,
+} from '~/utils/mediaPreview'
 
 export interface DetectedType {
   path: string
@@ -10,66 +26,7 @@ export interface DetectedType {
   value: string
 }
 
-// ── Image detection patterns (merged from TreeNode) ──
-
-const IMAGE_EXTENSIONS = /\.(jpg|jpeg|png|gif|webp|svg|bmp|ico)(\?.*)?$/i
-const IMAGE_HOSTS = /cdn\.|img\.|image\.|media\./i
-const IMAGE_PATHNAME = /\/image[s]?\//i
-
-/**
- * Check if a string value is a confident image URL (has extension or known host)
- */
-export function isImageUrl(value: unknown): boolean {
-  if (typeof value !== 'string') return false
-  if (value.length > 2048) return false
-
-  if (IMAGE_EXTENSIONS.test(value)) return true
-
-  try {
-    const url = new URL(value)
-    if (IMAGE_HOSTS.test(url.hostname)) return true
-    if (IMAGE_PATHNAME.test(url.pathname)) return true
-  } catch {
-    if (/^[/.]/.test(value) && IMAGE_EXTENSIONS.test(value)) return true
-  }
-
-  return false
-}
-
-/**
- * Check if a value could possibly be an image URL (any HTTP/HTTPS URL).
- * Use with <img @error> to hide failed previews.
- */
-export function isPossibleImageUrl(value: unknown): boolean {
-  if (typeof value !== 'string') return false
-  if (value.length > 2048) return false
-  return /^https?:\/\/[^\s]+$/i.test(value)
-}
-
-// ── Color detection patterns ──
-
-const HEX_COLOR = /^#([0-9a-f]{3}|[0-9a-f]{4}|[0-9a-f]{6}|[0-9a-f]{8})$/i
-const RGB_COLOR = /^rgba?\(\s*\d{1,3}\s*,\s*\d{1,3}\s*,\s*\d{1,3}/i
-const HSL_COLOR = /^hsla?\(\s*\d{1,3}\s*,\s*\d{1,3}%?\s*,\s*\d{1,3}%?/i
-
-/**
- * Check if a string value is a CSS color
- */
-export function isColorValue(value: unknown): boolean {
-  if (typeof value !== 'string') return false
-  return HEX_COLOR.test(value) || RGB_COLOR.test(value) || HSL_COLOR.test(value)
-}
-
-/**
- * Get a CSS color string safe for inline style binding.
- * Returns the value as-is if it looks like a valid CSS color.
- */
-export function getColorStyle(value: string): string | null {
-  if (!isColorValue(value)) return null
-  return value
-}
-
-// ── General type patterns ──
+// ── General type patterns (basic detection) ──
 
 const typePatterns: Record<string, RegExp> = {
   url: /^https?:\/\/[^\s]+$/i,
@@ -85,10 +42,22 @@ const typeIcons: Record<string, string> = {
   email: 'lucide:mail',
   date: 'lucide:calendar',
   color: 'lucide:palette',
+  // Extended kinds (P1-3 / P1-4)
+  audio: 'lucide:music',
+  video: 'lucide:video',
+  pdf: 'lucide:file-text',
+  timestamp: 'lucide:calendar',
+  jwt: 'lucide:key',
+  base64: 'lucide:binary',
+  uuid: 'lucide:fingerprint',
+  ip: 'lucide:globe',
+  markdown: 'lucide:file-code',
+  regex: 'lucide:regex',
 }
 
 /**
- * Detect smart type for a string value
+ * Detect basic smart type for a string value.
+ * (For the finer-grained kinds — jwt/base64/timestamp/… use `detectValueKind`.)
  */
 export function detectValueType(value: string): DetectedType['type'] | null {
   if (typeof value !== 'string') return null
@@ -149,10 +118,16 @@ export function useSmartJsonValue(jsonData: MaybeRefOrGetter<any>) {
   return {
     detectedTypes,
     detectValueType,
+    detectValueKind,
     getTypeIcon,
     isImageUrl,
     isColorValue,
     getColorStyle,
+    decodeJwt,
+    decodeBase64,
+    formatTimestamps,
+    base64ByteLength,
+    isRemoteResource,
     typePatterns,
     typeIcons,
   }

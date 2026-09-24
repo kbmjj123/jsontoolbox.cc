@@ -7,7 +7,7 @@ export const useBreadcrumbs = () => {
   const route = useRoute()
   const { t } = useI18n()
   const localePath = useLocalePath()
-  const { allCategories, allTools, subTools } = useTools()
+  const { allCategories, allTools } = useTools()
 
   const breadcrumbs = computed(() => {
     const path = route.path
@@ -38,7 +38,6 @@ export const useBreadcrumbs = () => {
 
     if (urlSlug) {
       const toolConfig = allTools.value.find(t => t.slug === urlSlug)
-        || subTools.value.find(t => t.slug === urlSlug)
 
       if (toolConfig) {
         const realCategoryId = toolConfig.category || urlCategory

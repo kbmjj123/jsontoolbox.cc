@@ -23,26 +23,33 @@
 <script setup lang="ts">
 import CodeMirror from 'vue-codemirror6'
 import { json, jsonParseLinter } from '@codemirror/lang-json'
-import { EditorView, Decoration } from '@codemirror/view'
+import { EditorView, Decoration, lineNumbers } from '@codemirror/view'
 import { RangeSetBuilder, type Extension } from '@codemirror/state'
 import { syntaxHighlighting, HighlightStyle } from '@codemirror/language'
 import { tags } from '@lezer/highlight'
+import { LARGE_FILE_MAX_BYTES, byteLength } from '~/composables/useLargeFile'
 
 const props = withDefaults(defineProps<{
   modelValue: string
   placeholder?: string
   readonly?: boolean
   disabled?: boolean
+  /** When true, paste events carrying more than LARGE_FILE_MAX_BYTES are
+   *  refused (and reported via `file-size`) instead of being inserted. */
+  blockOversized?: boolean
 }>(), {
   placeholder: '',
   readonly: false,
   disabled: false,
+  blockOversized: false,
 })
 
 const emit = defineEmits<{
   'update:modelValue': [value: string]
   scroll: [info: { scrollTop: number; scrollHeight: number; clientHeight: number }]
   ready: [view: EditorView]
+  /** Reported when a pasted value exceeds the large-file limit. */
+  'file-size': [info: { bytes: number; oversized: boolean; text: string }]
 }>()
 
 const cmRef = ref<any>()
@@ -89,6 +96,12 @@ const extensions: Extension[] = [
     '.cm-gutters': {
       backgroundColor: 'transparent',
       border: 'none',
+      borderRight: '1px solid rgba(148, 163, 184, 0.25)',
+      color: '#94a3b8',
+    },
+    '.cm-lineNumbers .cm-gutterElement': {
+      padding: '0 8px 0 12px',
+      minWidth: '32px',
     },
     '.cm-activeLineGutter': {
       backgroundColor: 'transparent',
@@ -115,6 +128,7 @@ const extensions: Extension[] = [
     },
   }),
   EditorView.lineWrapping,
+  lineNumbers(),
   // JSON syntax colors — aligned with JsonOutputPanel
   syntaxHighlighting(HighlightStyle.define([
     { tag: tags.propertyName, color: '#7c3aed' },               // key — purple-600
@@ -134,6 +148,24 @@ const extensions: Extension[] = [
     { tag: tags.punctuation, color: '#94a3b8' },                 // brackets, commas — slate-400 (dark)
     { tag: tags.separator, color: '#94a3b8' },                   // colon — slate-400 (dark)
   ], { dark: true })),
+  // Hand off oversized pastes to the Large JSON Explorer instead of letting
+  // CodeMirror insert (and freeze on) multi-MB content. Checked before the
+  // default paste handler runs, so the oversized text never enters the editor.
+  EditorView.domEventHandlers({
+    paste(event) {
+      if (!props.blockOversized) return false
+      const clip = event as ClipboardEvent
+      const text = clip.clipboardData?.getData('text') ?? ''
+      if (!text) return false
+      const bytes = byteLength(text)
+      if (bytes > LARGE_FILE_MAX_BYTES) {
+        event.preventDefault()
+        emit('file-size', { bytes, oversized: true, text })
+        return true
+      }
+      return false
+    },
+  }),
 ]
 
 // ── Ready handler ──
@@ -196,6 +228,42 @@ function clearLineDecorations() {
   })
 }
 
+// ── Highlight methods (for click-to-locate) ──
+let highlightTimer: ReturnType<typeof setTimeout> | null = null
+
+function highlightLine(line: number, style: 'flash' | 'subtle') {
+  highlightLines(line, 0, style)
+}
+
+function highlightLines(startLine: number, endLine: number, style: 'flash' | 'subtle') {
+  if (!editorView) return
+  if (highlightTimer) { clearTimeout(highlightTimer); highlightTimer = null }
+
+  if (startLine <= 0) {
+    editorView.dispatch({ effects: highlightEffect.of(Decoration.none) })
+    return
+  }
+
+  const doc = editorView.state.doc
+  const sLine = Math.max(1, Math.min(startLine, doc.lines))
+  const eLine = endLine > 0 ? Math.max(sLine, Math.min(endLine, doc.lines)) : sLine
+
+  const cls = style === 'flash' ? 'cm-highlight-flash' : 'cm-highlight-subtle'
+  const builder = new RangeSetBuilder<Decoration>()
+  for (let l = sLine; l <= eLine; l++) {
+    const lineObj = doc.line(l)
+    builder.add(lineObj.from, lineObj.from, Decoration.line({ attributes: { class: cls } }))
+  }
+  editorView.dispatch({ effects: highlightEffect.of(builder.finish()) })
+
+  if (style === 'flash') {
+    highlightTimer = setTimeout(() => {
+      editorView?.dispatch({ effects: highlightEffect.of(Decoration.none) })
+      highlightTimer = null
+    }, 2000)
+  }
+}
+
 // ── Exposed methods ──
 function scrollToLine(line: number) {
   if (!editorView) return
@@ -220,6 +288,7 @@ function getView(): EditorView | undefined {
 import { StateField, StateEffect } from '@codemirror/state'
 
 const decorationFieldEffect = StateEffect.define<any>()
+const highlightEffect = StateEffect.define<any>()
 const decorationField = StateField.define({
   create() { return Decoration.none },
   update(value, tr) {
@@ -234,14 +303,49 @@ const decorationField = StateField.define({
   provide: f => EditorView.decorations.from(f),
 })
 
-// Add StateField to extensions
+const highlightField = StateField.define({
+  create() { return Decoration.none },
+  update(value, tr) {
+    for (const e of tr.effects) {
+      if (e.is(highlightEffect)) return e.value
+    }
+    return value.map(tr.changes)
+  },
+  provide: f => EditorView.decorations.from(f),
+})
+
+// Add StateFields to extensions
 extensions.push(decorationField)
+extensions.push(highlightField)
 
 defineExpose({
   scrollToLine,
   scrollToRatio,
+  highlightLine,
+  highlightLines,
   setLineDecorations,
   clearLineDecorations,
   getView,
 })
 </script>
+
+<style>
+.cm-highlight-flash {
+  background-color: rgba(251, 191, 36, 0.3) !important;
+  animation: cm-flash-fade 2s forwards;
+}
+.dark .cm-highlight-flash {
+  background-color: rgba(251, 191, 36, 0.2) !important;
+}
+.cm-highlight-subtle {
+  background-color: rgba(251, 191, 36, 0.15) !important;
+}
+.dark .cm-highlight-subtle {
+  background-color: rgba(251, 191, 36, 0.1) !important;
+}
+@keyframes cm-flash-fade {
+  0% { background-color: rgba(251, 191, 36, 0.3); }
+  70% { background-color: rgba(251, 191, 36, 0.3); }
+  100% { background-color: transparent; }
+}
+</style>

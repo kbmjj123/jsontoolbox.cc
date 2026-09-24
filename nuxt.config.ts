@@ -1,26 +1,5 @@
 // https://nuxt.com/docs/api/configuration/nuxt-config
 import { fileURLToPath } from 'url'
-import { readdirSync, existsSync } from 'fs'
-import { resolve } from 'path'
-
-// 动态生成 sub 工具页面的预渲染路由
-function getSubToolRoutes(): string[] {
-  const dataDir = resolve(process.cwd(), 'app/assets/data')
-  const routes: string[] = []
-  if (!existsSync(dataDir)) return routes
-  const entries = readdirSync(dataDir, { withFileTypes: true })
-  for (const entry of entries) {
-    if (!entry.isDirectory()) continue
-    const subDir = resolve(dataDir, entry.name, 'sub')
-    if (!existsSync(subDir)) continue
-    const files = readdirSync(subDir).filter((f: string) => f.endsWith('.json'))
-    for (const file of files) {
-      const slug = file.replace(/\.json$/, '')
-      routes.push(`/tools/${entry.name}/${slug}/`)
-    }
-  }
-  return routes
-}
 
 export default defineNuxtConfig({
   ssr: true,
@@ -32,8 +11,7 @@ export default defineNuxtConfig({
       autoSubfolderIndex: false,
       routes: [
         '/llms.txt',
-        '/llms-full.txt',
-        ...getSubToolRoutes()
+        '/llms-full.txt'
       ]
     },
   },
@@ -193,6 +171,23 @@ export default defineNuxtConfig({
     '@nuxt/content/dist/module.mjs': fileURLToPath(new URL('./adapter-content.ts', import.meta.url))
   },
   vite: {
+    optimizeDeps: {
+      include: [
+        '@codemirror/lang-json',
+        '@codemirror/language',
+        '@codemirror/state',
+        '@codemirror/view',
+        '@lezer/highlight',
+        'ajv', // CJS
+        'dompurify',
+        'fflate',
+        'js-yaml',
+        'jsonrepair',
+        'marked',
+        'photoswipe',
+        'vue-codemirror6',
+      ]
+    },
     server: {
       hmr: {
         timeout: 30000
@@ -201,20 +196,6 @@ export default defineNuxtConfig({
     build: {
       cssCodeSplit: false,
       assetsInlineLimit: 4096
-    },
-  },
-  hooks: {
-    'pages:extend': pages => {
-      if (process.env.NODE_ENV === 'production') {
-        const routesToRemove = pages.filter(page => page.path.startsWith('/admin'))
-        routesToRemove.forEach(route => {
-          const index = pages.indexOf(route)
-          if (index > -1) {
-            pages.splice(index, 1)
-            console.log(`   - Removed: ${route.path}`)
-          }
-        })
-      }
     },
   },
 })

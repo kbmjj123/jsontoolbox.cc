@@ -6,7 +6,7 @@
       class="rounded-2xl border border-surface-200 bg-white p-5 dark:border-surface-700 dark:bg-surface-900"
     >
       <div class="mb-3 flex h-9 w-9 items-center justify-center rounded-lg bg-primary-50 text-primary-600 dark:bg-primary-900/30 dark:text-primary-400">
-        <Icon :name="feature.icon" class="h-4.5 w-4.5" />
+        <Icon :name="feature.icon || 'lucide:star'" class="h-4.5 w-4.5" />
       </div>
       <h3 class="mb-1 text-sm font-semibold text-surface-900 dark:text-surface-100">
         {{ feature.title }}

@@ -12,267 +12,396 @@
     "json-to-csv"
   ],
   "en": {
-		"name": "JSON Compare",
-		"description": "Compare two JSON documents and highlight differences. This online JSON compare tool and JSON comparer helps you compare JSON side by side and find every difference — added, removed, and changed values — instantly in your browser.",
-		"hero": {
-			"trustHtml": "100% client-side comparison. Your JSON data never leaves your browser."
-		},
-		"meta": {
-			"title": "JSON Compare — Free Online JSON Diff Tool",
-			"description": "Compare two JSON documents side by side. Highlight differences in keys, values, and structure. Copy diff results or export as a report. Free, 100% client-side, no upload required.",
-			"keywords": [
-				"json compare",
-				"json diff",
-				"compare json",
-				"json compare online",
-				"json diff online",
-				"json comparer",
-				"difference json",
-				"online json compare",
-				"json diff tool",
-				"compare json online",
-				"free json compare",
-				"json difference checker",
-				"json diff viewer",
-				"compare two json"
-			]
-		},
-		"features": [
-			{
-				"icon": "lucide:git-compare",
-				"title": "Side-by-Side View",
-				"description": "Compare two JSON documents with a clear side-by-side layout. Differences in keys, values, and structure are highlighted so you can quickly see what changed between versions."
-			},
-			{
-				"icon": "lucide:eye",
-				"title": "Visual Diff",
-				"description": "Added, removed, and changed values are color-coded for easy identification. This visual diff makes it simple to spot modifications in large or complex JSON documents."
-			},
-			{
-				"icon": "lucide:copy",
-				"title": "Copy & Export",
-				"description": "Copy diff results to your clipboard or download them as a report file. Use the output in bug reports, code reviews, documentation, or team communication."
-			},
-			{
-				"icon": "lucide:link",
-				"title": "URL Input",
-				"description": "Load JSON from a URL using the ?url= parameter for API comparison. This is useful when comparing remote API responses or configuration endpoints."
-			},
-			{
-				"icon": "lucide:arrow-left-right",
-				"title": "Swap & Compare",
-				"description": "Quickly swap the two inputs to compare from different perspectives. This helps when you want to treat the other document as the original or modified version."
-			},
-			{
-				"icon": "lucide:shield-check",
-				"title": "Private",
-				"description": "All comparison happens in your browser. Your JSON data is not uploaded to a server, which is useful when working with private API payloads or configuration data."
-			}
-		],
-		"guide": [
-			{
-				"title": "Paste first JSON",
-				"description": "Paste your first JSON document (original) into the left panel. You can use API responses, configuration files, or any JSON you want to compare."
-			},
-			{
-				"title": "Paste second JSON",
-				"description": "Paste your second JSON document (modified) into the right panel. This is the version you want to compare against the first one."
-			},
-			{
-				"title": "Click Compare",
-				"description": "Click Compare to analyze both documents. The tool highlights added, removed, and changed keys and values so you can see every difference."
-			},
-			{
-				"title": "Review and export",
-				"description": "Review the color-coded differences, then copy the diff results or download them as a report. Use the output for debugging, documentation, or team sharing."
-			}
-		],
-		"faq": [
-			{
-				"question": "Is my JSON data uploaded to a server?",
-				"answer": "No. All comparison happens locally in your browser. Your JSON data is not uploaded to a remote server and does not leave your device."
-			},
-			{
-				"question": "What types of differences does it detect?",
-				"answer": "It detects every difference between two JSON documents: added keys, removed keys, changed values, and type changes. Nested objects and arrays are compared recursively, and all modifications are highlighted."
-			},
-			{
-				"question": "Can I compare JSON files of different sizes?",
-				"answer": "Yes. The tool handles JSON documents of any size and structure. Differences are shown regardless of the documents' sizes, so you can compare JSON with confidence even when one version is much larger."
-			},
-			{
-				"question": "Does it support nested JSON objects?",
-				"answer": "Yes. The comparison is recursive and works with deeply nested JSON objects and arrays. You can compare JSON with any level of nesting and see every difference in the structure."
-			},
-			{
-				"question": "Can I copy or export the diff results?",
-				"answer": "Yes. After comparing, you can copy the diff results to your clipboard or download them as a report file. This makes it easy to share differences with your team or attach them to bug reports."
-			},
-			{
-				"question": "Can I load JSON from a URL?",
-				"answer": "Yes. Use the ?url= parameter to load JSON from a remote URL. This is useful for comparing API responses, remote configuration files, or any JSON accessible via HTTP."
-			},
-			{
-				"question": "Can I compare large JSON files?",
-				"answer": "You can compare larger JSON files as long as they can be loaded and processed by your browser. The practical limit depends on available memory, device performance, and the complexity of the JSON structures."
-			},
-			{
-				"question": "What do the colors in the diff mean?",
-				"answer": "Typically, added keys or values are shown in green, removed items in red, and changed values in yellow or another highlight color. The exact scheme may vary, but the legend or labels indicate which type of change each color represents."
-			},
-			{
-				"question": "Is this a free online JSON compare and diff tool?",
-				"answer": "Yes. This is a free online JSON compare and JSON diff tool. You can compare two JSON documents, spot every difference, and use it as an online JSON compare utility — all in your browser with no upload required."
-			}
-		],
-		"ui": {
-			"label_json_a": "JSON A (Original)",
-			"label_json_b": "JSON B (Modified)",
-			"btn_compare": "Compare",
-			"btn_sort_keys": "Sort Keys",
-			"btn_swap": "Swap",
-			"btn_ignore_order": "Ignore array order",
-			"status_removed": "removed",
-			"status_added": "added",
-			"status_changed": "changed",
-			"status_total": "total differences",
-			"label_differences": "Differences",
-			"status_identical": "JSON documents are identical!"
-		},
-		"article": {
-			"title": "How to Compare JSON Files Online & Find Differences",
-			"content": "<h2>Why Compare JSON?</h2><p>Comparing JSON documents is essential for debugging APIs, verifying configuration changes, and ensuring data integrity. Whether you're checking API responses, comparing config files, or validating data migrations, a JSON diff tool helps you spot every difference quickly and accurately.</p><h2>Common Use Cases</h2><ul><li><strong>API debugging:</strong> Compare expected vs actual API responses to find bugs and mismatches</li><li><strong>Configuration changes:</strong> Track changes between config file versions or environment-specific settings</li><li><strong>Data migration:</strong> Verify that data was transferred correctly between systems or databases</li><li><strong>Code review:</strong> Compare JSON payloads in pull requests or deployment diffs</li><li><strong>Testing:</strong> Compare test fixtures or snapshot outputs to detect regressions</li></ul><h2>How to Compare JSON Online</h2><ol><li><strong>Paste JSON A:</strong> Add your original JSON document to the left panel.</li><li><strong>Paste JSON B:</strong> Add your modified JSON document to the right panel.</li><li><strong>Click Compare:</strong> Run the comparison to analyze both documents.</li><li><strong>Review results:</strong> Added, removed, and changed keys and values are highlighted with color-coded indicators.</li><li><strong>Export if needed:</strong> Copy the diff results or download them as a report for documentation or team sharing.</li></ol><h2>Understanding Diff Results</h2><ul><li><strong>Added (Green):</strong> Keys or values that exist in JSON B but not in JSON A</li><li><strong>Removed (Red):</strong> Keys or values present in JSON A but missing in JSON B</li><li><strong>Changed (Yellow/Highlight):</strong> Keys that exist in both documents but have different values or types</li></ul><p>Nested objects and arrays are compared recursively, so differences deep inside the structure are also detected and highlighted.</p><h2>Best Practices</h2><ul><li><strong>Format first:</strong> Use a JSON formatter to ensure both documents are readable before comparing.</li><li><strong>Check structure:</strong> Make sure both JSONs have a similar overall structure; large structural differences can produce many changes.</li><li><strong>Export results:</strong> Copy or download diff results for bug reports, documentation, or code review comments.</li><li><strong>Use URL input:</strong> When available, compare remote API responses directly via URL instead of copying and pasting.</li><li><strong>Iterate gradually:</strong> For complex changes, compare intermediate versions to understand how the data evolved.</li></ul><h2>Client-Side Privacy</h2><p>This JSON compare tool processes input in your browser instead of requiring an upload to a remote service. That can be convenient for development data and private configuration snippets. However, you should still avoid entering passwords, API keys, access tokens, or other highly sensitive information into any browser-based tool.</p>"
-		}
-	},
+    "name": "JSON Compare",
+    "description": "Compare two JSON documents online and identify added, removed, changed, and type-changed values. This browser-based JSON compare tool performs a structural comparison of objects and arrays, highlights differences by category, lets you ignore key order or specific fields, and helps you inspect changes by JSON path.",
+    "hero": {
+      "trustHtml": "Runs in your browser. Your JSON is not uploaded by this tool."
+    },
+    "meta": {
+      "title": "JSON Compare – Free Online JSON Diff Tool",
+      "description": "Compare two JSON documents online with a structural JSON diff. Find added, removed, changed, and type-changed values; sort keys, ignore array order or specific fields, filter by type, and copy or export the result in your browser.",
+      "keywords": [
+        "json compare",
+        "json diff",
+        "compare json",
+        "json diff online",
+        "json comparer",
+        "json compare online",
+        "compare json online",
+        "json difference checker",
+        "json type change",
+        "ignore fields json compare",
+        "copy json path diff"
+      ]
+    },
+    "features": [
+      {
+        "icon": "lucide:columns-2",
+        "title": "Side-by-Side Comparison",
+        "description": "Compare the original and modified JSON next to each other, with added, removed, and changed values highlighted line by line in both editors."
+      },
+      {
+        "icon": "lucide:git-compare-arrows",
+        "title": "Added, Removed, Changed & Type Changes",
+        "description": "Separate differences into added, removed, and changed values, and detect type changes such as a number becoming a string or an object becoming an array."
+      },
+      {
+        "icon": "lucide:route",
+        "title": "Nested Path Context",
+        "description": "Show where each difference occurs within the JSON structure, such as $.users[0].profile.name, and copy its JSONPath with one click."
+      },
+      {
+        "icon": "lucide:sort-asc",
+        "title": "Sort Object Keys",
+        "description": "Normalize object key order before comparison so a different property order is not reported as a data change. Array element order is preserved."
+      },
+      {
+        "icon": "lucide:list-ordered",
+        "title": "Ignore Array Order",
+        "description": "Treat array position as insignificant for unordered collections, so reordering items does not produce spurious changes."
+      },
+      {
+        "icon": "lucide:filter",
+        "title": "Ignore Specific Fields",
+        "description": "Exclude noisy fields such as updatedAt or requestId by name or path, so they are skipped during comparison."
+      },
+      {
+        "icon": "lucide:clipboard-list",
+        "title": "Copy & Export",
+        "description": "Copy every changed path, copy the full diff result, or export it as a text report for issues, code review, or documentation."
+      },
+      {
+        "icon": "lucide:arrow-left-right",
+        "title": "Swap Inputs",
+        "description": "Swap JSON A and JSON B to reverse the comparison direction and view additions and removals from the opposite side."
+      },
+      {
+        "icon": "lucide:shield-check",
+        "title": "Browser-Based Comparison",
+        "description": "JSON parsing and comparison happen in your browser. No account is required and your documents are not uploaded to a server."
+      }
+    ],
+    "guide": [
+      {
+        "title": "Enter the original JSON",
+        "description": "Paste the baseline or original document into JSON A. This version is used as the starting point for classifying added, removed, and changed values."
+      },
+      {
+        "title": "Enter the modified JSON",
+        "description": "Paste the newer or comparison document into JSON B. The tool compares this document against JSON A."
+      },
+      {
+        "title": "Set comparison rules",
+        "description": "Enable Sort object keys when key order should not matter, enable Ignore array order for unordered collections, and list fields to skip in the Ignore fields box."
+      },
+      {
+        "title": "Compare and inspect",
+        "description": "Click Compare to parse both documents. Differences are highlighted in both editors and listed with their path, type, and old or new value."
+      },
+      {
+        "title": "Copy or export",
+        "description": "Filter the result by type, copy changed paths, copy the full result, or export a report. Use Swap to reverse the comparison direction."
+      }
+    ],
+    "faq": [
+      {
+        "question": "Does this compare JSON semantically or as plain text?",
+        "answer": "The comparison is structural: both inputs are parsed as JSON, so whitespace and formatting do not count as data changes. Object key order can also be normalized when Sort Keys is enabled."
+      },
+      {
+        "question": "What types of differences can it detect?",
+        "answer": "It classifies properties or array values as added, removed, or changed. A type change, such as a number becoming a string or an object becoming an array, is reported as its own Type changed category."
+      },
+      {
+        "question": "Does it compare nested objects and arrays?",
+        "answer": "Yes. The comparison is recursive for nested JSON objects and arrays. Each difference reports its full JSON path, for example $.items[2].price."
+      },
+      {
+        "question": "What does Sort Keys do?",
+        "answer": "Sort Keys normalizes the order of object properties before comparison. This prevents a different property order from being reported as a meaningful change. It does not reorder array elements."
+      },
+      {
+        "question": "What does Ignore array order do?",
+        "answer": "It treats array position as less important when the array represents an unordered collection. Use this option carefully for arrays with repeated or partially changed objects, since pairing is still required."
+      },
+      {
+        "question": "Are arrays compared by index?",
+        "answer": "By default, arrays are compared by position, so inserting an item near the beginning can cause later indexes to appear changed. If the data is an unordered collection, enable Ignore array order."
+      },
+      {
+        "question": "Can I ignore specific fields?",
+        "answer": "Yes. List field names or paths in the Ignore fields box, separated by commas. You can use a bare key name like updatedAt, a wildcard prefix like *.updatedAt, or an exact path like users.profile.updatedAt."
+      },
+      {
+        "question": "What is a type change?",
+        "answer": "A type change is detected when a value's JSON type differs between the two documents, for example a number becoming a string or an object becoming an array. It is shown as a separate Type changed entry with the before and after types."
+      },
+      {
+        "question": "Can I compare JSON files with different sizes?",
+        "answer": "Yes. The documents do not need to contain the same number of properties, items, or nested levels. Missing properties are reported as removed or added according to the comparison direction."
+      },
+      {
+        "question": "Can I compare minified and formatted JSON?",
+        "answer": "Yes, provided both inputs are valid JSON. Formatting, indentation, and whitespace do not affect a structural comparison."
+      },
+      {
+        "question": "Can I compare numbers and strings with similar values?",
+        "answer": "A structural comparator distinguishes JSON types. For example, the number 1 and the string \"1\" are different values even though they look similar when displayed."
+      },
+      {
+        "question": "Can I reverse the comparison?",
+        "answer": "Yes. Use Swap to exchange JSON A and JSON B. This reverses which document is treated as the original and which as the modified version."
+      },
+      {
+        "question": "Can I load JSON from URL parameters?",
+        "answer": "Yes. You can prefill either editor with the ?left= and ?right= URL parameters containing JSON text. This only loads the text from the address; the tool does not fetch remote URLs."
+      },
+      {
+        "question": "Can I copy or export the result?",
+        "answer": "Yes. You can copy every changed path, copy the full diff result as text, or export it as a .txt report for issues, code review, or documentation."
+      },
+      {
+        "question": "Can I compare large JSON documents?",
+        "answer": "The practical limit depends on browser memory, device performance, document depth, array size, and the complexity of the diff result. Large comparisons may take longer and may benefit from filtering or exporting the result."
+      },
+      {
+        "question": "Is my JSON uploaded to a server?",
+        "answer": "No. Both documents are parsed and compared in your browser without a server upload. You should still avoid entering passwords, API keys, access tokens, or confidential production payloads into any browser-based tool."
+      },
+      {
+        "question": "Is this a free JSON compare tool?",
+        "answer": "Yes. You can enter two JSON documents, compare their structure and values, and inspect the differences without creating an account."
+      }
+    ],
+    "ui": {
+      "label_json_a": "JSON A (Original)",
+      "label_json_b": "JSON B (Modified)",
+      "btn_compare": "Compare",
+      "btn_sort_keys": "Sort object keys",
+      "btn_swap": "Swap inputs",
+      "btn_ignore_order": "Ignore array order",
+      "ignore_fields": "Ignore fields (e.g. updatedAt)",
+      "status_removed": "removed",
+      "status_added": "added",
+      "status_changed": "changed",
+      "status_type_changed": "type changed",
+      "status_total": "differences",
+      "label_differences": "Differences",
+      "status_identical": "The JSON documents are structurally identical.",
+      "filter_all": "All",
+      "result_showing": "Showing first",
+      "copy_paths": "Copy all paths",
+      "copy_result": "Copy result",
+      "export_result": "Export",
+      "btn_copy_path": "Copy path",
+      "error_empty_a": "Enter JSON A first",
+      "error_empty_b": "Enter JSON B first",
+      "error_invalid_a": "JSON A is not valid JSON",
+      "error_invalid_b": "JSON B is not valid JSON",
+      "status_path": "Path",
+      "status_old_value": "Original value",
+      "status_new_value": "Modified value"
+    },
+    "article": {
+      "title": "How to Compare JSON Files Online",
+      "content": "<h2>What Is a JSON Compare Tool?</h2><p>A JSON compare tool examines two JSON documents and reports how their structure and values differ. It is useful when you need to compare API responses, configuration files, test fixtures, exported data, or two versions of a payload.</p><p>A structural JSON comparison parses the documents before comparing them. This means formatting, indentation, and whitespace do not normally count as changes. The result can focus on meaningful data differences such as added properties, removed properties, changed values, and type changes.</p><h2>Common Use Cases</h2><ul><li><strong>API debugging:</strong> Compare expected and actual responses to locate missing fields, changed values, or unexpected types.</li><li><strong>Configuration review:</strong> Compare environment-specific files or old and new configuration versions.</li><li><strong>Data migration:</strong> Check whether records changed during an export, import, or transformation.</li><li><strong>Regression testing:</strong> Compare snapshot outputs, test fixtures, or serialized results.</li><li><strong>Code review:</strong> Review JSON payload changes without manually scanning two large documents.</li><li><strong>Webhook and event debugging:</strong> Compare two event payloads to identify changes in nested properties or metadata.</li></ul><h2>How to Compare Two JSON Documents</h2><ol><li><strong>Enter JSON A:</strong> Paste the original or baseline document into the first editor.</li><li><strong>Enter JSON B:</strong> Paste the modified or newer document into the second editor.</li><li><strong>Choose normalization options:</strong> Sort object keys when property order should not matter. Use Ignore array order only when array position is semantically irrelevant. List fields to skip in Ignore fields.</li><li><strong>Run the comparison:</strong> Click Compare to parse and compare both inputs.</li><li><strong>Review the result:</strong> Inspect added, removed, changed, and type-changed values together with their JSON paths, then copy paths, copy the result, or export a report.</li></ol><h2>Understanding Difference Types</h2><ul><li><strong>Added (green):</strong> A key or value present in JSON B but missing from JSON A.</li><li><strong>Removed (red):</strong> A key or value present in JSON A but missing from JSON B.</li><li><strong>Changed (yellow):</strong> A key present in both documents whose value differs.</li><li><strong>Type changed (purple):</strong> A key present in both documents whose value changed JSON type, for example a number becoming a string.</li></ul><p>Nested objects and arrays are compared recursively, so differences deep in the structure are also detected and shown with their full path.</p><h2>Best Practices</h2><ul><li><strong>Normalize first:</strong> Enable Sort object keys when the two documents were generated by different serializers that order keys differently.</li><li><strong>Ignore noise:</strong> Use Ignore fields to skip volatile fields such as updatedAt, requestId, or timestamps that change on every run.</li><li><strong>Reverse when needed:</strong> Use Swap to view the comparison from the other direction when debugging which side introduced a change.</li><li><strong>Export for sharing:</strong> Copy changed paths or export the full result to attach to an issue or code review.</li></ul><h2>Browser-Based and Private</h2><p>This JSON compare tool processes input in your browser and does not require uploading your documents to a server. For development data and configuration snippets this local processing is convenient. Still, avoid entering passwords, API keys, access tokens, or other highly sensitive information into any browser tool.</p>"
+    }
+  },
   "zh": {
-		"name": "JSON差异查看器",
-		"description": "比较两个 JSON 文档并高亮显示差异。这个在线 JSON 比较工具和 JSON 对比工具可以帮助你并排比较 JSON，即时发现新增、删除和修改的键与值，并在浏览器中直观展示所有差异。",
-		"hero": {
-			"trustHtml": "100% 本地比较。JSON 数据始终保留在浏览器中。"
-		},
-		"meta": {
-			"title": "JSON 比较 — 免费在线 JSON 差异工具",
-			"description": "并排比较两个 JSON 文档。高亮显示键、值和结构的差异，支持复制差异结果或导出报告。免费、100% 客户端处理，无需上传文件。",
-			"keywords": [
-				"json比较",
-				"json差异",
-				"比较json",
-				"在线json比较",
-				"json对比工具",
-				"json diff工具",
-				"比较json在线",
-				"免费json比较",
-				"json差异检查",
-				"json对比在线",
-				"两个json比较",
-				"json差异查看器"
-			]
-		},
-		"features": [
-			{
-				"icon": "lucide:git-compare",
-				"title": "并排视图",
-				"description": "以清晰的并排布局比较两个 JSON 文档。键、值和结构中的差异会被高亮显示，方便快速查看两个版本之间的变化。"
-			},
-			{
-				"icon": "lucide:eye",
-				"title": "可视化差异",
-				"description": "新增、删除和修改的键与值会用不同颜色标记，便于识别。这种可视化差异让大型或复杂 JSON 文档中的变更一目了然。"
-			},
-			{
-				"icon": "lucide:copy",
-				"title": "复制与导出",
-				"description": "将差异结果复制到剪贴板，或下载为报告文件。可将输出用于问题报告、代码审查、文档或团队沟通。"
-			},
-			{
-				"icon": "lucide:link",
-				"title": "URL 输入",
-				"description": "使用 ?url= 参数从远程 URL 加载 JSON，方便比较 API 响应或远程配置文件。适合需要直接对比接口返回数据的场景。"
-			},
-			{
-				"icon": "lucide:arrow-left-right",
-				"title": "交换与比较",
-				"description": "一键交换左右两个输入，从不同角度进行比较。当你想将另一个文档视为“原始”或“修改后”版本时非常有用。"
-			},
-			{
-				"icon": "lucide:shield-check",
-				"title": "私密安全",
-				"description": "所有比较都在浏览器中完成，不需要将 JSON 数据上传到服务器。适合处理私密 API 负载、配置数据和其他不希望离开设备的内容。"
-			}
-		],
-		"guide": [
-			{
-				"title": "粘贴第一个 JSON",
-				"description": "将第一个 JSON 文档（原始版本）粘贴到左侧面板。可以使用 API 响应、配置文件或任何需要比较的 JSON。"
-			},
-			{
-				"title": "粘贴第二个 JSON",
-				"description": "将第二个 JSON 文档（修改版本）粘贴到右侧面板。这是你要与第一个文档进行对比的版本。"
-			},
-			{
-				"title": "点击比较",
-				"description": "点击“比较”按钮分析两个文档。工具会高亮显示新增、删除和修改的键与值，帮助你看到所有差异。"
-			},
-			{
-				"title": "查看并导出",
-				"description": "查看颜色标记的差异结果，然后复制差异内容或下载为报告。可用于调试、文档记录或与团队共享。"
-			}
-		],
-		"faq": [
-			{
-				"question": "我的 JSON 数据会上传到服务器吗？",
-				"answer": "不会。所有比较都在浏览器本地完成，你的 JSON 数据不会上传到远程服务器，也不会离开你的设备。"
-			},
-			{
-				"question": "能检测哪些类型的差异？",
-				"answer": "能检测两个 JSON 文档之间的所有差异：新增的键、删除的键、值的变化以及类型变化。嵌套对象和数组会递归比较，所有修改都会被高亮显示。"
-			},
-			{
-				"question": "可以比较不同大小的 JSON 文件吗？",
-				"answer": "可以。工具能处理任意大小和结构的 JSON 文档，无论两个文档大小差异多大，都会显示所有差异，让你可以放心比较 JSON。"
-			},
-			{
-				"question": "支持嵌套 JSON 对象吗？",
-				"answer": "支持。比较是递归的，可以处理深度嵌套的 JSON 对象和数组。你可以比较任意嵌套层级的 JSON，并查看结构中的每个差异。"
-			},
-			{
-				"question": "可以复制或导出差异结果吗？",
-				"answer": "可以。比较完成后，你可以将差异结果复制到剪贴板，或下载为报告文件。这样便于与团队分享差异，或附在问题报告和代码审查中。"
-			},
-			{
-				"question": "可以从 URL 加载 JSON 吗？",
-				"answer": "可以。使用 ?url= 参数从远程 URL 加载 JSON。这对于比较 API 响应、远程配置文件或任何可通过 HTTP 访问的 JSON 非常有用。"
-			},
-			{
-				"question": "可以比较大型 JSON 文件吗？",
-				"answer": "可以比较较大的 JSON 文件，只要浏览器能够加载和处理它们。实际限制取决于设备性能、浏览器可用内存以及 JSON 结构的复杂程度。"
-			},
-			{
-				"question": "差异中的颜色代表什么？",
-				"answer": "通常，新增的键或值会用绿色标记，删除的项用红色标记，修改的值用黄色或其他高亮颜色标记。具体配色可能略有差异，但界面中的说明或标签会指示每种颜色对应的变更类型。"
-			},
-			{
-				"question": "这是一个在线 JSON 比较工具吗？",
-				"answer": "是的。这是一个免费的在线 JSON 比较工具，支持比较两个 JSON 文档并高亮显示差异。无需上传数据，在浏览器中即可完成所有比较操作。"
-			}
-		],
-		"ui": {
-			"label_json_a": "JSON A（原始）",
-			"label_json_b": "JSON B（修改后）",
-			"btn_compare": "比较",
-			"btn_sort_keys": "排序键名",
-			"btn_swap": "交换",
-			"btn_ignore_order": "忽略数组顺序",
-			"status_removed": "已删除",
-			"status_added": "已新增",
-			"status_changed": "已修改",
-			"status_total": "个差异",
-			"label_differences": "差异",
-			"status_identical": "JSON 文档完全一致！"
-		},
-		"article": {
-			"title": "如何在线比较 JSON 文件并查找差异",
-			"content": "<h2>为什么要比较 JSON？</h2><p>比较 JSON 文档对于调试 API、验证配置更改和确保数据完整性非常重要。无论是在检查 API 响应、比较配置文件版本，还是验证数据迁移结果，JSON 差异工具都能帮助你快速、准确地发现每个差异。</p><h2>常见使用场景</h2><ul><li><strong>API 调试：</strong>比较预期与实际 API 响应，查找字段缺失、值错误或结构变化等问题</li><li><strong>配置更改：</strong>跟踪不同版本配置文件之间的差异，或对比不同环境的配置</li><li><strong>数据迁移：</strong>验证数据是否在系统或数据库之间正确传输，没有遗漏或错误</li><li><strong>代码审查：</strong>在 Pull Request 中比较 JSON 负载，确认改动是否符合预期</li><li><strong>测试与回归：</strong>比较测试用例的 JSON 输出或快照，检测回归和意外变更</li></ul><h2>如何在线比较 JSON</h2><ol><li><strong>粘贴 JSON A：</strong>将原始 JSON 文档添加到左侧面板。</li><li><strong>粘贴 JSON B：</strong>将修改后的 JSON 文档添加到右侧面板。</li><li><strong>点击比较：</strong>运行比较，分析两个文档的差异。</li><li><strong>查看结果：</strong>新增、删除和修改的键与值会以颜色标记，方便快速识别。</li><li><strong>导出结果（可选）：</strong>复制差异内容或下载为报告，用于问题记录、文档或团队沟通。</li></ol><h2>理解差异结果</h2><ul><li><strong>新增（绿色）：</strong>在 JSON B 中存在但在 JSON A 中不存在的键或值</li><li><strong>删除（红色）：</strong>在 JSON A 中存在但在 JSON B 中缺失的键或值</li><li><strong>修改（黄色/高亮）：</strong>在两个文档中都存在，但值或类型发生变化的键</li></ul><p>嵌套对象和数组会递归比较，因此深层结构中的差异也会被检测并高亮显示。</p><h2>最佳实践</h2><ul><li><strong>先格式化：</strong>使用 JSON 格式化工具确保两个文档可读，再进行比较。</li><li><strong>检查整体结构：</strong>如果两个 JSON 的整体结构差异很大，可能会产生大量变更提示，此时可以分步比较中间版本。</li><li><strong>导出结果：</strong>将差异结果复制到剪贴板或下载为报告，便于在问题报告、文档或代码审查中使用。</li><li><strong>利用 URL 输入：</strong>在支持时，直接通过 URL 比较远程 API 响应，减少复制粘贴的步骤。</li><li><strong>逐步对比：</strong>对于复杂变更，可以比较多个中间版本，理解数据是如何逐步演化的。</li></ul><h2>浏览器本地处理与隐私</h2><p>这个 JSON 比较工具在浏览器中处理输入内容，不要求将数据上传到远程服务。对于开发数据和私密配置片段来说，本地处理更加方便。不过，仍然不建议在任何浏览器工具中输入密码、API 密钥、访问令牌或其他高度敏感的信息。</p>"
-		}
-	}
+    "name": "JSON 差异比较",
+    "description": "在线比较两个 JSON 文档，识别新增、删除、修改以及类型变化的数值。这个浏览器端的 JSON 比较工具会对对象和数组做结构化比较，按类别高亮差异，支持忽略键顺序或指定字段，并通过 JSON 路径查看变更。",
+    "hero": {
+      "trustHtml": "100% 本地比较。JSON 数据始终保留在浏览器中。"
+    },
+    "meta": {
+      "title": "JSON 比较 — 免费在线 JSON 差异工具",
+      "description": "并排比较两个 JSON 文档。高亮显示新增、删除、修改与类型变化的差异，支持排序键名、忽略数组顺序或指定字段、按类型筛选，并可复制或导出结果。免费、100% 客户端处理，无需上传。",
+      "keywords": [
+        "json比较",
+        "json差异",
+        "比较json",
+        "在线json比较",
+        "json对比工具",
+        "json diff工具",
+        "比较json在线",
+        "免费json比较",
+        "json差异检查",
+        "json类型变化",
+        "忽略字段比较",
+        "复制json路径"
+      ]
+    },
+    "features": [
+      {
+        "icon": "lucide:columns-2",
+        "title": "并排比较",
+        "description": "将原始与修改后的 JSON 并排显示，新增、删除和修改的数值会在两个编辑器中按行高亮。"
+      },
+      {
+        "icon": "lucide:git-compare-arrows",
+        "title": "新增、删除、修改与类型变化",
+        "description": "将差异分为新增、删除和修改，并能识别类型变化，例如数字变成字符串，或对象变成数组。"
+      },
+      {
+        "icon": "lucide:route",
+        "title": "嵌套路径定位",
+        "description": "显示每个差异在 JSON 结构中的位置，例如 $.users[0].profile.name，并可一键复制其 JSONPath。"
+      },
+      {
+        "icon": "lucide:sort-asc",
+        "title": "排序键名",
+        "description": "比较前对对象的键名排序，使键的顺序差异不被当作数据变化。数组元素的顺序保持不变。"
+      },
+      {
+        "icon": "lucide:list-ordered",
+        "title": "忽略数组顺序",
+        "description": "对无序集合忽略数组位置，重新排序元素不会产生虚假变更。"
+      },
+      {
+        "icon": "lucide:filter",
+        "title": "忽略指定字段",
+        "description": "按字段名或路径排除 updatedAt、requestId 等干扰字段，比较时跳过它们。"
+      },
+      {
+        "icon": "lucide:clipboard-list",
+        "title": "复制与导出",
+        "description": "复制所有变更路径、复制完整差异结果，或导出为文本报告，用于问题记录、代码审查或文档。"
+      },
+      {
+        "icon": "lucide:arrow-left-right",
+        "title": "交换输入",
+        "description": "交换 JSON A 与 JSON B，反转比较方向，从另一侧查看新增与删除。"
+      },
+      {
+        "icon": "lucide:shield-check",
+        "title": "本地浏览器处理",
+        "description": "JSON 解析与比较都在浏览器中进行，无需登录，文档也不会上传到服务器。"
+      }
+    ],
+    "guide": [
+      {
+        "title": "粘贴第一个 JSON",
+        "description": "将原始或基线文档粘贴到 JSON A。这个版本用于作为新增、删除、修改的分类起点。"
+      },
+      {
+        "title": "粘贴第二个 JSON",
+        "description": "将修改后的文档粘贴到 JSON B。工具会把它与 JSON A 进行比较。"
+      },
+      {
+        "title": "设置比较规则",
+        "description": "当键顺序无关时开启「排序键名」；对无序集合开启「忽略数组顺序」；在「忽略字段」框中列出需要跳过的字段。"
+      },
+      {
+        "title": "比较并查看",
+        "description": "点击「比较」解析两份文档。两个编辑器会高亮差异，并列出每条差异的路径、类型以及旧值或新值。"
+      },
+      {
+        "title": "复制或导出",
+        "description": "按类型筛选结果，复制变更路径、复制完整结果，或导出报告。需要反转方向时使用「交换」。"
+      }
+    ],
+    "faq": [
+      {
+        "question": "这是按语义比较还是按纯文本比较？",
+        "answer": "比较是结构化的：两份输入都会先解析成 JSON，因此空白和格式差异不会算作数据变化。开启「排序键名」时，对象键的顺序也会被归一化。"
+      },
+      {
+        "question": "能检测哪些类型的差异？",
+        "answer": "会将属性或数组元素分类为新增、删除或修改。当值的 JSON 类型发生变化（例如数字变成字符串、对象变成数组）时，会作为单独的「类型变化」类别报告。"
+      },
+      {
+        "question": "能比较嵌套的对象和数组吗？",
+        "answer": "可以。比较会递归处理嵌套的 JSON 对象和数组，每条差异都会给出完整 JSON 路径，例如 $.items[2].price。"
+      },
+      {
+        "question": "「排序键名」有什么作用？",
+        "answer": "「排序键名」会在比较前对对象的属性排序，避免不同的属性顺序被当成有意义的数据变化。它不会重排数组元素。"
+      },
+      {
+        "question": "「忽略数组顺序」有什么作用？",
+        "answer": "当数组表示无序集合时，它会降低数组位置的重要性。对于包含重复或部分修改对象的数组要谨慎使用，因为仍需要配对逻辑。"
+      },
+      {
+        "question": "数组是按索引比较的吗？",
+        "answer": "默认按位置比较数组，因此在开头插入元素可能导致后续索引看起来都变了。如果数据是无序集合，请开启「忽略数组顺序」。"
+      },
+      {
+        "question": "可以忽略指定字段吗？",
+        "answer": "可以。在「忽略字段」框中填入字段名或路径，用逗号分隔。可以用裸键名如 updatedAt、通配前缀如 *.updatedAt，或精确路径如 users.profile.updatedAt。"
+      },
+      {
+        "question": "什么是类型变化？",
+        "answer": "当某个值在两个文档中的 JSON 类型不同时即被识别为类型变化，例如数字变成字符串、对象变成数组。它会作为单独的「类型变化」条目显示，并标注前后类型。"
+      },
+      {
+        "question": "可以比较大小不同的 JSON 吗？",
+        "answer": "可以。两份文档不需要拥有相同数量的属性、元素或嵌套层级。缺失的属性会按比较方向被报告为删除或新增。"
+      },
+      {
+        "question": "可以比较压缩和格式化后的 JSON 吗？",
+        "answer": "可以，只要两份输入都是合法 JSON。格式、缩进和空白不会影响结构化比较。"
+      },
+      {
+        "question": "能区分数值和看起来相似的字符串吗？",
+        "answer": "结构化比较会区分 JSON 类型。例如数字 1 和字符串 \"1\" 是不同的数值，即使显示时看起来相似。"
+      },
+      {
+        "question": "可以反转比较方向吗？",
+        "answer": "可以。使用「交换」互换 JSON A 与 JSON B，从而反转哪份文档被视为原始、哪份被视为修改。"
+      },
+      {
+        "question": "可以从 URL 参数加载 JSON 吗？",
+        "answer": "可以。通过地址中的 ?left= 和 ?right= 参数预填 JSON 文本。这只会加载地址中的文本，工具不会向远程地址发起请求。"
+      },
+      {
+        "question": "可以复制或导出结果吗？",
+        "answer": "可以。你可以复制所有变更路径、复制完整差异文本，或导出为 .txt 报告，用于问题记录、代码审查或文档。"
+      },
+      {
+        "question": "可以比较很大的 JSON 吗？",
+        "answer": "实际能处理的体量取决于浏览器内存、设备性能、JSON 结构深度、数组大小以及差异结果的复杂度。较大的比较可能更慢，此时可借助筛选或导出结果来查看。"
+      },
+      {
+        "question": "我的 JSON 数据会上传到服务器吗？",
+        "answer": "不会。两份文档都在浏览器本地解析和比较，不会上传到服务器。不过仍不建议在任何浏览器工具中输入密码、API 密钥、访问令牌或机密的生产负载。"
+      },
+      {
+        "question": "这是一个免费的 JSON 比较工具吗？",
+        "answer": "是的。你可以输入两份 JSON 文档，比较它们的结构和数值，并查看差异，无需注册账号。"
+      }
+    ],
+    "ui": {
+      "label_json_a": "JSON A（原始）",
+      "label_json_b": "JSON B（修改后）",
+      "btn_compare": "比较",
+      "btn_sort_keys": "排序键名",
+      "btn_swap": "交换",
+      "btn_ignore_order": "忽略数组顺序",
+      "ignore_fields": "忽略字段（如 updatedAt）",
+      "status_removed": "已删除",
+      "status_added": "已新增",
+      "status_changed": "已修改",
+      "status_type_changed": "类型变化",
+      "status_total": "个差异",
+      "label_differences": "差异",
+      "status_identical": "两份 JSON 文档结构完全一致。",
+      "filter_all": "全部",
+      "result_showing": "仅显示前",
+      "copy_paths": "复制所有路径",
+      "copy_result": "复制结果",
+      "export_result": "导出",
+      "btn_copy_path": "复制路径",
+      "error_empty_a": "请先输入 JSON A",
+      "error_empty_b": "请先输入 JSON B",
+      "error_invalid_a": "JSON A 不是合法 JSON",
+      "error_invalid_b": "JSON B 不是合法 JSON",
+      "status_path": "路径",
+      "status_old_value": "原值",
+      "status_new_value": "新值"
+    },
+    "article": {
+      "title": "如何在线比较 JSON 并查找差异",
+      "content": "<h2>为什么要比较 JSON？</h2><p>比较 JSON 文档对于调试 API、验证配置更改和确保数据完整性非常重要。无论是在检查 API 响应、对比配置文件版本，还是验证数据迁移结果，JSON 差异工具都能帮助你快速、准确地发现每个差异。</p><h2>差异类型说明</h2><ul><li><strong>新增（绿色）：</strong>在 JSON B 中存在但在 JSON A 中缺失的键或值。</li><li><strong>删除（红色）：</strong>在 JSON A 中存在但在 JSON B 中缺失的键或值。</li><li><strong>修改（黄色）：</strong>在两个文档中都存在、但值发生变化的键。</li><li><strong>类型变化（紫色）：</strong>在两个文档中都存在、但值的 JSON 类型发生变化的键，例如数字变成字符串。</li></ul><p>嵌套对象和数组会递归比较，因此深层结构中的差异也会被检测并显示完整路径。</p><h2>如何在线比较 JSON</h2><ol><li><strong>粘贴 JSON A：</strong>将原始 JSON 文档加入左侧编辑器。</li><li><strong>粘贴 JSON B：</strong>将修改后的 JSON 文档加入右侧编辑器。</li><li><strong>设置比较规则：</strong>当键顺序无关时开启「排序键名」；对无序集合开启「忽略数组顺序」；在「忽略字段」中列出需要跳过的字段。</li><li><strong>点击比较：</strong>运行比较，解析两份文档。</li><li><strong>查看结果：</strong>检查新增、删除、修改与类型变化的数值及其 JSON 路径，然后复制路径、复制结果或导出报告。</li></ol><h2>最佳实践</h2><ul><li><strong>先归一化：</strong>当两份文档由不同序列化器生成、键顺序不同时，开启「排序键名」。</li><li><strong>忽略干扰项：</strong>使用「忽略字段」跳过 updatedAt、requestId 或时间戳等每次运行都会变化的字段。</li><li><strong>必要时反转：</strong>用「交换」从另一个方向查看比较，定位是哪一侧引入了变更。</li><li><strong>导出分享：</strong>复制变更路径或导出完整结果，附在问题记录或代码审查中。</li></ul><h2>浏览器本地处理与隐私</h2><p>这个 JSON 比较工具在浏览器中处理输入内容，不要求将数据上传到远程服务。对于开发数据和私密配置片段来说，本地处理更加方便。不过，仍然不建议在任何浏览器工具中输入密码、API 密钥、访问令牌或其他高度敏感的信息。</p>"
+    }
+  }
 }

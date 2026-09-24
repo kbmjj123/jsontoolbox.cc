@@ -59,6 +59,7 @@
 </template>
 
 <script setup lang="ts">
+import { generateSchemaText } from '~/composables/useSchemaGenerate'
 const props = defineProps<{ tool: any }>()
 const { t } = useI18n()
 const toast = useToast()
@@ -110,46 +111,16 @@ const onPaste = () => {
   })
 }
 
-const inferSchema = (value: any): any => {
-  if (value === null) return { type: 'null' }
-  if (Array.isArray(value)) {
-    if (value.length === 0) return { type: 'array' }
-    return { type: 'array', items: inferSchema(value[0]) }
-  }
-  if (typeof value === 'object') {
-    const properties: any = {}
-    const required: string[] = []
-    for (const [key, val] of Object.entries(value)) {
-      properties[key] = inferSchema(val)
-      required.push(key)
-    }
-    const schema: any = { type: 'object', properties }
-    if (includeRequired.value && required.length > 0) schema.required = required
-    if (additionalProperties.value) schema.additionalProperties = true
-    return schema
-  }
-  if (typeof value === 'string') {
-    const schema: any = { type: 'string' }
-    if (/^\d{4}-\d{2}-\d{2}$/.test(value)) schema.format = 'date'
-    else if (/^\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}/.test(value)) schema.format = 'date-time'
-    else if (/^[^@]+@[^@]+\.[^@]+$/.test(value)) schema.format = 'email'
-    else if (/^https?:\/\//.test(value)) schema.format = 'uri'
-    else if (/^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i.test(value)) schema.format = 'uuid'
-    return schema
-  }
-  if (typeof value === 'number') return Number.isInteger(value) ? { type: 'integer' } : { type: 'number' }
-  if (typeof value === 'boolean') return { type: 'boolean' }
-  return {}
-}
-
 const generate = (silent = false) => {
   error.value = ''
   if (!inputJson.value.trim()) { outputSchema.value = ''; return }
   try {
     const parsed = JSON.parse(inputJson.value)
-    const schema = { $schema: 'http://json-schema.org/draft-07/schema#', ...inferSchema(parsed) }
-    const space = indent.value === 'tab' ? '\t' : Number(indent.value)
-    outputSchema.value = JSON.stringify(schema, null, space)
+    outputSchema.value = generateSchemaText(parsed, {
+      indent: indent.value as number | 'tab',
+      includeRequired: includeRequired.value,
+      additionalProperties: additionalProperties.value,
+    })
     if (!silent) toast.success(t('toast.generated'))
   } catch (e) {
     error.value = (e as Error).message

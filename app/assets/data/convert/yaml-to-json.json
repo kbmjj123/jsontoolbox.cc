@@ -8,255 +8,263 @@
   "nextSteps": ["json-editor", "json-to-yaml"],
   "recommends": [],
   "en": {
-		"name": "YAML to JSON Converter",
-		"description": "Convert YAML data to JSON format online. This YAML to JSON converter lets you convert YAML to JSON and transform YAML config files into JSON objects, with support for anchors, aliases, multi-line strings, and nested structures — a free YAML to JSON online tool.",
-		"hero": {
-			"trustHtml": "100% client-side conversion. Your data never leaves your browser."
-		},
-		"meta": {
-			"title": "YAML to JSON — Free Online Converter",
-			"description": "Convert YAML to JSON format online. Transform YAML config files into JSON objects with configurable indentation. Free, fast, and 100% client-side. No upload required.",
-			"keywords": [
-				"yaml to json",
-				"convert yaml to json",
-				"yaml to json converter",
-				"yaml to json online",
-				"yaml to json tool",
-				"yaml to json transformer",
-				"yaml to json parser",
-				"online yaml to json",
-				"free yaml to json",
-				"yaml to json converter online",
-				"yaml to json format",
-				"yaml to json api"
-			]
-		},
-		"ui": {
-			"label_input": "Input YAML",
-			"label_output": "JSON Output",
-			"btn_convert": "Convert to JSON",
-			"btn_example": "Load Example",
-			"option_indent": "Indent:",
-			"placeholder_output": "JSON output will appear here..."
-		},
-		"features": [
-			{
-				"icon": "lucide:file-input",
-				"title": "YAML Import",
-				"description": "Paste YAML data directly or upload .yaml/.yml files to convert. The tool supports common YAML structures from Kubernetes, Docker Compose, CI/CD configs, and other sources."
-			},
-			{
-				"icon": "lucide:download",
-				"title": "JSON Export",
-				"description": "Download the converted JSON as a .json file or copy the output to your clipboard. Use the result in APIs, scripts, frontend applications, or other JSON-based workflows."
-			},
-			{
-				"icon": "lucide:settings",
-				"title": "Indentation Options",
-				"description": "Choose 2 or 4 spaces for JSON output formatting. This helps match your project's code style and readability preferences."
-			},
-			{
-				"icon": "lucide:layers",
-				"title": "Full YAML Support",
-				"description": "Supports standard YAML features including anchors (&), aliases (*), multi-line strings (|, >), and deeply nested structures. Complex YAML is faithfully converted to JSON."
-			},
-			{
-				"icon": "lucide:upload",
-				"title": "File Upload",
-				"description": "Upload .yaml or .yml files directly from your device for conversion. The file is read locally in your browser and is not uploaded to any server."
-			},
-			{
-				"icon": "lucide:shield-check",
-				"title": "Private",
-				"description": "All YAML parsing and JSON conversion happen in your browser. Your data is not uploaded to a server, which is useful when working with private configuration files or sensitive environment variables."
-			}
-		],
-		"guide": [
-			{
-				"title": "Paste your YAML",
-				"description": "Paste your YAML document into the input field or upload a .yaml/.yml file. You can use Kubernetes manifests, Docker Compose files, CI/CD configs, or any YAML structure you need to convert to JSON."
-			},
-			{
-				"title": "Configure indentation",
-				"description": "Select 2 or 4 spaces for JSON indentation. Two spaces are common in many codebases, while four spaces can improve readability for deeply nested structures."
-			},
-			{
-				"title": "Click Convert",
-				"description": "Click Convert to JSON to transform the YAML into a JSON object. The tool preserves the structure, handles anchors and aliases, and converts multi-line strings correctly."
-			},
-			{
-				"title": "Copy or Download",
-				"description": "Copy the JSON output to your clipboard or download it as a .json file. Use the result in frontend applications, APIs, data pipelines, or other JSON-based workflows."
-			}
-		],
-		"example": {
-			"input": "database:\n  host: localhost\n  port: 5432\n  name: myapp",
-			"output": "{\n  \"database\": {\n    \"host\": \"localhost\",\n    \"port\": 5432,\n    \"name\": \"myapp\"\n  }\n}",
-			"useCase": "Convert YAML configuration files to JSON for Node.js applications."
-		},
-		"faq": [
-			{
-				"question": "Is my YAML data uploaded to a server?",
-				"answer": "No. All YAML parsing and JSON conversion happen locally in your browser. Your data never leaves your device and is not stored or transmitted anywhere."
-			},
-			{
-				"question": "Can I convert JSON back to YAML?",
-				"answer": "Yes. Use a JSON to YAML converter tool to transform JSON documents back into YAML format. This is useful when moving data between JSON-based and YAML-based systems."
-			},
-			{
-				"question": "Does it support multi-document YAML?",
-				"answer": "The converter processes single YAML documents. For multi-document YAML (using --- separators), convert each document separately to JSON."
-			},
-			{
-				"question": "Can I convert large YAML files?",
-				"answer": "You can convert larger YAML files as long as they can be loaded and processed by your browser. The practical limit depends on available memory, device performance, and the complexity of the YAML structure."
-			},
-			{
-				"question": "What YAML features are supported?",
-				"answer": "The converter supports standard YAML features including anchors (&), aliases (*), multi-line strings (|, >), and nested structures. Complex YAML is faithfully converted to equivalent JSON."
-			},
-			{
-				"question": "What is YAML commonly used for?",
-				"answer": "YAML is widely used for configuration files (Kubernetes, Docker, CI/CD pipelines), data serialization, and human-readable data exchange. Its concise syntax makes it popular for DevOps and infrastructure-as-code workflows."
-			},
-			{
-				"question": "How are YAML anchors and aliases handled?",
-				"answer": "Anchors and aliases are resolved during conversion, so the resulting JSON contains the expanded values. This ensures the JSON output is self-contained and does not rely on YAML-specific features."
-			},
-			{
-				"question": "Is this a free YAML to JSON converter?",
-				"answer": "Yes. This is a free online YAML to JSON converter. You can paste YAML or upload files, configure indentation, and copy or download the JSON output without creating an account or uploading data to a server."
-			}
-		],
-		"article": {
-			"title": "How to Convert YAML to JSON Online",
-			"content": "<h2>Why Convert YAML to JSON?</h2><p>YAML (YAML Ain't Markup Language) is a human-readable data serialization format widely used for configuration files. While JSON is excellent for data exchange and APIs, YAML is often preferred for configuration because of its readability, concise syntax, and support for comments.</p><h2>Common Use Cases</h2><ul><li><strong>Kubernetes configs:</strong> Convert YAML manifests into JSON for tooling that expects JSON input or for programmatic processing</li><li><strong>Docker Compose:</strong> Transform YAML compose files into JSON for analysis, validation, or integration with other systems</li><li><strong>CI/CD pipelines:</strong> Convert YAML pipeline definitions into JSON for custom tooling, reporting, or visualization</li><li><strong>Configuration management:</strong> Move from YAML-based configs to JSON-based systems without losing data fidelity</li><li><strong>Data exchange:</strong> Share data with systems or services that only accept JSON while authoring configs in YAML</li></ul><h2>How YAML Structures Map to JSON</h2><ul><li><strong>Mappings:</strong> YAML key-value mappings become JSON objects with equivalent keys and values.</li><li><strong>Sequences:</strong> YAML lists (sequences) become JSON arrays, preserving order and nesting.</li><li><strong>Scalars:</strong> Strings, numbers, booleans, and null values are converted to their JSON equivalents.</li><li><strong>Anchors and aliases:</strong> YAML anchors (&) and aliases (*) are resolved during conversion, so the resulting JSON contains the expanded, concrete values.</li><li><strong>Multi-line strings:</strong> Multi-line strings using | or > are converted into normal JSON strings with appropriate escaping.</li></ul><h2>How to Convert YAML to JSON</h2><ol><li><strong>Paste YAML:</strong> Add your YAML document to the input field, or upload a .yaml/.yml file.</li><li><strong>Configure indentation:</strong> Choose 2 or 4 spaces for JSON indentation to match your project's style.</li><li><strong>Click Convert:</strong> Transform the YAML into a JSON object. The tool preserves the structure, resolves anchors and aliases, and handles multi-line strings.</li><li><strong>Review output:</strong> Check the generated JSON to ensure it matches your expectations, especially for complex or deeply nested YAML.</li><li><strong>Copy or download:</strong> Copy the JSON to your clipboard or save it as a .json file for use in your applications or data pipelines.</li></ol><h2>Handling Anchors, Aliases, and Multi-Line Strings</h2><p>YAML supports advanced features like anchors and aliases to avoid repetition, as well as multi-line string literals. This converter handles them as follows:</p><ul><li><strong>Anchors and aliases:</strong> Anchors define reusable nodes, and aliases reference them. During conversion, these are fully resolved so the JSON output contains the actual values, not YAML-specific references.</li><li><strong>Multi-line strings:</strong> Strings defined with | (literal) or > (folded) are converted into standard JSON strings, with newlines represented as \\n where appropriate.</li><li><strong>Nested structures:</strong> Deeply nested YAML mappings and sequences are faithfully converted into nested JSON objects and arrays.</li></ul><h2>Best Practices</h2><ul><li><strong>Validate YAML first:</strong> Ensure your YAML is valid before conversion to avoid errors or unexpected results.</li><li><strong>Test with representative samples:</strong> Use YAML examples that reflect the full range of your data, including anchors, aliases, and multi-line strings.</li><li><strong>Check indentation:</strong> Choose JSON indentation that matches your project's conventions for easier integration.</li><li><strong>Be aware of multi-document YAML:</strong> If your file uses --- to separate multiple documents, convert each document separately.</li><li><strong>Keep a backup:</strong> Retain the original YAML in case you need to regenerate JSON with different options or mappings.</li></ul><h2>Client-Side Privacy</h2><p>This YAML to JSON converter processes input in your browser instead of requiring an upload to a remote service. That can be convenient for development data and private configuration snippets. However, you should still avoid entering passwords, API keys, access tokens, or other highly sensitive information into any browser-based tool.</p>"
-		}
-	},
+    "name": "YAML to JSON Converter",
+    "description": "Convert YAML data to JSON online in your browser. Paste YAML or open a .yaml or .yml file, review the converted JSON, and copy or download the result. Supports common mappings, sequences, nested structures, and multiline strings.",
+    "hero": {
+      "trustHtml": "Runs in your browser. Your YAML is not uploaded by this tool."
+    },
+    "meta": {
+      "title": "YAML to JSON Converter – Free Online Tool",
+      "description": "Convert YAML to JSON online for free. Paste YAML or open a .yaml file, format the JSON output, and copy or download the result. Browser-based and no account required.",
+      "keywords": [
+        "yaml to json",
+        "convert yaml to json",
+        "yaml to json converter",
+        "yaml to json online",
+        "online yaml to json",
+        "free yaml to json",
+        "yaml converter",
+        "yaml json converter"
+      ]
+    },
+    "ui": {
+      "label_input": "YAML Input",
+      "label_output": "JSON Output",
+      "btn_convert": "Convert to JSON",
+      "btn_example": "Load Example",
+      "option_indent": "Indent:",
+      "placeholder_output": "Converted JSON will appear here..."
+    },
+    "features": [
+      {
+        "icon": "lucide:file-input",
+        "title": "Paste or Open YAML Files",
+        "description": "Paste YAML directly into the editor or open a .yaml or .yml file from your device. The converter is suitable for common configuration files and structured YAML documents."
+      },
+      {
+        "icon": "lucide:braces",
+        "title": "Readable JSON Output",
+        "description": "Convert YAML mappings and sequences into JSON objects and arrays, with formatted output that is easier to inspect, copy, and use in development workflows."
+      },
+      {
+        "icon": "lucide:settings-2",
+        "title": "Configurable Indentation",
+        "description": "Choose the indentation used for the generated JSON output. Use compact output for smaller files or formatted output for easier reading and editing."
+      },
+      {
+        "icon": "lucide:alert-circle",
+        "title": "Conversion Error Details",
+        "description": "Invalid YAML is reported instead of producing incomplete JSON. Error details may include the parser message and location available from the browser-side YAML parser."
+      },
+      {
+        "icon": "lucide:copy",
+        "title": "Copy or Download JSON",
+        "description": "Copy the converted JSON to your clipboard or download it as a .json file for use in scripts, APIs, configuration workflows, and other JSON-based tools."
+      },
+      {
+        "icon": "lucide:shield-check",
+        "title": "Browser-Based Processing",
+        "description": "The conversion is performed in your browser and does not require an account or a server upload. For security, avoid entering passwords, API keys, tokens, or other highly sensitive secrets into any web tool."
+      }
+    ],
+    "guide": [
+      {
+        "title": "Enter or open YAML",
+        "description": "Paste a YAML document into the input editor or open a .yaml or .yml file from your device. You can start with the included example if you want to test the converter first."
+      },
+      {
+        "title": "Choose output formatting",
+        "description": "Select the indentation style for the JSON output. Formatted JSON is easier to read, while compact JSON can reduce the size of the generated text."
+      },
+      {
+        "title": "Convert the document",
+        "description": "Click Convert to JSON to parse the YAML and generate a JSON representation. If the YAML is invalid, review the reported error and correct the input before converting again."
+      },
+      {
+        "title": "Copy or download the result",
+        "description": "Review the generated JSON, then copy it to the clipboard or download it as a .json file. Check type conversions and multiline values before using the result in production."
+      }
+    ],
+    "example": {
+      "input": "database:\n  host: localhost\n  port: 5432\n  name: myapp",
+      "output": "{\n  \"database\": {\n    \"host\": \"localhost\",\n    \"port\": 5432,\n    \"name\": \"myapp\"\n  }\n}",
+      "useCase": "Convert a YAML application configuration into JSON for a JavaScript or Node.js workflow."
+    },
+    "faq": [
+      {
+        "question": "Is my YAML uploaded to a server?",
+        "answer": "This page performs the conversion in your browser and does not require a server upload. You should still avoid entering passwords, API keys, access tokens, or other secrets into any browser-based tool."
+      },
+      {
+        "question": "Can I convert JSON back to YAML?",
+        "answer": "This page is focused on YAML to JSON conversion. If the site provides a separate JSON to YAML tool, use that tool for the reverse conversion. YAML and JSON are not always interchangeable in every advanced feature or formatting detail."
+      },
+      {
+        "question": "Can I upload a .yaml or .yml file?",
+        "answer": "Yes. You can open a .yaml or .yml file from your device, or paste the YAML text directly into the input editor."
+      },
+      {
+        "question": "Does the converter support nested YAML?",
+        "answer": "Yes. Standard nested mappings and sequences are converted into nested JSON objects and arrays, provided that the source YAML is valid and supported by the parser."
+      },
+      {
+        "question": "Does it support YAML anchors and aliases?",
+        "answer": "The result depends on the YAML parser used by the page. When anchors and aliases are supported, aliases are resolved into ordinary JSON-compatible values. JSON does not preserve YAML anchor declarations, so the original YAML relationships may not remain visible in the output."
+      },
+      {
+        "question": "Does it support multi-line strings?",
+        "answer": "Common YAML literal and folded block strings can be converted into JSON strings. Their line breaks and spacing may be represented differently because JSON has its own string escaping rules."
+      },
+      {
+        "question": "Can I convert multi-document YAML?",
+        "answer": "Support for YAML documents separated by `---` depends on the parser and page implementation. If multi-document input is not supported, convert each document separately or use a tool that explicitly supports multi-document YAML."
+      },
+      {
+        "question": "Can I convert Kubernetes or Docker Compose YAML?",
+        "answer": "You can convert valid Kubernetes manifests, Docker Compose files, CI/CD definitions, and other YAML documents as long as they use YAML features supported by the parser. The converter changes the data format; it does not validate the resulting file against Kubernetes, Docker Compose, or another product's schema."
+      },
+      {
+        "question": "Can I convert a large YAML file?",
+        "answer": "The practical file size depends on your browser, device memory, parser behavior, and document complexity. Very large files may take longer to parse or may exceed the available browser memory."
+      },
+      {
+        "question": "Why does my YAML fail to convert?",
+        "answer": "Common causes include inconsistent indentation, tabs used for indentation, missing colons, incorrect quoting, invalid document separators, and unsupported YAML features. Check the reported parser error and test the smallest failing section first."
+      },
+      {
+        "question": "Is this YAML to JSON converter free?",
+        "answer": "Yes. The converter is free to use without an account. You can paste YAML or open a file, generate JSON, and copy or download the result."
+      }
+    ],
+    "article": {
+      "title": "How to Convert YAML to JSON Online",
+      "content": "<h2>What Does a YAML to JSON Converter Do?</h2><p>A YAML to JSON converter parses a YAML document and creates an equivalent JSON representation where the source structure can be represented in JSON. YAML is often used for configuration and deployment files, while JSON is common in APIs, JavaScript applications, and data-exchange workflows.</p><p>The conversion is not necessarily a byte-for-byte transformation. YAML and JSON have different syntax and feature sets, so comments, anchors, aliases, tags, document markers, and formatting choices may not be preserved in the JSON result.</p><h2>Common Use Cases</h2><ul><li><strong>Configuration conversion:</strong> Convert a YAML configuration into JSON for a script, application, or tool that expects JSON input.</li><li><strong>Development workflows:</strong> Inspect YAML data as JSON while debugging integrations, APIs, or frontend code.</li><li><strong>Kubernetes and Docker files:</strong> Convert valid YAML manifests or Compose configuration into JSON for inspection or downstream processing. This does not replace schema validation for the target platform.</li><li><strong>CI/CD configuration:</strong> Convert pipeline-related YAML into JSON for custom analysis, reporting, or internal tooling where appropriate.</li><li><strong>Data exchange:</strong> Prepare structured YAML data for a system or API that accepts JSON.</li></ul><h2>How YAML Maps to JSON</h2><ul><li><strong>Mappings:</strong> YAML key-value mappings become JSON objects.</li><li><strong>Sequences:</strong> YAML lists become JSON arrays while preserving their order.</li><li><strong>Scalar values:</strong> Strings, numbers, booleans, and null-like values are converted according to the parser's YAML rules and JSON's supported value types.</li><li><strong>Nested structures:</strong> Nested mappings and sequences become nested JSON objects and arrays.</li><li><strong>Multiline strings:</strong> YAML block strings are emitted as JSON strings with JSON-compatible escaping.</li><li><strong>Comments:</strong> YAML comments are generally not represented in standard JSON output.</li></ul><h2>How to Convert YAML to JSON</h2><ol><li><strong>Enter YAML:</strong> Paste a YAML document or open a .yaml or .yml file.</li><li><strong>Choose formatting:</strong> Select the desired JSON indentation or compact output if available.</li><li><strong>Run the conversion:</strong> Click Convert to JSON and wait for the parser to generate the output.</li><li><strong>Review errors:</strong> If conversion fails, inspect the parser message and correct indentation, quoting, mapping syntax, or other invalid YAML.</li><li><strong>Copy or download:</strong> Copy the JSON or save it as a .json file for the next step in your workflow.</li></ol><h2>YAML Anchors, Aliases, and Multiline Values</h2><p>YAML supports features that do not have direct equivalents in standard JSON. Anchors and aliases can describe reusable YAML nodes, but JSON has no native anchor syntax. When supported by the parser, these references are resolved into regular JSON-compatible values. As a result, the output may contain repeated values rather than preserving the original YAML references.</p><p>Literal and folded block strings, commonly written with <code>|</code> and <code>&gt;</code>, are converted into JSON strings. Line breaks, trailing spaces, and folding behavior can affect the resulting text, so review important multiline values after conversion.</p><h2>YAML Features That May Need Extra Checking</h2><ul><li><strong>Comments:</strong> Standard JSON output does not preserve YAML comments.</li><li><strong>Custom tags:</strong> Application-specific tags may not have a direct JSON representation.</li><li><strong>Non-standard types:</strong> Dates, timestamps, binary values, and other YAML-specific types may be interpreted differently by different parsers.</li><li><strong>Multiple documents:</strong> YAML files containing several documents may require separate processing if the page parser accepts only one document.</li><li><strong>Platform schemas:</strong> A syntactically valid conversion does not confirm that a Kubernetes, Docker, GitHub Actions, or other configuration file is valid for its target platform.</li></ul><h2>Checking the Converted JSON</h2><p>After conversion, inspect values that are sensitive to type changes, including version numbers, dates, booleans, null values, numeric-looking strings, and multiline text. If the JSON will be used by a specific application, validate it against that application's schema or documentation rather than relying only on successful parsing.</p><h2>Browser-Based Privacy</h2><p>This page is designed to process YAML in the browser rather than upload it to a remote conversion service. That can reduce the need to transmit configuration snippets over the network, but it is not a substitute for secure secret management. Do not paste passwords, API keys, access tokens, private certificates, or production credentials into a browser-based tool. For highly sensitive data, use a trusted local command-line or desktop workflow instead.</p><h2>Other Ways to Convert YAML to JSON</h2><p>Developers may also convert files locally with a programming language library or a command-line utility such as <code>yq</code>. Local tools are often preferable for repeatable builds, automation, CI pipelines, and sensitive configuration. An online browser-based converter is most useful for quick inspection, one-off transformations, and development troubleshooting.</p>"
+    }
+  },
   "zh": {
-		"name": "YAML 转 JSON",
-		"description": "在线将 YAML 数据转换为 JSON 格式。这个 YAML 转 JSON 转换器支持锚点、别名、多行字符串和嵌套结构，将 YAML 配置文件转换为 JSON 对象，全部在浏览器中完成。",
-		"hero": {
-			"trustHtml": "100% 本地转换。数据始终保留在浏览器中。"
-		},
-		"meta": {
-			"title": "YAML 转 JSON — 免费在线转换器",
-			"description": "在线将 YAML 转换为 JSON 格式。将 YAML 配置文件转换为 JSON 对象，支持配置缩进。免费、快速、100% 客户端处理，无需上传文件。",
-			"keywords": [
-				"yaml转json",
-				"转换yaml为json",
-				"yaml json转换器",
-				"在线yaml转json",
-				"yaml转json工具",
-				"yaml转json转换器",
-				"yaml转json解析器",
-				"在线yaml转json",
-				"免费yaml转json",
-				"yaml转json在线转换",
-				"yaml转json格式",
-				"yaml转json接口"
-			]
-		},
-		"ui": {
-			"label_input": "输入 YAML",
-			"label_output": "JSON 输出",
-			"btn_convert": "转换为 JSON",
-			"btn_example": "加载示例",
-			"option_indent": "缩进：",
-			"placeholder_output": "JSON 输出将显示在这里..."
-		},
-		"features": [
-			{
-				"icon": "lucide:file-input",
-				"title": "YAML 导入",
-				"description": "直接粘贴 YAML 数据或上传 .yaml/.yml 文件进行转换。支持来自 Kubernetes、Docker Compose、CI/CD 配置等常见 YAML 结构。"
-			},
-			{
-				"icon": "lucide:download",
-				"title": "JSON 导出",
-				"description": "将转换后的 JSON 下载为 .json 文件或复制到剪贴板。可用于 API、脚本、前端应用或其他基于 JSON 的工作流。"
-			},
-			{
-				"icon": "lucide:settings",
-				"title": "缩进选项",
-				"description": "选择 2 或 4 空格格式化 JSON 输出。这有助于匹配项目的代码风格和可读性偏好。"
-			},
-			{
-				"icon": "lucide:layers",
-				"title": "完整 YAML 支持",
-				"description": "支持标准 YAML 特性，包括锚点 (&)、别名 (*)、多行字符串 (|, >) 和深层嵌套结构。复杂 YAML 会被忠实地转换为等价的 JSON。"
-			},
-			{
-				"icon": "lucide:upload",
-				"title": "文件上传",
-				"description": "直接从设备上传 .yaml 或 .yml 文件进行转换。文件在浏览器本地读取，不会上传到任何服务器。"
-			},
-			{
-				"icon": "lucide:shield-check",
-				"title": "私密安全",
-				"description": "所有 YAML 解析和 JSON 转换都在浏览器中完成，不需要将数据上传到服务器。适合处理私密配置文件或敏感环境变量。"
-			}
-		],
-		"guide": [
-			{
-				"title": "粘贴 YAML",
-				"description": "将 YAML 文档粘贴到输入框中，或上传 .yaml/.yml 文件。可以使用 Kubernetes 清单、Docker Compose 文件、CI/CD 配置或任何需要转换为 JSON 的 YAML 结构。"
-			},
-			{
-				"title": "配置缩进",
-				"description": "选择 2 或 4 空格用于 JSON 缩进。许多代码库常用 2 空格，而 4 空格在深层嵌套结构中可读性更好。"
-			},
-			{
-				"title": "点击转换",
-				"description": "点击“转换为 JSON”将 YAML 转换为 JSON 对象。工具会保留结构，处理锚点和别名，并正确转换多行字符串。"
-			},
-			{
-				"title": "复制或下载",
-				"description": "将 JSON 输出复制到剪贴板，或下载为 .json 文件。可用于前端应用、API、数据流水线或其他基于 JSON 的工作流。"
-			}
-		],
-		"example": {
-			"input": "database:\n  host: localhost\n  port: 5432\n  name: myapp",
-			"output": "{\n  \"database\": {\n    \"host\": \"localhost\",\n    \"port\": 5432,\n    \"name\": \"myapp\"\n  }\n}",
-			"useCase": "将 YAML 配置文件转换为 JSON 供 Node.js 应用使用。"
-		},
-		"faq": [
-			{
-				"question": "我的 YAML 数据会上传到服务器吗？",
-				"answer": "不会。所有 YAML 解析和 JSON 转换都在浏览器本地完成，数据不会离开你的设备，也不会被存储或传输到任何地方。"
-			},
-			{
-				"question": "可以把 JSON 转回 YAML 吗？",
-				"answer": "可以。使用 JSON 转 YAML 转换器工具可以将 JSON 文档转换回 YAML 格式。这在需要在基于 JSON 和基于 YAML 的系统之间移动数据时非常有用。"
-			},
-			{
-				"question": "支持多文档 YAML 吗？",
-				"answer": "转换器处理单个 YAML 文档。对于多文档 YAML（使用 --- 分隔符），请分别将每个文档转换为 JSON。"
-			},
-			{
-				"question": "可以转换大型 YAML 文件吗？",
-				"answer": "可以转换较大的 YAML 文件，只要浏览器能够加载和处理它们。实际限制取决于设备性能、浏览器可用内存以及 YAML 结构的复杂程度。"
-			},
-			{
-				"question": "支持哪些 YAML 特性？",
-				"answer": "支持标准 YAML 特性，包括锚点 (&)、别名 (*)、多行字符串 (|, >) 和嵌套结构。复杂 YAML 会被忠实地转换为等价的 JSON。"
-			},
-			{
-				"question": "YAML 常用于什么场景？",
-				"answer": "YAML 广泛用于配置文件（Kubernetes、Docker、CI/CD 流水线）、数据序列化和人类可读的数据交换。其简洁语法使其在 DevOps 和基础设施即代码工作流中非常流行。"
-			},
-			{
-				"question": "YAML 锚点和别名怎么处理？",
-				"answer": "锚点和别名会在转换过程中被解析和展开，因此生成的 JSON 包含展开后的值。这确保 JSON 输出是自包含的，不依赖 YAML 特有的特性。"
-			},
-			{
-				"question": "这是一个免费的 YAML 转 JSON 转换器吗？",
-				"answer": "是的。这是一个免费的在线 YAML 转 JSON 转换器。你可以粘贴 YAML 或上传文件，配置缩进，并复制或下载 JSON 输出，无需创建账号或将数据上传到服务器。"
-			}
-		],
-		"article": {
-			"title": "如何在线将 YAML 转换为 JSON",
-			"content": "<h2>为什么要将 YAML 转换为 JSON？</h2><p>YAML（YAML Ain't Markup Language）是一种人类可读的数据序列化格式，广泛用于配置文件。虽然 JSON 非常适合数据交换和 API，但 YAML 由于其可读性、简洁语法和对注释的支持，常被用于配置文件。将 YAML 转换为 JSON 可以让你将 YAML 配置与现代的 JSON 工作流集成。</p><h2>常见使用场景</h2><ul><li><strong>Kubernetes 配置：</strong>将 YAML 清单转换为 JSON，供期望 JSON 输入的工具或程序化处理使用</li><li><strong>Docker Compose：</strong>将 YAML compose 文件转换为 JSON，用于分析、验证或与其他系统集成</li><li><strong>CI/CD 流水线：</strong>将 YAML 流水线定义转换为 JSON，用于自定义工具、报告或可视化</li><li><strong>配置管理：</strong>从基于 YAML 的配置迁移到基于 JSON 的系统，同时保持数据完整性</li><li><strong>数据交换：</strong>与仅接受 JSON 的系统或服务共享数据，同时使用 YAML 编写配置</li></ul><h2>YAML 结构如何映射到 JSON</h2><ul><li><strong>映射：</strong>YAML 的键值映射会变成 JSON 对象，具有等价的键和值。</li><li><strong>序列：</strong>YAML 列表（序列）会变成 JSON 数组，保留顺序和嵌套。</li><li><strong>标量：</strong>字符串、数字、布尔值和 null 会转换为对应的 JSON 类型。</li><li><strong>锚点和别名：</strong>YAML 锚点 (&) 和别名 (*) 在转换过程中会被解析和展开，因此生成的 JSON 包含具体的展开值。</li><li><strong>多行字符串：</strong>使用 | 或 > 定义的多行字符串会转换为普通 JSON 字符串，并在需要时使用 \\n 表示换行。</li></ul><h2>如何将 YAML 转换为 JSON</h2><ol><li><strong>粘贴 YAML：</strong>在输入框中添加 YAML 文档，或上传 .yaml/.yml 文件。</li><li><strong>配置缩进：</strong>选择 2 或 4 空格用于 JSON 缩进，以匹配项目的代码风格。</li><li><strong>点击转换：</strong>将 YAML 转换为 JSON 对象。工具会保留结构，解析锚点和别名，并正确处理多行字符串。</li><li><strong>检查输出：</strong>查看生成的 JSON，确保符合预期，尤其是对于复杂或深层嵌套的 YAML。</li><li><strong>复制或下载：</strong>将 JSON 复制到剪贴板，或保存为 .json 文件，用于应用或数据流水线。</li></ol><h2>处理锚点、别名和多行字符串</h2><p>YAML 支持锚点和别名等高级特性以避免重复，以及多行字符串字面量。此转换器对它们的处理方式如下：</p><ul><li><strong>锚点和别名：</strong>锚点定义可复用的节点，别名引用这些节点。转换过程中会完全解析它们，因此 JSON 输出包含实际值，而不是 YAML 特有的引用。</li><li><strong>多行字符串：</strong>使用 |（字面）或 >（折叠）定义的字符串会转换为标准 JSON 字符串，并在适当位置使用 \\n 表示换行。</li><li><strong>嵌套结构：</strong>深层嵌套的 YAML 映射和序列会被忠实地转换为嵌套的 JSON 对象和数组。</li></ul><h2>最佳实践</h2><ul><li><strong>先验证 YAML：</strong>确保 YAML 有效再进行转换，避免错误或意外结果。</li><li><strong>使用代表性样本测试：</strong>使用能反映数据完整范围的 YAML 示例，包括锚点、别名和多行字符串。</li><li><strong>检查缩进：</strong>选择与项目约定一致的 JSON 缩进，便于集成。</li><li><strong>注意多文档 YAML：</strong>如果文件使用 --- 分隔多个文档，请分别转换每个文档。</li><li><strong>保留备份：</strong>保留原始 YAML，以便在需要用不同选项或映射重新生成 JSON 时使用。</li></ul><h2>浏览器本地处理与隐私</h2><p>这个 YAML 转 JSON 转换器在浏览器中处理输入内容，不要求将数据上传到远程服务。对于开发数据和私密配置片段来说，本地处理更加方便。不过，仍然不建议在任何浏览器工具中输入密码、API 密钥、访问令牌或其他高度敏感的信息。</p>"
-		}
-	}
+    "name": "YAML 转 JSON",
+    "description": "在线将 YAML 数据转换为 JSON 格式。这个 YAML 转 JSON 转换器支持锚点、别名、多行字符串和嵌套结构，将 YAML 配置文件转换为 JSON 对象，全部在浏览器中完成。",
+    "hero": {
+      "trustHtml": "100% 本地转换。数据始终保留在浏览器中。"
+    },
+    "meta": {
+      "title": "YAML 转 JSON — 免费在线转换器",
+      "description": "在线将 YAML 转换为 JSON 格式。将 YAML 配置文件转换为 JSON 对象，支持配置缩进。免费、快速、100% 客户端处理，无需上传文件。",
+      "keywords": [
+        "yaml转json",
+        "转换yaml为json",
+        "yaml json转换器",
+        "在线yaml转json",
+        "yaml转json工具",
+        "yaml转json转换器",
+        "yaml转json解析器",
+        "在线yaml转json",
+        "免费yaml转json",
+        "yaml转json在线转换",
+        "yaml转json格式",
+        "yaml转json接口"
+      ]
+    },
+    "ui": {
+      "label_input": "输入 YAML",
+      "label_output": "JSON 输出",
+      "btn_convert": "转换为 JSON",
+      "btn_example": "加载示例",
+      "option_indent": "缩进：",
+      "placeholder_output": "JSON 输出将显示在这里..."
+    },
+    "features": [
+      {
+        "icon": "lucide:file-input",
+        "title": "YAML 导入",
+        "description": "直接粘贴 YAML 数据或上传 .yaml/.yml 文件进行转换。支持来自 Kubernetes、Docker Compose、CI/CD 配置等常见 YAML 结构。"
+      },
+      {
+        "icon": "lucide:download",
+        "title": "JSON 导出",
+        "description": "将转换后的 JSON 下载为 .json 文件或复制到剪贴板。可用于 API、脚本、前端应用或其他基于 JSON 的工作流。"
+      },
+      {
+        "icon": "lucide:settings",
+        "title": "缩进选项",
+        "description": "选择 2 或 4 空格格式化 JSON 输出。这有助于匹配项目的代码风格和可读性偏好。"
+      },
+      {
+        "icon": "lucide:layers",
+        "title": "完整 YAML 支持",
+        "description": "支持标准 YAML 特性，包括锚点 (&)、别名 (*)、多行字符串 (|, >) 和深层嵌套结构。复杂 YAML 会被忠实地转换为等价的 JSON。"
+      },
+      {
+        "icon": "lucide:upload",
+        "title": "文件上传",
+        "description": "直接从设备上传 .yaml 或 .yml 文件进行转换。文件在浏览器本地读取，不会上传到任何服务器。"
+      },
+      {
+        "icon": "lucide:shield-check",
+        "title": "私密安全",
+        "description": "所有 YAML 解析和 JSON 转换都在浏览器中完成，不需要将数据上传到服务器。适合处理私密配置文件或敏感环境变量。"
+      }
+    ],
+    "guide": [
+      {
+        "title": "粘贴 YAML",
+        "description": "将 YAML 文档粘贴到输入框中，或上传 .yaml/.yml 文件。可以使用 Kubernetes 清单、Docker Compose 文件、CI/CD 配置或任何需要转换为 JSON 的 YAML 结构。"
+      },
+      {
+        "title": "配置缩进",
+        "description": "选择 2 或 4 空格用于 JSON 缩进。许多代码库常用 2 空格，而 4 空格在深层嵌套结构中可读性更好。"
+      },
+      {
+        "title": "点击转换",
+        "description": "点击“转换为 JSON”将 YAML 转换为 JSON 对象。工具会保留结构，处理锚点和别名，并正确转换多行字符串。"
+      },
+      {
+        "title": "复制或下载",
+        "description": "将 JSON 输出复制到剪贴板，或下载为 .json 文件。可用于前端应用、API、数据流水线或其他基于 JSON 的工作流。"
+      }
+    ],
+    "example": {
+      "input": "database:\n  host: localhost\n  port: 5432\n  name: myapp",
+      "output": "{\n  \"database\": {\n    \"host\": \"localhost\",\n    \"port\": 5432,\n    \"name\": \"myapp\"\n  }\n}",
+      "useCase": "将 YAML 配置文件转换为 JSON 供 Node.js 应用使用。"
+    },
+    "faq": [
+      {
+        "question": "我的 YAML 数据会上传到服务器吗？",
+        "answer": "不会。所有 YAML 解析和 JSON 转换都在浏览器本地完成，数据不会离开你的设备，也不会被存储或传输到任何地方。"
+      },
+      {
+        "question": "可以把 JSON 转回 YAML 吗？",
+        "answer": "可以。使用 JSON 转 YAML 转换器工具可以将 JSON 文档转换回 YAML 格式。这在需要在基于 JSON 和基于 YAML 的系统之间移动数据时非常有用。"
+      },
+      {
+        "question": "支持多文档 YAML 吗？",
+        "answer": "转换器处理单个 YAML 文档。对于多文档 YAML（使用 --- 分隔符），请分别将每个文档转换为 JSON。"
+      },
+      {
+        "question": "可以转换大型 YAML 文件吗？",
+        "answer": "可以转换较大的 YAML 文件，只要浏览器能够加载和处理它们。实际限制取决于设备性能、浏览器可用内存以及 YAML 结构的复杂程度。"
+      },
+      {
+        "question": "支持哪些 YAML 特性？",
+        "answer": "支持标准 YAML 特性，包括锚点 (&)、别名 (*)、多行字符串 (|, >) 和嵌套结构。复杂 YAML 会被忠实地转换为等价的 JSON。"
+      },
+      {
+        "question": "YAML 常用于什么场景？",
+        "answer": "YAML 广泛用于配置文件（Kubernetes、Docker、CI/CD 流水线）、数据序列化和人类可读的数据交换。其简洁语法使其在 DevOps 和基础设施即代码工作流中非常流行。"
+      },
+      {
+        "question": "YAML 锚点和别名怎么处理？",
+        "answer": "锚点和别名会在转换过程中被解析和展开，因此生成的 JSON 包含展开后的值。这确保 JSON 输出是自包含的，不依赖 YAML 特有的特性。"
+      },
+      {
+        "question": "这是一个免费的 YAML 转 JSON 转换器吗？",
+        "answer": "是的。这是一个免费的在线 YAML 转 JSON 转换器。你可以粘贴 YAML 或上传文件，配置缩进，并复制或下载 JSON 输出，无需创建账号或将数据上传到服务器。"
+      }
+    ],
+    "article": {
+      "title": "如何在线将 YAML 转换为 JSON",
+      "content": "<h2>为什么要将 YAML 转换为 JSON？</h2><p>YAML（YAML Ain't Markup Language）是一种人类可读的数据序列化格式，广泛用于配置文件。虽然 JSON 非常适合数据交换和 API，但 YAML 由于其可读性、简洁语法和对注释的支持，常被用于配置文件。将 YAML 转换为 JSON 可以让你将 YAML 配置与现代的 JSON 工作流集成。</p><h2>常见使用场景</h2><ul><li><strong>Kubernetes 配置：</strong>将 YAML 清单转换为 JSON，供期望 JSON 输入的工具或程序化处理使用</li><li><strong>Docker Compose：</strong>将 YAML compose 文件转换为 JSON，用于分析、验证或与其他系统集成</li><li><strong>CI/CD 流水线：</strong>将 YAML 流水线定义转换为 JSON，用于自定义工具、报告或可视化</li><li><strong>配置管理：</strong>从基于 YAML 的配置迁移到基于 JSON 的系统，同时保持数据完整性</li><li><strong>数据交换：</strong>与仅接受 JSON 的系统或服务共享数据，同时使用 YAML 编写配置</li></ul><h2>YAML 结构如何映射到 JSON</h2><ul><li><strong>映射：</strong>YAML 的键值映射会变成 JSON 对象，具有等价的键和值。</li><li><strong>序列：</strong>YAML 列表（序列）会变成 JSON 数组，保留顺序和嵌套。</li><li><strong>标量：</strong>字符串、数字、布尔值和 null 会转换为对应的 JSON 类型。</li><li><strong>锚点和别名：</strong>YAML 锚点 (&) 和别名 (*) 在转换过程中会被解析和展开，因此生成的 JSON 包含具体的展开值。</li><li><strong>多行字符串：</strong>使用 | 或 > 定义的多行字符串会转换为普通 JSON 字符串，并在需要时使用 \\n 表示换行。</li></ul><h2>如何将 YAML 转换为 JSON</h2><ol><li><strong>粘贴 YAML：</strong>在输入框中添加 YAML 文档，或上传 .yaml/.yml 文件。</li><li><strong>配置缩进：</strong>选择 2 或 4 空格用于 JSON 缩进，以匹配项目的代码风格。</li><li><strong>点击转换：</strong>将 YAML 转换为 JSON 对象。工具会保留结构，解析锚点和别名，并正确处理多行字符串。</li><li><strong>检查输出：</strong>查看生成的 JSON，确保符合预期，尤其是对于复杂或深层嵌套的 YAML。</li><li><strong>复制或下载：</strong>将 JSON 复制到剪贴板，或保存为 .json 文件，用于应用或数据流水线。</li></ol><h2>处理锚点、别名和多行字符串</h2><p>YAML 支持锚点和别名等高级特性以避免重复，以及多行字符串字面量。此转换器对它们的处理方式如下：</p><ul><li><strong>锚点和别名：</strong>锚点定义可复用的节点，别名引用这些节点。转换过程中会完全解析它们，因此 JSON 输出包含实际值，而不是 YAML 特有的引用。</li><li><strong>多行字符串：</strong>使用 |（字面）或 >（折叠）定义的字符串会转换为标准 JSON 字符串，并在适当位置使用 \\n 表示换行。</li><li><strong>嵌套结构：</strong>深层嵌套的 YAML 映射和序列会被忠实地转换为嵌套的 JSON 对象和数组。</li></ul><h2>最佳实践</h2><ul><li><strong>先验证 YAML：</strong>确保 YAML 有效再进行转换，避免错误或意外结果。</li><li><strong>使用代表性样本测试：</strong>使用能反映数据完整范围的 YAML 示例，包括锚点、别名和多行字符串。</li><li><strong>检查缩进：</strong>选择与项目约定一致的 JSON 缩进，便于集成。</li><li><strong>注意多文档 YAML：</strong>如果文件使用 --- 分隔多个文档，请分别转换每个文档。</li><li><strong>保留备份：</strong>保留原始 YAML，以便在需要用不同选项或映射重新生成 JSON 时使用。</li></ul><h2>浏览器本地处理与隐私</h2><p>这个 YAML 转 JSON 转换器在浏览器中处理输入内容，不要求将数据上传到远程服务。对于开发数据和私密配置片段来说，本地处理更加方便。不过，仍然不建议在任何浏览器工具中输入密码、API 密钥、访问令牌或其他高度敏感的信息。</p>"
+    }
+  }
 }

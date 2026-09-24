@@ -177,6 +177,9 @@
         :model-value="modelValue"
         @update:model-value="emit('update:modelValue', $event)"
         :placeholder="placeholder"
+        :block-oversized="blockOversized"
+        :readonly="readonly"
+        @file-size="(info) => emit('file-size', info)"
         @scroll="onCmScroll"
         @ready="onCmReady"
       />
@@ -225,10 +228,22 @@
       @close="showUrlModal = false"
       @loaded="onUrlLoaded"
     />
+
+    <!-- Sensitive field privacy reminder -->
+    <SensitiveFieldWarning
+      v-if="showSensitiveWarning && sensitiveFields.length > 0"
+      class="mt-2"
+      :fields="sensitiveFields"
+      @dismiss="dismissSensitiveWarning"
+    />
   </div>
 </template>
 
 <script setup lang="ts">
+import SensitiveFieldWarning from '~/components/tool/SensitiveFieldWarning.vue'
+import { useSensitiveFieldDetection } from '~/composables/useSensitiveFieldDetection'
+import { useDebounceFn } from '@vueuse/core'
+
 interface Props {
   modelValue: string
   label?: string
@@ -239,6 +254,13 @@ interface Props {
   showUpload?: boolean
   showLoadUrl?: boolean
   accept?: string
+  /**
+   * Refuse content above LARGE_FILE_MAX_BYTES: only `file-size` is emitted, the
+   * text is never loaded into the editor. Used by pages that hand oversized
+   * input over to the Large JSON Explorer — loading it first would freeze the
+   * editor for no reason.
+   */
+  blockOversized?: boolean
   /** Line number with a parse error (1-based) */
   errorLine?: number
   /** Column number of the error within the line (1-based) */
@@ -251,12 +273,19 @@ interface Props {
   errorCopied?: boolean
   /** Tool slug for loading examples (e.g. 'json-minifier') */
   exampleSlug?: string
-  /** Editor implementation: 'textarea' (default) or 'codemirror' */
+  /** Editor implementation: 'codemirror' (default) or 'textarea' */
   editorMode?: 'textarea' | 'codemirror'
   /** Enable JSON syntax highlighting in textarea mode */
   syntaxHighlight?: boolean
   /** Make the editor read-only */
   readonly?: boolean
+  /**
+   * Show the sensitive-field privacy reminder when detected in the input.
+   * Enabled by default so every tool page benefits; pages that render their
+   * own warning (e.g. the main JSON editor, which also feeds the share modal)
+   * should pass `false` to avoid a duplicate prompt.
+   */
+  showSensitiveWarning?: boolean
 }
 
 const props = withDefaults(defineProps<Props>(), {
@@ -268,15 +297,17 @@ const props = withDefaults(defineProps<Props>(), {
   showUpload: false,
   showLoadUrl: true,
   accept: '.json,.txt,.jsonl,.geojson,.ndjson',
+  blockOversized: false,
   errorLine: 0,
   errorColumn: 0,
   friendlyMessage: '',
   error: '',
   errorCopied: false,
   exampleSlug: '',
-  editorMode: 'textarea',
+  editorMode: 'codemirror',
   syntaxHighlight: false,
   readonly: false,
+  showSensitiveWarning: true,
 })
 
 const emit = defineEmits<{
@@ -288,7 +319,9 @@ const emit = defineEmits<{
   locateError: []
   copyError: []
   'example-loaded': [input: string]
-  'file-size': [info: { bytes: number; category: 'small' | 'medium' | 'large' }]
+  /** Emitted whenever content enters the editor (upload / paste). `text` is
+   *  included so the parent can hand it off without reading a stale v-model. */
+  'file-size': [info: { bytes: number; oversized: boolean; text: string; fileName?: string }]
 }>()
 
 // Example dropdown (built-in when exampleSlug is provided)
@@ -314,7 +347,30 @@ const gutterRef = ref<HTMLDivElement>()
 const textareaRef = ref<HTMLTextAreaElement>()
 const highlightBackdropRef = ref<HTMLPreElement>()
 const fileInputRef = ref<HTMLInputElement>()
-const { detectSize, fileSizeCategory, fileSizeBytes } = useFileSize()
+const { detectSize } = useFileSize()
+
+// ── Sensitive field detection (privacy reminder) ──
+const { detectedFields: sensitiveFields, scanJson, clear: clearSensitive } = useSensitiveFieldDetection()
+const sensitiveDismissed = ref(false)
+
+function dismissSensitiveWarning() {
+  sensitiveDismissed.value = true
+  clearSensitive()
+}
+
+const debouncedSensitiveScan = useDebounceFn((val: string) => {
+  if (!props.showSensitiveWarning) { clearSensitive(); return }
+  if (sensitiveDismissed.value) return
+  if (!val.trim()) { clearSensitive(); return }
+  scanJson(val)
+}, 500)
+
+watch(() => props.modelValue, (val) => {
+  // Re-show the reminder when the input changes (a dismissed warning is for
+  // the previous content only).
+  sensitiveDismissed.value = false
+  debouncedSensitiveScan(val)
+})
 const cmRef = ref<InstanceType<typeof CodeMirrorEditor>>()
 const dragging = ref(false)
 const fileInfo = ref<{ name: string; size: string } | null>(null)
@@ -332,6 +388,9 @@ const onCmReady = () => {
 }
 
 const onUrlLoaded = (text: string) => {
+  const size = detectSize(text)
+  emit('file-size', { ...size, text })
+  if (size.oversized && props.blockOversized) { showUrlModal.value = false; return }
   emit('update:modelValue', text)
   emit('loadUrl', text)
   showUrlModal.value = false
@@ -347,8 +406,10 @@ const processFile = (file: File) => {
   const reader = new FileReader()
   reader.onload = (ev) => {
     const text = ev.target?.result as string
-    detectSize(text, file)
-    emit('file-size', { bytes: fileSizeBytes.value, category: fileSizeCategory.value })
+    const size = detectSize(text, file)
+    emit('file-size', { ...size, text, fileName: file.name })
+    // Oversized content stays out of the editor entirely.
+    if (size.oversized && props.blockOversized) return
     emit('update:modelValue', text)
     emit('upload', text)
     fileInfo.value = { name: file.name, size: formatFileSize(file.size) }
@@ -444,8 +505,9 @@ const onScroll = () => {
 const onPaste = (e: ClipboardEvent) => {
   const text = e.clipboardData?.getData('text') ?? ''
   if (text) {
-    detectSize(text)
-    emit('file-size', { bytes: fileSizeBytes.value, category: fileSizeCategory.value })
+    const size = detectSize(text)
+    emit('file-size', { ...size, text })
+    if (size.oversized && props.blockOversized) return
     emit('paste', text)
   }
 }
@@ -475,6 +537,11 @@ const handlePaste = async () => {
     try {
       const text = await navigator.clipboard.readText()
       if (text) {
+        const size = detectSize(text)
+        emit('file-size', { ...size, text })
+        // Oversized content is handed off to the Large JSON Explorer; never
+        // load it here or CodeMirror would freeze inserting multi-MB text.
+        if (size.oversized && props.blockOversized) return
         emit('update:modelValue', text)
         emit('paste', text)
         pasted.value = true
@@ -561,6 +628,10 @@ function updateHighlightPosition() {
 }
 
 function scrollToLine(line: number) {
+  if (props.editorMode === 'codemirror') {
+    cmRef.value?.scrollToLine(line)
+    return
+  }
   if (!textareaRef.value) return
   const targetScroll = Math.max(0, (line - 1) * LINE_HEIGHT - textareaRef.value.clientHeight / 3)
   textareaRef.value.scrollTop = targetScroll
@@ -578,6 +649,10 @@ function scrollToLine(line: number) {
 let flashTimers: ReturnType<typeof setTimeout>[] = []
 
 function highlightLine(line: number, style: 'flash' | 'subtle') {
+  if (props.editorMode === 'codemirror') {
+    cmRef.value?.highlightLine(line, style)
+    return
+  }
   // Clear pending flash timers
   flashTimers.forEach(clearTimeout)
   flashTimers = []
@@ -601,6 +676,10 @@ function highlightLine(line: number, style: 'flash' | 'subtle') {
 }
 
 function highlightLines(startLine: number, endLine: number, style: 'flash' | 'subtle') {
+  if (props.editorMode === 'codemirror') {
+    cmRef.value?.highlightLines(startLine, endLine, style)
+    return
+  }
   flashTimers.forEach(clearTimeout)
   flashTimers = []
 

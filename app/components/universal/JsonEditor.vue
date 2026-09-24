@@ -25,13 +25,6 @@
     <!-- Input editor -->
     <template #first>
       <div class="h-full pr-3 overflow-hidden">
-        <!-- Parsing indicator -->
-        <div v-if="isParsing" class="absolute inset-0 z-20 flex items-center justify-center bg-surface-50/80 dark:bg-surface-800/80 backdrop-blur-sm rounded-xl">
-          <div class="flex items-center gap-3 px-4 py-3 rounded-lg bg-white dark:bg-surface-900 shadow-lg border border-surface-200 dark:border-surface-700">
-            <div class="w-5 h-5 border-2 border-primary-600 border-t-transparent rounded-full animate-spin" />
-            <span class="text-sm font-medium text-surface-700 dark:text-surface-300">{{ $t('largeFile.parsing') }}</span>
-          </div>
-        </div>
         <JsonInputEditor
           ref="inputEditorRef"
           v-model="inputJson"
@@ -48,6 +41,8 @@
           :show-paste="!isSharedReadonly"
           :show-clear="!isSharedReadonly"
           example-slug="json-editor"
+          block-oversized
+          :show-sensitive-warning="false"
           @clear="clearAll"
           @paste="onInputPaste"
           @locate-error="onLocateFromPanel"
@@ -61,7 +56,9 @@
     <!-- Output panel -->
     <template #second>
       <div class="h-full pl-3 flex flex-col overflow-hidden">
-        <JsonOutputPanel
+        <JsonSchemaPanel v-if="schemaMode" :parsed-data="parsedData" />
+        <JsonGeneratePanel v-else-if="generateMode" :parsed-data="parsedData" />
+        <JsonOutputPanel v-else
           :label="tool.ui?.label_output || 'Output'"
           :content="outputJson"
           :error="error"
@@ -76,7 +73,6 @@
           :empty-text="$t('system.emptyOutput')"
           :masked="masked"
           :sensitive-paths="sensitivePathSet"
-          :file-size-category="fileSizeCategory"
           @update:view-mode="viewMode = $event"
           @update:masked="masked = $event"
           @copy="copyOutput"
@@ -90,18 +86,7 @@
 
     <!-- Toolbar left: indent + action buttons -->
     <template #toolbar-left>
-      <div class="flex items-center gap-2 shrink-0">
-        <!-- File size mode indicator -->
-        <div
-          v-if="fileSizeCategory !== 'small'"
-          class="flex items-center gap-1.5 px-2 py-1 rounded-lg text-xs font-medium"
-          :class="fileSizeCategory === 'large'
-            ? 'bg-red-50 text-red-700 dark:bg-red-900/20 dark:text-red-400'
-            : 'bg-amber-50 text-amber-700 dark:bg-amber-900/20 dark:text-amber-400'"
-        >
-          <Icon name="lucide:hard-drive" class="w-3.5 h-3.5" />
-          {{ $t('largeFile.mode_' + fileSizeCategory) }}
-        </div>
+      <div class="flex flex-wrap items-center gap-2 shrink-0">
         <div class="flex items-center gap-2">
           <label class="text-xs font-bold text-surface-600 dark:text-surface-400">{{ tool.ui?.option_indent || 'Indent:' }}</label>
           <select v-model="indent" class="rounded-lg border border-surface-200 bg-white px-2 py-1 text-xs dark:border-surface-700 dark:bg-surface-800">
@@ -151,6 +136,53 @@
             />
           </button>
         </label>
+
+        <!-- Schema validation mode -->
+        <button
+          @click="toggleSchema"
+          :class="schemaMode
+            ? 'bg-primary-600 text-white dark:bg-primary-500'
+            : 'bg-white text-surface-600 hover:bg-surface-50 dark:bg-surface-800 dark:text-surface-400 dark:hover:bg-surface-700'"
+          class="px-2.5 py-1 text-[11px] font-bold transition-colors"
+        >
+          {{ t('schema.toggle') }}
+        </button>
+
+        <!-- Generate panel: convert to TS/YAML/CSV/Schema, or build API snippets -->
+        <button
+          @click="toggleGenerate"
+          :class="generateMode
+            ? 'bg-primary-600 text-white dark:bg-primary-500'
+            : 'bg-white text-surface-600 hover:bg-surface-50 dark:bg-surface-800 dark:text-surface-400 dark:hover:bg-surface-700'"
+          class="px-2.5 py-1 text-[11px] font-bold transition-colors"
+        >
+          {{ t('generate.title') }}
+        </button>
+
+        <!-- Node editing: batch select + undo / redo -->
+        <button
+          @click="nodeEditing.batchMode.value = !nodeEditing.batchMode.value"
+          :class="nodeEditing.batchMode.value
+            ? 'bg-primary-600 text-white dark:bg-primary-500'
+            : 'bg-white text-surface-600 hover:bg-surface-50 dark:bg-surface-800 dark:text-surface-400 dark:hover:bg-surface-700'"
+          class="px-2.5 py-1 text-[11px] font-bold transition-colors"
+        >
+          {{ t('edit.batch') }}
+        </button>
+        <button
+          @click="nodeEditing.undo()"
+          :disabled="!nodeEditing.canUndo.value"
+          class="px-2.5 py-1 text-[11px] font-bold transition-colors bg-white text-surface-600 hover:bg-surface-50 disabled:opacity-40 disabled:cursor-not-allowed dark:bg-surface-800 dark:text-surface-400 dark:hover:bg-surface-700"
+        >
+          {{ t('edit.undo') }}
+        </button>
+        <button
+          @click="nodeEditing.redo()"
+          :disabled="!nodeEditing.canRedo.value"
+          class="px-2.5 py-1 text-[11px] font-bold transition-colors bg-white text-surface-600 hover:bg-surface-50 disabled:opacity-40 disabled:cursor-not-allowed dark:bg-surface-800 dark:text-surface-400 dark:hover:bg-surface-700"
+        >
+          {{ t('edit.redo') }}
+        </button>
       </div>
     </template>
 
@@ -162,7 +194,14 @@
           @click="copyOutput"
           class="text-xs text-primary-600 hover:text-primary-700 dark:text-primary-400"
         >
-          {{ copyJustCopied ? '✓ Copied!' : $t('system.copy') }}
+          {{ clipboard.copied.value ? '✓ Copied!' : $t('system.copy') }}
+        </button>
+        <button
+          v-if="outputJson"
+          @click="clipboard.copyMinified()"
+          class="text-xs text-surface-500 hover:text-surface-700 dark:text-surface-400"
+        >
+          {{ $t('clipboard.copyMinifiedLabel') }}
         </button>
         <button
           v-if="outputJson"
@@ -182,17 +221,38 @@
     </template>
   </ResizablePanel>
 
+  <!-- Batch editing bar (P1-2): apply one value to every selected node -->
+  <div
+    v-if="nodeEditing.batchMode.value && nodeEditing.batchSelected.value.size > 0"
+    class="mt-2 flex flex-wrap items-center gap-2 rounded-lg border border-primary-200 bg-primary-50 px-3 py-2 dark:border-primary-800 dark:bg-primary-900/20"
+  >
+    <span class="text-xs font-medium text-primary-700 dark:text-primary-300">
+      {{ t('edit.selectedCount', { count: nodeEditing.batchSelected.value.size }) }}
+    </span>
+    <input
+      v-model="batchValue"
+      :placeholder="t('edit.newValue')"
+      @keydown.enter="applyBatch"
+      class="w-40 rounded border border-surface-200 bg-white px-2 py-1 text-xs dark:border-surface-700 dark:bg-surface-800 dark:text-surface-100 focus:outline-none focus:ring-1 focus:ring-primary-400"
+    />
+    <button @click="applyBatch" class="rounded bg-primary-600 px-2.5 py-1 text-[11px] font-medium text-white hover:bg-primary-700">
+      {{ t('edit.apply') }}
+    </button>
+    <button @click="nodeEditing.clearBatch(); batchValue = ''" class="rounded border border-surface-200 px-2.5 py-1 text-[11px] dark:border-surface-700">
+      {{ t('edit.clear') }}
+    </button>
+  </div>
+
   <!-- Sensitive field warning -->
   <div v-if="sensitiveFields.length > 0" class="mt-2">
     <SensitiveFieldWarning :fields="sensitiveFields" @dismiss="dismissSensitiveWarning" />
   </div>
 
-  <!-- Large file warning -->
+  <!-- Over the size limit: hand the content to the Large JSON Explorer -->
   <LargeFileWarning
-    :visible="showLargeFileWarning"
-    :formatted-size="formatBytes(fileSizeBytes)"
-    @continue="handleLargeFileContinue"
-    @parse-partial="handleLargeFilePartial"
+    :visible="largeFile.visible.value"
+    :formatted-size="formatBytes(largeFile.bytes.value)"
+    @open-explorer="largeFile.openExplorer()"
     @cancel="handleLargeFileCancel"
   />
 
@@ -221,7 +281,9 @@
 
 <script setup lang="ts">
 import type { ParseError, FieldError } from '~/types/jsonErrors'
-import type { FileSizeCategory } from '~/composables/useFileSize'
+import { useLargeFileGate } from '~/composables/useLargeFile'
+import { useNodeEditing } from '~/composables/useNodeEditing'
+import { useClipboardActions } from '~/composables/useClipboardActions'
 
 const { tool, showViewToggle = true, defaultViewMode = 'rich' } = defineProps<{
   tool: any
@@ -235,7 +297,52 @@ const error = ref('')
 const parseError = ref<ParseError | null>(null)
 const indent = ref<number | string>(2)
 const autoFormat = ref(true)
+
+// ── Node-level editing (P1-2): every tree edit writes back into `inputJson`,
+// so the formatted output, validation and share payload all stay in sync. ──
+const nodeEditing = useNodeEditing(inputJson, indent)
+provide('nodeEditing', nodeEditing)
+
+// Clipboard workflow (F12): one place for copy formatted / minified JSON and
+// "replace node from clipboard" (writing back through node editing).
+const clipboard = useClipboardActions({
+  inputJson,
+  indent,
+  writeNode: (path, value) => nodeEditing.setValue(path, value),
+})
+provide('clipboardActions', clipboard)
+
+const batchValue = ref('')
+function applyBatch() {
+  const paths = [...nodeEditing.batchSelected.value]
+  if (paths.length === 0) return
+  let value: unknown = batchValue.value
+  try { value = JSON.parse(batchValue.value) } catch { value = batchValue.value }
+  if (nodeEditing.batchSetValue(paths, value)) {
+    toast.success(t('toast.edited'))
+    batchValue.value = ''
+    nodeEditing.clearBatch()
+  }
+}
+watch(() => nodeEditing.batchMode.value, (on) => {
+  if (!on) {
+    nodeEditing.clearBatch()
+    batchValue.value = ''
+  }
+})
 const viewMode = ref<'text' | 'rich' | 'table'>(defaultViewMode)
+const schemaMode = ref(false)
+const generateMode = ref(false)
+
+// The two right-panel modes are mutually exclusive.
+function toggleSchema() {
+  schemaMode.value = !schemaMode.value
+  if (schemaMode.value) generateMode.value = false
+}
+function toggleGenerate() {
+  generateMode.value = !generateMode.value
+  if (generateMode.value) schemaMode.value = false
+}
 const fullscreen = ref(false)
 const lastAction = ref<'formatted' | 'minified' | 'validated'>('formatted')
 
@@ -254,7 +361,7 @@ const friendlyMessage = computed(() => {
   }, { default: parseError.value.message })
 })
 
-const copyJustCopied = ref(false)
+
 // ── Input editor ref & source map ─────────────────────────────
 const inputEditorRef = ref<InstanceType<typeof import('~/components/tool/JsonInputEditor.vue').default>>()
 const sourceMap = ref<Map<string, number>>(new Map())
@@ -268,43 +375,23 @@ provide('onNodeInteraction', (path: string, type: 'click' | 'hover') => {
     inputEditorRef.value?.highlightLine(0, 'subtle')
     return
   }
-  const startLine = sourceMap.value.get(path)
-  if (!startLine) return
-
-  // Compute end line: find next sibling's start, or EOF
-  const endLine = computeEndLine(path)
+  const line = sourceMap.value.get(path)
+  if (!line) return
 
   if (type === 'click') {
-    inputEditorRef.value?.scrollToLine(startLine)
-    inputEditorRef.value?.highlightLines(startLine, endLine, 'flash')
+    inputEditorRef.value?.scrollToLine(line)
+    inputEditorRef.value?.highlightLine(line, 'flash')
   } else {
-    inputEditorRef.value?.highlightLines(startLine, endLine, 'subtle')
+    inputEditorRef.value?.highlightLine(line, 'subtle')
   }
 })
-
-function computeEndLine(path: string): number {
-  const sm = sourceMap.value
-  const parts = path.split(/\.|\[|\]/).filter(Boolean)
-  if (parts.length === 0) return inputJson.value.split('\n').length
-
-  const lastPart = parts[parts.length - 1]
-  const parentPrefix = path.slice(0, path.length - lastPart.length)
-
-  // Try numeric increment (array element)
-  const num = parseInt(lastPart, 10)
-  if (!isNaN(num)) {
-    const nextLine = sm.get(parentPrefix + String(num + 1))
-    if (nextLine) return nextLine - 1
-  }
-
-  return inputJson.value.split('\n').length
-}
 
 const { repairJson, getJsonError } = useJsonFixer()
 const share = useShareJson()
 const sharedPayloadLoader = useSharedPayloadLoader()
-const { parseInWorker, isParsing } = useWorkerParser()
-const { detectSize, formatBytes, fileSizeCategory, fileSizeBytes, isLargeFile, getPartialText } = useFileSize()
+const { formatBytes } = useFileSize()
+// Single entry point for "this input is too big for a regular tool".
+const largeFile = useLargeFileGate()
 
 // Sensitive field detection
 const { scanJson, detectedFields: sensitiveFields, clear: clearSensitiveFields } = useSensitiveFieldDetection()
@@ -377,6 +464,7 @@ function exitReadonly() {
 }
 
 function clearAndReset() {
+  largeFile.close()
   inputJson.value = ''
   outputJson.value = ''
   error.value = ''
@@ -411,7 +499,9 @@ async function loadSharedContent() {
     isSharedSession.value = true
     sharedPayload.value = payload
 
-    // Restore content
+    // Restore content. A shared link can carry a document that is too big for
+    // this page — hand it off instead of loading it into the editor.
+    if (largeFile.check(payload.content.rawText)) return
     inputJson.value = payload.content.rawText
     isSharedReadonly.value = payload.display.readOnly
 
@@ -433,13 +523,21 @@ async function loadSharedContent() {
   }
 }
 
+// Regular tools always parse on the main thread. Anything above
+// LARGE_FILE_MAX_BYTES never reaches here — it is handed off to the Large JSON
+// Explorer by `largeFile` instead of being parsed here.
 const parsedData = computed(() => {
+  if (largeFile.blocked.value) return null
   try {
     return JSON.parse(inputJson.value)
   } catch {
     return null
   }
 })
+
+// Batch selections refer to paths in the previous document — drop them once it
+// changes so a stale path never writes into the wrong place.
+watch(parsedData, () => { nodeEditing.clearBatch() })
 
 const copyPath = async (path: string) => {
   await copyToClipboard(path)
@@ -450,14 +548,10 @@ const toast = useToast()
 
 const formatJson = (silent = false) => {
   if (!inputJson.value.trim()) { error.value = ''; parseError.value = null; outputJson.value = ''; return }
+  // Oversized input is waiting to be handed off to the Large JSON Explorer —
+  // never parse it here.
+  if (largeFile.blocked.value) return
 
-  // Large files: use Worker (async path)
-  if (isLargeFile(inputJson.value)) {
-    formatJsonAsync(silent)
-    return
-  }
-
-  // Small files: synchronous parse on main thread
   try {
     const parsed = JSON.parse(inputJson.value)
     const space = indent.value === 'tab' ? '\t' : Number(indent.value)
@@ -486,37 +580,6 @@ const formatJson = (silent = false) => {
   }
 }
 
-// Async format for large files (Worker-based)
-async function formatJsonAsync(silent: boolean) {
-  const result = await parseInWorker(inputJson.value)
-  if (result.data !== null) {
-    const space = indent.value === 'tab' ? '\t' : Number(indent.value)
-    outputJson.value = JSON.stringify(result.data, null, space)
-    lastAction.value = Number(indent.value) === 0 ? 'minified' : 'formatted'
-    error.value = ''
-    parseError.value = null
-    if (!silent) toast.success(Number(indent.value) === 0 ? t('toast.minified') : t('toast.formatted'))
-  }
-  else {
-    const repaired = repairJson(inputJson.value)
-    if (repaired) {
-      inputJson.value = repaired
-      const parsed = JSON.parse(repaired)
-      const space = indent.value === 'tab' ? '\t' : Number(indent.value)
-      outputJson.value = JSON.stringify(parsed, null, space)
-      lastAction.value = Number(indent.value) === 0 ? 'minified' : 'formatted'
-      error.value = ''
-      parseError.value = null
-      if (!silent) toast.success(Number(indent.value) === 0 ? t('toast.minified') : t('toast.formatted'))
-      return
-    }
-    const err = result.error ? { message: result.error, line: result.line, column: result.column, errorKey: '' } : getJsonError(inputJson.value)
-    parseError.value = err
-    error.value = err ? t('errors.lineCol', { line: err.line, col: err.column }) + ': ' + err.message : t('formatter.invalidJson')
-    if (!silent) toast.error(error.value)
-  }
-}
-
 const isMinified = computed(() => Number(indent.value) === 0)
 const lastIndent = ref<number | string>(2)
 
@@ -533,11 +596,7 @@ const setFormatted = () => {
 
 const validateJson = () => {
   if (!inputJson.value.trim()) { error.value = ''; parseError.value = null; outputJson.value = ''; return }
-
-  if (isLargeFile(inputJson.value)) {
-    validateJsonAsync()
-    return
-  }
+  if (largeFile.blocked.value) return
 
   try {
     JSON.parse(inputJson.value)
@@ -555,69 +614,26 @@ const validateJson = () => {
   }
 }
 
-async function validateJsonAsync() {
-  const result = await parseInWorker(inputJson.value)
-  if (result.data !== null) {
-    outputJson.value = tool.ui?.status_valid || t('formatter.validJson')
-    lastAction.value = 'validated'
-    error.value = ''
-    parseError.value = null
-    toast.success(t('toast.validated'))
-  }
-  else {
-    const err = result.error ? { message: result.error, line: result.line, column: result.column, errorKey: '' } : getJsonError(inputJson.value)
-    parseError.value = err
-    error.value = err ? t('errors.lineCol', { line: err.line, col: err.column }) + ': ' + err.message : t('formatter.invalidJson')
-    outputJson.value = ''
-    toast.error(error.value)
-  }
-}
-
 const clearAll = () => {
+  largeFile.close()
   outputJson.value = ''
   error.value = ''
   parseError.value = null
 }
 
-// ── Large file handling ─────────────────────────────────────
-const showLargeFileWarning = ref(false)
-const pendingLargeText = ref('')
-const pendingPartialParse = ref(false)
-
-const onFileSize = (info: { bytes: number; category: FileSizeCategory }) => {
-  detectSize(
-    inputJson.value,
-    undefined
-  )
-  if (info.category === 'large') {
-    showLargeFileWarning.value = true
-    pendingLargeText.value = inputJson.value
-  }
+// ── Over the limit → Large JSON Explorer ─────────────────────
+// This page only ever handles input up to LARGE_FILE_MAX_BYTES. Anything bigger
+// is refused here and carried over (in memory) to the one page that owns
+// large-file processing, so the user never re-uploads or re-pastes.
+const onFileSize = (info: { bytes: number; oversized: boolean; text: string; fileName?: string }) => {
+  if (!info.oversized) return
+  largeFile.check(info.text, info.fileName || 'data.json', info.bytes)
 }
 
-const handleLargeFileContinue = () => {
-  showLargeFileWarning.value = false
-  pendingLargeText.value = ''
-  // Re-trigger format with the current input
-  nextTick(() => formatJson())
-}
-
-const handleLargeFilePartial = () => {
-  showLargeFileWarning.value = false
-  pendingPartialParse.value = true
-  const partial = getPartialText(inputJson.value, 20 * 1024 * 1024)
-  inputJson.value = partial
-  nextTick(() => formatJson())
-}
-
+// The oversized text was never loaded into the editor, so backing out keeps
+// whatever the user had before — nothing to clear.
 const handleLargeFileCancel = () => {
-  showLargeFileWarning.value = false
-  pendingLargeText.value = ''
-  inputJson.value = ''
-  outputJson.value = ''
-  error.value = ''
-  parseError.value = null
-  parsedData.value = null
+  largeFile.close()
 }
 
 // Locate error from the output panel "Jump to Error" button
@@ -645,11 +661,7 @@ const locateTarget = ref('')
 // In-place format: replace inputJson with formatted version
 const formatInputInPlace = () => {
   if (!inputJson.value.trim()) return
-
-  if (isLargeFile(inputJson.value)) {
-    formatInputInPlaceAsync()
-    return
-  }
+  if (largeFile.blocked.value) return
 
   try {
     const parsed = JSON.parse(inputJson.value)
@@ -658,19 +670,13 @@ const formatInputInPlace = () => {
   } catch {}
 }
 
-async function formatInputInPlaceAsync() {
-  const result = await parseInWorker(inputJson.value)
-  if (result.data !== null) {
-    const space = indent.value === 'tab' ? '\t' : Number(indent.value)
-    inputJson.value = JSON.stringify(result.data, null, space)
-  }
-}
-
 // Paste: immediately format input in-place
 const onInputPaste = () => {
-  if (autoFormat.value) {
-    nextTick(() => formatInputInPlace())
-  }
+  nextTick(() => {
+    if (autoFormat.value) formatInputInPlace()
+    // Hint only — URL / Base64 are reported, never silently rewritten.
+    clipboard.hintAfterPaste(inputJson.value)
+  })
 }
 
 // 300ms debounce: update output panel only (non-intrusive)
@@ -679,6 +685,8 @@ const debouncedFormat = useDebounceFn(() => { formatJson(true) }, 300)
 const debouncedFormatInPlace = useDebounceFn(() => { formatInputInPlace() }, 1500)
 
 watch(inputJson, () => {
+  // Oversized input is parked for hand-off — skip every normal parse path.
+  if (largeFile.blocked.value) return
   if (autoFormat.value) {
     debouncedFormat()
     debouncedFormatInPlace()
@@ -701,11 +709,7 @@ useEventListener('keydown', (e: KeyboardEvent) => {
   }
 })
 
-const copyOutput = async () => {
-  await copyToClipboard(outputJson.value)
-  copyJustCopied.value = true
-  setTimeout(() => { copyJustCopied.value = false }, 2000)
-}
+const copyOutput = () => clipboard.copyFormatted()
 
 const downloadOutput = () => {
   const blob = new Blob([outputJson.value], { type: 'application/json' })

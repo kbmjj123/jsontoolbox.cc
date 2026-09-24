@@ -25,7 +25,8 @@ export function getToolsFlat(): ToolInfo[] {
 
   const tools: ToolInfo[] = []
   const categories = readdirSync(dataDir, { withFileTypes: true })
-    .filter(e => e.isDirectory())
+    // examples/ holds sample data, not tool definitions
+    .filter(e => e.isDirectory() && e.name !== 'examples')
 
   for (const cat of categories) {
     const catDir = resolve(dataDir, cat.name)
@@ -49,29 +50,6 @@ export function getToolsFlat(): ToolInfo[] {
         })
       } catch { /* skip invalid files */ }
     }
-
-    // Also scan sub/ directory
-    const subDir = resolve(catDir, 'sub')
-    if (existsSync(subDir)) {
-      const subFiles = readdirSync(subDir).filter(f => f.endsWith('.json'))
-      for (const file of subFiles) {
-        try {
-          const data = JSON.parse(readFileSync(resolve(subDir, file), 'utf-8'))
-          const slug = data.slug || file.replace('.json$', '')
-          tools.push({
-            name: data.en?.name || slug,
-            description: data.en?.description || '',
-            path: `/tools/${cat.name}/${slug}`,
-            slug,
-            category: cat.name,
-            en: data.en || {},
-            faq: data.en?.faq,
-            guide: data.en?.guide,
-            features: data.en?.features,
-          })
-        } catch { /* skip */ }
-      }
-    }
   }
 
   return tools
@@ -83,7 +61,8 @@ export function getGroupedTools(): Record<string, CategoryGroup> {
 
   const grouped: Record<string, CategoryGroup> = {}
   const categories = readdirSync(dataDir, { withFileTypes: true })
-    .filter(e => e.isDirectory())
+    // examples/ holds sample data, not tool definitions
+    .filter(e => e.isDirectory() && e.name !== 'examples')
 
   for (const cat of categories) {
     const catDir = resolve(dataDir, cat.name)
@@ -121,29 +100,6 @@ export function getGroupedTools(): Record<string, CategoryGroup> {
           features: data.en?.features,
         })
       } catch { /* skip */ }
-    }
-
-    // Scan sub/ directory
-    const subDir = resolve(catDir, 'sub')
-    if (existsSync(subDir)) {
-      const subFiles = readdirSync(subDir).filter(f => f.endsWith('.json'))
-      for (const file of subFiles) {
-        try {
-          const data = JSON.parse(readFileSync(resolve(subDir, file), 'utf-8'))
-          const slug = data.slug || file.replace('.json$', '')
-          tools.push({
-            name: data.en?.name || slug,
-            description: data.en?.description || '',
-            path: `/tools/${cat.name}/${slug}`,
-            slug,
-            category: cat.name,
-            en: data.en || {},
-            faq: data.en?.faq,
-            guide: data.en?.guide,
-            features: data.en?.features,
-          })
-        } catch { /* skip */ }
-      }
     }
 
     if (tools.length > 0) {

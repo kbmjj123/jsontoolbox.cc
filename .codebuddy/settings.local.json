@@ -1,0 +1,8 @@
+{
+  "enabledMcpjsonServers": [
+    "playwright"
+  ],
+  "disabledMcpjsonServers": [
+    "code-review-graph"
+  ]
+}
