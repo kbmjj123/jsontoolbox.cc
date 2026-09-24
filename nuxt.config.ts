@@ -56,7 +56,7 @@ export default defineNuxtConfig({
   // seo config
   site: {
     enabled: true,
-    url: process.env.NUXT_PUBLIC_SITE_URL,
+    url: process.env.NUXT_PUBLIC_SITE_URL || 'https://jsontoolbox.cc',
     defaultLocale: 'en',
     trailingSlash: false,
   },
