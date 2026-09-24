@@ -21,7 +21,7 @@
           :content="outputJson"
           :parsed-data="parsedOutputData"
           :error="error"
-          view-mode="rich"
+          :enable-tree-search="false"
           :highlight="'json'"
           empty-text="JSON output will appear here"
           download-filename="converted.json"

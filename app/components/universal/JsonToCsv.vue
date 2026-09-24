@@ -22,6 +22,7 @@
           :content="outputJson"
           :parsed-data="parsedData"
           :error="error"
+          :enable-tree-search="false"
           :show-copy="false"
           :show-download="false"
           highlight="json"

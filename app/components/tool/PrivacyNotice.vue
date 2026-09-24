@@ -18,7 +18,7 @@
           class="absolute bottom-full left-1/2 -translate-x-1/2 mb-2 w-72 rounded-xl border border-surface-200 bg-white p-4 shadow-lg dark:border-surface-700 dark:bg-surface-800 z-50"
         >
           <!-- Arrow -->
-          <div class="absolute top-full left-1/2 -translate-x-1/2 -mt-px w-3 h-3 rotate-45 border-r border-b border-surface-200 bg-white dark:border-surface-700 dark:bg-surface-800" />
+          <div class="absolute top-full left-1/2 -translate-x-1/2 -translate-y-1/2 -mt-px w-3 h-3 rotate-45 border-r border-b border-surface-200 bg-white dark:border-surface-700 dark:bg-surface-800" />
 
           <p class="text-xs font-bold text-surface-700 dark:text-surface-200 mb-3">
             {{ $t('privacy_notice.verify_title') }}

@@ -56,9 +56,7 @@
     <!-- Output panel -->
     <template #second>
       <div class="h-full pl-3 flex flex-col overflow-hidden">
-        <JsonSchemaPanel v-if="schemaMode" :parsed-data="parsedData" />
-        <JsonGeneratePanel v-else-if="generateMode" :parsed-data="parsedData" />
-        <JsonOutputPanel v-else
+        <JsonOutputPanel
           :label="tool.ui?.label_output || 'Output'"
           :content="outputJson"
           :error="error"
@@ -70,6 +68,7 @@
           :show-copy="false"
           :show-download="false"
           :show-view-toggle="showViewToggle"
+          :enable-tree-search="true"
           :empty-text="$t('system.emptyOutput')"
           :masked="masked"
           :sensitive-paths="sensitivePathSet"
@@ -80,7 +79,56 @@
           @copy-path="copyPath"
           @locate-error="onLocateFromPanel"
           @load-example="loadDefaultExample"
-        />
+        >
+          <!-- Tree edit actions: anchored to the bottom of the rich/tree view.
+               Batch/undo/redo act on the tree, which lives here — so the
+               controls sit with their content. Gated by v-if on the slot so the
+               footer (and its border) never renders in text/table mode. -->
+          <template #footer v-if="viewMode === 'rich'">
+            <div class="flex flex-wrap items-center gap-2">
+              <button
+                @click="nodeEditing.batchMode.value = !nodeEditing.batchMode.value"
+                :class="nodeEditing.batchMode.value
+                  ? 'bg-primary-600 text-white dark:bg-primary-500'
+                  : 'bg-white text-surface-600 hover:bg-surface-50 dark:bg-surface-800 dark:text-surface-400 dark:hover:bg-surface-700'"
+                class="px-2.5 py-1 text-[11px] font-bold transition-colors"
+              >
+                {{ t('edit.batch') }}
+              </button>
+              <button
+                v-if="nodeEditing.canUndo.value"
+                @click="nodeEditing.undo()"
+                class="px-2.5 py-1 text-[11px] font-bold transition-colors bg-white text-surface-600 hover:bg-surface-50 dark:bg-surface-800 dark:text-surface-400 dark:hover:bg-surface-700"
+              >
+                {{ t('edit.undo') }}
+              </button>
+              <button
+                v-if="nodeEditing.canRedo.value"
+                @click="nodeEditing.redo()"
+                class="px-2.5 py-1 text-[11px] font-bold transition-colors bg-white text-surface-600 hover:bg-surface-50 dark:bg-surface-800 dark:text-surface-400 dark:hover:bg-surface-700"
+              >
+                {{ t('edit.redo') }}
+              </button>
+              <template v-if="nodeEditing.batchMode.value && nodeEditing.batchSelected.value.size > 0">
+                <span class="text-xs font-medium text-primary-700 dark:text-primary-300">
+                  {{ t('edit.selectedCount', { count: nodeEditing.batchSelected.value.size }) }}
+                </span>
+                <input
+                  v-model="batchValue"
+                  :placeholder="t('edit.newValue')"
+                  @keydown.enter="applyBatch"
+                  class="w-40 rounded border border-surface-200 bg-white px-2 py-1 text-xs dark:border-surface-700 dark:bg-surface-800 dark:text-surface-100 focus:outline-none focus:ring-1 focus:ring-primary-400"
+                />
+                <button @click="applyBatch" class="rounded bg-primary-600 px-2.5 py-1 text-[11px] font-medium text-white hover:bg-primary-700">
+                  {{ t('edit.apply') }}
+                </button>
+                <button @click="nodeEditing.clearBatch(); batchValue = ''" class="rounded border border-surface-200 px-2.5 py-1 text-[11px] dark:border-surface-700">
+                  {{ t('edit.clear') }}
+                </button>
+              </template>
+            </div>
+          </template>
+        </JsonOutputPanel>
       </div>
     </template>
 
@@ -120,69 +168,6 @@
             {{ $t('system.format') || 'Format' }}
           </button>
         </div>
-        <!-- Auto-format toggle -->
-        <label class="flex items-center gap-1.5 cursor-pointer select-none">
-          <span class="text-xs text-surface-600 dark:text-surface-400">{{ $t('system.autoFormat') }}</span>
-          <button
-            @click="autoFormat = !autoFormat"
-            :class="autoFormat ? 'bg-primary-600' : 'bg-surface-300 dark:bg-surface-600'"
-            class="relative inline-flex h-5 w-9 items-center rounded-full transition-colors"
-            role="switch"
-            :aria-checked="autoFormat"
-          >
-            <span
-              :class="autoFormat ? 'translate-x-4' : 'translate-x-0.5'"
-              class="inline-block h-4 w-4 rounded-full bg-white transition-transform"
-            />
-          </button>
-        </label>
-
-        <!-- Schema validation mode -->
-        <button
-          @click="toggleSchema"
-          :class="schemaMode
-            ? 'bg-primary-600 text-white dark:bg-primary-500'
-            : 'bg-white text-surface-600 hover:bg-surface-50 dark:bg-surface-800 dark:text-surface-400 dark:hover:bg-surface-700'"
-          class="px-2.5 py-1 text-[11px] font-bold transition-colors"
-        >
-          {{ t('schema.toggle') }}
-        </button>
-
-        <!-- Generate panel: convert to TS/YAML/CSV/Schema, or build API snippets -->
-        <button
-          @click="toggleGenerate"
-          :class="generateMode
-            ? 'bg-primary-600 text-white dark:bg-primary-500'
-            : 'bg-white text-surface-600 hover:bg-surface-50 dark:bg-surface-800 dark:text-surface-400 dark:hover:bg-surface-700'"
-          class="px-2.5 py-1 text-[11px] font-bold transition-colors"
-        >
-          {{ t('generate.title') }}
-        </button>
-
-        <!-- Node editing: batch select + undo / redo -->
-        <button
-          @click="nodeEditing.batchMode.value = !nodeEditing.batchMode.value"
-          :class="nodeEditing.batchMode.value
-            ? 'bg-primary-600 text-white dark:bg-primary-500'
-            : 'bg-white text-surface-600 hover:bg-surface-50 dark:bg-surface-800 dark:text-surface-400 dark:hover:bg-surface-700'"
-          class="px-2.5 py-1 text-[11px] font-bold transition-colors"
-        >
-          {{ t('edit.batch') }}
-        </button>
-        <button
-          @click="nodeEditing.undo()"
-          :disabled="!nodeEditing.canUndo.value"
-          class="px-2.5 py-1 text-[11px] font-bold transition-colors bg-white text-surface-600 hover:bg-surface-50 disabled:opacity-40 disabled:cursor-not-allowed dark:bg-surface-800 dark:text-surface-400 dark:hover:bg-surface-700"
-        >
-          {{ t('edit.undo') }}
-        </button>
-        <button
-          @click="nodeEditing.redo()"
-          :disabled="!nodeEditing.canRedo.value"
-          class="px-2.5 py-1 text-[11px] font-bold transition-colors bg-white text-surface-600 hover:bg-surface-50 disabled:opacity-40 disabled:cursor-not-allowed dark:bg-surface-800 dark:text-surface-400 dark:hover:bg-surface-700"
-        >
-          {{ t('edit.redo') }}
-        </button>
       </div>
     </template>
 
@@ -220,28 +205,6 @@
       </div>
     </template>
   </ResizablePanel>
-
-  <!-- Batch editing bar (P1-2): apply one value to every selected node -->
-  <div
-    v-if="nodeEditing.batchMode.value && nodeEditing.batchSelected.value.size > 0"
-    class="mt-2 flex flex-wrap items-center gap-2 rounded-lg border border-primary-200 bg-primary-50 px-3 py-2 dark:border-primary-800 dark:bg-primary-900/20"
-  >
-    <span class="text-xs font-medium text-primary-700 dark:text-primary-300">
-      {{ t('edit.selectedCount', { count: nodeEditing.batchSelected.value.size }) }}
-    </span>
-    <input
-      v-model="batchValue"
-      :placeholder="t('edit.newValue')"
-      @keydown.enter="applyBatch"
-      class="w-40 rounded border border-surface-200 bg-white px-2 py-1 text-xs dark:border-surface-700 dark:bg-surface-800 dark:text-surface-100 focus:outline-none focus:ring-1 focus:ring-primary-400"
-    />
-    <button @click="applyBatch" class="rounded bg-primary-600 px-2.5 py-1 text-[11px] font-medium text-white hover:bg-primary-700">
-      {{ t('edit.apply') }}
-    </button>
-    <button @click="nodeEditing.clearBatch(); batchValue = ''" class="rounded border border-surface-200 px-2.5 py-1 text-[11px] dark:border-surface-700">
-      {{ t('edit.clear') }}
-    </button>
-  </div>
 
   <!-- Sensitive field warning -->
   <div v-if="sensitiveFields.length > 0" class="mt-2">
@@ -296,7 +259,6 @@ const outputJson = ref('')
 const error = ref('')
 const parseError = ref<ParseError | null>(null)
 const indent = ref<number | string>(2)
-const autoFormat = ref(true)
 
 // ── Node-level editing (P1-2): every tree edit writes back into `inputJson`,
 // so the formatted output, validation and share payload all stay in sync. ──
@@ -331,18 +293,6 @@ watch(() => nodeEditing.batchMode.value, (on) => {
   }
 })
 const viewMode = ref<'text' | 'rich' | 'table'>(defaultViewMode)
-const schemaMode = ref(false)
-const generateMode = ref(false)
-
-// The two right-panel modes are mutually exclusive.
-function toggleSchema() {
-  schemaMode.value = !schemaMode.value
-  if (schemaMode.value) generateMode.value = false
-}
-function toggleGenerate() {
-  generateMode.value = !generateMode.value
-  if (generateMode.value) schemaMode.value = false
-}
 const fullscreen = ref(false)
 const lastAction = ref<'formatted' | 'minified' | 'validated'>('formatted')
 
@@ -586,12 +536,10 @@ const lastIndent = ref<number | string>(2)
 const setMinified = () => {
   if (!isMinified.value) lastIndent.value = indent.value
   indent.value = 0
-  if (!autoFormat.value) formatJson()
 }
 
 const setFormatted = () => {
   indent.value = lastIndent.value
-  if (!autoFormat.value) formatJson()
 }
 
 const validateJson = () => {
@@ -673,7 +621,7 @@ const formatInputInPlace = () => {
 // Paste: immediately format input in-place
 const onInputPaste = () => {
   nextTick(() => {
-    if (autoFormat.value) formatInputInPlace()
+    formatInputInPlace()
     // Hint only — URL / Base64 are reported, never silently rewritten.
     clipboard.hintAfterPaste(inputJson.value)
   })
@@ -687,19 +635,15 @@ const debouncedFormatInPlace = useDebounceFn(() => { formatInputInPlace() }, 150
 watch(inputJson, () => {
   // Oversized input is parked for hand-off — skip every normal parse path.
   if (largeFile.blocked.value) return
-  if (autoFormat.value) {
-    debouncedFormat()
-    debouncedFormatInPlace()
-  }
+  debouncedFormat()
+  debouncedFormatInPlace()
 })
 
 // Indent change: immediate re-format (deliberate user action, no debounce)
 watch(indent, () => {
   if (!inputJson.value.trim()) return
   formatJson()
-  if (autoFormat.value) {
-    formatInputInPlace()
-  }
+  formatInputInPlace()
 })
 
 useEventListener('keydown', (e: KeyboardEvent) => {

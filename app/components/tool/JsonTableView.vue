@@ -2,7 +2,7 @@
   <div class="h-full flex flex-col overflow-hidden rounded-xl border border-surface-200 bg-white text-xs dark:border-surface-700 dark:bg-surface-900 dark:text-surface-200 relative">
     <template v-if="columns.length > 0">
       <!-- Toolbar: filter / columns / copy row / export CSV -->
-      <div class="flex items-center gap-2 px-2 py-1.5 border-b border-surface-200 bg-surface-50 dark:bg-surface-800 dark:border-surface-700">
+      <ToolPanelBar>
         <div class="relative">
           <Icon name="lucide:search" class="absolute left-2 top-1/2 -translate-y-1/2 w-3.5 h-3.5 text-surface-400" />
           <input
@@ -21,16 +21,18 @@
             <Icon name="lucide:columns-3" class="w-3.5 h-3.5" />
             {{ t('largeViewer.table.columns') }}
           </button>
-          <div v-if="showColMenu" class="absolute top-full mt-1 left-0 z-50 max-h-64 overflow-auto rounded-lg border border-surface-200 bg-white shadow-lg dark:border-surface-700 dark:bg-surface-800 w-48">
-            <label
-              v-for="col in columns"
-              :key="col"
-              class="flex items-center gap-2 px-3 py-1.5 text-xs hover:bg-surface-100 dark:hover:bg-surface-700 cursor-pointer"
-            >
-              <input type="checkbox" :checked="!hiddenCols.has(col)" @change="toggleCol(col)" class="rounded" />
-              <span class="truncate">{{ col }}</span>
-            </label>
-          </div>
+          <ToolFloatingPanel v-if="showColMenu" :anchor-el="colMenuRef">
+            <div class="pointer-events-auto max-h-64 w-48 overflow-auto rounded-lg border border-surface-200 bg-white shadow-lg dark:border-surface-700 dark:bg-surface-800">
+              <label
+                v-for="col in columns"
+                :key="col"
+                class="flex items-center gap-2 px-3 py-1.5 text-xs hover:bg-surface-100 dark:hover:bg-surface-700 cursor-pointer"
+              >
+                <input type="checkbox" :checked="!hiddenCols.has(col)" @change="toggleCol(col)" class="rounded" />
+                <span class="truncate">{{ col }}</span>
+              </label>
+            </div>
+          </ToolFloatingPanel>
         </div>
 
         <button
@@ -64,7 +66,7 @@
         <span class="ml-auto text-[10px] text-surface-400 dark:text-surface-500">
           {{ filteredRows.length }} {{ t('largeViewer.table.matching') }}
         </span>
-      </div>
+      </ToolPanelBar>
 
       <!-- Fixed header -->
       <div

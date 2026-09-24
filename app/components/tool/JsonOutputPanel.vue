@@ -48,157 +48,6 @@
         </button>
       </div>
       <div class="flex gap-2 items-center shrink-0 sm:ml-auto">
-
-        <!-- Search bar (rich mode only; hidden in compact contexts via `enableTreeSearch`) -->
-        <template v-if="currentMode === 'rich' && parsedData !== null && enableTreeSearch">
-          <button
-            @click="toggleExpandAll"
-            class="text-xs text-surface-500 hover:text-surface-700 dark:text-surface-400 dark:hover:text-surface-200 whitespace-nowrap"
-          >
-            {{ allExpanded ? $t('tree.collapseAll') : $t('tree.expandAll') }}
-          </button>
-
-          <div class="relative" ref="modeDropdownRef">
-            <button
-              @click="toggleModeDropdown"
-              class="flex items-center gap-1 rounded-lg border border-surface-200 bg-white px-2.5 py-1.5 text-xs font-medium text-surface-600 hover:bg-surface-50 dark:border-surface-700 dark:bg-surface-800 dark:text-surface-300 dark:hover:bg-surface-700"
-            >
-              {{ modeLabel }}
-              <Icon name="lucide:chevron-down" class="w-3 h-3" />
-            </button>
-            <!-- Rendered into `body`: the header is a horizontal scroll container
-                 (overflow-x-auto ⇒ overflow-y computes to auto), so an absolutely
-                 positioned dropdown inside it gets clipped instead of dropping down. -->
-            <Teleport to="body">
-              <Transition name="fade">
-                <div
-                  v-if="showModeDropdown && dropdownPos"
-                  :style="dropdownStyle"
-                  class="fixed z-[100] rounded-lg border border-surface-200 bg-white shadow-lg dark:border-surface-700 dark:bg-surface-800 overflow-hidden"
-                >
-                  <button
-                    v-for="m in modes"
-                    :key="m.value"
-                    @click="selectSearchMode(m.value)"
-                    class="block w-full text-left px-3 py-1.5 text-xs hover:bg-surface-100 dark:hover:bg-surface-700"
-                    :class="treeSearch.mode.value === m.value ? 'text-primary-600 dark:text-primary-400 font-medium' : 'text-surface-600 dark:text-surface-300'"
-                  >
-                    {{ m.label }}
-                  </button>
-                </div>
-              </Transition>
-            </Teleport>
-          </div>
-
-          <div ref="searchBoxRef" class="relative">
-            <Icon name="lucide:search" class="absolute left-2.5 top-1/2 -translate-y-1/2 w-3.5 h-3.5 text-surface-400" />
-            <input
-              :value="treeSearch.query.value"
-              @input="onSearchInput"
-              @keydown.enter.prevent="onEnter"
-              @keydown.escape="treeSearch.clear()"
-              @focus="showHistory = true"
-              type="text"
-              :placeholder="searchPlaceholder"
-              class="w-48 rounded-lg border border-surface-200 bg-white pl-8 pr-14 py-1.5 text-xs dark:border-surface-700 dark:bg-surface-800 dark:text-surface-100 focus:outline-none focus:ring-1 focus:ring-primary-400"
-            />
-            <span
-              v-if="treeSearch.isSearching.value"
-              class="absolute right-2 top-1/2 -translate-y-1/2"
-            >
-              <span class="block w-3.5 h-3.5 border-2 border-primary-500 border-t-transparent rounded-full animate-spin" />
-            </span>
-            <span
-              v-else-if="treeSearch.query.value"
-              class="absolute right-2 top-1/2 -translate-y-1/2 text-[10px] font-mono"
-              :class="treeSearch.totalCount.value > 0 ? 'text-surface-400' : 'text-red-400'"
-            >
-              {{ treeSearch.totalCount.value > 0 ? `${treeSearch.currentIndex.value + 1}/${treeSearch.totalCount.value}` : '0/0' }}
-            </span>
-            <!-- Floating panels for this box (invalid-path hint + recent searches)
-                 are teleported to `body` — the header is a horizontal scroll
-                 container and clips anything below it. -->
-          </div>
-
-          <Teleport to="body">
-            <div
-              v-if="searchPanelVisible && searchPanelPos"
-              :style="searchPanelStyle"
-              class="fixed z-[100] flex flex-col items-stretch gap-1 pointer-events-none"
-            >
-              <!-- Unsupported / invalid JSONPath expression -->
-              <div
-                v-if="treeSearch.invalidExpression.value"
-                class="pointer-events-auto self-end whitespace-nowrap rounded bg-red-600 px-1.5 py-0.5 text-[10px] text-white shadow"
-              >
-                {{ t('largeViewer.pathInvalid') }}
-              </div>
-
-              <!-- Recent searches -->
-              <div
-                v-if="showHistory && treeSearch.history.value.length > 0"
-                class="pointer-events-auto overflow-hidden rounded-lg border border-surface-200 bg-white shadow-lg dark:border-surface-700 dark:bg-surface-800"
-              >
-                <div class="flex items-center justify-between border-b border-surface-100 px-3 py-1 text-[10px] uppercase tracking-wider text-surface-400 dark:border-surface-700 dark:text-surface-500">
-                  <span>{{ t('search.history') }}</span>
-                  <button class="hover:text-surface-600 dark:hover:text-surface-300" @click="treeSearch.clearHistory()">
-                    {{ t('edit.clear') }}
-                  </button>
-                </div>
-                <button
-                  v-for="item in treeSearch.history.value"
-                  :key="item"
-                  @click="applyHistory(item)"
-                  class="block w-full truncate px-3 py-1.5 text-left text-xs hover:bg-surface-100 dark:hover:bg-surface-700"
-                >
-                  {{ item }}
-                </button>
-              </div>
-            </div>
-          </Teleport>
-
-          <template v-if="treeSearch.query.value">
-            <button
-              @click="showResultsDrawer = !showResultsDrawer"
-              :title="t('largeViewer.results')"
-              class="w-7 h-7 flex items-center justify-center rounded-lg border border-surface-200 bg-white text-surface-500 hover:bg-surface-50 dark:border-surface-700 dark:bg-surface-800 dark:text-surface-400 dark:hover:bg-surface-700"
-              :class="showResultsDrawer ? 'text-primary-600 dark:text-primary-400' : ''"
-            >
-              <Icon name="lucide:list" class="w-3.5 h-3.5" />
-            </button>
-            <button
-              @click="treeSearch.prev()"
-              :disabled="treeSearch.totalCount.value === 0"
-              class="w-7 h-7 flex items-center justify-center rounded-lg border border-surface-200 bg-white text-surface-500 hover:bg-surface-50 disabled:opacity-30 disabled:cursor-not-allowed dark:border-surface-700 dark:bg-surface-800 dark:text-surface-400 dark:hover:bg-surface-700"
-            >
-              <Icon name="lucide:chevron-up" class="w-3.5 h-3.5" />
-            </button>
-            <button
-              @click="treeSearch.next()"
-              :disabled="treeSearch.totalCount.value === 0"
-              class="w-7 h-7 flex items-center justify-center rounded-lg border border-surface-200 bg-white text-surface-500 hover:bg-surface-50 disabled:opacity-30 disabled:cursor-not-allowed dark:border-surface-700 dark:bg-surface-800 dark:text-surface-400 dark:hover:bg-surface-700"
-            >
-              <Icon name="lucide:chevron-down" class="w-3.5 h-3.5" />
-            </button>
-          </template>
-        </template>
-
-        <!-- Edit action buttons (when editable) -->
-        <template v-if="showEditActions">
-          <button @click="emit('format')" class="btn-primary px-3 py-1 text-xs">
-            {{ $t('system.format') }}
-          </button>
-          <button @click="emit('minify')" class="rounded-lg border border-surface-200 bg-white px-3 py-1 text-xs font-bold text-surface-700 hover:bg-surface-50 dark:border-surface-700 dark:bg-surface-800 dark:text-surface-300 dark:hover:bg-surface-700">
-            {{ $t('system.minify') }}
-          </button>
-          <button @click="emit('validate')" class="rounded-lg border border-surface-200 bg-white px-3 py-1 text-xs font-bold text-surface-700 hover:bg-surface-50 dark:border-surface-700 dark:bg-surface-800 dark:text-surface-300 dark:hover:bg-surface-700">
-            {{ $t('system.validate') }}
-          </button>
-          <button @click="emit('fix')" class="rounded-lg border border-surface-200 bg-white px-3 py-1 text-xs font-bold text-surface-700 hover:bg-surface-50 dark:border-surface-700 dark:bg-surface-800 dark:text-surface-300 dark:hover:bg-surface-700">
-            {{ $t('system.fix') }}
-          </button>
-        </template>
-
         <slot name="actions" />
 
         <button
@@ -218,56 +67,6 @@
       </div>
     </div>
 
-    <!-- Search results drawer -->
-    <div
-      v-if="showResultsDrawer && resultList.length"
-      class="absolute left-2 right-2 top-11 z-50 max-h-80 overflow-auto rounded-lg border border-surface-200 bg-white shadow-lg dark:border-surface-700 dark:bg-surface-800"
-    >
-      <div class="sticky top-0 flex items-center justify-between border-b border-surface-200 bg-surface-50 px-3 py-1.5 text-xs font-medium text-surface-600 dark:border-surface-700 dark:bg-surface-800 dark:text-surface-300">
-        <span>{{ t('largeViewer.results') }} ({{ resultList.length }})</span>
-        <div class="flex items-center gap-1">
-          <button
-            class="rounded px-1 py-0.5 text-surface-400 hover:text-surface-600 hover:bg-surface-100 dark:hover:text-surface-300 dark:hover:bg-surface-700"
-            :title="t('largeViewer.exportTxt')"
-            @click="exportResults('txt')"
-          >
-            <Icon name="lucide:file-text" class="w-3.5 h-3.5" />
-          </button>
-          <button
-            class="rounded px-1 py-0.5 text-surface-400 hover:text-surface-600 hover:bg-surface-100 dark:hover:text-surface-300 dark:hover:bg-surface-700"
-            :title="t('largeViewer.exportJson')"
-            @click="exportResults('json')"
-          >
-            <Icon name="lucide:file-json" class="w-3.5 h-3.5" />
-          </button>
-          <button
-            class="rounded px-1 py-0.5 text-surface-400 hover:text-surface-600 hover:bg-surface-100 dark:hover:text-surface-300 dark:hover:bg-surface-700"
-            :title="t('largeViewer.exportCsv')"
-            @click="exportResults('csv')"
-          >
-            <Icon name="lucide:table" class="w-3.5 h-3.5" />
-          </button>
-          <button class="text-surface-400 hover:text-surface-600 dark:hover:text-surface-300" @click="showResultsDrawer = false">
-            <Icon name="lucide:x" class="w-3.5 h-3.5" />
-          </button>
-        </div>
-      </div>
-      <button
-        v-for="(item, i) in resultList"
-        :key="item.path"
-        @click="jumpTo(item.path, i)"
-        class="block w-full border-b border-surface-100 px-3 py-1.5 text-left last:border-0 hover:bg-surface-50 dark:border-surface-800 dark:hover:bg-surface-700"
-      >
-        <div class="flex flex-wrap items-center gap-1.5 text-xs">
-          <span class="font-mono text-primary-600 dark:text-primary-400">{{ item.snippet }}</span>
-          <span class="rounded bg-surface-100 px-1 text-[10px] text-surface-500 dark:bg-surface-700">{{ item.kindLabel }}</span>
-          <span class="rounded bg-surface-100 px-1 text-[10px] text-surface-500 dark:bg-surface-700">{{ item.type }}</span>
-          <span v-if="item.parentArray" class="rounded bg-surface-100 px-1 text-[10px] text-surface-500 dark:bg-surface-700">@{{ item.parentArray }}</span>
-        </div>
-        <div class="mt-0.5 truncate font-mono text-[10px] text-surface-400 dark:text-surface-500">{{ item.path }}</div>
-      </button>
-    </div>
-
     <!-- Text view -->
     <div v-show="currentMode === 'text'" class="relative flex-1 min-h-0">
       <!-- Editable mode: textarea with line numbers -->
@@ -283,7 +82,6 @@
           ref="textareaRef"
           :value="content"
           @input="onTextareaInput"
-          @paste="emit('paste')"
           @scroll="syncLineNumbers"
           :placeholder="placeholder"
           class="flex-1 p-4 m-0 bg-transparent font-mono text-sm text-surface-900 dark:text-surface-100 resize-none outline-none leading-[1.5] whitespace-pre overflow-auto w-full h-full"
@@ -334,14 +132,28 @@
     <!-- Rich view -->
     <div
       v-show="currentMode === 'rich'"
-      ref="richRef"
-      class="flex-1 min-h-0 overflow-auto rounded-xl border border-surface-200 bg-surface-50 p-4 dark:border-surface-700 dark:bg-surface-800"
+      class="flex-1 min-h-0 overflow-auto rounded-xl border border-surface-200 bg-surface-50 pb-14 dark:border-surface-700 dark:bg-surface-800"
+      :class="showTreeToolbar ? 'scroll-pt-12' : ''"
     >
-      <JsonTreeNode
-        v-if="parsedData !== null"
-        :data="parsedData"
-        :path="''"
-      />
+      <!-- Tree browsing + search controls: sticky so they stay in reach while
+           the tree scrolls, and out of the header so it stays a short row. -->
+      <ToolPanelBar v-if="showTreeToolbar" sticky>
+        <TreeToolbar
+          :tree-search="treeSearch"
+          :all-expanded="allExpanded"
+          :results="resultList"
+          @toggle-expand-all="toggleExpandAll"
+          @jump="jumpTo"
+          @export-results="exportResults"
+        />
+      </ToolPanelBar>
+
+      <div v-if="parsedData !== null" class="p-4">
+        <JsonTreeNode
+          :data="parsedData"
+          :path="''"
+        />
+      </div>
       <div v-else-if="error" class="flex flex-col items-center justify-center h-full gap-3 p-6 text-center">
         <span class="i-lucide-alert-circle w-8 h-8 text-red-400 dark:text-red-500" />
         <div>
@@ -384,6 +196,18 @@
         {{ emptyText }}
       </div>
     </div>
+
+    <!-- Footer slot: floats OVER the bottom of the panel content (absolute,
+         not a flex row) so it never shrinks the tree area. Styled as a rounded,
+         bordered floating bar with a divider line, matching the top toolbar's
+         segmented-control style. Only renders when a consumer provides it, so
+         the ~17 other tools are unaffected. -->
+    <div
+      v-if="$slots.footer"
+      class="absolute inset-x-3 bottom-3 z-10 flex flex-wrap items-center gap-2 border-t border-surface-200 pt-2"
+    >
+      <slot name="footer" />
+    </div>
   </div>
 </template>
 
@@ -392,12 +216,6 @@ import type { FieldError } from '~/types/jsonErrors'
 import type { SearchMode } from '~/composables/useTreeSearch'
 import { jsonTypeLabel } from '~/utils/jsonPath'
 import { generateCsv } from '~/composables/useExcelCompat'
-
-// Single scroll viewport for the rich tree. Virtualized subtree lists window
-// against this element instead of creating a scroll box of their own, which is
-// what used to produce a second scrollbar inside the tree.
-const richRef = ref<HTMLElement | null>(null)
-provide('treeViewport', richRef)
 
 const { t } = useI18n()
 
@@ -419,8 +237,6 @@ interface Props {
   editable?: boolean
   /** Placeholder text when editable and empty */
   placeholder?: string
-  /** Show format/minify/validate/fix action buttons in header */
-  showEditActions?: boolean
   /** Show text/rich view mode toggle */
   showViewToggle?: boolean
   /** Syntax highlighting in text mode: '' = none, 'json' = JSON highlighting */
@@ -429,7 +245,12 @@ interface Props {
   masked?: boolean
   /** Set of sensitive field paths to mask */
   sensitivePaths?: Set<string>
-  /** Show the in-tree search controls in rich mode (expand all, mode picker, query, prev/next) */
+  /**
+   * Show the tree-browsing / search controls in rich mode (expand all, mode
+   * picker, query, prev/next, results drawer).
+   * Must be opted in explicitly — it is a tree-exploration feature set, not
+   * something every page that happens to render JSON should inherit.
+   */
   enableTreeSearch?: boolean
 }
 
@@ -448,12 +269,11 @@ const props = withDefaults(defineProps<Props>(), {
   locateTarget: '',
   editable: false,
   placeholder: '',
-  showEditActions: false,
   showViewToggle: true,
   highlight: '',
   masked: false,
   sensitivePaths: () => new Set(),
-  enableTreeSearch: true,
+  enableTreeSearch: false,
 })
 
 const emit = defineEmits<{
@@ -463,20 +283,11 @@ const emit = defineEmits<{
   copy: []
   download: []
   copyPath: [path: string]
-  format: []
-  minify: []
-  validate: []
-  fix: []
-  paste: []
   locateError: []
   loadExample: []
 }>()
 
 const copied = ref(false)
-const showModeDropdown = ref(false)
-const modeDropdownRef = ref<HTMLElement>()
-const searchBoxRef = ref<HTMLElement>()
-const showHistory = ref(false)
 const textareaRef = ref<HTMLTextAreaElement>()
 
 const currentMode = computed(() => props.viewMode)
@@ -506,6 +317,10 @@ const tableData = computed(() => {
   return props.parsedData as unknown[]
 })
 const tableParentPath = computed(() => tableOverride.value?.parentPath ?? '')
+// The tree toolbar only makes sense where there is a tree to browse.
+const showTreeToolbar = computed(
+  () => currentMode.value === 'rich' && props.parsedData !== null && props.enableTreeSearch,
+)
 const lineCount = computed(() => {
   const lines = (props.content || '').split('\n')
   return Math.max(lines.length, 1)
@@ -527,9 +342,6 @@ function syncLineNumbers() {
 // Search
 const parsedDataRef = computed(() => props.parsedData)
 const treeSearch = useTreeSearch(parsedDataRef)
-
-// ── Search results drawer (P0-4): list + jump to node ──
-const showResultsDrawer = ref(false)
 
 function valueAtPath(data: unknown, path: string): unknown {
   if (data === null || data === undefined || !path) return data
@@ -602,137 +414,7 @@ function exportResults(kind: 'txt' | 'json' | 'csv') {
 function jumpTo(path: string, index: number) {
   treeSearch.currentIndex.value = index
   locatePath.value = path
-  showResultsDrawer.value = false
 }
-
-const modes = computed(() => [
-  { value: 'all' as const, label: t('largeViewer.scopeAll') },
-  { value: 'key' as const, label: t('tree.searchByKey') },
-  { value: 'value' as const, label: t('tree.searchByValue') },
-  { value: 'path' as const, label: t('tree.searchByPath') },
-  { value: 'jsonpath' as const, label: t('tree.searchByJsonPath') },
-])
-
-const modeLabel = computed(() => modes.value.find(m => m.value === treeSearch.mode.value)?.label ?? 'Key')
-
-// The dropdown lives in <Teleport to="body">, so it needs a viewport position
-// measured from its trigger.
-function measureAnchor(el: HTMLElement | undefined | null) {
-  if (!el) return null
-  const r = el.getBoundingClientRect()
-  return { top: r.bottom + 4, left: r.left, width: r.width }
-}
-
-function anchorStyle(pos: { top: number; left: number; width: number } | null) {
-  if (!pos) return {}
-  return { top: `${pos.top}px`, left: `${pos.left}px`, minWidth: `${pos.width}px` }
-}
-
-const dropdownPos = ref<{ top: number; left: number; width: number } | null>(null)
-const dropdownStyle = computed(() => anchorStyle(dropdownPos.value))
-
-function measureDropdown() {
-  const p = measureAnchor(modeDropdownRef.value)
-  if (p) dropdownPos.value = p
-}
-
-function toggleModeDropdown() {
-  if (showModeDropdown.value) {
-    showModeDropdown.value = false
-    return
-  }
-  measureDropdown()
-  showModeDropdown.value = true
-}
-
-function selectSearchMode(value: SearchMode) {
-  treeSearch.mode.value = value
-  showModeDropdown.value = false
-}
-
-// Recent searches + invalid-path hint share the search box as their anchor.
-const searchPanelPos = ref<{ top: number; left: number; width: number } | null>(null)
-const searchPanelStyle = computed(() => anchorStyle(searchPanelPos.value))
-const searchPanelVisible = computed(
-  () => treeSearch.invalidExpression.value || (showHistory.value && treeSearch.history.value.length > 0),
-)
-
-function measureSearchPanel() {
-  const p = measureAnchor(searchBoxRef.value)
-  if (p) searchPanelPos.value = p
-}
-
-// Keep both floating panels glued to their triggers while they are open.
-function onViewportChange() {
-  if (showModeDropdown.value) measureDropdown()
-  if (searchPanelVisible.value) measureSearchPanel()
-}
-
-watch([showModeDropdown, searchPanelVisible], ([modeOpen, panelOpen]) => {
-  if (modeOpen) {
-    measureDropdown()
-    window.addEventListener('scroll', measureDropdown, true)
-  } else {
-    window.removeEventListener('scroll', measureDropdown, true)
-  }
-
-  if (panelOpen) {
-    measureSearchPanel()
-    window.addEventListener('scroll', measureSearchPanel, true)
-  } else {
-    window.removeEventListener('scroll', measureSearchPanel, true)
-  }
-
-  if (modeOpen || panelOpen) window.addEventListener('resize', onViewportChange)
-  else window.removeEventListener('resize', onViewportChange)
-})
-
-onUnmounted(() => {
-  window.removeEventListener('scroll', measureDropdown, true)
-  window.removeEventListener('scroll', measureSearchPanel, true)
-  window.removeEventListener('resize', onViewportChange)
-})
-
-const searchPlaceholder = computed(() => {
-  switch (treeSearch.mode.value) {
-    case 'key': return t('tree.placeholderKey')
-    case 'value': return t('tree.placeholderValue')
-    case 'path': return t('tree.placeholderPath')
-    case 'jsonpath': return t('largeViewer.pathPlaceholder')
-    default: return t('tree.placeholderKey')
-  }
-})
-
-function onSearchInput(e: Event) {
-  treeSearch.query.value = (e.target as HTMLInputElement).value
-}
-
-function onEnter(e: KeyboardEvent) {
-  // Only a committed query (Enter) enters history — not every keystroke.
-  treeSearch.rememberQuery(treeSearch.query.value)
-  showHistory.value = false
-  if (e.shiftKey) treeSearch.prev()
-  else treeSearch.next()
-}
-
-function applyHistory(value: string) {
-  treeSearch.query.value = value
-  showHistory.value = false
-}
-
-// Close mode dropdown on outside click
-onMounted(() => {
-  const handler = (e: MouseEvent) => {
-    if (modeDropdownRef.value && !modeDropdownRef.value.contains(e.target as Node)) {
-      showModeDropdown.value = false
-    }
-    if (searchBoxRef.value && !searchBoxRef.value.contains(e.target as Node)) {
-      showHistory.value = false
-    }
-  }
-  document.addEventListener('click', handler)
-  onUnmounted(() => document.removeEventListener('click', handler))
-})
 
 // Provide search state to tree nodes
 provide('treeSearch', treeSearch)
