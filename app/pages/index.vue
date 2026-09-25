@@ -1,32 +1,63 @@
 <template>
   <div>
-    <!-- Hero Section -->
-    <section class="relative py-16 sm:py-24">
-      <div class="mx-auto max-w-[1200px] px-5">
-        <div class="text-center">
+    <!-- Hero Section: value prop (left) + JSON data flow visual (right) -->
+    <section class="relative overflow-hidden">
+      <div
+        class="pointer-events-none absolute inset-x-0 top-0 -z-10 h-80 bg-gradient-to-b from-primary-500/[0.06] to-transparent dark:from-primary-500/[0.10]">
+      </div>
+      <div class="mx-auto max-w-[1280px] px-5 py-20 lg:py-28">
+        <div class="grid items-center gap-12 lg:gap-16 lg:grid-cols-[minmax(0,0.95fr)_minmax(420px,1.05fr)]">
 
-          <!-- Title -->
-          <h1 class="text-4xl font-black tracking-tight text-surface-900 dark:text-surface-100 sm:text-5xl lg:text-6xl">
-            <span class="block">{{ $t('home.hero.title_line1') }}</span>
-            <span class="block text-primary-600 dark:text-primary-400">{{ $t('home.hero.title_line2') }}</span>
-          </h1>
+          <!-- Left: value proposition + CTAs -->
+          <div class="text-left">
+            <span
+              class="inline-flex items-center gap-2 rounded-full border border-primary-200/70 bg-primary-50 px-3 py-1 text-xs font-semibold text-primary-700 dark:border-primary-800/60 dark:bg-primary-900/20 dark:text-primary-300">
+              {{ $t('home.hero.badge') }}
+            </span>
 
-          <!-- Subtitle -->
-          <p class="mx-auto mt-6 max-w-2xl text-lg text-surface-600 dark:text-surface-400">
-            {{ $t('home.hero.subtitle') }}
-          </p>
+            <h1 class="mt-6 text-4xl font-black tracking-tight text-surface-900 dark:text-surface-100 sm:text-5xl lg:text-6xl">
+              <span class="block">{{ $t('home.hero.title_line1') }}</span>
+              <span class="block text-primary-600 dark:text-primary-400">{{ $t('home.hero.title_line2') }}</span>
+            </h1>
 
-        </div>
+            <p class="mt-6 max-w-xl text-lg leading-relaxed text-surface-600 dark:text-surface-400">
+              {{ $t('home.hero.subtitle') }}
+            </p>
 
-        <!-- JSON Editor embedded -->
-        <div class="mt-16">
-          <JsonEditor v-if="editorTool" :tool="editorTool" show-view-toggle default-view-mode="rich" />
-          <div class="mt-3 flex justify-center">
-            <PrivacyNotice />
+            <div class="mt-8 flex flex-wrap items-center gap-3">
+              <NuxtLinkLocale to="/tools"
+                class="inline-flex items-center gap-2 rounded-xl bg-primary-600 px-5 py-3 text-sm font-bold text-white shadow-sm transition hover:bg-primary-700 hover:shadow-md dark:bg-primary-500 dark:hover:bg-primary-400">
+                {{ $t('home.hero.cta_primary') }}
+                <Icon name="lucide:arrow-right" class="h-4 w-4" />
+              </NuxtLinkLocale>
+              <NuxtLinkLocale to="/tools/format/json-editor"
+                class="inline-flex items-center gap-2 rounded-xl border border-surface-200 bg-white px-5 py-3 text-sm font-bold text-surface-700 transition hover:border-primary-200 hover:text-primary-600 dark:border-surface-700 dark:bg-surface-900 dark:text-surface-200 dark:hover:border-primary-800 dark:hover:text-primary-400">
+                <Icon name="lucide:edit-3" class="h-4 w-4" />
+                {{ $t('home.hero.cta_secondary') }}
+              </NuxtLinkLocale>
+            </div>
+
+            <ul class="mt-6 flex flex-wrap items-center gap-x-4 gap-y-2 text-xs font-medium text-surface-500 dark:text-surface-400">
+              <li class="inline-flex items-center gap-1.5">
+                <Icon name="lucide:image" class="h-3.5 w-3.5 text-primary-500" />
+                {{ $t('home.hero.capability_1') }}
+              </li>
+              <li class="inline-flex items-center gap-1.5">
+                <Icon name="lucide:database" class="h-3.5 w-3.5 text-primary-500" />
+                {{ $t('home.hero.capability_2') }}
+              </li>
+              <li class="inline-flex items-center gap-1.5">
+                <Icon name="lucide:shuffle" class="h-3.5 w-3.5 text-primary-500" />
+                {{ $t('home.hero.capability_3') }}
+              </li>
+            </ul>
           </div>
-          <div class="mt-3">
-            <PrivacyPanel />
+
+          <!-- Right: live JSON data flow visual -->
+          <div class="relative">
+            <JsonHeroSvg />
           </div>
+
         </div>
       </div>
     </section>
@@ -91,42 +122,42 @@
         </div>
 
         <div class="grid grid-cols-1 sm:grid-cols-3 gap-6">
-          <!-- Client-Side -->
-          <div class="rounded-xl border border-surface-200 bg-white p-6 text-center dark:border-surface-700 dark:bg-surface-900">
-            <div class="mx-auto mb-4 flex h-12 w-12 items-center justify-center rounded-full bg-green-50 text-green-600 dark:bg-green-900/30 dark:text-green-400">
-              <Icon name="lucide:shield-check" class="h-6 w-6" />
-            </div>
-            <h3 class="font-bold text-surface-900 dark:text-surface-100">
-              {{ $t('home.about.features.client_side.title') }}
-            </h3>
-            <p class="mt-2 text-sm text-surface-500 dark:text-surface-400">
-              {{ $t('home.about.features.client_side.description') }}
-            </p>
-          </div>
-
-          <!-- Fast & Free -->
-          <div class="rounded-xl border border-surface-200 bg-white p-6 text-center dark:border-surface-700 dark:bg-surface-900">
-            <div class="mx-auto mb-4 flex h-12 w-12 items-center justify-center rounded-full bg-amber-50 text-amber-600 dark:bg-amber-900/30 dark:text-amber-400">
-              <Icon name="lucide:zap" class="h-6 w-6" />
-            </div>
-            <h3 class="font-bold text-surface-900 dark:text-surface-100">
-              {{ $t('home.about.features.free.title') }}
-            </h3>
-            <p class="mt-2 text-sm text-surface-500 dark:text-surface-400">
-              {{ $t('home.about.features.free.description') }}
-            </p>
-          </div>
-
-          <!-- Multi-Language -->
+          <!-- Preview everything inside JSON -->
           <div class="rounded-xl border border-surface-200 bg-white p-6 text-center dark:border-surface-700 dark:bg-surface-900">
             <div class="mx-auto mb-4 flex h-12 w-12 items-center justify-center rounded-full bg-blue-50 text-blue-600 dark:bg-blue-900/30 dark:text-blue-400">
-              <Icon name="lucide:globe" class="h-6 w-6" />
+              <Icon name="lucide:image" class="h-6 w-6" />
             </div>
             <h3 class="font-bold text-surface-900 dark:text-surface-100">
-              {{ $t('home.about.features.multi_lang.title') }}
+              {{ $t('home.about.features.preview.title') }}
             </h3>
             <p class="mt-2 text-sm text-surface-500 dark:text-surface-400">
-              {{ $t('home.about.features.multi_lang.description') }}
+              {{ $t('home.about.features.preview.description') }}
+            </p>
+          </div>
+
+          <!-- Built for huge files -->
+          <div class="rounded-xl border border-surface-200 bg-white p-6 text-center dark:border-surface-700 dark:bg-surface-900">
+            <div class="mx-auto mb-4 flex h-12 w-12 items-center justify-center rounded-full bg-green-50 text-green-600 dark:bg-green-900/30 dark:text-green-400">
+              <Icon name="lucide:database" class="h-6 w-6" />
+            </div>
+            <h3 class="font-bold text-surface-900 dark:text-surface-100">
+              {{ $t('home.about.features.large_file.title') }}
+            </h3>
+            <p class="mt-2 text-sm text-surface-500 dark:text-surface-400">
+              {{ $t('home.about.features.large_file.description') }}
+            </p>
+          </div>
+
+          <!-- One toolbox, many formats -->
+          <div class="rounded-xl border border-surface-200 bg-white p-6 text-center dark:border-surface-700 dark:bg-surface-900">
+            <div class="mx-auto mb-4 flex h-12 w-12 items-center justify-center rounded-full bg-purple-50 text-purple-600 dark:bg-purple-900/30 dark:text-purple-400">
+              <Icon name="lucide:shuffle" class="h-6 w-6" />
+            </div>
+            <h3 class="font-bold text-surface-900 dark:text-surface-100">
+              {{ $t('home.about.features.formats.title') }}
+            </h3>
+            <p class="mt-2 text-sm text-surface-500 dark:text-surface-400">
+              {{ $t('home.about.features.formats.description') }}
             </p>
           </div>
         </div>
@@ -209,7 +240,7 @@
 </template>
 
 <script setup lang="ts">
-const { featuredTools, getToolDetail } = useTools()
+const { featuredTools } = useTools()
 const { t } = useI18n()
 const { getBlogList } = useBlog()
 
@@ -238,9 +269,6 @@ useSchemaOrg(
     })
   )
 )
-
-// Embedded JSON Editor tool data
-const editorTool = computed(() => getToolDetail('format', 'json-editor'))
 
 // SEO
 useSeoMeta({

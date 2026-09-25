@@ -192,14 +192,14 @@
       "description": "在线压缩（Minify）JSON：去除缩进、换行和无意义的空白，生成紧凑的单行输出。对比原始与压缩后的字符数、UTF-8 字节数和节省比例，支持复制与下载，浏览器本地处理，无需上传。",
       "keywords": [
         "json压缩",
-        "json minify",
-        "minify json",
+        "json 最小化",
+        "json 代码最小化",
         "在线压缩json",
         "json去空白",
         "json转单行",
         "json单行化",
         "json大小缩减",
-        "免费 json minify 工具"
+        "免费 json 最小化工具"
       ]
     },
     "features": [

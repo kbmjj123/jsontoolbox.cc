@@ -45,12 +45,34 @@
   },
   "home": {
     "hero": {
-      "badge": "免费 · 开源 · 无需上传",
-      "title_line1": "从JSON到",
-      "title_line2": "你需要的任何格式。",
-      "subtitle": "格式化、校验、转换、对比——浏览器里直接用，不用装任何东西。",
-      "cta_primary": "查看所有工具",
-      "cta_secondary": "开始JSON格式化"
+      "badge": "免费 · 开源 · 浏览器端运行",
+      "title_line1": "你的 JSON，",
+      "title_line2": "看得见。",
+      "subtitle": "在 JSON 中直接预览图片、颜色和媒体，秒开超大文件，并在 12+ 种格式间自由转换——全程都在浏览器里完成。",
+      "cta_primary": "浏览所有工具",
+      "cta_secondary": "打开 JSON 编辑器",
+      "capability_1": "内联图片与颜色预览",
+      "capability_2": "秒开超大 JSON / NDJSON",
+      "capability_3": "12+ 种格式互转",
+      "popular_label": "热门",
+      "svg": {
+        "pipeline": "JSON 工作流",
+        "local": "本地",
+        "raw_json": "原始 JSON",
+        "input": "输入",
+        "format": "格式化",
+        "readable": "可读",
+        "explore": "浏览",
+        "tree": "树形",
+        "table": "表格",
+        "view": "查看",
+        "convert": "转换",
+        "csv": "CSV",
+        "parse": "解析",
+        "ready": "就绪",
+        "no_upload": "纯前端",
+        "processed_locally": "在你的浏览器中运行"
+      }
     },
     "featured": {
       "badge": {
@@ -66,20 +88,20 @@
       "view_all": "查看所有工具"
     },
     "about": {
-      "title": "什么是JSON工具箱？",
-      "description": "JSON工具箱是一套免费、开源的JSON工具集合，专为开发者、数据分析师和所有处理JSON的人打造。所有工具完全在浏览器中运行 — 数据不会上传到任何服务器。",
+      "title": "为什么选择 JSON 工具箱？",
+      "description": "JSON 工具箱把原始 JSON 变成你可以真正处理的数据：在内部预览媒体、打开其他编辑器打不开的大文件，并自由在多种格式间转换——全程都不离开浏览器。",
       "features": {
-        "client_side": {
-          "title": "100% 纯前端",
-          "description": "所有处理在浏览器本地完成，JSON数据不会离开你的设备。"
+        "preview": {
+          "title": "在 JSON 内预览一切",
+          "description": "图片、颜色、音频、视频、PDF、JWT、时间戳等会被自动识别并内联展示——无需把值复制到另一个标签页。"
         },
-        "free": {
-          "title": "快速且免费",
-          "description": "无需注册，没有限制。打开工具即可开始使用。"
+        "large_file": {
+          "title": "为超大文件而生",
+          "description": "通过虚拟滚动与后台搜索打开数 MB 的 JSON 与 NDJSON。超过 5MB 的文件会自动转入专用查看器。"
         },
-        "multi_lang": {
-          "title": "多语言支持",
-          "description": "支持英文和中文，更多语言即将推出。"
+        "formats": {
+          "title": "一个工具箱，多种格式",
+          "description": "19 个工具，覆盖格式化、校验、查询、对比，以及 JSON 到 CSV、YAML、XML、Excel、HTML、PDF、TypeScript 等的转换——全部在浏览器中完成。"
         }
       }
     },

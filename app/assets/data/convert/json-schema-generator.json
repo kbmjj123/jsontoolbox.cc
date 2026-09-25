@@ -217,7 +217,7 @@
       "option_indent": "缩进：",
       "option_indent_2": "2 空格",
       "option_indent_4": "4 空格",
-      "option_draft": "Schema draft：",
+      "option_draft": "Schema 草案：",
       "option_draft_7": "Draft-07",
       "option_draft_2020": "Draft 2020-12",
       "option_required": "把样本中出现的字段标记为 required",

@@ -44,12 +44,34 @@
   },
   "home": {
     "hero": {
-      "badge": "Free · Open Source · No Upload",
-      "title_line1": "From JSON to",
-      "title_line2": "any format you need.",
-      "subtitle": "Format, validate, convert, compare — all in your browser, nothing to install.",
-      "cta_primary": "Explore All Tools",
-      "cta_secondary": "Open JSON Formatter"
+      "badge": "Free · Open source · Browser-based",
+      "title_line1": "JSON you can",
+      "title_line2": "actually see.",
+      "subtitle": "Preview images, colors, and media right inside your JSON, open huge files in seconds, and convert across 12+ formats — all in your browser.",
+      "cta_primary": "Explore JSON Tools",
+      "cta_secondary": "Open JSON Editor",
+      "capability_1": "Inline image & color preview",
+      "capability_2": "Opens huge JSON & NDJSON",
+      "capability_3": "12+ format conversions",
+      "popular_label": "Popular",
+      "svg": {
+        "pipeline": "JSON Pipeline",
+        "local": "Local",
+        "raw_json": "Raw JSON",
+        "input": "Input",
+        "format": "Format",
+        "readable": "Readable",
+        "explore": "Explore",
+        "tree": "Tree",
+        "table": "Table",
+        "view": "View",
+        "convert": "Convert",
+        "csv": "CSV",
+        "parse": "Parse",
+        "ready": "Ready",
+        "no_upload": "Client-side",
+        "processed_locally": "Runs in your browser"
+      }
     },
     "featured": {
       "badge": {
@@ -65,20 +87,20 @@
       "view_all": "View All Tools"
     },
     "about": {
-      "title": "What is JSON Toolbox?",
-      "description": "JSON Toolbox is a free, open-source collection of JSON tools built for developers, data analysts, and anyone who works with JSON. Every tool runs entirely in your browser — no data is ever uploaded to any server.",
+      "title": "Why JSON Toolbox?",
+      "description": "JSON Toolbox turns raw JSON into something you can actually work with. Preview media inline, open files other editors choke on, and move between formats — all without leaving your browser.",
       "features": {
-        "client_side": {
-          "title": "100% Client-Side",
-          "description": "All processing happens locally in your browser. Your JSON data never leaves your device."
+        "preview": {
+          "title": "Preview everything inside JSON",
+          "description": "Images, colors, audio, video, PDFs, JWTs, timestamps and more are detected and shown inline — no copy-pasting values into another tab."
         },
-        "free": {
-          "title": "Fast & Free",
-          "description": "No sign-up, no limits. Open any tool and start working instantly."
+        "large_file": {
+          "title": "Built for huge files",
+          "description": "Open multi-megabyte JSON and NDJSON with virtual scrolling and background search. Files over 5 MB are routed to the dedicated viewer automatically."
         },
-        "multi_lang": {
-          "title": "Multi-Language",
-          "description": "Available in English and Chinese, with more languages coming soon."
+        "formats": {
+          "title": "One toolbox, many formats",
+          "description": "19 tools that format, validate, query, diff, and convert JSON to CSV, YAML, XML, Excel, HTML, PDF, TypeScript and more — all in your browser."
         }
       }
     },
