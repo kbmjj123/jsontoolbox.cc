@@ -8,8 +8,8 @@
           :label="tool.ui?.label_input || 'Input XML'"
           placeholder='<root><item>data</item></root>'
           show-upload
-          show-load-url
           example-slug="xml-to-json"
+          :tool="props.tool"
           @clear="clearAll"
           @paste="onPaste"
           @example-loaded="onExampleLoaded"
@@ -41,8 +41,8 @@
       <div class="flex items-center gap-2">
         <label class="text-xs font-bold text-surface-600 dark:text-surface-400">{{ tool.ui?.label_indent || 'Indent:' }}</label>
         <select v-model="indent" class="rounded-lg border border-surface-200 bg-white px-2 py-1 text-xs dark:border-surface-700 dark:bg-surface-800">
-          <option :value="2">2 spaces</option>
-          <option :value="4">4 spaces</option>
+          <option :value="2">{{ props.tool.ui?.option_spaces_2 || '2 spaces' }}</option>
+          <option :value="4">{{ props.tool.ui?.option_spaces_4 || '4 spaces' }}</option>
         </select>
       </div>
       <div class="flex items-center gap-2">
@@ -57,6 +57,10 @@
         <input type="checkbox" v-model="preserveTextNodes" class="rounded border-surface-300">
         <span class="text-xs font-bold text-surface-600 dark:text-surface-400">{{ tool.ui?.label_preserve_text || 'Preserve #text' }}</span>
       </label>
+
+      <span v-if="elementCount" class="text-xs text-surface-500 dark:text-surface-400">
+        {{ (tool.ui?.status_elements || '{count} elements').replace('{count}', String(elementCount)) }}
+      </span>
     </template>
   </ResizablePanel>
 </template>
@@ -73,6 +77,7 @@ const indent = ref(2)
 const attrPrefix = ref('@')
 const preserveTextNodes = ref(false)
 const fullscreen = ref(false)
+const elementCount = ref(0)
 
 const inputEditorRef = ref<InstanceType<typeof import('~/components/tool/JsonInputEditor.vue').default>>()
 
@@ -130,25 +135,27 @@ const parseXmlNode = (node: Element): any => {
 
 const convertToJson = (silent = false) => {
   error.value = ''
-  if (!inputXml.value.trim()) { outputJson.value = ''; return }
+  elementCount.value = 0
+  if (!inputXml.value.trim()) { if (!silent) error.value = props.tool.ui?.error_empty_input || 'Enter XML or open an XML file first'; outputJson.value = ''; return }
   try {
     const parser = new DOMParser()
     const doc = parser.parseFromString(inputXml.value, 'text/xml')
     const parserError = doc.querySelector('parsererror')
     if (parserError) {
-      error.value = (tool.ui?.error_invalid_xml || 'Invalid XML: ') + parserError.textContent
+      error.value = (props.tool.ui?.error_invalid_xml || 'Invalid XML: ') + parserError.textContent
       outputJson.value = ''
       if (!silent) toast.error(error.value)
       return
     }
     const root = doc.documentElement
     const result = { [root.tagName]: parseXmlNode(root) }
+    elementCount.value = doc.getElementsByTagName('*').length
     outputJson.value = JSON.stringify(result, null, indent.value)
     if (!silent) toast.success(t('toast.converted'))
   } catch (e) {
-    error.value = (e as Error).message
+    error.value = props.tool.ui?.error_conversion || 'The XML could not be converted'
     outputJson.value = ''
-    if (!silent) toast.error((e as Error).message)
+    if (!silent) toast.error(error.value)
   }
 }
 

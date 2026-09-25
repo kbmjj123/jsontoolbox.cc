@@ -1,0 +1,29 @@
+[
+  {
+    "id": "shutdown-1790292686270",
+    "from": "team-lead",
+    "to": "page-ts",
+    "type": "shutdown_request",
+    "content": "{\"type\":\"shutdown_request\",\"request_id\":\"shutdown-1790292686270\",\"timeout_ms\":60000,\"reason\":\"本轮工作已完成并合入，构建通过。感谢，可以关闭。\",\"from\":\"team-lead\",\"timestamp\":\"2026-09-24T23:31:26.271Z\"}",
+    "timestamp": "2026-09-24T23:31:26.271Z",
+    "read": true
+  },
+  {
+    "id": "shutdown-1790294868785",
+    "from": "team-lead",
+    "to": "page-ts",
+    "type": "shutdown_request",
+    "content": "{\"type\":\"shutdown_request\",\"request_id\":\"shutdown-1790294868785\",\"timeout_ms\":60000,\"reason\":\"Work verified in tree and build is green. Shutting down.\",\"from\":\"team-lead\",\"timestamp\":\"2026-09-25T00:07:48.785Z\"}",
+    "timestamp": "2026-09-25T00:07:48.785Z",
+    "read": false
+  },
+  {
+    "id": "nudge-1790294898798-uc6ghm",
+    "from": "team-lead",
+    "to": "page-ts",
+    "type": "message",
+    "content": "Reminder: a previous shutdown_request (request_id=shutdown-1790294868785) is still awaiting your response.\nPer the Shutdown Protocol, you MUST reply now with:\n  send_message(type='shutdown_response', approve=true, request_id='shutdown-1790294868785')\nIf you have unreported deliverables, send them via send_message first, then acknowledge.\nForce termination will occur shortly if no response is received.",
+    "timestamp": "2026-09-25T00:08:18.798Z",
+    "read": false
+  }
+]

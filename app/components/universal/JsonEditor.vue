@@ -28,8 +28,8 @@
         <JsonInputEditor
           ref="inputEditorRef"
           v-model="inputJson"
-          :label="tool.ui?.label_input || 'Input JSON'"
-          placeholder='{"name": "JSON Toolbox", "version": "1.0"}'
+          :label="tool.ui?.label_input"
+          :placeholder="tool.ui?.placeholder_input"
           :error-line="parseError?.line ?? 0"
           :error-column="parseError?.column ?? 0"
           :friendly-message="friendlyMessage"
@@ -37,7 +37,6 @@
           :error-copied="errorCopied"
           :readonly="isSharedReadonly"
           :show-upload="!isSharedReadonly"
-          :show-load-url="!isSharedReadonly"
           :show-paste="!isSharedReadonly"
           :show-clear="!isSharedReadonly"
           example-slug="json-editor"
@@ -57,7 +56,7 @@
     <template #second>
       <div class="h-full pl-3 flex flex-col overflow-hidden">
         <JsonOutputPanel
-          :label="tool.ui?.label_output || 'Output'"
+          :label="tool.ui?.label_output"
           :content="outputJson"
           :error="error"
           :friendly-message="friendlyMessage"
@@ -67,9 +66,9 @@
           :locate-target="locateTarget"
           :show-copy="false"
           :show-download="false"
-          :show-view-toggle="showViewToggle"
+          :show-view-toggle="props.showViewToggle"
           :enable-tree-search="true"
-          :empty-text="$t('system.emptyOutput')"
+          :empty-text="tool.ui?.placeholder_output || $t('system.emptyOutput')"
           :masked="masked"
           :sensitive-paths="sensitivePathSet"
           @update:view-mode="viewMode = $event"
@@ -136,15 +135,16 @@
     <template #toolbar-left>
       <div class="flex flex-wrap items-center gap-2 shrink-0">
         <div class="flex items-center gap-2">
-          <label class="text-xs font-bold text-surface-600 dark:text-surface-400">{{ tool.ui?.option_indent || 'Indent:' }}</label>
+          <label class="text-xs font-bold text-surface-600 dark:text-surface-400">{{ tool.ui?.option_indent }}</label>
           <select v-model="indent" class="rounded-lg border border-surface-200 bg-white px-2 py-1 text-xs dark:border-surface-700 dark:bg-surface-800">
             <option :value="1">{{ $t('formatter.1space') }}</option>
-            <option :value="2">{{ tool.ui?.option_2_spaces || $t('formatter.2spaces') }}</option>
+            <option :value="2">{{ tool.ui?.option_indent_2 || $t('formatter.2spaces') }}</option>
             <option :value="3">{{ $t('formatter.3spaces') }}</option>
-            <option :value="4">{{ tool.ui?.option_4_spaces || $t('formatter.4spaces') }}</option>
+            <option :value="4">{{ tool.ui?.option_indent_4 || $t('formatter.4spaces') }}</option>
             <option :value="6">{{ $t('formatter.6spaces') }}</option>
             <option :value="8">{{ $t('formatter.8spaces') }}</option>
             <option value="tab">{{ $t('formatter.tab') }}</option>
+            <option :value="0">{{ tool.ui?.option_indent_minified || $t('system.minify') }}</option>
           </select>
         </div>
         <!-- Minify / Format toggle -->
@@ -156,7 +156,7 @@
               : 'bg-white text-surface-600 hover:bg-surface-50 dark:bg-surface-800 dark:text-surface-400 dark:hover:bg-surface-700'"
             class="px-2.5 py-1 text-[11px] font-bold transition-colors"
           >
-            {{ $t('system.minify') }}
+            {{ tool.ui?.btn_minify || $t('system.minify') }}
           </button>
           <button
             @click="setFormatted"
@@ -165,9 +165,15 @@
               : 'bg-white text-surface-600 hover:bg-surface-50 dark:bg-surface-800 dark:text-surface-400 dark:hover:bg-surface-700'"
             class="px-2.5 py-1 text-[11px] font-bold transition-colors"
           >
-            {{ $t('system.format') || 'Format' }}
+            {{ tool.ui?.btn_format || $t('system.format') }}
           </button>
         </div>
+        <button
+          @click="validateJson"
+          class="px-2.5 py-1 text-[11px] font-bold transition-colors rounded-lg border border-surface-200 bg-white text-surface-600 hover:bg-surface-50 dark:border-surface-700 dark:bg-surface-800 dark:text-surface-400 dark:hover:bg-surface-700"
+        >
+          {{ tool.ui?.btn_validate || $t('system.validate') }}
+        </button>
       </div>
     </template>
 
@@ -179,7 +185,7 @@
           @click="copyOutput"
           class="text-xs text-primary-600 hover:text-primary-700 dark:text-primary-400"
         >
-          {{ clipboard.copied.value ? '✓ Copied!' : $t('system.copy') }}
+          {{ clipboard.copied.value ? $t('system.copied') : (tool.ui?.btn_copy || $t('system.copy')) }}
         </button>
         <button
           v-if="outputJson"
@@ -193,7 +199,7 @@
           @click="downloadOutput"
           class="text-xs text-surface-500 hover:text-surface-700 dark:text-surface-400"
         >
-          {{ $t('system.download') }}
+          {{ tool.ui?.btn_download || $t('system.download') }}
         </button>
         <button
           @click="openShareModal"
@@ -248,11 +254,17 @@ import { useLargeFileGate } from '~/composables/useLargeFile'
 import { useNodeEditing } from '~/composables/useNodeEditing'
 import { useClipboardActions } from '~/composables/useClipboardActions'
 
-const { tool, showViewToggle = true, defaultViewMode = 'rich' } = defineProps<{
+const props = withDefaults(defineProps<{
   tool: any
   showViewToggle?: boolean
   defaultViewMode?: 'text' | 'rich' | 'table'
-}>()
+}>(), {
+  showViewToggle: true,
+  defaultViewMode: 'rich',
+})
+
+/** Reactive view of the tool config (re-resolves when the locale changes). */
+const tool = computed(() => props.tool)
 
 const inputJson = ref('')
 const outputJson = ref('')
@@ -292,7 +304,7 @@ watch(() => nodeEditing.batchMode.value, (on) => {
     batchValue.value = ''
   }
 })
-const viewMode = ref<'text' | 'rich' | 'table'>(defaultViewMode)
+const viewMode = ref<'text' | 'rich' | 'table'>(props.defaultViewMode)
 const fullscreen = ref(false)
 const lastAction = ref<'formatted' | 'minified' | 'validated'>('formatted')
 
@@ -310,6 +322,24 @@ const friendlyMessage = computed(() => {
     col: parseError.value.column,
   }, { default: parseError.value.message })
 })
+
+/** Renders `status_error_at` — "Error at line {line}, column {column}". */
+function errorLocationText(err: ParseError): string {
+  const template = props.tool.ui?.status_error_at
+  if (typeof template === 'string' && template) {
+    return template.replace('{line}', String(err.line)).replace('{column}', String(err.column))
+  }
+  return t('errors.lineCol', { line: err.line, col: err.column })
+}
+
+/** Full user-facing error: "<Invalid JSON> — <Error at line L, column C>: <detail>". */
+function errorTextFor(err: ParseError | null): string {
+  const invalid = props.tool.ui?.status_invalid
+    || props.tool.ui?.error_invalid_json
+    || t('formatter.invalidJson')
+  if (!err) return props.tool.ui?.error_invalid_json || invalid
+  return `${invalid} — ${errorLocationText(err)}: ${friendlyMessage.value || err.message}`
+}
 
 
 // ── Input editor ref & source map ─────────────────────────────
@@ -525,7 +555,7 @@ const formatJson = (silent = false) => {
     }
     const err = getJsonError(inputJson.value)
     parseError.value = err
-    error.value = err ? t('errors.lineCol', { line: err.line, col: err.column }) + ': ' + err.message : t('formatter.invalidJson')
+    error.value = errorTextFor(err)
     if (!silent) toast.error(error.value)
   }
 }
@@ -543,12 +573,18 @@ const setFormatted = () => {
 }
 
 const validateJson = () => {
-  if (!inputJson.value.trim()) { error.value = ''; parseError.value = null; outputJson.value = ''; return }
+  if (!inputJson.value.trim()) {
+    error.value = ''
+    parseError.value = null
+    outputJson.value = ''
+    toast.error(props.tool.ui?.error_empty_input || t('edit.emptyInput'))
+    return
+  }
   if (largeFile.blocked.value) return
 
   try {
     JSON.parse(inputJson.value)
-    outputJson.value = tool.ui?.status_valid || t('formatter.validJson')
+    outputJson.value = props.tool.ui?.status_valid || t('formatter.validJson')
     lastAction.value = 'validated'
     error.value = ''
     parseError.value = null
@@ -556,7 +592,7 @@ const validateJson = () => {
   } catch {
     const err = getJsonError(inputJson.value)
     parseError.value = err
-    error.value = err ? t('errors.lineCol', { line: err.line, col: err.column }) + ': ' + err.message : t('formatter.invalidJson')
+    error.value = errorTextFor(err)
     outputJson.value = ''
     toast.error(error.value)
   }
@@ -597,7 +633,7 @@ const onLocateFromPanel = () => {
 const errorCopied = ref(false)
 const copyErrorMessage = async () => {
   if (!parseError.value) return
-  const text = `${t('errors.lineCol', { line: parseError.value.line, col: parseError.value.column })}: ${friendlyMessage.value || parseError.value.message}`
+  const text = `${errorLocationText(parseError.value)}: ${friendlyMessage.value || parseError.value.message}`
   await copyToClipboard(text)
   errorCopied.value = true
   setTimeout(() => { errorCopied.value = false }, 2000)

@@ -13,320 +13,357 @@
     "json-to-csv"
   ],
   "en": {
-  "name": "JSON Escape & Unescape",
-  "description": "Escape raw text or JSON content into a JSON-safe string and unescape JSON string literals back to readable text. Handle quotes, backslashes, line breaks, tabs, control characters, and Unicode escapes directly in your browser.",
-  "hero": {
-    "trustHtml": "Runs in your browser. Your input is not uploaded by this tool."
-  },
-  "meta": {
-    "title": "JSON Escape and Unescape – Free Online Tool",
-    "description": "Escape or unescape JSON strings online. Convert quotes, backslashes, newlines, tabs, control characters, and Unicode escapes for nested JSON, logs, API fields, and code. Free and browser-based.",
-    "keywords": [
-      "json escape",
-      "json unescape",
-      "escape json",
-      "unescape json",
-      "json string escape",
-      "json string unescape",
-      "escaped json",
-      "json escape tool"
-    ]
-  },
-  "features": [
-    {
-      "icon": "lucide:shield",
-      "title": "Escape JSON Strings",
-      "description": "Convert raw text or JSON content into a JSON-safe string representation with escaped quotes, backslashes, line breaks, tabs, and other required control characters."
-    },
-    {
-      "icon": "lucide:undo-2",
-      "title": "Unescape JSON Strings",
-      "description": "Decode valid JSON string escape sequences such as \\\" , \\\\, \\n, \\t, \\r, and \\uXXXX back into readable text or JSON content."
-    },
-    {
-      "icon": "lucide:layers-2",
-      "title": "Handle Nested JSON Strings",
-      "description": "Work with JSON stored inside another JSON string, log field, database column, environment variable, or API response. Review the escaping depth before applying the operation again."
-    },
-    {
-      "icon": "lucide:braces",
-      "title": "JSON String and Document Modes",
-      "description": "Distinguish between escaping a string value and serializing an entire JSON document. The output mode should make clear whether surrounding JSON string quotes are included."
-    },
-    {
-      "icon": "lucide:copy",
-      "title": "Copy the Result",
-      "description": "Copy the escaped or unescaped output to your clipboard for use in JSON payloads, code, logs, tests, configuration files, and debugging workflows."
-    },
-    {
-      "icon": "lucide:download",
-      "title": "Download Text",
-      "description": "Download the result as a plain text file when the escaped content is large or needs to be reused in another tool."
-    },
-    {
-      "icon": "lucide:refresh-cw",
-      "title": "Swap Directions",
-      "description": "Move the output back into the input area to inspect the reverse operation. Repeated escaping increases the escaping depth, so use this only when another serialization layer is intentional."
-    },
-    {
-      "icon": "lucide:shield-check",
-      "title": "Browser-Based Processing",
-      "description": "Escaping and unescaping happen in your browser. The page does not require an account or upload the input to a remote service."
-    }
-  ],
-  "guide": [
-    {
-      "title": "Enter text or an escaped string",
-      "description": "Paste raw text, a JSON string literal, escaped JSON from a log, or a field copied from an API response. Choose the operation that matches the current representation."
-    },
-    {
-      "title": "Choose Escape or Unescape",
-      "description": "Use Escape to encode text for use inside a JSON string. Use Unescape to decode valid JSON escape sequences and recover the represented text."
-    },
-    {
-      "title": "Check the quoting mode",
-      "description": "Confirm whether the output should include the surrounding JSON string quotes or only return the inner escaped content. This distinction affects how the result is embedded."
-    },
-    {
-      "title": "Review nested escaping",
-      "description": "If the input already contains sequences such as \\\\\" or \\\\\\\\, it may be escaped more than once. Do not apply Escape repeatedly unless another JSON or string serialization layer is required."
-    },
-    {
-      "title": "Copy or download",
-      "description": "Copy the processed result or download it as text. Test the output with the parser or programming language that will consume it."
-    }
-  ],
-  "example": {
-    "title": "JSON Escape Example",
-    "description": "Escape a JSON document so it can be stored as the value of another JSON string.",
-    "input": "{\"name\":\"Alice\",\"message\":\"She said \\\"OK\\\"\",\"path\":\"C:\\\\Users\\\\test\"}",
-    "output": "\"{\\\"name\\\":\\\"Alice\\\",\\\"message\\\":\\\"She said \\\\\\\"OK\\\\\\\"\\\",\\\"path\\\":\\\"C:\\\\\\\\Users\\\\\\\\test\\\"}\"",
-    "inputLabel": "JSON Text",
-    "outputLabel": "JSON String Literal",
-    "note": "The output includes surrounding quotes because the entire JSON document is represented as one JSON string value. If your application expects only the inner content, use the output mode implemented by the page.",
-    "useCase": "Embed a JSON payload as a string inside another JSON document, log record, test fixture, or API field."
-  },
-  "faq": [
-    {
-      "question": "What does JSON escaping do?",
-      "answer": "JSON escaping encodes text so it can safely appear inside a JSON string. It adds escape sequences for characters that would otherwise change the string syntax, including double quotes, backslashes, line breaks, tabs, carriage returns, backspace, and form feed."
-    },
-    {
-      "question": "What does JSON unescaping do?",
-      "answer": "JSON unescaping decodes valid JSON escape sequences back into the characters they represent. For example, \\\" becomes a double quote, \\\\ becomes one backslash, and \\n becomes a line break."
-    },
-    {
-      "question": "Does Escape add surrounding double quotes?",
-      "answer": "There are two common outputs: a complete JSON string literal includes surrounding double quotes, while string content mode returns only the escaped characters inside the string. Check the selected mode or output description before embedding the result."
-    },
-    {
-      "question": "What is the difference between escaping a JSON string and escaping a JSON document?",
-      "answer": "A JSON string contains text and must escape characters that conflict with string syntax. A JSON document is already structured JSON. To embed the whole document inside another JSON string, serialize the document as text first and then escape or stringify that text."
-    },
-    {
-      "question": "Which characters must be escaped in a JSON string?",
-      "answer": "Double quotes and backslashes must be escaped. JSON also defines escapes for control characters including backspace, form feed, line feed, carriage return, and tab. A Unicode escape such as \\uXXXX may be used for characters when needed. Escaping the forward slash is optional in standard JSON."
-    },
-    {
-      "question": "Can Unicode characters appear directly in JSON?",
-      "answer": "Yes. Valid Unicode characters such as Chinese text, accented letters, and emoji can generally appear directly in a JSON string. They do not need to be converted to \\uXXXX unless a downstream system requires escaped Unicode or the output mode is configured to do so."
-    },
-    {
-      "question": "Why does my output contain too many backslashes?",
-      "answer": "The input may already be escaped, or the value may be nested inside more than one string serialization layer. Each additional JSON string layer adds another level of escaping. Inspect the actual representation and unescape one layer at a time."
-    },
-    {
-      "question": "How do I unescape JSON from an API response or log?",
-      "answer": "Copy the field containing the escaped JSON string, choose Unescape, and review whether the result becomes readable text or a valid JSON document. If it is still escaped, the value may contain multiple serialization layers."
-    },
-    {
-      "question": "Does this tool parse escaped JSON into an object?",
-      "answer": "Escaping and parsing are different operations. An unescape operation can recover the JSON text, but converting that text into an object requires JSON parsing. Use a JSON viewer or parser after unescaping when you need to inspect the structure."
-    },
-    {
-      "question": "What is the difference between JSON escaping and HTML encoding?",
-      "answer": "JSON escaping uses backslash sequences such as \\\" and \\\\ inside JSON strings. HTML encoding uses entities such as &quot; and &amp;. They solve different syntax and context problems and are not interchangeable."
-    },
-    {
-      "question": "Is JSON escaping the same as JavaScript string escaping?",
-      "answer": "They overlap but are not identical in every detail. JSON supports a specific set of escape sequences, while JavaScript string literals may support additional syntax such as single-quoted strings, hexadecimal escapes, or other language-specific forms. Use the escaping rules required by the target context."
-    },
-    {
-      "question": "Can I use this tool for JSONL?",
-      "answer": "Only when the input is processed as independent lines and each line is valid for the selected operation. JSONL may contain escaped newlines or multiline quoted content, so line-by-line processing is not always equivalent to parsing one JSON document."
-    },
-    {
-      "question": "Can I load input from a URL?",
-      "answer": "The recommended input is pasted text or a local file. Arbitrary URL loading can fail because of CORS and can expose remote or private data to the browser. Add URL input only if it is explicitly implemented with URL validation, size limits, and appropriate security controls."
-    },
-    {
-      "question": "Is there a size limit?",
-      "answer": "The practical limit depends on browser memory, input length, rendering, and the number of escaping layers. Small and medium strings should process quickly, while very large files may slow down the page or require local streaming tools."
-    },
-    {
-      "question": "Is my input uploaded to a server?",
-      "answer": "This page is designed to process the input in your browser without requiring a server upload. You should still avoid entering passwords, API keys, access tokens, private customer data, or confidential production logs into any browser-based tool."
-    }
-  ],
-  "article": {
-    "title": "How to Escape and Unescape JSON Strings",
-    "content": "<h2>What Is JSON String Escaping?</h2><p>JSON string escaping converts text into a representation that can safely appear inside a JSON string. Double quotes, backslashes, and control characters have special meaning in JSON, so they must be represented with escape sequences when they occur as content.</p><p>For example, the text <code>She said \"hello\"</code> contains double quotes. As JSON string content, it can be represented as <code>She said \\\"hello\\\"</code>. The escaping changes the representation, not the intended text.</p><h2>JSON Escape Sequences</h2><p>Standard JSON defines a limited set of escape sequences for string values:</p><ul><li><strong><code>\\\"</code>:</strong> double quote</li><li><strong><code>\\\\</code>:</strong> backslash</li><li><strong><code>\\n</code>:</strong> line feed</li><li><strong><code>\\r</code>:</strong> carriage return</li><li><strong><code>\\t</code>:</strong> horizontal tab</li><li><strong><code>\\b</code>:</strong> backspace</li><li><strong><code>\\f</code>:</strong> form feed</li><li><strong><code>\\uXXXX</code>:</strong> a Unicode escape using four hexadecimal digits</li></ul><p>Escaping the forward slash as <code>\\/</code> is allowed but not generally required. JSON does not support every escape syntax accepted by programming languages, so sequences such as <code>\\a</code>, <code>\\v</code>, and <code>\\0</code> should not be assumed to be valid JSON escapes.</p><h2>Escaping a String vs Escaping a JSON Document</h2><p>A raw text string and a complete JSON document are related but different inputs. If you want to embed a JSON document inside another JSON string, the document must become string content:</p><pre><code>{\"event\":\"created\"}</code></pre><p>may become a JSON string literal similar to:</p><pre><code>\"{\\\"event\\\":\\\"created\\\"}\"</code></pre><p>The outer quotes indicate that the entire document is now one JSON string value. If you only need the inner escaped content, the surrounding quotes may be omitted depending on the target context.</p><h2>How to Escape JSON</h2><ol><li><strong>Enter raw text or JSON:</strong> Paste the content you need to embed or serialize.</li><li><strong>Choose the output mode:</strong> Decide whether the result should include the complete JSON string literal or only its inner content.</li><li><strong>Escape once:</strong> Convert quotes, backslashes, and control characters according to JSON string rules.</li><li><strong>Review the output:</strong> Check the number of escaping layers and confirm that the destination expects a JSON string.</li><li><strong>Test with a parser:</strong> Use the target language or JSON parser to confirm that the result decodes to the intended value.</li></ol><h2>How to Unescape JSON</h2><ol><li><strong>Paste the escaped value:</strong> Use a string copied from a log, database field, environment variable, or API response.</li><li><strong>Identify the layer:</strong> Check whether the value includes outer quotes and whether it has been escaped more than once.</li><li><strong>Unescape one layer:</strong> Decode the JSON string representation.</li><li><strong>Inspect the result:</strong> Determine whether it is readable text or valid JSON that should be parsed next.</li><li><strong>Repeat only when necessary:</strong> Decode another layer only if the data was intentionally serialized multiple times.</li></ol><h2>Nested JSON and Double Escaping</h2><p>Nested JSON is common when one JSON field contains another JSON document as a string:</p><pre><code>{\"payload\":\"{\\\"id\\\":1,\\\"status\\\":\\\"ok\\\"}\"}</code></pre><p>The outer document contains a string, and the string's content happens to be JSON text. To inspect the inner object, decode the string value and then parse the resulting JSON. Removing backslashes manually without respecting the serialization layers can corrupt the data.</p><h2>Use JSON.stringify and JSON.parse When Coding</h2><p>When writing application code, prefer the standard JSON library instead of manually replacing characters. In JavaScript, <code>JSON.stringify(value)</code> produces a JSON representation with the required escaping, and <code>JSON.parse(text)</code> parses JSON and decodes valid string escapes. Similar standard-library functions exist in Python, Java, C#, Go, and other languages.</p><p>An online escape tool is useful for inspection and one-off transformations, but application code should rely on a tested serializer and parser.</p><h2>JSON Escaping Is Not HTML Encoding</h2><p>JSON escaping and HTML encoding target different contexts. JSON uses backslash sequences inside string values, while HTML uses entities such as <code>&amp;quot;</code> and <code>&amp;amp;</code>. Escaping a value for JSON does not automatically make it safe for HTML, JavaScript, SQL, URLs, or shell commands.</p><h2>Unicode and Surrogate Pairs</h2><p>Unicode characters can normally appear directly in JSON. A serializer may choose to leave them readable or emit Unicode escapes. Characters outside the Basic Multilingual Plane, including many emoji, may be represented using surrogate-pair escapes in UTF-16-based environments, so do not assume every visible character maps to one <code>\\uXXXX</code> sequence.</p><h2>Common Mistakes</h2><ul><li><strong>Double escaping:</strong> Applying Escape to content that is already escaped.</li><li><strong>Manual backslash removal:</strong> Deleting backslashes without parsing the JSON string.</li><li><strong>Wrong context:</strong> Using JSON escaping where HTML, SQL, URL, or JavaScript-specific encoding is required.</li><li><strong>Confusing text with an object:</strong> Unescaping a JSON string does not automatically parse the resulting text into an object.</li><li><strong>Invalid escape sequences:</strong> Using language-specific escapes that are not valid in JSON.</li><li><strong>Incorrect outer quotes:</strong> Embedding inner escaped content where the target expects a complete JSON string literal, or the reverse.</li></ul><h2>Browser-Based Privacy</h2><p>This tool is designed to escape and unescape input in the browser rather than sending it to a remote service. That is convenient for development data, logs, and test fixtures, but it is not a secret-management system. Avoid entering credentials, access tokens, private keys, customer information, or confidential production logs into any online tool.</p>"
-  },
-  "ui": {
-    "label_input": "Input Text",
-    "label_output": "Output",
-    "btn_escape": "Escape",
-    "btn_unescape": "Unescape",
-    "btn_swap": "Swap",
-    "btn_copy": "Copy",
-    "btn_download": "Download TXT",
-    "option_include_quotes": "Include surrounding quotes",
-    "option_decode_layers": "Decode one layer",
-    "status_escaped": "Escaped JSON string",
-    "status_unescaped": "Unescaped text",
-    "status_invalid": "Input is not a valid JSON string representation",
-    "placeholder_output": "Output will appear here..."
-  }
-},
-  "zh": {
-    "name": "JSON 转义/反转义",
-    "description": "在线 JSON 转义或 JSON 反转义字符串。处理 JSON 特殊字符，包括引号、反斜杠和换行符。",
+    "name": "JSON Escape & Unescape",
+    "description": "Escape raw text or JSON content into a JSON-safe string and unescape JSON string literals back to readable text. Handle quotes, backslashes, line breaks, tabs, control characters, and Unicode escapes directly in your browser.",
     "hero": {
-      "trustHtml": "100% 本地处理，你的 JSON 数据永远不会离开浏览器。"
+      "trustHtml": "Runs in your browser. Your input is not uploaded by this tool."
     },
     "meta": {
-      "title": "JSON 转义反转义 — 免费在线工具",
-      "description": "在线转义和反转义 JSON 字符串。处理特殊字符、引号、反斜杠和换行符。免费、快速，浏览器中运行。无需上传。",
+      "title": "JSON Escape and Unescape – Free Online Tool",
+      "description": "Escape or unescape JSON strings online. Convert quotes, backslashes, newlines, tabs, control characters, and Unicode escapes for nested JSON, logs, API fields, and code. Free and browser-based.",
       "keywords": [
-        "json 转义",
-        "json 反转义",
-        "转义 json",
-        "反转义 json",
-        "json 特殊字符处理",
-        "转义特殊字符 json",
-        "json 字符串格式化",
-        "json 转义工具",
-        "json 字符串转义",
-        "json 字符串反转义"
+        "json escape",
+        "json unescape",
+        "escape json",
+        "unescape json",
+        "json string escape",
+        "json string unescape",
+        "escaped json",
+        "json escape tool"
       ]
     },
     "features": [
       {
         "icon": "lucide:shield",
-        "title": "转义与反转义",
-        "description": "在转义和反转义的 JSON 字符串之间即时转换。"
+        "title": "Escape JSON Strings",
+        "description": "Convert raw text or JSON content into a JSON-safe string representation with escaped quotes, backslashes, line breaks, tabs, and other required control characters."
+      },
+      {
+        "icon": "lucide:undo-2",
+        "title": "Unescape JSON Strings",
+        "description": "Decode valid JSON string escape sequences such as \\\" , \\\\, \\n, \\t, \\r, and \\uXXXX back into readable text or JSON content."
+      },
+      {
+        "icon": "lucide:layers-2",
+        "title": "Handle Nested JSON Strings",
+        "description": "Work with JSON stored inside another JSON string, log field, database column, environment variable, or API response. Review the escaping depth before applying the operation again."
+      },
+      {
+        "icon": "lucide:braces",
+        "title": "JSON String and Document Modes",
+        "description": "Distinguish between escaping a string value and serializing an entire JSON document. The output mode should make clear whether surrounding JSON string quotes are included."
       },
       {
         "icon": "lucide:copy",
-        "title": "一键复制",
-        "description": "一键复制结果到剪贴板。"
+        "title": "Copy the Result",
+        "description": "Copy the escaped or unescaped output to your clipboard for use in JSON payloads, code, logs, tests, configuration files, and debugging workflows."
       },
       {
         "icon": "lucide:download",
-        "title": "下载",
-        "description": "下载处理后的字符串文件。"
+        "title": "Download Text",
+        "description": "Download the result as a plain text file when the escaped content is large or needs to be reused in another tool."
       },
       {
         "icon": "lucide:refresh-cw",
-        "title": "交换",
-        "description": "快速交换输入和输出以进行重复操作。"
-      },
-      {
-        "icon": "lucide:link",
-        "title": "URL 输入",
-        "description": "使用 ?url= 参数从 URL 加载 JSON。"
+        "title": "Swap Directions",
+        "description": "Move the output back into the input area to inspect the reverse operation. Repeated escaping increases the escaping depth, so use this only when another serialization layer is intentional."
       },
       {
         "icon": "lucide:shield-check",
-        "title": "私密安全",
-        "description": "所有处理在浏览器中完成，不上传数据。"
+        "title": "Browser-Based Processing",
+        "description": "Escaping and unescaping happen in your browser. The page does not require an account or upload the input to a remote service."
       }
     ],
     "guide": [
       {
-        "title": "粘贴 JSON 字符串",
-        "description": "将转义或未转义的 JSON 字符串粘贴到输入框中。也可以上传 .json 文件或从 URL 加载。"
+        "title": "Enter text or an escaped string",
+        "description": "Paste raw text, a JSON string literal, escaped JSON from a log, or a field copied from an API response. Choose the operation that matches the current representation."
       },
       {
-        "title": "点击转义或反转义",
-        "description": "选择转义在引号、换行符等特殊字符前添加反斜杠，或选择反转义移除反斜杠还原原始文本。"
+        "title": "Choose Escape or Unescape",
+        "description": "Use Escape to encode text for use inside a JSON string. Use Unescape to decode valid JSON escape sequences and recover the represented text."
       },
       {
-        "title": "复制或下载结果",
-        "description": "一键复制处理后的字符串到剪贴板，或下载为 .txt 文件。使用交换将输出移回输入框进行反向操作。"
+        "title": "Check the quoting mode",
+        "description": "Confirm whether the output should include the surrounding JSON string quotes or only return the inner escaped content. This distinction affects how the result is embedded."
+      },
+      {
+        "title": "Review nested escaping",
+        "description": "If the input already contains sequences such as \\\\\" or \\\\\\\\, it may be escaped more than once. Do not apply Escape repeatedly unless another JSON or string serialization layer is required."
+      },
+      {
+        "title": "Copy or download",
+        "description": "Copy the processed result or download it as text. Test the output with the parser or programming language that will consume it."
+      }
+    ],
+    "example": {
+      "title": "JSON Escape Example",
+      "description": "Escape a JSON document so it can be stored as the value of another JSON string.",
+      "input": "{\"name\":\"Alice\",\"message\":\"She said \\\"OK\\\"\",\"path\":\"C:\\\\Users\\\\test\"}",
+      "output": "\"{\\\"name\\\":\\\"Alice\\\",\\\"message\\\":\\\"She said \\\\\\\"OK\\\\\\\"\\\",\\\"path\\\":\\\"C:\\\\\\\\Users\\\\\\\\test\\\"}\"",
+      "inputLabel": "JSON Text",
+      "outputLabel": "JSON String Literal",
+      "note": "The output includes surrounding quotes because the entire JSON document is represented as one JSON string value. If your application expects only the inner content, use the output mode implemented by the page.",
+      "useCase": "Embed a JSON payload as a string inside another JSON document, log record, test fixture, or API field."
+    },
+    "faq": [
+      {
+        "question": "What does JSON escaping do?",
+        "answer": "JSON escaping encodes text so it can safely appear inside a JSON string. It adds escape sequences for characters that would otherwise change the string syntax, including double quotes, backslashes, line breaks, tabs, carriage returns, backspace, and form feed."
+      },
+      {
+        "question": "What does JSON unescaping do?",
+        "answer": "JSON unescaping decodes valid JSON escape sequences back into the characters they represent. For example, \\\" becomes a double quote, \\\\ becomes one backslash, and \\n becomes a line break."
+      },
+      {
+        "question": "Does Escape add surrounding double quotes?",
+        "answer": "There are two common outputs: a complete JSON string literal includes surrounding double quotes, while string content mode returns only the escaped characters inside the string. Check the selected mode or output description before embedding the result."
+      },
+      {
+        "question": "What is the difference between escaping a JSON string and escaping a JSON document?",
+        "answer": "A JSON string contains text and must escape characters that conflict with string syntax. A JSON document is already structured JSON. To embed the whole document inside another JSON string, serialize the document as text first and then escape or stringify that text."
+      },
+      {
+        "question": "Which characters must be escaped in a JSON string?",
+        "answer": "Double quotes and backslashes must be escaped. JSON also defines escapes for control characters including backspace, form feed, line feed, carriage return, and tab. A Unicode escape such as \\uXXXX may be used for characters when needed. Escaping the forward slash is optional in standard JSON."
+      },
+      {
+        "question": "Can Unicode characters appear directly in JSON?",
+        "answer": "Yes. Valid Unicode characters such as Chinese text, accented letters, and emoji can generally appear directly in a JSON string. They do not need to be converted to \\uXXXX unless a downstream system requires escaped Unicode or the output mode is configured to do so."
+      },
+      {
+        "question": "Why does my output contain too many backslashes?",
+        "answer": "The input may already be escaped, or the value may be nested inside more than one string serialization layer. Each additional JSON string layer adds another level of escaping. Inspect the actual representation and unescape one layer at a time."
+      },
+      {
+        "question": "How do I unescape JSON from an API response or log?",
+        "answer": "Copy the field containing the escaped JSON string, choose Unescape, and review whether the result becomes readable text or a valid JSON document. If it is still escaped, the value may contain multiple serialization layers."
+      },
+      {
+        "question": "Does this tool parse escaped JSON into an object?",
+        "answer": "Escaping and parsing are different operations. An unescape operation can recover the JSON text, but converting that text into an object requires JSON parsing. Use a JSON viewer or parser after unescaping when you need to inspect the structure."
+      },
+      {
+        "question": "What is the difference between JSON escaping and HTML encoding?",
+        "answer": "JSON escaping uses backslash sequences such as \\\" and \\\\ inside JSON strings. HTML encoding uses entities such as &quot; and &amp;. They solve different syntax and context problems and are not interchangeable."
+      },
+      {
+        "question": "Is JSON escaping the same as JavaScript string escaping?",
+        "answer": "They overlap but are not identical in every detail. JSON supports a specific set of escape sequences, while JavaScript string literals may support additional syntax such as single-quoted strings, hexadecimal escapes, or other language-specific forms. Use the escaping rules required by the target context."
+      },
+      {
+        "question": "Can I use this tool for JSONL?",
+        "answer": "Only when the input is processed as independent lines and each line is valid for the selected operation. JSONL may contain escaped newlines or multiline quoted content, so line-by-line processing is not always equivalent to parsing one JSON document."
+      },
+      {
+        "question": "Can I load input from a URL?",
+        "answer": "The recommended input is pasted text or a local file. Arbitrary URL loading can fail because of CORS and can expose remote or private data to the browser. Add URL input only if it is explicitly implemented with URL validation, size limits, and appropriate security controls."
+      },
+      {
+        "question": "Is there a size limit?",
+        "answer": "The practical limit depends on browser memory, input length, rendering, and the number of escaping layers. Small and medium strings should process quickly, while very large files may slow down the page or require local streaming tools."
+      },
+      {
+        "question": "Is my input uploaded to a server?",
+        "answer": "This page is designed to process the input in your browser without requiring a server upload. You should still avoid entering passwords, API keys, access tokens, private customer data, or confidential production logs into any browser-based tool."
+      }
+    ],
+    "article": {
+      "title": "How to Escape and Unescape JSON Strings",
+      "content": "<h2>What Is JSON String Escaping?</h2><p>JSON string escaping converts text into a representation that can safely appear inside a JSON string. Double quotes, backslashes, and control characters have special meaning in JSON, so they must be represented with escape sequences when they occur as content.</p><p>For example, the text <code>She said \"hello\"</code> contains double quotes. As JSON string content, it can be represented as <code>She said \\\"hello\\\"</code>. The escaping changes the representation, not the intended text.</p><h2>JSON Escape Sequences</h2><p>Standard JSON defines a limited set of escape sequences for string values:</p><ul><li><strong><code>\\\"</code>:</strong> double quote</li><li><strong><code>\\\\</code>:</strong> backslash</li><li><strong><code>\\n</code>:</strong> line feed</li><li><strong><code>\\r</code>:</strong> carriage return</li><li><strong><code>\\t</code>:</strong> horizontal tab</li><li><strong><code>\\b</code>:</strong> backspace</li><li><strong><code>\\f</code>:</strong> form feed</li><li><strong><code>\\uXXXX</code>:</strong> a Unicode escape using four hexadecimal digits</li></ul><p>Escaping the forward slash as <code>\\/</code> is allowed but not generally required. JSON does not support every escape syntax accepted by programming languages, so sequences such as <code>\\a</code>, <code>\\v</code>, and <code>\\0</code> should not be assumed to be valid JSON escapes.</p><h2>Escaping a String vs Escaping a JSON Document</h2><p>A raw text string and a complete JSON document are related but different inputs. If you want to embed a JSON document inside another JSON string, the document must become string content:</p><pre><code>{\"event\":\"created\"}</code></pre><p>may become a JSON string literal similar to:</p><pre><code>\"{\\\"event\\\":\\\"created\\\"}\"</code></pre><p>The outer quotes indicate that the entire document is now one JSON string value. If you only need the inner escaped content, the surrounding quotes may be omitted depending on the target context.</p><h2>How to Escape JSON</h2><ol><li><strong>Enter raw text or JSON:</strong> Paste the content you need to embed or serialize.</li><li><strong>Choose the output mode:</strong> Decide whether the result should include the complete JSON string literal or only its inner content.</li><li><strong>Escape once:</strong> Convert quotes, backslashes, and control characters according to JSON string rules.</li><li><strong>Review the output:</strong> Check the number of escaping layers and confirm that the destination expects a JSON string.</li><li><strong>Test with a parser:</strong> Use the target language or JSON parser to confirm that the result decodes to the intended value.</li></ol><h2>How to Unescape JSON</h2><ol><li><strong>Paste the escaped value:</strong> Use a string copied from a log, database field, environment variable, or API response.</li><li><strong>Identify the layer:</strong> Check whether the value includes outer quotes and whether it has been escaped more than once.</li><li><strong>Unescape one layer:</strong> Decode the JSON string representation.</li><li><strong>Inspect the result:</strong> Determine whether it is readable text or valid JSON that should be parsed next.</li><li><strong>Repeat only when necessary:</strong> Decode another layer only if the data was intentionally serialized multiple times.</li></ol><h2>Nested JSON and Double Escaping</h2><p>Nested JSON is common when one JSON field contains another JSON document as a string:</p><pre><code>{\"payload\":\"{\\\"id\\\":1,\\\"status\\\":\\\"ok\\\"}\"}</code></pre><p>The outer document contains a string, and the string's content happens to be JSON text. To inspect the inner object, decode the string value and then parse the resulting JSON. Removing backslashes manually without respecting the serialization layers can corrupt the data.</p><h2>Use JSON.stringify and JSON.parse When Coding</h2><p>When writing application code, prefer the standard JSON library instead of manually replacing characters. In JavaScript, <code>JSON.stringify(value)</code> produces a JSON representation with the required escaping, and <code>JSON.parse(text)</code> parses JSON and decodes valid string escapes. Similar standard-library functions exist in Python, Java, C#, Go, and other languages.</p><p>An online escape tool is useful for inspection and one-off transformations, but application code should rely on a tested serializer and parser.</p><h2>JSON Escaping Is Not HTML Encoding</h2><p>JSON escaping and HTML encoding target different contexts. JSON uses backslash sequences inside string values, while HTML uses entities such as <code>&amp;quot;</code> and <code>&amp;amp;</code>. Escaping a value for JSON does not automatically make it safe for HTML, JavaScript, SQL, URLs, or shell commands.</p><h2>Unicode and Surrogate Pairs</h2><p>Unicode characters can normally appear directly in JSON. A serializer may choose to leave them readable or emit Unicode escapes. Characters outside the Basic Multilingual Plane, including many emoji, may be represented using surrogate-pair escapes in UTF-16-based environments, so do not assume every visible character maps to one <code>\\uXXXX</code> sequence.</p><h2>Common Mistakes</h2><ul><li><strong>Double escaping:</strong> Applying Escape to content that is already escaped.</li><li><strong>Manual backslash removal:</strong> Deleting backslashes without parsing the JSON string.</li><li><strong>Wrong context:</strong> Using JSON escaping where HTML, SQL, URL, or JavaScript-specific encoding is required.</li><li><strong>Confusing text with an object:</strong> Unescaping a JSON string does not automatically parse the resulting text into an object.</li><li><strong>Invalid escape sequences:</strong> Using language-specific escapes that are not valid in JSON.</li><li><strong>Incorrect outer quotes:</strong> Embedding inner escaped content where the target expects a complete JSON string literal, or the reverse.</li></ul><h2>Browser-Based Privacy</h2><p>This tool is designed to escape and unescape input in the browser rather than sending it to a remote service. That is convenient for development data, logs, and test fixtures, but it is not a secret-management system. Avoid entering credentials, access tokens, private keys, customer information, or confidential production logs into any online tool.</p>"
+    },
+    "ui": {
+      "label_input": "Input Text",
+      "label_output": "Output",
+      "placeholder_input": "Paste or type text to escape or unescape...",
+      "btn_escape": "Escape",
+      "btn_unescape": "Unescape",
+      "btn_swap": "Swap",
+      "btn_copy": "Copy",
+      "btn_download": "Download TXT",
+      "option_include_quotes": "Include surrounding quotes",
+      "option_decode_layers": "Decode one layer",
+      "status_escaped": "Escaped JSON string",
+      "status_unescaped": "Unescaped text",
+      "status_invalid": "Input is not a valid JSON string representation",
+      "placeholder_output": "Output will appear here..."
+    }
+  },
+  "zh": {
+    "name": "JSON 转义 / 反转义",
+    "description": "把原始文本或 JSON 内容转义成 JSON 安全的字符串，也可以把 JSON 字符串字面量反转义回可读文本。处理引号、反斜杠、换行、制表符、控制字符和 Unicode 转义，全部在浏览器中完成。",
+    "hero": {
+      "trustHtml": "在你的浏览器中运行。你的输入不会被本工具上传。"
+    },
+    "meta": {
+      "title": "JSON 转义与反转义 — 免费在线工具",
+      "description": "在线转义和反转义 JSON 字符串。处理引号、反斜杠、换行、制表符、控制字符和 Unicode 转义，适用于嵌套 JSON、日志、API 字段和代码。免费，浏览器本地处理。",
+      "keywords": [
+        "json 转义",
+        "json 反转义",
+        "转义 json",
+        "反转义 json",
+        "json 字符串转义",
+        "json 字符串反转义",
+        "escaped json",
+        "json 转义工具"
+      ]
+    },
+    "features": [
+      {
+        "icon": "lucide:shield",
+        "title": "转义 JSON 字符串",
+        "description": "把原始文本或 JSON 内容转换成 JSON 安全的字符串表示，转义其中的引号、反斜杠、换行、制表符等必须转义的控制字符。"
+      },
+      {
+        "icon": "lucide:undo-2",
+        "title": "反转义 JSON 字符串",
+        "description": "把合法的 JSON 转义序列解码回原本的文本或 JSON 内容，包括双引号、反斜杠、换行、制表符、回车和 Unicode 转义。"
+      },
+      {
+        "icon": "lucide:layers-2",
+        "title": "处理嵌套 JSON 字符串",
+        "description": "处理存放在另一个 JSON 字符串、日志字段、数据库列、环境变量或 API 响应里的 JSON。再次执行操作前，先确认当前的转义层数。"
+      },
+      {
+        "icon": "lucide:braces",
+        "title": "字符串模式与文档模式",
+        "description": "区分「转义一个字符串值」和「序列化整份 JSON 文档」。输出会体现是否包含了外层的 JSON 字符串双引号。"
+      },
+      {
+        "icon": "lucide:copy",
+        "title": "复制结果",
+        "description": "把转义或反转义的结果复制到剪贴板，用于 JSON 载荷、代码、日志、测试、配置文件和调试流程。"
+      },
+      {
+        "icon": "lucide:download",
+        "title": "下载文本",
+        "description": "当转义内容较大，或需要在其他工具里复用时，把结果下载为纯文本文件。"
+      },
+      {
+        "icon": "lucide:refresh-cw",
+        "title": "互换方向",
+        "description": "把输出移回输入区域，用来检查反向操作。重复转义会增加转义层数，只有在确实需要再加一层序列化时才这样做。"
+      },
+      {
+        "icon": "lucide:shield-check",
+        "title": "浏览器本地处理",
+        "description": "转义和反转义都在你的浏览器中完成。本页不需要注册账号，也不会把输入上传到远端服务。"
+      }
+    ],
+    "guide": [
+      {
+        "title": "输入文本或已转义的字符串",
+        "description": "粘贴原始文本、JSON 字符串字面量、日志里的转义 JSON，或从 API 响应复制出来的字段。根据当前的实际表示形式选择操作。"
+      },
+      {
+        "title": "选择转义或反转义",
+        "description": "要嵌进 JSON 字符串里，用「转义」；要把合法的 JSON 转义序列解回原本的文本，用「反转义」。"
+      },
+      {
+        "title": "确认引号模式",
+        "description": "确认输出要包含外层的 JSON 字符串双引号，还是只要内部的转义内容。这会影响结果能否直接嵌入目标位置。"
+      },
+      {
+        "title": "检查嵌套转义",
+        "description": "如果输入里已经出现成对的反斜杠转义序列，说明它可能已经被转义过多次。除非确实需要再加一层序列化，不要反复执行转义。"
+      },
+      {
+        "title": "复制或下载",
+        "description": "复制处理结果，或把它下载为文本文件。最后用真正消费它的解析器或编程语言验证一次。"
       }
     ],
     "example": {
       "title": "JSON 转义示例",
-      "description": "看看 JSON 对象字符串转义前后的变化。引号、反斜杠和特殊字符都被正确转义。",
-      "input": "{\"name\": \"Alice\", \"msg\": \"She said \\\"OK\\\"\", \"path\": \"C:\\\\Users\\\\test\"}",
-      "output": "{\\\"name\\\": \\\"Alice\\\", \\\"msg\\\": \\\"She said \\\\\\\"OK\\\\\\\"\\\", \\\"path\\\": \\\"C\\\\\\\\Users\\\\\\\\test\\\"}",
-      "inputLabel": "JSON 字符串（未转义）",
-      "outputLabel": "转义后的字符串",
-      "note": "注意引号变成 \\\"，反斜杠变成 \\\\，嵌套结构被保留。这个转义后的字符串可以安全地嵌入另一个 JSON 文档或 JavaScript 代码中。",
-      "useCase": "转义 JSON 对象字符串 — 内部引号、反斜杠和特殊字符被正确转义，可安全嵌入代码或配置文件。"
+      "description": "把一份 JSON 文档转义成可以作为另一个 JSON 字符串值保存的内容。",
+      "input": "{\"name\":\"Alice\",\"message\":\"She said \\\"OK\\\"\",\"path\":\"C:\\\\Users\\\\test\"}",
+      "output": "\"{\\\"name\\\":\\\"Alice\\\",\\\"message\\\":\\\"She said \\\\\\\"OK\\\\\\\"\\\",\\\"path\\\":\\\"C:\\\\\\\\Users\\\\\\\\test\\\"}\"",
+      "inputLabel": "JSON 文本",
+      "outputLabel": "JSON 字符串字面量",
+      "note": "输出包含外层双引号，因为整份 JSON 文档被表示为一个 JSON 字符串值。如果你的程序只需要内部内容，请使用页面提供的输出模式。",
+      "useCase": "把一份 JSON 载荷作为字符串嵌入另一个 JSON 文档、日志记录、测试 fixture 或 API 字段。"
     },
     "faq": [
       {
-        "question": "我的 JSON 数据会上传到服务器吗？",
-        "answer": "不会。所有处理直接在浏览器中完成，JSON 数据不会离开你的设备 — 没有服务器上传，没有追踪，没有 Cookie。"
+        "question": "什么是 JSON 转义？",
+        "answer": "JSON 转义把文本编码成可以安全放进 JSON 字符串的形式。双引号、反斜杠、换行、制表符、回车、退格符和换页符这类会改变或破坏字符串语法的字符，都会被替换成转义序列。"
       },
       {
-        "question": "JSON 转义是什么意思？",
-        "answer": "JSON 转义在特殊字符（引号、反斜杠、换行符、制表符）前添加反斜杠，使其可以安全地包含在 JSON 字符串中，不会破坏结构。"
+        "question": "什么是 JSON 反转义？",
+        "answer": "JSON 反转义把合法的 JSON 转义序列解回它代表的字符。例如双引号转义会变回双引号，连续两个反斜杠变回一个反斜杠，换行转义变回真正的换行。"
       },
       {
-        "question": "JSON 反转义是什么意思？",
-        "answer": "JSON 反转义移除反斜杠转义字符，将 \\\" 和 \\n 等转义序列还原为原始字符（引号和换行符）。当你有转义的 JSON 字符串需要查看实际内容时使用。"
+        "question": "转义时会在外面加双引号吗？",
+        "answer": "常见有两种输出：完整的 JSON 字符串字面量包含外层双引号；字符串内容模式只返回内部的转义字符。嵌入之前请先看页面的输出模式。"
       },
       {
-        "question": "什么时候应该转义 JSON？",
-        "answer": "在将 JSON 字符串嵌入另一个 JSON 文档时、在 JavaScript 代码中包含 JSON 时、将 JSON 写入日志文件时、或将 JSON 粘贴到需要转义字符串的配置文件中时。"
+        "question": "转义一个 JSON 字符串和转义一整份 JSON 文档有什么区别？",
+        "answer": "JSON 字符串是文本内容，需要转义与字符串语法冲突的字符。JSON 文档本身已经是结构化的 JSON。要把整份文档放进另一个 JSON 字符串，需要先把文档序列化成文本，再对这个文本做转义。"
       },
       {
-        "question": "什么时候应该反转义 JSON？",
-        "answer": "当你从 API 响应、Webhook 请求体、日志文件或错误消息中收到转义的 JSON 字符串，需要查看实际的 JSON 内容进行调试或进一步处理时。"
+        "question": "JSON 字符串里哪些字符必须转义？",
+        "answer": "双引号和反斜杠必须转义。JSON 也定义了退格符、换页符、换行、回车和制表符的转义写法，必要时还可以使用 Unicode 转义。斜杠在标准 JSON 里可以转义，但不是必须。"
       },
       {
-        "question": "哪些特殊字符需要转义？",
-        "answer": "JSON 字符串中必须转义的字符有：双引号（\"）、反斜杠（\\）、换行符（\\n）、制表符（\\t）、回车符（\\r）、退格符（\\b）、换页符（\\f）以及任何使用 \\uXXXX 的 Unicode 转义。"
+        "question": "Unicode 字符可以直接出现在 JSON 里吗？",
+        "answer": "可以。中文、带重音的字母、emoji 等合法 Unicode 字符通常可以直接出现在 JSON 字符串中。除非下游系统要求，或输出模式就是这样配置的，否则不需要转成 Unicode 转义。"
+      },
+      {
+        "question": "为什么我的输出里有太多反斜杠？",
+        "answer": "输入可能已经被转义过，或者值嵌在多层字符串序列化里。每多一层 JSON 字符串，就多一层转义。先看清楚实际的表示形式，然后一层一层地反转义。"
+      },
+      {
+        "question": "怎么反转义 API 响应或日志里的 JSON？",
+        "answer": "复制包含转义 JSON 字符串的字段，选择反转义，再看结果是可读文本还是一份合法的 JSON 文档。如果结果仍然带着转义，说明它可能有多层序列化。"
+      },
+      {
+        "question": "这个工具会把转义后的 JSON 解析成对象吗？",
+        "answer": "转义和解析是两件事。反转义可以还原 JSON 文本，但要把它变成对象还需要再做一次 JSON 解析。要查看结构时，先反转义再用 JSON 查看器或解析器。"
       },
       {
         "question": "JSON 转义和 HTML 编码有什么区别？",
-        "answer": "JSON 转义使用反斜杠（\\\"）处理 JSON 字符串中的特殊字符，HTML 编码使用 &amp;quot; 处理 HTML 中的特殊字符。目的相同（防止语法冲突），但使用不同的转义字符，不能互换。"
+        "answer": "JSON 转义在字符串值内部使用反斜杠序列，HTML 编码使用 &amp;quot; 、&amp;amp; 这样的实体。它们解决的是不同上下文里的语法问题，不能互换。"
       },
       {
-        "question": "可以转义整个 JSON 对象而不只是字符串吗？",
-        "answer": "可以。粘贴像 {\"key\": \"value\"} 这样的 JSON 对象后，转义功能会转换所有引号和特殊字符，使整个对象可以安全地作为字符串嵌入另一个 JSON 文档或 JavaScript 代码中。"
+        "question": "JSON 转义和 JavaScript 字符串转义一样吗？",
+        "answer": "两者有重叠但不完全一样。JSON 只支持固定的一组转义序列，而 JavaScript 字符串字面量还支持单引号字符串、十六进制转义等语言特有的写法。请按目标上下文的规则来转义。"
       },
       {
-        "question": "为什么转义后的 JSON 有太多反斜杠？",
-        "answer": "通常是因为输入在转义之前已经是转义过的 — 这叫双重转义。先用反转义按钮去除多余的反斜杠，检查输入后再重新转义。"
+        "question": "可以用这个工具处理 JSONL 吗？",
+        "answer": "只有在每一行都被当作独立内容处理、且每一行对所选操作都合法时才可行。JSONL 里可能包含转义过的换行，或者跨行的引号内容，所以逐行处理并不总是等同于解析一整份 JSON 文档。"
       },
       {
-        "question": "如何处理 JSON 字符串中的 Unicode 字符？",
-        "answer": "Unicode 字符（如 é、ñ、中文、emoji）可以直接出现在 JSON 字符串中，不需要转义。如果需要转义，使用 \\uXXXX 格式加 4 位十六进制编码。例如 é 变成 \\u00e9。"
+        "question": "可以从 URL 加载内容吗？",
+        "answer": "推荐使用粘贴的文本或本地文件。随意加载 URL 可能因 CORS 失败，也可能把远端或私有数据暴露给浏览器。"
       },
       {
-        "question": "这个工具支持 JSONL（JSON Lines）格式吗？",
-        "answer": "支持。可以粘贴多行 JSONL 内容进行转义或反转义，每行都会按相同的转义规则处理。适合处理 JSONL 日志数据或批量处理。"
+        "question": "有大小限制吗？",
+        "answer": "实际限制取决于浏览器内存、输入长度、渲染开销和转义层数。中小长度的字符串通常很快；非常大的文件可能让页面变慢，这种情况需要用本地或流式的工具处理。"
       },
       {
-        "question": "可以处理的 JSON 有大小限制吗？",
-        "answer": "没有人为的大小限制。工具完全在浏览器中运行，性能取决于你的设备。大多数场景（几 MB 以内）可以即时处理，超大文件（100MB+）可能会让浏览器变慢。"
+        "question": "我的输入会上传到服务器吗？",
+        "answer": "本页在浏览器里完成处理，不需要把输入上传到服务器。但仍然不要在任何浏览器工具中输入密码、API 密钥、访问令牌、客户隐私数据或生产环境的机密日志。"
       }
     ],
     "ui": {
       "label_input": "输入文本",
       "label_output": "输出结果",
-      "placeholder_output": "输出将显示在这里...",
+      "placeholder_input": "粘贴或输入要转义 / 反转义的文本...",
+      "placeholder_output": "输出会显示在这里...",
       "btn_escape": "转义",
       "btn_unescape": "反转义",
-      "btn_swap": "交换"
+      "btn_swap": "交换",
+      "btn_copy": "复制",
+      "btn_download": "下载 TXT",
+      "option_include_quotes": "包含外层双引号",
+      "option_decode_layers": "只解码一层",
+      "status_escaped": "已生成转义后的 JSON 字符串",
+      "status_unescaped": "已还原为文本",
+      "status_invalid": "输入不是合法的 JSON 字符串表示"
     },
     "article": {
-      "title": "如何在线转义和反转义 JSON 字符串 — 完整指南",
-      "content": "<h2>什么是 JSON 转义？</h2><p>JSON 转义是在字符串中的特殊字符前添加反斜杠（\\），使其可以安全地包含在 JSON 文档中。双引号、反斜杠、换行符和制表符在 JSON 中有特殊含义 — 直接使用会破坏 JSON 结构。转义告诉解析器「把这个字符当作普通文本，不要当作语法」。</p><p>例如，字符串 <code>She said \"hello\"</code> 包含会破坏 JSON 的双引号。转义后变成 <code>She said \\\"hello\\\"</code> — 合法且可安全嵌入。</p><h2>JSON 中的常见转义字符</h2><p>JSON 定义了一组在字符串值中必须转义的字符：</p><ul><li><strong>\\\"</strong> — 双引号（必须，因为引号是字符串的定界符）</li><li><strong>\\\\</strong> — 反斜杠（必须，因为它是转义序列的前缀）</li><li><strong>\\n</strong> — 换行符</li><li><strong>\\t</strong> — 制表符</li><li><strong>\\r</strong> — 回车符</li><li><strong>\\uXXXX</strong> — Unicode 字符（4 位十六进制编码）</li></ul><p>其他字符（包括大部分 emoji 和非 ASCII 字符）可以直接出现在 JSON 字符串中，不需要转义。</p><h2>JSON 转义的真实使用场景</h2><h3>日志文件中的 JSON 转义</h3><p>当应用将 JSON 数据写入日志文件（CloudWatch、ELK、Datadog）时，日志条目本身通常也是 JSON。如果请求体包含嵌套的 JSON 字符串，内部字符串必须转义。例如，作为字符串记录在 JSON 日志中的 API 请求体需要正确转义，否则日志聚合器无法正确索引或拆分条目。</p><h3>在 JavaScript 代码中嵌入 JSON</h3><p>如果需要在 JavaScript 字符串中嵌入 JSON 对象（比如测试数据、配置模板或内联脚本），必须转义所有引号和反斜杠。常见错误是把原始 JSON 直接复制到 JS 字符串中而不转义 — 这会产生语法错误。使用我们的 JSON 转义工具一键将原始 JSON 转换为合法的 JavaScript 字符串。</p><h3>处理来自 Webhook 和 API 的转义 JSON</h3><p>很多 API 返回的 JSON 中，某些字段包含转义的 JSON 字符串。例如，Webhook 请求体中可能有一个 <code>payload</code> 字段，其值是编码为字符串的 JSON 对象。要读取实际数据，需要先反转义。这在 Stripe Webhook、Slack API 响应和事件驱动架构中很常见。</p><h3>配置文件中的 JSON</h3><p>配置文件（package.json、tsconfig.json、.eslintrc）是 JSON 格式，但有时包含特殊字符 — Windows 的反斜杠文件路径、正则表达式或多行描述。正确转义确保这些配置文件保持有效的 JSON 格式。</p><h2>JSON 转义的常见错误</h2><h3>双重转义</h3><p>最常见的错误是对已经转义的字符串再次转义。例如，对 <code>She said \\\"hello\\\"</code> 再次转义，会得到 <code>She said \\\\\\\"hello\\\\\\\"</code> — 反斜杠本身被转义，产生错误输出。如果输出有太多反斜杠，很可能就是双重转义了。先用反转义按钮还原，再只转义一次。</p><h3>忘记转义反斜杠</h3><p>反斜杠必须先于其他字符被转义。Windows 文件路径 <code>C:\\Users\\test</code> 在 JSON 中必须写成 <code>C:\\\\Users\\\\test</code>。常见错误是转义了引号但忘记转义反斜杠，产生看起来几乎正确但实际损坏的 JSON。</p><h3>使用错误的转义序列</h3><p>JSON 只支持有限的转义序列：<code>\\\"</code>、<code>\\\\</code>、<code>\\/</code>、<code>\\n</code>、<code>\\r</code>、<code>\\t</code>、<code>\\b</code>、<code>\\f</code> 和 <code>\\uXXXX</code>。<code>\\a</code>、<code>\\v</code>、<code>\\0</code> 在 JSON 中无效（虽然在某些编程语言中有效），使用无效序列会导致 <code>JSON.parse</code> 报错。</p><h3>混合转义和未转义内容</h3><p>如果粘贴的内容部分转义了（有些引号转义了，有些没有），转义或反转义操作会产生不一致的结果。操作前先确认输入是完全转义还是完全未转义的，然后选择对应的操作。</p><h2>如何使用 JSON 转义工具</h2><ol><li>将 JSON 字符串或文本<strong>粘贴</strong>到输入框（或上传文件 / 从 URL 加载）</li><li><strong>点击转义</strong>添加转义字符，或<strong>点击反转义</strong>移除转义字符</li><li><strong>复制</strong>结果或下载为文件</li><li>使用<strong>交换</strong>将输出移回输入框进行反向操作</li></ol><p>所有处理在浏览器中完成 — 数据不会发送到任何服务器。</p>"
+      "title": "如何转义和反转义 JSON 字符串",
+      "content": "<h2>什么是 JSON 字符串转义？</h2><p>JSON 字符串转义把文本转换成可以安全出现在 JSON 字符串里的表示形式。双引号、反斜杠和控制字符在 JSON 中有特殊含义，所以当它们作为内容出现时，必须用转义序列表示。</p><p>例如文本 <code>She said \"hello\"</code> 含有双引号。作为 JSON 字符串内容，它可以表示成 <code>She said \\\"hello\\\"</code>。改变的是表示形式，而不是文本本身的含义。</p><h2>JSON 转义序列</h2><p>标准 JSON 为字符串值定义了一组有限的转义序列：</p><ul><li><strong><code>\\\"</code>：</strong>双引号</li><li><strong><code>\\\\</code>：</strong>反斜杠</li><li><strong><code>\\n</code>：</strong>换行</li><li><strong><code>\\r</code>：</strong>回车</li><li><strong><code>\\t</code>：</strong>水平制表符</li><li><strong><code>\\b</code>：</strong>退格符</li><li><strong><code>\\f</code>：</strong>换页符</li><li><strong><code>\\uXXXX</code>：</strong>四位十六进制的 Unicode 转义</li></ul><p>把斜杠转义成 <code>\\/</code> 是允许的，但通常不是必须。JSON 不支持所有编程语言里的转义写法，所以 <code>\\a</code> 、<code>\\v</code> 、<code>\\0</code> 不应被当作合法的 JSON 转义。</p><h2>转义字符串 vs 转义 JSON 文档</h2><p>原始文本字符串和一整份 JSON 文档是相关但不相同的输入。如果想把一份 JSON 文档放进另一个 JSON 字符串，这份文档必须先变成字符串内容：</p><pre><code>{\"event\":\"created\"}</code></pre><p>它可能变成类似这样的 JSON 字符串字面量：</p><pre><code>\"{\\\"event\\\":\\\"created\\\"}\"</code></pre><p>外层双引号表示整份文档现在是一个 JSON 字符串值。如果只需要内部的转义内容，可以根据目标场景去掉外层引号。</p><h2>如何转义</h2><ol><li><strong>输入原始文本或 JSON：</strong>粘贴需要嵌入或序列化的内容。</li><li><strong>选择输出模式：</strong>决定结果要包含完整的 JSON 字符串字面量，还是只要内部内容。</li><li><strong>只转义一次：</strong>按 JSON 字符串规则转换引号、反斜杠和控制字符。</li><li><strong>检查输出：</strong>确认转义层数，以及目标位置是否真的需要一个 JSON 字符串。</li><li><strong>用解析器验证：</strong>用目标语言或 JSON 解析器确认结果能解回预期的值。</li></ol><h2>如何反转义</h2><ol><li><strong>粘贴转义后的值：</strong>可以来自日志、数据库字段、环境变量或 API 响应。</li><li><strong>判断层数：</strong>检查值是否带外层引号，以及是否被转义过多次。</li><li><strong>一次解一层：</strong>解出一个 JSON 字符串表示。</li><li><strong>检查结果：</strong>判断它现在是可读文本，还是一份需要继续解析的合法 JSON。</li><li><strong>必要时才重复：</strong>只有当数据确实被多次序列化时，才继续解下一层。</li></ol><h2>嵌套 JSON 与双重转义</h2><p>当一个 JSON 字段里放着另一份 JSON 文档的字符串时，就出现了嵌套 JSON：</p><pre><code>{\"payload\":\"{\\\"id\\\":1,\\\"status\\\":\\\"ok\\\"}\"}</code></pre><p>外层文档包含一个字符串，而这个字符串的内容恰好是 JSON 文本。要查看内部对象，先把字符串值解出来，再解析得到的 JSON。不按序列化层级、直接手动删反斜杠会破坏数据。</p><h2>写代码时用 JSON.stringify 和 JSON.parse</h2><p>在应用代码里应该用标准 JSON 库，而不是手动替换字符。在 JavaScript 中，<code>JSON.stringify(value)</code> 会生成带必要转义的 JSON 表示，<code>JSON.parse(text)</code> 会解析 JSON 并解码合法的字符串转义。Python、Java、C#、Go 等语言也都有对应的标准库函数。</p><p>在线转义工具适合检查和临时转换，但应用代码应该依赖经过检验的序列化器和解析器。</p><h2>JSON 转义不是 HTML 编码</h2><p>两者面向不同的上下文。JSON 在字符串值里使用反斜杠序列，HTML 使用 <code>&amp;quot;</code> 、<code>&amp;amp;</code> 这样的实体。为 JSON 做过转义，并不意味着在 HTML、JavaScript、SQL、URL 或 shell 命令里就是安全的。</p><h2>Unicode 与代理对</h2><p>Unicode 字符通常可以直接出现在 JSON 里。序列化器可以选择保留可读字符，也可以输出 Unicode 转义。位于基本多文种平面之外的字符（包括很多 emoji）在基于 UTF-16 的环境里可能用代理对转义表示，所以不要假设每个可见字符都只对应一个 <code>\\uXXXX</code> 序列。</p><h2>常见错误</h2><ul><li><strong>双重转义：</strong>对已经转义过的内容再次转义。</li><li><strong>手动删反斜杠：</strong>不解析 JSON 字符串就直接删除转义符号。</li><li><strong>用错上下文：</strong>在需要 HTML、SQL、URL 或 JavaScript 专用编码的地方使用 JSON 转义。</li><li><strong>把文本当成对象：</strong>反转义一个 JSON 字符串并不会自动把结果解析成对象。</li><li><strong>无效的转义序列：</strong>使用了 JSON 不支持的语言特有转义。</li><li><strong>外层引号用错：</strong>目标需要完整 JSON 字符串字面量时只嵌入了内部内容，或者反过来。</li></ul><h2>浏览器本地处理与隐私</h2><p>本工具在浏览器里完成转义和反转义，不会把内容发送到远端服务。这对于开发数据、日志和测试 fixture 很方便，但它不是密钥管理系统。请不要在任何在线工具里输入凭证、访问令牌、私钥、客户信息或生产环境的机密日志。</p>"
     }
   }
 }

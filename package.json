@@ -51,7 +51,8 @@
     "vue": "^3.5.18",
     "vue-codemirror6": "^1.6.1",
     "vue-router": "^4.5.1",
-    "xlsx": "^0.18.5"
+    "xlsx": "^0.18.5",
+    "yaml": "^2.9.1"
   },
   "devDependencies": {
     "@egoist/tailwindcss-icons": "^1.9.0",

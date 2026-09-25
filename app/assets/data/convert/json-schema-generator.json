@@ -12,306 +12,357 @@
     "json-to-typescript"
   ],
   "en": {
-  "name": "JSON Schema Generator",
-  "description": "Generate a JSON Schema draft from representative JSON data. This JSON Schema generator infers object structure, arrays, basic data types, and selected string formats, then lets you review, copy, or download the generated schema for validation, API documentation, and development workflows.",
-  "ui": {
-    "label_input": "Input JSON Sample",
-    "label_output": "Generated JSON Schema",
-    "btn_generate": "Generate Schema",
-    "btn_example": "Load Example",
-    "btn_copy": "Copy Schema",
-    "btn_download": "Download Schema",
-    "placeholder_output": "Generated JSON Schema will appear here...",
-    "option_indent": "Indent:",
-    "option_indent_2": "2 spaces",
-    "option_indent_4": "4 spaces",
-    "option_draft": "Schema draft:",
-    "option_draft_7": "Draft-07",
-    "option_draft_2020": "Draft 2020-12",
-    "option_required": "Mark observed fields as required",
-    "option_additional": "Allow additional properties",
-    "option_formats": "Detect common string formats",
-    "option_examples": "Include examples",
-    "error_invalid_json": "Input is not valid JSON",
-    "error_empty_input": "Enter JSON sample data first",
-    "error_generation": "The JSON Schema could not be generated",
-    "warning_sample_based": "The schema is inferred from the provided sample"
-  },
-  "hero": {
-    "trustHtml": "Runs in your browser. Your JSON sample is not uploaded by this tool."
-  },
-  "meta": {
-    "title": "JSON Schema Generator – Generate Schema from JSON",
-    "description": "Generate JSON Schema from JSON sample data online. Infer nested objects, arrays, types, required fields, and common formats, then copy or download the schema. Free and browser-based.",
-    "keywords": [
-      "json schema generator",
-      "json schema from json",
-      "generate json schema from json",
-      "json to schema",
-      "create json schema",
-      "json schema creator",
-      "json to json schema",
-      "json schema converter"
-    ]
-  },
-  "features": [
-    {
-      "icon": "lucide:file-json-2",
-      "title": "Generate Schema from JSON",
-      "description": "Analyze a representative JSON object or array and generate a starting JSON Schema that describes its observed structure and basic data types."
-    },
-    {
-      "icon": "lucide:git-branch",
-      "title": "Nested Objects and Arrays",
-      "description": "Recursively infer nested object properties and array item schemas. Review arrays with mixed or incomplete item structures before using the result as a validation contract."
-    },
-    {
-      "icon": "lucide:list-checks",
-      "title": "Required Field Control",
-      "description": "Choose whether fields observed in the sample should be added to the required array. A single example cannot reliably prove that every observed field is required in all future data."
-    },
-    {
-      "icon": "lucide:settings-2",
-      "title": "Additional Properties",
-      "description": "Choose whether generated object schemas allow properties that were not present in the sample. Use strict settings carefully because real payloads may contain fields not included in the example."
-    },
-    {
-      "icon": "lucide:scan-search",
-      "title": "Common Format Detection",
-      "description": "Optionally detect common string patterns such as email, date-time, URI, UUID, IPv4, or hostname when the value matches the implemented detection rules."
-    },
-    {
-      "icon": "lucide:braces",
-      "title": "Draft Version Selection",
-      "description": "Choose the JSON Schema draft supported by your validator or documentation tool. Draft-07 has broad compatibility, while newer drafts provide newer vocabulary and behavior."
-    },
-    {
-      "icon": "lucide:copy",
-      "title": "Copy and Download",
-      "description": "Copy the generated schema or download it as a .json file for use with validators, API documentation, tests, form tools, or code-generation workflows."
-    },
-    {
-      "icon": "lucide:shield-check",
-      "title": "Browser-Based Generation",
-      "description": "JSON parsing and schema generation happen in your browser. The page does not require an account or upload the sample data to a remote service."
-    }
-  ],
-  "guide": [
-    {
-      "title": "Enter representative JSON",
-      "description": "Paste an example object, an array of records, or a local JSON file if file input is available. Include examples of optional fields and different array item shapes when those variations matter."
-    },
-    {
-      "title": "Choose the schema draft",
-      "description": "Select Draft-07 or Draft 2020-12 according to the validator, API tool, or documentation system that will consume the schema."
-    },
-    {
-      "title": "Configure inference options",
-      "description": "Choose whether observed fields should be required, whether additional properties are allowed, whether common string formats are detected, and whether examples are included."
-    },
-    {
-      "title": "Generate and review",
-      "description": "Click Generate Schema, then review types, required fields, array items, formats, additionalProperties, and any warning that the result is inferred from sample data."
-    },
-    {
-      "title": "Copy, download, and validate",
-      "description": "Copy or download the schema, then test it against representative valid and invalid documents. Add constraints such as enum, pattern, minimum, maximum, or minLength manually when needed."
-    }
-  ],
-  "example": {
-    "input": "{\n  \"name\": \"Alice\",\n  \"age\": 30,\n  \"email\": \"alice@example.com\",\n  \"tags\": [\"admin\", \"user\"]\n}",
-    "output": "{\n  \"$schema\": \"https://json-schema.org/draft/2020-12/schema\",\n  \"type\": \"object\",\n  \"properties\": {\n    \"name\": {\n      \"type\": \"string\"\n    },\n    \"age\": {\n      \"type\": \"integer\"\n    },\n    \"email\": {\n      \"type\": \"string\",\n      \"format\": \"email\"\n    },\n    \"tags\": {\n      \"type\": \"array\",\n      \"items\": {\n        \"type\": \"string\"\n      }\n    }\n  },\n  \"required\": [\n    \"name\",\n    \"age\",\n    \"email\",\n    \"tags\"\n  ],\n  \"additionalProperties\": true\n}",
-    "useCase": "Generate a starting JSON Schema for validating an API payload and documenting its observed structure."
-  },
-  "faq": [
-    {
-      "question": "What is JSON Schema?",
-      "answer": "JSON Schema is a vocabulary for describing and validating the structure, data types, and constraints of JSON documents. It can be used with validators, API documentation tools, form generators, tests, and development workflows."
-    },
-    {
-      "question": "Can one JSON example produce a complete schema?",
-      "answer": "No. A schema generated from one example describes what was observed in that sample, not every possible future payload. Review the output and add optional fields, alternative types, constraints, enums, patterns, and array rules based on your actual data contract."
-    },
-    {
-      "question": "What JSON Schema draft does it generate?",
-      "answer": "The generated draft depends on the selected option and the implementation. Draft-07 is widely supported, while Draft 2020-12 is newer. Always select the draft supported by the validator or tool that will consume the schema."
-    },
-    {
-      "question": "What is the difference between Draft-07 and Draft 2020-12?",
-      "answer": "They are different JSON Schema specifications with different vocabularies, identifiers, and behavior. A schema written for one draft should be tested with a validator configured for that draft rather than assumed to work identically everywhere."
-    },
-    {
-      "question": "Are all observed fields marked as required?",
-      "answer": "Only when the required option is enabled. Even then, marking every observed field as required is an inference from the sample, not proof that all future documents must contain those fields."
-    },
-    {
-      "question": "What does additionalProperties mean?",
-      "answer": "For an object schema, additionalProperties controls whether properties not listed in properties are accepted. Allowing them is more flexible; setting it to false is stricter but may reject legitimate fields that were absent from the sample."
-    },
-    {
-      "question": "Can it generate a schema from a JSON array?",
-      "answer": "Yes. For an array, the generator creates an array schema and infers an items schema from the values or objects it observes. If array items have different shapes, review whether the result should use a combined schema, oneOf, anyOf, or a manually edited structure."
-    },
-    {
-      "question": "How are mixed-type arrays handled?",
-      "answer": "The behavior depends on the generator. Values with compatible types may be combined, while incompatible item shapes may require a union schema such as anyOf or oneOf. Review mixed arrays carefully instead of assuming the inferred items rule covers every case."
-    },
-    {
-      "question": "Does it detect email, UUID, date, and URI formats?",
-      "answer": "If format detection is enabled, the generator may add supported format hints when a string matches its detection rules. Format detection is heuristic and should be reviewed; a string that looks like an email or date is not proof that every value must follow that format."
-    },
-    {
-      "question": "Does it add minimum, maximum, enum, or pattern constraints?",
-      "answer": "A sample-based generator may infer basic types and selected formats, but it cannot reliably infer all business constraints from one value. Add enum, minimum, maximum, minLength, pattern, and other constraints manually when they are part of your actual contract."
-    },
-    {
-      "question": "Can it preserve the original JSON as an example?",
-      "answer": "If Include examples is enabled and supported, the generator can include representative sample values in the output. Examples document observed data but do not automatically define validation constraints."
-    },
-    {
-      "question": "Is the generated schema ready for OpenAPI?",
-      "answer": "It may provide a useful starting point for an OpenAPI schema, but OpenAPI versions use a related subset or dialect of JSON Schema and may impose additional rules. Review and adapt the generated schema to the OpenAPI version and tooling you use."
-    },
-    {
-      "question": "Can I validate JSON with the generated schema?",
-      "answer": "The generated schema can be used as input to a JSON Schema validator, but it should be reviewed and tested first. A schema that matches one sample may be too strict or too loose for production data."
-    },
-    {
-      "question": "Is my JSON data uploaded to a server?",
-      "answer": "This page is designed to parse the sample and generate the schema in your browser without requiring a server upload. You should still avoid entering passwords, API keys, access tokens, private customer data, or confidential production payloads into any browser-based tool."
-    },
-    {
-      "question": "Is this a free JSON Schema generator?",
-      "answer": "Yes. You can paste representative JSON, choose the available options, and copy or download a generated schema without creating an account."
-    }
-  ],
-  "article": {
-    "title": "How to Generate JSON Schema from JSON Data",
-    "content": "<h2>What Is JSON Schema?</h2><p>JSON Schema is a vocabulary for describing the structure and validation rules of JSON documents. It can define object properties, arrays, data types, required fields, formats, value constraints, and whether additional properties are allowed.</p><p>A JSON Schema generator analyzes one or more JSON examples and creates a starting schema. The generated result is useful for reducing manual work, but it still needs review because sample data cannot reveal every optional field, alternative type, boundary value, or business rule.</p><h2>Why Generate JSON Schema from JSON?</h2><ul><li><strong>API documentation:</strong> Create a first version of a request or response schema from a representative payload.</li><li><strong>Validation:</strong> Define a starting point for checking JSON structure and basic types.</li><li><strong>Testing:</strong> Use the generated schema to build valid and invalid test cases.</li><li><strong>Form generation:</strong> Provide structure and basic types to tools that generate forms from schemas.</li><li><strong>Code generation:</strong> Supply schema information to tools that create types or models, after reviewing the result.</li><li><strong>Data contracts:</strong> Document the observed shape of configuration files, events, or integration payloads.</li></ul><h2>How to Generate a JSON Schema</h2><ol><li><strong>Provide representative JSON:</strong> Paste an object, array, or sample payload that reflects real data variations.</li><li><strong>Select the draft:</strong> Choose Draft-07 or Draft 2020-12 based on the target validator or documentation tool.</li><li><strong>Configure required fields:</strong> Decide whether observed properties should be listed in required.</li><li><strong>Configure object strictness:</strong> Decide whether additionalProperties should allow fields not present in the sample.</li><li><strong>Enable format detection:</strong> Add selected format hints only when heuristic detection is useful for your workflow.</li><li><strong>Generate the schema:</strong> Review the generated types, arrays, properties, and nested definitions.</li><li><strong>Copy or download:</strong> Export the schema, then validate it with representative documents.</li></ol><h2>How the Generator Infers Types</h2><ul><li><strong>Objects:</strong> Become schemas with type object and a properties map.</li><li><strong>Arrays:</strong> Become schemas with type array and an items schema.</li><li><strong>Strings:</strong> Become type string, with optional format hints when detection is enabled.</li><li><strong>Numbers:</strong> Become number or integer according to the inference rules and observed values.</li><li><strong>Booleans:</strong> Become type boolean.</li><li><strong>Null:</strong> May become type null or a union with another observed type, depending on the generator.</li></ul><p>Type inference is based on observed values. It does not automatically know whether a numeric field is a count, price, identifier, timestamp, or version string.</p><h2>Required Fields Are an Inference</h2><p>If a property appears in one sample, that proves only that it appeared in that sample. It does not prove that every valid document must contain it. Use the required option as a starting point, then compare multiple examples or edit the required array based on the real API or data contract.</p><h2>Why Multiple Samples Are Better</h2><p>A single JSON object may omit optional fields or show only one branch of a conditional structure. Multiple representative samples can reveal:</p><ul><li>Fields that are sometimes missing.</li><li>Arrays containing more than one item shape.</li><li>Nullable values.</li><li>Alternative object structures.</li><li>Different string formats.</li><li>Unexpected types in real-world payloads.</li></ul><p>If the generator accepts only one JSON input, combine representative records into an array or review the resulting schema manually with additional samples.</p><h2>additionalProperties and Strictness</h2><p>Setting <code>additionalProperties</code> to false makes an object schema strict: properties not listed in the schema are rejected. This can detect unexpected fields, but it can also reject legitimate fields that were absent from the example. Allowing additional properties is more tolerant and may be safer for evolving APIs.</p><h2>Format Detection Is Heuristic</h2><p>Values such as email addresses, URLs, UUIDs, IP addresses, dates, and hostnames can sometimes be recognized by pattern. A format hint is not the same as a complete validation rule, and detection can produce false positives or miss valid values. Review generated formats before relying on them.</p><h2>Constraints Need Domain Knowledge</h2><p>A generator can infer that a value is a number, but it usually cannot know the correct business limits. Add rules such as <code>minimum</code>, <code>maximum</code>, <code>minLength</code>, <code>maxLength</code>, <code>pattern</code>, <code>enum</code>, <code>oneOf</code>, or <code>anyOf</code> based on documented requirements rather than guessing from one example.</p><h2>JSON Schema Drafts and Tool Compatibility</h2><p>JSON Schema Draft-07 is widely supported by existing validators and tools. Draft 2020-12 is newer and uses updated vocabularies and behavior. The correct choice depends on your validator, API documentation generator, form library, or code-generation workflow. Include the appropriate <code>$schema</code> URI and test the result with the exact toolchain you plan to use.</p><h2>Generated Schema vs Production Contract</h2><p>A generated schema is a useful starting point, not automatically a complete production contract. Before publishing it, review required fields, optional fields, nullability, numeric ranges, string formats, enum values, additional properties, array item rules, property names, and security-sensitive fields.</p><h2>Browser-Based Privacy</h2><p>This generator is designed to parse the sample JSON and create the schema in the browser rather than sending the input to a remote service. That can be useful for development and documentation. Avoid entering credentials, access tokens, private customer records, or confidential production payloads into any online tool.</p>"
-  }
-},
-  "zh": {
-    "name": "JSON Schema 生成器",
-    "description": "从json生成schema，自动从json数据生成json schema。这是一个json schema生成器，支持json转schema，导出为.json文件。",
+    "name": "JSON Schema Generator",
+    "description": "Generate a JSON Schema draft from representative JSON data. This JSON Schema generator infers object structure, arrays, basic data types, and selected string formats, then lets you review, copy, or download the generated schema for validation, API documentation, and development workflows.",
     "ui": {
-      "label_input": "输入 JSON",
-      "label_output": "JSON Schema",
-      "btn_generate": "生成 Schema",
-      "btn_example": "加载示例",
-      "placeholder_output": "JSON Schema 将在此显示...",
-      "option_indent": "缩进:",
-      "option_indent_2": "2 空格",
-      "option_indent_4": "4 空格",
-      "option_required": "包含 required",
-      "option_additional": "允许额外属性"
+      "label_input": "Input JSON Sample",
+      "label_output": "Generated JSON Schema",
+      "btn_generate": "Generate Schema",
+      "btn_example": "Load Example",
+      "placeholder_output": "Generated JSON Schema will appear here...",
+      "option_indent": "Indent:",
+      "option_indent_2": "2 spaces",
+      "option_indent_4": "4 spaces",
+      "option_draft": "Schema draft:",
+      "option_draft_7": "Draft-07",
+      "option_draft_2020": "Draft 2020-12",
+      "option_required": "Mark observed fields as required",
+      "option_additional": "Allow additional properties",
+      "option_formats": "Detect common string formats",
+      "option_examples": "Include examples",
+      "error_invalid_json": "Input is not valid JSON",
+      "error_empty_input": "Enter JSON sample data first",
+      "error_generation": "The JSON Schema could not be generated",
+      "warning_sample_based": "The schema is inferred from the provided sample"
     },
     "hero": {
-      "trustHtml": "100% 本地生成，JSON 数据不会离开浏览器。"
+      "trustHtml": "Runs in your browser. Your JSON sample is not uploaded by this tool."
     },
     "meta": {
-      "title": "JSON Schema 生成器 — 免费在线工具",
-      "description": "在线从 JSON 数据生成 JSON Schema。从 JSON 示例自动创建验证 Schema。导出为 .json 文件。免费、100% 客户端处理。",
+      "title": "JSON Schema Generator – Generate Schema from JSON",
+      "description": "Generate JSON Schema from JSON sample data online. Infer nested objects, arrays, types, required fields, and common formats, then copy or download the schema. Free and browser-based.",
       "keywords": [
-        "json schema生成器",
-        "json schema生成",
-        "从json生成schema",
-        "json转schema",
-        "json schema创建器",
-        "json schema制作器",
-        "创建json schema",
-        "json示例转schema",
-        "json转json schema",
-        "在线生成json schema"
+        "json schema generator",
+        "json schema from json",
+        "generate json schema from json",
+        "json to schema",
+        "create json schema",
+        "json schema creator",
+        "json to json schema",
+        "json schema converter"
       ]
     },
     "features": [
       {
-        "icon": "lucide:file-json",
-        "title": "自动生成",
-        "description": "从任何 JSON 数据自动生成 JSON Schema。"
+        "icon": "lucide:file-json-2",
+        "title": "Generate Schema from JSON",
+        "description": "Analyze a representative JSON object or array and generate a starting JSON Schema that describes its observed structure and basic data types."
       },
       {
-        "icon": "lucide:settings",
-        "title": "可配置",
-        "description": "配置必填字段、额外属性和缩进格式。"
+        "icon": "lucide:git-branch",
+        "title": "Nested Objects and Arrays",
+        "description": "Recursively infer nested object properties and array item schemas. Review arrays with mixed or incomplete item structures before using the result as a validation contract."
+      },
+      {
+        "icon": "lucide:list-checks",
+        "title": "Required Field Control",
+        "description": "Choose whether fields observed in the sample should be added to the required array. A single example cannot reliably prove that every observed field is required in all future data."
+      },
+      {
+        "icon": "lucide:settings-2",
+        "title": "Additional Properties",
+        "description": "Choose whether generated object schemas allow properties that were not present in the sample. Use strict settings carefully because real payloads may contain fields not included in the example."
+      },
+      {
+        "icon": "lucide:scan-search",
+        "title": "Common Format Detection",
+        "description": "Optionally detect common string patterns such as email, date, date-time, URI, and UUID when the value matches the implemented detection rules. Detected formats are guesses based on the sample and can be turned off."
+      },
+      {
+        "icon": "lucide:braces",
+        "title": "Draft Version Selection",
+        "description": "Choose the JSON Schema draft supported by your validator or documentation tool. Draft-07 has broad compatibility, while newer drafts provide newer vocabulary and behavior."
       },
       {
         "icon": "lucide:copy",
-        "title": "复制与下载",
-        "description": "复制 Schema 或下载为 .json 文件。"
-      },
-      {
-        "icon": "lucide:layers",
-        "title": "嵌套支持",
-        "description": "处理深度嵌套的对象和数组，正确推断类型。"
-      },
-      {
-        "icon": "lucide:link",
-        "title": "智能格式检测",
-        "description": "自动识别日期、邮箱、URI、UUID、IPv4 和主机名格式。"
+        "title": "Copy and Download",
+        "description": "Copy the generated schema or download it as a .json file for use with validators, API documentation, tests, form tools, or code-generation workflows."
       },
       {
         "icon": "lucide:shield-check",
-        "title": "私密安全",
-        "description": "所有生成在浏览器中完成，不上传数据。"
+        "title": "Browser-Based Generation",
+        "description": "JSON parsing and schema generation happen in your browser. The page does not require an account or upload the sample data to a remote service."
       }
     ],
     "guide": [
       {
-        "title": "粘贴 JSON",
-        "description": "将 JSON 数据粘贴到输入框中。"
+        "title": "Enter representative JSON",
+        "description": "Paste an example object, an array of records, or a local JSON file if file input is available. Include examples of optional fields and different array item shapes when those variations matter."
       },
       {
-        "title": "点击生成",
-        "description": "点击生成 Schema 创建 JSON Schema。"
+        "title": "Choose the schema draft",
+        "description": "Select Draft-07 or Draft 2020-12 according to the validator, API tool, or documentation system that will consume the schema."
       },
       {
-        "title": "复制或下载",
-        "description": "复制 Schema 或下载为文件。"
+        "title": "Configure inference options",
+        "description": "Choose whether observed fields should be required, whether additional properties are allowed, whether common string formats are detected, and whether examples are included."
+      },
+      {
+        "title": "Generate and review",
+        "description": "Click Generate Schema, then review types, required fields, array items, formats, additionalProperties, and any warning that the result is inferred from sample data."
+      },
+      {
+        "title": "Copy, download, and validate",
+        "description": "Copy or download the schema, then test it against representative valid and invalid documents. Add constraints such as enum, pattern, minimum, maximum, or minLength manually when needed."
       }
     ],
     "example": {
-      "input": "{\\n  \"name\": \"Alice\",\\n  \"age\": 30,\\n  \"email\": \"alice@example.com\",\\n  \"tags\": [\"admin\", \"user\"]\\n}",
-      "output": "{\\n  \"type\": \"object\",\\n  \"properties\": {\\n    \"name\": { \"type\": \"string\" },\\n    \"age\": { \"type\": \"number\" },\\n    \"email\": { \"type\": \"string\" },\\n    \"tags\": {\\n      \"type\": \"array\",\\n      \"items\": { \"type\": \"string\" }\\n    }\\n  },\\n  \"required\": [\"name\", \"age\", \"email\", \"tags\"]\\n}",
-      "useCase": "从示例 JSON 自动生成 JSON Schema 用于 API 文档。"
+      "input": "{\n  \"name\": \"Alice\",\n  \"age\": 30,\n  \"email\": \"alice@example.com\",\n  \"tags\": [\"admin\", \"user\"]\n}",
+      "output": "{\n  \"$schema\": \"http://json-schema.org/draft-07/schema#\",\n  \"type\": \"object\",\n  \"properties\": {\n    \"name\": {\n      \"type\": \"string\"\n    },\n    \"age\": {\n      \"type\": \"integer\"\n    },\n    \"email\": {\n      \"type\": \"string\",\n      \"format\": \"email\"\n    },\n    \"tags\": {\n      \"type\": \"array\",\n      \"items\": {\n        \"type\": \"string\"\n      }\n    }\n  },\n  \"required\": [\n    \"name\",\n    \"age\",\n    \"email\",\n    \"tags\"\n  ],\n  \"additionalProperties\": true\n}",
+      "useCase": "Generate a starting JSON Schema for validating an API payload and documenting its observed structure."
     },
     "faq": [
       {
-        "question": "我的 JSON 数据会上传到服务器吗？",
-        "answer": "不会。所有生成在浏览器中完成，数据不会离开你的设备。"
+        "question": "What is JSON Schema?",
+        "answer": "JSON Schema is a vocabulary for describing and validating the structure, data types, and constraints of JSON documents. It can be used with validators, API documentation tools, form generators, tests, and development workflows."
       },
       {
-        "question": "生成什么版本的 JSON Schema？",
-        "answer": "生成 JSON Schema Draft 7，被大多数验证器和工具广泛支持。"
+        "question": "Can one JSON example produce a complete schema?",
+        "answer": "No. A schema generated from one example describes what was observed in that sample, not every possible future payload. Review the output and add optional fields, alternative types, constraints, enums, patterns, and array rules based on your actual data contract."
       },
       {
-        "question": "可以自定义生成的 Schema 吗？",
-        "answer": "可以。你可以配置必填字段、额外属性和缩进格式等选项。"
+        "question": "What JSON Schema draft does it generate?",
+        "answer": "The generated draft depends on the selected option and the implementation. Draft-07 is widely supported, while Draft 2020-12 is newer. Always select the draft supported by the validator or tool that will consume the schema."
       },
       {
-        "question": "可以下载生成的 Schema 吗？",
-        "answer": "可以。生成后，你可以将 Schema 复制到剪贴板或下载为 .json 文件，直接在项目中使用。"
+        "question": "What is the difference between Draft-07 and Draft 2020-12?",
+        "answer": "They are different JSON Schema specifications with different vocabularies, identifiers, and behavior. A schema written for one draft should be tested with a validator configured for that draft rather than assumed to work identically everywhere."
       },
       {
-        "question": "能处理嵌套对象吗？",
-        "answer": "能。生成器递归处理嵌套对象和数组，创建完整的 Schema。"
+        "question": "Are all observed fields marked as required?",
+        "answer": "Only when the required option is enabled. Even then, marking every observed field as required is an inference from the sample, not proof that all future documents must contain those fields."
       },
       {
-        "question": "能自动识别哪些格式？",
-        "answer": "生成器自动识别日期、日期时间、邮箱、URI、UUID、IPv4 和主机名等格式。"
+        "question": "What does additionalProperties mean?",
+        "answer": "For an object schema, additionalProperties controls whether properties not listed in properties are accepted. Allowing them is more flexible; setting it to false is stricter but may reject legitimate fields that were absent from the sample."
       },
       {
-        "question": "JSON Schema 有什么用？",
-        "answer": "JSON Schema 用于验证 JSON 数据的结构和数据类型。常用于 API 文档、数据验证和表单生成。"
+        "question": "Can it generate a schema from a JSON array?",
+        "answer": "Yes. For an array, the generator creates an array schema and infers an items schema from the values or objects it observes. If array items have different shapes, review whether the result should use a combined schema, oneOf, anyOf, or a manually edited structure."
       },
       {
-        "question": "可以从 JSON 数组生成 Schema 吗？",
-        "answer": "可以。粘贴 JSON 数组，生成器会从第一个元素推断项目 Schema。"
+        "question": "How are mixed-type arrays handled?",
+        "answer": "The behavior depends on the generator. Values with compatible types may be combined, while incompatible item shapes may require a union schema such as anyOf or oneOf. Review mixed arrays carefully instead of assuming the inferred items rule covers every case."
+      },
+      {
+        "question": "Does it detect email, UUID, date, and URI formats?",
+        "answer": "Yes, when format detection is enabled. The implemented rules recognise email, date, date-time, URI, and UUID patterns. Detection is a guess based on the sample values, so review it before relying on a format keyword in validation."
+      },
+      {
+        "question": "Does it add minimum, maximum, enum, or pattern constraints?",
+        "answer": "A sample-based generator may infer basic types and selected formats, but it cannot reliably infer all business constraints from one value. Add enum, minimum, maximum, minLength, pattern, and other constraints manually when they are part of your actual contract."
+      },
+      {
+        "question": "Can it preserve the original JSON as an example?",
+        "answer": "If Include examples is enabled and supported, the generator can include representative sample values in the output. Examples document observed data but do not automatically define validation constraints."
+      },
+      {
+        "question": "Is the generated schema ready for OpenAPI?",
+        "answer": "It may provide a useful starting point for an OpenAPI schema, but OpenAPI versions use a related subset or dialect of JSON Schema and may impose additional rules. Review and adapt the generated schema to the OpenAPI version and tooling you use."
+      },
+      {
+        "question": "Can I validate JSON with the generated schema?",
+        "answer": "The generated schema can be used as input to a JSON Schema validator, but it should be reviewed and tested first. A schema that matches one sample may be too strict or too loose for production data."
+      },
+      {
+        "question": "Is my JSON data uploaded to a server?",
+        "answer": "This page is designed to parse the sample and generate the schema in your browser without requiring a server upload. You should still avoid entering passwords, API keys, access tokens, private customer data, or confidential production payloads into any browser-based tool."
+      },
+      {
+        "question": "Is this a free JSON Schema generator?",
+        "answer": "Yes. You can paste representative JSON, choose the available options, and copy or download a generated schema without creating an account."
       }
     ],
     "article": {
-      "title": "如何从 JSON 数据生成 JSON Schema",
-      "content": "<h2>什么是 JSON Schema？</h2><p>JSON Schema 是一种用于注释和验证 JSON 数据的词汇。它定义了 JSON 文档的结构、数据类型和约束，对于 API 文档和数据验证至关重要。</p><h2>为什么要生成 JSON Schema？</h2><ul><li><strong>API 文档：</strong>自动记录你的 API 负载结构</li><li><strong>数据验证：</strong>根据 Schema 验证传入的 JSON 数据</li><li><strong>表单生成：</strong>从 Schema 定义生成表单</li><li><strong>代码生成：</strong>从 Schema 生成类型化模型</li></ul><h2>如何生成</h2><ol><li><strong>粘贴 JSON</strong> 示例数据</li><li><strong>点击生成</strong> 创建 Schema</li><li><strong>审查</strong> 生成的 Schema</li><li><strong>复制或下载</strong> 在项目中使用</li></ol><h2>理解输出</h2><ul><li><strong>type：</strong> 数据类型（string、number、object、array）</li><li><strong>properties：</strong> 对象字段及其类型</li><li><strong>required：</strong> 必填字段</li><li><strong>additionalProperties：</strong> 允许额外字段</li></ul><h2>最佳实践</h2><ul><li><strong>使用示例：</strong>提供代表性的 JSON 数据</li><li><strong>审查必填字段：</strong>确保重要字段标记为必填</li><li><strong>测试 Schema：</strong>验证它适用于你的数据</li></ul>"
+      "title": "How to Generate JSON Schema from JSON Data",
+      "content": "<h2>What Is JSON Schema?</h2><p>JSON Schema is a vocabulary for describing the structure and validation rules of JSON documents. It can define object properties, arrays, data types, required fields, formats, value constraints, and whether additional properties are allowed.</p><p>A JSON Schema generator analyzes one or more JSON examples and creates a starting schema. The generated result is useful for reducing manual work, but it still needs review because sample data cannot reveal every optional field, alternative type, boundary value, or business rule.</p><h2>Why Generate JSON Schema from JSON?</h2><ul><li><strong>API documentation:</strong> Create a first version of a request or response schema from a representative payload.</li><li><strong>Validation:</strong> Define a starting point for checking JSON structure and basic types.</li><li><strong>Testing:</strong> Use the generated schema to build valid and invalid test cases.</li><li><strong>Form generation:</strong> Provide structure and basic types to tools that generate forms from schemas.</li><li><strong>Code generation:</strong> Supply schema information to tools that create types or models, after reviewing the result.</li><li><strong>Data contracts:</strong> Document the observed shape of configuration files, events, or integration payloads.</li></ul><h2>How to Generate a JSON Schema</h2><ol><li><strong>Provide representative JSON:</strong> Paste an object, array, or sample payload that reflects real data variations.</li><li><strong>Select the draft:</strong> Choose Draft-07 or Draft 2020-12 based on the target validator or documentation tool.</li><li><strong>Configure required fields:</strong> Decide whether observed properties should be listed in required.</li><li><strong>Configure object strictness:</strong> Decide whether additionalProperties should allow fields not present in the sample.</li><li><strong>Enable format detection:</strong> Add selected format hints only when heuristic detection is useful for your workflow.</li><li><strong>Generate the schema:</strong> Review the generated types, arrays, properties, and nested definitions.</li><li><strong>Copy or download:</strong> Export the schema, then validate it with representative documents.</li></ol><h2>How the Generator Infers Types</h2><ul><li><strong>Objects:</strong> Become schemas with type object and a properties map.</li><li><strong>Arrays:</strong> Become schemas with type array and an items schema.</li><li><strong>Strings:</strong> Become type string, with optional format hints when detection is enabled.</li><li><strong>Numbers:</strong> Become number or integer according to the inference rules and observed values.</li><li><strong>Booleans:</strong> Become type boolean.</li><li><strong>Null:</strong> May become type null or a union with another observed type, depending on the generator.</li></ul><p>Type inference is based on observed values. It does not automatically know whether a numeric field is a count, price, identifier, timestamp, or version string.</p><h2>Required Fields Are an Inference</h2><p>If a property appears in one sample, that proves only that it appeared in that sample. It does not prove that every valid document must contain it. Use the required option as a starting point, then compare multiple examples or edit the required array based on the real API or data contract.</p><h2>Why Multiple Samples Are Better</h2><p>A single JSON object may omit optional fields or show only one branch of a conditional structure. Multiple representative samples can reveal:</p><ul><li>Fields that are sometimes missing.</li><li>Arrays containing more than one item shape.</li><li>Nullable values.</li><li>Alternative object structures.</li><li>Different string formats.</li><li>Unexpected types in real-world payloads.</li></ul><p>If the generator accepts only one JSON input, combine representative records into an array or review the resulting schema manually with additional samples.</p><h2>additionalProperties and Strictness</h2><p>Setting <code>additionalProperties</code> to false makes an object schema strict: properties not listed in the schema are rejected. This can detect unexpected fields, but it can also reject legitimate fields that were absent from the example. Allowing additional properties is more tolerant and may be safer for evolving APIs.</p><h2>Format Detection Is Heuristic</h2><p>Values such as email addresses, URLs, UUIDs, IP addresses, dates, and hostnames can sometimes be recognized by pattern. A format hint is not the same as a complete validation rule, and detection can produce false positives or miss valid values. Review generated formats before relying on them.</p><h2>Constraints Need Domain Knowledge</h2><p>A generator can infer that a value is a number, but it usually cannot know the correct business limits. Add rules such as <code>minimum</code>, <code>maximum</code>, <code>minLength</code>, <code>maxLength</code>, <code>pattern</code>, <code>enum</code>, <code>oneOf</code>, or <code>anyOf</code> based on documented requirements rather than guessing from one example.</p><h2>JSON Schema Drafts and Tool Compatibility</h2><p>JSON Schema Draft-07 is widely supported by existing validators and tools. Draft 2020-12 is newer and uses updated vocabularies and behavior. The correct choice depends on your validator, API documentation generator, form library, or code-generation workflow. Include the appropriate <code>$schema</code> URI and test the result with the exact toolchain you plan to use.</p><h2>Generated Schema vs Production Contract</h2><p>A generated schema is a useful starting point, not automatically a complete production contract. Before publishing it, review required fields, optional fields, nullability, numeric ranges, string formats, enum values, additional properties, array item rules, property names, and security-sensitive fields.</p><h2>Browser-Based Privacy</h2><p>This generator is designed to parse the sample JSON and create the schema in the browser rather than sending the input to a remote service. That can be useful for development and documentation. Avoid entering credentials, access tokens, private customer records, or confidential production payloads into any online tool.</p>"
+    }
+  },
+  "zh": {
+    "name": "JSON Schema 生成器",
+    "description": "在浏览器中根据 JSON 样本生成起始版 JSON Schema。分析代表性 JSON 对象或数组，推断嵌套结构、基础类型和可选格式，然后复制或下载 Schema。",
+    "hero": {
+      "trustHtml": "在你的浏览器中运行。你的 JSON 样本不会被本工具上传。"
+    },
+    "meta": {
+      "title": "JSON Schema 生成器 — 免费在线工具",
+      "description": "免费在线从 JSON 生成 JSON Schema。选择 Schema draft、控制 required 与 additionalProperties、检测常见字符串格式，然后复制或下载结果。浏览器本地生成。",
+      "keywords": [
+        "json schema生成器",
+        "json转schema",
+        "生成json schema",
+        "在线json schema",
+        "json schema在线生成",
+        "免费json schema",
+        "json schema工具",
+        "json转json schema"
+      ]
+    },
+    "ui": {
+      "label_input": "JSON 样本",
+      "label_output": "生成的 JSON Schema",
+      "btn_generate": "生成 Schema",
+      "btn_example": "加载示例",
+      "placeholder_output": "生成的 JSON Schema 将显示在这里……",
+      "option_indent": "缩进：",
+      "option_indent_2": "2 空格",
+      "option_indent_4": "4 空格",
+      "option_draft": "Schema draft：",
+      "option_draft_7": "Draft-07",
+      "option_draft_2020": "Draft 2020-12",
+      "option_required": "把样本中出现的字段标记为 required",
+      "option_additional": "允许额外属性",
+      "option_formats": "检测常见字符串格式",
+      "option_examples": "包含示例值",
+      "error_invalid_json": "输入不是合法的 JSON",
+      "error_empty_input": "请先输入 JSON 样本数据",
+      "error_generation": "无法生成 JSON Schema",
+      "warning_sample_based": "该 Schema 是根据你提供的样本推断出来的"
+    },
+    "features": [
+      {
+        "icon": "lucide:file-json",
+        "title": "从 JSON 生成 Schema",
+        "description": "分析一份有代表性的 JSON 对象或数组，生成描述其结构形态与基础数据类型的起始版 JSON Schema，而不是一份最终定稿。"
+      },
+      {
+        "icon": "lucide:layers",
+        "title": "嵌套对象与数组",
+        "description": "递归推断嵌套对象属性和数组元素 schema。数组元素结构混杂或样本不完整时，请把结果当作草稿再人工复核。"
+      },
+      {
+        "icon": "lucide:check-circle-2",
+        "title": "required 字段控制",
+        "description": "可以决定样本中出现的字段是否写入 required 数组。单个样本并不能可靠证明这些字段在所有数据里都必然存在。"
+      },
+      {
+        "icon": "lucide:settings-2",
+        "title": "additionalProperties 控制",
+        "description": "可以决定生成的对象 schema 是否允许样本之外的属性。严格设置要谨慎，因为真实数据往往带有样本里没有的字段。"
+      },
+      {
+        "icon": "lucide:search",
+        "title": "常见格式检测",
+        "description": "开启后会按已实现的规则检测 email、date、date-time、URI 和 UUID 这类字符串模式。格式是基于样本的猜测，可以关闭。"
+      },
+      {
+        "icon": "lucide:git-branch",
+        "title": "选择 draft 版本",
+        "description": "可以按校验器或文档工具的支持情况选择 JSON Schema draft。Draft-07 兼容性广，较新的 draft 提供更新的关键字与语义。"
+      },
+      {
+        "icon": "lucide:copy",
+        "title": "复制与下载",
+        "description": "复制生成的 schema，或下载为 .json 文件，用于校验器、接口文档、测试、表单工具或代码生成流程。"
+      },
+      {
+        "icon": "lucide:shield-check",
+        "title": "浏览器本地生成",
+        "description": "JSON 解析和 schema 生成都在你的浏览器中完成，不需要账号，也不会把样本数据上传到远程服务。"
+      }
+    ],
+    "guide": [
+      {
+        "title": "输入有代表性的 JSON",
+        "description": "粘贴能覆盖真实数据形态的 JSON 样本，或打开 .json 文件。样本越有代表性，推断结果越接近可用。"
+      },
+      {
+        "title": "选择 draft 版本",
+        "description": "按你的校验器或文档工具选择 Draft-07 或 2020-12。"
+      },
+      {
+        "title": "配置推断选项",
+        "description": "决定是否标记 required、是否允许额外属性、是否检测字符串格式、是否附带示例值。"
+      },
+      {
+        "title": "生成并检查",
+        "description": "生成后逐项检查类型、嵌套结构、数组元素和格式关键字，确认没有把样本特性误当成通用规则。"
+      },
+      {
+        "title": "复制、下载并校验",
+        "description": "复制或下载 schema，然后用你自己的校验器对真实数据跑一遍，再决定是否投入使用。"
+      }
+    ],
+    "example": {
+      "input": "{\n  \"name\": \"Alice\",\n  \"age\": 30,\n  \"email\": \"alice@example.com\",\n  \"tags\": [\"admin\", \"user\"]\n}",
+      "output": "{\n  \"$schema\": \"http://json-schema.org/draft-07/schema#\",\n  \"type\": \"object\",\n  \"properties\": {\n    \"name\": {\n      \"type\": \"string\"\n    },\n    \"age\": {\n      \"type\": \"integer\"\n    },\n    \"email\": {\n      \"type\": \"string\",\n      \"format\": \"email\"\n    },\n    \"tags\": {\n      \"type\": \"array\",\n      \"items\": {\n        \"type\": \"string\"\n      }\n    }\n  },\n  \"required\": [\n    \"name\",\n    \"age\",\n    \"email\",\n    \"tags\"\n  ],\n  \"additionalProperties\": true\n}",
+      "useCase": "根据一条用户记录快速生成起始版 Schema，再交给校验器对真实数据验证。"
+    },
+    "faq": [
+      {
+        "question": "什么是 JSON Schema？",
+        "answer": "JSON Schema 是一种用 JSON 描述 JSON 数据结构的规范，可以声明字段、类型、必填项和约束，常用于接口校验、文档生成和表单配置。"
+      },
+      {
+        "question": "一份 JSON 示例能生成完整的 schema 吗？",
+        "answer": "不能保证。生成器只能根据样本中出现的形态推断结构与类型。样本里没有出现的字段、可选字段、边界值和业务约束都无法凭空推断，因此结果是起始草稿，需要人工补充。"
+      },
+      {
+        "question": "生成的是哪个 draft 版本？",
+        "answer": "可以在页面上选择 Draft-07 或 2020-12，默认 Draft-07。选择依据是校验器或文档工具实际支持的版本，而不是哪个更新就选哪个。"
+      },
+      {
+        "question": "Draft-07 和 2020-12 有什么区别？",
+        "answer": "两者在关键字、$schema 标识和部分语义上有差异，例如某些关键字的写法和前缀 items 的行为。多数通用校验器同时支持两者，但工具链差异仍然存在，请按目标工具选择。"
+      },
+      {
+        "question": "所有出现过的字段都会被标记为 required 吗？",
+        "answer": "只有在开启该选项时才会。单个样本无法证明某个字段在所有数据中必然存在，因此把样本字段全部标为 required 容易造成合法数据被判为不合法。"
+      },
+      {
+        "question": "additionalProperties 是什么意思？",
+        "answer": "它决定对象是否允许出现 schema 中未声明的属性。关闭时更严格，但真实数据常带样本里没有的字段，严格设置可能导致校验失败。"
+      },
+      {
+        "question": "可以根据 JSON 数组生成 schema 吗？",
+        "answer": "可以。数组会生成 items 描述；生成器会采样数组元素（最多取前 20 个）来推断元素结构。"
+      },
+      {
+        "question": "元素类型混杂的数组怎么处理？",
+        "answer": "生成器会把采样到的不同结构合并：结构一致时输出单个 items schema，结构不一致时输出 `items: { anyOf: [...] }`。这类结果通常需要人工收敛成明确的业务类型。"
+      },
+      {
+        "question": "会检测 email、UUID、日期、URI 格式吗？",
+        "answer": "开启格式检测后会。已实现的规则可识别 email、date、date-time、URI 和 UUID。这些都是基于样本值的猜测，用于校验前请复核。"
+      },
+      {
+        "question": "会加 minimum、maximum、enum 或 pattern 约束吗？",
+        "answer": "不会。取值范围、枚举和正则这类约束表达的是业务规则，无法从样本可靠推断，需要你按实际需求手工补充。"
+      },
+      {
+        "question": "可以把原始 JSON 保留为示例吗？",
+        "answer": "可以。开启“包含示例值”后，标量节点会附带 `examples`，把样本中的值写进 schema，便于文档和 Mock 数据使用。"
+      },
+      {
+        "question": "生成的 schema 可以直接用于 OpenAPI 吗？",
+        "answer": "可以作为起点，但 OpenAPI 通常基于特定的 Schema 方言，并对 nullable、format、discriminator 等有额外约定。迁移前请按 OpenAPI 版本调整。"
+      },
+      {
+        "question": "可以用生成的 schema 校验 JSON 吗？",
+        "answer": "本页只负责生成。校验请使用 JSON Schema 校验器，或站内的 JSON Schema 校验工具，并用真实数据试跑，确认约束符合预期。"
+      },
+      {
+        "question": "我的 JSON 数据会上传到服务器吗？",
+        "answer": "生成过程在你的浏览器本地完成，不需要上传服务器。但仍不建议在任何浏览器工具中输入密码、API 密钥、令牌或机密的客户数据。"
+      },
+      {
+        "question": "这个 JSON Schema 生成器免费吗？",
+        "answer": "免费，且无需注册账号。你可以粘贴样本、生成 schema，然后复制或下载结果。"
+      }
+    ],
+    "article": {
+      "title": "如何在线从 JSON 生成 JSON Schema",
+      "content": "<h2>JSON Schema 生成器做了什么？</h2><p>JSON Schema 生成器读取一份 JSON 样本，推断它的结构与类型，输出一份描述该结构的 JSON Schema。它适合在已有示例数据、但还没有正式契约时，快速得到一份可用的草稿。</p><p>推断出来的 schema 是起点而不是终点：样本里没有出现的字段、可选性、边界值和业务规则都无法自动获得，必须由人来补。</p><h2>常见使用场景</h2><ul><li><strong>接口契约：</strong>先用真实响应生成草稿，再人工整理成正式的请求/响应 schema。</li><li><strong>测试数据校验：</strong>为测试夹具或快照生成一份结构约束，防回归。</li><li><strong>文档与 Mock：</strong>为接口文档或 Mock 服务提供结构化描述。</li><li><strong>表单与配置：</strong>把结构描述交给表单生成工具或配置校验流程。</li></ul><h2>如何生成</h2><ol><li><strong>准备样本：</strong>选择能覆盖真实形态的 JSON，而不是最理想的那一条。</li><li><strong>选择 draft：</strong>按校验器或文档工具选择 Draft-07 或 2020-12。</li><li><strong>配置选项：</strong>决定 required、additionalProperties、格式检测和示例值。</li><li><strong>生成并检查：</strong>重点看数组元素、嵌套结构和格式关键字。</li><li><strong>下载并试跑：</strong>用真实数据在你的校验器里验证，再定稿。</li></ol><h2>推断的边界在哪里</h2><p>生成器只能描述它看到的东西：</p><ul><li><strong>类型：</strong>按样本值推断 string / number / integer / boolean / null / object / array。</li><li><strong>数组：</strong>采样前 20 个元素，结构一致则输出单个 items，不一致则输出 anyOf。</li><li><strong>格式：</strong>按规则猜测 email、date、date-time、URI、UUID，可关闭。</li><li><strong>不做推断：</strong>minimum / maximum、enum、pattern、唯一性、跨字段依赖等业务约束。</li></ul><p>这些边界决定了生成的 schema 必须复核，尤其是要拿去做强制校验时。</p><h2>required 与 additionalProperties 的风险</h2><p>把样本中出现的字段全部标为 required，会让缺少该字段的合法数据被判为不合法；而关闭 additionalProperties 又可能拒绝样本之外本来就合理的字段。两者都要按真实数据形态决定，默认设置只适合快速查看。</p><h2>如何选择 draft 版本</h2><p>Draft-07 兼容性最好，多数工具和库都支持；2020-12 引入了更新的关键字与语义表达。选择的依据应是目标校验器实际支持的版本，而不是版本新旧。</p><h2>浏览器本地处理与隐私</h2><p>生成过程在你的浏览器中完成，不需要把样本数据上传到远程服务，方便直接粘贴接口响应或配置片段。但它不是密钥管理方案，请勿在浏览器工具中粘贴密码、API 密钥、访问令牌或生产环境的敏感数据。</p>"
     }
   }
 }

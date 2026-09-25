@@ -12,353 +12,391 @@
     "json-compare"
   ],
   "en": {
-  "name": "JSONPath Tester",
-  "ui": {
-    "labelInputJson": "Input JSON",
-    "labelResults": "Results",
-    "labelExpression": "JSONPath Expression",
-    "labelCommonPaths": "Common Expressions:",
-    "labelMatchPath": "Match path",
-    "labelJsonPointer": "JSON Pointer",
-    "labelValue": "Matched value",
-    "btnEvaluate": "Evaluate",
-    "btnCopyResults": "Copy Results",
-    "btnCopyExpression": "Copy Expression",
-    "btnExample": "Load Example",
-    "placeholderExpression": "$.store.book[0].title",
-    "statusMatches": "{count} match(es)",
-    "statusNoMatches": "No matches found",
-    "statusInvalidExpression": "Invalid JSONPath expression",
-    "statusInvalidJson": "Input JSON is invalid",
-    "placeholderResults": "Matching values and paths will appear here...",
-    "errorNoJson": "Please enter JSON data",
-    "errorNoExpression": "Please enter a JSONPath expression",
-    "errorNoMatches": "No matches found",
-    "errorUnsupportedExpression": "This expression uses syntax not supported by the current evaluator"
-  },
-  "description": "Evaluate JSONPath expressions against JSON data in your browser. Query nested objects and arrays, test selectors, inspect matching values and paths, and copy the results for API debugging, configuration work, and data-processing tasks.",
-  "hero": {
-    "trustHtml": "Runs in your browser. Your JSON is not uploaded by this tool."
-  },
-  "meta": {
-    "title": "JSONPath Tester – Test JSONPath Expressions Online",
-    "description": "Test JSONPath expressions against JSON online. Query nested objects and arrays, inspect matching values and paths, and distinguish syntax errors from no-match results. Free and browser-based.",
-    "keywords": [
-      "jsonpath tester",
-      "json path tester",
-      "jsonpath online",
-      "test jsonpath",
-      "jsonpath query tool",
-      "jsonpath evaluator",
-      "json path finder",
-      "jsonpath extractor"
-    ]
-  },
-  "features": [
-    {
-      "icon": "lucide:route",
-      "title": "Evaluate JSONPath Expressions",
-      "description": "Run a JSONPath expression against a parsed JSON document and inspect the values selected by the current evaluator."
+    "name": "JSONPath Tester",
+    "ui": {
+      "label_input": "Input JSON",
+      "label_expression": "JSONPath Expression",
+      "label_results": "Results",
+      "label_common_paths": "Common paths:",
+      "label_match_path": "Path:",
+      "label_json_pointer": "Pointer:",
+      "label_type": "Type:",
+      "label_reference": "JSONPath Reference",
+      "label_operators": "Operators",
+      "label_filter_operators": "Filter Operators",
+      "col_operator": "Operator",
+      "col_description": "Description",
+      "col_example": "Example",
+      "btn_copy_expression": "Copy",
+      "btn_copy_results": "Copy results",
+      "btn_example": "Example",
+      "placeholder_expression": "$.store.books[0].title",
+      "placeholder_results": "Matching values and paths will appear here...",
+      "status_matches": "{count} match(es)",
+      "status_no_matches": "The expression is valid but matched nothing",
+      "status_invalid_expression": "This expression is invalid or uses unsupported syntax",
+      "status_invalid_json": "The JSON could not be parsed",
+      "error_no_json": "Please enter JSON data",
+      "error_no_expression": "Please enter a JSONPath expression",
+      "note_supported_syntax": "This page evaluates a documented JSONPath subset. It is not a complete RFC 9535 implementation: array slices, unions, regular expressions, and functions are not supported.",
+      "op_root": "Root element",
+      "op_current": "Current node inside a filter",
+      "op_wildcard": "Wildcard: every child",
+      "op_deep_scan": "Recursive descent",
+      "op_dot": "Child by name",
+      "op_bracket": "Child in bracket notation",
+      "op_filter": "Filter expression",
+      "filter_eq": "Equals",
+      "filter_ne": "Not equals",
+      "filter_lt": "Less than",
+      "filter_gt": "Greater than",
+      "filter_lte": "Less than or equal",
+      "filter_gte": "Greater than or equal"
     },
-    {
-      "icon": "lucide:search-check",
-      "title": "Inspect Matching Values",
-      "description": "View the number of matches and the extracted values returned by the expression. Results should remain distinguishable even when multiple matches contain identical data."
+    "description": "Evaluate JSONPath expressions against JSON data in your browser. Query nested objects and arrays, test selectors, inspect matching values and paths, and copy the results for API debugging, configuration work, and data-processing tasks.",
+    "hero": {
+      "trustHtml": "Runs in your browser. Your JSON is not uploaded by this tool."
     },
-    {
-      "icon": "lucide:map-pin",
-      "title": "Show Match Paths",
-      "description": "Display the concrete path of each matched node, such as $.users[2].name, so you can identify where a value came from in the original document."
+    "meta": {
+      "title": "JSONPath Tester – Test JSONPath Expressions Online",
+      "description": "Test JSONPath expressions against JSON online. Query nested objects and arrays, inspect matching values and paths, and distinguish syntax errors from no-match results. Free and browser-based.",
+      "keywords": [
+        "jsonpath tester",
+        "json path tester",
+        "jsonpath online",
+        "test jsonpath",
+        "jsonpath query tool",
+        "jsonpath evaluator",
+        "json path finder",
+        "jsonpath extractor"
+      ]
     },
-    {
-      "icon": "lucide:brackets",
-      "title": "Common JSONPath Syntax",
-      "description": "Use root selectors, child properties, bracket notation, array indexes, wildcards, recursive descent, slices, and filters when supported by the selected JSONPath implementation."
+    "features": [
+      {
+        "icon": "lucide:route",
+        "title": "Evaluate JSONPath Expressions",
+        "description": "Run a JSONPath expression against a parsed JSON document and inspect the values selected by the current evaluator."
+      },
+      {
+        "icon": "lucide:search-check",
+        "title": "Inspect Matching Values",
+        "description": "View the number of matches and the extracted values returned by the expression. Results should remain distinguishable even when multiple matches contain identical data."
+      },
+      {
+        "icon": "lucide:map-pin",
+        "title": "Show Match Paths",
+        "description": "Each result shows its JSONPath, the equivalent JSON Pointer (RFC 6901), and the node type, so you can locate the match in the source document or in another tool."
+      },
+      {
+        "icon": "lucide:brackets",
+        "title": "Common JSONPath Syntax",
+        "description": "Use the root selector, child properties, bracket notation, array indexes, wildcards, recursive descent, and simple comparison filters. Slices, unions, regular expressions, and functions are not supported."
+      },
+      {
+        "icon": "lucide:book-open",
+        "title": "Syntax Reference",
+        "description": "Open the built-in reference to review the operators this evaluator supports, with examples you can copy into the expression field."
+      },
+      {
+        "icon": "lucide:copy",
+        "title": "Copy Query or Results",
+        "description": "Copy the tested expression, matched values, paths, or result JSON for use in API tests, scripts, configuration, documentation, or debugging."
+      },
+      {
+        "icon": "lucide:shield-check",
+        "title": "Browser-Based Evaluation",
+        "description": "JSON parsing and JSONPath evaluation happen in your browser. The page does not require an account or upload your document to a remote service."
+      }
+    ],
+    "guide": [
+      {
+        "title": "Enter valid JSON",
+        "description": "Paste an API response, configuration document, export, or other valid JSON into the input editor. The JSON must parse successfully before a query can run."
+      },
+      {
+        "title": "Write a JSONPath expression",
+        "description": "Start with the root selector $, then add properties, indexes, wildcards, recursive selectors, slices, or filters supported by the current evaluator."
+      },
+      {
+        "title": "Evaluate the expression",
+        "description": "Click Evaluate to run the query. The result distinguishes a valid expression with no matches from an expression that cannot be parsed or is not supported."
+      },
+      {
+        "title": "Inspect values and locations",
+        "description": "Review each matched value together with its concrete path and, when available, its JSON Pointer or node type."
+      },
+      {
+        "title": "Copy and refine",
+        "description": "Copy the expression or selected results for use in code and refine the query incrementally until it returns exactly the nodes you need."
+      }
+    ],
+    "example": {
+      "title": "JSONPath Query Example",
+      "description": "Use a JSONPath expression to select the title of the first book and compare it with a wildcard query.",
+      "input": "{\n  \"store\": {\n    \"book\": [\n      {\n        \"title\": \"Sayings of the Century\",\n        \"price\": 8.95\n      },\n      {\n        \"title\": \"Sword of Honour\",\n        \"price\": 12.99\n      }\n    ]\n  }\n}",
+      "expression": "$.store.book[0].title",
+      "output": "[\n  {\n    \"path\": \"$.store.book[0].title\",\n    \"value\": \"Sayings of the Century\"\n  }\n]",
+      "useCase": "Test an API response selector before using the JSONPath expression in application code or an API testing workflow."
     },
-    {
-      "icon": "lucide:book-open",
-      "title": "Syntax Reference",
-      "description": "Review supported operators and examples before building a complex query. The reference should reflect the exact dialect and evaluator used by this page."
-    },
-    {
-      "icon": "lucide:copy",
-      "title": "Copy Query or Results",
-      "description": "Copy the tested expression, matched values, paths, or result JSON for use in API tests, scripts, configuration, documentation, or debugging."
-    },
-    {
-      "icon": "lucide:shield-check",
-      "title": "Browser-Based Evaluation",
-      "description": "JSON parsing and JSONPath evaluation happen in your browser. The page does not require an account or upload your document to a remote service."
+    "faq": [
+      {
+        "question": "What is JSONPath?",
+        "answer": "JSONPath is a query syntax for selecting values or nodes from a JSON document. It provides selectors for the root, object properties, arrays, wildcards, recursive searches, slices, and filters, depending on the dialect and evaluator."
+      },
+      {
+        "question": "Which JSONPath specification does this tool support?",
+        "answer": "This page uses its own evaluator for a documented subset of JSONPath: `$`, `.name`, `['name']`, `[index]`, `*`, `..name`, and simple filters such as `[?(@.price < 10)]`. It does not implement the full RFC 9535 standard: array slices, unions, regular expressions, and functions are not supported. Expressions outside the subset are reported as invalid instead of returning partial results."
+      },
+      {
+        "question": "What is the difference between a syntax error and no matches?",
+        "answer": "A syntax error means the expression cannot be parsed or uses unsupported syntax. No matches means the expression is valid under the evaluator but does not select any node in the supplied JSON. These cases require different fixes."
+      },
+      {
+        "question": "What are common JSONPath expressions?",
+        "answer": "Examples include $.user.name for a nested property, $.items[0] for the first array item, $.items[*].id for every item ID, $..price for recursive price searches, and $.items[?(@.price > 10)] for a filter when filter syntax is supported."
+      },
+      {
+        "question": "What does $ mean in JSONPath?",
+        "answer": "The dollar sign usually represents the root of the JSON document. For example, $.users starts at the root and selects the users property."
+      },
+      {
+        "question": "What does .. mean in JSONPath?",
+        "answer": "Recursive descent searches descendants below the current location. For example, $..id can match id properties at multiple nesting levels, depending on the evaluator's semantics."
+      },
+      {
+        "question": "Does the tool support filters?",
+        "answer": "Yes, with a limited set of comparison operators: `==`, `!=`, `<`, `>`, `<=`, and `>=`, for example `$.store.books[?(@.price < 10)]`. Regular expression filters and function calls are not supported and are reported as invalid expressions."
+      },
+      {
+        "question": "Does the tool support array slices?",
+        "answer": "No. Slice expressions such as `$.items[0:3]` are not supported by this evaluator, and neither are unions such as `$.items[0,2]`. Use a wildcard with a filter, or select the indexes you need one at a time."
+      },
+      {
+        "question": "Why do I get duplicate-looking results?",
+        "answer": "Different nodes can contain the same value. Inspect the concrete match path, JSON Pointer, or source location to distinguish them instead of relying only on the displayed value."
+      },
+      {
+        "question": "Can I see where each result came from?",
+        "answer": "If path reporting is enabled, each match can include its concrete JSONPath location and possibly an RFC 6901 JSON Pointer. This is useful when identical values appear in several parts of a document."
+      },
+      {
+        "question": "Can I use JSONPath to modify JSON?",
+        "answer": "This page is designed for querying and extracting values. JSONPath itself is primarily a selection syntax; modifying the selected data requires a separate transformation or update operation."
+      },
+      {
+        "question": "Can I use it with API responses?",
+        "answer": "Yes. Paste a valid API response and use JSONPath to inspect fields, arrays, nested objects, and filter results. The evaluator only queries the data supplied to the page and does not know the API's business semantics."
+      },
+      {
+        "question": "Can I test large JSON documents?",
+        "answer": "The practical limit depends on document size, nesting depth, array length, evaluator complexity, result count, and browser memory. Filters and recursive searches may require more work than direct property access."
+      },
+      {
+        "question": "Is my JSON uploaded to a server?",
+        "answer": "This page is designed to parse and query JSON in your browser without requiring a server upload. You should still avoid entering passwords, API keys, access tokens, private customer data, or confidential production payloads into any browser-based tool."
+      },
+      {
+        "question": "Is this a free JSONPath tester?",
+        "answer": "Yes. You can paste JSON, test supported JSONPath expressions, inspect matches and paths, and copy the results without creating an account."
+      }
+    ],
+    "article": {
+      "title": "How to Test JSONPath Expressions Online",
+      "content": "<h2>What Is JSONPath?</h2><p>JSONPath is a query syntax for navigating and selecting data from JSON documents. It is commonly used to find nested properties, array items, matching records, and values inside API responses or configuration files.</p><p>JSONPath implementations are not all identical. Some tools follow the newer IETF JSONPath RFC 9535, while others implement older or library-specific dialects. A reliable tester should identify the syntax it supports rather than implying that every JSONPath expression works everywhere.</p><h2>How to Use a JSONPath Tester</h2><ol><li><strong>Enter JSON:</strong> Paste a valid JSON object or array into the document editor.</li><li><strong>Write an expression:</strong> Start with <code>$</code> and add property names, array indexes, wildcards, recursive selectors, slices, or filters supported by the evaluator.</li><li><strong>Evaluate:</strong> Run the query against the parsed document.</li><li><strong>Classify the result:</strong> Determine whether the expression is invalid, valid but has no matches, or returns one or more nodes.</li><li><strong>Inspect paths:</strong> Review the concrete path, JSON Pointer, value, and node type when available.</li><li><strong>Copy the query:</strong> Reuse the tested expression in application code, API tests, a pipeline, or documentation.</li></ol><h2>Common JSONPath Expressions</h2><ul><li><strong><code>$</code>:</strong> Select the root document.</li><li><strong><code>$.user.name</code>:</strong> Select a nested property with dot notation.</li><li><strong><code>$[\"user-name\"]</code>:</strong> Select a property whose name requires bracket notation.</li><li><strong><code>$.items[0]</code>:</strong> Select the first item in an array.</li><li><strong><code>$.items[*].id</code>:</strong> Select the id property from every item.</li><li><strong><code>$..price</code>:</strong> Search for price properties recursively.</li><li><strong><code>$.items[?(@.price &gt; 10)]</code>:</strong> Filter items when predicate syntax is supported.</li></ul><h2>Dot Notation and Bracket Notation</h2><p>Dot notation is concise for ordinary property names:</p><pre><code>$.store.book[0].title</code></pre><p>Bracket notation is useful for property names containing spaces, hyphens, punctuation, or characters that are not convenient in an identifier:</p><pre><code>$[\"user profile\"][\"display-name\"]</code></pre><p>Use the notation supported by the evaluator and quote property names exactly as they appear in the JSON.</p><h2>Wildcards, Recursive Descent, and Slices</h2><p>A wildcard selects multiple children, while recursive descent searches below the current location. Array slices select a range when supported:</p><ul><li><strong><code>*</code>:</strong> Match children or array items.</li><li><strong><code>..</code>:</strong> Search descendants recursively.</li><li><strong><code>[0:3]</code>:</strong> Select a slice when the evaluator supports slice syntax.</li></ul><p>Recursive queries can return many nodes, especially in large documents. Review match paths rather than assuming that every value with the same key belongs to the same logical object.</p><h2>Filter Expressions</h2><p>Filters let you select array items based on a condition, such as:</p><pre><code>$.store.book[?(@.price &lt; 10)].title</code></pre><p>Filter syntax and available functions vary between JSONPath implementations. Comparisons involving missing properties, null values, strings, and numbers should be tested against the actual evaluator.</p><h2>Match Values Are Not Enough</h2><p>Two nodes can return the same value but represent different locations:</p><pre><code>{\"users\":[{\"id\":1},{\"id\":1}]}</code></pre><p>A useful result view should show both the value and its path, such as <code>$.users[0].id</code> and <code>$.users[1].id</code>. An RFC 6901 JSON Pointer can provide another precise location format for integration with tools that use JSON Patch or pointer-based updates.</p><h2>Invalid Expression vs No Match</h2><p>These results are different:</p><ul><li><strong>Invalid expression:</strong> The parser cannot understand the query or the evaluator does not support part of its syntax.</li><li><strong>No match:</strong> The expression is valid but does not select a node in the current document.</li><li><strong>Successful match:</strong> One or more values or nodes were selected.</li></ul><p>Keeping these states separate makes debugging much faster. A syntax error should be fixed in the expression, while a no-match result usually requires checking property names, array indexes, document structure, or filter conditions.</p><h2>JSONPath and JSON Pointer</h2><p>JSONPath is a query language that can select multiple nodes. JSON Pointer, defined by RFC 6901, identifies one location using slash-separated tokens such as <code>/users/0/name</code>. They solve different problems and should not be presented as interchangeable syntax.</p><h2>JSONPath in API Testing</h2><p>JSONPath is useful for checking API responses, extracting fields, and writing assertions. For example, a test can verify that <code>$.data.items[*].id</code> returns expected identifiers. The exact expression syntax must match the API testing tool or library used by the project.</p><h2>Implementation and Compatibility</h2><p>Before copying a query into production code, test it in the target library. A query that works in a browser tester may fail in a tool that uses a different JSONPath dialect, function set, filter syntax, or result model. If the page implements RFC 9535, include the specification version and supported extensions in the reference.</p><h2>Large JSON Documents</h2><p>Direct property access is usually cheaper than recursive searches and complex filters. For large documents, result rendering can become as important as evaluation. A Web Worker, lazy filtering, virtualized results, and a result limit can keep the interface responsive.</p><h2>Browser-Based Privacy</h2><p>This tester is designed to parse and evaluate JSON in the browser instead of sending the document to a remote service. That is useful for development payloads and private configuration samples, but it is not a secret-management system. Avoid entering credentials, tokens, private customer information, or production secrets into any online tool.</p>"
     }
-  ],
-  "guide": [
-    {
-      "title": "Enter valid JSON",
-      "description": "Paste an API response, configuration document, export, or other valid JSON into the input editor. The JSON must parse successfully before a query can run."
-    },
-    {
-      "title": "Write a JSONPath expression",
-      "description": "Start with the root selector $, then add properties, indexes, wildcards, recursive selectors, slices, or filters supported by the current evaluator."
-    },
-    {
-      "title": "Evaluate the expression",
-      "description": "Click Evaluate to run the query. The result distinguishes a valid expression with no matches from an expression that cannot be parsed or is not supported."
-    },
-    {
-      "title": "Inspect values and locations",
-      "description": "Review each matched value together with its concrete path and, when available, its JSON Pointer or node type."
-    },
-    {
-      "title": "Copy and refine",
-      "description": "Copy the expression or selected results for use in code and refine the query incrementally until it returns exactly the nodes you need."
-    }
-  ],
-  "example": {
-    "title": "JSONPath Query Example",
-    "description": "Use a JSONPath expression to select the title of the first book and compare it with a wildcard query.",
-    "input": "{\n  \"store\": {\n    \"book\": [\n      {\n        \"title\": \"Sayings of the Century\",\n        \"price\": 8.95\n      },\n      {\n        \"title\": \"Sword of Honour\",\n        \"price\": 12.99\n      }\n    ]\n  }\n}",
-    "expression": "$.store.book[0].title",
-    "output": "[\n  {\n    \"path\": \"$.store.book[0].title\",\n    \"value\": \"Sayings of the Century\"\n  }\n]",
-    "useCase": "Test an API response selector before using the JSONPath expression in application code or an API testing workflow."
   },
-  "features": [
-    {
-      "icon": "lucide:route",
-      "title": "Evaluate JSONPath Expressions",
-      "description": "Run a JSONPath expression against a parsed JSON document and inspect the values selected by the current evaluator."
-    },
-    {
-      "icon": "lucide:search-check",
-      "title": "Inspect Matching Values",
-      "description": "View the number of matches and the extracted values returned by the expression. Results should remain distinguishable even when multiple matches contain identical data."
-    },
-    {
-      "icon": "lucide:map-pin",
-      "title": "Show Match Paths",
-      "description": "Display the concrete path of each matched node, such as $.users[2].name, so you can identify where a value came from in the original document."
-    },
-    {
-      "icon": "lucide:brackets",
-      "title": "Common JSONPath Syntax",
-      "description": "Use root selectors, child properties, bracket notation, array indexes, wildcards, recursive descent, slices, and filters when supported by the selected JSONPath implementation."
-    },
-    {
-      "icon": "lucide:book-open",
-      "title": "Syntax Reference",
-      "description": "Review supported operators and examples before building a complex query. The reference should reflect the exact dialect and evaluator used by this page."
-    },
-    {
-      "icon": "lucide:copy",
-      "title": "Copy Query or Results",
-      "description": "Copy the tested expression, matched values, paths, or result JSON for use in API tests, scripts, configuration, documentation, or debugging."
-    },
-    {
-      "icon": "lucide:shield-check",
-      "title": "Browser-Based Evaluation",
-      "description": "JSON parsing and JSONPath evaluation happen in your browser. The page does not require an account or upload your document to a remote service."
-    }
-  ],
-  "faq": [
-    {
-      "question": "What is JSONPath?",
-      "answer": "JSONPath is a query syntax for selecting values or nodes from a JSON document. It provides selectors for the root, object properties, arrays, wildcards, recursive searches, slices, and filters, depending on the dialect and evaluator."
-    },
-    {
-      "question": "Which JSONPath specification does this tool support?",
-      "answer": "The supported syntax depends on the evaluator and library used by the page. If the implementation follows RFC 9535, state that explicitly and document the supported functions and operators. Otherwise, describe the page as supporting a documented JSONPath subset or dialect rather than claiming universal compatibility."
-    },
-    {
-      "question": "What is the difference between a syntax error and no matches?",
-      "answer": "A syntax error means the expression cannot be parsed or uses unsupported syntax. No matches means the expression is valid under the evaluator but does not select any node in the supplied JSON. These cases require different fixes."
-    },
-    {
-      "question": "What are common JSONPath expressions?",
-      "answer": "Examples include $.user.name for a nested property, $.items[0] for the first array item, $.items[*].id for every item ID, $..price for recursive price searches, and $.items[?(@.price > 10)] for a filter when filter syntax is supported."
-    },
-    {
-      "question": "What does $ mean in JSONPath?",
-      "answer": "The dollar sign usually represents the root of the JSON document. For example, $.users starts at the root and selects the users property."
-    },
-    {
-      "question": "What does .. mean in JSONPath?",
-      "answer": "Recursive descent searches descendants below the current location. For example, $..id can match id properties at multiple nesting levels, depending on the evaluator's semantics."
-    },
-    {
-      "question": "Does the tool support filters?",
-      "answer": "Filter support depends on the JSONPath implementation. If supported, an expression such as $.items[?(@.price > 10)] can select items whose price is greater than 10. Check the built-in reference because filter syntax and available functions differ between implementations."
-    },
-    {
-      "question": "Does the tool support array slices?",
-      "answer": "Array slice support depends on the evaluator. Some JSONPath dialects support expressions such as $.items[0:3], while others implement a different subset. Use the syntax reference for the exact behavior supported here."
-    },
-    {
-      "question": "Why do I get duplicate-looking results?",
-      "answer": "Different nodes can contain the same value. Inspect the concrete match path, JSON Pointer, or source location to distinguish them instead of relying only on the displayed value."
-    },
-    {
-      "question": "Can I see where each result came from?",
-      "answer": "If path reporting is enabled, each match can include its concrete JSONPath location and possibly an RFC 6901 JSON Pointer. This is useful when identical values appear in several parts of a document."
-    },
-    {
-      "question": "Can I use JSONPath to modify JSON?",
-      "answer": "This page is designed for querying and extracting values. JSONPath itself is primarily a selection syntax; modifying the selected data requires a separate transformation or update operation."
-    },
-    {
-      "question": "Can I use it with API responses?",
-      "answer": "Yes. Paste a valid API response and use JSONPath to inspect fields, arrays, nested objects, and filter results. The evaluator only queries the data supplied to the page and does not know the API's business semantics."
-    },
-    {
-      "question": "Can I test large JSON documents?",
-      "answer": "The practical limit depends on document size, nesting depth, array length, evaluator complexity, result count, and browser memory. Filters and recursive searches may require more work than direct property access."
-    },
-    {
-      "question": "Is my JSON uploaded to a server?",
-      "answer": "This page is designed to parse and query JSON in your browser without requiring a server upload. You should still avoid entering passwords, API keys, access tokens, private customer data, or confidential production payloads into any browser-based tool."
-    },
-    {
-      "question": "Is this a free JSONPath tester?",
-      "answer": "Yes. You can paste JSON, test supported JSONPath expressions, inspect matches and paths, and copy the results without creating an account."
-    }
-  ],
-  "article": {
-    "title": "How to Test JSONPath Expressions Online",
-    "content": "<h2>What Is JSONPath?</h2><p>JSONPath is a query syntax for navigating and selecting data from JSON documents. It is commonly used to find nested properties, array items, matching records, and values inside API responses or configuration files.</p><p>JSONPath implementations are not all identical. Some tools follow the newer IETF JSONPath RFC 9535, while others implement older or library-specific dialects. A reliable tester should identify the syntax it supports rather than implying that every JSONPath expression works everywhere.</p><h2>How to Use a JSONPath Tester</h2><ol><li><strong>Enter JSON:</strong> Paste a valid JSON object or array into the document editor.</li><li><strong>Write an expression:</strong> Start with <code>$</code> and add property names, array indexes, wildcards, recursive selectors, slices, or filters supported by the evaluator.</li><li><strong>Evaluate:</strong> Run the query against the parsed document.</li><li><strong>Classify the result:</strong> Determine whether the expression is invalid, valid but has no matches, or returns one or more nodes.</li><li><strong>Inspect paths:</strong> Review the concrete path, JSON Pointer, value, and node type when available.</li><li><strong>Copy the query:</strong> Reuse the tested expression in application code, API tests, a pipeline, or documentation.</li></ol><h2>Common JSONPath Expressions</h2><ul><li><strong><code>$</code>:</strong> Select the root document.</li><li><strong><code>$.user.name</code>:</strong> Select a nested property with dot notation.</li><li><strong><code>$[\"user-name\"]</code>:</strong> Select a property whose name requires bracket notation.</li><li><strong><code>$.items[0]</code>:</strong> Select the first item in an array.</li><li><strong><code>$.items[*].id</code>:</strong> Select the id property from every item.</li><li><strong><code>$..price</code>:</strong> Search for price properties recursively.</li><li><strong><code>$.items[?(@.price &gt; 10)]</code>:</strong> Filter items when predicate syntax is supported.</li></ul><h2>Dot Notation and Bracket Notation</h2><p>Dot notation is concise for ordinary property names:</p><pre><code>$.store.book[0].title</code></pre><p>Bracket notation is useful for property names containing spaces, hyphens, punctuation, or characters that are not convenient in an identifier:</p><pre><code>$[\"user profile\"][\"display-name\"]</code></pre><p>Use the notation supported by the evaluator and quote property names exactly as they appear in the JSON.</p><h2>Wildcards, Recursive Descent, and Slices</h2><p>A wildcard selects multiple children, while recursive descent searches below the current location. Array slices select a range when supported:</p><ul><li><strong><code>*</code>:</strong> Match children or array items.</li><li><strong><code>..</code>:</strong> Search descendants recursively.</li><li><strong><code>[0:3]</code>:</strong> Select a slice when the evaluator supports slice syntax.</li></ul><p>Recursive queries can return many nodes, especially in large documents. Review match paths rather than assuming that every value with the same key belongs to the same logical object.</p><h2>Filter Expressions</h2><p>Filters let you select array items based on a condition, such as:</p><pre><code>$.store.book[?(@.price &lt; 10)].title</code></pre><p>Filter syntax and available functions vary between JSONPath implementations. Comparisons involving missing properties, null values, strings, and numbers should be tested against the actual evaluator.</p><h2>Match Values Are Not Enough</h2><p>Two nodes can return the same value but represent different locations:</p><pre><code>{\"users\":[{\"id\":1},{\"id\":1}]}</code></pre><p>A useful result view should show both the value and its path, such as <code>$.users[0].id</code> and <code>$.users[1].id</code>. An RFC 6901 JSON Pointer can provide another precise location format for integration with tools that use JSON Patch or pointer-based updates.</p><h2>Invalid Expression vs No Match</h2><p>These results are different:</p><ul><li><strong>Invalid expression:</strong> The parser cannot understand the query or the evaluator does not support part of its syntax.</li><li><strong>No match:</strong> The expression is valid but does not select a node in the current document.</li><li><strong>Successful match:</strong> One or more values or nodes were selected.</li></ul><p>Keeping these states separate makes debugging much faster. A syntax error should be fixed in the expression, while a no-match result usually requires checking property names, array indexes, document structure, or filter conditions.</p><h2>JSONPath and JSON Pointer</h2><p>JSONPath is a query language that can select multiple nodes. JSON Pointer, defined by RFC 6901, identifies one location using slash-separated tokens such as <code>/users/0/name</code>. They solve different problems and should not be presented as interchangeable syntax.</p><h2>JSONPath in API Testing</h2><p>JSONPath is useful for checking API responses, extracting fields, and writing assertions. For example, a test can verify that <code>$.data.items[*].id</code> returns expected identifiers. The exact expression syntax must match the API testing tool or library used by the project.</p><h2>Implementation and Compatibility</h2><p>Before copying a query into production code, test it in the target library. A query that works in a browser tester may fail in a tool that uses a different JSONPath dialect, function set, filter syntax, or result model. If the page implements RFC 9535, include the specification version and supported extensions in the reference.</p><h2>Large JSON Documents</h2><p>Direct property access is usually cheaper than recursive searches and complex filters. For large documents, result rendering can become as important as evaluation. A Web Worker, lazy filtering, virtualized results, and a result limit can keep the interface responsive.</p><h2>Browser-Based Privacy</h2><p>This tester is designed to parse and evaluate JSON in the browser instead of sending the document to a remote service. That is useful for development payloads and private configuration samples, but it is not a secret-management system. Avoid entering credentials, tokens, private customer information, or production secrets into any online tool.</p>"
-  }
-},
   "zh": {
-		"name": "JSONPath 测试器",
-		"ui": {
-			"labelInputJson": "输入 JSON",
-			"labelResults": "结果",
-			"labelExpression": "JSONPath 表达式",
-			"labelCommonPaths": "常用路径：",
-			"btnEvaluate": "执行",
-			"placeholderExpression": "$.store.book[0].title",
-			"statusMatches": "{count} 个匹配",
-			"placeholderResults": "结果将显示在此处...",
-			"errorNoJson": "请输入 JSON 数据",
-			"errorNoExpression": "请输入 JSONPath 表达式",
-			"errorNoMatches": "未找到匹配结果"
-		},
-		"description": "对你的 JSON 数据执行 JSONPath 表达式测试。这个 JSONPath 在线工具支持使用 JSONPath 语法查找和提取值，查看匹配数量与结果，并支持复制结果和通过 ?url= 参数从 URL 加载 JSON。",
-		"hero": {
-			"trustHtml": "100% 本地处理。JSON 数据始终保留在浏览器中。"
-		},
-		"meta": {
-			"title": "JSONPath 测试器 — 免费在线 JSONPath 查询工具",
-			"description": "在线对 JSON 数据测试 JSONPath 表达式。查找路径、提取值、验证表达式并复制结果。免费、100% 客户端处理，无需上传文件。",
-			"keywords": [
-				"jsonpath",
-				"jsonpath测试",
-				"json路径",
-				"jsonpath在线",
-				"测试jsonpath",
-				"jsonpath查询工具",
-				"json路径表达式",
-				"jsonpath评估器",
-				"在线jsonpath测试",
-				"jsonpath练习场",
-				"免费jsonpath工具",
-				"json路径查询",
-				"jsonpath提取器",
-				"jsonpath在线测试"
-			]
-		},
-		"features": [
-			{
-				"icon": "lucide:route",
-				"title": "路径测试",
-				"description": "输入 JSONPath 表达式并对你的 JSON 数据执行查询。工具会显示匹配的数量和具体结果，帮助你验证表达式是否返回预期的数据。"
-			},
-			{
-				"icon": "lucide:search",
-				"title": "值提取",
-				"description": "使用 JSONPath 语法从 JSON 中提取特定值，包括嵌套键、数组索引、通配符、过滤器和递归下降。适合 API 测试、数据处理和调试场景。"
-			},
-			{
-				"icon": "lucide:copy",
-				"title": "复制结果",
-				"description": "将提取的值或完整结果集复制到剪贴板。你可以直接将结果用于代码、文档、测试脚本或其他开发流程。"
-			},
-			{
-				"icon": "lucide:bookmark",
-				"title": "常用路径",
-				"description": "快速访问常用的 JSONPath 表达式，例如根键、数组索引、通配符和递归搜索。这些示例有助于学习语法并构建更复杂的查询。"
-			},
-			{
-				"icon": "lucide:link",
-				"title": "URL 输入",
-				"description": "支持通过 ?url= 参数从公开可访问的 URL 加载 JSON。加载后可以先检查内容，再执行 JSONPath 查询。"
-			},
-			{
-				"icon": "lucide:shield-check",
-				"title": "私密安全",
-				"description": "JSON 解析和 JSONPath 评估都在浏览器本地完成，不需要将数据上传到服务器。适合处理私密 API 响应、配置数据和其他不希望离开设备的内容。"
-			}
-		],
-		"guide": [
-			{
-				"title": "粘贴 JSON",
-				"description": "将 JSON 对象或数组粘贴到输入框中。可以使用 API 响应、配置文件、导出数据或任何需要查询的 JSON 结构。"
-			},
-			{
-				"title": "输入 JSONPath 表达式",
-				"description": "在表达式输入框中输入 JSONPath 查询，例如 $.store.book[0].title 或 $..price。可以借助常用路径和参考示例来构建和优化表达式。"
-			},
-			{
-				"title": "执行并查看结果",
-				"description": "点击执行按钮，对输入的 JSON 运行 JSONPath 表达式。结果区域会显示匹配的个数以及提取到的值或路径。"
-			},
-			{
-				"title": "复制或调整表达式",
-				"description": "复制结果用于代码、文档或其他用途。如果输出不符合预期，可以修改表达式并重新执行，直到查询返回所需的数据。"
-			}
-		],
-		"faq": [
-			{
-				"question": "我的 JSON 数据会上传到服务器吗？",
-				"answer": "不会。JSON 解析和 JSONPath 评估都在浏览器本地完成，数据不会上传到远程服务器，也不会离开你的设备。"
-			},
-			{
-				"question": "支持哪些 JSONPath 语法？",
-				"answer": "支持常见的 JSONPath 表达式，包括点表示法、括号表示法、数组索引、通配符、递归下降和过滤表达式。具体支持范围可能因底层 JSONPath 实现而略有差异。"
-			},
-			{
-				"question": "可以测试复杂的 JSONPath 表达式吗？",
-				"answer": "可以。你可以测试包含过滤器、数组切片、嵌套路径和递归搜索的高级表达式。如果查询结果不符合预期，可以尝试简化表达式或参考示例进行调整。"
-			},
-			{
-				"question": "JSONPath 有什么用？",
-				"answer": "JSONPath 用于从 JSON 数据中提取特定值，类似于 XPath 对 XML 的作用。常用于 API 测试、数据处理、配置管理和调试嵌套 JSON 结构。"
-			},
-			{
-				"question": "可以复制结果吗？",
-				"answer": "可以。你可以复制提取的值或完整结果集到剪贴板，方便在代码、测试脚本、文档或其他开发流程中使用。"
-			},
-			{
-				"question": "什么是常见的 JSONPath 表达式？",
-				"answer": "常见表达式包括 $.key（根层级键）、$.array[0]（第一个元素）、$.array[*]（所有元素）和 $..key（递归搜索）。工具提供对这些常用模式的快速访问。"
-			},
-			{
-				"question": "可以在大文件上测试 JSONPath 吗？",
-				"answer": "可以，只要浏览器能够加载和处理该文件。实际限制取决于设备性能、浏览器可用内存以及 JSON 结构的复杂程度。非常大的文件可能需要更长的评估时间。"
-			},
-			{
-				"question": "如果没有匹配结果会怎样？",
-				"answer": "如果 JSONPath 表达式在输入的 JSON 中找不到任何匹配，工具会显示未找到匹配结果的提示。你可以调整表达式、检查 JSON 结构，或参考示例优化查询。"
-			},
-			{
-				"question": "可以用这个工具调试 API 响应吗？",
-				"answer": "可以。将 API 响应粘贴到输入区域，然后使用 JSONPath 表达式检查特定字段、数组或嵌套对象。这有助于理解数据结构并提取需要的值。"
-			},
-			{
-				"question": "这是一个免费的 JSONPath 测试器吗？",
-				"answer": "是的。这是一个免费的在线 JSONPath 测试器，用于查询和提取 JSON 中的数据。你可以测试表达式、查看结果并复制输出，无需注册账号或上传文件。"
-			}
-		],
-		"article": {
-			"title": "如何在线测试 JSONPath 表达式",
-			"content": "<h2>什么是 JSONPath？</h2><p>JSONPath 是一种用于 JSON 的查询语言，类似于 XML 中的 XPath。它允许你使用简洁的、基于路径的语法，从 JSON 数据中导航并提取特定值。</p><p>通过 JSONPath，你可以选择根对象、子属性、数组元素和嵌套结构，还可以使用通配符、递归下降和过滤表达式来匹配更复杂的数据模式。</p><h2>常见 JSONPath 表达式</h2><ul><li><strong>$.store.book[0].title</strong> — 获取 store 中第一本书的 title</li><li><strong>$.store.book[*].author</strong> — 获取所有书籍的 author</li><li><strong>$..price</strong> — 获取文档中所有的 price 值（递归搜索）</li><li><strong>$.store.book[?(@.price < 10)]</strong> — 过滤价格低于 10 的书籍</li><li><strong>$.users[0].name</strong> — 获取第一个用户的 name</li><li><strong>$..[*]</strong> — 选择 JSON 树中的所有节点</li></ul><p>这些模式是构建更复杂查询的良好起点，适用于 API 响应、配置文件和其他结构化数据。</p><h2>如何使用 JSONPath 测试器</h2><ol><li><strong>粘贴 JSON：</strong>将你的 JSON 对象或数组添加到输入框。</li><li><strong>输入 JSONPath 表达式：</strong>输入查询，例如 $.users[0].name 或 $..price。</li><li><strong>点击执行：</strong>对你的 JSON 数据运行表达式。</li><li><strong>查看结果：</strong>检查匹配的个数以及提取到的值或路径。</li><li><strong>复制或优化：</strong>复制结果用于代码或文档，或调整表达式后重新执行。</li></ol><h2>JSONPath 语法指南</h2><ul><li><strong>$</strong> — 根对象或根数组</li><li><strong>.key</strong> — 按名称访问子属性</li><li><strong>[n]</strong> — 按索引访问数组元素</li><li><strong>[*]</strong> — 通配符，匹配数组或对象中的所有元素</li><li><strong>..</strong> — 递归下降，搜索所有后代节点</li><li><strong>[?(expr)]</strong> — 过滤表达式，用于匹配特定条件</li></ul><p>利用这些运算符，你可以构建精确 targeting 所需数据的查询，即使 JSON 结构非常嵌套或不规则。</p><h2>使用场景</h2><ul><li><strong>API 测试：</strong>从 API 响应中提取特定字段进行验证或调试</li><li><strong>数据处理：</strong>在脚本或流水线中选择并转换 JSON 数据的子集</li><li><strong>配置管理：</strong>导航嵌套的配置对象和数组</li><li><strong>调试：</strong>检查大型或复杂 JSON 文档中的特定值</li><li><strong>文档示例：</strong>生成如何访问 JSON 架构中某些字段的示例</li></ul><h2>编写 JSONPath 查询的技巧</h2><ul><li><strong>从简单开始：</strong>先测试 $.key 或 $.array[0] 等基础路径，再添加过滤器或递归</li><li><strong>检查结构：</strong>确认你的 JSON 确实包含你正在查询的键和数组</li><li><strong>谨慎使用递归：</strong>$..key 可能匹配很多节点，如有需要可以用过滤器进一步限定</li><li><strong>逐步测试：</strong>分步构建复杂表达式，每修改一次就执行一次</li><li><strong>利用参考：</strong>不确定运算符或过滤器时，查阅内置的语法表示例</li></ul><h2>浏览器本地处理与隐私</h2><p>这个 JSONPath 测试器在浏览器中处理输入内容，不要求将数据上传到远程服务。对于开发数据和私密配置片段来说，本地处理更加方便。不过，仍然不建议在任何浏览器工具中输入密码、API 密钥、访问令牌或其他高度敏感的信息。</p>"
-		}
-	}
+    "name": "JSONPath 在线测试工具",
+    "description": "在浏览器中测试 JSONPath 表达式。粘贴 JSON，输入表达式，查看匹配值、匹配路径、JSON Pointer 和节点类型，并复制表达式或结果。",
+    "hero": {
+      "trustHtml": "在你的浏览器中运行。你的 JSON不会被本工具上传。"
+    },
+    "meta": {
+      "title": "JSONPath 在线测试工具 — 免费 JSON 路径求值器",
+      "description": "免费在线测试 JSONPath 表达式。粘贴 JSON，求值并查看匹配值、匹配路径与 JSON Pointer，支持通配符、递归下降和简单过滤。浏览器本地运行。",
+      "keywords": [
+        "jsonpath测试",
+        "jsonpath在线测试",
+        "jsonpath求值器",
+        "json path tester",
+        "jsonpath语法",
+        "在线jsonpath",
+        "jsonpath表达式",
+        "json路径查询"
+      ]
+    },
+    "ui": {
+      "label_input": "输入 JSON",
+      "label_expression": "JSONPath 表达式",
+      "label_results": "匹配结果",
+      "label_common_paths": "常用路径：",
+      "label_match_path": "路径：",
+      "label_json_pointer": "指针：",
+      "label_type": "类型：",
+      "label_reference": "JSONPath 参考",
+      "label_operators": "运算符",
+      "label_filter_operators": "过滤运算符",
+      "col_operator": "运算符",
+      "col_description": "说明",
+      "col_example": "示例",
+      "btn_copy_expression": "复制",
+      "btn_copy_results": "复制结果",
+      "btn_example": "示例",
+      "placeholder_expression": "$.store.books[0].title",
+      "placeholder_results": "匹配到的值和路径将显示在这里……",
+      "status_matches": "{count} 个匹配",
+      "status_no_matches": "表达式合法，但没有匹配到任何节点",
+      "status_invalid_expression": "表达式非法，或使用了不支持的语法",
+      "status_invalid_json": "JSON 无法解析",
+      "error_no_json": "请输入 JSON 数据",
+      "error_no_expression": "请输入 JSONPath 表达式",
+      "note_supported_syntax": "本页面按一份明确说明的 JSONPath 子集求值，并非完整的 RFC 9535 实现：不支持数组切片、并集、正则和函数。",
+      "op_root": "根元素",
+      "op_current": "过滤表达式中的当前节点",
+      "op_wildcard": "通配符：所有子节点",
+      "op_deep_scan": "递归下降",
+      "op_dot": "按名称取子节点",
+      "op_bracket": "方括号取子节点",
+      "op_filter": "过滤表达式",
+      "filter_eq": "等于",
+      "filter_ne": "不等于",
+      "filter_lt": "小于",
+      "filter_gt": "大于",
+      "filter_lte": "小于或等于",
+      "filter_gte": "大于或等于"
+    },
+    "features": [
+      {
+        "icon": "lucide:play",
+        "title": "求值 JSONPath 表达式",
+        "description": "粘贴 JSON 后输入表达式即可求值。结果按匹配顺序展示，值和位置一起给出，方便快速验证表达式是否符合预期。"
+      },
+      {
+        "icon": "lucide:braces",
+        "title": "查看匹配值",
+        "description": "每个匹配都展示原始值：对象与数组按缩进格式化，标量按字符串显示，null 与 undefined 明确区分。"
+      },
+      {
+        "icon": "lucide:map-pin",
+        "title": "显示匹配路径",
+        "description": "每个结果同时给出 JSONPath、等价的 JSON Pointer（RFC 6901）和节点类型，方便在源文档或其他工具里定位该节点。"
+      },
+      {
+        "icon": "lucide:code",
+        "title": "常用 JSONPath 语法",
+        "description": "支持根选择器、子属性、方括号记法、数组下标、通配符、递归下降和简单比较过滤。不支持切片、并集、正则和函数。"
+      },
+      {
+        "icon": "lucide:book-open",
+        "title": "语法参考",
+        "description": "展开内置参考表，查看本求值器支持的运算符及示例，示例可直接复制到表达式输入框。"
+      },
+      {
+        "icon": "lucide:copy",
+        "title": "复制表达式或结果",
+        "description": "可以复制当前表达式、单个匹配路径，也可以一次性复制全部结果，便于写进文档或代码。"
+      },
+      {
+        "icon": "lucide:shield-check",
+        "title": "浏览器本地求值",
+        "description": "解析和求值都在你的浏览器中完成，不需要账号，也不会把 JSON 上传到远程服务。"
+      }
+    ],
+    "guide": [
+      {
+        "title": "输入合法 JSON",
+        "description": "把 JSON 粘贴到左侧编辑器，或从设备打开 .json 文件。非法 JSON 会先提示解析错误。"
+      },
+      {
+        "title": "编写 JSONPath 表达式",
+        "description": "输入表达式，例如 `$.store.books[*].title`；也可以点选常用路径快速填入。"
+      },
+      {
+        "title": "执行求值",
+        "description": "点击求值按钮或按回车。表达式无法解析时会提示非法，而不是返回不完整的结果。"
+      },
+      {
+        "title": "查看值与位置",
+        "description": "逐条确认匹配值、JSONPath、JSON Pointer 和节点类型是否符合预期。"
+      },
+      {
+        "title": "复制并调整",
+        "description": "复制表达式或结果，按需要微调后再次求值，直到表达式精确命中目标节点。"
+      }
+    ],
+    "example": {
+      "title": "JSONPath Query Example",
+      "description": "Use a JSONPath expression to select the title of the first book and compare it with a wildcard query.",
+      "input": "{\n  \"store\": {\n    \"book\": [\n      {\n        \"title\": \"Sayings of the Century\",\n        \"price\": 8.95\n      },\n      {\n        \"title\": \"Sword of Honour\",\n        \"price\": 12.99\n      }\n    ]\n  }\n}",
+      "expression": "$.store.book[0].title",
+      "output": "[\n  {\n    \"path\": \"$.store.book[0].title\",\n    \"value\": \"Sayings of the Century\"\n  }\n]",
+      "useCase": "Test an API response selector before using the JSONPath expression in application code or an API testing workflow."
+    },
+    "faq": [
+      {
+        "question": "什么是 JSONPath？",
+        "answer": "JSONPath 是一种用于在 JSON 文档中定位节点的查询语法，作用类似 XML 的 XPath。`$.store.books[0].title` 这样的表达式可以选中某个具体的值，也可以一次选中一组节点。"
+      },
+      {
+        "question": "这个工具支持哪一套 JSONPath 规范？",
+        "answer": "本页面使用自带的求值器，支持一份明确说明的 JSONPath 子集：`$`、`.name`、`['name']`、`[下标]`、`*`、`..name`，以及 `[?(@.price < 10)]` 这类简单过滤。它没有实现完整的 RFC 9535：不支持数组切片、并集、正则和函数。超出该子集的表达式会被判定为非法，而不是返回部分结果。"
+      },
+      {
+        "question": "语法错误和没有匹配有什么区别？",
+        "answer": "语法错误表示表达式无法解析，或使用了本求值器不支持的语法；没有匹配表示表达式合法，但在当前 JSON 里没有选中任何节点。前者要改表达式，后者要检查数据或路径。"
+      },
+      {
+        "question": "有哪些常用的 JSONPath 表达式？",
+        "answer": "常见写法包括：`$` 取根、`$.store` 取子对象、`$.store.books[0]` 取数组元素、`$.store.books[*].title` 取所有书名、`$..price` 递归查找所有 price、`$.store.books[?(@.price < 10)]` 按条件过滤。"
+      },
+      {
+        "question": "JSONPath 里的 $ 是什么意思？",
+        "answer": "`$` 表示文档根节点，几乎所有表达式都以它开头。相对写法里的 `@` 则表示过滤表达式内部的当前节点。"
+      },
+      {
+        "question": "JSONPath 里的 .. 是什么意思？",
+        "answer": "`..` 是递归下降操作符，会在整棵树的任意深度查找匹配的名称，例如 `$..price` 会返回所有名为 price 的节点。递归范围较大时请留意结果数量。"
+      },
+      {
+        "question": "支持过滤表达式吗？",
+        "answer": "支持，但只支持有限的比较运算符：`==`、`!=`、`<`、`>`、`<=`、`>=`，例如 `$.store.books[?(@.price < 10)]`。正则过滤和函数调用不支持，会被判定为非法表达式。"
+      },
+      {
+        "question": "支持数组切片吗？",
+        "answer": "不支持。`$.items[0:3]` 这类切片语法本求值器不处理，`$.items[0,2]` 这类并集也不支持。可以改用通配符配合过滤，或逐个选择需要的下标。"
+      },
+      {
+        "question": "为什么结果看起来有重复？",
+        "answer": "递归下降和通配符会遍历多条路径，同一个值可能通过不同路径被选中；过滤表达式也会对每个候选节点分别求值。通常改用更精确的路径即可消除重复。"
+      },
+      {
+        "question": "可以看到每个结果来自哪里吗？",
+        "answer": "可以。每个匹配都会显示它的 JSONPath、等价的 JSON Pointer（RFC 6901）以及节点类型，便于回到源文档定位，或在其他工具里复用该路径。"
+      },
+      {
+        "question": "可以用 JSONPath 修改 JSON 吗？",
+        "answer": "不可以。本工具只做查询和求值，不提供写入、删除或更新节点的能力。"
+      },
+      {
+        "question": "可以用于接口返回的 JSON 吗？",
+        "answer": "可以。把接口响应粘贴进来即可验证表达式；表达式确认后再写进代码里使用。"
+      },
+      {
+        "question": "可以测试很大的 JSON 文档吗？",
+        "answer": "实际可处理的规模取决于浏览器内存和设备性能。递归下降和通配符会遍历大量节点，文档很大时求值会变慢。"
+      },
+      {
+        "question": "我的 JSON 会上传到服务器吗？",
+        "answer": "解析和求值都在你的浏览器本地完成，不需要上传服务器。但仍不建议在任何浏览器工具中输入密码、API 密钥、令牌或机密数据。"
+      },
+      {
+        "question": "这个 JSONPath 测试工具免费吗？",
+        "answer": "免费，且无需注册账号。你可以粘贴 JSON、求值表达式并复制结果。"
+      }
+    ],
+    "article": {
+      "title": "如何在线测试 JSONPath 表达式",
+      "content": "<h2>什么是 JSONPath 测试工具？</h2><p>JSONPath 测试工具用来验证一条表达式在给定 JSON 文档上到底选中了什么。它会返回匹配到的值，以及每个匹配在文档中的位置，避免把未经验证的表达式直接写进代码。</p><p>不同实现对 JSONPath 的支持范围并不一致，因此在一个工具里能跑通的表达式，换到另一个库里可能报错或结果不同。使用时应以目标库实际支持的方言为准。</p><h2>常见使用场景</h2><ul><li><strong>接口调试：</strong>从接口响应里快速取出关心的字段，确认路径写法。</li><li><strong>日志排查：</strong>在结构复杂的日志 JSON 里定位嵌套字段。</li><li><strong>脚本预演：</strong>把要写进脚本的表达式先验证一遍，减少反复试错。</li><li><strong>数据核对：</strong>确认某个字段在整份数据里出现了几次、分别在哪里。</li></ul><h2>如何使用</h2><ol><li><strong>输入 JSON：</strong>粘贴 JSON 或打开 .json 文件。</li><li><strong>写下表达式：</strong>例如 `$.store.books[*].title`，也可以点选常用路径。</li><li><strong>执行求值：</strong>点击求值按钮或按回车。</li><li><strong>核对结果：</strong>查看匹配值、JSONPath、JSON Pointer 和节点类型。</li><li><strong>复制复用：</strong>复制表达式或结果，写进文档或代码。</li></ol><h2>本页支持的语法子集</h2><ul><li><strong>$：</strong>根选择器。</li><li><strong>.name 与 ['name']：</strong>按名称取子节点，两种写法都支持。</li><li><strong>[index]：</strong>按下标取数组元素。</li><li><strong>*：</strong>通配符，选中所有子节点。</li><li><strong>..name：</strong>递归下降，在任意深度查找该名称。</li><li><strong>[?(expr)]：</strong>简单过滤，支持 ==、!=、&lt;、&gt;、&lt;=、&gt;=。</li></ul><p>不支持数组切片、并集、正则匹配和函数调用。遇到这些语法时会提示表达式非法，而不是返回不完整的匹配。</p><h2>语法错误与无匹配</h2><p>这是两种不同的失败：语法错误说明表达式本身无法解析或用了不支持的语法，需要改表达式；无匹配说明表达式合法，但当前 JSON 里没有对应节点，需要检查数据结构或路径写法。把两者分开提示，可以避免把数据问题误判成语法问题。</p><h2>JSONPath 与 JSON Pointer</h2><p>JSONPath 是查询表达式，可以一次选中多个节点；JSON Pointer（RFC 6901）是定位单个节点的路径表示，例如 `/store/books/0/title`。本页同时给出两种表示，方便在只接受 Pointer 的工具里继续使用。</p><h2>需要留意的限制</h2><ul><li><strong>方言差异：</strong>本页是明确说明的子集，不是完整 RFC 9535 实现。</li><li><strong>只做查询：</strong>不提供修改、删除或写入节点的能力。</li><li><strong>递归代价：</strong>递归下降和通配符会遍历大量节点，大文档上会变慢。</li><li><strong>类型展示：</strong>节点类型只做基本区分（object、array、string、number、boolean、null）。</li></ul><h2>浏览器本地处理与隐私</h2><p>解析和求值都在你的浏览器中完成，不需要把 JSON 上传到远程服务，适合接口响应和日志片段这类内容。但它不是密钥管理方案，请勿在浏览器工具中粘贴密码、API 密钥、访问令牌或生产环境的敏感数据。</p>"
+    }
+  }
 }

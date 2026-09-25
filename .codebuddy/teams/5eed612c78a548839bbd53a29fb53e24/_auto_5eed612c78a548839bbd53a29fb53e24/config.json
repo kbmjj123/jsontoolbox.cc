@@ -1,0 +1,76 @@
+{
+  "name": "_auto_5eed612c78a548839bbd53a29fb53e24",
+  "mainConversationId": "5eed612c78a548839bbd53a29fb53e24",
+  "workspacePath": "/Users/kbmjj123/Desktop/fullstack/jsontoolbox.cc",
+  "createdAt": "2026-09-24T17:26:15.245Z",
+  "options": {
+    "workspacePath": "/Users/kbmjj123/Desktop/fullstack/jsontoolbox.cc",
+    "isAutoTeam": true
+  },
+  "isAutoTeam": true,
+  "members": [
+    {
+      "memberId": "page-table@_auto_5eed612c78a548839bbd53a29fb53e24",
+      "name": "page-table",
+      "role": "02/03 json-to-table+html",
+      "sessionId": "f6bec395309046e3ba5af84bd73caa36",
+      "status": "completed"
+    },
+    {
+      "memberId": "page-csv@_auto_5eed612c78a548839bbd53a29fb53e24",
+      "name": "page-csv",
+      "role": "05 json-to-csv 收口",
+      "sessionId": "33cbf15eb6a94ebb809f7cb14adee9f9",
+      "status": "completed"
+    },
+    {
+      "memberId": "page-fmt@_auto_5eed612c78a548839bbd53a29fb53e24",
+      "name": "page-fmt",
+      "role": "11/12 minifier+escape",
+      "sessionId": "51ef67bc25814bde80ffe7768f63755c",
+      "status": "completed"
+    },
+    {
+      "memberId": "page-xml2json@_auto_5eed612c78a548839bbd53a29fb53e24",
+      "name": "page-xml2json",
+      "role": "07 xml-to-json zh 同步",
+      "sessionId": "8cb745d6bd2d4eb4b5dbb1c1a2fc5537",
+      "status": "completed"
+    },
+    {
+      "memberId": "page-yaml@_auto_5eed612c78a548839bbd53a29fb53e24",
+      "name": "page-yaml",
+      "role": "09 json-to-yaml 收口",
+      "sessionId": "3728749b88ca428ea145bbc787184bfc",
+      "status": "completed"
+    },
+    {
+      "memberId": "page-ts@_auto_5eed612c78a548839bbd53a29fb53e24",
+      "name": "page-ts",
+      "role": "14 json-to-typescript",
+      "sessionId": "5f871144d200452f8d4b763a7f858905",
+      "status": "completed"
+    },
+    {
+      "memberId": "page-code@_auto_5eed612c78a548839bbd53a29fb53e24",
+      "name": "page-code",
+      "role": "15 json-to-code",
+      "sessionId": "1cf2e2f6e34d4ad387705ee8db41737c",
+      "status": "completed"
+    },
+    {
+      "memberId": "page-csv2json@_auto_5eed612c78a548839bbd53a29fb53e24",
+      "name": "page-csv2json",
+      "role": "csv-to-json 收口",
+      "sessionId": "f99de05df6d44c43a670ed4d664254a2",
+      "status": "running"
+    },
+    {
+      "memberId": "page-editor@_auto_5eed612c78a548839bbd53a29fb53e24",
+      "name": "page-editor",
+      "role": "17 json-editor 收口",
+      "sessionId": "7f218a94db5b45ba9a9d5f88f5ae672d",
+      "status": "running"
+    }
+  ]
+}
