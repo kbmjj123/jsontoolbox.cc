@@ -186,7 +186,6 @@
       "status_changed": "changed",
       "status_type_changed": "type changed",
       "status_total": "differences",
-      "label_differences": "Differences",
       "status_identical": "The JSON documents are structurally identical.",
       "filter_all": "All",
       "result_showing": "Showing first",
@@ -198,9 +197,7 @@
       "error_empty_b": "Enter JSON B first",
       "error_invalid_a": "JSON A is not valid JSON",
       "error_invalid_b": "JSON B is not valid JSON",
-      "status_path": "Path",
-      "status_old_value": "Original value",
-      "status_new_value": "Modified value"
+      "hint_esc_fullscreen": "Press ESC to exit fullscreen"
     },
     "article": {
       "title": "How to Compare JSON Files Online",
@@ -211,7 +208,7 @@
     "name": "JSON 差异比较",
     "description": "在线比较两个 JSON 文档，识别新增、删除、修改以及类型变化的数值。这个浏览器端的 JSON 比较工具会对对象和数组做结构化比较，按类别高亮差异，支持忽略键顺序或指定字段，并通过 JSON 路径查看变更。",
     "hero": {
-      "trustHtml": "100% 本地比较。JSON 数据始终保留在浏览器中。"
+      "trustHtml": "在你的浏览器中运行。你的 JSON不会被本工具上传。"
     },
     "meta": {
       "title": "JSON 比较 — 免费在线 JSON 差异工具",
@@ -383,7 +380,6 @@
       "status_changed": "已修改",
       "status_type_changed": "类型变化",
       "status_total": "个差异",
-      "label_differences": "差异",
       "status_identical": "两份 JSON 文档结构完全一致。",
       "filter_all": "全部",
       "result_showing": "仅显示前",
@@ -395,13 +391,11 @@
       "error_empty_b": "请先输入 JSON B",
       "error_invalid_a": "JSON A 不是合法 JSON",
       "error_invalid_b": "JSON B 不是合法 JSON",
-      "status_path": "路径",
-      "status_old_value": "原值",
-      "status_new_value": "新值"
+      "hint_esc_fullscreen": "按 ESC 退出全屏"
     },
     "article": {
       "title": "如何在线比较 JSON 并查找差异",
-      "content": "<h2>为什么要比较 JSON？</h2><p>比较 JSON 文档对于调试 API、验证配置更改和确保数据完整性非常重要。无论是在检查 API 响应、对比配置文件版本，还是验证数据迁移结果，JSON 差异工具都能帮助你快速、准确地发现每个差异。</p><h2>差异类型说明</h2><ul><li><strong>新增（绿色）：</strong>在 JSON B 中存在但在 JSON A 中缺失的键或值。</li><li><strong>删除（红色）：</strong>在 JSON A 中存在但在 JSON B 中缺失的键或值。</li><li><strong>修改（黄色）：</strong>在两个文档中都存在、但值发生变化的键。</li><li><strong>类型变化（紫色）：</strong>在两个文档中都存在、但值的 JSON 类型发生变化的键，例如数字变成字符串。</li></ul><p>嵌套对象和数组会递归比较，因此深层结构中的差异也会被检测并显示完整路径。</p><h2>如何在线比较 JSON</h2><ol><li><strong>粘贴 JSON A：</strong>将原始 JSON 文档加入左侧编辑器。</li><li><strong>粘贴 JSON B：</strong>将修改后的 JSON 文档加入右侧编辑器。</li><li><strong>设置比较规则：</strong>当键顺序无关时开启「排序键名」；对无序集合开启「忽略数组顺序」；在「忽略字段」中列出需要跳过的字段。</li><li><strong>点击比较：</strong>运行比较，解析两份文档。</li><li><strong>查看结果：</strong>检查新增、删除、修改与类型变化的数值及其 JSON 路径，然后复制路径、复制结果或导出报告。</li></ol><h2>最佳实践</h2><ul><li><strong>先归一化：</strong>当两份文档由不同序列化器生成、键顺序不同时，开启「排序键名」。</li><li><strong>忽略干扰项：</strong>使用「忽略字段」跳过 updatedAt、requestId 或时间戳等每次运行都会变化的字段。</li><li><strong>必要时反转：</strong>用「交换」从另一个方向查看比较，定位是哪一侧引入了变更。</li><li><strong>导出分享：</strong>复制变更路径或导出完整结果，附在问题记录或代码审查中。</li></ul><h2>浏览器本地处理与隐私</h2><p>这个 JSON 比较工具在浏览器中处理输入内容，不要求将数据上传到远程服务。对于开发数据和私密配置片段来说，本地处理更加方便。不过，仍然不建议在任何浏览器工具中输入密码、API 密钥、访问令牌或其他高度敏感的信息。</p>"
+      "content": "<h2>为什么要比较 JSON？</h2><p>比较 JSON 文档对于调试 API、验证配置更改和确保数据完整性非常重要。无论是在检查 API 响应、对比配置文件版本，还是验证数据迁移结果，JSON 差异工具都能帮助你快速、准确地发现每个差异。</p><h2>常见使用场景</h2><ul><li><strong>接口调试：</strong>对比预期响应与实际响应，定位缺失字段、值变化或类型异常。</li><li><strong>配置评审：</strong>对比不同环境的配置文件，或新旧版本的配置差异。</li><li><strong>数据迁移：</strong>检查导出、导入或转换过程中记录是否发生变化。</li><li><strong>回归测试：</strong>对比快照输出、测试夹具或序列化结果。</li><li><strong>代码评审：</strong>不逐行扫两份大文档，也能看清 JSON 载荷的改动。</li><li><strong>Webhook 与事件排查：</strong>对比两个事件载荷，找出嵌套属性或元数据的变化。</li></ul><h2>差异类型说明</h2><ul><li><strong>新增（绿色）：</strong>在 JSON B 中存在但在 JSON A 中缺失的键或值。</li><li><strong>删除（红色）：</strong>在 JSON A 中存在但在 JSON B 中缺失的键或值。</li><li><strong>修改（黄色）：</strong>在两个文档中都存在、但值发生变化的键。</li><li><strong>类型变化（紫色）：</strong>在两个文档中都存在、但值的 JSON 类型发生变化的键，例如数字变成字符串。</li></ul><p>嵌套对象和数组会递归比较，因此深层结构中的差异也会被检测并显示完整路径。</p><h2>如何在线比较 JSON</h2><ol><li><strong>粘贴 JSON A：</strong>将原始 JSON 文档加入左侧编辑器。</li><li><strong>粘贴 JSON B：</strong>将修改后的 JSON 文档加入右侧编辑器。</li><li><strong>设置比较规则：</strong>当键顺序无关时开启「排序键名」；对无序集合开启「忽略数组顺序」；在「忽略字段」中列出需要跳过的字段。</li><li><strong>点击比较：</strong>运行比较，解析两份文档。</li><li><strong>查看结果：</strong>检查新增、删除、修改与类型变化的数值及其 JSON 路径，然后复制路径、复制结果或导出报告。</li></ol><h2>最佳实践</h2><ul><li><strong>先归一化：</strong>当两份文档由不同序列化器生成、键顺序不同时，开启「排序键名」。</li><li><strong>忽略干扰项：</strong>使用「忽略字段」跳过 updatedAt、requestId 或时间戳等每次运行都会变化的字段。</li><li><strong>必要时反转：</strong>用「交换」从另一个方向查看比较，定位是哪一侧引入了变更。</li><li><strong>导出分享：</strong>复制变更路径或导出完整结果，附在问题记录或代码审查中。</li></ul><h2>浏览器本地处理与隐私</h2><p>这个 JSON 比较工具在浏览器中处理输入内容，不要求将数据上传到远程服务。对于开发数据和私密配置片段来说，本地处理更加方便。不过，仍然不建议在任何浏览器工具中输入密码、API 密钥、访问令牌或其他高度敏感的信息。</p>"
     }
   }
 }

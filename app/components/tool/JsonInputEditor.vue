@@ -8,7 +8,7 @@
         <div v-if="hasExamples" ref="exampleMenuRef" class="relative">
           <button @click="showExampleMenu = !showExampleMenu"
             class="text-xs text-primary-600 hover:text-primary-700 dark:text-primary-400">
-            {{ $t('system.example') }}
+            {{ props.tool?.ui?.btn_example ?? $t('system.example') }}
           </button>
           <div v-if="showExampleMenu"
             class="absolute right-0 top-full mt-1 bg-white dark:bg-surface-800 border border-surface-200 dark:border-surface-700 rounded-lg shadow-lg p-1 z-50 min-w-[140px]">
@@ -273,6 +273,8 @@ interface Props {
   errorCopied?: boolean
   /** Tool slug for loading examples (e.g. 'json-minifier') */
   exampleSlug?: string
+  /** Optional tool config; when present, its `ui.btn_example` labels the example button. */
+  tool?: any
   /** Editor implementation: 'codemirror' (default) or 'textarea' */
   editorMode?: 'textarea' | 'codemirror'
   /** Enable JSON syntax highlighting in textarea mode */
@@ -295,7 +297,7 @@ const props = withDefaults(defineProps<Props>(), {
   showPaste: true,
   showClear: true,
   showUpload: false,
-  showLoadUrl: true,
+  showLoadUrl: false,
   accept: '.json,.txt,.jsonl,.geojson,.ndjson',
   blockOversized: false,
   errorLine: 0,

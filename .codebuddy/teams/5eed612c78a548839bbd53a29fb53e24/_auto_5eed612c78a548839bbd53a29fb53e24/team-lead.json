@@ -1,0 +1,245 @@
+[
+  {
+    "id": "msg-1790271435656-dl1446",
+    "from": "page-table",
+    "to": "team-lead",
+    "type": "message",
+    "content": "改动 4 个文件：`data/convert/json-to-table.json`（重写）、`data/convert/json-to-html.json`（新建）、`data/examples/json-to-html.json`（新建 3 例，含 `<script>`/`&`/引号转义例）、`universal/JsonToTable.vue`。\n\nen 定位：json-to-table = 对象数组→表格预览（自动识别列、行列计数、可选展平、CSV 导出），明确不提供 sort/filter/pagination/编辑/Excel，明确“不生成 HTML 代码”；json-to-html = 生成可嵌入 HTML（thead/tbody/th/td + class=\"json-table\"、五字符转义、复制代码 + 下载 .html + CSV）。两页 nextSteps/recommends 已按要求设置，hero.trustHtml 保持原样。\n\n删除的 ui 键：`btn_example`（JsonInputEditor 示例按钮走 i18n `system.example`，改共享组件才能接线）、`preview_title`（与 `label_output` 重复）。其余旧 camelCase 键统一 snake_case（label_input/label_output/btn_render/btn_download_csv/btn_copy_html/btn_download_html/view_preview/view_html/option_flatten/empty_state/status_rows/status_columns/preview_limit/error_*）。组件已去掉全部英文兜底。\n\n需复核的取舍：①预览沿用 `toTableData` 100 行上限，新增 `preview_limit` 文案说明，导出走全量；②按钮与预览/HTML 切换改为“ui 键存在才渲染”，避免按 slug 硬编码；③原 `exportToCsv` 在 `useExcelCompat` 里不存在（点击必崩），改用 `generateCsv + addUtf8Bom + downloadFile`；④下载 .html 含极简 CSS，复制的只有 markup。\n\n未改共享组件：`JsonInputEditor`（示例按钮文案）、`JsonOutputPanel`（未复用，第二栏是表格+源码切换）、`JsonTableView`（只读参考）。\n\n自校验：两个 JSON `json.load` 通过；en/zh features 7/8、guide 4、faq 11、ui 13/17、article 各 8 个 h2、ui 键集合完全一致；Vue 无 lint 错误。未跑 build。",
+    "timestamp": "2026-09-24T17:37:15.656Z",
+    "read": true
+  },
+  {
+    "id": "msg-1790271520195-95orsy",
+    "from": "page-csv",
+    "to": "team-lead",
+    "type": "message",
+    "content": "json-to-csv 已完成，只动了允许的 3 个文件（未改任何 tool/utils/i18n 共享文件）。\n\n改动\n1. JsonToCsv.vue 重写：`show-upload`；展平改为复选框（默认开，关时嵌套值序列化成 JSON 文本）；新增分隔符（`,` / `;` / Tab）与编码（UTF-8 / UTF-8 BOM）下拉；新增「选择字段」浮层（默认全选，取消勾选即实时重算 CSV，全空时提示 error_no_columns）；新增表格预览（自绘、dark 支持，50 行/页翻页，**不截断数据**，所以文案无需写\"前 N 行\"上限）；下方面板显示 CSV 原文（empty-text 用 $t('system.emptyOutput')，消除英文兜底）；空数组 / 非对象项 / 无列三类错误分开；输入与展平变更自动静默重转换（静默态不弹 JSON.parse 英文报错）。\n2. useExcelCompat.ts 只加注释：`toGbk` 标 @deprecated 说明它是假 GBK、不得作为 GBK 选项暴露，行为未变；`generateCsv` 的 delimiter、`prepareForExcel` 的 addBom 本就支持，无需改签名。\n3. JSON：zh 全量重翻对齐 en（features 8 / guide 4 / faq 14 / ui 16 键，en 与 zh 条数键集已校验一致；article 10 个 h2 逐节对应，删除全部 GBK 能力描述）。\n\nui 键处置：无删除，全部 16 键已接线。两处改动需你确认——① 按 snake_case 把 en/zh 的 `statusRows`/`statusColumns` 改名为 `status_rows`/`status_columns`（值不变，docs 里仍是 camelCase）；② 新增 `error_no_data`（原组件有 `?? 'No data to convert'` 英文兜底，属 zh 漏英文）。组件内做了 `status_rows || statusRows` 兼容读取。\n\n取舍/待复核：zh meta 删除了 json转excel / json转google sheets（对齐 en 与 docs §7）；en FAQ\"Do not promise GBK…\"那句是元说明，我按忠实翻译保留在 zh，建议后续从 en 删掉；预览分页而非截断；未修改 JsonOutputPanel 的 Rich/Text/Table 硬编码英文（共享组件）。另发现 JsonToTable.vue 调用的 `exportToCsv` 在 useExcelCompat 中并不存在（未动，供你判断）。`python3 json.load` 通过，未按你的要求跑 build。",
+    "timestamp": "2026-09-24T17:38:40.195Z",
+    "read": true
+  },
+  {
+    "id": "msg-1790272862765-jido8a",
+    "from": "page-fmt",
+    "to": "team-lead",
+    "type": "message",
+    "content": "两页已完成，改动仅限授权的 4 个文件（未跑 build）。\n\n## JsonMinifier.vue\n- 统计区重写：3 个 chip = 原始体积 / 压缩后体积 / 节省，每个都同时显示字符数与 UTF-8 字节数；节省量与百分比按 UTF-8 字节计算（`savedBytes`、`savedPercent`）。字节数用 `TextEncoder`，SSR 走 `import.meta.client` + `typeof TextEncoder` 双保险，SSR 返回 0。\n- 确认实现就是 `JSON.stringify(JSON.parse(x))`，无 `replace(/\\s+/g,'')`。\n- 全部 ui 键接线，无英文兜底：`btn_minify`（替掉 `$t('system.minify')`）、`btn_beautify`（删掉 `Beautify First` 兜底）、`placeholder_output`、`error_empty_input` / `error_invalid_json` / `error_processing`（经 `friendlyMessage` 显示，raw error 仍留在 `error`）。`btn_copy` / `btn_download` 的实现方式：把 `JsonOutputPanel` 内置复制/下载关掉（`:show-copy=\"false\"` `:show-download=\"false\"`），在 `#actions` slot 里用 ui 文案自建按钮，避免与 i18n 按钮重复。\n- 副作用：点「美化」会清空输出，保证大小对比始终对着当前输入。\n\n## JsonEscape.vue\n- escape 改为 `JSON.stringify(inputText)`：`\\b \\f \\u` 等全部交给标准语义，中文/emoji 原样保留（不会无故变成 \\uXXXX）。\n- `option_include_quotes`：勾选=输出完整 JSON 字符串字面量（带外层引号，默认勾选，与 en 示例输出一致）；取消=只输出内部转义内容。\n- `option_decode_layers`：「只解码一层」默认勾选；取消=循环解码至无法再解，上限 10 层，结果无变化即停。\n- unescape 兼容两种输入：优先按「带外层引号的字面量」`JSON.parse`，失败或不是 string 再按「内部转义内容」包裹一层解析。已用 node 验证 en 示例 escape→swap→unescape 往返一致，多层/控制字符/非 BMP emoji 均正确。\n- placeholder 硬编码 → 新增 `placeholder_input`（en 也补了这一键，这是唯一改动 en 的地方）；`btn_copy`/`btn_download` 同上方案接线；`status_escaped`/`status_unescaped`/`status_invalid` 同时作为 toolbar 状态 chip 与 toast（失败时同时进 `error`）。\n\n## zh 侧\n- minifier：features 6→8（删 URL 输入）、guide 4、faq 10→13、ui 6→17、example 补 `note`/`useCase` 并删掉「约减少 40%」这类无出处数字、article 全量重写（含 JSON.stringify/JSON.parse、字符数 vs UTF-8 字节、算公式、minify≠gzip）。\n- escape：features 8（删 URL 输入）、guide 3→5、faq 12→15（JSONL / 大小限制 / URL 三条按 en 改写）、ui 补齐 14 键、example 与 en 逐字对齐（含外层引号）、article 重译并含 `JSON.stringify / JSON.parse` 与 Unicode 代理对章节（代码块字符与 en 完全一致，已脚本校验）。\n\n## 命名结论\nzh name 由「JSON 压缩器」改为 **「JSON 压缩工具（Minify）」**，meta.title/description 同步；保留 `json压缩` 关键词（真实搜索量），但 description 首句即声明「去掉 token 间空白、不等于 gzip/Brotli」。未采用「JSON 压缩/单行化工具」，理由是 doing:名称过长且在导航/面包屑里会折行。若你更看重语义纯净，可再退到「JSON 单行化工具（Minify）」。\n\n## 需你复核的取舍\n1. 两页都替换掉了 `JsonOutputPanel` 的内置复制/下载（原 i18n 按钮）→ 改由组件自己实现，行为等价、文案来自 ui；如果你希望保留内置按钮，则需从 en/zh 删掉 `btn_copy`/`btn_download`。\n2. escape 空输入点 Escape 不做报错，输出 `\"\"`/空；unescape 无法解出一层时报 `status_invalid`。\n3. 多层解码未写进任何文案（属「多做少说」），需要的话可以在 en/zh guide 里补一句，但要你确认后再改 en。\n4. 两份 JSON 因用脚本写入被统一格式化（2 空格缩进），内容语义与 HEAD 完全一致（已用脚本比对 en 区块逐字段相等）。\n",
+    "timestamp": "2026-09-24T18:01:02.765Z",
+    "read": true
+  },
+  {
+    "id": "msg-1790284622795-ltjyzj",
+    "from": "page-yaml",
+    "to": "team-lead",
+    "type": "message",
+    "content": "## 改了什么（仅 2 个授权文件）\n\n**JsonToYaml.vue**\n1. 缩进标签 + `2 spaces/4 spaces` 硬编码 → 读 `props.tool.ui?.option_indent / option_indent_2 / option_indent_4`；`label_input/label_output/btn_convert/placeholder_output` 全部去掉英文兜底，统一用 `props.tool.ui?.x`。\n2. `yaml.dump` 显式配置：`indent`、`lineWidth: -1`（长标量不折行）、`noRefs: true`（重复对象不出锚点）、`quotingType: '\"'`、`forceQuotes: false`、`sortKeys: false`（按源顺序输出键）。\n3. 把 parse 与 dump 拆成两个 try：`error_invalid_json`（解析失败）/ `error_conversion`（dump 失败）/ `error_empty_input`（空输入点转换）三个键全部接线，错误文案 = 本地化标题 + 原始 message，作为 `friendly-message` 传给 `JsonOutputPanel`。\n4. `show-upload` 已存在（:10），en 的 \"open a .json file\" 已兑现，无需改动。\n\n**json-to-yaml.json**\n- en：只删了 `ui.btn_example`（示例按钮在 `JsonInputEditor` 内部、不会读 tool.ui，属死键）。其余 en 未动。\n- zh：全量重写——features 7 条（删 URL 输入，改为\"粘贴或打开 JSON\"、\"缩进选项\"不再说 2 空格是 K8s 标准、\"保留结构\"限定为嵌套关系/大致结构）、guide 4 条、faq 13 条与 en 一一对应（含 quoting、YAML 1.1/1.2、往返、URL 安全）、meta.keywords 8 条（去掉 `json转kubernetes配置`、`json转docker compose`、`json转yaml k8s`、`yaml转json转换器`）、article 12 个 `<h2>` 与 en 对齐（补 quoting / 1.1 vs 1.2 / 往返 / URL 安全）。\n\n## quoting 实测（js-yaml 4.3.2，node 真跑）\n目标值 `\"yes\" \"1.0\" \"2026-09-18\" \"null\" \"~\" \"#comment\" \"010\" \"on\"` → 输出全部自动加引号，`yaml.load` 读回 **全部仍是 string**，往返 `JSON.stringify` 完全相等。另补测 45 个高危标量（`Y/N/y/n/Yes/No/ON/OFF/True/False/NULL/0b101/12:30/5e3/.inf/-/?/:/&amp;/*/{x/a: b/前导空格/multi\\nline` 等）同样全部往返为 string；indent=4、200 字符长串、深层嵌套结构往返一致。\n\n## 需要你复核的取舍（3 点）\n1. **en 仍写 \"download it as a .yaml or .yml file\"，组件只下载 `output.yaml`** —— 轻微过度承诺。要做实需加扩展名选择控件（我无权加共享 UI），建议改成 \"a .yaml file\"，但会动 en，等你定。\n2. **残留 YAML 1.1 特例**：`NaN`、`1_000` 在 js-yaml 1.2 core 下不加引号（js-yaml 读回仍是 string），但 PyYAML 会解析成 float/int。en FAQ 已用\"请复核\"覆盖，若要硬保证需自定义 schema，成本较高，未做。\n3. **未在授权范围的问题**：`YamlToJson.vue` 仍有大量 `|| 'English'` 兜底（zh 页会漏英文）；`docs/upgrade/json-to-yaml.md` 里的 `btn_example` 未同步删除。\n\n校验：`7 7 13 13 set()`（features/faq 数量一致，ui 键差集为空），lint 0 error，未跑 build。",
+    "timestamp": "2026-09-24T21:17:02.795Z",
+    "read": true
+  },
+  {
+    "id": "msg-1790284739736-tvrpdg",
+    "from": "page-xml2json",
+    "to": "team-lead",
+    "type": "message",
+    "content": "zh 已全量重写，文件：app/assets/data/convert/xml-to-json.json（仅改 zh，hero 原样未动）。校验输出：features 7/7、guide 4/4、faq 13/13、ui 键差集为空、article h2 11 段，JSON 合法、2 空格。name 改为「XML 转 JSON 转换器」对齐 en/yaml 文风。\n\n按实现做的保守化：\n1. #text 只对「同时有子元素和直接文本」的元素生效（parseXmlNode 叶子分支直接返回 textContent，属性会被丢弃），zh 明确写出；en 写的是 attributes+text，与实现不符。\n2. 文本一律输出字符串，无类型推断：example.output 写 \"age\": \"30\"，与 en 的 30 不一致（疑 en 示例 bug，需你确认是否改 en）。\n3. 不承诺强制数组/无损/完整命名空间：写明单元素仍是标量、无 force-array 开关、元素名保留命名空间前缀、xmlns 按属性输出、CDATA 按文本处理、SOAP 仅结构转换。\n4. 错误提示写成「解析器信息 + 就近行列，不保证精确」。\n5. keywords 删掉「xml转json接口」「xml转json解析器」（无 API/库能力）。\n\n疑问：en ui 实际只有 14 个键（我列了全量，见下），不是 15。若你规划的第 15 个键（如 placeholder_input？）存在，需先补 en，我再同步 zh。当前 14 键与组件读取的 12 个键完全覆盖，zh 页不会漏英文。\nbtn_convert/btn_example/error_conversion/error_empty_input/error_invalid_xml/label_attr_prefix/label_indent/label_input/label_output/label_preserve_text/option_spaces_2/option_spaces_4/placeholder_output/status_elements",
+    "timestamp": "2026-09-24T21:18:59.736Z",
+    "read": true
+  },
+  {
+    "id": "msg-1790286457446-m8zglr",
+    "from": "page-code",
+    "to": "team-lead",
+    "type": "message",
+    "content": "json-to-code 升级完成（`app/assets/data/convert/json-to-code.json` + `app/components/universal/JsonToCode.vue`；`app/utils/codegen.ts` 未改动）。\n\n**语言收敛**：选 (b) 并用 (a) 的方式实现——下拉收敛为 TypeScript / Python / Go / Rust，四者都递归生成嵌套声明；删除 Java/Kotlin/C#/Swift/MySQL/Protobuf。理由：符合 docs 第一阶段建议；MySQL/Protobuf 无法递归建模，删掉才能兑现 FAQ「Nested Models」。\n\n**已接线选项（22 个 ui 键全部使用，统一 snake_case）**\n- option_export：TS `export` / Python `__all__` / Rust `pub`；Go 靠首字母大写导出，故对该语言隐藏。\n- option_optional：TS `?`、Python `None` 默认值、Go `,omitempty`、Rust `Option`。\n- option_null：关闭时 null 字段变为 unknown/Any/interface{}/serde_json::Value；开启时 `T | null`、`T | None`、`*T`、`Option<T>`。\n- option_format：TS 注释、Python datetime/uuid、Go time.Time（自动 import）；Rust 隐藏。\n- option_indent：四种语言均真实生效。\n- 另外新增 int/float 区分（int/float、int/float64、i64/f64；TS 仍用 number）、跨样本缺失键自动可选、对象变体合并、混合基元数组 TS/Python 出联合、Go/Rust 退化宽松类型、Go json tag + initialism(ID)、Rust serde rename、非常规键清洗/加引号。\n- 6 个 error + warning_sample_based 全部接线；下载改为 `:download-filename`（按语言扩展名 + 根类型名），去掉自写 blob 下载，避免与 JsonOutputPanel 重复触发两次下载。\n\n**删改的 en 文案**：description / meta（去「10 种语言」及 java、C# 关键词）、features #1/#5、guide #5、example 输出改为与默认选项一致的 TS 接口、FAQ #1/#2 改写、MySQL/Protobuf 两问替换为「各目标可用选项」「Rust 是否需要外部 crate」，article 删 MySQL/Protobuf 两节并补「各语言可用选项」「整数与浮点数」，其余节语言列表收敛为四种。\n\n**删掉的 ui 键**：btn_copy、btnDownload 之类改成 btn_copy/btn_download 时发现它们由 JsonOutputPanel 用 i18n `system.copy/download` 渲染，组件无法接管，故删除（22 键）。\n\n**校验**：features 8/8、guide 6/6、faq 16/16、ui 键差集为空；article 中英均为 13 个 h2 且标签数完全一致。用 esbuild 抽出脚本跑了 20 组样例（嵌套、数组根、混合 union、null-only、奇怪键、空对象、标量根、4 空格缩进）人工核对输出；未执行 pnpm build。\n\n**待你复核**：① 我未在 codegen.ts 复用/新增导出（避免影响 JsonGeneratePanel），通用引擎写在组件内，是否需要后续抽成向后兼容的 codegen 导出；② example.output 从 Go 结构体改为 TS 接口，如需保留 Go 示例请告知；③ 删除 MySQL/Protobuf 后是否需要独立的 /tools/json-to-sql 页面承接原关键词。",
+    "timestamp": "2026-09-24T21:47:37.446Z",
+    "read": true
+  },
+  {
+    "id": "msg-1790286681912-gllooc",
+    "from": "page-ts",
+    "to": "team-lead",
+    "type": "message",
+    "content": "json-to-typescript 落地页已完成，校验通过：`8 8 17 17 set()`（features/guide 5/faq 17，ui 键两侧完全一致，无 camelCase 残留）。未执行 pnpm build，read_lints 无报错。\n\n**实现的控件**（全部 snake_case，组件内统一走 `props.tool.ui`，无任何英文兜底）：interface/type 分段切换、export、mark optional、preserve null、format detection、缩进 2/4、btn_example（接 `loadDefaultExample()`）。全部 22 个 ui 键均已接线：error_invalid_name（根类型名按 `/^[A-Za-z_$][A-Za-z0-9_$]*$/`+保留字校验）、error_empty_input（手动点击空输入）、error_empty_array、error_invalid_input（SyntaxError）、error_generation（其余异常）、warning_sample_based（输出面板上方黄条，仅在有输出且无错误时显示）。\n\n**format detection 保留**：实现为字段上方 `/** format: email */` 注释（uuid/date-time/date/email/url/ipv4，且所有样本命中同一格式才输出），不产生 branded type，与 en 文案一致，故未删 en 该条。\n\n**union 规则**：同一位置多样本合并 → `a: string | null`；数组元素多类型加括号 → `(number | string | null)[]`；对象数组合并字段、缺失键转 `?`；关闭 preserve null 时 null→unknown 且 unknown 吸收联合。\n\n**非法标识符**：属性名不合规或为保留字 → `JSON.stringify` 加引号（`\"first-name\"`、`\"user id\"`、`\"class\"`）；嵌套类型名转 PascalCase，数字开头加 `_`，重名自动加数字后缀。根数组输出 `export type Root = RootItem[]` + 元素 interface。\n\n**删除/改动**：en 与 zh 同时删除与 `option_export` 重复的 `label_export`（唯一一处 en 改动）；其余 en 内容未动。\n\n**zh**：features 6→8、guide 4→5、faq 10→17、article 全量重写、name 改为「JSON 转 TypeScript 转换器」、keywords 去掉 typescript类型生成器/在线生成ts 等词。\n\n**请复核**：1）删 en 的 `label_export` 是否可接受（或你更倾向保留它做分组标题）；2）根类型名为空时静默回退 `RootObject` 而不报错，是否需要报错；3）nested 声明排在根声明之前（自底向上），是否符合预期阅读顺序。",
+    "timestamp": "2026-09-24T21:51:21.912Z",
+    "read": true
+  },
+  {
+    "id": "msg-1790289044743-s0mj5p",
+    "from": "page-editor",
+    "to": "team-lead",
+    "type": "message",
+    "content": "json-editor 落地页 + JsonEditor.vue 已完成，只动了这两个文件。校验：features 15/15、faq 14/14、ui 18/18（en/zh 键集合差集为空）、guide 4/4。未跑 pnpm build。\n\n删掉的承诺（实现里指不到）：\n1. feature「Optional Key Sorting」— JsonEditor 全文无 sort 实现，只有 JsonCompare 有 btn_sort_keys。连带删除 guide 步骤「Organize keys if needed」；FAQ「Can I sort JSON keys?」改为如实说明「本编辑器保留原始键序，需要归一化顺序请用 JSON Compare」，不删问题只改答案；en article「Sorting Object Keys」改写为「Object Key Order」。en features 因此 16→15。\n2. en guide/article 里的 \"bracket matching / match brackets\" — CodeMirrorEditor 只引入 lang-json + jsonParseLinter + 自定义 HighlightStyle，无 bracketMatching，改为「标出的错误行」。\n\n分享功能真实行为（`useShareJson` + `utils/share/limits.ts`）：压缩后 base64url 编码进 URL 片段 `#share=...`，浏览器不会把它发给服务器，但链接本身就是一份数据副本——任何人拿到链接都能解码，且会进浏览器历史/聊天记录；原文上限 512KB、URL 硬上限 4000 字符，超限直接拒绝并提供下载。i18n 里已有 system.shareWarning 印证。已把这个结论写进 en/zh 新增的 FAQ「What does the Share button do with my JSON?」和 article 隐私段。\n\nui 键处理：删除死键 `btn_example`（示例按钮在 JsonInputEditor 内部用 $t('system.example')，不读 tool.ui）和 `option_sort_keys`。修复静默失效：组件原读 `option_2_spaces/option_4_spaces`，改为 `option_indent_2/option_indent_4`，并给 select 补上 `:value=\"0\"` 消费 `option_indent_minified`。新接线：`btn_minify`/`btn_format`（替掉 $t('system.minify')、$t('system.format') || 'Format'）、新增 Validate 按钮消费 `btn_validate`（原 validateJson 是死函数）、`btn_copy`/`btn_download`、`placeholder_input`/`placeholder_output`、`error_empty_input`、`error_invalid_json`、`status_invalid`。`status_error_at` 通过 errorLocationText() 消费（支持 {line}/{column}），替换了 3 处 `t('errors.lineCol')`。所有英文兜底已清除，剩余兜底全部走 $t（i18n，非硬编码英文）。script 内统一 `props.tool`，props 改为 withDefaults + `const tool = computed(() => props.tool)`，避免语言切换时 tool 快照失效。\n\n16 条 feature 其余 15 条均已指到代码：语法高亮 CodeMirrorEditor:133、实时校验 JsonEditor debouncedFormat+getJsonError、复制路径 JsonNodeMenu:237-249、树内编辑 useNodeEditing + JsonNodeMenu:290-329、搜索 useTreeSearch(含 history) + JsonOutputPanel:387、媒体/值预览 JsonValueInspector(remoteWarning:27、按需解码:220、DOMPurify:238)、JSONPath useJsonPath:1-11、剪贴板 useClipboardActions、表格 JsonTableView(sort/resize/hide/filter/copyRow/exportCsv)、5MB 门槛 useLargeFile:60。",
+    "timestamp": "2026-09-24T22:30:44.743Z",
+    "read": true
+  },
+  {
+    "id": "msg-1790291169051-jg2y6s",
+    "from": "page-csv2json",
+    "to": "team-lead",
+    "type": "message",
+    "content": "已完成 csv-to-json（仅动 2 个文件，useExcelCompat.ts 未改）。\n\n代码 CsvToJson.vue\n- typeInference 默认 false；并接线 option_infer_types / option_empty_as_null(默认 false) / option_trim_values(默认 true) / option_indent_2·4 / 四个分隔符 + option_auto_delimiter，全部 props.tool.ui?.x，无英文兜底。\n- JsonInputEditor 加 show-upload + accept=\".csv,.tsv,.txt\"；placeholder 换成语言无关的 CSV 样例（原 placeholder_input 键根本不存在，会漏英文）。\n- 预览：输入区下方表格，实时解析，显示表头 + 前 10 行 + 行数/列数/分隔符 +“共 N 行显示前 10 行”。列数不一致的行标黄，转换时直接报 error_inconsistent_columns（严格报错，不静默补空或丢列）。error_no_headers / error_parse / error_no_data 同时接线；空单元格显示 ∅，空值策略由 empty_as_null 决定。\n\n配置\n- ui：en/zh 各 28 键，差集为空。原 23 键逐一兑现，一个没删；新增 5 个 preview_* 键（en/zh 同步，预览必须有标题/行列/范围文案）。\n- zh 全量重写：features 8、faq 15、guide 4、article（14 段对齐 en 结构）。已清除 URL 输入、GBK、嵌套 JSON、JSONL 承诺；无表头键名写成 column_1（与实现生成的名字一致）。\n- 校验：8 8 15 15 set()\n\n需你复核\n1. 改了 4 处 en：ui 加 5 个 preview_*；features[1]/guide[2] 补 “first 10 rows”（预览上限 10 行，否则等于静默截断）；article 类型推断段加一句“默认关闭，示例里的 30 默认是字符串”。不改这 3 处，预览范围与示例输出都无法与实现对齐。\n2. en example.output 的 age 仍是数字，与默认关闭推断不一致——已靠上面那句话兜住；若你想让示例本身改成字符串，我再动 example。\n3. btn_download / btn_example 组件读不到（按钮文案走共享组件 i18n），保留未删。\n4. 文件被重新序列化（缩进对齐 yaml-to-json.json），diff 偏大，内容层只动了 en 4 处 + zh 整块。",
+    "timestamp": "2026-09-24T23:06:09.051Z",
+    "read": true
+  },
+  {
+    "id": "resp-1790292684752-ntqai7",
+    "from": "page-fmt",
+    "to": "team-lead",
+    "type": "shutdown_response",
+    "content": "{\"type\":\"shutdown_response\",\"request_id\":\"shutdown-1790292684226\",\"approve\":true,\"reason\":\"Auto-acknowledged by team-member runtime\",\"from\":\"page-fmt\",\"timestamp\":\"2026-09-24T23:31:24.752Z\"}",
+    "timestamp": "2026-09-24T23:31:24.752Z",
+    "read": true
+  },
+  {
+    "id": "resp-1790292684753-fzei3o",
+    "from": "page-csv",
+    "to": "team-lead",
+    "type": "shutdown_response",
+    "content": "{\"type\":\"shutdown_response\",\"request_id\":\"shutdown-1790292684176\",\"approve\":true,\"reason\":\"Auto-acknowledged by team-member runtime\",\"from\":\"page-csv\",\"timestamp\":\"2026-09-24T23:31:24.753Z\"}",
+    "timestamp": "2026-09-24T23:31:24.753Z",
+    "read": true
+  },
+  {
+    "id": "resp-1790292684753-s9dsjt",
+    "from": "page-table",
+    "to": "team-lead",
+    "type": "shutdown_response",
+    "content": "{\"type\":\"shutdown_response\",\"request_id\":\"shutdown-1790292683601\",\"approve\":true,\"reason\":\"Auto-acknowledged by team-member runtime\",\"from\":\"page-table\",\"timestamp\":\"2026-09-24T23:31:24.753Z\"}",
+    "timestamp": "2026-09-24T23:31:24.753Z",
+    "read": true
+  },
+  {
+    "id": "resp-1790292686753-q2abej",
+    "from": "page-code",
+    "to": "team-lead",
+    "type": "shutdown_response",
+    "content": "{\"type\":\"shutdown_response\",\"request_id\":\"shutdown-1790292686343\",\"approve\":true,\"reason\":\"Auto-acknowledged by team-member runtime\",\"from\":\"page-code\",\"timestamp\":\"2026-09-24T23:31:26.753Z\"}",
+    "timestamp": "2026-09-24T23:31:26.753Z",
+    "read": true
+  },
+  {
+    "id": "resp-1790292686754-rqpn9g",
+    "from": "page-xml2json",
+    "to": "team-lead",
+    "type": "shutdown_response",
+    "content": "{\"type\":\"shutdown_response\",\"request_id\":\"shutdown-1790292684798\",\"approve\":true,\"reason\":\"Auto-acknowledged by team-member runtime\",\"from\":\"page-xml2json\",\"timestamp\":\"2026-09-24T23:31:26.754Z\"}",
+    "timestamp": "2026-09-24T23:31:26.754Z",
+    "read": true
+  },
+  {
+    "id": "resp-1790292686754-3u8or2",
+    "from": "page-ts",
+    "to": "team-lead",
+    "type": "shutdown_response",
+    "content": "{\"type\":\"shutdown_response\",\"request_id\":\"shutdown-1790292686270\",\"approve\":true,\"reason\":\"Auto-acknowledged by team-member runtime\",\"from\":\"page-ts\",\"timestamp\":\"2026-09-24T23:31:26.754Z\"}",
+    "timestamp": "2026-09-24T23:31:26.754Z",
+    "read": true
+  },
+  {
+    "id": "resp-1790292686763-zhoy9m",
+    "from": "page-yaml",
+    "to": "team-lead",
+    "type": "shutdown_response",
+    "content": "{\"type\":\"shutdown_response\",\"request_id\":\"shutdown-1790292685644\",\"approve\":true,\"reason\":\"Auto-acknowledged by team-member runtime\",\"from\":\"page-yaml\",\"timestamp\":\"2026-09-24T23:31:26.763Z\"}",
+    "timestamp": "2026-09-24T23:31:26.763Z",
+    "read": true
+  },
+  {
+    "id": "resp-1790292688751-hfih5l",
+    "from": "page-editor",
+    "to": "team-lead",
+    "type": "shutdown_response",
+    "content": "{\"type\":\"shutdown_response\",\"request_id\":\"shutdown-1790292687248\",\"approve\":true,\"reason\":\"Auto-acknowledged by team-member runtime\",\"from\":\"page-editor\",\"timestamp\":\"2026-09-24T23:31:28.751Z\"}",
+    "timestamp": "2026-09-24T23:31:28.751Z",
+    "read": true
+  },
+  {
+    "id": "resp-1790292688752-9in55m",
+    "from": "page-csv2json",
+    "to": "team-lead",
+    "type": "shutdown_response",
+    "content": "{\"type\":\"shutdown_response\",\"request_id\":\"shutdown-1790292686839\",\"approve\":true,\"reason\":\"Auto-acknowledged by team-member runtime\",\"from\":\"page-csv2json\",\"timestamp\":\"2026-09-24T23:31:28.752Z\"}",
+    "timestamp": "2026-09-24T23:31:28.752Z",
+    "read": true
+  },
+  {
+    "id": "timeout-1790292746974-64fj33",
+    "from": "page-csv2json",
+    "to": "team-lead",
+    "type": "message",
+    "content": "[System] Shutdown timeout: \"page-csv2json\" did not acknowledge the shutdown_request (request_id=shutdown-1790292686839) within 60s and has been force-terminated. Any unreported deliverables from this teammate may have been lost. You can proceed with team_delete or continue with the remaining teammates.",
+    "timestamp": "2026-09-24T23:32:26.974Z",
+    "read": true
+  },
+  {
+    "id": "timeout-1790292747200-f4nhe4",
+    "from": "page-editor",
+    "to": "team-lead",
+    "type": "message",
+    "content": "[System] Shutdown timeout: \"page-editor\" did not acknowledge the shutdown_request (request_id=shutdown-1790292687248) within 60s and has been force-terminated. Any unreported deliverables from this teammate may have been lost. You can proceed with team_delete or continue with the remaining teammates.",
+    "timestamp": "2026-09-24T23:32:27.200Z",
+    "read": true
+  },
+  {
+    "id": "timeout-1790294927057-mjr5y8",
+    "from": "page-table",
+    "to": "team-lead",
+    "type": "message",
+    "content": "[System] Shutdown timeout: \"page-table\" did not acknowledge the shutdown_request (request_id=shutdown-1790294867043) within 60s and has been force-terminated. Any unreported deliverables from this teammate may have been lost. You can proceed with team_delete or continue with the remaining teammates.",
+    "timestamp": "2026-09-25T00:08:47.057Z",
+    "read": true
+  },
+  {
+    "id": "timeout-1790294927424-udserj",
+    "from": "page-csv",
+    "to": "team-lead",
+    "type": "message",
+    "content": "[System] Shutdown timeout: \"page-csv\" did not acknowledge the shutdown_request (request_id=shutdown-1790294867409) within 60s and has been force-terminated. Any unreported deliverables from this teammate may have been lost. You can proceed with team_delete or continue with the remaining teammates.",
+    "timestamp": "2026-09-25T00:08:47.424Z",
+    "read": true
+  },
+  {
+    "id": "timeout-1790294927756-tb0jh5",
+    "from": "page-fmt",
+    "to": "team-lead",
+    "type": "message",
+    "content": "[System] Shutdown timeout: \"page-fmt\" did not acknowledge the shutdown_request (request_id=shutdown-1790294867739) within 60s and has been force-terminated. Any unreported deliverables from this teammate may have been lost. You can proceed with team_delete or continue with the remaining teammates.",
+    "timestamp": "2026-09-25T00:08:47.756Z",
+    "read": true
+  },
+  {
+    "id": "timeout-1790294928136-4kzizx",
+    "from": "page-xml2json",
+    "to": "team-lead",
+    "type": "message",
+    "content": "[System] Shutdown timeout: \"page-xml2json\" did not acknowledge the shutdown_request (request_id=shutdown-1790294868120) within 60s and has been force-terminated. Any unreported deliverables from this teammate may have been lost. You can proceed with team_delete or continue with the remaining teammates.",
+    "timestamp": "2026-09-25T00:08:48.136Z",
+    "read": true
+  },
+  {
+    "id": "timeout-1790294928723-8cvicu",
+    "from": "page-yaml",
+    "to": "team-lead",
+    "type": "message",
+    "content": "[System] Shutdown timeout: \"page-yaml\" did not acknowledge the shutdown_request (request_id=shutdown-1790294868428) within 60s and has been force-terminated. Any unreported deliverables from this teammate may have been lost. You can proceed with team_delete or continue with the remaining teammates.",
+    "timestamp": "2026-09-25T00:08:48.723Z",
+    "read": true
+  },
+  {
+    "id": "timeout-1790294928799-rld7t2",
+    "from": "page-ts",
+    "to": "team-lead",
+    "type": "message",
+    "content": "[System] Shutdown timeout: \"page-ts\" did not acknowledge the shutdown_request (request_id=shutdown-1790294868785) within 60s and has been force-terminated. Any unreported deliverables from this teammate may have been lost. You can proceed with team_delete or continue with the remaining teammates.",
+    "timestamp": "2026-09-25T00:08:48.799Z",
+    "read": true
+  },
+  {
+    "id": "timeout-1790294929089-yduw64",
+    "from": "page-code",
+    "to": "team-lead",
+    "type": "message",
+    "content": "[System] Shutdown timeout: \"page-code\" did not acknowledge the shutdown_request (request_id=shutdown-1790294869080) within 60s and has been force-terminated. Any unreported deliverables from this teammate may have been lost. You can proceed with team_delete or continue with the remaining teammates.",
+    "timestamp": "2026-09-25T00:08:49.089Z",
+    "read": true
+  }
+]

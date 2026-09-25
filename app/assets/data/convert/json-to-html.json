@@ -1,0 +1,327 @@
+{
+  "slug": "json-to-html",
+  "category": "convert",
+  "component": "JsonToTable",
+  "icon": "lucide:code",
+  "sort": 7,
+  "applicationCategory": "DeveloperApplication",
+  "nextSteps": [
+    "json-to-table",
+    "json-editor"
+  ],
+  "recommends": [
+    "json-to-csv"
+  ],
+  "en": {
+    "name": "JSON to HTML Table",
+    "description": "Convert a JSON array of objects into an HTML table online. Generate semantic table markup with thead, tbody, th, and td, escape values that contain HTML characters, preview the result, and copy the markup or download a standalone .html file.",
+    "hero": {
+      "trustHtml": "Runs in your browser. Your JSON is not uploaded by this tool."
+    },
+    "meta": {
+      "title": "JSON to HTML Table Generator – Free Online Converter",
+      "description": "Convert JSON to an HTML table online. Paste an array of objects, preview rows and columns, copy semantic table markup, or download a standalone .html file. Cell values are escaped. Free and browser-based.",
+      "keywords": [
+        "json to html",
+        "json to html table",
+        "json to html table generator",
+        "json array to html table",
+        "convert json to html",
+        "json html table converter",
+        "generate html table from json",
+        "json table html generator"
+      ]
+    },
+    "features": [
+      {
+        "icon": "lucide:code-2",
+        "title": "JSON Array to HTML Table",
+        "description": "Turn an array of JSON objects into HTML rows and columns. Each object becomes a row, and the object keys become the header cells."
+      },
+      {
+        "icon": "lucide:layout-list",
+        "title": "Semantic Table Markup",
+        "description": "The output uses table, thead, tbody, tr, th, and td elements, with a json-table class instead of inline presentation attributes, so you can style it with your own CSS."
+      },
+      {
+        "icon": "lucide:shield-check",
+        "title": "Escaped Cell Values",
+        "description": "Every header and cell value is escaped before it is written into the markup. The characters &, <, >, double quote, and single quote become HTML entities, so JSON text is rendered as text instead of markup."
+      },
+      {
+        "icon": "lucide:copy",
+        "title": "Copy or Download the HTML",
+        "description": "Copy the generated markup to your clipboard, or download a standalone .html document that includes a minimal stylesheet so you can open the file directly in a browser."
+      },
+      {
+        "icon": "lucide:table-2",
+        "title": "Preview Before Exporting",
+        "description": "Switch between the rendered table preview and the generated HTML source, and check the row and column counts before you copy or download anything."
+      },
+      {
+        "icon": "lucide:layers-2",
+        "title": "Optional Nested Flattening",
+        "description": "Flatten nested objects into dot-notation columns such as address.city. With flattening off, an object or array value is written into one cell as compact JSON text."
+      },
+      {
+        "icon": "lucide:upload",
+        "title": "Paste or Open a File",
+        "description": "Paste JSON into the editor or open a .json file from your device. Parsing and HTML generation happen in the browser."
+      },
+      {
+        "icon": "lucide:shield",
+        "title": "Browser-Based Processing",
+        "description": "Parsing, escaping, and HTML generation run in your browser. No account and no upload to a conversion server."
+      }
+    ],
+    "guide": [
+      {
+        "title": "Enter a JSON array of objects",
+        "description": "Paste an array such as [{\"name\":\"Alice\"},{\"name\":\"Bob\"}] or open a .json file. Every item has to be an object, because each item becomes one row."
+      },
+      {
+        "title": "Choose nested data handling",
+        "description": "Enable Flatten nested objects when nested properties should become dot-notation columns such as address.city."
+      },
+      {
+        "title": "Check the preview and the markup",
+        "description": "Use the Preview and HTML switch to compare the rendered table with the generated source, and confirm the row and column counts match your data."
+      },
+      {
+        "title": "Copy or download the result",
+        "description": "Click Copy HTML to take the markup, or download the .html file when you want a page you can open directly. Use the CSV button if you need the same records in a spreadsheet."
+      }
+    ],
+    "example": {
+      "input": "[\n  { \"name\": \"Alice\", \"age\": 30, \"note\": \"a & b <tag> \\\"quoted\\\"\" },\n  { \"name\": \"Bob\", \"age\": 25, \"note\": \"plain text\" }\n]",
+      "output": "<table class=\"json-table\">\n  <thead>\n    <tr>\n      <th>name</th>\n      <th>age</th>\n      <th>note</th>\n    </tr>\n  </thead>\n  <tbody>\n    <tr>\n      <td>Alice</td>\n      <td>30</td>\n      <td>a &amp; b &lt;tag&gt; &quot;quoted&quot;</td>\n    </tr>\n    <tr>\n      <td>Bob</td>\n      <td>25</td>\n      <td>plain text</td>\n    </tr>\n  </tbody>\n</table>",
+      "useCase": "Turn an array of records into table markup that can be pasted into a page, a CMS editor, or a documentation site."
+    },
+    "faq": [
+      {
+        "question": "What JSON input does this tool accept?",
+        "answer": "A top-level JSON array whose items are objects, for example [{\"name\":\"Alice\",\"age\":30}]. Arrays of strings, numbers, or arrays are rejected, because every item has to become one row of the table."
+      },
+      {
+        "question": "What HTML does the tool generate?",
+        "answer": "The output is one table element containing a thead with a header row of th cells and a tbody with one tr per record and one td per column. The table carries a json-table class rather than inline border or padding attributes."
+      },
+      {
+        "question": "Are cell values escaped?",
+        "answer": "Yes. Header and cell text is escaped before it is written into the markup: & becomes &amp;, < becomes &lt;, > becomes &gt;, a double quote becomes &quot;, and a single quote becomes &#39;. That keeps JSON values such as script tags from being interpreted as markup."
+      },
+      {
+        "question": "Does the generated HTML include CSS?",
+        "answer": "The copied markup is the table only, with a json-table class and no styles. The downloaded .html file is a complete document that adds a minimal stylesheet for borders, padding, and header background."
+      },
+      {
+        "question": "Can I embed the output in my own website?",
+        "answer": "Yes. The generated table is static markup you can paste into a page, a CMS editor, or a documentation system. Add your own CSS for borders, spacing, responsive behavior, and typography, and follow your application's content and security policies when the values come from untrusted sources."
+      },
+      {
+        "question": "Can I convert nested JSON to an HTML table?",
+        "answer": "Yes, with limits. Enable Flatten nested objects to turn nested properties into dot-notation columns such as address.city. Nested arrays do not always have a natural two-dimensional shape, so they are either written into one cell as compact JSON text or need a separate transformation."
+      },
+      {
+        "question": "Can I convert a single JSON object?",
+        "answer": "No. This page expects an array of records. If your data looks like {\"results\":[...]}, paste the inner array instead, or use a JSON viewer built for object inspection."
+      },
+      {
+        "question": "How many rows does the preview show?",
+        "answer": "The preview renders the first 100 rows to keep the page responsive. The reported row count and the copied or downloaded HTML still cover every record in the array."
+      },
+      {
+        "question": "Can I get CSV instead of HTML?",
+        "answer": "Yes. The same table can be downloaded as a UTF-8 CSV file with a BOM for Excel, Google Sheets, or other spreadsheet tools."
+      },
+      {
+        "question": "Is my JSON data uploaded to a server?",
+        "answer": "This page parses JSON and generates the markup in your browser and does not require an upload to a conversion server. You should still avoid entering passwords, API keys, access tokens, or other highly sensitive information into any browser-based tool."
+      },
+      {
+        "question": "Is this a free JSON to HTML table generator?",
+        "answer": "Yes. You can paste or open JSON, preview the table, and copy or download the HTML without creating an account."
+      }
+    ],
+    "ui": {
+      "label_input": "Input JSON",
+      "label_output": "HTML Table",
+      "view_preview": "Preview",
+      "view_html": "HTML",
+      "btn_render": "Render Table",
+      "btn_copy_html": "Copy HTML",
+      "btn_download_html": "Download .html",
+      "btn_download_csv": "Download CSV",
+      "option_flatten": "Flatten nested objects",
+      "empty_state": "Paste a JSON array of objects to generate an HTML table",
+      "status_rows": "{count} rows",
+      "status_columns": "{count} columns",
+      "preview_limit": "Preview shows the first {count} rows. The copied and downloaded HTML includes every row.",
+      "error_invalid_input": "Input must be a JSON array of objects",
+      "error_empty_array": "The JSON array is empty",
+      "error_invalid_row": "Each array item must be a JSON object",
+      "error_no_columns": "No table columns were found",
+      "error_invalid_json": "Input is not valid JSON"
+    },
+    "article": {
+      "title": "How to Convert JSON to an HTML Table",
+      "content": "<h2>What Is a JSON to HTML Table Converter?</h2><p>A JSON to HTML table converter takes structured JSON records and writes them out as HTML table markup. The typical input is an array of objects, where each object is one record and each property is one column. The result is static markup you can paste into a web page, a CMS editor, an email template, or a documentation site.</p><p>This is useful when you have JSON data from an API, a database export, or a configuration file and you need to show it to people as a table rather than as raw text.</p><h2>Supported JSON Structure</h2><p>The supported input is a top-level array of objects:</p><pre><code>[{\"name\":\"Alice\",\"age\":30},{\"name\":\"Bob\",\"age\":25}]</code></pre><p>Every item in the array has to be an object. An array of strings such as [\"a\",\"b\"], an array of numbers, or an array of arrays cannot be turned into rows and columns, so it is rejected with an error message. If your document wraps the records in an object such as {\"results\":[...]}, paste the inner array instead.</p><h2>How to Convert JSON to an HTML Table</h2><ol><li><strong>Enter the JSON:</strong> Paste an array of objects into the editor or open a .json file.</li><li><strong>Handle nesting:</strong> Enable flattening if nested properties should become dot-notation columns.</li><li><strong>Check the result:</strong> Switch between the rendered preview and the HTML source and confirm the row and column counts.</li><li><strong>Copy the markup:</strong> Copy the generated table and paste it into your page or editor.</li><li><strong>Or download the file:</strong> Save the .html document when you want a page you can open directly, or use the CSV button for a spreadsheet export.</li></ol><h2>The Generated HTML Structure</h2><p>The output follows the standard table structure: a thead holding one row of th header cells, and a tbody holding one tr per record with one td per column.</p><pre><code>&lt;table class=\"json-table\"&gt;\n  &lt;thead&gt;\n    &lt;tr&gt;\n      &lt;th&gt;name&lt;/th&gt;\n    &lt;/tr&gt;\n  &lt;/thead&gt;\n  &lt;tbody&gt;\n    &lt;tr&gt;\n      &lt;td&gt;Alice&lt;/td&gt;\n    &lt;/tr&gt;\n  &lt;/tbody&gt;\n&lt;/table&gt;</code></pre><p>Using thead, tbody, th, and td keeps the markup semantic: screen readers and other tools can associate header cells with the data cells below them. Presentation is left to CSS, so the table carries a class instead of border, cellpadding, or cellspacing attributes.</p><h2>HTML Safety and Escaping</h2><p>JSON values can contain characters that are meaningful in HTML. If a value such as a script tag or an ampersand is inserted into markup without escaping, the browser may interpret it as part of the page instead of as text.</p><p>Before a value is written into a th or td element, this tool escapes the five characters that matter in HTML text: &amp;, &lt;, &gt;, the double quote, and the single quote. They become &amp;amp;, &amp;lt;, &amp;gt;, &amp;quot;, and &amp;#39;. The escaped text renders exactly as the original JSON string, without introducing markup.</p><p>Escaping the output is necessary but not sufficient in every context. When you place generated markup into a larger application, follow that application's HTML, templating, and content-security practices, especially if the JSON comes from untrusted users.</p><h2>Using the Output in a Web Page</h2><p>After copying the markup, paste it into an HTML page, a CMS editor, a documentation system, or an email template. Add your own CSS for borders, spacing, typography, zebra striping, and responsive behavior on small screens.</p><p>The generated table is static HTML. It does not include sorting, filtering, pagination, editing, or responsive controls, and it does not load any script or stylesheet of its own. Those behaviors require additional HTML, CSS, or JavaScript in your page.</p><h2>HTML Table, CSV, and Table Preview</h2><p>The three outputs solve different problems:</p><ul><li><strong>HTML table:</strong> Use it when the data has to be displayed on a page or pasted into an editor that accepts markup.</li><li><strong>CSV:</strong> Use it when the records have to continue into Excel, Google Sheets, a database import, or a reporting pipeline.</li><li><strong>Table preview:</strong> Use it when you only need to read and sanity-check the records in the browser.</li><li><strong>Raw JSON:</strong> Keep it when nested structure, exact data types, or machine-to-machine exchange must be preserved.</li></ul><h2>Browser-Based Privacy</h2><p>This tool is designed to parse JSON and generate the markup in your browser rather than uploading the input to a remote conversion service. That is useful for internal datasets and development data, but it is not a guarantee of complete security. Avoid entering credentials, access tokens, personal information, or confidential production data into any web-based tool.</p>"
+    }
+  },
+  "zh": {
+    "name": "JSON 转 HTML 表格",
+    "description": "在线把 JSON 对象数组转换为 HTML 表格。生成包含 thead、tbody、th、td 的语义化表格代码，自动转义 HTML 特殊字符，可预览结果并复制代码或下载独立的 .html 文件。",
+    "hero": {
+      "trustHtml": "在你的浏览器中运行。你的 JSON不会被本工具上传。"
+    },
+    "meta": {
+      "title": "JSON 转 HTML 表格生成器 — 免费在线转换工具",
+      "description": "在线把 JSON 转成 HTML 表格。粘贴对象数组，预览行列，复制语义化表格代码，或下载独立的 .html 文件。单元格值自动转义。免费、浏览器本地处理。",
+      "keywords": [
+        "json转html",
+        "json转html表格",
+        "json转html表格生成器",
+        "json数组转html表格",
+        "在线json转html",
+        "json html表格转换器",
+        "生成html表格",
+        "json表格代码生成"
+      ]
+    },
+    "features": [
+      {
+        "icon": "lucide:code-2",
+        "title": "JSON 数组转 HTML 表格",
+        "description": "把 JSON 对象数组转成 HTML 的行和列。每个对象变成一行，对象的键变成表头单元格。"
+      },
+      {
+        "icon": "lucide:layout-list",
+        "title": "语义化表格代码",
+        "description": "输出包含 table、thead、tbody、tr、th、td 元素，并用 json-table 类名代替内联表现属性，方便你用自己的 CSS 控制样式。"
+      },
+      {
+        "icon": "lucide:shield-check",
+        "title": "单元格值自动转义",
+        "description": "写入代码前，每个表头和单元格值都会转义：&、<、>、双引号、单引号会变成对应的 HTML 实体，JSON 文本只会被当作文本渲染，不会变成标签。"
+      },
+      {
+        "icon": "lucide:copy",
+        "title": "复制或下载 HTML",
+        "description": "把生成的代码复制到剪贴板，或下载独立的 .html 文档——它带一份极简样式表，可以直接用浏览器打开。"
+      },
+      {
+        "icon": "lucide:table-2",
+        "title": "导出前先预览",
+        "description": "可以在渲染好的表格预览和生成的 HTML 源码之间切换，并先确认行数和列数是否符合预期。"
+      },
+      {
+        "icon": "lucide:layers-2",
+        "title": "可选嵌套展平",
+        "description": "把嵌套对象展平成 address.city 这样的点号列。不展平时，对象或数组值会以一个单元格里的紧凑 JSON 文本写入。"
+      },
+      {
+        "icon": "lucide:upload",
+        "title": "粘贴或打开文件",
+        "description": "把 JSON 粘贴进编辑器，或从设备打开 .json 文件。解析和生成 HTML 都在浏览器中完成。"
+      },
+      {
+        "icon": "lucide:shield",
+        "title": "浏览器本地处理",
+        "description": "解析、转义和 HTML 生成都在你的浏览器中运行。无需账号，也不上传到转换服务器。"
+      }
+    ],
+    "guide": [
+      {
+        "title": "输入 JSON 对象数组",
+        "description": "粘贴类似 [{\"name\":\"Alice\"},{\"name\":\"Bob\"}] 的数组，或打开 .json 文件。每一项都必须是对象，因为每一项会变成表格的一行。"
+      },
+      {
+        "title": "选择嵌套数据处理方式",
+        "description": "需要把嵌套属性变成 address.city 这样的点号列时，启用“展平嵌套对象”。"
+      },
+      {
+        "title": "检查预览和代码",
+        "description": "用“预览 / HTML”切换，对比渲染后的表格和生成的源码，确认行列数量与数据一致。"
+      },
+      {
+        "title": "复制或下载结果",
+        "description": "点击“复制 HTML”拿走代码，或下载 .html 文件直接打开查看。需要电子表格时，用 CSV 按钮导出同样的数据。"
+      }
+    ],
+    "example": {
+      "input": "[\n  { \"name\": \"Alice\", \"age\": 30, \"note\": \"a & b <tag> \\\"quoted\\\"\" },\n  { \"name\": \"Bob\", \"age\": 25, \"note\": \"plain text\" }\n]",
+      "output": "<table class=\"json-table\">\n  <thead>\n    <tr>\n      <th>name</th>\n      <th>age</th>\n      <th>note</th>\n    </tr>\n  </thead>\n  <tbody>\n    <tr>\n      <td>Alice</td>\n      <td>30</td>\n      <td>a &amp; b &lt;tag&gt; &quot;quoted&quot;</td>\n    </tr>\n    <tr>\n      <td>Bob</td>\n      <td>25</td>\n      <td>plain text</td>\n    </tr>\n  </tbody>\n</table>",
+      "useCase": "把一组记录转成表格代码，粘贴到网页、CMS 编辑器或文档站点中。"
+    },
+    "faq": [
+      {
+        "question": "这个工具接受什么样的 JSON 输入？",
+        "answer": "顶层是 JSON 数组、且每一项都是对象，例如 [{\"name\":\"Alice\",\"age\":30}]。字符串数组、数字数组、数组的数组都会被拒绝，因为每一项都要变成表格的一行。"
+      },
+      {
+        "question": "会生成什么样的 HTML？",
+        "answer": "输出是一个 table 元素：thead 里放一行 th 表头单元格，tbody 里每条记录一个 tr、每列一个 td。表格带的是 json-table 类名，而不是 border、cellpadding 这类内联表现属性。"
+      },
+      {
+        "question": "单元格的值会转义吗？",
+        "answer": "会。写入代码前，表头和单元格文本都会转义：& 变成 &amp;，< 变成 &lt;，> 变成 &gt;，双引号变成 &quot;，单引号变成 &#39;。这样 JSON 里的 script 标签等内容只会当作文本渲染，不会被当成标签解析。"
+      },
+      {
+        "question": "生成的 HTML 带 CSS 样式吗？",
+        "answer": "复制出来的代码只有表格本身，带 json-table 类名、不带样式。下载的 .html 文件是完整文档，里面加了一份极简样式表，包含边框、内边距和表头背景色。"
+      },
+      {
+        "question": "可以把结果嵌入我自己的网站吗？",
+        "answer": "可以。生成的是静态表格代码，可以粘贴进网页、CMS 编辑器或文档系统。边框、间距、响应式和字体样式由你自己的 CSS 决定；如果值来自不可信来源，还要遵守你自己应用的内容与安全策略。"
+      },
+      {
+        "question": "支持嵌套 JSON 吗？",
+        "answer": "支持，但有边界。启用“展平嵌套对象”后，嵌套属性会变成 address.city 这样的点号列。嵌套数组不一定有天然的二维形态，所以要么以一个单元格里的紧凑 JSON 文本写入，要么需要另外的转换处理。"
+      },
+      {
+        "question": "可以转换单个 JSON 对象吗？",
+        "answer": "不可以。本页面要求输入记录数组。如果数据是 {\"results\":[...]} 这种结构，请粘贴里面的数组；也可以用专门查看对象的 JSON 浏览器。"
+      },
+      {
+        "question": "预览会显示多少行？",
+        "answer": "为了保持页面流畅，预览只渲染前 100 行。显示的行数以及复制、下载的 HTML 仍然覆盖数组中的每一条记录。"
+      },
+      {
+        "question": "可以导出 CSV 而不是 HTML 吗？",
+        "answer": "可以。同一份表格也能下载为带 BOM 的 UTF-8 CSV 文件，用于 Excel、Google Sheets 或其他电子表格工具。"
+      },
+      {
+        "question": "我的 JSON 数据会上传到服务器吗？",
+        "answer": "本页面在你的浏览器中解析 JSON 并生成代码，不需要上传到转换服务器。仍然建议不要在任何浏览器工具中输入密码、API 密钥、访问令牌或其他高度敏感的信息。"
+      },
+      {
+        "question": "这是一个免费的 JSON 转 HTML 表格生成器吗？",
+        "answer": "是的。你可以粘贴或打开 JSON、预览表格并复制或下载 HTML，无需注册账号。"
+      }
+    ],
+    "ui": {
+      "label_input": "输入 JSON",
+      "label_output": "HTML 表格",
+      "view_preview": "预览",
+      "view_html": "HTML",
+      "btn_render": "渲染表格",
+      "btn_copy_html": "复制 HTML",
+      "btn_download_html": "下载 .html",
+      "btn_download_csv": "下载 CSV",
+      "option_flatten": "展平嵌套对象",
+      "empty_state": "粘贴 JSON 对象数组，即可生成 HTML 表格",
+      "status_rows": "{count} 行",
+      "status_columns": "{count} 列",
+      "preview_limit": "预览显示前 {count} 行，复制和下载的 HTML 包含全部行。",
+      "error_invalid_input": "输入必须是 JSON 对象数组",
+      "error_empty_array": "JSON 数组为空",
+      "error_invalid_row": "数组中的每一项都必须是 JSON 对象",
+      "error_no_columns": "没有找到表格列",
+      "error_invalid_json": "输入不是合法的 JSON"
+    },
+    "article": {
+      "title": "如何把 JSON 转成 HTML 表格",
+      "content": "<h2>什么是 JSON 转 HTML 表格转换器？</h2><p>JSON 转 HTML 表格转换器把结构化的 JSON 记录写成 HTML 表格代码。典型的输入是对象数组：每个对象是一条记录，每个属性是一列。结果是静态代码，可以粘贴进网页、CMS 编辑器、邮件模板或文档站点。</p><p>当你手上有来自接口、数据库导出或配置文件的 JSON 数据，需要以表格形式展示给人看、而不是给机器读时，这个转换就很有用。</p><h2>支持的 JSON 结构</h2><p>支持的输入是顶层对象数组：</p><pre><code>[{\"name\":\"Alice\",\"age\":30},{\"name\":\"Bob\",\"age\":25}]</code></pre><p>数组里的每一项都必须是对象。[\"a\",\"b\"] 这样的字符串数组、数字数组、数组的数组都无法变成行和列，会被直接报错。如果数据被包在 {\"results\":[...]} 这样的对象里，请粘贴内层的数组。</p><h2>如何把 JSON 转成 HTML 表格</h2><ol><li><strong>输入 JSON：</strong>把对象数组粘贴进编辑器，或打开 .json 文件。</li><li><strong>处理嵌套：</strong>需要把嵌套属性变成点号列时启用展平。</li><li><strong>检查结果：</strong>在渲染预览和 HTML 源码之间切换，确认行列数量。</li><li><strong>复制代码：</strong>复制生成的表格，粘贴到你的页面或编辑器里。</li><li><strong>或下载文件：</strong>需要直接打开的页面时保存 .html 文档；要电子表格时用 CSV 按钮导出。</li></ol><h2>生成的 HTML 结构</h2><p>输出遵循标准表格结构：thead 里放一行 th 表头单元格，tbody 里每条记录一个 tr、每列一个 td。</p><pre><code>&lt;table class=\"json-table\"&gt;\n  &lt;thead&gt;\n    &lt;tr&gt;\n      &lt;th&gt;name&lt;/th&gt;\n    &lt;/tr&gt;\n  &lt;/thead&gt;\n  &lt;tbody&gt;\n    &lt;tr&gt;\n      &lt;td&gt;Alice&lt;/td&gt;\n    &lt;/tr&gt;\n  &lt;/tbody&gt;\n&lt;/table&gt;</code></pre><p>使用 thead、tbody、th、td 让代码保持语义化：屏幕阅读器等工具可以把表头单元格和下面的数据单元格关联起来。表现交给 CSS，所以表格只带类名，不再写 border、cellpadding、cellspacing 这类属性。</p><h2>HTML 安全与转义</h2><p>JSON 的值里可能含有在 HTML 中有特殊含义的字符。如果 script 标签或 & 这类内容不加转义就被插进代码，浏览器可能把它当成页面的一部分，而不是普通文本。</p><p>在把值写入 th 或 td 之前，本工具会转义 HTML 文本中有意义的五个字符：&amp;、&lt;、&gt;、双引号、单引号，分别变成 &amp;amp;、&amp;lt;、&amp;gt;、&amp;quot;、&amp;#39;。转义后的文本会按原始 JSON 字符串原样显示，不会引入新的标签。</p><p>转义输出是必要的，但不是所有场景下的充分条件。把生成的代码放进更大的应用时，还要遵守该应用的 HTML、模板和内容安全策略，尤其是当 JSON 来自不可信用户时。</p><h2>在网页中使用生成结果</h2><p>复制代码后，可以粘贴进 HTML 页面、CMS 编辑器、文档系统或邮件模板。边框、间距、字体、斑马纹和小屏下的响应式表现，都由你自己的 CSS 决定。</p><p>生成的表格是静态 HTML，不包含排序、筛选、分页、编辑或响应式控件，也不会加载任何脚本或样式表。这些行为需要在你的页面里额外补上 HTML、CSS 或 JavaScript。</p><h2>HTML 表格、CSV 与表格预览</h2><p>三种输出解决的是不同问题：</p><ul><li><strong>HTML 表格：</strong>数据要显示在页面上，或粘贴进支持代码的编辑器时使用。</li><li><strong>CSV：</strong>数据要继续进入 Excel、Google Sheets、数据库导入或报表流程时使用。</li><li><strong>表格预览：</strong>只需要在浏览器里阅读和检查数据时使用。</li><li><strong>原始 JSON：</strong>需要保留嵌套结构、精确类型或机器间交换时保留原格式。</li></ul><h2>浏览器本地处理与隐私</h2><p>这个工具在你的浏览器中解析 JSON 并生成代码，而不是把输入上传到远程转换服务。这对内部数据集和开发数据很方便，但并不等于绝对安全。不要在任何在线工具中输入凭证、访问令牌、个人信息或机密生产数据。</p>"
+    }
+  }
+}

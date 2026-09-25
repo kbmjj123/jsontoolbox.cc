@@ -4,6 +4,7 @@
 .nuxt
 .nitro
 .cache
+.playwright-mcp
 dist
 wait-to-upload
 test_images

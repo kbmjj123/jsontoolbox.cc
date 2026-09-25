@@ -46,7 +46,7 @@
             v-if="isFullscreen"
             class="text-xs text-surface-400 dark:text-surface-500 bg-surface-100 dark:bg-surface-800 px-3 py-1 rounded-full"
           >
-            Press ESC to exit fullscreen
+            {{ tool.ui?.hint_esc_fullscreen || 'Press ESC to exit fullscreen' }}
           </span>
         </Transition>
         <button
@@ -66,14 +66,12 @@
         v-model="leftJson"
         :label="tool.ui?.label_json_a || 'JSON A (Original)'"
         placeholder='{"name": "Alice", "age": 30}'
-        show-load-url
         @clear="onClearLeft"
       />
       <JsonInputEditor
         v-model="rightJson"
         :label="tool.ui?.label_json_b || 'JSON B (Modified)'"
         placeholder='{"name": "Alice", "age": 31, "email": "alice@example.com"}'
-        show-load-url
         @clear="onClearRight"
       />
     </div>
@@ -90,7 +88,6 @@
               :label="tool.ui?.label_json_a || 'JSON A (Original)'"
               placeholder='{"name": "Alice", "age": 30}'
               show-upload
-              show-load-url
               @clear="onClearLeft"
             />
           </div>
@@ -104,7 +101,6 @@
               :label="tool.ui?.label_json_b || 'JSON B (Modified)'"
               placeholder='{"name": "Alice", "age": 31, "email": "alice@example.com"}'
               show-upload
-              show-load-url
               @clear="onClearRight"
             />
           </div>
@@ -220,6 +216,10 @@ const { isFullscreen, toggle: toggleFullscreen } = useFullscreen()
 const RENDER_CAP = 500
 
 const leftJson = ref('')
+onMounted(() => {
+  const text = useJsonInbox().consumeInbox()
+  if (text != null) leftJson.value = text
+})
 const rightJson = ref('')
 const error = ref('')
 const diffs = ref<DiffEntry[]>([])

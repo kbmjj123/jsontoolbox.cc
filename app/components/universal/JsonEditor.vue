@@ -28,8 +28,8 @@
         <JsonInputEditor
           ref="inputEditorRef"
           v-model="inputJson"
-          :label="tool.ui?.label_input || 'Input JSON'"
-          placeholder='{"name": "JSON Toolbox", "version": "1.0"}'
+          :label="tool.ui?.label_input"
+          :placeholder="tool.ui?.placeholder_input"
           :error-line="parseError?.line ?? 0"
           :error-column="parseError?.column ?? 0"
           :friendly-message="friendlyMessage"
@@ -37,7 +37,6 @@
           :error-copied="errorCopied"
           :readonly="isSharedReadonly"
           :show-upload="!isSharedReadonly"
-          :show-load-url="!isSharedReadonly"
           :show-paste="!isSharedReadonly"
           :show-clear="!isSharedReadonly"
           example-slug="json-editor"
@@ -56,10 +55,8 @@
     <!-- Output panel -->
     <template #second>
       <div class="h-full pl-3 flex flex-col overflow-hidden">
-        <JsonSchemaPanel v-if="schemaMode" :parsed-data="parsedData" />
-        <JsonGeneratePanel v-else-if="generateMode" :parsed-data="parsedData" />
-        <JsonOutputPanel v-else
-          :label="tool.ui?.label_output || 'Output'"
+        <JsonOutputPanel
+          :label="tool.ui?.label_output"
           :content="outputJson"
           :error="error"
           :friendly-message="friendlyMessage"
@@ -69,8 +66,9 @@
           :locate-target="locateTarget"
           :show-copy="false"
           :show-download="false"
-          :show-view-toggle="showViewToggle"
-          :empty-text="$t('system.emptyOutput')"
+          :show-view-toggle="props.showViewToggle"
+          :enable-tree-search="true"
+          :empty-text="tool.ui?.placeholder_output || $t('system.emptyOutput')"
           :masked="masked"
           :sensitive-paths="sensitivePathSet"
           @update:view-mode="viewMode = $event"
@@ -80,7 +78,56 @@
           @copy-path="copyPath"
           @locate-error="onLocateFromPanel"
           @load-example="loadDefaultExample"
-        />
+        >
+          <!-- Tree edit actions: anchored to the bottom of the rich/tree view.
+               Batch/undo/redo act on the tree, which lives here — so the
+               controls sit with their content. Gated by v-if on the slot so the
+               footer (and its border) never renders in text/table mode. -->
+          <template #footer v-if="viewMode === 'rich'">
+            <div class="flex flex-wrap items-center gap-2">
+              <button
+                @click="nodeEditing.batchMode.value = !nodeEditing.batchMode.value"
+                :class="nodeEditing.batchMode.value
+                  ? 'bg-primary-600 text-white dark:bg-primary-500'
+                  : 'bg-white text-surface-600 hover:bg-surface-50 dark:bg-surface-800 dark:text-surface-400 dark:hover:bg-surface-700'"
+                class="px-2.5 py-1 text-[11px] font-bold transition-colors"
+              >
+                {{ t('edit.batch') }}
+              </button>
+              <button
+                v-if="nodeEditing.canUndo.value"
+                @click="nodeEditing.undo()"
+                class="px-2.5 py-1 text-[11px] font-bold transition-colors bg-white text-surface-600 hover:bg-surface-50 dark:bg-surface-800 dark:text-surface-400 dark:hover:bg-surface-700"
+              >
+                {{ t('edit.undo') }}
+              </button>
+              <button
+                v-if="nodeEditing.canRedo.value"
+                @click="nodeEditing.redo()"
+                class="px-2.5 py-1 text-[11px] font-bold transition-colors bg-white text-surface-600 hover:bg-surface-50 dark:bg-surface-800 dark:text-surface-400 dark:hover:bg-surface-700"
+              >
+                {{ t('edit.redo') }}
+              </button>
+              <template v-if="nodeEditing.batchMode.value && nodeEditing.batchSelected.value.size > 0">
+                <span class="text-xs font-medium text-primary-700 dark:text-primary-300">
+                  {{ t('edit.selectedCount', { count: nodeEditing.batchSelected.value.size }) }}
+                </span>
+                <input
+                  v-model="batchValue"
+                  :placeholder="t('edit.newValue')"
+                  @keydown.enter="applyBatch"
+                  class="w-40 rounded border border-surface-200 bg-white px-2 py-1 text-xs dark:border-surface-700 dark:bg-surface-800 dark:text-surface-100 focus:outline-none focus:ring-1 focus:ring-primary-400"
+                />
+                <button @click="applyBatch" class="rounded bg-primary-600 px-2.5 py-1 text-[11px] font-medium text-white hover:bg-primary-700">
+                  {{ t('edit.apply') }}
+                </button>
+                <button @click="nodeEditing.clearBatch(); batchValue = ''" class="rounded border border-surface-200 px-2.5 py-1 text-[11px] dark:border-surface-700">
+                  {{ t('edit.clear') }}
+                </button>
+              </template>
+            </div>
+          </template>
+        </JsonOutputPanel>
       </div>
     </template>
 
@@ -88,15 +135,16 @@
     <template #toolbar-left>
       <div class="flex flex-wrap items-center gap-2 shrink-0">
         <div class="flex items-center gap-2">
-          <label class="text-xs font-bold text-surface-600 dark:text-surface-400">{{ tool.ui?.option_indent || 'Indent:' }}</label>
+          <label class="text-xs font-bold text-surface-600 dark:text-surface-400">{{ tool.ui?.option_indent }}</label>
           <select v-model="indent" class="rounded-lg border border-surface-200 bg-white px-2 py-1 text-xs dark:border-surface-700 dark:bg-surface-800">
             <option :value="1">{{ $t('formatter.1space') }}</option>
-            <option :value="2">{{ tool.ui?.option_2_spaces || $t('formatter.2spaces') }}</option>
+            <option :value="2">{{ tool.ui?.option_indent_2 || $t('formatter.2spaces') }}</option>
             <option :value="3">{{ $t('formatter.3spaces') }}</option>
-            <option :value="4">{{ tool.ui?.option_4_spaces || $t('formatter.4spaces') }}</option>
+            <option :value="4">{{ tool.ui?.option_indent_4 || $t('formatter.4spaces') }}</option>
             <option :value="6">{{ $t('formatter.6spaces') }}</option>
             <option :value="8">{{ $t('formatter.8spaces') }}</option>
             <option value="tab">{{ $t('formatter.tab') }}</option>
+            <option :value="0">{{ tool.ui?.option_indent_minified || $t('system.minify') }}</option>
           </select>
         </div>
         <!-- Minify / Format toggle -->
@@ -108,7 +156,7 @@
               : 'bg-white text-surface-600 hover:bg-surface-50 dark:bg-surface-800 dark:text-surface-400 dark:hover:bg-surface-700'"
             class="px-2.5 py-1 text-[11px] font-bold transition-colors"
           >
-            {{ $t('system.minify') }}
+            {{ tool.ui?.btn_minify || $t('system.minify') }}
           </button>
           <button
             @click="setFormatted"
@@ -117,71 +165,14 @@
               : 'bg-white text-surface-600 hover:bg-surface-50 dark:bg-surface-800 dark:text-surface-400 dark:hover:bg-surface-700'"
             class="px-2.5 py-1 text-[11px] font-bold transition-colors"
           >
-            {{ $t('system.format') || 'Format' }}
+            {{ tool.ui?.btn_format || $t('system.format') }}
           </button>
         </div>
-        <!-- Auto-format toggle -->
-        <label class="flex items-center gap-1.5 cursor-pointer select-none">
-          <span class="text-xs text-surface-600 dark:text-surface-400">{{ $t('system.autoFormat') }}</span>
-          <button
-            @click="autoFormat = !autoFormat"
-            :class="autoFormat ? 'bg-primary-600' : 'bg-surface-300 dark:bg-surface-600'"
-            class="relative inline-flex h-5 w-9 items-center rounded-full transition-colors"
-            role="switch"
-            :aria-checked="autoFormat"
-          >
-            <span
-              :class="autoFormat ? 'translate-x-4' : 'translate-x-0.5'"
-              class="inline-block h-4 w-4 rounded-full bg-white transition-transform"
-            />
-          </button>
-        </label>
-
-        <!-- Schema validation mode -->
         <button
-          @click="toggleSchema"
-          :class="schemaMode
-            ? 'bg-primary-600 text-white dark:bg-primary-500'
-            : 'bg-white text-surface-600 hover:bg-surface-50 dark:bg-surface-800 dark:text-surface-400 dark:hover:bg-surface-700'"
-          class="px-2.5 py-1 text-[11px] font-bold transition-colors"
+          @click="validateJson"
+          class="px-2.5 py-1 text-[11px] font-bold transition-colors rounded-lg border border-surface-200 bg-white text-surface-600 hover:bg-surface-50 dark:border-surface-700 dark:bg-surface-800 dark:text-surface-400 dark:hover:bg-surface-700"
         >
-          {{ t('schema.toggle') }}
-        </button>
-
-        <!-- Generate panel: convert to TS/YAML/CSV/Schema, or build API snippets -->
-        <button
-          @click="toggleGenerate"
-          :class="generateMode
-            ? 'bg-primary-600 text-white dark:bg-primary-500'
-            : 'bg-white text-surface-600 hover:bg-surface-50 dark:bg-surface-800 dark:text-surface-400 dark:hover:bg-surface-700'"
-          class="px-2.5 py-1 text-[11px] font-bold transition-colors"
-        >
-          {{ t('generate.title') }}
-        </button>
-
-        <!-- Node editing: batch select + undo / redo -->
-        <button
-          @click="nodeEditing.batchMode.value = !nodeEditing.batchMode.value"
-          :class="nodeEditing.batchMode.value
-            ? 'bg-primary-600 text-white dark:bg-primary-500'
-            : 'bg-white text-surface-600 hover:bg-surface-50 dark:bg-surface-800 dark:text-surface-400 dark:hover:bg-surface-700'"
-          class="px-2.5 py-1 text-[11px] font-bold transition-colors"
-        >
-          {{ t('edit.batch') }}
-        </button>
-        <button
-          @click="nodeEditing.undo()"
-          :disabled="!nodeEditing.canUndo.value"
-          class="px-2.5 py-1 text-[11px] font-bold transition-colors bg-white text-surface-600 hover:bg-surface-50 disabled:opacity-40 disabled:cursor-not-allowed dark:bg-surface-800 dark:text-surface-400 dark:hover:bg-surface-700"
-        >
-          {{ t('edit.undo') }}
-        </button>
-        <button
-          @click="nodeEditing.redo()"
-          :disabled="!nodeEditing.canRedo.value"
-          class="px-2.5 py-1 text-[11px] font-bold transition-colors bg-white text-surface-600 hover:bg-surface-50 disabled:opacity-40 disabled:cursor-not-allowed dark:bg-surface-800 dark:text-surface-400 dark:hover:bg-surface-700"
-        >
-          {{ t('edit.redo') }}
+          {{ tool.ui?.btn_validate || $t('system.validate') }}
         </button>
       </div>
     </template>
@@ -194,7 +185,7 @@
           @click="copyOutput"
           class="text-xs text-primary-600 hover:text-primary-700 dark:text-primary-400"
         >
-          {{ clipboard.copied.value ? '✓ Copied!' : $t('system.copy') }}
+          {{ clipboard.copied.value ? $t('system.copied') : (tool.ui?.btn_copy || $t('system.copy')) }}
         </button>
         <button
           v-if="outputJson"
@@ -208,7 +199,7 @@
           @click="downloadOutput"
           class="text-xs text-surface-500 hover:text-surface-700 dark:text-surface-400"
         >
-          {{ $t('system.download') }}
+          {{ tool.ui?.btn_download || $t('system.download') }}
         </button>
         <button
           @click="openShareModal"
@@ -220,28 +211,6 @@
       </div>
     </template>
   </ResizablePanel>
-
-  <!-- Batch editing bar (P1-2): apply one value to every selected node -->
-  <div
-    v-if="nodeEditing.batchMode.value && nodeEditing.batchSelected.value.size > 0"
-    class="mt-2 flex flex-wrap items-center gap-2 rounded-lg border border-primary-200 bg-primary-50 px-3 py-2 dark:border-primary-800 dark:bg-primary-900/20"
-  >
-    <span class="text-xs font-medium text-primary-700 dark:text-primary-300">
-      {{ t('edit.selectedCount', { count: nodeEditing.batchSelected.value.size }) }}
-    </span>
-    <input
-      v-model="batchValue"
-      :placeholder="t('edit.newValue')"
-      @keydown.enter="applyBatch"
-      class="w-40 rounded border border-surface-200 bg-white px-2 py-1 text-xs dark:border-surface-700 dark:bg-surface-800 dark:text-surface-100 focus:outline-none focus:ring-1 focus:ring-primary-400"
-    />
-    <button @click="applyBatch" class="rounded bg-primary-600 px-2.5 py-1 text-[11px] font-medium text-white hover:bg-primary-700">
-      {{ t('edit.apply') }}
-    </button>
-    <button @click="nodeEditing.clearBatch(); batchValue = ''" class="rounded border border-surface-200 px-2.5 py-1 text-[11px] dark:border-surface-700">
-      {{ t('edit.clear') }}
-    </button>
-  </div>
 
   <!-- Sensitive field warning -->
   <div v-if="sensitiveFields.length > 0" class="mt-2">
@@ -285,18 +254,27 @@ import { useLargeFileGate } from '~/composables/useLargeFile'
 import { useNodeEditing } from '~/composables/useNodeEditing'
 import { useClipboardActions } from '~/composables/useClipboardActions'
 
-const { tool, showViewToggle = true, defaultViewMode = 'rich' } = defineProps<{
+const props = withDefaults(defineProps<{
   tool: any
   showViewToggle?: boolean
   defaultViewMode?: 'text' | 'rich' | 'table'
-}>()
+}>(), {
+  showViewToggle: true,
+  defaultViewMode: 'rich',
+})
+
+/** Reactive view of the tool config (re-resolves when the locale changes). */
+const tool = computed(() => props.tool)
 
 const inputJson = ref('')
+onMounted(() => {
+  const text = useJsonInbox().consumeInbox()
+  if (text != null) inputJson.value = text
+})
 const outputJson = ref('')
 const error = ref('')
 const parseError = ref<ParseError | null>(null)
 const indent = ref<number | string>(2)
-const autoFormat = ref(true)
 
 // ── Node-level editing (P1-2): every tree edit writes back into `inputJson`,
 // so the formatted output, validation and share payload all stay in sync. ──
@@ -330,19 +308,7 @@ watch(() => nodeEditing.batchMode.value, (on) => {
     batchValue.value = ''
   }
 })
-const viewMode = ref<'text' | 'rich' | 'table'>(defaultViewMode)
-const schemaMode = ref(false)
-const generateMode = ref(false)
-
-// The two right-panel modes are mutually exclusive.
-function toggleSchema() {
-  schemaMode.value = !schemaMode.value
-  if (schemaMode.value) generateMode.value = false
-}
-function toggleGenerate() {
-  generateMode.value = !generateMode.value
-  if (generateMode.value) schemaMode.value = false
-}
+const viewMode = ref<'text' | 'rich' | 'table'>(props.defaultViewMode)
 const fullscreen = ref(false)
 const lastAction = ref<'formatted' | 'minified' | 'validated'>('formatted')
 
@@ -360,6 +326,24 @@ const friendlyMessage = computed(() => {
     col: parseError.value.column,
   }, { default: parseError.value.message })
 })
+
+/** Renders `status_error_at` — "Error at line {line}, column {column}". */
+function errorLocationText(err: ParseError): string {
+  const template = props.tool.ui?.status_error_at
+  if (typeof template === 'string' && template) {
+    return template.replace('{line}', String(err.line)).replace('{column}', String(err.column))
+  }
+  return t('errors.lineCol', { line: err.line, col: err.column })
+}
+
+/** Full user-facing error: "<Invalid JSON> — <Error at line L, column C>: <detail>". */
+function errorTextFor(err: ParseError | null): string {
+  const invalid = props.tool.ui?.status_invalid
+    || props.tool.ui?.error_invalid_json
+    || t('formatter.invalidJson')
+  if (!err) return props.tool.ui?.error_invalid_json || invalid
+  return `${invalid} — ${errorLocationText(err)}: ${friendlyMessage.value || err.message}`
+}
 
 
 // ── Input editor ref & source map ─────────────────────────────
@@ -575,7 +559,7 @@ const formatJson = (silent = false) => {
     }
     const err = getJsonError(inputJson.value)
     parseError.value = err
-    error.value = err ? t('errors.lineCol', { line: err.line, col: err.column }) + ': ' + err.message : t('formatter.invalidJson')
+    error.value = errorTextFor(err)
     if (!silent) toast.error(error.value)
   }
 }
@@ -586,21 +570,25 @@ const lastIndent = ref<number | string>(2)
 const setMinified = () => {
   if (!isMinified.value) lastIndent.value = indent.value
   indent.value = 0
-  if (!autoFormat.value) formatJson()
 }
 
 const setFormatted = () => {
   indent.value = lastIndent.value
-  if (!autoFormat.value) formatJson()
 }
 
 const validateJson = () => {
-  if (!inputJson.value.trim()) { error.value = ''; parseError.value = null; outputJson.value = ''; return }
+  if (!inputJson.value.trim()) {
+    error.value = ''
+    parseError.value = null
+    outputJson.value = ''
+    toast.error(props.tool.ui?.error_empty_input || t('edit.emptyInput'))
+    return
+  }
   if (largeFile.blocked.value) return
 
   try {
     JSON.parse(inputJson.value)
-    outputJson.value = tool.ui?.status_valid || t('formatter.validJson')
+    outputJson.value = props.tool.ui?.status_valid || t('formatter.validJson')
     lastAction.value = 'validated'
     error.value = ''
     parseError.value = null
@@ -608,7 +596,7 @@ const validateJson = () => {
   } catch {
     const err = getJsonError(inputJson.value)
     parseError.value = err
-    error.value = err ? t('errors.lineCol', { line: err.line, col: err.column }) + ': ' + err.message : t('formatter.invalidJson')
+    error.value = errorTextFor(err)
     outputJson.value = ''
     toast.error(error.value)
   }
@@ -649,7 +637,7 @@ const onLocateFromPanel = () => {
 const errorCopied = ref(false)
 const copyErrorMessage = async () => {
   if (!parseError.value) return
-  const text = `${t('errors.lineCol', { line: parseError.value.line, col: parseError.value.column })}: ${friendlyMessage.value || parseError.value.message}`
+  const text = `${errorLocationText(parseError.value)}: ${friendlyMessage.value || parseError.value.message}`
   await copyToClipboard(text)
   errorCopied.value = true
   setTimeout(() => { errorCopied.value = false }, 2000)
@@ -673,7 +661,7 @@ const formatInputInPlace = () => {
 // Paste: immediately format input in-place
 const onInputPaste = () => {
   nextTick(() => {
-    if (autoFormat.value) formatInputInPlace()
+    formatInputInPlace()
     // Hint only — URL / Base64 are reported, never silently rewritten.
     clipboard.hintAfterPaste(inputJson.value)
   })
@@ -687,19 +675,15 @@ const debouncedFormatInPlace = useDebounceFn(() => { formatInputInPlace() }, 150
 watch(inputJson, () => {
   // Oversized input is parked for hand-off — skip every normal parse path.
   if (largeFile.blocked.value) return
-  if (autoFormat.value) {
-    debouncedFormat()
-    debouncedFormatInPlace()
-  }
+  debouncedFormat()
+  debouncedFormatInPlace()
 })
 
 // Indent change: immediate re-format (deliberate user action, no debounce)
 watch(indent, () => {
   if (!inputJson.value.trim()) return
   formatJson()
-  if (autoFormat.value) {
-    formatInputInPlace()
-  }
+  formatInputInPlace()
 })
 
 useEventListener('keydown', (e: KeyboardEvent) => {

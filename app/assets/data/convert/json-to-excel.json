@@ -5,302 +5,325 @@
   "icon": "lucide:file-spreadsheet",
   "sort": 4,
   "applicationCategory": "DeveloperApplication",
-  "nextSteps": ["json-to-csv", "csv-to-json"],
-  "recommends": ["json-editor"],
+  "nextSteps": [
+    "json-to-csv",
+    "csv-to-json"
+  ],
+  "recommends": [
+    "json-editor"
+  ],
   "en": {
-    "name": "JSON to CSV for Excel",
-    "description": "Convert JSON arrays to spreadsheet-ready CSV for Excel, Google Sheets, and other spreadsheet applications. Choose a delimiter, include or omit headers, flatten nested objects, preview the result, and download the CSV directly from your browser.",
+    "name": "JSON to Excel Converter",
+    "description": "Convert a JSON array of records into an XLSX worksheet you can open in Excel, Google Sheets, and LibreOffice Calc. Flatten nested objects, collect every field, include or omit the header row, preview the rows, and download the .xlsx file directly from your browser.",
     "ui": {
-      "label_input": "Input JSON",
-      "label_preview": "CSV Preview",
-      "option_delimiter": "Delimiter:",
-      "option_delimiter_comma": "Comma (,)",
-      "option_delimiter_semicolon": "Semicolon (;)",
-      "option_delimiter_tab": "Tab",
-      "option_include_header": "Include header row",
+      "label_input": "Input JSON Array",
+      "label_preview": "Preview",
+      "btn_convert": "Convert to Excel",
+      "btn_copy_csv": "Copy CSV",
+      "btn_download_xlsx": "Download XLSX",
       "option_flatten": "Flatten nested objects",
-      "btn_convert": "Convert to CSV",
-      "btn_example": "Load Example",
-      "btn_download": "Download CSV",
+      "option_include_header": "Include header row",
       "status_rows": "{count} rows",
-      "placeholder_preview": "CSV preview will appear here...",
+      "placeholder_preview": "Preview will appear here...",
+      "error_no_data": "Enter JSON or open a JSON file first",
       "error_not_array": "Input must be a JSON array of objects",
-      "error_empty": "The JSON array is empty",
-      "error_invalid_row": "Each array item must be a JSON object",
-      "error_no_columns": "No exportable fields were found"
+      "error_invalid_row": "Every array item must be a JSON object",
+      "error_no_columns": "No exportable fields were found",
+      "error_export": "The XLSX file could not be created",
+      "error_invalid_json": "Input must be valid JSON"
     },
     "hero": {
       "trustHtml": "Runs in your browser. Your JSON is not uploaded by this tool."
     },
     "meta": {
-      "title": "JSON to CSV for Excel – Free Online Converter",
-      "description": "Convert JSON arrays to CSV for Excel and Google Sheets. Choose a delimiter, flatten nested objects, preview the rows, and download a spreadsheet-ready CSV file. Free and browser-based.",
+      "title": "JSON to Excel Converter – Export JSON to XLSX Online",
+      "description": "Convert JSON to Excel online. Turn a JSON array of objects into an XLSX worksheet with flattened columns, optional headers, and a preview. Free and browser-based.",
       "keywords": [
         "json to excel",
         "json to excel converter",
         "convert json to excel",
-        "json to csv for excel",
+        "json to xlsx converter",
         "json array to excel",
         "json to spreadsheet",
-        "json to xlsx converter",
-        "json to csv converter"
+        "convert json to xlsx",
+        "free json to excel"
       ]
     },
     "features": [
       {
-        "icon": "lucide:file-spreadsheet",
-        "title": "Spreadsheet-Ready CSV",
-        "description": "Convert a JSON array of records into CSV that can be opened or imported in Excel, Google Sheets, LibreOffice Calc, and other spreadsheet applications."
+        "icon": "lucide:download",
+        "title": "Real XLSX Workbook",
+        "description": "Download an actual .xlsx workbook with a single worksheet, ready to open in Excel, Google Sheets, and LibreOffice Calc. No import wizard or text-column mapping is required."
       },
       {
-        "icon": "lucide:table-2",
-        "title": "Preview Rows and Columns",
-        "description": "Review the generated rows and detected columns before downloading. This helps you identify missing fields, unexpected values, or incorrect nested-data handling."
+        "icon": "lucide:braces",
+        "title": "Array of Records Input",
+        "description": "Paste a JSON array of objects or open a .json file. Each array item becomes one worksheet row, and the detected fields become columns."
       },
       {
-        "icon": "lucide:separator-horizontal",
-        "title": "Choose a Delimiter",
-        "description": "Select comma, semicolon, or tab output according to your spreadsheet application and regional settings. The selected delimiter is used when generating the downloaded text file."
-      },
-      {
-        "icon": "lucide:layers-2",
+        "icon": "lucide:layers",
         "title": "Flatten Nested Objects",
-        "description": "Convert nested object paths into flat columns such as address.city or user.name. Nested arrays may require additional handling because CSV represents data in rows and columns."
+        "description": "Turn nested objects into dotted column names such as `address.city`. Arrays of objects become indexed columns such as `items.0.name`, and arrays of simple values are written as JSON text."
       },
       {
-        "icon": "lucide:heading-1",
+        "icon": "lucide:list",
+        "title": "Collect Every Field",
+        "description": "Columns are collected from every record, not just the first one. Fields missing from a record are exported as empty cells instead of shifting the row."
+      },
+      {
+        "icon": "lucide:rows-3",
         "title": "Optional Header Row",
-        "description": "Include column names in the first row or omit the header when preparing data for an existing spreadsheet or downstream import workflow."
+        "description": "Include the column names as the first row, or turn the header off when appending data below an existing spreadsheet."
+      },
+      {
+        "icon": "lucide:eye",
+        "title": "Preview Before Download",
+        "description": "Review the flattened records and detected columns in the preview panel before exporting the workbook."
       },
       {
         "icon": "lucide:copy",
-        "title": "Copy CSV Text",
-        "description": "Copy the generated CSV text to your clipboard for quick pasting into Excel, Google Sheets, a spreadsheet editor, or another compatible application."
-      },
-      {
-        "icon": "lucide:download",
-        "title": "Download CSV",
-        "description": "Save the result as a .csv file. The output is CSV rather than a native .xlsx workbook, so use Excel's import options if you need to choose encoding or delimiter settings."
+        "title": "Copy as CSV Text",
+        "description": "Copy the same rows as comma-separated text when you only need to paste values into a sheet. The CSV copy uses a comma delimiter and follows the header setting."
       },
       {
         "icon": "lucide:shield-check",
         "title": "Browser-Based Processing",
-        "description": "JSON parsing and CSV generation happen in your browser. The page does not require an account or upload the source JSON to a conversion server."
+        "description": "JSON parsing and workbook generation happen in your browser. The page does not require an account or upload the source JSON to a remote service."
       }
     ],
     "guide": [
       {
-        "title": "Enter your JSON",
-        "description": "Paste a JSON array of objects into the input field or open a .json file. For spreadsheet conversion, each object should represent one record."
+        "title": "Enter or open JSON",
+        "description": "Paste a JSON array of objects into the editor or open a .json file from your device."
       },
       {
-        "title": "Configure the output",
-        "description": "Choose the delimiter, decide whether to include a header row, and enable Flatten nested objects if your records contain nested object properties."
+        "title": "Choose export options",
+        "description": "Enable flattening for nested objects and decide whether the first row should contain column names."
       },
       {
         "title": "Convert and preview",
-        "description": "Click Convert to CSV and inspect the preview. Check the detected columns, row count, missing values, and representation of nested fields before downloading."
+        "description": "Run the conversion and review the flattened records, detected columns, and row count in the preview panel."
       },
       {
-        "title": "Copy or download",
-        "description": "Copy the CSV text or download the .csv file. Open it in Excel or import it into Google Sheets using the delimiter and encoding settings that match your data."
+        "title": "Download or copy",
+        "description": "Download the .xlsx workbook, or copy the rows as CSV text when you only need to paste values."
       }
     ],
     "example": {
-      "input": "[\n  { \"product\": \"Laptop\", \"price\": 999, \"quantity\": 5 },\n  { \"product\": \"Mouse\", \"price\": 25, \"quantity\": 50 }\n]",
-      "output": "product,price,quantity\nLaptop,999,5\nMouse,25,50",
-      "useCase": "Export product records to a CSV file that can be opened in Excel for analysis and reporting."
+      "input": "[\n  { \"product\": \"Laptop\", \"price\": 999, \"stock\": { \"warehouse\": \"A\" } },\n  { \"product\": \"Mouse\", \"price\": 25, \"stock\": { \"warehouse\": \"B\" } }\n]",
+      "output": "[\n  { \"product\": \"Laptop\", \"price\": 999, \"stock.warehouse\": \"A\" },\n  { \"product\": \"Mouse\", \"price\": 25, \"stock.warehouse\": \"B\" }\n]",
+      "useCase": "Export product records to an XLSX worksheet for analysis in Excel."
     },
     "faq": [
       {
         "question": "Does this create a real Excel XLSX file?",
-        "answer": "This page generates CSV, not a native .xlsx workbook. CSV files can be opened or imported in Excel and other spreadsheet applications, but they do not contain Excel workbook features such as multiple worksheets, cell formatting, formulas, or workbook metadata."
-      },
-      {
-        "question": "How can I convert JSON to Excel using this tool?",
-        "answer": "Paste a JSON array of objects, configure the delimiter and header option, convert the data to CSV, and open or import the downloaded CSV in Excel. If you need a native .xlsx file, use a JSON to XLSX tool that explicitly generates an Excel workbook."
-      },
-      {
-        "question": "Can I open the output in Google Sheets?",
-        "answer": "Yes. Upload the CSV to Google Sheets or use File → Import. If the columns are not separated correctly, select the delimiter used during conversion or choose the separator manually during import."
-      },
-      {
-        "question": "What JSON structure works best?",
-        "answer": "The recommended input is a top-level JSON array of objects, such as [{\"product\":\"Laptop\",\"price\":999},{\"product\":\"Mouse\",\"price\":25}]. Each object becomes a row and its fields become columns."
-      },
-      {
-        "question": "Can I convert a JSON object instead of an array?",
-        "answer": "This page is designed mainly for arrays of records. If the useful records are inside a wrapper object such as {\"items\":[...]}, extract the items array before converting unless the current implementation provides a row-path selector."
-      },
-      {
-        "question": "Does it support nested JSON objects?",
-        "answer": "Yes. Enable Flatten nested objects to represent nested paths as flat columns, such as customer.name or address.city. Nested arrays do not always map cleanly to a single spreadsheet row and may be serialized or require a separate transformation."
+        "answer": "Yes. The download is a real .xlsx workbook with a single worksheet named Sheet1, so you can open it directly in Excel, Google Sheets, and LibreOffice Calc without importing text."
       },
       {
         "question": "Can I choose comma, semicolon, or tab output?",
-        "answer": "Yes. Select the delimiter that matches your spreadsheet application's import settings and regional conventions. Comma is common internationally, while semicolon is used by some spreadsheet locales."
+        "answer": "The XLSX download does not use a delimiter, so no delimiter setting is needed. The CSV copy button always uses a comma, because that is what spreadsheets expect when pasting text."
+      },
+      {
+        "question": "What JSON structure works best?",
+        "answer": "A JSON array of objects works best, where each object is one record. Flat objects export one column per key, and nested objects are flattened when the option is enabled."
+      },
+      {
+        "question": "Can I convert a JSON object instead of an array?",
+        "answer": "No. The input must be a JSON array. Wrap a single object in an array, for example `[{ ... }]`, or select the array inside the object, such as the `items` array of an API response."
+      },
+      {
+        "question": "Does it support nested JSON objects?",
+        "answer": "Yes, when flattening is enabled. Nested objects become dotted columns such as `address.city`, arrays of objects become indexed columns such as `items.0.name`, and arrays of simple values are written as JSON text. Turn the option off to keep nested objects out of the workbook columns."
+      },
+      {
+        "question": "Are all fields exported, or only the fields of the first record?",
+        "answer": "Columns are collected from every record in the array. A field that is missing from one record becomes an empty cell in that row, so rows stay aligned even when records have different fields."
+      },
+      {
+        "question": "How are numbers, booleans, dates, and null values exported?",
+        "answer": "Numbers and booleans are written as cells of that type. Null and missing values become empty cells. Dates stay as the original JSON strings, so convert them inside your spreadsheet if you need real date cells."
       },
       {
         "question": "Can I remove the header row?",
-        "answer": "Yes. Disable Include header row when the destination already defines the column names or when you are appending records to an existing spreadsheet structure."
+        "answer": "Yes. Turn off the header option and the workbook and CSV copy will contain data rows only, which is useful when appending below an existing sheet."
       },
       {
-        "question": "Does the CSV include UTF-8 BOM?",
-        "answer": "The answer depends on the current download implementation. If the page adds a UTF-8 BOM, it can improve direct opening of multilingual CSV files in some Excel environments. Otherwise, use Excel's import workflow and explicitly select UTF-8 when characters are displayed incorrectly."
+        "question": "Can I export multiple worksheets?",
+        "answer": "No. One conversion produces one worksheet. Convert each array separately if you need several sheets, then combine them in your spreadsheet application."
       },
       {
         "question": "Can I convert large JSON files?",
-        "answer": "The practical limit depends on browser memory, device performance, the number of records and columns, and the complexity of nested values. Very large files may take longer to parse, preview, and download."
+        "answer": "The practical limit depends on browser memory, device performance, and record count. Very large arrays take longer to flatten and export, and may exhaust available memory."
       },
       {
         "question": "Is my JSON uploaded to a server?",
-        "answer": "This page is designed to parse the JSON and generate CSV in your browser without requiring a server upload. You should still avoid entering passwords, API keys, access tokens, or confidential production data into any browser-based tool."
+        "answer": "The workbook is generated in your browser and does not require a server upload. You should still avoid entering passwords, API keys, tokens, or confidential customer data into any browser-based tool."
       },
       {
         "question": "Is this a free JSON to Excel converter?",
-        "answer": "It is a free JSON-to-CSV converter designed for Excel-compatible workflows. It does not create a native Excel workbook unless a separate XLSX export function is implemented."
+        "answer": "Yes. You can paste JSON or open a file, preview the rows, and download the XLSX workbook without creating an account."
       }
     ],
     "article": {
-      "title": "How to Convert JSON to Excel with a CSV Export",
-      "content": "<h2>JSON to Excel vs JSON to CSV</h2><p>Many people search for a JSON to Excel converter when they want to inspect JSON records in a spreadsheet. There are two different technical outputs: CSV is a plain-text, delimited file that Excel can open, while XLSX is a native Excel workbook with worksheets, formatting, formulas, and workbook metadata.</p><p>This page converts JSON to CSV for Excel and other spreadsheet applications. It is useful when you need a simple tabular export without creating a full XLSX workbook. If you specifically require a native .xlsx file, choose a converter that explicitly generates XLSX rather than only renaming or downloading a CSV file with an Excel-related label.</p><h2>How to Convert JSON to Excel-Compatible CSV</h2><ol><li><strong>Enter JSON:</strong> Paste a JSON array of objects or open a .json file.</li><li><strong>Check the records:</strong> Confirm that each array item represents one row. If the data is wrapped in an object, identify the array that contains the records.</li><li><strong>Choose formatting:</strong> Select comma, semicolon, or tab as the delimiter, then decide whether to include a header row.</li><li><strong>Flatten nested objects:</strong> Enable flattening when nested fields should become columns such as <code>user.name</code> or <code>address.city</code>.</li><li><strong>Preview the result:</strong> Review the columns, values, missing fields, and row count before exporting.</li><li><strong>Download or copy:</strong> Save the CSV file or copy the CSV text, then open or import it in Excel or another spreadsheet application.</li></ol><h2>Example JSON Structure</h2><p>A simple array of objects is the most suitable input:</p><pre><code>[{\"product\":\"Laptop\",\"price\":999,\"quantity\":5},{\"product\":\"Mouse\",\"price\":25,\"quantity\":50}]</code></pre><p>The resulting spreadsheet-style CSV has one header row followed by one row for each object:</p><pre><code>product,price,quantity\nLaptop,999,5\nMouse,25,50</code></pre><h2>Flattening Nested JSON</h2><p>Spreadsheet tables are flat, but JSON can contain nested objects and arrays. When flattening is enabled, nested object paths can become dot-notation columns:</p><pre><code>{\"product\":\"Laptop\",\"manufacturer\":{\"name\":\"Example Corp\"},\"warehouse\":{\"city\":\"Austin\"}}</code></pre><p>Possible flat columns include <code>product</code>, <code>manufacturer.name</code>, and <code>warehouse.city</code>. Nested arrays require a separate mapping decision because one JSON record may contain multiple child values. Depending on the implementation, an array can be serialized into one cell, joined as text, expanded into multiple columns, or transformed into multiple rows.</p><h2>Choosing a Delimiter</h2><p>Comma-separated output is the most common CSV format, but spreadsheet applications and regional settings may expect a semicolon or tab. If all values appear in one Excel column, import the file through Excel's data import workflow and choose the delimiter used by the converter.</p><ul><li><strong>Comma:</strong> Common for standard CSV files and many international workflows.</li><li><strong>Semicolon:</strong> Used by some regional spreadsheet configurations where comma is a decimal separator.</li><li><strong>Tab:</strong> Useful when pasting tabular data into spreadsheets or text-based systems.</li></ul><h2>Header Rows and Missing Fields</h2><p>A header row makes the CSV easier to interpret because it contains the column names. Disable the header option only when the receiving workflow already defines the columns or expects data rows without headers.</p><p>JSON records may not contain identical keys. A converter can collect fields across the records and leave an empty cell when a particular record does not contain a field. This preserves row alignment but may create a wide spreadsheet when the source has many optional properties.</p><h2>CSV Is Not the Same as XLSX</h2><p>CSV stores text values separated by a delimiter. It does not preserve the full JSON structure and does not contain native workbook features. CSV normally cannot represent multiple worksheets, cell styling, formulas, merged cells, or rich data types in the same way as XLSX.</p><p>Use CSV when you need a lightweight interchange file, simple spreadsheet analysis, or a format accepted by a data-import workflow. Use a real XLSX converter when you need an Excel workbook, multiple sheets, formatting, type preservation, or direct workbook features.</p><h2>Opening Multilingual CSV Files in Excel</h2><p>UTF-8 is generally the safest encoding for multilingual data. Microsoft explains that a UTF-8 CSV saved with a byte order mark can be opened correctly in Excel, while a file without a BOM may need to be imported through Excel's text or data-import workflow with UTF-8 selected manually.[164][166]</p><p>A UTF-8 BOM can help in some Excel environments, but it is not a guarantee for every application or operating system. Test a representative file containing Chinese, accented, or other non-ASCII characters before using the export in a production workflow.</p><h2>Common Conversion Problems</h2><ul><li><strong>Input is not an array:</strong> The page expects a collection of records rather than a single wrapper object.</li><li><strong>Columns are in one field:</strong> The spreadsheet imported the file with the wrong delimiter.</li><li><strong>Characters are garbled:</strong> Choose UTF-8 during import or use a UTF-8 CSV with BOM when available.</li><li><strong>Nested values look incorrect:</strong> Enable flattening for objects and check how nested arrays are represented.</li><li><strong>Too many columns:</strong> Select only the fields you need or avoid flattening unnecessary branches.</li><li><strong>Large file is slow:</strong> Reduce the dataset, limit the preview, or process the file in smaller parts.</li></ul><h2>Browser-Based Privacy</h2><p>This page is designed to parse JSON and create CSV in the browser rather than sending the source data to a remote conversion service. That can be useful for development and internal data review. It should not be treated as a secret-management system, so avoid entering credentials, API keys, customer data, or production secrets into any online tool.</p>"
+      "title": "How to Convert JSON to Excel (XLSX)",
+      "content": "<h2>What this JSON to Excel converter does</h2><p>A JSON to Excel converter turns a JSON array of objects into an XLSX worksheet: each array item becomes a row and the detected fields become columns. The downloaded file is a real workbook you can open directly, not plain text you must import through a wizard.</p><p>It restructures data; it does not analyse it. It does not build charts, pivot tables, or formulas, and it does not decide which fields to merge.</p>\n<h2>Common use cases</h2><ul><li><strong>Business analysis:</strong> Export API records to a sheet your colleagues open in Excel.</li><li><strong>Data delivery:</strong> Hand operations, finance, or clients a file they can open directly.</li><li><strong>Review and audit:</strong> Flatten records into rows to check missing fields and unexpected values.</li><li><strong>Migration and import:</strong> Prepare tabular data for a CRM, ERP, or finance system.</li></ul>\n<h2>How to convert JSON to Excel</h2><ol><li><strong>Prepare the array:</strong> Make sure the input is a JSON array of objects; wrap a single object in an array.</li><li><strong>Choose options:</strong> Enable flattening for nested data and decide whether to include a header row.</li><li><strong>Preview:</strong> Confirm the column names, row count, and flattening result look right.</li><li><strong>Download:</strong> Export the .xlsx workbook, or copy the rows as CSV text to paste into a sheet.</li><li><strong>Double-check:</strong> In your spreadsheet, review numbers, dates, and empty values.</li></ol>\n<h2>How nested JSON becomes columns</h2><p>Sheets are two-dimensional, so nested structures must be flattened. With flattening enabled:</p><ul><li><strong>Nested objects:</strong> Dotted column names such as <code>address.city</code>, at any depth.</li><li><strong>Arrays of objects:</strong> Indexed column names such as <code>items.0.name</code>.</li><li><strong>Arrays of simple values:</strong> Written as JSON text in one cell, because a single column cannot safely hold a list of varying length.</li><li><strong>Missing fields:</strong> Left as empty cells so rows stay aligned with columns.</li></ul><p>Different tools flatten nested structures differently, so preview before exporting.</p>\n<h2>Data types and empty values</h2><p>Numbers and booleans are written as cells of that type and can be sorted or calculated directly. Null and missing fields become empty cells. Dates stay as the original JSON strings, because JSON has no date type and the tool cannot reliably tell whether a string is a date; convert them in your spreadsheet when you need real date cells.</p>\n<h2>XLSX vs CSV</h2><p>XLSX is a workbook format: one file can hold worksheets, cells carry type information, and spreadsheet apps open it by double-clicking. CSV is plain text with delimiters, and regional defaults for separators and encoding can differ. This page downloads XLSX; the Copy CSV button only puts the same rows on the clipboard as comma-separated text for quick pasting.</p>\n<h2>Limitations to keep in mind</h2><ul><li><strong>Input must be an array:</strong> A root object errors; extract its array first.</li><li><strong>One worksheet:</strong> A single conversion produces one sheet.</li><li><strong>Very large arrays:</strong> Limited by browser memory; sample or split first if needed.</li><li><strong>No type conversion:</strong> Dates and number precision should be reviewed in the sheet.</li></ul>\n<h2>Browser-based privacy</h2><p>The workbook is generated in your browser and the JSON is not sent to a remote conversion service, which is convenient for everyday development and data work. It is not a secret-management system, so avoid pasting passwords, API keys, access tokens, or production customer data into any browser tool.</p>"
     }
   },
   "zh": {
-    "name": "JSON 转 Excel",
-    "description": "在线将 JSON 数据转换为 Excel 兼容格式。这个 JSON 转 Excel 转换器支持将 JSON 数组导出为 CSV，用于 Excel、Google Sheets 等电子表格应用，并提供分隔符、表头和嵌套展平等选项，全部在浏览器中完成。",
+    "name": "JSON 转 Excel 转换器",
+    "description": "把 JSON 记录数组转换为可以在 Excel、Google Sheets 和 LibreOffice Calc 中打开的 XLSX 工作表。支持展平嵌套对象、收集所有字段、选择是否包含表头、预览数据行，并直接在浏览器中下载 .xlsx 文件。",
+    "hero": {
+      "trustHtml": "在你的浏览器中运行。你的 JSON不会被本工具上传。"
+    },
+    "meta": {
+      "title": "JSON 转 Excel 转换器 — 在线导出 XLSX",
+      "description": "在线将 JSON 转换为 Excel。把 JSON 对象数组导出为 XLSX 工作表，支持嵌套字段展平、可选表头和结果预览。免费，在浏览器中完成。",
+      "keywords": [
+        "json转excel",
+        "json转excel转换器",
+        "转换json为excel",
+        "json转xlsx",
+        "json数组转excel",
+        "json转表格",
+        "json导出excel",
+        "免费json转excel"
+      ]
+    },
     "ui": {
       "label_input": "输入 JSON 数组",
       "label_preview": "预览",
-      "option_delimiter": "分隔符：",
-      "option_delimiter_comma": "逗号 (,)",
-      "option_delimiter_semicolon": "分号 (;)",
-      "option_delimiter_tab": "制表符",
-      "option_include_header": "包含表头",
-      "option_flatten": "展平嵌套",
-      "btn_convert": "转换为 CSV",
-      "btn_example": "加载示例",
-      "btn_download": "下载 CSV",
-      "status_rows": "行",
-      "placeholder_preview": "预览将在此显示...",
-      "error_not_array": "输入必须是 JSON 数组",
-      "error_empty": "数组为空"
-    },
-    "hero": {
-      "trustHtml": "100% 本地转换。数据始终保留在浏览器中。"
-    },
-    "meta": {
-      "title": "JSON 转 Excel — 免费在线转换器",
-      "description": "在线将 JSON 转换为 Excel 格式。将 JSON 数组导出为 Excel 兼容的 CSV，支持选择分隔符、表头和嵌套展平。免费、快速、100% 客户端处理，无需上传文件。",
-      "keywords": [
-        "json转excel",
-        "json excel转换器",
-        "转换json为excel",
-        "在线json转excel",
-        "json数组转excel",
-        "json转表格",
-        "json转csv excel",
-        "免费json转excel",
-        "json excel在线转换",
-        "json数据转excel"
-      ]
+      "btn_convert": "转换为 Excel",
+      "btn_copy_csv": "复制 CSV",
+      "btn_download_xlsx": "下载 XLSX",
+      "option_flatten": "展平嵌套对象",
+      "option_include_header": "包含表头行",
+      "status_rows": "{count} 行",
+      "placeholder_preview": "预览将显示在这里……",
+      "error_no_data": "请先输入 JSON 或打开 JSON 文件",
+      "error_not_array": "输入必须是 JSON 对象数组",
+      "error_invalid_row": "每个数组元素都必须是 JSON 对象",
+      "error_no_columns": "没有找到可导出的字段",
+      "error_export": "无法生成 XLSX 文件",
+      "error_invalid_json": "输入必须是合法的 JSON"
     },
     "features": [
       {
-        "icon": "lucide:file-spreadsheet",
-        "title": "Excel 导出",
-        "description": "将 JSON 数组导出为 Excel 兼容的 CSV 格式。可根据区域设置选择逗号、分号或制表符作为分隔符，适配不同电子表格应用。"
-      },
-      {
-        "icon": "lucide:copy",
-        "title": "复制 CSV",
-        "description": "将生成的 CSV 输出复制到剪贴板，方便快速粘贴到 Excel、Google Sheets 或其他工具中，无需下载文件。"
-      },
-      {
         "icon": "lucide:download",
-        "title": "下载",
-        "description": "下载 CSV 文件，用于 Excel、Google Sheets、LibreOffice Calc 或任何电子表格应用。UTF-8 BOM 编码确保字符正确显示。"
+        "title": "真正的 XLSX 工作簿",
+        "description": "下载的是真实的 .xlsx 工作簿，包含一个工作表，可以直接在 Excel、Google Sheets 和 LibreOffice Calc 中打开，不需要导入向导或文本列映射。"
+      },
+      {
+        "icon": "lucide:braces",
+        "title": "记录数组输入",
+        "description": "粘贴 JSON 对象数组，或打开 .json 文件。每个数组元素对应工作表中的一行，检测到的字段成为列。"
+      },
+      {
+        "icon": "lucide:layers",
+        "title": "展平嵌套对象",
+        "description": "把嵌套对象转成 `address.city` 这样的点号列名；对象数组会变成 `items.0.name` 这样的带索引列名；简单值数组会以 JSON 文本写入单元格。"
       },
       {
         "icon": "lucide:list",
-        "title": "展平嵌套",
-        "description": "将嵌套 JSON 对象展平为点号表示的列（例如 address.city、user.name）。这样可以在扁平的表格中清晰展示深层结构数据。"
+        "title": "收集全部字段",
+        "description": "列是从所有记录中收集的，而不是只看第一条。某条记录缺少的字段会导出为空白单元格，不会让整行错位。"
       },
       {
-        "icon": "lucide:upload",
-        "title": "文件上传",
-        "description": "直接从设备上传 .json 文件进行转换。文件在浏览器本地读取，不会上传到任何服务器。"
+        "icon": "lucide:rows-3",
+        "title": "可选表头行",
+        "description": "可以决定是否把列名作为第一行；往已有表格下方追加数据时，可以关闭表头。"
+      },
+      {
+        "icon": "lucide:eye",
+        "title": "下载前预览",
+        "description": "导出前先在预览面板检查展平后的记录、检测到的列和行数。"
+      },
+      {
+        "icon": "lucide:copy",
+        "title": "复制为 CSV 文本",
+        "description": "只需要往表格里粘贴数值时，可以把同样的数据复制为逗号分隔文本。CSV 复制使用逗号分隔符，并遵循表头设置。"
       },
       {
         "icon": "lucide:shield-check",
-        "title": "私密安全",
-        "description": "所有 JSON 解析和 CSV 生成都在浏览器中完成，不需要将数据上传到服务器。适合处理内部数据或敏感数据集。"
+        "title": "浏览器本地处理",
+        "description": "JSON 解析和工作簿生成都在你的浏览器中完成，不需要账号，也不会把源 JSON 上传到远程服务。"
       }
     ],
     "guide": [
       {
-        "title": "粘贴 JSON 数组",
-        "description": "将 JSON 对象数组粘贴到输入框中，或上传 .json 文件。每个对象会变成电子表格中的一行。"
+        "title": "输入或打开 JSON",
+        "description": "把 JSON 对象数组粘贴到编辑器，或从设备打开 .json 文件。"
       },
       {
-        "title": "配置选项",
-        "description": "选择分隔符（逗号、分号或制表符），决定是否包含表头行，并在 JSON 包含嵌套结构时启用“展平嵌套”选项。"
+        "title": "选择导出选项",
+        "description": "嵌套数据可开启展平，并决定第一行是否包含列名。"
       },
       {
-        "title": "点击转换",
-        "description": "点击“转换为 CSV”解析 JSON 并生成 CSV 表示。预览区域会显示数据在电子表格中的呈现效果。"
+        "title": "转换并预览",
+        "description": "执行转换，在预览面板检查展平后的记录、检测到的列和行数。"
       },
       {
         "title": "下载或复制",
-        "description": "下载 CSV 文件用于 Excel 或其他电子表格应用，或将 CSV 文本复制到剪贴板，直接粘贴到目标位置。"
+        "description": "下载 .xlsx 工作簿；只需要粘贴数值时，也可以复制为 CSV 文本。"
       }
     ],
     "example": {
-      "input": "[\n  { \"product\": \"Laptop\", \"price\": 999, \"quantity\": 5 },\n  { \"product\": \"Mouse\", \"price\": 25, \"quantity\": 50 }\n]",
-      "output": "product,price,quantity\nLaptop,999,5\nMouse,25,50",
-      "useCase": "将产品数据导出为 Excel 格式供财务分析。"
+      "input": "[\n  { \"product\": \"Laptop\", \"price\": 999, \"stock\": { \"warehouse\": \"A\" } },\n  { \"product\": \"Mouse\", \"price\": 25, \"stock\": { \"warehouse\": \"B\" } }\n]",
+      "output": "[\n  { \"product\": \"Laptop\", \"price\": 999, \"stock.warehouse\": \"A\" },\n  { \"product\": \"Mouse\", \"price\": 25, \"stock.warehouse\": \"B\" }\n]",
+      "useCase": "Export product records to an XLSX worksheet for analysis in Excel."
     },
     "faq": [
       {
-        "question": "我的 JSON 数据会上传到服务器吗？",
-        "answer": "不会。所有 JSON 解析和 CSV 生成都在浏览器本地完成，数据不会离开你的设备，也不会被存储或传输到任何地方。"
+        "question": "这会生成真正的 Excel XLSX 文件吗？",
+        "answer": "会。下载得到的是真实的 .xlsx 工作簿，包含一个名为 Sheet1 的工作表，可以直接在 Excel、Google Sheets 和 LibreOffice Calc 中打开，不需要按文本导入。"
       },
       {
-        "question": "可以在 Google Sheets 中打开吗？",
-        "answer": "可以。输出的 CSV 文件可以在 Excel、Google Sheets、LibreOffice Calc 或任何电子表格应用中打开。如果区域设置要求特定分隔符，可以使用导入功能选择对应选项。"
+        "question": "可以选择逗号、分号或制表符分隔吗？",
+        "answer": "XLSX 下载不使用分隔符，因此不需要分隔符设置。CSV 复制按钮固定使用逗号，因为粘贴文本时表格软件通常按逗号识别列。"
       },
       {
-        "question": "支持嵌套 JSON 对象吗？",
-        "answer": "支持。启用“展平嵌套”后，嵌套结构会被展开为点号表示的列（例如 address.city、user.name），使嵌套数据能够适配扁平的表格结构。"
+        "question": "什么样的 JSON 结构最合适？",
+        "answer": "最合适的是 JSON 对象数组，每个对象是一条记录。扁平对象每个键导出为一列；嵌套对象在开启展平后会转成带点号的列。"
       },
       {
-        "question": "可以转换大型 JSON 文件吗？",
-        "answer": "可以转换较大的 JSON 文件，只要浏览器能够加载和处理它们。实际限制取决于设备性能、浏览器可用内存以及数据的复杂程度。"
+        "question": "可以转换 JSON 对象而不是数组吗？",
+        "answer": "不可以，输入必须是 JSON 数组。可以把单个对象包成数组，例如 `[{ ... }]`，或者只取对象里的那个数组，例如接口响应中的 `items` 数组。"
       },
       {
-        "question": "导出什么格式？",
-        "answer": "导出为带 UTF-8 BOM 编码的 CSV 格式，兼容 Excel、Google Sheets 和其他主流电子表格应用。你也可以根据需要选择分号或制表符作为分隔符。"
+        "question": "支持嵌套的 JSON 对象吗？",
+        "answer": "开启展平后支持。嵌套对象会变成 `address.city` 这样的点号列，对象数组变成 `items.0.name` 这样的带索引列，简单值数组则以 JSON 文本写入。关闭该选项就不会把嵌套对象展开成列。"
       },
       {
-        "question": "JSON 转 Excel 和 JSON 转 CSV 有什么区别？",
-        "answer": "功能上非常接近。“JSON 转 Excel”更强调导出可以直接在 Excel 和其他电子表格应用中打开的 CSV 文件，并提供更贴合电子表格工作流的选项。"
+        "question": "是导出全部字段，还是只导出第一条记录的字段？",
+        "answer": "列是从数组中所有记录收集的。某条记录缺少某个字段时，对应单元格留空，因此即使各条记录字段不一致，行也不会错位。"
       },
       {
-        "question": "可以根据区域设置选择分隔符吗？",
-        "answer": "可以。你可以选择逗号、分号或制表符作为分隔符。对于习惯使用分号分隔 CSV 的地区，这在 Excel 中会更友好。"
+        "question": "数字、布尔值、日期和 null 会怎么导出？",
+        "answer": "数字和布尔值会写成对应类型的单元格；null 和缺失值写成空白单元格；日期保持原始 JSON 字符串，如果需要真正的日期单元格，请在表格里再转换一次。"
       },
       {
-        "question": "可以包含或排除表头行吗？",
-        "answer": "可以。“包含表头”选项让你决定是否在第一行输出列名。在需要追加到现有表格时，可以选择不包含表头。"
+        "question": "可以去掉表头行吗？",
+        "answer": "可以。关闭表头选项后，工作簿和 CSV 复制都只包含数据行，适合往已有表格下方追加。"
       },
       {
-        "question": "这是一个免费的 JSON 转 Excel 转换器吗？",
-        "answer": "是的。这是一个免费的在线 JSON 转 Excel 转换器。你可以粘贴 JSON 数组或上传文件，配置选项后下载或复制 CSV，无需创建账号或将数据上传到服务器。"
+        "question": "可以导出多个工作表吗？",
+        "answer": "不可以，一次转换只生成一个工作表。如果需要多个工作表，请分别转换每个数组，再在表格软件里合并。"
+      },
+      {
+        "question": "可以转换很大的 JSON 文件吗？",
+        "answer": "实际可处理的大小取决于浏览器内存、设备性能和记录条数。非常大的数组展平和导出都会更慢，并可能耗尽可用内存。"
+      },
+      {
+        "question": "我的 JSON 会上传到服务器吗？",
+        "answer": "工作簿在你的浏览器本地生成，不需要上传服务器。但仍不建议在任何浏览器工具中输入密码、API 密钥、令牌或机密的客户数据。"
+      },
+      {
+        "question": "这个 JSON 转 Excel 转换器免费吗？",
+        "answer": "免费，且无需注册账号。你可以粘贴 JSON 或打开文件，预览数据行后下载 XLSX 工作簿。"
       }
     ],
     "article": {
-      "title": "如何将 JSON 转换为 Excel 和电子表格可用的数据",
-      "content": "<h2>为什么要将 JSON 转换为 Excel？</h2><p>JSON（JavaScript 对象表示法）常用于 API、Web 应用和数据交换格式，而 Excel、Google Sheets 等电子表格工具更适合数据分析、报表制作和与非技术人员共享数据。将 JSON 转换为 Excel 兼容的 CSV 格式，可以在保留数据结构的同时，充分利用电子表格的排序、筛选、透视表和图表功能。</p><h2>常见使用场景</h2><ul><li><strong>API 数据分析：</strong>将 API 返回的 JSON 数据转换为 Excel，用于运营、财务或产品分析</li><li><strong>报表导出：</strong>将系统内的 JSON 数据导出为电子表格，用于周报、月报或对外分享</li><li><strong>数据迁移：</strong>在不同系统之间迁移数据时，通过 CSV 作为中间格式</li><li><strong>人工审核：</strong>将结构化 JSON 转换为表格形式，便于 QA、内容审核或运营检查</li><li><strong>离线处理：</strong>将在线数据导出为本地 Excel 文件，方便离线查看和分发</li></ul><h2>如何处理嵌套 JSON 结构</h2><p>实际业务中的 JSON 往往包含嵌套对象，例如：</p><pre>{\"user\": {\"name\": \"Alice\", \"address\": {\"city\": \"NYC\"}}, \"status\": \"active\"}</pre><p>启用“展平嵌套”后，转换器会将其转换为类似以下的列：</p><ul><li>user.name → Alice</li><li>user.address.city → NYC</li><li>status → active</li></ul><p>这种点号表示法既保留了层级关系，又能在扁平的表格中清晰展示。</p><h2>如何将 JSON 转换为 Excel</h2><ol><li><strong>粘贴 JSON 数组：</strong>在输入框中添加一个 JSON 对象数组，或上传 .json 文件。每个对象会变成表格中的一行。</li><li><strong>配置选项：</strong>根据区域选择分隔符（逗号、分号或制表符），决定是否包含表头，并在有嵌套结构时启用“展平嵌套”。</li><li><strong>点击转换：</strong>工具会解析 JSON，收集所有唯一键，并生成对应的 CSV 表示。</li><li><strong>预览并调整：</strong>通过表格预览检查列名和行内容，必要时只选择要导出的字段。</li><li><strong>下载或复制：</strong>下载 CSV 文件用于 Excel/Google 表格，或将 CSV 文本复制到剪贴板直接粘贴。</li></ol><h2>Excel 和 Google Sheets 兼容性建议</h2><ul><li><strong>UTF-8 BOM：</strong>带 BOM 的 UTF-8 CSV 在 Windows 版 Excel 中能更好识别中文和其他非 ASCII 字符。</li><li><strong>分隔符选择：</strong>某些地区（如部分欧洲国家）的 Excel 默认期望分号分隔的 CSV，此时可选择分号作为分隔符。</li><li><strong>表头控制：</strong>如果要将数据追加到已有表格中，可以选择不包含表头行，避免重复列名。</li><li><strong>字段筛选：</strong>只导出需要的字段，可以让表格更简洁，也便于后续分析和透视。</li></ul><h2>最佳实践</h2><ul><li><strong>先预览再下载：</strong>在导出前通过预览确认列结构和数据是否符合预期。</li><li><strong>保持结构一致：</strong>尽量保证 JSON 数组中对象的结构相对一致，减少空单元格。</li><li><strong>合理使用展平：</strong>嵌套展平适合中等深度的结构，过深的嵌套会产生大量列，影响可读性。</li><li><strong>大文件分块：</strong>对于非常大的 JSON 文件，可以先在源头分块，再分批转换和合并。</li><li><strong>保留原始 JSON：</strong>保留原始 JSON 文件，以便之后用不同选项或字段重新导出。</li></ul><h2>浏览器本地处理与隐私</h2><p>这个 JSON 转 Excel 转换器在浏览器中处理输入内容，不要求将数据上传到远程服务。对于内部数据集、敏感报表或开发数据来说，本地处理更加方便。不过，仍然不建议在任何浏览器工具中输入密码、API 密钥、访问令牌或其他高度敏感的信息。</p>"
+      "title": "如何在线将 JSON 转换为 Excel",
+      "content": "<h2>JSON 转 Excel 转换器做了什么？</h2><p>JSON 转 Excel 转换器会把 JSON 对象数组转换成一张 XLSX 工作表：每个数组元素是一行，检测到的字段是列。下载得到的是真正的工作簿文件，而不是需要再用导入向导处理一遍的文本。</p><p>它做的是结构转换，不是数据分析：不会生成图表、透视表或公式，也不会判断哪些字段该合并。</p><h2>常见使用场景</h2><ul><li><strong>业务分析：</strong>把接口返回的记录导出成表格，交给同事用 Excel 分析。</li><li><strong>数据交付：</strong>为运营、财务或客户提供可以直接打开的表格文件。</li><li><strong>排查核对：</strong>把一批记录铺平成行，人工检查字段缺失和异常值。</li><li><strong>迁移导入：</strong>把 JSON 数据整理成 CRM、ERP 或财务系统可导入的表格。</li></ul><h2>如何将 JSON 转换为 Excel</h2><ol><li><strong>准备数组：</strong>确保输入是 JSON 对象数组；单个对象请包成数组。</li><li><strong>选择选项：</strong>嵌套数据开启展平，并决定是否包含表头行。</li><li><strong>预览：</strong>确认列名、行数和展平结果符合预期。</li><li><strong>下载：</strong>导出 .xlsx 工作簿，或复制为 CSV 文本粘贴到表格里。</li><li><strong>复核：</strong>在表格软件里检查数字、日期和空值是否符合预期。</li></ol><h2>嵌套 JSON 如何变成列</h2><p>表格是二维结构，因此需要把嵌套结构摊平。开启展平后：</p><ul><li><strong>嵌套对象：</strong>`address.city` 这样的点号列名，层级深度不限。</li><li><strong>对象数组：</strong>`items.0.name` 这类带索引的列名。</li><li><strong>简单值数组：</strong>以 JSON 文本写入单元格，因为一列无法安全地表达不定长的列表。</li><li><strong>缺失字段：</strong>留空单元格，保证行与列对齐。</li></ul><p>不同工具对嵌套结构的处理规则并不统一，导出前先看一眼预览，比事后在表格里修更快。</p><h2>数据类型与空值</h2><p>数字和布尔值会写成同类型的单元格，可以直接参与排序和计算。null 和缺失字段写成空白单元格。日期保持原始 JSON 字符串，因为 JSON 没有日期类型，工具无法可靠判断字符串是不是日期；需要真正的日期单元格时，请在表格里转换。</p><h2>XLSX 与 CSV 的区别</h2><p>XLSX 是工作簿格式，一个文件里可以有多个工作表，单元格带类型信息，双击即可用表格软件打开。CSV 是纯文本，用分隔符表示列，不同地区的默认分隔符和编码处理都可能造成差异。</p><p>本页下载的是 XLSX；CSV 按钮只是把同样的数据以逗号分隔文本复制到剪贴板，方便直接粘贴。</p><h2>需要留意的限制</h2><ul><li><strong>输入必须是数组：</strong>根对象会报错，请先取出其中的数组。</li><li><strong>单个工作表：</strong>一次转换只产生一个工作表。</li><li><strong>超大数组：</strong>受浏览器内存限制，可能需要先抽样或分片。</li><li><strong>不做类型转换：</strong>日期、金额精度等需要在表格里复核。</li></ul><h2>浏览器本地处理与隐私</h2><p>工作簿在你的浏览器中生成，不需要把 JSON 上传到远程转换服务，这对日常开发和数据处理更方便。但它不是密钥管理方案，请勿在浏览器工具中粘贴密码、API 密钥、访问令牌或生产环境的敏感数据。</p>"
     }
   }
 }

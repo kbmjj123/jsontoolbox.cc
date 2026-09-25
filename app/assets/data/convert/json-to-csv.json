@@ -5,8 +5,14 @@
   "icon": "lucide:table",
   "sort": 1,
   "applicationCategory": "DeveloperApplication",
-  "nextSteps": ["json-to-yaml", "json-to-xml"],
-  "recommends": ["json-editor", "large-json-viewer"],
+  "nextSteps": [
+    "json-to-yaml",
+    "json-to-xml"
+  ],
+  "recommends": [
+    "json-editor",
+    "large-json-viewer"
+  ],
   "en": {
     "name": "JSON to CSV Converter",
     "description": "Convert JSON records to CSV online for Excel, Google Sheets, and other spreadsheet tools. Paste JSON or open a file, preview the detected columns, optionally flatten nested objects, and download a CSV file directly from your browser.",
@@ -135,7 +141,7 @@
       },
       {
         "question": "Why are Chinese characters or accented characters garbled in Excel?",
-        "answer": "Excel may interpret a CSV using the wrong character encoding when the file is opened directly. A UTF-8 CSV with a BOM is commonly recognized correctly by Excel; alternatively, import the file through Excel's data import workflow and select UTF-8 manually. Do not promise GBK output unless the application actually includes a reliable GBK encoder."
+        "answer": "Excel may interpret a CSV using the wrong character encoding when the file is opened directly. A UTF-8 CSV with a BOM is commonly recognized correctly by Excel; alternatively, import the file through Excel's data import workflow and select UTF-8 manually."
       },
       {
         "question": "Can I convert a large JSON file?",
@@ -155,6 +161,7 @@
       "label_output": "CSV Output",
       "btn_convert": "Convert to CSV",
       "btn_download": "Download CSV",
+      "error_no_data": "Enter the JSON data you want to convert",
       "error_not_array": "Input must be a JSON array of objects",
       "error_empty_array": "The JSON array is empty",
       "error_invalid_row": "Each array item must be a JSON object",
@@ -164,8 +171,8 @@
       "option_delimiter": "Delimiter",
       "option_field_selection": "Select fields",
       "preview_title": "CSV Preview",
-      "statusRows": "{count} rows",
-      "statusColumns": "{count} columns"
+      "status_rows": "{count} rows",
+      "status_columns": "{count} columns"
     },
     "article": {
       "title": "How to Convert JSON to CSV for Excel and Google Sheets",
@@ -173,79 +180,84 @@
     }
   },
   "zh": {
-    "name": "JSON 转 CSV",
-    "description": "在线将 JSON 数组转换为 CSV 格式，支持导出到 Excel 和 Google Sheets。这个免费的 JSON 转 CSV 转换器支持嵌套对象展平、字段选择和编码配置，完全在浏览器中运行，无需上传文件。",
+    "name": "JSON 转 CSV 转换器",
+    "description": "在线把 JSON 记录转换为 CSV，供 Excel、Google Sheets 和其他表格工具使用。粘贴 JSON 或打开文件，预览检测到的列，按需展平嵌套对象，然后直接在浏览器里下载 CSV 文件。",
     "hero": {
-      "trustHtml": "100% 本地转换。数据始终保留在浏览器中。"
+      "trustHtml": "在你的浏览器中运行。你的 JSON不会被本工具上传。"
     },
     "meta": {
-      "title": "JSON 转 CSV 转换器 — 免费在线工具，支持 Excel 和 Google Sheets",
-      "description": "在线将 JSON 数组转换为 CSV 格式，支持 Excel 和 Google Sheets。展平嵌套对象、选择字段、预览表格，并下载带 UTF-8 BOM 或 GBK 编码的 CSV。免费、无需上传文件。",
+      "title": "JSON 转 CSV 转换器 — 免费在线工具，适用于 Excel",
+      "description": "在线把 JSON 数组转换为 CSV。预览行与列、展平嵌套对象、选择字段，下载可直接用于 Excel 或 Google Sheets 的 CSV。免费、在浏览器中处理。",
       "keywords": [
         "json转csv",
-        "json csv转换器",
-        "在线json转csv",
-        "json转excel",
-        "json转google sheets",
+        "转换json为csv",
+        "json转csv转换器",
         "json数组转csv",
+        "在线json转csv",
+        "json转csv用于excel",
         "嵌套json转csv",
         "json csv转换工具",
-        "如何将json转csv",
-        "json转csv在线",
-        "免费json转csv",
-        "json转csv格式",
-        "json数据转csv",
-        "json导出csv"
+        "免费json转csv"
       ]
     },
     "features": [
       {
-        "icon": "lucide:table",
-        "title": "CSV 导出",
-        "description": "将 JSON 数组转换为带正确转义的 CSV，自动处理逗号、引号和换行。支持任何 JSON 数组格式，包括键不一致或包含嵌套对象的数据。"
+        "icon": "lucide:file-json-2",
+        "title": "JSON 记录转 CSV",
+        "description": "把 JSON 对象数组转换为 CSV 的行和列。每个对象成为一条记录，检测到的字段用作 CSV 表头。"
       },
       {
-        "icon": "lucide:layers",
-        "title": "展平嵌套对象",
-        "description": "自动将嵌套的 JSON 对象展平为 CSV 列，使用点号连接（例如 user.name、address.city）。这样可以在电子表格中清晰展示深层结构数据。"
-      },
-      {
-        "icon": "lucide:eye",
+        "icon": "lucide:table-2",
         "title": "表格预览",
-        "description": "在下载前以表格形式预览数据。可以检查列名、行内容和展平后的结构，确认转换结果是否符合预期。"
+        "description": "下载前先检查检测到的列和转换后的行。这样可以在导出文件之前发现缺失字段、异常取值和展平问题。"
+      },
+      {
+        "icon": "lucide:layers-2",
+        "title": "展平嵌套对象",
+        "description": "把嵌套对象属性转换为点号形式的列，例如 user.name 或 address.city。嵌套数组可能被序列化到一个单元格，或需要根据结构另行转换。"
       },
       {
         "icon": "lucide:list-checks",
-        "title": "字段选择",
-        "description": "选择要导出为 CSV 列的字段。当你只需要特定属性、希望减少列数或避免导出敏感数据时非常有用。"
+        "title": "选择导出字段",
+        "description": "当只需要某个较大的 JSON 响应或数据集里的部分字段时，可以选择要写入 CSV 的那些列。"
+      },
+      {
+        "icon": "lucide:separator-horizontal",
+        "title": "CSV 格式选项",
+        "description": "生成标准的逗号分隔输出，并正确转义包含逗号、引号或换行的值。可以使用页面提供的分隔符和编码选项。"
       },
       {
         "icon": "lucide:download",
-        "title": "Excel 兼容",
-        "description": "下载带 UTF-8 BOM 的 CSV 文件，确保 Windows 版 Excel 正确识别编码。同时支持 GBK 编码，适配旧版 Excel 和中文环境。"
+        "title": "适合表格的下载",
+        "description": "下载生成的 CSV 文件，用于 Excel、Google Sheets、数据库导入、报表流程，或其他接受分隔文本的应用。"
+      },
+      {
+        "icon": "lucide:upload",
+        "title": "粘贴或打开 JSON",
+        "description": "直接把 JSON 粘贴到编辑器，或打开设备上的 .json 文件。生成 CSV 之前，输入会在浏览器里完成解析。"
       },
       {
         "icon": "lucide:shield-check",
-        "title": "私密安全",
-        "description": "所有 JSON 解析和 CSV 生成都在浏览器中完成，不需要将数据上传到服务器。适合处理内部数据或敏感数据集。"
+        "title": "浏览器内处理",
+        "description": "JSON 解析、表格准备和 CSV 生成都在你的浏览器中完成。这个转换器不需要注册账号，也不需要上传到服务器。"
       }
     ],
     "guide": [
       {
-        "title": "粘贴 JSON 数组",
-        "description": "将 JSON 对象数组粘贴到输入框中。数组中的每个对象会变成 CSV 中的一行。"
+        "title": "输入 JSON 数据",
+        "description": "把 JSON 对象数组粘贴到输入框，或打开 .json 文件。API 响应和导出的记录通常要先整理成包含各行数据的那个数组。"
       },
       {
-        "title": "配置选项",
-        "description": "如果 JSON 包含嵌套结构，可以启用“展平嵌套对象”。根据 Excel 版本和使用环境选择 UTF-8 或 GBK 编码。"
+        "title": "检查检测到的列",
+        "description": "执行转换并查看表格预览。转换器会跨记录收集字段，因此键不同的行可能会在某些列产生空单元格。"
       },
       {
-        "title": "点击转换",
-        "description": "点击“转换为 CSV”解析 JSON 并生成 CSV 表示。工具会收集所有唯一键并将它们作为列头。"
+        "title": "配置嵌套数据与字段",
+        "description": "需要 user.name、address.city 这类属性单独成列时，开启嵌套对象展平。数据集里有不需要的属性时，只勾选要导出的字段。"
       },
       {
-        "title": "预览并下载",
-        "description": "预览表格，根据需要选择特定字段，然后下载 CSV 文件。可以在 Excel、Google Sheets 或其他电子表格应用中打开结果。"
+        "title": "下载 CSV",
+        "description": "检查转换后的行，然后下载 CSV 文件。在 Excel 中打开或导入 Google Sheets；如果表格显示异常字符，确认分隔符和字符编码。"
       }
     ],
     "example": {
@@ -255,56 +267,83 @@
     },
     "faq": [
       {
-        "question": "如何将 JSON 转换为 Excel 可用的 CSV？",
-        "answer": "粘贴 JSON 数组，点击“转换为 CSV”，然后下载文件。转换器会自动添加 UTF-8 BOM，使 Windows 版 Excel 正确识别编码。对于旧版 Excel 或中文环境，可以选择 GBK 编码。"
+        "question": "如何把 JSON 转换成 Excel 可用的 CSV？",
+        "answer": "粘贴 JSON 对象数组或打开 JSON 文件，检查检测到的列，然后下载生成的 CSV。如果 Excel 显示非 ASCII 字符异常，在提供带 BOM 的 UTF-8 时选择它，或者通过 Excel 的文本导入流程导入文件并选择 UTF-8。"
+      },
+      {
+        "question": "哪种 JSON 结构最适合转换为 CSV？",
+        "answer": "最适合的是顶层对象数组，每个对象代表一行。例如：[{\"name\":\"Alice\",\"age\":30},{\"name\":\"Bob\",\"age\":25}]。"
+      },
+      {
+        "question": "可以转换 JSON 对象而不是数组吗？",
+        "answer": "本页面主要面向记录数组。如果数据被 {\"results\":[...]} 这样的对象包着，先取出里面的记录数组再转换。只有当当前实现支持时，单个对象才会被当作一条记录。"
       },
       {
         "question": "支持嵌套 JSON 对象吗？",
-        "answer": "支持。启用“展平嵌套对象”选项后，嵌套对象会自动展平为 CSV 列。例如，{\"user\": {\"name\": \"Alice\"}} 会变成名为 'user.name' 的列。"
+        "answer": "支持。开启展平后，嵌套对象可以变成 user.name、address.city 这样的点号列，形成更容易导入电子表格的扁平结构。"
       },
       {
-        "question": "可以选择要导出的字段吗？",
-        "answer": "可以。粘贴 JSON 并转换后，可以选择要在 CSV 中包含的列。当你只需要特定字段、希望表格更简洁时非常有用。"
+        "question": "嵌套数组怎么处理？",
+        "answer": "CSV 只有行和列，嵌套数组不一定有唯一自然的表示方式。根据实现不同，数组可能被序列化到一个单元格、拼接成文本、展开成额外的列，或者需要单独转换。"
       },
       {
-        "question": "如何在下载前预览 CSV？",
-        "answer": "转换后会自动显示表格预览，也可以使用“显示表格预览”按钮切换显示。这样可以在下载前检查列名和行内容是否正确。"
+        "question": "键不同的 JSON 对象怎么处理？",
+        "answer": "转换器可以跨输入记录收集字段，并把它们用作列头。某条记录没有某个字段时，对应的单元格留空。"
       },
       {
-        "question": "有记录数量限制吗？",
-        "answer": "本页面处理 5 MB 以内的日常文档。超过这个规模不会再尝试解析，而是把内容交给「大文件 JSON / NDJSON 浏览器」，由它在 Web Worker 中扫描并导出 CSV；内容会自动带过去，无需重新上传。5 MB 以内没有人为的记录数限制，实际取决于设备内存。"
+        "question": "可以选择导出哪些 JSON 字段吗？",
+        "answer": "可以，前提是界面里有字段选择。检测到列之后，勾选要保留的字段，把不需要或敏感的属性排除在 CSV 之外。"
       },
       {
-        "question": "JSON 数组中对象的键不同时怎么处理？",
-        "answer": "转换器会收集数组中所有对象的所有唯一键，并将它们作为 CSV 的列头。如果某个对象缺少某个键，对应行的该单元格在 CSV 中会为空。"
+        "question": "支持 API 响应吗？",
+        "answer": "支持，前提是 API 响应里包含 JSON 记录数组，或者是带记录数组的包装对象。如果响应层级较深，先确定代表各行数据的那个数组再开始转换。"
       },
       {
-        "question": "我的数据会上传到服务器吗？",
-        "answer": "不会。所有 JSON 解析和 CSV 生成都在浏览器本地完成，数据不会离开你的设备，也不会被存储或传输到任何地方。"
+        "question": "逗号、引号和换行怎么转义？",
+        "answer": "包含逗号、引号或换行的 CSV 值必须按通用 CSV 规则加引号并转义。处理大数据集之前，先查看预览，或在目标表格软件里打开一份小样本测试。"
       },
       {
-        "question": "UTF-8 和 GBK 编码有什么区别？",
-        "answer": "UTF-8 是 Web 和现代应用的标准编码，适用于大多数系统。GBK 常用于旧版 Excel 和中文环境。如果在 Excel 中看到中文字符乱码，可以尝试切换到 GBK 编码。"
+        "question": "可以在 Google Sheets 里使用这个 CSV 吗？",
+        "answer": "可以。下载 CSV 后导入 Google Sheets。多语言数据通常首选 UTF-8，导入对话框里也可以选择正确的分隔符和字符编码。"
       },
       {
-        "question": "可以用这个工具为 Google Sheets 生成 CSV 吗？",
-        "answer": "可以。生成的 CSV 可以通过 Google 表格的“文件 → 导入”功能导入。对于 Google Sheets，通常使用 UTF-8 编码即可。"
+        "question": "为什么 Excel 里中文或带重音的字符会乱码？",
+        "answer": "直接打开 CSV 时，Excel 可能用错误的字符编码解析文件。带 BOM 的 UTF-8 CSV 通常能被 Excel 正确识别；也可以改用 Excel 的数据导入流程并手动选择 UTF-8。"
+      },
+      {
+        "question": "可以转换大 JSON 文件吗？",
+        "answer": "本页面处理中小体量的文档（5 MB 以内）。超过这个规模不会再尝试解析，而是把内容交给「大文件 JSON 查看器」，由它在 Web Worker 中扫描并导出 CSV。内容会自动带过去，你不需要重新上传。"
+      },
+      {
+        "question": "我的 JSON 数据会上传到服务器吗？",
+        "answer": "本页面的设计是在浏览器里解析输入并生成 CSV，不需要上传到服务器。仍然建议不要在任何浏览器工具中输入密码、API 密钥、访问令牌、个人信息或机密的生产数据。"
       },
       {
         "question": "这是一个免费的 JSON 转 CSV 转换器吗？",
-        "answer": "是的。这是一个免费的在线 JSON 转 CSV 转换器。你可以粘贴 JSON 数组、配置选项、预览表格并下载 CSV 文件，无需创建账号或将数据上传到服务器。"
+        "answer": "是的。你可以粘贴 JSON 或打开文件、查看转换结果并下载 CSV，无需创建账号。"
       }
     ],
     "ui": {
-      "label_input": "输入 JSON 数组",
+      "label_input": "输入 JSON",
       "label_output": "CSV 输出",
       "btn_convert": "转换为 CSV",
-      "btn_download": "下载 .csv",
-      "error_not_array": "输入必须是 JSON 数组"
+      "btn_download": "下载 CSV",
+      "error_no_data": "请输入要转换的 JSON 数据",
+      "error_not_array": "输入必须是 JSON 对象数组",
+      "error_empty_array": "这个 JSON 数组是空的",
+      "error_invalid_row": "数组中的每一项都必须是 JSON 对象",
+      "error_no_columns": "没有找到可导出的字段",
+      "option_flatten": "展平嵌套对象",
+      "option_encoding": "编码",
+      "option_delimiter": "分隔符",
+      "option_field_selection": "选择字段",
+      "preview_title": "CSV 预览",
+      "status_rows": "{count} 行",
+      "status_columns": "{count} 列"
     },
     "article": {
-      "title": "如何将 JSON 转换为 Excel 和 Google Sheets 可用的 CSV",
-      "content": "<h2>为什么要将 JSON 转换为 CSV？</h2><p>JSON（JavaScript 对象表示法）广泛用于服务器、API 和应用程序之间的数据交换。然而，当你需要分析这些数据、创建报表或与非技术人员共享时，CSV（逗号分隔值）往往是更合适的格式。CSV 文件可以直接在 Excel、Google Sheets 和大多数电子表格应用中打开。</p><h2>常见使用场景</h2><ul><li><strong>API 数据导出：</strong>将 API 响应（JSON）转换为 CSV，方便在 Excel 或 Google 表格中分析</li><li><strong>数据库备份：</strong>将以 JSON 格式存储的数据库记录导出为电子表格友好的格式</li><li><strong>数据迁移：</strong>在不同格式的系统之间迁移数据时，通过 CSV 作为中间格式</li><li><strong>报表生成：</strong>在电子表格中基于 JSON 数据创建图表、数据透视表和汇总</li><li><strong>人工审核：</strong>将结构化 JSON 转换为人类可读的表格，用于 QA、审计或内容检查</li></ul><h2>处理嵌套 JSON 对象</h2><p>现实世界中的 JSON 数据通常是嵌套的。例如：</p><pre>{\"user\": {\"name\": \"Alice\", \"address\": {\"city\": \"NYC\"}}, \"status\": \"active\"}</pre><p>启用展平后，转换器会将其转换为如下 CSV 列：</p><ul><li>user.name → Alice</li><li>user.address.city → NYC</li><li>status → active</li></ul><p>这种点号表示法在保持结构清晰的同时，也能与扁平的 CSV 表格兼容。</p><h2>如何将 JSON 转换为 CSV</h2><ol><li><strong>粘贴 JSON 数组：</strong>在输入框中添加一个 JSON 对象数组。每个对象会变成 CSV 中的一行。</li><li><strong>配置选项：</strong>如果数据包含嵌套结构，可以启用“展平嵌套对象”。根据 Excel 版本和使用环境选择 UTF-8 或 GBK 编码。</li><li><strong>点击转换：</strong>工具会解析 JSON，收集所有唯一键，并生成对应的 CSV 表示。</li><li><strong>预览并选择字段：</strong>使用表格预览检查列名和行内容，必要时只选择要导出的字段。</li><li><strong>下载 CSV：</strong>将结果保存为 .csv 文件，然后在 Excel、Google Sheets 或其他电子表格应用中打开。</li></ol><h2>Excel 兼容性技巧</h2><ul><li><strong>使用 UTF-8 BOM：</strong>转换器会在 CSV 文件开头添加字节顺序标记（BOM），使 Windows 版 Excel 正确识别 UTF-8 字符。</li><li><strong>GBK 编码：</strong>对于旧版 Excel 或中文环境，如果在 Excel 中看到乱码，可以尝试切换到 GBK 编码。</li><li><strong>字段选择：</strong>只导出需要的字段，可以让电子表格更简洁、重点更突出。</li><li><strong>检查分隔符：</strong>大多数系统使用逗号分隔的 CSV。如果你的区域设置使用分号，可能需要在 Excel 导入设置中调整分隔符选项。</li></ul><h2>最佳实践</h2><ul><li><strong>先预览：</strong>下载前务必检查表格预览，确认列和行符合预期。</li><li><strong>验证输入：</strong>确保 JSON 是有效的对象数组。结构差异过大会导致大量空单元格。</li><li><strong>合理使用展平：</strong>在需要内部字段时启用嵌套展平，但要注意过深的嵌套会产生很多列。</li><li><strong>大文件处理：</strong>对于非常大的 JSON 文件（例如 100MB 以上），可以考虑先分块再转换。</li><li><strong>保留备份：</strong>保留原始 JSON 文件，以便之后用不同选项或字段重新导出。</li></ul><h2>浏览器本地处理与隐私</h2><p>这个 JSON 转 CSV 转换器在浏览器中处理输入内容，不要求将数据上传到远程服务。对于内部数据集、敏感报表或开发数据来说，本地处理更加方便。不过，仍然不建议在任何浏览器工具中输入密码、API 密钥、访问令牌或其他高度敏感的信息。</p>"
+      "title": "如何把 JSON 转换为 Excel 和 Google Sheets 可用的 CSV",
+      "content": "<h2>什么是 JSON 转 CSV？</h2><p>JSON 常用于 API、应用数据、配置和数据库导出。CSV 是一种扁平的分隔格式，适合电子表格、报表工具和简单的数据导入流程。当你需要把记录当成行和列来查看，而不是当成嵌套对象时，把 JSON 转换为 CSV 就很有用。</p><p>最合适的 JSON 输入是顶层对象数组。每个对象代表一条记录，它的属性成为 CSV 字段。由于 CSV 只有两个维度，嵌套对象和数组必须先确定表示方式才能导出。</p><h2>常见使用场景</h2><ul><li><strong>API 数据分析：</strong>把 JSON API 响应转成电子表格，用于筛选、审查、制图或报表。</li><li><strong>数据库与应用导出：</strong>把 JSON 记录转成电子表格或导入工具可以直接打开的格式。</li><li><strong>人工审核：</strong>把结构化记录显示为行和列，用于 QA、审计或内容检查。</li><li><strong>数据迁移：</strong>为只接受 CSV、不接受 JSON 的系统准备扁平文件。</li><li><strong>电子表格工作流：</strong>把 JSON 数据导入 Excel 或 Google Sheets，不需要额外安装转换程序。</li></ul><h2>如何把 JSON 转换为 CSV</h2><ol><li><strong>输入 JSON：</strong>粘贴 JSON 对象数组，或打开 .json 文件。</li><li><strong>确定记录：</strong>确认输入数组就是你要导出的那些行。如果数据被包在对象里，先找到对应的记录数组。</li><li><strong>配置嵌套字段：</strong>需要 <code>user.name</code>、<code>address.city</code> 这类路径单独成列时，开启嵌套对象展平。</li><li><strong>检查列：</strong>查看检测到的表头、行数和表格预览。提供字段选择时，去掉不想导出的字段。</li><li><strong>下载 CSV：</strong>生成并保存 CSV 文件，然后在 Excel 中打开或导入 Google Sheets。</li></ol><h2>展平嵌套 JSON</h2><p>如果不先确定表示方式，嵌套对象无法直接放进扁平的表格单元格。常见做法是用点号展平对象路径：</p><pre><code>{\"user\":{\"name\":\"Alice\",\"address\":{\"city\":\"New York\"}},\"status\":\"active\"}</code></pre><p>展平后，字段可能变成 <code>user.name</code>、<code>user.address.city</code> 和 <code>status</code>。这对嵌套对象很有效，但嵌套数组需要另外的规则：它们可能被序列化成 JSON 文本、拼进一个单元格、展开成多个列，或者按转换设计的不同拆成多行。</p><h2>键不同与缺失值</h2><p>真实数据里的记录往往字段并不完全一致。转换器可以扫描这些记录，取所有键的并集。某条记录没有某个字段时，对应的 CSV 单元格为空。这样保持了行对齐，但当源数据包含大量可选属性时，表格可能会变得很宽。</p><h2>CSV 转义规则</h2><p>包含逗号、双引号或换行的 CSV 值需要特殊处理。含逗号的值通常用双引号包起来，值内部的双引号则写成两个双引号。当名称、描述、地址或 API 字段包含标点或多行文本时，正确的转义非常重要。</p><p>CSV 是相对简单的格式，但不同表格软件对分隔符、行尾、字符编码和公式解析的假设可能不同。分发大批量导出结果之前，先用有代表性的样本测试。</p><h2>在 Excel 中打开 CSV 文件</h2><p>对于多语言数据，UTF-8 通常是通用性最好的编码。微软文档说明，带 BOM 保存的 UTF-8 CSV 可以在 Excel 中正确打开；没有 BOM 的文件可能需要通过 Excel 的数据或文本导入流程，并手动选择 UTF-8。[164][166]</p><p>BOM 能改善部分 Excel 环境下的直接打开体验，但不是对所有表格软件都适用的通用方案。如果文件仍然显示异常，就使用导入对话框，明确选择 UTF-8 和正确的分隔符。</p><h2>JSON 转 CSV 的局限</h2><ul><li><strong>嵌套数据：</strong>对象和数组需要展平、序列化或其他映射规则。</li><li><strong>类型信息：</strong>CSV 不能像 JSON 那样保留对象和数组类型。</li><li><strong>空值：</strong>null 可能变成空单元格，也可能变成字面值，取决于转换器的规则。</li><li><strong>大体积数据：</strong>浏览器内存和渲染时间会限制客户端转换的实际规模。</li><li><strong>类似公式的值：</strong>表格软件可能把以 <code>=</code>、<code>+</code>、<code>-</code>、<code>@</code> 开头的值当成公式处理。谨慎对待来源不可信的导出结果，为他人导出数据时考虑公式注入防护。</li></ul><h2>浏览器本地处理与隐私</h2><p>这个转换器的设计是在浏览器里处理 JSON 并生成 CSV，而不是把源数据发送到远程转换服务。这对内部记录和开发数据很有用。但浏览器工具不应被当作安全的密钥管理系统，不要在任何在线转换器中输入凭证、令牌、客户隐私数据或生产环境密钥。</p><h2>什么时候应该继续用 JSON</h2><p>CSV 适合扁平记录和电子表格工作流，但如果需要保留嵌套结构、数组、精确的数据类型或机器之间的数据交换，JSON 通常是更好的选择。如果转换成 CSV 会产生大量含义不明的列，或者丢失重要关系，就保留原始 JSON，或使用为嵌套数据设计的格式。</p>"
     }
   }
 }

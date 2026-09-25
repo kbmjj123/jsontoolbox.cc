@@ -5,266 +5,306 @@
   "icon": "lucide:table",
   "sort": 6,
   "applicationCategory": "DeveloperApplication",
-  "nextSteps": ["json-to-csv", "json-to-excel"],
-  "recommends": ["json-editor"],
+  "nextSteps": [
+    "json-to-csv",
+    "json-to-excel",
+    "json-to-html"
+  ],
+  "recommends": [
+    "json-editor"
+  ],
   "en": {
-  "name": "JSON to HTML Table",
-  "ui": {
-    "labelInputJson": "Input JSON",
-    "btnRender": "Render Table",
-    "btnExample": "Load Example",
-    "btnCopyHtml": "Copy HTML",
-    "btnDownloadCsv": "Download CSV",
-    "option_flatten": "Flatten nested objects",
-    "statusRows": "{count} rows",
-    "statusColumns": "{count} columns",
-    "errorInvalidInput": "Input must be a JSON array of objects",
-    "errorEmptyArray": "The JSON array is empty",
-    "errorInvalidRow": "Each array item must be a JSON object",
-    "errorNoColumns": "No table columns were found"
-  },
-  "description": "Convert a JSON array of objects into an HTML table online. This JSON to table converter creates readable rows and columns, supports optional flattening for nested objects, and lets you copy the generated HTML or download the data as CSV.",
-  "hero": {
-    "trustHtml": "Runs in your browser. Your JSON is not uploaded by this tool."
-  },
-  "meta": {
-    "title": "JSON to Table Converter – Free HTML Table Generator",
-    "description": "Convert a JSON array to an HTML table online. Preview rows and columns, flatten nested objects, copy semantic HTML, or download CSV. Free and browser-based.",
-    "keywords": [
-      "json to table",
-      "json table converter",
-      "json to html table",
-      "json array to table",
-      "convert json to table",
-      "json html table generator",
-      "json table generator",
-      "json table viewer"
-    ]
-  },
-  "features": [
-    {
-      "icon": "lucide:table-2",
-      "title": "JSON Array to Table",
-      "description": "Convert an array of JSON objects into a readable HTML table. Each object becomes a row, and the discovered object keys become table columns."
+    "name": "JSON to Table Converter",
+    "description": "Convert a JSON array of objects into a readable table online. This JSON to table converter detects columns automatically, reports row and column counts, flattens nested objects when needed, and exports the data as CSV.",
+    "hero": {
+      "trustHtml": "Runs in your browser. Your JSON is not uploaded by this tool."
     },
-    {
-      "icon": "lucide:code-2",
-      "title": "Semantic HTML Output",
-      "description": "Generate a table using standard table elements such as table, thead, tbody, th, and td. Copy the generated markup for use in web pages, documentation, or HTML-compatible editors."
+    "meta": {
+      "title": "JSON to Table Converter – Free Online JSON Table Viewer",
+      "description": "Convert JSON to a table online. Paste an array of objects, preview rows and columns, flatten nested objects, and download CSV. Free and runs in your browser.",
+      "keywords": [
+        "json to table",
+        "json to table converter",
+        "convert json to table",
+        "json table converter",
+        "json array to table",
+        "json table viewer",
+        "json table generator",
+        "json to table online"
+      ]
     },
-    {
-      "icon": "lucide:layers-2",
-      "title": "Optional Nested Flattening",
-      "description": "Flatten nested objects into dot-notation column names such as address.city or user.name when a flat table is more useful than nested JSON values."
+    "features": [
+      {
+        "icon": "lucide:table-2",
+        "title": "Array of Objects to Table",
+        "description": "Turn an array of JSON objects into rows and columns. Each object becomes one row, and the object keys become the table headers."
+      },
+      {
+        "icon": "lucide:columns-3",
+        "title": "Automatic Column Detection",
+        "description": "Columns are collected from every record in the array. When a record does not contain a column, that cell stays empty instead of shifting the row."
+      },
+      {
+        "icon": "lucide:rows-3",
+        "title": "Row and Column Counts",
+        "description": "The preview reports how many rows and columns were detected, so you can confirm the whole array was read before exporting."
+      },
+      {
+        "icon": "lucide:layers-2",
+        "title": "Optional Nested Flattening",
+        "description": "Flatten nested objects into dot-notation columns such as address.city. With flattening off, an object or array value is shown as compact JSON in a single cell."
+      },
+      {
+        "icon": "lucide:download",
+        "title": "CSV Export",
+        "description": "Download the table data as a UTF-8 CSV file with a BOM, ready for Excel, Google Sheets, or other spreadsheet tools."
+      },
+      {
+        "icon": "lucide:upload",
+        "title": "Paste or Open a File",
+        "description": "Paste JSON into the editor or open a .json file from your device. Parsing and rendering happen in the browser."
+      },
+      {
+        "icon": "lucide:shield-check",
+        "title": "Browser-Based Processing",
+        "description": "Parsing, column detection, and CSV generation run in your browser. No account and no upload to a conversion server."
+      }
+    ],
+    "guide": [
+      {
+        "title": "Enter a JSON array of objects",
+        "description": "Paste an array such as [{\"name\":\"Alice\"},{\"name\":\"Bob\"}] or open a .json file. Every item has to be an object, because each item becomes one row."
+      },
+      {
+        "title": "Check the detected columns",
+        "description": "The table renders as soon as the JSON parses. Read the row and column counts and scan the headers to confirm every field you expect is present."
+      },
+      {
+        "title": "Flatten nested objects when needed",
+        "description": "Enable Flatten nested objects to turn nested properties into dot-notation columns. Leave it off if you prefer to see nested values as compact JSON in one cell."
+      },
+      {
+        "title": "Download the CSV",
+        "description": "Click the CSV button to save the table data. Open the file in Excel or Google Sheets to sort, filter, or chart the records."
+      }
+    ],
+    "example": {
+      "input": "[\n  { \"name\": \"Alice\", \"age\": 30, \"city\": \"New York\" },\n  { \"name\": \"Bob\", \"age\": 25, \"city\": \"London\" }\n]",
+      "output": "name    age  city\nAlice   30   New York\nBob     25   London",
+      "useCase": "Preview an array of API records as a table before exporting it to a spreadsheet."
     },
-    {
-      "icon": "lucide:download",
-      "title": "CSV Export",
-      "description": "Download the rendered table data as a CSV file for use in spreadsheet applications, reporting workflows, or further data processing."
+    "faq": [
+      {
+        "question": "What JSON input does this tool accept?",
+        "answer": "A top-level JSON array whose items are objects, for example [{\"name\":\"Alice\",\"age\":30}]. Arrays of strings, numbers, or arrays are rejected, because every item has to become one row of the table."
+      },
+      {
+        "question": "Can I convert a single JSON object to a table?",
+        "answer": "No. This page expects an array of records. If your data looks like {\"results\":[...]}, paste the inner array instead, or use a JSON viewer that is built for object inspection."
+      },
+      {
+        "question": "How are the table columns chosen?",
+        "answer": "Columns are collected from every object in the array, in the order the keys are first seen. A record that does not contain a column leaves that cell empty."
+      },
+      {
+        "question": "Can I convert nested JSON to a table?",
+        "answer": "Yes, with limits. Enable Flatten nested objects to turn nested properties into dot-notation columns such as address.city. Nested arrays do not always have a natural two-dimensional shape, so they are either serialized into one cell or need a separate transformation."
+      },
+      {
+        "question": "Can I sort, filter, or paginate the table?",
+        "answer": "No. The preview is a static table view: it does not offer sorting, filtering, pagination, editing, or column selection. Download the CSV if you need to work with the records in a spreadsheet."
+      },
+      {
+        "question": "How many rows does the preview show?",
+        "answer": "The preview renders the first 100 rows to keep the page responsive. The reported row count and the CSV export still cover every record in the array."
+      },
+      {
+        "question": "Can I download the table as CSV?",
+        "answer": "Yes. The CSV export uses UTF-8 with a BOM so Excel recognizes accented and non-Latin characters, and values containing commas, quotation marks, or line breaks are quoted and escaped."
+      },
+      {
+        "question": "Can I convert a large JSON file?",
+        "answer": "The page does not set a fixed row limit, but everything runs in your browser. Very large arrays depend on your device memory and take longer to parse and render."
+      },
+      {
+        "question": "Does this page generate HTML code?",
+        "answer": "No. This page is for previewing JSON records as a table and exporting them as CSV. Use the JSON to HTML Table page when you need copyable table markup or a downloadable .html file."
+      },
+      {
+        "question": "Is my JSON data uploaded to a server?",
+        "answer": "This page parses JSON and builds the table in your browser and does not require an upload to a conversion server. You should still avoid entering passwords, API keys, access tokens, or other highly sensitive information into any browser-based tool."
+      },
+      {
+        "question": "Is this a free JSON to table converter?",
+        "answer": "Yes. You can paste or open JSON, preview the table, and download CSV without creating an account."
+      }
+    ],
+    "ui": {
+      "label_input": "Input JSON",
+      "label_output": "Table Preview",
+      "btn_render": "Render Table",
+      "btn_download_csv": "Download CSV",
+      "option_flatten": "Flatten nested objects",
+      "empty_state": "Paste a JSON array of objects to preview it as a table",
+      "status_rows": "{count} rows",
+      "status_columns": "{count} columns",
+      "preview_limit": "Preview shows the first {count} rows. The CSV export includes every row.",
+      "error_invalid_input": "Input must be a JSON array of objects",
+      "error_empty_array": "The JSON array is empty",
+      "error_invalid_row": "Each array item must be a JSON object",
+      "error_no_columns": "No table columns were found",
+      "error_invalid_json": "Input is not valid JSON"
     },
-    {
-      "icon": "lucide:upload",
-      "title": "Paste or Open a JSON File",
-      "description": "Paste JSON directly into the editor or open a .json file from your device. The input is processed in the browser."
-    },
-    {
-      "icon": "lucide:shield-check",
-      "title": "Browser-Based Processing",
-      "description": "JSON parsing and table generation happen in your browser. The tool does not require an account or upload your JSON to a conversion server."
+    "article": {
+      "title": "How to Convert JSON to a Table",
+      "content": "<h2>What Is a JSON to Table Converter?</h2><p>A JSON to table converter takes structured JSON records and lays them out as rows and columns so they are easier to read. The input that works best is an array of objects, where each object is one record and each property is one column.</p><p>Developers use this view when inspecting an API response, a database export, a log file, or a configuration dump. Reading 200 records as a table is usually faster than scrolling through raw JSON text, and the row and column counts tell you at a glance whether the whole array was read.</p><h2>Supported JSON Structure</h2><p>The supported input is a top-level array of objects:</p><pre><code>[{\"name\":\"Alice\",\"age\":30},{\"name\":\"Bob\",\"age\":25}]</code></pre><p>Every item in the array has to be an object. An array of strings such as [\"a\",\"b\"], an array of numbers, or an array of arrays cannot be turned into rows and columns, so it is rejected with an error message. If your document wraps the records in an object such as {\"results\":[...]}, paste the inner array instead.</p><h2>How to Convert JSON to a Table</h2><ol><li><strong>Enter the JSON:</strong> Paste an array of objects into the editor or open a .json file.</li><li><strong>Read the counts:</strong> Check the reported row and column counts to confirm the whole array was parsed.</li><li><strong>Scan the headers:</strong> Confirm that every field you expect appears as a column and that values line up.</li><li><strong>Handle nesting:</strong> Enable flattening when nested properties should become their own columns.</li><li><strong>Export:</strong> Download the CSV and continue in Excel, Google Sheets, or another spreadsheet application.</li></ol><h2>Automatic Column Detection and Missing Values</h2><p>Real records rarely share exactly the same keys. A user list may have an optional phone number, an order list may have a refund field only on some rows. The converter collects the keys from every object in the array, in the order they are first seen, and uses that union as the columns.</p><p>When a record does not contain a column, the cell stays empty. Row alignment is preserved, but a source array with many optional properties produces a wide table with many empty cells.</p><h2>Flattening Nested JSON</h2><p>A flat table works best when every cell holds a scalar value such as a string, number, boolean, or null. Nested objects do not fit into a single cell, so the optional flattening mode rewrites paths as dot-notation columns:</p><pre><code>{\"user\":{\"name\":\"Alice\"},\"address\":{\"city\":\"New York\"}}</code></pre><p>becomes columns such as <code>user.name</code> and <code>address.city</code>. Nested arrays are harder: they can hold many values or many objects, and there is no single obvious two-dimensional shape for them. With flattening off, an object or array value is shown as compact JSON text inside one cell.</p><h2>Table Preview, CSV, and HTML Output</h2><p>The three options solve different problems, and it is worth picking the right one before you start:</p><ul><li><strong>Table preview:</strong> Use it to read and sanity-check the records in the browser.</li><li><strong>CSV:</strong> Use it when the data has to continue into Excel, Google Sheets, a database import, or a reporting pipeline.</li><li><strong>HTML table:</strong> Use it when the result has to be displayed on a web page or pasted into a CMS or documentation editor.</li><li><strong>Raw JSON:</strong> Keep it when nested structure, exact data types, or machine-to-machine exchange must be preserved.</li></ul><h2>Limits of the Table Preview</h2><p>The preview is a static view generated from your input. It does not offer sorting, filtering, pagination, editing, or column selection, and it does not include a spreadsheet-style toolbar. The preview also renders only the first 100 rows so the page stays responsive; the reported row count and the CSV export still cover every record.</p><p>If you need to sort, filter, chart, or edit the records, download the CSV and continue in a spreadsheet application. If you need markup to embed in a page, use the JSON to HTML Table page instead.</p><h2>Browser-Based Privacy</h2><p>This tool is designed to parse JSON and build the table in your browser rather than uploading the input to a remote conversion service. That is useful for internal datasets and development data, but it is not a guarantee of complete security. Avoid entering credentials, access tokens, personal information, or confidential production data into any web-based tool.</p>"
     }
-  ],
-  "guide": [
-    {
-      "title": "Enter a JSON array",
-      "description": "Paste an array of JSON objects into the input field or open a .json file. A table works best when each array item represents one record."
-    },
-    {
-      "title": "Choose nested data handling",
-      "description": "Enable Flatten nested objects if your records contain nested objects and you want their values represented as separate dot-notation columns."
-    },
-    {
-      "title": "Render the table",
-      "description": "Click Render Table to parse the JSON and create the table preview. If the input is invalid or the array contains unsupported rows, review the error message and correct the data."
-    },
-    {
-      "title": "Copy or export the result",
-      "description": "Copy the generated HTML table markup for use in a web page, or download the visible data as a CSV file for spreadsheet applications."
-    }
-  ],
-  "example": {
-    "input": "[\n  { \"name\": \"Alice\", \"age\": 30, \"city\": \"New York\" },\n  { \"name\": \"Bob\", \"age\": 25, \"city\": \"London\" }\n]",
-    "output": "<table>\n  <thead>\n    <tr><th>name</th><th>age</th><th>city</th></tr>\n  </thead>\n  <tbody>\n    <tr><td>Alice</td><td>30</td><td>New York</td></tr>\n    <tr><td>Bob</td><td>25</td><td>London</td></tr>\n  </tbody>\n</table>",
-    "useCase": "Convert an array of records from an API response into an HTML table for a web page or documentation."
   },
-  "faq": [
-    {
-      "question": "What JSON input does this tool accept?",
-      "answer": "The tool accepts a JSON array whose items are objects, for example [{\"name\":\"Alice\"},{\"name\":\"Bob\"}]. Each object becomes a table row and the object keys become column names."
-    },
-    {
-      "question": "Can I convert a single JSON object to a table?",
-      "answer": "This page is designed primarily for arrays of records. A single object is better represented as a key-value view. Wrap multiple records in an array or use a JSON viewer designed for object inspection."
-    },
-    {
-      "question": "Can I convert nested JSON to a table?",
-      "answer": "Yes, when the input contains nested objects you can enable Flatten nested objects. Nested keys are represented as dot-notation columns such as customer.name or address.city. Arrays and complex nested values may require additional transformation before they can fit into a flat table."
-    },
-    {
-      "question": "What happens when different rows have different keys?",
-      "answer": "The table can use the union of keys found across the input objects as columns. Rows that do not contain a particular key will have an empty cell for that column."
-    },
-    {
-      "question": "Can I copy the generated HTML?",
-      "answer": "Yes. Click Copy HTML to copy the generated table markup. The result is intended for static HTML use in web pages, documentation, emails, or other HTML-compatible destinations."
-    },
-    {
-      "question": "Does the generated HTML include CSS styles?",
-      "answer": "The generated output contains the table markup supported by this page. Styling depends on the implementation and may require your own CSS or an existing stylesheet."
-    },
-    {
-      "question": "Can I download the table as CSV?",
-      "answer": "Yes. Click Download CSV to export the table data. CSV is suitable for spreadsheet applications such as Excel and Google Sheets, although the exact handling of nested values depends on the selected flattening option."
-    },
-    {
-      "question": "Is my JSON data uploaded to a server?",
-      "answer": "This page processes the JSON in your browser and does not require an upload to a conversion server. You should still avoid entering passwords, API keys, access tokens, or other highly sensitive information into any browser-based tool."
-    },
-    {
-      "question": "Can I convert a large JSON file?",
-      "answer": "The practical limit depends on your browser, device memory, number of rows, number of columns, and the complexity of nested values. Very large files may take longer to parse or render than smaller arrays."
-    },
-    {
-      "question": "Why does the tool say that the input must be an array?",
-      "answer": "A flat table requires multiple records, so the page expects a top-level JSON array. If your data is wrapped inside an object such as {\"results\":[...]}, extract the results array before converting it."
-    },
-    {
-      "question": "Is this a free JSON to table converter?",
-      "answer": "Yes. You can paste or open JSON, render the table, copy the generated HTML, and download CSV without creating an account."
-    }
-  ],
-  "article": {
-    "title": "How to Convert JSON to an HTML Table",
-    "content": "<h2>What Is a JSON to Table Converter?</h2><p>A JSON to table converter transforms structured JSON records into rows and columns that are easier to read and reuse. The most common input is an array of objects, where each object represents one record and each property becomes a table column.</p><p>For example, an array containing users, products, API results, or database records can be easier to inspect as a table than as raw JSON text. This tool generates an HTML table and can also export the displayed data as CSV.</p><h2>Supported JSON Structure</h2><p>The recommended input is a top-level array of objects:</p><pre><code>[{\"name\":\"Alice\",\"age\":30},{\"name\":\"Bob\",\"age\":25}]</code></pre><p>The object keys are used as column names, and each object becomes a table row. If different objects contain different keys, the final set of columns may include keys from more than one row, with empty cells where a value is missing.</p><h2>How to Convert JSON to an HTML Table</h2><ol><li><strong>Enter JSON:</strong> Paste an array of objects into the editor or open a .json file.</li><li><strong>Choose nested handling:</strong> Enable the flattening option if nested objects should become separate columns.</li><li><strong>Render the table:</strong> Click Render Table to parse the JSON and display the result.</li><li><strong>Review the data:</strong> Check the row count, column count, headers, and values before exporting.</li><li><strong>Copy or download:</strong> Copy the generated HTML markup or download the table as a CSV file.</li></ol><h2>Flattening Nested JSON</h2><p>Flat tables work best when each cell contains a scalar value such as a string, number, boolean, or null. Nested objects do not naturally fit into a single flat cell, so the optional flattening mode converts paths into column names.</p><p>For example, this object:</p><pre><code>{\"user\":{\"name\":\"Alice\"},\"address\":{\"city\":\"New York\"}}</code></pre><p>may become columns such as <code>user.name</code> and <code>address.city</code>. Nested arrays are more difficult because they can contain multiple values or objects. Depending on the conversion rules, they may be serialized into one cell or require a separate transformation.</p><h2>JSON to HTML Table vs JSON to CSV</h2><p>HTML tables are useful when the result will be displayed inside a web page, documentation, or an HTML-compatible editor. CSV is better suited to spreadsheet applications, data analysis, and workflows that require a downloadable delimited file.</p><ul><li><strong>HTML table:</strong> Use when you need table markup with rows, columns, headings, and cells.</li><li><strong>CSV:</strong> Use when you need to open the result in Excel, Google Sheets, or another spreadsheet application.</li><li><strong>Raw JSON:</strong> Keep the original format when nested structure, data types, or machine-to-machine exchange must be preserved.</li></ul><h2>HTML Safety and Escaping</h2><p>Values copied into HTML should be escaped before they are inserted into table cells. Characters such as <code>&lt;</code>, <code>&gt;</code>, <code>&amp;</code>, and quotation marks can have special meaning in HTML. A safe converter should escape cell values so that JSON content is treated as text rather than interpreted as markup.</p><p>Do not assume that converting JSON to HTML makes untrusted data safe in every context. If you insert the generated output into a larger application, follow that application's HTML and content-security practices.</p><h2>Common Input Problems</h2><ul><li><strong>Top-level object:</strong> The tool expects an array of records, but the input starts with <code>{</code> instead of <code>[</code>.</li><li><strong>Invalid JSON:</strong> The document contains a missing comma, unmatched bracket, invalid quote, or another syntax error.</li><li><strong>Empty array:</strong> The input contains no records to display.</li><li><strong>Mixed row types:</strong> Some array items are objects while others are strings, numbers, or arrays.</li><li><strong>Inconsistent fields:</strong> Different records contain different keys, which may create empty cells or additional columns.</li><li><strong>Large data:</strong> Very large arrays may use considerable browser memory and may take longer to render.</li></ul><h2>Using the Generated HTML</h2><p>After copying the output, paste it into an HTML page, documentation system, CMS editor, email template, or other destination that accepts table markup. You may need to add CSS for borders, spacing, responsive behavior, colors, and typography.</p><p>The generated table is static HTML. It does not automatically provide sorting, filtering, pagination, editing, responsive controls, or accessibility behavior beyond the markup generated by the page. Those features require additional HTML, CSS, or JavaScript.</p><h2>Browser-Based Privacy</h2><p>This tool is designed to parse JSON and generate the table in your browser instead of uploading the input to a remote conversion service. That can be useful for internal datasets and development data, but it is not a guarantee of complete security. Avoid entering credentials, access tokens, personal information, or confidential production data into any web-based tool.</p>"
-  }
-},
   "zh": {
-		"name": "JSON 转 HTML 表格",
-		"ui": {
-			"labelInputJson": "输入 JSON 数组",
-			"btnRender": "渲染表格",
-			"btnExample": "加载示例",
-			"btnCopyHtml": "复制 HTML",
-			"btnDownloadCsv": "下载 CSV",
-			"option_flatten": "展平嵌套对象",
-			"statusRows": "{count} 行",
-			"statusColumns": "{count} 列",
-			"errorInvalidInput": "输入必须是 JSON 数组",
-			"errorEmptyArray": "数组为空"
-		},
-		"description": "将 JSON 数据转换为 HTML 表格视图。这个 JSON 表格转换器和 JSON 表格查看器可以将 JSON 数组可视化为格式化的可读表格，支持复制 HTML 代码或导出为 CSV，用于网页展示和数据分析。",
-		"hero": {
-			"trustHtml": "100% 本地转换。数据始终保留在浏览器中。"
-		},
-		"meta": {
-			"title": "JSON 转表格 — 免费在线 JSON 表格查看器",
-			"description": "在线将 JSON 数组转换为 HTML 表格。将 JSON 数据可视化为格式化的可读表格，支持复制 HTML 代码或导出为 CSV。免费、快速、100% 客户端处理。",
-			"keywords": [
-				"json转表格",
-				"json html表格",
-				"json表格转换器",
-				"json表格查看器",
-				"json转html表格",
-				"json数组转表格",
-				"在线json表格",
-				"免费json转表格",
-				"json数据转表格",
-				"json表格生成器"
-			]
-		},
-		"features": [
-			{
-				"icon": "lucide:table",
-				"title": "表格视图",
-				"description": "将 JSON 数组转换为清晰、语义化的 HTML 表格。每个对象变成一行，每个键变成列标题，便于阅读和展示。"
-			},
-			{
-				"icon": "lucide:copy",
-				"title": "复制 HTML",
-				"description": "将生成的 HTML 表格代码复制到剪贴板。可直接用于网页、文档、邮件或其他支持 HTML 的场景。"
-			},
-			{
-				"icon": "lucide:download",
-				"title": "下载 CSV",
-				"description": "将表格数据导出为 CSV 文件，用于 Excel、Google Sheets 或其他电子表格应用。适合进一步分析或生成报表。"
-			},
-			{
-				"icon": "lucide:list",
-				"title": "展平嵌套",
-				"description": "将嵌套 JSON 对象展平为点号表示的列（例如 address.city、user.name）。这样可以在扁平表格中清晰展示深层结构数据。"
-			},
-			{
-				"icon": "lucide:upload",
-				"title": "文件上传",
-				"description": "直接从设备上传 .json 文件进行转换。文件在浏览器本地读取，不会上传到任何服务器。"
-			},
-			{
-				"icon": "lucide:shield-check",
-				"title": "私密安全",
-				"description": "所有 JSON 解析和表格生成都在浏览器中完成，不需要将数据上传到服务器。适合处理内部数据或敏感数据集。"
-			}
-		],
-		"guide": [
-			{
-				"title": "粘贴 JSON 数组",
-				"description": "将 JSON 对象数组粘贴到输入框中，或上传 .json 文件。每个对象会变成 HTML 表格中的一行。"
-			},
-			{
-				"title": "渲染表格",
-				"description": "点击“渲染表格”将 JSON 转换为 HTML 表格视图。如果数据包含嵌套对象，可以启用“展平嵌套对象”将其展开为独立列。"
-			},
-			{
-				"title": "复制 HTML 或下载 CSV",
-				"description": "复制 HTML 表格代码用于网页或文档，或将表格数据下载为 CSV 文件，用于电子表格应用和数据分析。"
-			}
-		],
-		"example": {
-			"input": "[\n  { \"name\": \"Alice\", \"age\": 30, \"city\": \"New York\" },\n  { \"name\": \"Bob\", \"age\": 25, \"city\": \"London\" }\n]",
-			"output": "<table>\n  <thead>\n    <tr><th>name</th><th>age</th><th>city</th></tr>\n  </thead>\n  <tbody>\n    <tr><td>Alice</td><td>30</td><td>New York</td></tr>\n    <tr><td>Bob</td><td>25</td><td>London</td></tr>\n  </tbody>\n</table>",
-			"useCase": "将 JSON 数据快速转换为 HTML 表格用于网页展示。"
-		},
-		"faq": [
-			{
-				"question": "我的 JSON 数据会上传到服务器吗？",
-				"answer": "不会。所有 JSON 解析和表格生成都在浏览器本地完成，数据不会离开你的设备，也不会被存储或传输到任何地方。"
-			},
-			{
-				"question": "可以复制 HTML 代码吗？",
-				"answer": "可以。你可以复制生成的 HTML 表格代码，粘贴到网页、文档、邮件或其他支持 HTML 的地方直接使用。"
-			},
-			{
-				"question": "支持嵌套 JSON 对象吗？",
-				"answer": "支持。启用“展平嵌套对象”后，嵌套结构会被展开为点号表示的列（例如 address.city、user.name），使嵌套数据能够适配扁平的表格视图。"
-			},
-			{
-				"question": "可以转换大型 JSON 文件吗？",
-				"answer": "可以转换较大的 JSON 文件，只要浏览器能够加载和处理它们。实际限制取决于设备性能、浏览器可用内存以及数据的复杂程度。"
-			},
-			{
-				"question": "这个工具和 JSON 转 CSV 有什么区别？",
-				"answer": "JSON 转表格主要创建用于网页或文档中可视化展示的 HTML 表格视图。JSON 转 CSV 则生成可下载的 CSV 文件，更适合在 Excel、Google Sheets 等电子表格应用中进行分析和处理。"
-			},
-			{
-				"question": "可以下载表格为 CSV 吗？",
-				"answer": "可以。点击“下载 CSV”可以将表格数据导出为 CSV 文件，兼容 Excel、Google Sheets 和其他主流电子表格应用。"
-			},
-			{
-				"question": "可以在自己的网站中使用这个表格吗？",
-				"answer": "可以。生成的 HTML 表格是标准、语义化的 HTML，可以直接嵌入到你的网页中。如有需要，还可以使用自己的 CSS 进一步美化样式。"
-			},
-			{
-				"question": "这是一个免费的 JSON 转表格转换器吗？",
-				"answer": "是的。这是一个免费的在线 JSON 转表格转换器。你可以粘贴 JSON 数组或上传文件，渲染 HTML 表格，并复制或导出结果，无需创建账号或将数据上传到服务器。"
-			}
-		]
-	}
+    "name": "JSON 转表格",
+    "description": "在线把 JSON 对象数组渲染成可读表格。自动识别列、显示行列数、可展平嵌套对象，并导出 CSV。全部在浏览器中完成。",
+    "hero": {
+      "trustHtml": "在你的浏览器中运行。你的 JSON不会被本工具上传。"
+    },
+    "meta": {
+      "title": "JSON 转表格转换器 — 免费在线 JSON 表格查看",
+      "description": "在线把 JSON 转成表格。粘贴对象数组，预览行列与列数，展平嵌套对象，并下载 CSV。免费、浏览器本地处理。",
+      "keywords": [
+        "json转表格",
+        "json表格转换器",
+        "json数组转表格",
+        "json表格查看器",
+        "在线json转表格",
+        "json转表格在线",
+        "免费json转表格",
+        "json数据转表格"
+      ]
+    },
+    "features": [
+      {
+        "icon": "lucide:table-2",
+        "title": "对象数组转表格",
+        "description": "把 JSON 对象数组转成行和列。每个对象变成一行，对象的键变成表头。"
+      },
+      {
+        "icon": "lucide:columns-3",
+        "title": "自动识别列",
+        "description": "列从数组中的每一条记录里收集。某条记录没有这个字段时，对应单元格留空，不会影响行的对齐。"
+      },
+      {
+        "icon": "lucide:rows-3",
+        "title": "行列数量统计",
+        "description": "预览会显示识别到的行数和列数，导出前可以先确认整个数组都被读到。"
+      },
+      {
+        "icon": "lucide:layers-2",
+        "title": "可选嵌套展平",
+        "description": "把嵌套对象展平成 address.city 这样的点号列。不展平时，对象或数组值会以一个单元格里的紧凑 JSON 显示。"
+      },
+      {
+        "icon": "lucide:download",
+        "title": "导出 CSV",
+        "description": "把表格数据下载为带 BOM 的 UTF-8 CSV 文件，可直接用于 Excel、Google Sheets 或其他电子表格工具。"
+      },
+      {
+        "icon": "lucide:upload",
+        "title": "粘贴或打开文件",
+        "description": "把 JSON 粘贴进编辑器，或从设备打开 .json 文件。解析和渲染都在浏览器中完成。"
+      },
+      {
+        "icon": "lucide:shield-check",
+        "title": "浏览器本地处理",
+        "description": "解析、列识别和 CSV 生成都在你的浏览器中运行。无需账号，也不上传到转换服务器。"
+      }
+    ],
+    "guide": [
+      {
+        "title": "输入 JSON 对象数组",
+        "description": "粘贴类似 [{\"name\":\"Alice\"},{\"name\":\"Bob\"}] 的数组，或打开 .json 文件。每一项都必须是对象，因为每一项会变成表格的一行。"
+      },
+      {
+        "title": "检查识别到的列",
+        "description": "JSON 解析成功后表格会立刻渲染。先看行列数量，再扫一遍表头，确认需要的字段都在。"
+      },
+      {
+        "title": "按需展平嵌套对象",
+        "description": "需要把嵌套属性变成独立列时，启用“展平嵌套对象”。如果更想在一个单元格里看紧凑 JSON，就保持关闭。"
+      },
+      {
+        "title": "下载 CSV",
+        "description": "点击 CSV 按钮保存表格数据。用 Excel 或 Google Sheets 打开后，可以排序、筛选或做图表。"
+      }
+    ],
+    "example": {
+      "input": "[\n  { \"name\": \"Alice\", \"age\": 30, \"city\": \"New York\" },\n  { \"name\": \"Bob\", \"age\": 25, \"city\": \"London\" }\n]",
+      "output": "name    age  city\nAlice   30   New York\nBob     25   London",
+      "useCase": "把接口返回的多条记录先以表格预览，确认无误后再导出到电子表格。"
+    },
+    "faq": [
+      {
+        "question": "这个工具接受什么样的 JSON 输入？",
+        "answer": "顶层是 JSON 数组、且每一项都是对象，例如 [{\"name\":\"Alice\",\"age\":30}]。字符串数组、数字数组、数组的数组都会被拒绝，因为每一项都要变成表格的一行。"
+      },
+      {
+        "question": "可以把单个 JSON 对象转成表格吗？",
+        "answer": "不可以。本页面要求输入记录数组。如果数据是 {\"results\":[...]} 这种结构，请粘贴里面的数组；也可以用专门查看对象的 JSON 浏览器。"
+      },
+      {
+        "question": "表格的列是怎么确定的？",
+        "answer": "列会从数组中的每一个对象里收集，按键首次出现的顺序排列。某条记录没有这个字段时，对应单元格留空。"
+      },
+      {
+        "question": "支持嵌套 JSON 吗？",
+        "answer": "支持，但有边界。启用“展平嵌套对象”后，嵌套属性会变成 address.city 这样的点号列。嵌套数组不一定有天然的二维形态，所以要么被序列化到一个单元格里，要么需要另外的转换处理。"
+      },
+      {
+        "question": "可以排序、筛选或分页吗？",
+        "answer": "不可以。预览是一个静态表格视图，不提供排序、筛选、分页、编辑或列选择。需要在电子表格里处理数据时，请下载 CSV。"
+      },
+      {
+        "question": "预览会显示多少行？",
+        "answer": "为了保持页面流畅，预览只渲染前 100 行。显示的行数和 CSV 导出仍然覆盖数组中的每一条记录。"
+      },
+      {
+        "question": "可以把表格下载成 CSV 吗？",
+        "answer": "可以。CSV 使用带 BOM 的 UTF-8 编码，Excel 能正确识别带重音和非拉丁字符的内容；包含逗号、引号或换行的值会被加引号并转义。"
+      },
+      {
+        "question": "可以转换很大的 JSON 文件吗？",
+        "answer": "页面没有设置固定的行数上限，但全部处理都在浏览器中完成。非常大的数组取决于设备内存，解析和渲染会更慢。"
+      },
+      {
+        "question": "这个页面会生成 HTML 代码吗？",
+        "answer": "不会。本页面用于把 JSON 记录预览为表格并导出 CSV。需要可复制的表格代码或可下载的 .html 文件时，请使用“JSON 转 HTML 表格”页面。"
+      },
+      {
+        "question": "我的 JSON 数据会上传到服务器吗？",
+        "answer": "本页面在你的浏览器中解析 JSON 并生成表格，不需要上传到转换服务器。仍然建议不要在任何浏览器工具中输入密码、API 密钥、访问令牌或其他高度敏感的信息。"
+      },
+      {
+        "question": "这是一个免费的 JSON 转表格转换器吗？",
+        "answer": "是的。你可以粘贴或打开 JSON、预览表格并下载 CSV，无需注册账号。"
+      }
+    ],
+    "ui": {
+      "label_input": "输入 JSON",
+      "label_output": "表格预览",
+      "btn_render": "渲染表格",
+      "btn_download_csv": "下载 CSV",
+      "option_flatten": "展平嵌套对象",
+      "empty_state": "粘贴 JSON 对象数组，即可预览为表格",
+      "status_rows": "{count} 行",
+      "status_columns": "{count} 列",
+      "preview_limit": "预览显示前 {count} 行，CSV 导出包含全部行。",
+      "error_invalid_input": "输入必须是 JSON 对象数组",
+      "error_empty_array": "JSON 数组为空",
+      "error_invalid_row": "数组中的每一项都必须是 JSON 对象",
+      "error_no_columns": "没有找到表格列",
+      "error_invalid_json": "输入不是合法的 JSON"
+    },
+    "article": {
+      "title": "如何把 JSON 转成表格",
+      "content": "<h2>什么是 JSON 转表格转换器？</h2><p>JSON 转表格转换器把结构化的 JSON 记录铺成行和列，方便人眼阅读。最适合的数据是对象数组：每个对象是一条记录，每个属性是一列。</p><p>开发者在查看接口响应、数据库导出、日志文件或配置快照时经常用到这个视图。把 200 条记录读成表格，通常比滚动原始 JSON 文本快得多；行数和列数也能让你一眼确认整个数组是否被完整读取。</p><h2>支持的 JSON 结构</h2><p>支持的输入是顶层对象数组：</p><pre><code>[{\"name\":\"Alice\",\"age\":30},{\"name\":\"Bob\",\"age\":25}]</code></pre><p>数组里的每一项都必须是对象。[\"a\",\"b\"] 这样的字符串数组、数字数组、数组的数组都无法变成行和列，会被直接报错。如果数据被包在 {\"results\":[...]} 这样的对象里，请粘贴内层的数组。</p><h2>如何把 JSON 转成表格</h2><ol><li><strong>输入 JSON：</strong>把对象数组粘贴进编辑器，或打开 .json 文件。</li><li><strong>看统计数字：</strong>先看识别到的行数和列数，确认整个数组都解析成功。</li><li><strong>检查表头：</strong>确认需要的字段都成了列，并且数值对齐。</li><li><strong>处理嵌套：</strong>需要把嵌套属性变成独立列时启用展平。</li><li><strong>导出：</strong>下载 CSV，然后在 Excel、Google Sheets 或其他电子表格里继续处理。</li></ol><h2>自动识别列与缺失值</h2><p>真实数据很少每条记录的键都完全一致：用户列表里手机号可能是可选的，订单列表里只有部分行有退款字段。转换器会从每一个对象里收集键，按首次出现的顺序组成列。</p><p>某条记录缺少某个字段时，单元格留空。行的对齐关系不会错，但如果原始数据里可选字段很多，表格就会变得很宽，空单元格也会变多。</p><h2>展平嵌套 JSON</h2><p>扁平表格最适合每个单元格都是字符串、数字、布尔或 null 这类标量值的情况。嵌套对象放不进一个单元格，所以可选的展平模式会把路径改写成点号列：</p><pre><code>{\"user\":{\"name\":\"Alice\"},\"address\":{\"city\":\"New York\"}}</code></pre><p>会变成 <code>user.name</code>、<code>address.city</code> 这样的列。嵌套数组更麻烦：它可能包含多个值或多个对象，没有唯一合适的二维形态。不展平时，对象和数组值会以一个单元格里的紧凑 JSON 文本显示。</p><h2>表格预览、CSV 与 HTML 输出</h2><p>这三种输出解决的是不同问题，开始前先选对：</p><ul><li><strong>表格预览：</strong>在浏览器里快速阅读和检查数据。</li><li><strong>CSV：</strong>数据要继续进入 Excel、Google Sheets、数据库导入或报表流程时使用。</li><li><strong>HTML 表格：</strong>结果要显示在网页上，或粘贴进 CMS、文档编辑器时使用。</li><li><strong>原始 JSON：</strong>需要保留嵌套结构、精确类型或机器间交换时保留原格式。</li></ul><h2>表格预览的边界</h2><p>预览是根据你的输入生成的静态视图，不提供排序、筛选、分页、编辑或列选择，也没有电子表格式的工具栏。为了保持页面流畅，预览只渲染前 100 行；显示的行数和 CSV 导出仍然覆盖每一条记录。</p><p>如果需要排序、筛选、做图表或编辑数据，请下载 CSV 后在电子表格里继续。如果需要可嵌入网页的代码，请使用“JSON 转 HTML 表格”页面。</p><h2>浏览器本地处理与隐私</h2><p>这个工具在你的浏览器中解析 JSON 并生成表格，而不是把输入上传到远程转换服务。这对内部数据集和开发数据很方便，但并不等于绝对安全。不要在任何在线工具中输入凭证、访问令牌、个人信息或机密生产数据。</p>"
+    }
+  }
 }

@@ -1,0 +1,20 @@
+[
+  {
+    "id": "users",
+    "label_en": "User List",
+    "label_zh": "用户列表",
+    "input": "[{\"name\":\"Alice\",\"age\":30,\"email\":\"alice@example.com\",\"city\":\"New York\"},{\"name\":\"Bob\",\"age\":25,\"email\":\"bob@example.com\",\"city\":\"San Francisco\"},{\"name\":\"Charlie\",\"age\":35,\"email\":\"charlie@example.com\",\"city\":\"London\"}]"
+  },
+  {
+    "id": "nested",
+    "label_en": "Nested Records",
+    "label_zh": "嵌套记录",
+    "input": "[{\"id\":1,\"title\":\"Laptop\",\"price\":999.99,\"tags\":[\"electronics\",\"sale\"],\"seller\":{\"name\":\"ACME\",\"city\":\"Berlin\"}},{\"id\":2,\"title\":\"Mouse\",\"price\":29.99,\"tags\":[\"electronics\"],\"seller\":{\"name\":\"ACME\",\"city\":\"Paris\"}},{\"id\":3,\"title\":\"Desk\",\"price\":249.00,\"tags\":[\"furniture\"],\"seller\":{\"name\":\"Homely\",\"city\":\"Oslo\"}}]"
+  },
+  {
+    "id": "escaping",
+    "label_en": "Values That Need Escaping",
+    "label_zh": "需要转义的值",
+    "input": "[{\"id\":1,\"name\":\"<script>alert('xss')</script>\",\"note\":\"a & b <tag>\",\"quote\":\"he said \\\"hi\\\"\",\"url\":\"https://example.com/?a=1&b=2\"},{\"id\":2,\"name\":\"Bob & Sons\",\"note\":\"plain text\",\"quote\":\"ok\",\"url\":\"https://example.com/\"}]"
+  }
+]

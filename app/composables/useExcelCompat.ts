@@ -76,6 +76,11 @@ export const useExcelCompat = () => {
   /**
    * Convert to GBK encoding (simplified)
    * Note: Full GBK conversion requires a library, this is a fallback
+   * @deprecated This is NOT a real GBK encoder — it returns UTF-8 bytes with a
+   * BOM. No page may offer it as a "GBK" output option (see copy-accuracy:
+   * promising an encoding the app cannot produce is a blocked-level defect).
+   * Kept only so existing `prepareForExcel({ encoding: 'gbk' })` calls keep
+   * behaving exactly as before.
    * @param content - String to convert
    * @returns ArrayBuffer with encoding
    */
@@ -87,7 +92,13 @@ export const useExcelCompat = () => {
 
   /**
    * Prepare CSV content for Excel
-   * @param csv - CSV content
+   *
+   * Supported output encodings are UTF-8 (with or without BOM). The `'gbk'`
+   * value is kept for backwards compatibility only and does not produce real
+   * GBK bytes — see `toGbk`. Pages that expose an encoding switch should offer
+   * UTF-8 and UTF-8 with BOM only.
+   *
+   * @param csv - CSV content (already delimited, e.g. from `generateCsv`)
    * @param options - Encoding options
    * @returns ArrayBuffer ready for download
    */

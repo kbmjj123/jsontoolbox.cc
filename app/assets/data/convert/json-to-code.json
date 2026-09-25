@@ -5,326 +5,383 @@
   "icon": "lucide:code-2",
   "sort": 13,
   "applicationCategory": "DeveloperApplication",
-  "nextSteps": ["json-to-typescript", "json-editor"],
-  "recommends": ["json-schema-generator"],
+  "nextSteps": [
+    "json-to-typescript",
+    "json-editor"
+  ],
+  "recommends": [
+    "json-schema-generator"
+  ],
   "en": {
-  "name": "JSON to Code Generator",
-  "ui": {
-    "labelInputJson": "Input JSON",
-    "labelOutput": "Generated Code",
-    "labelLanguage": "Target:",
-    "labelTypeName": "Root Type Name:",
-    "btnGenerate": "Generate Code",
-    "btnExample": "Load Example",
-    "btnCopy": "Copy Code",
-    "btnDownload": "Download File",
-    "placeholderOutput": "Generated code will appear here...",
-    "placeholderName": "RootObject",
-    "option_export": "Add export",
-    "option_optional": "Mark fields optional",
-    "option_null": "Preserve null in types",
-    "option_format": "Detect common formats",
-    "option_indent": "Indent:",
-    "option_indent_2": "2 spaces",
-    "option_indent_4": "4 spaces",
-    "errorInvalidInput": "Input must be valid JSON",
-    "errorEmptyInput": "Enter JSON or open a JSON file first",
-    "errorEmptyArray": "The JSON array is empty",
-    "errorInvalidName": "The root type name is not valid for the selected language",
-    "errorUnsupported": "This language or output mode is not available",
-    "errorGeneration": "Code could not be generated",
-    "warningSampleBased": "Generated code is inferred from the provided JSON sample"
-  },
-  "description": "Generate starter data models from JSON examples in multiple programming languages. Choose a target such as TypeScript, Python, Go, Rust, Java, Kotlin, C#, Swift, MySQL, or Protobuf when supported, then review and export the generated code for your project.",
-  "hero": {
-    "trustHtml": "Runs in your browser. Your JSON is not uploaded by this tool."
-  },
-  "meta": {
-    "title": "JSON to Code Generator – TypeScript, Go, Python and More",
-    "description": "Generate TypeScript interfaces, Python models, Go structs, Java classes, Rust structs, SQL tables, or Protobuf definitions from JSON samples. Free and browser-based.",
-    "keywords": [
-      "json to code",
-      "generate code from json",
-      "json to typescript",
-      "json to python",
-      "json to go",
-      "json to rust",
-      "json to java",
-      "json to c#"
-    ]
-  },
-  "features": [
-    {
-      "icon": "lucide:languages",
-      "title": "Multiple Code Targets",
-      "description": "Generate data-model code for the supported target languages shown in the interface. Output syntax, null handling, naming, and serialization conventions vary by language."
+    "name": "JSON to Code Generator",
+    "ui": {
+      "label_input_json": "Input JSON",
+      "label_output": "Generated Code",
+      "label_language": "Target:",
+      "label_root_name": "Root Type Name:",
+      "btn_generate": "Generate Code",
+      "btn_example": "Load Example",
+      "placeholder_output": "Generated code will appear here...",
+      "placeholder_name": "RootObject",
+      "option_export": "Add export",
+      "option_optional": "Mark fields optional",
+      "option_null": "Preserve null in types",
+      "option_format": "Detect common formats",
+      "option_indent": "Indent:",
+      "option_indent_2": "2 spaces",
+      "option_indent_4": "4 spaces",
+      "error_invalid_input": "Input must be valid JSON",
+      "error_empty_input": "Enter JSON or open a JSON file first",
+      "error_empty_array": "The JSON array is empty",
+      "error_invalid_name": "The root type name is not valid for the selected target",
+      "error_unsupported": "This target is not available",
+      "error_generation": "Code could not be generated",
+      "warning_sample_based": "Generated code is inferred from the provided JSON sample"
     },
-    {
-      "icon": "lucide:braces",
-      "title": "Type Inference from JSON",
-      "description": "Infer primitive values, objects, arrays, nested structures, and selected nullable or mixed types from representative JSON samples."
+    "description": "Generate starter data models from JSON examples in TypeScript, Python, Go, or Rust. Types, nested models, nullable fields, and collections are inferred from the current sample, then you can review, copy, or download the generated code.",
+    "hero": {
+      "trustHtml": "Runs in your browser. Your JSON is not uploaded by this tool."
     },
-    {
-      "icon": "lucide:git-branch",
-      "title": "Nested Models",
-      "description": "Create related declarations for nested objects and typed collections. Generated names are inferred from JSON property names and may need manual refinement."
+    "meta": {
+      "title": "JSON to Code Generator – TypeScript, Python, Go and Rust",
+      "description": "Generate TypeScript interfaces, Python dataclasses, Go structs, or Rust structs from a JSON sample. Free, browser-based, no upload.",
+      "keywords": [
+        "json to code",
+        "generate code from json",
+        "json to typescript",
+        "json to python",
+        "json to go",
+        "json to rust"
+      ]
     },
-    {
-      "icon": "lucide:settings-2",
-      "title": "Naming and Output Options",
-      "description": "Set the root type name and configure the options available for the selected target, such as export declarations, optional properties, null handling, or indentation."
+    "features": [
+      {
+        "icon": "lucide:languages",
+        "title": "Four Supported Targets",
+        "description": "Generate data-model code for TypeScript, Python, Go, or Rust. Output syntax, naming, nullability, and collection conventions differ per target."
+      },
+      {
+        "icon": "lucide:braces",
+        "title": "Type Inference from JSON",
+        "description": "Infer primitives, objects, arrays, nested structures, and nullable or mixed values from representative JSON samples. Union types are emitted where the target language supports them."
+      },
+      {
+        "icon": "lucide:git-branch",
+        "title": "Nested Models",
+        "description": "Nested objects and arrays of objects become separate named declarations referenced by their parent type. Generated names are inferred from JSON property names and may need manual refinement."
+      },
+      {
+        "icon": "lucide:settings-2",
+        "title": "Naming and Output Options",
+        "description": "Set the root type name and configure the options shown for the selected target, such as export declarations, optional fields, null handling, format hints, or indentation."
+      },
+      {
+        "icon": "lucide:copy",
+        "title": "Copy Generated Code",
+        "description": "Copy the generated source code to your clipboard and place it in an interface, class, struct, or type definition file."
+      },
+      {
+        "icon": "lucide:download",
+        "title": "Download Source Files",
+        "description": "Download the generated output using the file extension of the selected target: .ts, .py, .go, or .rs. Review the output before adding it to a production codebase."
+      },
+      {
+        "icon": "lucide:upload",
+        "title": "Paste or Open JSON",
+        "description": "Paste a JSON object or array into the editor or open a local .json file. Representative examples produce more useful results."
+      },
+      {
+        "icon": "lucide:shield-check",
+        "title": "Browser-Based Generation",
+        "description": "JSON parsing and code generation happen in your browser. The page does not require an account or upload the source data to a remote generation service."
+      }
+    ],
+    "guide": [
+      {
+        "title": "Enter representative JSON",
+        "description": "Paste an object, an array of objects, or a JSON file containing representative data. Include important variations when the real payload can contain optional fields or different item shapes."
+      },
+      {
+        "title": "Choose a target",
+        "description": "Select TypeScript, Python, Go, or Rust. Each target may use different conventions for names, nullability, arrays, and serialization."
+      },
+      {
+        "title": "Set the root type name",
+        "description": "Enter a valid root name such as UserResponse, Product, or ApiResult. Nested declaration names are derived from the structure and may be adjusted after generation."
+      },
+      {
+        "title": "Configure target options",
+        "description": "Enable the options supported for the selected target, such as export declarations, optional fields, null preservation, format hints, or indentation."
+      },
+      {
+        "title": "Generate and review",
+        "description": "Click Generate Code and inspect nested types, arrays, unions, null handling, and property names before using the output."
+      },
+      {
+        "title": "Copy or download",
+        "description": "Copy the result or download the source file. Generated code is a starting point and should be compiled, formatted, tested, and adapted to the target project's conventions."
+      }
+    ],
+    "example": {
+      "input": "{\n  \"id\": 1,\n  \"name\": \"Alice\",\n  \"email\": \"alice@example.com\"\n}",
+      "output": "export interface RootObject {\n  id: number;\n  name: string;\n  email: string;\n}",
+      "useCase": "Generate a starting TypeScript interface from an API response sample."
     },
-    {
-      "icon": "lucide:copy",
-      "title": "Copy Generated Code",
-      "description": "Copy the generated source code to your clipboard and place it in a model, interface, struct, class, schema, or database definition file."
-    },
-    {
-      "icon": "lucide:download",
-      "title": "Download Source Files",
-      "description": "Download the generated output using the file extension associated with the selected target. Review the output before adding it to a production codebase."
-    },
-    {
-      "icon": "lucide:upload",
-      "title": "Paste or Open JSON",
-      "description": "Paste a JSON object or array into the editor or open a local .json file when file input is available. Representative examples produce more useful results."
-    },
-    {
-      "icon": "lucide:shield-check",
-      "title": "Browser-Based Generation",
-      "description": "JSON parsing and code generation happen in your browser. The page does not require an account or upload the source data to a remote generation service."
+    "faq": [
+      {
+        "question": "What does this JSON to code generator produce?",
+        "answer": "It generates declarations for the selected target: a TypeScript interface, a Python dataclass, a Go struct, or a Rust struct, plus the nested declarations those types reference. The output is inferred from the sample and may need manual changes."
+      },
+      {
+        "question": "Which languages are supported?",
+        "answer": "TypeScript, Python, Go, and Rust. Each target names fields, maps arrays, and handles nullability differently, so review the output for the target you selected."
+      },
+      {
+        "question": "Does it generate production-ready code?",
+        "answer": "It generates a useful starting point, not a guaranteed production-ready model. Review naming, optional fields, nullability, serialization behavior, validation, imports, and language-specific conventions before committing the output."
+      },
+      {
+        "question": "Does it generate serialization code?",
+        "answer": "Partly. Go structs include json struct tags and Rust structs derive Serialize and Deserialize, so those targets carry basic serialization metadata. TypeScript interfaces and Python dataclasses describe the shape only; they add no runtime parsing, validation, or custom converters."
+      },
+      {
+        "question": "How are nested objects handled?",
+        "answer": "Nested objects are emitted as separate declarations and referenced by the parent type in all four targets. The exact syntax depends on the selected language, and generated names may need to be adjusted when property names are generic or reused."
+      },
+      {
+        "question": "How are JSON arrays handled?",
+        "answer": "Arrays become Item[] in TypeScript, list[Item] in Python, []Item in Go, and Vec<Item> in Rust. Mixed or inconsistent item shapes produce union types in TypeScript and Python, while Go and Rust fall back to a permissive value type that needs manual modeling."
+      },
+      {
+        "question": "Can one JSON example determine all types correctly?",
+        "answer": "No. A single sample cannot reveal every optional field, alternative object shape, nullable value, enum, range, or future API variation. Use representative samples and review the generated code against the actual data contract."
+      },
+      {
+        "question": "How are null and optional fields handled?",
+        "answer": "With \"preserve null in types\" enabled, a field whose sample value is null becomes null, None, a nullable pointer, or Option depending on the target; with it disabled, such fields become a permissive type such as unknown, Any, interface{}, or serde_json::Value. \"Mark fields optional\" adds ?, a None default, omitempty, or Option instead. An optional field may be absent, which is different from being present with null."
+      },
+      {
+        "question": "Can I provide multiple JSON samples?",
+        "answer": "Only if the current interface supports multiple samples or a documented sample-merging mode. Multiple representative samples improve inference for optional fields, mixed arrays, and alternative response shapes."
+      },
+      {
+        "question": "What happens to JSON keys that are not valid identifiers?",
+        "answer": "The generator may quote, sanitize, rename, or map them according to the selected target. Review the result because changing a generated property name may require a serialization tag or explicit mapping to preserve the original JSON key."
+      },
+      {
+        "question": "Which options are available for each target?",
+        "answer": "Only the options that apply to the selected target are shown: TypeScript supports export declarations, optional properties, null preservation, format comments, and indentation; Python supports an __all__ export list, optional fields, null preservation, datetime and uuid hints, and indentation; Go supports omitempty tags, null preservation, time.Time hints, and indentation; Rust supports pub export, optional fields, null preservation, and indentation."
+      },
+      {
+        "question": "Does the generated Rust code require external crates?",
+        "answer": "Yes. Rust output uses serde attributes, and any position whose shape cannot be typed uses serde_json::Value, so add serde and serde_json to your Cargo.toml. TypeScript, Python, and Go output uses only standard language features; the Python output relies on the dataclasses module, and the Go output may import time for date and time fields."
+      },
+      {
+        "question": "Does the generated TypeScript or other code validate runtime JSON?",
+        "answer": "Usually not. Static models help compilers and editors but do not validate untrusted runtime data. Add a runtime validation layer or generated serializers when the application requires protection against malformed input."
+      },
+      {
+        "question": "Can I use the output directly in an API project?",
+        "answer": "You can use it as a starting model, but compile or format it, review serialization tags and nullable fields, test it against representative payloads, and adapt it to the framework and library conventions used by your project."
+      },
+      {
+        "question": "Is my JSON uploaded to a server?",
+        "answer": "This page is designed to parse JSON and generate code in your browser without requiring a server upload. You should still avoid entering credentials, access tokens, private customer data, or confidential production payloads into any browser-based tool."
+      },
+      {
+        "question": "Is this a free JSON to code generator?",
+        "answer": "Yes. You can paste or open JSON, choose an available target, generate code, and copy or download the result without creating an account."
+      }
+    ],
+    "article": {
+      "title": "How to Generate Code from JSON",
+      "content": "<h2>What Is a JSON to Code Generator?</h2><p>A JSON to code generator reads a JSON sample and writes declarations for another language. Depending on the target, the output is a TypeScript interface, a Python dataclass, a Go struct, or a Rust struct, plus any nested declarations those types reference.</p><p>The generator removes repetitive boilerplate, but it does not know the rules of your application. Treat the result as a starting model that still has to be reviewed, compiled, tested, and adapted to the conventions of the target project.</p><h2>Common Use Cases</h2><ul><li><strong>API integration:</strong> Build initial response models from REST, GraphQL, webhook, or internal service payloads.</li><li><strong>Frontend development:</strong> Create TypeScript types for Vue, React, Angular, or other JavaScript projects.</li><li><strong>Backend models:</strong> Create starting structs or classes for Go, Python, or Rust services.</li><li><strong>Data contract review:</strong> Turn a payload taken from logs or documentation into a readable model before coding against it.</li></ul><h2>How to Generate Code from JSON</h2><ol><li><strong>Provide representative input:</strong> Paste an object, an array of objects, or open a JSON file. Include optional fields and shape variations that occur in real data.</li><li><strong>Select a target:</strong> Choose TypeScript, Python, Go, or Rust.</li><li><strong>Set the root name:</strong> Use a name that describes the model's role, such as UserResponse or Order.</li><li><strong>Configure options:</strong> Toggle the options shown for that target: export declarations, optional fields, null preservation, format hints, and indentation.</li><li><strong>Generate:</strong> Read through nested declarations, arrays, and field mappings before trusting them.</li><li><strong>Compile and test:</strong> Put the output in a real file, run the target compiler or formatter, and feed representative payloads through it.</li></ol><h2>How JSON Types Map to Code</h2><ul><li><strong>Strings:</strong> Become string-like types such as <code>string</code>, <code>str</code>, or <code>String</code>.</li><li><strong>Numbers:</strong> Python, Go, and Rust separate integers and floating-point values as <code>int</code>/<code>float</code>, <code>int</code>/<code>float64</code>, and <code>i64</code>/<code>f64</code>. TypeScript uses <code>number</code> for both.</li><li><strong>Booleans:</strong> Become <code>boolean</code>, <code>bool</code>, or a target-specific equivalent.</li><li><strong>Objects:</strong> Become named declarations: interfaces, classes, or structs.</li><li><strong>Arrays:</strong> Become <code>Item[]</code>, <code>list[Item]</code>, <code>[]Item</code>, or <code>Vec&lt;Item&gt;</code>.</li><li><strong>Null:</strong> Becomes <code>null</code>, <code>None</code>, a pointer, or <code>Option&lt;T&gt;</code> depending on the target and the options you set.</li></ul><h2>Nested Objects and Naming</h2><p>Nested JSON objects are emitted as separate named declarations in every supported target. Names are inferred from property names, but properties such as <code>data</code>, <code>items</code>, or <code>value</code> can produce generic or ambiguous names. Rename declarations when the generated names do not describe the domain model clearly.</p><p>Property naming also varies by target. Go field names are exported and keep the original JSON key in a struct tag. Rust field names are snake_case and keep the original key in a <code>serde(rename)</code> attribute. Python keeps the key when it can be used as a field name and sanitizes it otherwise, and TypeScript quotes keys that are not valid identifiers. After renaming, confirm that serialization still maps the field back to the original JSON key.</p><h2>Arrays and Mixed Shapes</h2><p>An array of objects is straightforward when every item has the same shape. Real API responses often contain variants:</p><pre><code>[{\"type\":\"user\",\"name\":\"Alice\"},{\"type\":\"error\",\"code\":400,\"message\":\"Bad request\"}]</code></pre><p>The object variants merge into one model whose fields are marked optional. A union is only produced for mixed primitive values such as numbers and strings, and only in TypeScript and Python; Go and Rust have no union type, so such a position falls back to a permissive value type that you should model by hand.</p><h2>Optional and Nullable Fields</h2><p>A field missing from some samples and a field whose value is <code>null</code> are different things. The first means the key may be absent; the second means the key is present with a null value.</p><ul><li><strong>Optional:</strong> TypeScript writes <code>key?</code>, Python adds a <code>None</code> default, Go adds <code>omitempty</code> to the struct tag, and Rust uses <code>Option</code>.</li><li><strong>Nullable:</strong> TypeScript writes <code>T | null</code>, Python writes <code>T | None</code>, Go writes a pointer such as <code>*string</code>, and Rust writes <code>Option&lt;T&gt;</code>.</li><li><strong>No information:</strong> Disabling null preservation turns null-only fields into a permissive type such as <code>unknown</code>, <code>Any</code>, <code>interface{}</code>, or <code>serde_json::Value</code>.</li></ul><h2>Options That Differ per Target</h2><p>Each target exposes only the options that make sense for it:</p><ul><li><strong>TypeScript:</strong> export declarations, optional properties, null preservation, format comments, indentation.</li><li><strong>Python:</strong> <code>__all__</code> export list, optional fields, null preservation, <code>datetime</code> and <code>uuid</code> hints, indentation.</li><li><strong>Go:</strong> optional fields as <code>omitempty</code>, null preservation, <code>time.Time</code> hints, indentation.</li><li><strong>Rust:</strong> <code>pub</code> export, optional fields, null preservation, indentation.</li></ul><p>Go exports identifiers through capitalization, so there is no export toggle. Rust has no date type in its standard library, so there is no format hint.</p><h2>Integer and Floating-Point Numbers</h2><p>TypeScript has one numeric type, so both <code>42</code> and <code>4.2</code> become <code>number</code>. Python, Go, and Rust separate them: a sample without a fractional part becomes <code>int</code>, <code>int</code>, or <code>i64</code>, and a sample with one becomes <code>float</code>, <code>float64</code>, or <code>f64</code>. One sample cannot reveal every range, so widen or narrow these types after reviewing the real data contract.</p><h2>Static Types Are Not Runtime Validation</h2><p>Generated TypeScript interfaces, Go structs, Python dataclasses, or Rust structs do not automatically validate incoming JSON. External data can be malformed, incomplete, or changed by another service. Add runtime parsing, schema validation, deserialization checks, or generated serializers when the application depends on runtime guarantees.</p><h2>Use Multiple Samples When Possible</h2><p>One sample may omit optional fields or fail to show alternative response shapes. Multiple representative samples can improve inference for optional properties, nullable values, mixed arrays, and unions. If the tool accepts only one input document, combine or review representative examples manually before finalizing the model.</p><h2>Review Generated Code</h2><ul><li>Check field and type names.</li><li>Verify JSON serialization tags or annotations.</li><li>Review nullability and optional properties.</li><li>Check number precision and integer handling.</li><li>Inspect arrays with mixed item shapes.</li><li>Run the target compiler or formatter.</li><li>Test the model with valid and invalid payloads.</li><li>Keep the generated code synchronized with the actual API contract.</li></ul><h2>Browser-Based Privacy</h2><p>This generator is designed to parse JSON and generate code in the browser rather than sending the input to a remote service. That is convenient for API samples and development data, but it is not a secure secret-management system. Avoid entering credentials, tokens, private customer records, or confidential production payloads into any online tool.</p>"
     }
-  ],
-  "guide": [
-    {
-      "title": "Enter representative JSON",
-      "description": "Paste an object, an array of objects, or a JSON file containing representative data. Include important variations when the real payload can contain optional fields or different item shapes."
-    },
-    {
-      "title": "Choose a target",
-      "description": "Select the language or output format supported by the current implementation. Each target may use different conventions for names, nullability, arrays, and serialization."
-    },
-    {
-      "title": "Set the root type name",
-      "description": "Enter a valid root name such as UserResponse, Product, or ApiResult. Nested declaration names are derived from the structure and may be adjusted after generation."
-    },
-    {
-      "title": "Configure target options",
-      "description": "Enable the options supported for the selected target, such as export declarations, optional fields, null preservation, format hints, or indentation."
-    },
-    {
-      "title": "Generate and review",
-      "description": "Click Generate Code and inspect nested types, arrays, unions, null handling, property names, database types, or Protobuf field numbers before using the output."
-    },
-    {
-      "title": "Copy or download",
-      "description": "Copy the result or download the source file. Generated code is a starting point and should be compiled, formatted, tested, and adapted to the target project's conventions."
-    }
-  ],
-  "example": {
-    "input": "{\n  \"id\": 1,\n  \"name\": \"Alice\",\n  \"email\": \"alice@example.com\"\n}",
-    "output": "type User struct {\n  ID    int    `json:\"id\"`\n  Name  string `json:\"name\"`\n  Email string `json:\"email\"`\n}",
-    "useCase": "Generate a starting Go struct from an API response sample."
   },
-  "faq": [
-    {
-      "question": "What does this JSON to code generator produce?",
-      "answer": "It generates source declarations or schema statements for the selected target, such as TypeScript interfaces, Python models, Go structs, Java classes, SQL table definitions, or Protobuf messages when those targets are implemented. The output is inferred from the sample and may need manual changes."
-    },
-    {
-      "question": "Which languages and formats are supported?",
-      "answer": "The available targets are the languages shown in the interface and implemented by the current version. They may include TypeScript, Python, Go, Rust, Java, Kotlin, C#, Swift, MySQL, and Protobuf. Check the language selector rather than relying only on the page description."
-    },
-    {
-      "question": "Does it generate production-ready code?",
-      "answer": "It generates a useful starting point, not a guaranteed production-ready model. Review naming, optional fields, nullability, serialization behavior, validation, imports, database constraints, and language-specific conventions before committing the output."
-    },
-    {
-      "question": "Does it generate serialization and deserialization code?",
-      "answer": "Only if the selected target and implementation explicitly support it. Basic type or class generation does not automatically provide runtime parsing, validation, custom converters, or serialization methods."
-    },
-    {
-      "question": "How are nested objects handled?",
-      "answer": "Nested objects are usually emitted as separate declarations and referenced by the parent type. The exact syntax depends on the selected language, and generated names may need to be adjusted when property names are generic or reused."
-    },
-    {
-      "question": "How are JSON arrays handled?",
-      "answer": "Arrays are mapped to the target language's collection type, such as User[], List<User>, []User, Vec<User>, or a language-specific equivalent. Mixed or inconsistent item shapes may require unions, optional fields, or manual modeling."
-    },
-    {
-      "question": "Can one JSON example determine all types correctly?",
-      "answer": "No. A single sample cannot reveal every optional field, alternative object shape, nullable value, enum, range, or future API variation. Use representative samples and review the generated code against the actual data contract."
-    },
-    {
-      "question": "How are null and optional fields handled?",
-      "answer": "The result depends on the selected language and options. Null may become a nullable union, pointer, optional wrapper, nullable reference, database NULL, or another target-specific representation. An optional field may be absent, which is different from being present with null."
-    },
-    {
-      "question": "Can I provide multiple JSON samples?",
-      "answer": "Only if the current interface supports multiple samples or a documented sample-merging mode. Multiple representative samples improve inference for optional fields, mixed arrays, and alternative response shapes."
-    },
-    {
-      "question": "What happens to JSON keys that are not valid identifiers?",
-      "answer": "The generator may quote, sanitize, rename, or map them according to the selected target. Review the result because changing a generated property name may require a serialization tag or explicit mapping to preserve the original JSON key."
-    },
-    {
-      "question": "What does MySQL output mean?",
-      "answer": "The MySQL target generates a starting CREATE TABLE statement inferred from the JSON structure. It cannot reliably infer primary keys, foreign keys, indexes, normalization, constraints, relationships, or the correct lengths and precision for every field without database requirements."
-    },
-    {
-      "question": "What does Protobuf output mean?",
-      "answer": "The Protobuf target generates a starting .proto message definition. Protobuf field numbers and schema evolution rules are important, so review field numbering, optionality, repeated fields, scalar types, package names, and compatibility before using it in a protocol."
-    },
-    {
-      "question": "Does the generated TypeScript or other code validate runtime JSON?",
-      "answer": "Usually not. Static models help compilers and editors but do not validate untrusted runtime data. Add a runtime validation layer or generated serializers when the application requires protection against malformed input."
-    },
-    {
-      "question": "Can I use the output directly in an API project?",
-      "answer": "You can use it as a starting model, but compile or format it, review serialization tags and nullable fields, test it against representative payloads, and adapt it to the framework and library conventions used by your project."
-    },
-    {
-      "question": "Is my JSON uploaded to a server?",
-      "answer": "This page is designed to parse JSON and generate code in your browser without requiring a server upload. You should still avoid entering credentials, access tokens, private customer data, or confidential production payloads into any browser-based tool."
-    },
-    {
-      "question": "Is this a free JSON to code generator?",
-      "answer": "Yes. You can paste or open JSON, choose an available target, generate code, and copy or download the result without creating an account."
-    }
-  ],
-  "article": {
-    "title": "How to Generate Code from JSON",
-    "content": "<h2>What Is a JSON to Code Generator?</h2><p>A JSON to code generator analyzes a JSON sample and creates declarations or schema statements for another language. Depending on the target, the output may be a TypeScript interface, Python dataclass, Go struct, Java class, Rust struct, Kotlin data class, C# model, Swift type, SQL table definition, or Protobuf message.</p><p>The generator reduces repetitive boilerplate, but it does not know every rule in your application. Generated code should be treated as a starting model that must be reviewed, compiled, tested, and adapted to the target project's conventions.</p><h2>Common Use Cases</h2><ul><li><strong>API integration:</strong> Generate initial response models from REST, GraphQL, webhook, or service payload samples.</li><li><strong>Frontend development:</strong> Create TypeScript types for Vue, React, Angular, or other JavaScript applications.</li><li><strong>Backend models:</strong> Create starting structs, classes, or data classes for Go, Python, Java, Kotlin, C#, Rust, or Swift projects.</li><li><strong>Database prototyping:</strong> Generate a preliminary SQL table definition from a flat JSON sample.</li><li><strong>Serialization contracts:</strong> Create a starting Protobuf message or language model for an integration boundary.</li></ul><h2>How to Generate Code from JSON</h2><ol><li><strong>Provide representative input:</strong> Paste an object, an array of objects, or open a JSON file. Include optional fields and shape variations when they occur in real data.</li><li><strong>Select a target:</strong> Choose a supported language or schema output.</li><li><strong>Set the root name:</strong> Use a meaningful name that reflects the model's role, such as UserResponse or Order.</li><li><strong>Configure options:</strong> Set export, optionality, null handling, naming, and indentation options that apply to the selected target.</li><li><strong>Generate:</strong> Produce the declarations or schema statements and inspect nested types, arrays, and field mappings.</li><li><strong>Compile and test:</strong> Add the output to a temporary file, run the target compiler or formatter, and test it against representative data.</li></ol><h2>How JSON Types Map to Code</h2><ul><li><strong>Strings:</strong> Become string-like types, such as string, String, str, or language-specific equivalents.</li><li><strong>Numbers:</strong> Map differently across languages. Some targets distinguish integers and floating-point values, while JavaScript and TypeScript commonly use number.</li><li><strong>Booleans:</strong> Become boolean-like types such as bool or boolean.</li><li><strong>Objects:</strong> Become classes, interfaces, structs, records, maps, or nested declarations.</li><li><strong>Arrays:</strong> Become collections such as lists, vectors, slices, arrays, or repeated fields.</li><li><strong>Null:</strong> Requires target-specific handling such as nullable types, pointers, optional wrappers, unions, SQL NULL, or Protobuf optional fields.</li></ul><h2>Nested Objects and Naming</h2><p>Nested JSON objects are often generated as separate named declarations. Names may be inferred from property names, but properties such as <code>data</code>, <code>items</code>, or <code>value</code> can produce generic or ambiguous names. Rename declarations when the generated names do not describe the domain model clearly.</p><p>Property naming also varies by language. A JSON key such as <code>user_id</code> may remain unchanged in a serialization tag while the generated field becomes <code>UserID</code>, <code>userId</code>, or another idiomatic form. Ensure that the serializer still maps the code field back to the original JSON key.</p><h2>Arrays and Mixed Shapes</h2><p>An array of objects is easy to model when every item has the same shape. Real API responses may contain different variants:</p><pre><code>[{\"type\":\"user\",\"name\":\"Alice\"},{\"type\":\"error\",\"code\":400,\"message\":\"Bad request\"}]</code></pre><p>This may require a union, discriminated union, optional fields, or separate models. A generator cannot always determine the intended domain relationship from the sample alone.</p><h2>Static Types Are Not Runtime Validation</h2><p>Generated TypeScript interfaces, Go structs, Java classes, or Python type hints do not automatically validate incoming JSON. External data can be malformed, incomplete, or changed by another service. Add runtime parsing, schema validation, deserialization checks, or generated serializers when the application depends on runtime guarantees.</p><h2>MySQL Output Limitations</h2><p>JSON-to-SQL generation is useful for prototyping, but a JSON example does not reveal database design decisions. The generator cannot reliably infer normalized tables, relationships, primary keys, indexes, unique constraints, foreign keys, character sets, decimal precision, or lifecycle rules. Treat the generated CREATE TABLE statement as a draft.</p><h2>Protobuf Output Limitations</h2><p>Protobuf is a schema language with compatibility rules. Field numbers are part of the wire contract and should not be casually changed or reused. Review <code>optional</code>, <code>repeated</code>, scalar types, package names, reserved fields, and schema evolution before using generated messages in a shared protocol.</p><h2>Use Multiple Samples When Possible</h2><p>One sample may omit optional fields or fail to show alternative response shapes. Multiple representative samples can improve inference for optional properties, nullable values, mixed arrays, and unions. If the tool accepts only one input document, combine or review representative examples manually before finalizing the model.</p><h2>Review Generated Code</h2><ul><li>Check field and type names.</li><li>Verify JSON serialization tags or annotations.</li><li>Review nullability and optional properties.</li><li>Check number precision and integer handling.</li><li>Inspect arrays with mixed item shapes.</li><li>Run the target compiler or formatter.</li><li>Test the model with valid and invalid payloads.</li><li>Keep the generated code synchronized with the actual API contract.</li></ul><h2>Browser-Based Privacy</h2><p>This generator is designed to parse JSON and generate code in the browser rather than sending the input to a remote service. That is convenient for API samples and development data, but it is not a secure secret-management system. Avoid entering credentials, tokens, private customer records, or confidential production payloads into any online tool.</p>"
-  }
-},
   "zh": {
-		"name": "JSON 转代码生成器",
-		"ui": {
-			"labelInputJson": "输入 JSON",
-			"labelOutput": "代码输出",
-			"labelLanguage": "语言：",
-			"labelTypeName": "类型名称：",
-			"btnGenerate": "生成",
-			"btnExample": "加载示例",
-			"placeholderOutput": "代码输出将显示在此处...",
-			"placeholderName": "RootObject"
-		},
-		"description": "将 JSON 数据转换为 10 种编程语言的代码：TypeScript、Python、Go、Rust、Java、Kotlin、C#、Swift、MySQL 和 Protobuf。这个 JSON 转代码工具可以从 JSON 示例自动生成类型定义、数据类、结构体和 schema 语句，全部在浏览器中完成。",
-		"hero": {
-			"trustHtml": "100% 本地生成。JSON 数据始终保留在浏览器中。"
-		},
-		"meta": {
-			"title": "JSON 转代码 — TypeScript、Python、Go、Kotlin、C#、Swift — 免费在线",
-			"description": "在线将 JSON 转换为 TypeScript、Python、Go、Rust、Java、Kotlin、C#、Swift、MySQL 或 Protobuf。从 JSON 数据自动生成类型定义、类、结构体和 schema。免费、100% 客户端处理，无需上传文件。",
-			"keywords": [
-				"json转代码",
-				"json转go",
-				"json转python",
-				"json转c#",
-				"json转kotlin",
-				"json转swift",
-				"json转mysql",
-				"json转protobuf",
-				"json转结构体",
-				"json转typescript",
-				"json转java",
-				"json转rust",
-				"json代码生成器",
-				"从json生成代码"
-			]
-		},
-		"features": [
-			{
-				"icon": "lucide:code-2",
-				"title": "10 种语言",
-				"description": "支持 TypeScript、Python、Go、Rust、Java、Kotlin、C#、Swift、MySQL（CREATE TABLE）和 Protobuf（.proto 消息）。选择与你的技术栈匹配的目标语言。"
-			},
-			{
-				"icon": "lucide:copy",
-				"title": "复制与下载",
-				"description": "将生成的代码复制到剪贴板，或下载为源文件（.ts、.py、.go、.rs、.java、.kt、.cs、.swift、.sql 或 .proto）。可直接用于你的项目。"
-			},
-			{
-				"icon": "lucide:settings",
-				"title": "可配置",
-				"description": "配置根类型名称和命名约定。调整生成器对键和类型的处理方式，使其符合项目的代码风格。"
-			},
-			{
-				"icon": "lucide:layers",
-				"title": "嵌套支持",
-				"description": "为嵌套对象创建单独的类型定义、类或结构体。这样可以让生成的代码在每种语言中都保持结构清晰、风格地道。"
-			},
-			{
-				"icon": "lucide:upload",
-				"title": "文件上传",
-				"description": "直接从设备上传 .json 文件进行转换。文件在浏览器本地读取，不会上传到任何服务器。"
-			},
-			{
-				"icon": "lucide:shield-check",
-				"title": "私密安全",
-				"description": "所有代码生成都在浏览器中完成，不需要将 JSON 数据上传到服务器。适合处理私密 API 响应或配置数据。"
-			}
-		],
-		"guide": [
-			{
-				"title": "粘贴 JSON",
-				"description": "将 JSON 对象或数组粘贴到输入框中，或上传 .json 文件。使用具有代表性的数据示例可获得更好的类型推断结果。"
-			},
-			{
-				"title": "选择语言",
-				"description": "从 10 种语言中选择目标语言：TypeScript、Python、Go、Rust、Java、Kotlin、C#、Swift、MySQL 或 Protobuf。生成器会根据每种语言的约定调整输出。"
-			},
-			{
-				"title": "配置类型名称",
-				"description": "输入自定义类型名称（默认：RootObject）。对于嵌套对象，生成器会自动派生相关的类型名称。"
-			},
-			{
-				"title": "生成并使用",
-				"description": "点击“生成”生成代码。将输出复制到剪贴板或下载为源文件，然后导入或集成到你的项目中。"
-			}
-		],
-		"example": {
-			"input": "{\n  \"id\": 1,\n  \"name\": \"Alice\",\n  \"email\": \"alice@example.com\"\n}",
-			"output": "type User struct {\n  ID    int    `json:\"id\"`\n  Name  string `json:\"name\"`\n  Email string `json:\"email\"`\n}",
-			"useCase": "从 JSON 快速生成 Go 结构体、C# 类或 Python dataclass。"
-		},
-		"faq": [
-			{
-				"question": "我的 JSON 数据会上传到服务器吗？",
-				"answer": "不会。所有代码生成都在浏览器本地完成，你的 JSON 数据不会离开设备，也不会被存储或传输到任何地方。"
-			},
-			{
-				"question": "支持哪些语言？",
-				"answer": "支持 10 种语言：TypeScript、Python、Go、Rust、Java、Kotlin、C#、Swift、MySQL（CREATE TABLE 语句）和 Protobuf（.proto 消息定义）。"
-			},
-			{
-				"question": "能处理嵌套对象吗？",
-				"answer": "能。生成器会为所有支持的语言创建嵌套对象的单独类型定义、类或结构体，使生成的代码结构清晰、符合各语言的习惯写法。"
-			},
-			{
-				"question": "可以自定义类型名称吗？",
-				"answer": "可以。在“类型名称”字段中输入自定义名称。默认是 'RootObject'，但你可以使用任何在目标语言中合法的标识符。"
-			},
-			{
-				"question": "MySQL 输出有什么用？",
-				"answer": "MySQL 选项会根据你的 JSON 结构生成 CREATE TABLE 语句。这对于从 API 响应或数据样本快速原型化数据库 schema 非常有用。"
-			},
-			{
-				"question": "Protobuf 输出是什么？",
-				"answer": "Protobuf（Protocol Buffers）会生成 .proto 消息定义。这些可以用于 gRPC、Google 服务以及其他依赖 Protocol Buffers 作为接口契约的系统。"
-			},
-			{
-				"question": "类型推断准确吗？",
-				"answer": "生成器会根据 JSON 中看到的值推断类型（字符串、数字、布尔值、数组、对象）。为获得最佳结果，请使用能反映数据完整范围的 JSON 示例。"
-			},
-			{
-				"question": "可以下载生成的代码吗？",
-				"answer": "可以。你可以将生成的代码复制到剪贴板，或下载为对应语言的源文件，然后直接用于项目中。"
-			},
-			{
-				"question": "这是一个免费的 JSON 转代码生成器吗？",
-				"answer": "是的。这是一个免费的在线 JSON 转代码生成器。你可以粘贴 JSON 或上传文件，选择语言并生成代码，无需创建账号或将数据上传到服务器。"
-			}
-		]
-	}
+    "name": "JSON 转代码生成器",
+    "ui": {
+      "label_input_json": "输入 JSON",
+      "label_output": "生成的代码",
+      "label_language": "目标语言：",
+      "label_root_name": "根类型名称：",
+      "btn_generate": "生成代码",
+      "btn_example": "加载示例",
+      "placeholder_output": "生成的代码将显示在此处...",
+      "placeholder_name": "RootObject",
+      "option_export": "添加导出",
+      "option_optional": "字段标记为可选",
+      "option_null": "保留类型中的 null",
+      "option_format": "识别常见格式",
+      "option_indent": "缩进：",
+      "option_indent_2": "2 个空格",
+      "option_indent_4": "4 个空格",
+      "error_invalid_input": "输入必须是合法的 JSON",
+      "error_empty_input": "请先输入 JSON 或打开 JSON 文件",
+      "error_empty_array": "JSON 数组为空",
+      "error_invalid_name": "根类型名称在所选目标中不合法",
+      "error_unsupported": "该目标语言暂不可用",
+      "error_generation": "无法生成代码",
+      "warning_sample_based": "生成的代码基于你提供的 JSON 样本推断而来"
+    },
+    "description": "从 JSON 示例生成 TypeScript、Python、Go 或 Rust 的起始数据模型。类型、嵌套模型、可空字段和集合都从当前样本推断，生成后可以检查、复制或下载代码。",
+    "hero": {
+      "trustHtml": "在你的浏览器中运行。本工具不会上传你的 JSON。"
+    },
+    "meta": {
+      "title": "JSON 转代码生成器 — TypeScript、Python、Go、Rust — 免费在线",
+      "description": "从 JSON 样本生成 TypeScript 接口、Python dataclass、Go 结构体或 Rust 结构体。免费、纯浏览器处理，不需要上传。",
+      "keywords": [
+        "json转代码",
+        "从json生成代码",
+        "json转typescript",
+        "json转python",
+        "json转go",
+        "json转rust"
+      ]
+    },
+    "features": [
+      {
+        "icon": "lucide:languages",
+        "title": "四种目标语言",
+        "description": "生成 TypeScript、Python、Go 或 Rust 的数据模型代码。语法、命名、可空处理和集合写法因语言而异。"
+      },
+      {
+        "icon": "lucide:braces",
+        "title": "从 JSON 推断类型",
+        "description": "从有代表性的 JSON 样本推断基本类型、对象、数组、嵌套结构，以及可空或混合类型。目标语言支持联合类型时才会输出联合类型。"
+      },
+      {
+        "icon": "lucide:git-branch",
+        "title": "嵌套模型",
+        "description": "嵌套对象和对象数组会生成独立的命名声明，由父类型引用。名称来自 JSON 属性名，可能需要手动调整。"
+      },
+      {
+        "icon": "lucide:settings-2",
+        "title": "命名与输出选项",
+        "description": "设置根类型名称，并配置当前目标语言支持的选项：导出声明、可选字段、null 处理、格式提示或缩进。"
+      },
+      {
+        "icon": "lucide:copy",
+        "title": "复制生成的代码",
+        "description": "把生成的代码复制到剪贴板，粘贴到接口、类、结构体或类型定义文件中即可使用。"
+      },
+      {
+        "icon": "lucide:download",
+        "title": "下载源文件",
+        "description": "按所选语言的扩展名下载输出文件：.ts、.py、.go 或 .rs。加入正式代码库前请先检查。"
+      },
+      {
+        "icon": "lucide:upload",
+        "title": "粘贴或打开 JSON",
+        "description": "把 JSON 对象或数组粘贴到编辑器，或打开本地 .json 文件。样本越有代表性，结果越有用。"
+      },
+      {
+        "icon": "lucide:shield-check",
+        "title": "浏览器内生成",
+        "description": "JSON 解析和代码生成都在你的浏览器中完成。不需要注册账号，也不会把数据上传到远程生成服务。"
+      }
+    ],
+    "guide": [
+      {
+        "title": "输入有代表性的 JSON",
+        "description": "粘贴对象、对象数组，或包含代表性数据的 JSON 文件。如果真实数据里有可选字段或不同的元素结构，请一并包含。"
+      },
+      {
+        "title": "选择目标语言",
+        "description": "选择 TypeScript、Python、Go 或 Rust。不同语言在命名、可空处理、数组和序列化上的写法各不相同。"
+      },
+      {
+        "title": "设置根类型名称",
+        "description": "输入合法的根类型名称，例如 UserResponse、Product 或 ApiResult。嵌套声明的名称由结构推导，生成后可以再调整。"
+      },
+      {
+        "title": "配置目标选项",
+        "description": "勾选当前语言支持的选项，例如导出声明、可选字段、保留 null、格式提示或缩进。"
+      },
+      {
+        "title": "生成并检查",
+        "description": "点击“生成代码”，检查嵌套类型、数组、联合类型、null 处理和字段名，确认无误后再使用。"
+      },
+      {
+        "title": "复制或下载",
+        "description": "复制结果或下载源文件。生成的代码只是起点，需要按目标项目的规范编译、格式化、测试并调整。"
+      }
+    ],
+    "example": {
+      "input": "{\n  \"id\": 1,\n  \"name\": \"Alice\",\n  \"email\": \"alice@example.com\"\n}",
+      "output": "export interface RootObject {\n  id: number;\n  name: string;\n  email: string;\n}",
+      "useCase": "从 API 响应样本生成 TypeScript 接口的起始版本。"
+    },
+    "faq": [
+      {
+        "question": "这个 JSON 转代码生成器会生成什么？",
+        "answer": "它会按所选目标生成声明：TypeScript 接口、Python dataclass、Go 结构体或 Rust 结构体，以及这些类型引用的嵌套声明。输出是基于样本推断的，可能需要手动修改。"
+      },
+      {
+        "question": "支持哪些语言？",
+        "answer": "支持 TypeScript、Python、Go 和 Rust。每种语言在字段命名、数组映射和可空处理上都不一样，使用时请针对所选语言检查输出。"
+      },
+      {
+        "question": "生成的是可以直接上生产的代码吗？",
+        "answer": "生成的是有用的起点，不是保证可直接用于生产的模型。提交前请检查命名、可选字段、可空性、序列化行为、校验、导入和语言特有的规范。"
+      },
+      {
+        "question": "会生成序列化和反序列化代码吗？",
+        "answer": "部分会。Go 结构体带 json 标签，Rust 结构体派生 Serialize 和 Deserialize，因此这两种目标带有基础序列化元数据。TypeScript 接口和 Python dataclass 只描述数据结构，不包含运行时解析、校验或自定义转换器。"
+      },
+      {
+        "question": "嵌套对象怎么处理？",
+        "answer": "四种目标都会把嵌套对象生成为独立的命名声明，由父类型引用。具体语法取决于所选语言；当属性名过于通用或重复时，生成的名称可能需要调整。"
+      },
+      {
+        "question": "JSON 数组怎么处理？",
+        "answer": "数组在 TypeScript 中是 Item[]，Python 中是 list[Item]，Go 中是 []Item，Rust 中是 Vec<Item>。元素形状不一致时，TypeScript 和 Python 会生成联合类型；Go 和 Rust 没有联合类型，会退化为宽松的值类型，需要你手动建模。"
+      },
+      {
+        "question": "一份 JSON 示例就能确定所有类型吗？",
+        "answer": "不能。单个样本无法体现所有可选字段、其他对象结构、可空值、枚举、取值范围，也无法预测 API 后续的变化。请使用有代表性的样本，并对照真实数据契约检查生成结果。"
+      },
+      {
+        "question": "null 字段和可选字段怎么处理？",
+        "answer": "勾选“保留类型中的 null”后，样本值为 null 的字段会按语言变成 null、None、可空指针或 Option；不勾选时，这类字段会变成宽松类型，如 unknown、Any、interface{} 或 serde_json::Value。勾选“字段标记为可选”则会加上 ?、None 默认值、omitempty 或 Option。字段缺失和字段值为 null 是两回事。"
+      },
+      {
+        "question": "可以输入多份 JSON 样本吗？",
+        "answer": "取决于当前界面是否支持多样本或提供了明确的样本合并模式。多份有代表性的样本能更好地推断可选字段、混合数组和不同的响应结构。"
+      },
+      {
+        "question": "JSON 键不是合法标识符时会怎样？",
+        "answer": "生成器会按所选目标进行加引号、清洗、重命名或映射。请检查结果：改名后可能需要序列化标签或显式映射，才能保留原始 JSON 键。"
+      },
+      {
+        "question": "每种语言各有哪些选项？",
+        "answer": "界面只显示适用于当前语言的选项：TypeScript 支持导出声明、可选属性、保留 null、格式注释和缩进；Python 支持 __all__ 导出列表、可选字段、保留 null、datetime 与 uuid 提示和缩进；Go 支持 omitempty 标签、保留 null、time.Time 提示和缩进；Rust 支持 pub 导出、可选字段、保留 null 和缩进。"
+      },
+      {
+        "question": "生成的 Rust 代码需要外部依赖吗？",
+        "answer": "需要。Rust 输出使用 serde 属性，无法确定类型的字段会用到 serde_json::Value，因此要在 Cargo.toml 中加入 serde 和 serde_json。TypeScript、Python 和 Go 的输出只用到语言自带能力：Python 依赖 dataclasses 模块，Go 在处理日期时间字段时可能导入 time。"
+      },
+      {
+        "question": "生成的 TypeScript 或其他代码能校验运行时 JSON 吗？",
+        "answer": "通常不能。静态模型可以帮助编译器和编辑器，但不会校验不可信的运行时数据。如果需要防范异常输入，请额外添加运行时校验层或生成的序列化器。"
+      },
+      {
+        "question": "输出可以直接用在 API 项目里吗？",
+        "answer": "可以当作起始模型使用，但要先编译或格式化，检查序列化标签和可空字段，用有代表性的数据做测试，并按项目使用的框架和库规范做调整。"
+      },
+      {
+        "question": "我的 JSON 会上传到服务器吗？",
+        "answer": "这个页面在浏览器中解析 JSON 并生成代码，不需要上传到服务器。但仍请避免把凭证、访问令牌、客户隐私数据或生产环境的保密数据粘贴到任何在线工具里。"
+      },
+      {
+        "question": "这是一个免费的 JSON 转代码生成器吗？",
+        "answer": "是。你可以粘贴或打开 JSON、选择可用目标、生成代码并复制或下载结果，全程不需要注册账号。"
+      }
+    ],
+    "article": {
+      "title": "如何从 JSON 生成代码",
+      "content": "<h2>什么是 JSON 转代码生成器？</h2><p>JSON 转代码生成器读取一份 JSON 样本，然后为另一种语言生成声明。根据目标不同，输出可能是 TypeScript 接口、Python dataclass、Go 结构体或 Rust 结构体，以及这些类型引用的嵌套声明。</p><p>它帮你省掉重复的样板代码，但并不了解你的应用规则。请把结果当成起始模型，之后仍需检查、编译、测试，并按目标项目的规范做调整。</p><h2>常见使用场景</h2><ul><li><strong>API 对接：</strong>用 REST、GraphQL、webhook 或内部服务的响应样本，生成第一批响应模型。</li><li><strong>前端开发：</strong>为 Vue、React、Angular 或其他 JavaScript 项目生成 TypeScript 类型。</li><li><strong>后端模型：</strong>为 Go、Python 或 Rust 服务生成结构体或类的起始版本。</li><li><strong>数据契约核对：</strong>把日志或文档里的报文转成可读模型，再开始写业务代码。</li></ul><h2>如何从 JSON 生成代码</h2><ol><li><strong>提供有代表性的输入：</strong>粘贴对象、对象数组，或打开 JSON 文件。真实数据里存在可选字段或不同结构时，请一并包含。</li><li><strong>选择目标语言：</strong>选择 TypeScript、Python、Go 或 Rust。</li><li><strong>设置根类型名称：</strong>用能说明模型用途的名称，例如 UserResponse 或 Order。</li><li><strong>配置选项：</strong>按当前语言显示的选项调整：导出声明、可选字段、保留 null、格式提示和缩进。</li><li><strong>生成：</strong>先看一遍嵌套声明、数组和字段映射，再决定是否采用。</li><li><strong>编译并测试：</strong>把输出放进真实文件，运行目标语言的编译器或格式化工具，并用有代表性的数据跑一遍。</li></ol><h2>JSON 类型如何映射为代码</h2><ul><li><strong>字符串：</strong>变成字符串类型，例如 <code>string</code>、<code>str</code> 或 <code>String</code>。</li><li><strong>数字：</strong>Python、Go、Rust 会区分整数和浮点数，分别得到 <code>int</code>/<code>float</code>、<code>int</code>/<code>float64</code>、<code>i64</code>/<code>f64</code>。TypeScript 两者都用 <code>number</code>。</li><li><strong>布尔值：</strong>变成 <code>boolean</code>、<code>bool</code> 或对应语言的等价类型。</li><li><strong>对象：</strong>变成命名声明：接口、类或结构体。</li><li><strong>数组：</strong>变成 <code>Item[]</code>、<code>list[Item]</code>、<code>[]Item</code> 或 <code>Vec&lt;Item&gt;</code>。</li><li><strong>null：</strong>根据所选语言和你的选项，变成 <code>null</code>、<code>None</code>、指针或 <code>Option&lt;T&gt;</code>。</li></ul><h2>嵌套对象与命名</h2><p>在所有支持的语言中，嵌套 JSON 对象都会生成为独立的命名声明。名称由属性名推导，但 <code>data</code>、<code>items</code>、<code>value</code> 这类属性容易产生通用或含义不清的名称。当生成的名称不能清楚表达领域模型时，请重命名。</p><p>字段命名也因语言而异：Go 字段名需要导出，并在结构体标签中保留原始 JSON 键；Rust 字段名用 snake_case，并用 <code>serde(rename)</code> 属性保留原始键；Python 在键可以直接作为字段名时保持不变，否则做清洗；TypeScript 会对非法标识符加引号。重命名后，请确认序列化时字段仍能映射回原始 JSON 键。</p><h2>数组与混合结构</h2><p>当数组里每个元素结构都相同时，建模很简单。真实的 API 响应经常出现不同变体：</p><pre><code>[{\"type\":\"user\",\"name\":\"Alice\"},{\"type\":\"error\",\"code\":400,\"message\":\"Bad request\"}]</code></pre><p>这些对象变体会合并成一个模型，其中不同的字段被标记为可选。只有在数字、字符串这类基本类型混合时才会生成联合类型，且仅限 TypeScript 和 Python；Go 和 Rust 没有联合类型，遇到这种情况会退化为宽松的值类型，需要你手动建模。</p><h2>可选字段与可空字段</h2><p>“部分样本中缺失的字段”和“值为 <code>null</code> 的字段”不是一回事：前者表示这个键可能不存在，后者表示键存在但值为 null。</p><ul><li><strong>可选：</strong>TypeScript 写成 <code>key?</code>，Python 加 <code>None</code> 默认值，Go 在结构体标签里加 <code>omitempty</code>，Rust 使用 <code>Option</code>。</li><li><strong>可空：</strong>TypeScript 写成 <code>T | null</code>，Python 写成 <code>T | None</code>，Go 写成 <code>*string</code> 这样的指针，Rust 写成 <code>Option&lt;T&gt;</code>。</li><li><strong>信息不足：</strong>关闭“保留类型中的 null”后，只有 null 样本的字段会变成宽松类型，如 <code>unknown</code>、<code>Any</code>、<code>interface{}</code> 或 <code>serde_json::Value</code>。</li></ul><h2>各语言可用的选项</h2><p>每种语言只显示对它有意义的选项：</p><ul><li><strong>TypeScript：</strong>导出声明、可选属性、保留 null、格式注释、缩进。</li><li><strong>Python：</strong><code>__all__</code> 导出列表、可选字段、保留 null、<code>datetime</code> 与 <code>uuid</code> 提示、缩进。</li><li><strong>Go：</strong>用 <code>omitempty</code> 表示可选字段、保留 null、<code>time.Time</code> 提示、缩进。</li><li><strong>Rust：</strong><code>pub</code> 导出、可选字段、保留 null、缩进。</li></ul><p>Go 通过首字母大写来导出标识符，所以没有导出开关；Rust 标准库没有日期类型，所以没有格式提示选项。</p><h2>整数与浮点数</h2><p>TypeScript 只有一种数字类型，所以 <code>42</code> 和 <code>4.2</code> 都是 <code>number</code>。Python、Go、Rust 会区分：没有小数部分的样本得到 <code>int</code>、<code>int</code>、<code>i64</code>，有小数部分的样本得到 <code>float</code>、<code>float64</code>、<code>f64</code>。单个样本无法体现全部取值范围，请对照真实数据契约放宽或收紧这些类型。</p><h2>静态类型不等于运行时校验</h2><p>生成的 TypeScript 接口、Go 结构体、Python dataclass 或 Rust 结构体都不会自动校验传入的 JSON。外部数据可能格式错误、字段缺失，或者已被其他服务改动。如果应用依赖运行时保证，请额外添加运行时解析、schema 校验、反序列化检查或生成的序列化器。</p><h2>尽量使用多份样本</h2><p>单份样本可能漏掉可选字段，也无法体现其他响应结构。多份有代表性的样本能更好地推断可选属性、可空值、混合数组和联合类型。如果工具只接受一份输入，请先人工合并或逐个核对代表性示例，再确定最终模型。</p><h2>检查生成的代码</h2><ul><li>检查字段名和类型名。</li><li>核对 JSON 序列化标签或注解。</li><li>检查可空性和可选属性。</li><li>检查数字精度和整数处理。</li><li>查看元素结构不一致的数组。</li><li>运行目标语言的编译器或格式化工具。</li><li>用合法和非法数据测试模型。</li><li>让生成的代码与真实 API 契约保持同步。</li></ul><h2>浏览器端隐私</h2><p>这个生成器在浏览器中解析 JSON 并生成代码，不需要把数据发送到远程服务。这对 API 样本和开发数据很方便，但它不是密钥管理系统。请不要把凭证、令牌、客户隐私记录或生产环境的保密数据粘贴到任何在线工具里。</p>"
+    }
+  }
 }

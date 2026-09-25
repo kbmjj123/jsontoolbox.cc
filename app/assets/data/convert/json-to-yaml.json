@@ -13,285 +13,305 @@
     "json-editor"
   ],
   "en": {
-  "name": "JSON to YAML Converter",
-  "description": "Convert JSON objects and arrays to readable YAML online. Paste JSON or open a .json file, choose the indentation and formatting options supported by the page, then copy or download the YAML output for configuration, documentation, or development workflows.",
-  "hero": {
-    "trustHtml": "Runs in your browser. Your JSON is not uploaded by this tool."
-  },
-  "meta": {
-    "title": "JSON to YAML Converter – Free Online Tool",
-    "description": "Convert JSON to YAML online. Format nested objects and arrays, choose indentation, and copy or download the YAML output. Useful for configuration files and development workflows. Free and browser-based.",
-    "keywords": [
-      "json to yaml",
-      "json to yaml converter",
-      "convert json to yaml",
-      "json to yaml online",
-      "online json to yaml",
-      "free json to yaml",
-      "json yaml converter",
-      "json to yaml tool"
-    ]
-  },
-  "features": [
-    {
-      "icon": "lucide:file-code-2",
-      "title": "Readable YAML Output",
-      "description": "Convert valid JSON objects and arrays into block-style YAML with indentation that makes nested configuration data easier to inspect and edit."
+    "name": "JSON to YAML Converter",
+    "description": "Convert JSON objects and arrays to readable YAML online. Paste JSON or open a .json file, choose the indentation and formatting options supported by the page, then copy or download the YAML output for configuration, documentation, or development workflows.",
+    "hero": {
+      "trustHtml": "Runs in your browser. Your JSON is not uploaded by this tool."
     },
-    {
-      "icon": "lucide:download",
-      "title": "Copy or Download YAML",
-      "description": "Copy the generated YAML to your clipboard or download it as a .yaml or .yml file for documentation, configuration work, testing, and version control."
+    "meta": {
+      "title": "JSON to YAML Converter – Free Online Tool",
+      "description": "Convert JSON to YAML online. Format nested objects and arrays, choose indentation, and copy or download the YAML output. Useful for configuration files and development workflows. Free and browser-based.",
+      "keywords": [
+        "json to yaml",
+        "json to yaml converter",
+        "convert json to yaml",
+        "json to yaml online",
+        "online json to yaml",
+        "free json to yaml",
+        "json yaml converter",
+        "json to yaml tool"
+      ]
     },
-    {
-      "icon": "lucide:settings-2",
-      "title": "Indentation Options",
-      "description": "Choose the indentation option supported by the page. Consistent indentation improves readability, but the target platform's parser and schema remain the final authority."
+    "features": [
+      {
+        "icon": "lucide:file-code-2",
+        "title": "Readable YAML Output",
+        "description": "Convert valid JSON objects and arrays into block-style YAML with indentation that makes nested configuration data easier to inspect and edit."
+      },
+      {
+        "icon": "lucide:download",
+        "title": "Copy or Download YAML",
+        "description": "Copy the generated YAML to your clipboard or download it as a .yaml file for documentation, configuration work, testing, and version control."
+      },
+      {
+        "icon": "lucide:settings-2",
+        "title": "Indentation Options",
+        "description": "Choose the indentation option supported by the page. Consistent indentation improves readability, but the target platform's parser and schema remain the final authority."
+      },
+      {
+        "icon": "lucide:braces",
+        "title": "Nested Objects and Arrays",
+        "description": "Convert JSON objects into YAML mappings and arrays into YAML sequences while keeping the original nesting relationships represented in the output."
+      },
+      {
+        "icon": "lucide:check-circle-2",
+        "title": "Readable Data Types",
+        "description": "Represent JSON strings, numbers, booleans, and null values using YAML-compatible scalar forms. Review values that may be interpreted differently by a YAML 1.1 or YAML 1.2 parser."
+      },
+      {
+        "icon": "lucide:upload",
+        "title": "Paste or Open JSON",
+        "description": "Paste JSON directly into the editor or open a .json file from your device. The input is parsed and converted in the browser."
+      },
+      {
+        "icon": "lucide:shield-check",
+        "title": "Browser-Based Processing",
+        "description": "JSON parsing and YAML generation happen in your browser. The page does not require an account or upload the source JSON to a remote conversion service."
+      }
+    ],
+    "guide": [
+      {
+        "title": "Enter JSON",
+        "description": "Paste a valid JSON object or array into the input editor or open a .json file. API responses, configuration data, and exported records can all be used as input."
+      },
+      {
+        "title": "Choose formatting options",
+        "description": "Select the available indentation option and review any scalar or quoting settings provided by the interface."
+      },
+      {
+        "title": "Convert to YAML",
+        "description": "Click Convert to YAML to generate a block-style YAML document. The converter maps JSON objects to YAML mappings and arrays to YAML sequences."
+      },
+      {
+        "title": "Review and export",
+        "description": "Check indentation, strings, numbers, booleans, null values, and nested arrays before copying or downloading the YAML file."
+      }
+    ],
+    "example": {
+      "input": "{\n  \"database\": {\n    \"host\": \"localhost\",\n    \"port\": 5432,\n    \"name\": \"myapp\"\n  }\n}",
+      "output": "database:\n  host: localhost\n  port: 5432\n  name: myapp",
+      "useCase": "Convert JSON configuration into readable YAML for documentation, local development, or a configuration workflow."
     },
-    {
-      "icon": "lucide:braces",
-      "title": "Nested Objects and Arrays",
-      "description": "Convert JSON objects into YAML mappings and arrays into YAML sequences while keeping the original nesting relationships represented in the output."
+    "faq": [
+      {
+        "question": "Is JSON to YAML conversion lossless?",
+        "answer": "The object and array structure can usually be represented in YAML, but formatting and some type interpretation rules may differ. JSON has no comments, anchors, aliases, tags, or multiline-style metadata to preserve, and YAML parsers may interpret some scalar values differently."
+      },
+      {
+        "question": "Can I use the output for Kubernetes?",
+        "answer": "The generated YAML may be used as a starting point for a Kubernetes manifest if its structure matches the required resource schema. Conversion alone does not validate apiVersion, kind, metadata, spec fields, namespaces, or Kubernetes-specific rules. Run a Kubernetes-aware validation step before applying it."
+      },
+      {
+        "question": "Can I use the output for Docker Compose?",
+        "answer": "The output can be used as a starting point for a Docker Compose file when the JSON structure represents a valid Compose configuration. The converter does not validate Compose version rules, service options, interpolation, or runtime behavior."
+      },
+      {
+        "question": "Does JSON to YAML conversion add comments?",
+        "answer": "No. Standard JSON does not contain comments, so a converter cannot recover comments that were never present in the source. You can add YAML comments manually after conversion."
+      },
+      {
+        "question": "Does it support nested objects and arrays?",
+        "answer": "Yes. Nested JSON objects are represented as indented YAML mappings, and JSON arrays are represented as YAML sequences with dash markers. Deep or complex structures should still be reviewed after conversion."
+      },
+      {
+        "question": "What happens to JSON null values?",
+        "answer": "Null values are emitted using a YAML-compatible null representation chosen by the converter. The receiving tool may distinguish null from an empty string or an omitted property, so review important fields before deployment."
+      },
+      {
+        "question": "Why are some strings quoted in the YAML output?",
+        "answer": "A YAML serializer may quote strings that could otherwise be interpreted as booleans, numbers, dates, null values, document markers, or special syntax. Quoting helps preserve the intended string value across different YAML parsers."
+      },
+      {
+        "question": "Can YAML parsers interpret the output differently?",
+        "answer": "Yes. YAML 1.1 and YAML 1.2 differ in how some plain scalars are interpreted, including values such as yes, no, on, off, and certain date-like strings. If the output is used by a specific platform, test it with that platform's YAML parser."
+      },
+      {
+        "question": "Can I convert YAML back to JSON?",
+        "answer": "Use the site's YAML to JSON converter for the reverse direction. The resulting JSON represents the parsed YAML data, but comments, anchors, aliases, formatting, and some YAML-specific types may not survive the round trip."
+      },
+      {
+        "question": "Does the converter load JSON from a URL?",
+        "answer": "This page is designed for pasted JSON or local file input. Loading arbitrary URLs can fail because of CORS restrictions and can expose remote data to the browser. Use a URL input only if the feature is explicitly implemented with appropriate security controls."
+      },
+      {
+        "question": "Can I convert a large JSON file?",
+        "answer": "The practical limit depends on browser memory, device performance, document depth, and the amount of generated YAML. Large files may take longer to parse and render, especially when the output contains many nested lines."
+      },
+      {
+        "question": "Is my JSON uploaded to a server?",
+        "answer": "This page is designed to parse JSON and generate YAML in your browser without requiring a server upload. You should still avoid entering passwords, API keys, access tokens, private customer data, or confidential production configuration into any browser-based tool."
+      },
+      {
+        "question": "Is this a free JSON to YAML converter?",
+        "answer": "Yes. You can paste or open JSON, generate YAML, and copy or download the output without creating an account."
+      }
+    ],
+    "ui": {
+      "label_input": "Input JSON",
+      "label_output": "YAML Output",
+      "btn_convert": "Convert to YAML",
+      "option_indent": "Indent:",
+      "option_indent_2": "2 spaces",
+      "option_indent_4": "4 spaces",
+      "placeholder_output": "YAML output will appear here...",
+      "error_invalid_json": "Input is not valid JSON",
+      "error_empty_input": "Enter JSON or open a JSON file first",
+      "error_conversion": "The JSON could not be converted to YAML"
     },
-    {
-      "icon": "lucide:check-circle-2",
-      "title": "Readable Data Types",
-      "description": "Represent JSON strings, numbers, booleans, and null values using YAML-compatible scalar forms. Review values that may be interpreted differently by a YAML 1.1 or YAML 1.2 parser."
-    },
-    {
-      "icon": "lucide:upload",
-      "title": "Paste or Open JSON",
-      "description": "Paste JSON directly into the editor or open a .json file from your device. The input is parsed and converted in the browser."
-    },
-    {
-      "icon": "lucide:shield-check",
-      "title": "Browser-Based Processing",
-      "description": "JSON parsing and YAML generation happen in your browser. The page does not require an account or upload the source JSON to a remote conversion service."
+    "article": {
+      "title": "How to Convert JSON to YAML Online",
+      "content": "<h2>What Is a JSON to YAML Converter?</h2><p>A JSON to YAML converter parses a JSON object or array and emits the same general data structure using YAML syntax. YAML is often easier for people to read and edit because nesting is represented with indentation rather than braces, brackets, and commas.</p><p>JSON and YAML are related but not identical formats. JSON can be represented as YAML data, but converting JSON to YAML does not create comments, anchors, aliases, schemas, or platform-specific configuration behavior. The result still needs to be checked against the tool or platform that will read it.</p><h2>Common Use Cases</h2><ul><li><strong>Configuration editing:</strong> Convert machine-generated JSON into a more readable YAML representation for human review.</li><li><strong>Kubernetes workflows:</strong> Use converted data as a starting point for a manifest, then validate it against Kubernetes resource schemas before applying it.</li><li><strong>Docker Compose:</strong> Convert structured configuration into YAML syntax for review or further editing when the resulting keys match the Compose specification.</li><li><strong>CI/CD files:</strong> Prepare JSON-generated configuration for a YAML-based pipeline, while still validating it with the target CI system.</li><li><strong>Documentation:</strong> Show nested configuration data in a concise YAML form.</li><li><strong>Local development:</strong> Convert API samples, generated configuration, or test fixtures into YAML for easier manual editing.</li></ul><h2>JSON vs YAML</h2><ul><li><strong>JSON:</strong> Strict punctuation-based syntax commonly used for APIs, application data, and machine-to-machine exchange.</li><li><strong>YAML:</strong> Indentation-based syntax commonly used for human-edited configuration and infrastructure tooling.</li></ul><p>YAML can be more readable for configuration, but indentation and scalar interpretation become significant. A visually simple YAML file can still be invalid or interpreted differently by different parsers.</p><h2>How to Convert JSON to YAML</h2><ol><li><strong>Enter JSON:</strong> Paste a valid JSON object or array or open a .json file.</li><li><strong>Choose indentation:</strong> Select the available indentation setting for the output.</li><li><strong>Convert:</strong> Generate the YAML representation of the JSON structure.</li><li><strong>Review scalar values:</strong> Check strings that resemble booleans, numbers, dates, null values, or YAML syntax.</li><li><strong>Copy or download:</strong> Copy the YAML or save it as a .yaml or .yml file.</li><li><strong>Validate for the target platform:</strong> If the file is for Kubernetes, Docker Compose, GitHub Actions, Helm, Ansible, or another system, run that platform's validation step before using it.</li></ol><h2>How JSON Structures Map to YAML</h2><ul><li><strong>Objects:</strong> Become YAML mappings using indented key-value pairs.</li><li><strong>Arrays:</strong> Become YAML sequences with a dash before each item.</li><li><strong>Strings:</strong> Become YAML scalars, with quotes added when needed to avoid ambiguous interpretation.</li><li><strong>Numbers:</strong> Are emitted as numeric-looking YAML scalars, subject to the target parser's rules.</li><li><strong>Booleans:</strong> Are emitted as YAML boolean values according to the serializer's output rules.</li><li><strong>Null:</strong> Is emitted using a YAML null representation rather than an empty string.</li></ul><h2>Why Quoting Matters in YAML</h2><p>YAML parsers do not always interpret plain text the same way. Values such as <code>true</code>, <code>false</code>, <code>null</code>, date-like strings, numeric-looking strings, and YAML indicators may be interpreted as types rather than ordinary text. A serializer may add quotes to preserve the original JSON string value.</p><p>This is especially relevant when the output is consumed by tools using different YAML versions. YAML 1.1 and YAML 1.2 have different scalar rules, so test important values with the parser used by the destination platform.</p><h2>JSON to YAML for Kubernetes</h2><p>Kubernetes accepts YAML manifests and also accepts JSON representations for many resource definitions, so converting JSON to YAML is mainly useful for readability, editing, version control, and consistency with common Kubernetes workflows. The converter does not know whether fields such as <code>apiVersion</code>, <code>kind</code>, <code>metadata</code>, and <code>spec</code> are valid for a specific Kubernetes resource.</p><p>After conversion, validate the manifest with Kubernetes-aware tooling and remove server-managed fields when converting output from commands such as <code>kubectl get -o json</code>. A format conversion is not the same as producing a clean deployable manifest.</p><h2>JSON to YAML for Docker Compose and CI/CD</h2><p>Docker Compose and CI/CD platforms use YAML files, but each platform has its own schema and interpolation rules. A valid YAML document can still be rejected because a key is unsupported, a value has the wrong type, or the structure does not match the platform specification. Treat the generated YAML as a syntax conversion and validate it separately.</p><h2>YAML Comments and Round Trips</h2><p>JSON does not contain comments, so converting JSON to YAML cannot recreate comments that were not present in the source. Likewise, converting the generated YAML back to JSON will normally remove comments and formatting choices. Keep the original JSON and the edited YAML separately when comments or human-authored formatting matter.</p><h2>URL Input and Security</h2><p>Loading JSON from arbitrary URLs can introduce CORS, privacy, and security considerations. A browser may not be allowed to read a remote endpoint, and a remote response may contain data you did not intend to process. Local paste or file input is a more predictable default. If URL loading is added, validate the URL, handle CORS failures, and avoid sending credentials or private URLs from the page.</p><h2>Browser-Based Privacy</h2><p>This converter is designed to parse JSON and generate YAML in the browser instead of sending the source data to a remote conversion service. That can be useful for development and configuration work, but it is not a secret-management system. Avoid entering passwords, API keys, tokens, private customer data, or production credentials into any online tool.</p><h2>Local Alternatives</h2><p>For repeatable automation, CI pipelines, large files, or sensitive configuration, use a trusted local tool such as <code>yq</code>, a language-specific YAML library, or a project-specific formatter. Browser tools are most useful for quick transformations, inspection, and one-off edits.</p>"
     }
-  ],
-  "guide": [
-    {
-      "title": "Enter JSON",
-      "description": "Paste a valid JSON object or array into the input editor or open a .json file. API responses, configuration data, and exported records can all be used as input."
-    },
-    {
-      "title": "Choose formatting options",
-      "description": "Select the available indentation option and review any scalar or quoting settings provided by the interface."
-    },
-    {
-      "title": "Convert to YAML",
-      "description": "Click Convert to YAML to generate a block-style YAML document. The converter maps JSON objects to YAML mappings and arrays to YAML sequences."
-    },
-    {
-      "title": "Review and export",
-      "description": "Check indentation, strings, numbers, booleans, null values, and nested arrays before copying or downloading the YAML file."
-    }
-  ],
-  "example": {
-    "input": "{\n  \"database\": {\n    \"host\": \"localhost\",\n    \"port\": 5432,\n    \"name\": \"myapp\"\n  }\n}",
-    "output": "database:\n  host: localhost\n  port: 5432\n  name: myapp",
-    "useCase": "Convert JSON configuration into readable YAML for documentation, local development, or a configuration workflow."
   },
-  "faq": [
-    {
-      "question": "Is JSON to YAML conversion lossless?",
-      "answer": "The object and array structure can usually be represented in YAML, but formatting and some type interpretation rules may differ. JSON has no comments, anchors, aliases, tags, or multiline-style metadata to preserve, and YAML parsers may interpret some scalar values differently."
-    },
-    {
-      "question": "Can I use the output for Kubernetes?",
-      "answer": "The generated YAML may be used as a starting point for a Kubernetes manifest if its structure matches the required resource schema. Conversion alone does not validate apiVersion, kind, metadata, spec fields, namespaces, or Kubernetes-specific rules. Run a Kubernetes-aware validation step before applying it."
-    },
-    {
-      "question": "Can I use the output for Docker Compose?",
-      "answer": "The output can be used as a starting point for a Docker Compose file when the JSON structure represents a valid Compose configuration. The converter does not validate Compose version rules, service options, interpolation, or runtime behavior."
-    },
-    {
-      "question": "Does JSON to YAML conversion add comments?",
-      "answer": "No. Standard JSON does not contain comments, so a converter cannot recover comments that were never present in the source. You can add YAML comments manually after conversion."
-    },
-    {
-      "question": "Does it support nested objects and arrays?",
-      "answer": "Yes. Nested JSON objects are represented as indented YAML mappings, and JSON arrays are represented as YAML sequences with dash markers. Deep or complex structures should still be reviewed after conversion."
-    },
-    {
-      "question": "What happens to JSON null values?",
-      "answer": "Null values are emitted using a YAML-compatible null representation chosen by the converter. The receiving tool may distinguish null from an empty string or an omitted property, so review important fields before deployment."
-    },
-    {
-      "question": "Why are some strings quoted in the YAML output?",
-      "answer": "A YAML serializer may quote strings that could otherwise be interpreted as booleans, numbers, dates, null values, document markers, or special syntax. Quoting helps preserve the intended string value across different YAML parsers."
-    },
-    {
-      "question": "Can YAML parsers interpret the output differently?",
-      "answer": "Yes. YAML 1.1 and YAML 1.2 differ in how some plain scalars are interpreted, including values such as yes, no, on, off, and certain date-like strings. If the output is used by a specific platform, test it with that platform's YAML parser."
-    },
-    {
-      "question": "Can I convert YAML back to JSON?",
-      "answer": "Use the site's YAML to JSON converter for the reverse direction. The resulting JSON represents the parsed YAML data, but comments, anchors, aliases, formatting, and some YAML-specific types may not survive the round trip."
-    },
-    {
-      "question": "Does the converter load JSON from a URL?",
-      "answer": "This page is designed for pasted JSON or local file input. Loading arbitrary URLs can fail because of CORS restrictions and can expose remote data to the browser. Use a URL input only if the feature is explicitly implemented with appropriate security controls."
-    },
-    {
-      "question": "Can I convert a large JSON file?",
-      "answer": "The practical limit depends on browser memory, device performance, document depth, and the amount of generated YAML. Large files may take longer to parse and render, especially when the output contains many nested lines."
-    },
-    {
-      "question": "Is my JSON uploaded to a server?",
-      "answer": "This page is designed to parse JSON and generate YAML in your browser without requiring a server upload. You should still avoid entering passwords, API keys, access tokens, private customer data, or confidential production configuration into any browser-based tool."
-    },
-    {
-      "question": "Is this a free JSON to YAML converter?",
-      "answer": "Yes. You can paste or open JSON, generate YAML, and copy or download the output without creating an account."
-    }
-  ],
-  "ui": {
-    "label_input": "Input JSON",
-    "label_output": "YAML Output",
-    "btn_convert": "Convert to YAML",
-    "btn_example": "Load Example",
-    "option_indent": "Indent:",
-    "option_indent_2": "2 spaces",
-    "option_indent_4": "4 spaces",
-    "placeholder_output": "YAML output will appear here...",
-    "error_invalid_json": "Input is not valid JSON",
-    "error_empty_input": "Enter JSON or open a JSON file first",
-    "error_conversion": "The JSON could not be converted to YAML"
-  },
-  "article": {
-    "title": "How to Convert JSON to YAML Online",
-    "content": "<h2>What Is a JSON to YAML Converter?</h2><p>A JSON to YAML converter parses a JSON object or array and emits the same general data structure using YAML syntax. YAML is often easier for people to read and edit because nesting is represented with indentation rather than braces, brackets, and commas.</p><p>JSON and YAML are related but not identical formats. JSON can be represented as YAML data, but converting JSON to YAML does not create comments, anchors, aliases, schemas, or platform-specific configuration behavior. The result still needs to be checked against the tool or platform that will read it.</p><h2>Common Use Cases</h2><ul><li><strong>Configuration editing:</strong> Convert machine-generated JSON into a more readable YAML representation for human review.</li><li><strong>Kubernetes workflows:</strong> Use converted data as a starting point for a manifest, then validate it against Kubernetes resource schemas before applying it.</li><li><strong>Docker Compose:</strong> Convert structured configuration into YAML syntax for review or further editing when the resulting keys match the Compose specification.</li><li><strong>CI/CD files:</strong> Prepare JSON-generated configuration for a YAML-based pipeline, while still validating it with the target CI system.</li><li><strong>Documentation:</strong> Show nested configuration data in a concise YAML form.</li><li><strong>Local development:</strong> Convert API samples, generated configuration, or test fixtures into YAML for easier manual editing.</li></ul><h2>JSON vs YAML</h2><ul><li><strong>JSON:</strong> Strict punctuation-based syntax commonly used for APIs, application data, and machine-to-machine exchange.</li><li><strong>YAML:</strong> Indentation-based syntax commonly used for human-edited configuration and infrastructure tooling.</li></ul><p>YAML can be more readable for configuration, but indentation and scalar interpretation become significant. A visually simple YAML file can still be invalid or interpreted differently by different parsers.</p><h2>How to Convert JSON to YAML</h2><ol><li><strong>Enter JSON:</strong> Paste a valid JSON object or array or open a .json file.</li><li><strong>Choose indentation:</strong> Select the available indentation setting for the output.</li><li><strong>Convert:</strong> Generate the YAML representation of the JSON structure.</li><li><strong>Review scalar values:</strong> Check strings that resemble booleans, numbers, dates, null values, or YAML syntax.</li><li><strong>Copy or download:</strong> Copy the YAML or save it as a .yaml or .yml file.</li><li><strong>Validate for the target platform:</strong> If the file is for Kubernetes, Docker Compose, GitHub Actions, Helm, Ansible, or another system, run that platform's validation step before using it.</li></ol><h2>How JSON Structures Map to YAML</h2><ul><li><strong>Objects:</strong> Become YAML mappings using indented key-value pairs.</li><li><strong>Arrays:</strong> Become YAML sequences with a dash before each item.</li><li><strong>Strings:</strong> Become YAML scalars, with quotes added when needed to avoid ambiguous interpretation.</li><li><strong>Numbers:</strong> Are emitted as numeric-looking YAML scalars, subject to the target parser's rules.</li><li><strong>Booleans:</strong> Are emitted as YAML boolean values according to the serializer's output rules.</li><li><strong>Null:</strong> Is emitted using a YAML null representation rather than an empty string.</li></ul><h2>Why Quoting Matters in YAML</h2><p>YAML parsers do not always interpret plain text the same way. Values such as <code>true</code>, <code>false</code>, <code>null</code>, date-like strings, numeric-looking strings, and YAML indicators may be interpreted as types rather than ordinary text. A serializer may add quotes to preserve the original JSON string value.</p><p>This is especially relevant when the output is consumed by tools using different YAML versions. YAML 1.1 and YAML 1.2 have different scalar rules, so test important values with the parser used by the destination platform.</p><h2>JSON to YAML for Kubernetes</h2><p>Kubernetes accepts YAML manifests and also accepts JSON representations for many resource definitions, so converting JSON to YAML is mainly useful for readability, editing, version control, and consistency with common Kubernetes workflows. The converter does not know whether fields such as <code>apiVersion</code>, <code>kind</code>, <code>metadata</code>, and <code>spec</code> are valid for a specific Kubernetes resource.</p><p>After conversion, validate the manifest with Kubernetes-aware tooling and remove server-managed fields when converting output from commands such as <code>kubectl get -o json</code>. A format conversion is not the same as producing a clean deployable manifest.</p><h2>JSON to YAML for Docker Compose and CI/CD</h2><p>Docker Compose and CI/CD platforms use YAML files, but each platform has its own schema and interpolation rules. A valid YAML document can still be rejected because a key is unsupported, a value has the wrong type, or the structure does not match the platform specification. Treat the generated YAML as a syntax conversion and validate it separately.</p><h2>YAML Comments and Round Trips</h2><p>JSON does not contain comments, so converting JSON to YAML cannot recreate comments that were not present in the source. Likewise, converting the generated YAML back to JSON will normally remove comments and formatting choices. Keep the original JSON and the edited YAML separately when comments or human-authored formatting matter.</p><h2>URL Input and Security</h2><p>Loading JSON from arbitrary URLs can introduce CORS, privacy, and security considerations. A browser may not be allowed to read a remote endpoint, and a remote response may contain data you did not intend to process. Local paste or file input is a more predictable default. If URL loading is added, validate the URL, handle CORS failures, and avoid sending credentials or private URLs from the page.</p><h2>Browser-Based Privacy</h2><p>This converter is designed to parse JSON and generate YAML in the browser instead of sending the source data to a remote conversion service. That can be useful for development and configuration work, but it is not a secret-management system. Avoid entering passwords, API keys, tokens, private customer data, or production credentials into any online tool.</p><h2>Local Alternatives</h2><p>For repeatable automation, CI pipelines, large files, or sensitive configuration, use a trusted local tool such as <code>yq</code>, a language-specific YAML library, or a project-specific formatter. Browser tools are most useful for quick transformations, inspection, and one-off edits.</p>"
-  }
-},
   "zh": {
-		"name": "JSON 转 YAML",
-		"description": "在线将 JSON 数据转换为 YAML 格式。这个 JSON 转 YAML 转换器支持自定义缩进和 URL 输入，适合配置文件、Kubernetes 清单、Docker Compose 和其他 DevOps 工作流，全部在浏览器中完成。",
-		"hero": {
-			"trustHtml": "100% 本地转换。数据始终保留在浏览器中。"
-		},
-		"meta": {
-			"title": "JSON 转 YAML — 免费在线转换器，支持配置文件",
-			"description": "在线将 JSON 转换为 YAML 格式。适合 Kubernetes、Docker Compose 和配置文件。可选择缩进，复制或下载 YAML。免费、快速、100% 客户端处理，无需上传文件。",
-			"keywords": [
-				"json转yaml",
-				"json yaml转换器",
-				"转换json为yaml",
-				"在线json转yaml",
-				"json转kubernetes配置",
-				"json转docker compose",
-				"json转配置文件",
-				"yaml转json转换器",
-				"json to yaml工具",
-				"免费json转yaml",
-				"json转yaml在线",
-				"json转yaml格式",
-				"json转yaml配置",
-				"json转yaml k8s"
-			]
-		},
-		"features": [
-			{
-				"icon": "lucide:file-text",
-				"title": "YAML 导出",
-				"description": "将 JSON 转换为清晰、可读的 YAML 格式。输出适用于 Kubernetes 清单、Docker Compose 文件、CI/CD 配置和其他基于 YAML 的配置系统。"
-			},
-			{
-				"icon": "lucide:download",
-				"title": "下载",
-				"description": "将生成的 YAML 下载为 .yaml 或 .yml 文件。可直接用于部署流水线、配置管理或基础设施即代码工作流。"
-			},
-			{
-				"icon": "lucide:shield-check",
-				"title": "私密安全",
-				"description": "所有转换都在浏览器中完成，不需要将 JSON 数据上传到服务器。适合处理私密配置数据或敏感环境变量。"
-			},
-			{
-				"icon": "lucide:settings",
-				"title": "自定义缩进",
-				"description": "在 2 空格和 4 空格缩进之间选择。Kubernetes 和许多 DevOps 工具常用 2 空格，而 4 空格在复杂结构中可读性更好。"
-			},
-			{
-				"icon": "lucide:copy",
-				"title": "复制输出",
-				"description": "一键将 YAML 输出复制到剪贴板。可粘贴到配置文件、版本控制、文档或其他支持 YAML 的目标位置。"
-			},
-			{
-				"icon": "lucide:link",
-				"title": "URL 输入",
-				"description": "使用 ?url= 参数从 URL 加载 JSON。适合直接转换远程 API 响应或配置端点为 YAML。"
-			}
-		],
-		"guide": [
-			{
-				"title": "粘贴 JSON",
-				"description": "将 JSON 对象或数组粘贴到输入框中。可以使用 API 响应、配置片段或任何需要转换为 YAML 的 JSON 结构。"
-			},
-			{
-				"title": "配置选项",
-				"description": "选择你偏好的缩进（2 或 4 空格）以匹配项目规范。对于 Kubernetes 和许多 DevOps 工具，2 空格是标准。"
-			},
-			{
-				"title": "点击转换",
-				"description": "点击“转换为 YAML”将 JSON 转换为 YAML 文档。工具会保留结构，并将数组和对象转换为 YAML 语法。"
-			},
-			{
-				"title": "复制或下载",
-				"description": "将 YAML 输出复制到剪贴板，或下载为 .yaml/.yml 文件。可用于 Kubernetes、Docker Compose、CI/CD 流水线或其他配置工作流。"
-			}
-		],
-		"example": {
-			"input": "{\n  \"database\": {\n    \"host\": \"localhost\",\n    \"port\": 5432,\n    \"name\": \"myapp\"\n  }\n}",
-			"output": "database:\n  host: localhost\n  port: 5432\n  name: myapp",
-			"useCase": "将 JSON 配置转换为 YAML 格式用于 Docker Compose 或 Kubernetes。"
-		},
-		"faq": [
-			{
-				"question": "我的 JSON 数据会上传到服务器吗？",
-				"answer": "不会。所有转换都在浏览器本地完成，你的 JSON 数据不会离开设备，也不会被存储或传输到任何地方。"
-			},
-			{
-				"question": "可以把 YAML 转回 JSON 吗？",
-				"answer": "可以。使用 YAML 转 JSON 转换器工具可以将 YAML 文档转换回 JSON 格式。这在需要在基于 JSON 和基于 YAML 的系统之间移动数据时非常有用。"
-			},
-			{
-				"question": "支持嵌套 JSON 对象吗？",
-				"answer": "支持。转换器可以处理嵌套对象和数组，并在 YAML 格式中保留结构。深层嵌套的层级会被转换为对应的 YAML 树。"
-			},
-			{
-				"question": "输出可以用于 Kubernetes 配置吗？",
-				"answer": "可以。输出是有效的 YAML，可用于 Kubernetes 清单、Docker Compose 文件和其他配置文件。这个工具专为 DevOps 工作流设计。"
-			},
-			{
-				"question": "可以转换大型 JSON 文件吗？",
-				"answer": "可以转换较大的 JSON 文件，只要浏览器能够加载和处理它们。实际限制取决于设备性能、浏览器可用内存以及 JSON 结构的复杂程度。"
-			},
-			{
-				"question": "如何在线将 JSON 转换为 YAML？",
-				"answer": "只需粘贴你的 JSON 并点击“转换”即可。这个免费的 JSON 转 YAML 转换器让你可以在浏览器中即时将 JSON 转换为 YAML，无需上传文件。"
-			},
-			{
-				"question": "有哪些缩进选项？",
-				"answer": "可以在 2 空格和 4 空格缩进之间选择。Kubernetes 和许多 CI/CD 配置常用 2 空格，而 4 空格在复杂或深层嵌套结构中可读性更好。"
-			},
-			{
-				"question": "YAML 支持注释吗？",
-				"answer": "支持。YAML 使用 # 字符支持注释，而 JSON 不支持注释。如果需要在配置中添加注释，可以在转换后编辑生成的 YAML 文件。"
-			},
-			{
-				"question": "这是一个免费的 JSON 转 YAML 转换器吗？",
-				"answer": "是的。这是一个免费的在线 JSON 转 YAML 转换器。你可以粘贴 JSON、配置缩进，并复制或下载 YAML 输出，无需创建账号或将数据上传到服务器。"
-			}
-		],
-		"ui": {
-			"label_input": "输入 JSON",
-			"label_output": "YAML 输出",
-			"btn_convert": "转换为 YAML",
-			"placeholder_output": "YAML 输出将显示在这里..."
-		},
-		"article": {
-			"title": "如何在线将 JSON 转换为 YAML",
-			"content": "<h2>为什么要将 JSON 转换为 YAML？</h2><p>YAML（YAML Ain't Markup Language）是一种人类可读的数据序列化格式，广泛用于配置文件。虽然 JSON 非常适合数据交换和 API，但 YAML 由于其可读性、简洁语法和对注释的支持，常被用于配置文件。</p><h2>常见使用场景</h2><ul><li><strong>Kubernetes 配置：</strong>将 JSON API 响应或原型转换为 Kubernetes 清单和 Helm 图表的 YAML 格式</li><li><strong>Docker Compose：</strong>将 JSON 配置转换为 docker-compose.yml 格式，用于容器编排</li><li><strong>CI/CD 管道：</strong>将 JSON 设置转换为 GitHub Actions、GitLab CI、CircleCI 等流水线配置的 YAML 格式</li><li><strong>Ansible Playbooks：</strong>将 JSON 数据结构转换为自动化脚本和基础设施管理的 YAML 格式</li><li><strong>通用配置：</strong>将应用配置、环境定义等人工编辑的设置从 JSON 转换为更易读的 YAML</li></ul><h2>JSON 与 YAML 的对比</h2><ul><li><strong>JSON：</strong>语法严格、不支持注释，适合 API 和机器间通信</li><li><strong>YAML：</strong>可读性强、支持注释和多行字符串，适合人工编辑的配置文件</li></ul><p>JSON 通常更受程序化数据交换青睐，而 YAML 常被选择用于需要人类阅读和修改的配置文件。</p><h2>如何将 JSON 转换为 YAML</h2><ol><li><strong>粘贴 JSON：</strong>在输入框中添加 JSON 对象或数组。</li><li><strong>配置缩进：</strong>根据项目规范选择 2 空格或 4 空格缩进。Kubernetes 和许多 DevOps 工具通常使用 2 空格。</li><li><strong>点击转换：</strong>将 JSON 转换为 YAML 文档。工具会保留结构，并将数组和对象转换为 YAML 语法。</li><li><strong>查看输出：</strong>检查生成的 YAML 是否正确，尤其是对于复杂或深层嵌套的结构。</li><li><strong>复制或下载：</strong>将 YAML 复制到剪贴板，或保存为 .yaml/.yml 文件，用于配置工作流。</li></ol><h2>JSON 结构如何映射到 YAML</h2><ul><li><strong>对象：</strong>变成 YAML 映射（key: value 对），通过缩进表示嵌套。</li><li><strong>数组：</strong>转换为 YAML 序列，每个元素前使用短横线 (-)。</li><li><strong>基本类型值：</strong>字符串、数字和布尔值以其自然的 YAML 形式表示。</li><li><strong>Null 值：</strong>通常在 YAML 中表示为 null 或 ~。</li></ul><h2>最佳实践</h2><ul><li><strong>先验证：</strong>确保 JSON 有效再进行转换，避免将错误带入 YAML。</li><li><strong>检查缩进：</strong>Kubernetes 和许多 CI/CD 配置使用 2 空格；对于复杂结构，4 空格可以提高可读性。</li><li><strong>审查输出：</strong>YAML 对缩进和结构非常敏感，特别是对于关键配置文件，务必验证结果。</li><li><strong>添加注释：</strong>利用 YAML 的注释支持（#）在转换后为配置添加说明。</li><li><strong>保留备份：</strong>保留原始 JSON，以便在需要用不同选项或结构重新生成 YAML 时使用。</li></ul><h2>浏览器本地处理与隐私</h2><p>这个 JSON 转 YAML 转换器在浏览器中处理输入内容，不要求将数据上传到远程服务。对于开发数据和私密配置片段来说，本地处理更加方便。不过，仍然不建议在任何浏览器工具中输入密码、API 密钥、访问令牌或其他高度敏感的信息。</p>"
-		}
-	}
+    "name": "JSON 转 YAML 转换器",
+    "description": "在线将 JSON 对象和数组转换为可读的 YAML。粘贴 JSON 或打开 .json 文件，选择页面支持的缩进和格式选项，然后复制或下载 YAML 输出，用于配置文件、文档或开发流程。",
+    "hero": {
+      "trustHtml": "在你的浏览器中运行。你的 JSON 不会被本工具上传。"
+    },
+    "meta": {
+      "title": "JSON 转 YAML 转换器 — 免费在线工具",
+      "description": "在线将 JSON 转换为 YAML。整理嵌套对象和数组的格式，选择缩进，复制或下载 YAML 输出。适用于配置文件和开发流程。免费，在浏览器本地完成。",
+      "keywords": [
+        "json转yaml",
+        "json转yaml转换器",
+        "转换json为yaml",
+        "json转yaml在线",
+        "在线json转yaml",
+        "免费json转yaml",
+        "json yaml转换器",
+        "json转yaml工具"
+      ]
+    },
+    "features": [
+      {
+        "icon": "lucide:file-code-2",
+        "title": "可读的 YAML 输出",
+        "description": "将合法的 JSON 对象和数组转换为块级 YAML，并使用缩进呈现嵌套配置，便于查看和编辑。"
+      },
+      {
+        "icon": "lucide:download",
+        "title": "复制或下载 YAML",
+        "description": "把生成的 YAML 复制到剪贴板，或下载为 .yaml 文件，用于文档、配置工作、测试和版本管理。"
+      },
+      {
+        "icon": "lucide:settings-2",
+        "title": "缩进选项",
+        "description": "选择页面支持的缩进选项。一致的缩进能提升可读性，但最终仍以目标平台的解析器和 schema 为准。"
+      },
+      {
+        "icon": "lucide:braces",
+        "title": "嵌套对象与数组",
+        "description": "JSON 对象转换为 YAML 映射，数组转换为 YAML 序列，并在输出中保留原有的嵌套关系。"
+      },
+      {
+        "icon": "lucide:check-circle-2",
+        "title": "可读的数据类型",
+        "description": "用 YAML 兼容的标量形式表示 JSON 的字符串、数字、布尔值和 null。对于 YAML 1.1 和 YAML 1.2 解析器可能解释不同的值，请重点复核。"
+      },
+      {
+        "icon": "lucide:upload",
+        "title": "粘贴或打开 JSON",
+        "description": "直接把 JSON 粘贴到编辑器，或从设备打开 .json 文件。输入会在浏览器中解析并转换。"
+      },
+      {
+        "icon": "lucide:shield-check",
+        "title": "浏览器本地处理",
+        "description": "JSON 解析和 YAML 生成都在你的浏览器中完成。本页不需要账号，也不会把源 JSON 上传到远程转换服务。"
+      }
+    ],
+    "guide": [
+      {
+        "title": "输入 JSON",
+        "description": "把合法的 JSON 对象或数组粘贴到输入编辑器，或打开 .json 文件。API 响应、配置数据和导出记录都可以作为输入。"
+      },
+      {
+        "title": "选择格式选项",
+        "description": "选择可用的缩进选项，并留意界面提供的标量与引号相关设置。"
+      },
+      {
+        "title": "转换为 YAML",
+        "description": "点击“转换为 YAML”生成块级 YAML 文档。转换器会把 JSON 对象映射为 YAML 映射，把数组映射为 YAML 序列。"
+      },
+      {
+        "title": "检查并导出",
+        "description": "复制或下载 YAML 文件前，先检查缩进、字符串、数字、布尔值、null 和嵌套数组。"
+      }
+    ],
+    "example": {
+      "input": "{\n  \"database\": {\n    \"host\": \"localhost\",\n    \"port\": 5432,\n    \"name\": \"myapp\"\n  }\n}",
+      "output": "database:\n  host: localhost\n  port: 5432\n  name: myapp",
+      "useCase": "将 JSON 配置转换为可读的 YAML，用于文档、本地开发或配置流程。"
+    },
+    "faq": [
+      {
+        "question": "JSON 转 YAML 是无损转换吗？",
+        "answer": "对象和数组结构通常可以用 YAML 表达，但格式和部分类型解释规则可能不同。JSON 本身没有注释、锚点、别名、标签或多行样式元数据可以保留，而且不同 YAML 解析器对某些标量的解释也可能不同。"
+      },
+      {
+        "question": "输出可以用于 Kubernetes 吗？",
+        "answer": "如果生成的数据结构符合对应资源的 schema，生成的 YAML 可以作为 Kubernetes 清单的起点。仅做转换不会校验 apiVersion、kind、metadata、spec 字段、命名空间或 Kubernetes 特有规则。应用前请先跑一遍面向 Kubernetes 的校验。"
+      },
+      {
+        "question": "输出可以用于 Docker Compose 吗？",
+        "answer": "当 JSON 结构本身是一份合法的 Compose 配置时，输出可以作为 Docker Compose 文件的起点。转换器不会校验 Compose 版本规则、service 选项、变量插值或运行时行为。"
+      },
+      {
+        "question": "JSON 转 YAML 会加注释吗？",
+        "answer": "不会。标准 JSON 不含注释，转换器无法凭空生成源数据里不存在的注释。你可以在转换后手动添加 YAML 注释。"
+      },
+      {
+        "question": "支持嵌套对象和数组吗？",
+        "answer": "支持。嵌套的 JSON 对象会表示为带缩进的 YAML 映射，JSON 数组会表示为带短横线的 YAML 序列。深层或复杂结构转换后仍需复核。"
+      },
+      {
+        "question": "JSON 的 null 值会怎么处理？",
+        "answer": "null 值会按转换器选择的 YAML null 形式输出。接收方工具可能会区分 null、空字符串和缺失字段，因此部署前请复核关键字段。"
+      },
+      {
+        "question": "为什么 YAML 输出里有些字符串加了引号？",
+        "answer": "对于不加引号就可能被解释为布尔值、数字、日期、null、文档标记或特殊语法的字符串，YAML 序列化器会加上引号。加引号有助于在不同 YAML 解析器之间保留原本的字符串值。"
+      },
+      {
+        "question": "不同 YAML 解析器会有不同解释吗？",
+        "answer": "会。YAML 1.1 和 YAML 1.2 对部分普通标量的解释不同，包括 yes、no、on、off 以及某些像日期的字符串。如果输出要给特定平台使用，请用该平台的 YAML 解析器实测。"
+      },
+      {
+        "question": "可以把 YAML 转回 JSON 吗？",
+        "answer": "反向转换请使用站内的 YAML 转 JSON 转换器。得到的 JSON 表示解析后的 YAML 数据，但注释、锚点、别名、排版以及部分 YAML 特有类型可能无法在往返中保留。"
+      },
+      {
+        "question": "转换器支持从 URL 加载 JSON 吗？",
+        "answer": "本页设计为粘贴 JSON 或读取本地文件。加载任意 URL 可能因 CORS 限制失败，也可能把远程数据暴露给浏览器。只有在明确实现并配好安全控制时，才应提供 URL 输入。"
+      },
+      {
+        "question": "可以转换很大的 JSON 文件吗？",
+        "answer": "实际上限取决于浏览器内存、设备性能、文档深度和生成的 YAML 体量。大文件解析和渲染会变慢，输出行数很多时尤其明显。"
+      },
+      {
+        "question": "我的 JSON 会上传到服务器吗？",
+        "answer": "本页设计为在浏览器中解析 JSON 并生成 YAML，不需要上传服务器。但仍不要在任何浏览器工具中输入密码、API 密钥、访问令牌、客户隐私数据或生产环境配置。"
+      },
+      {
+        "question": "这是免费的 JSON 转 YAML 转换器吗？",
+        "answer": "是。你可以粘贴或打开 JSON，生成 YAML，并复制或下载输出，无需注册账号。"
+      }
+    ],
+    "ui": {
+      "label_input": "输入 JSON",
+      "label_output": "YAML 输出",
+      "btn_convert": "转换为 YAML",
+      "option_indent": "缩进：",
+      "option_indent_2": "2 空格",
+      "option_indent_4": "4 空格",
+      "placeholder_output": "YAML 输出将显示在这里……",
+      "error_invalid_json": "输入不是合法的 JSON",
+      "error_empty_input": "请先输入 JSON 或打开 JSON 文件",
+      "error_conversion": "这份 JSON 无法转换为 YAML"
+    },
+    "article": {
+      "title": "如何在线将 JSON 转换为 YAML",
+      "content": "<h2>什么是 JSON 转 YAML 转换器？</h2><p>JSON 转 YAML 转换器会解析 JSON 对象或数组，并用 YAML 语法输出大致相同的数据结构。YAML 通常更便于人阅读和修改，因为嵌套是用缩进表达的，而不是大括号、方括号和逗号。</p><p>JSON 和 YAML 是相近但并不等同的格式。JSON 的数据可以用 YAML 表示，但转换过程不会凭空产生注释、锚点、别名、schema 或某个平台特有的配置行为。结果仍然要按最终读取它的工具或平台来校验。</p><h2>常见使用场景</h2><ul><li><strong>配置编辑：</strong>把机器生成的 JSON 转成更易读的 YAML，方便人工审阅。</li><li><strong>Kubernetes 流程：</strong>把转换结果当作清单的起点，再按 Kubernetes 资源 schema 校验后才能应用。</li><li><strong>Docker Compose：</strong>在键名符合 Compose 规范的前提下，把结构化配置转成 YAML 语法，便于审阅或继续编辑。</li><li><strong>CI/CD 文件：</strong>为基于 YAML 的流水线准备由 JSON 生成的配置，同时仍要用目标 CI 系统校验。</li><li><strong>文档：</strong>用简洁的 YAML 形式展示嵌套配置数据。</li><li><strong>本地开发：</strong>把 API 样例、生成的配置或测试夹具转成 YAML，便于手动修改。</li></ul><h2>JSON 与 YAML 的对比</h2><ul><li><strong>JSON：</strong>语法严格、基于标点，常用于 API、应用数据和机器间交换。</li><li><strong>YAML：</strong>基于缩进，常用于人工编辑的配置和基础设施工具。</li></ul><p>YAML 作为配置更易读，但缩进和标量解释会变得很关键。一个看起来很简单的 YAML 文件，仍可能是非法的，或被不同解析器解释成不同的值。</p><h2>如何将 JSON 转换为 YAML</h2><ol><li><strong>输入 JSON：</strong>粘贴合法的 JSON 对象或数组，或打开 .json 文件。</li><li><strong>选择缩进：</strong>选择输出可用的缩进设置。</li><li><strong>转换：</strong>生成 JSON 结构对应的 YAML 表示。</li><li><strong>检查标量值：</strong>重点看那些像布尔值、数字、日期、null 或 YAML 语法的字符串。</li><li><strong>复制或下载：</strong>复制 YAML，或保存为 .yaml、.yml 文件。</li><li><strong>按目标平台校验：</strong>如果文件要用于 Kubernetes、Docker Compose、GitHub Actions、Helm、Ansible 或其他系统，使用前先跑该平台的校验步骤。</li></ol><h2>JSON 结构如何映射到 YAML</h2><ul><li><strong>对象：</strong>变成 YAML 映射，即带缩进的键值对。</li><li><strong>数组：</strong>变成 YAML 序列，每项前带一个短横线。</li><li><strong>字符串：</strong>变成 YAML 标量；为避免歧义解释，必要时会加引号。</li><li><strong>数字：</strong>以看起来像数字的 YAML 标量输出，具体解释取决于目标解析器的规则。</li><li><strong>布尔值：</strong>按序列化器的输出规则写成 YAML 布尔值。</li><li><strong>Null：</strong>用 YAML 的 null 形式输出，而不是空字符串。</li></ul><h2>为什么 YAML 里的引号很重要</h2><p>YAML 解析器并不总是以相同方式解释纯文本。像 <code>true</code>、<code>false</code>、<code>null</code>、类日期字符串、类数字字符串以及 YAML 指示符这样的值，可能被解释成类型而不是普通文本。序列化器会加引号，以保留原本的 JSON 字符串值。</p><p>当输出要交给使用不同 YAML 版本的工具时，这一点尤其重要。YAML 1.1 和 YAML 1.2 的标量规则不同，所以重要取值请用目标平台的解析器实测。</p><h2>面向 Kubernetes 的 JSON 转 YAML</h2><p>Kubernetes 接受 YAML 清单，对许多资源定义也接受 JSON 表示，因此把 JSON 转成 YAML 主要是为了可读性、编辑、版本管理，以及与常见 Kubernetes 工作流保持一致。转换器并不知道 <code>apiVersion</code>、<code>kind</code>、<code>metadata</code>、<code>spec</code> 这些字段对某个具体 Kubernetes 资源是否合法。</p><p>转换后请用面向 Kubernetes 的工具校验清单；如果源数据来自 <code>kubectl get -o json</code> 这类命令，还要删除由服务端管理的字段。格式转换并不等同于产出一份干净、可直接部署的清单。</p><h2>面向 Docker Compose 和 CI/CD 的 JSON 转 YAML</h2><p>Docker Compose 和 CI/CD 平台都使用 YAML 文件，但每个平台都有自己的 schema 和插值规则。一个合法的 YAML 文档仍可能因为键不被支持、值类型不对或结构与平台规范不符而被拒绝。请把生成的 YAML 当作一次语法转换，并单独做校验。</p><h2>YAML 注释与往返转换</h2><p>JSON 不含注释，因此把 JSON 转成 YAML 不可能补出源数据里没有的注释。反过来，把生成的 YAML 再转回 JSON，通常也会丢掉注释和排版选择。如果注释或人工排版很重要，请把原始 JSON 和编辑后的 YAML 分开保存。</p><h2>URL 输入与安全</h2><p>从任意 URL 加载 JSON 会带来 CORS、隐私和安全方面的考虑。浏览器可能没有权限读取远程接口，而远程响应也可能包含你本不打算处理的数据。相比之下，本地粘贴或文件输入是更可预期的默认方式。如果要加入 URL 加载，需要校验 URL、处理 CORS 失败，并且不从页面发送凭据或私有 URL。</p><h2>浏览器本地处理与隐私</h2><p>本转换器设计为在浏览器中解析 JSON 并生成 YAML，而不是把源数据发送到远程转换服务。这对开发和配置工作很有用，但它不是密钥管理系统。不要在任何在线工具中输入密码、API 密钥、令牌、客户隐私数据或生产环境凭据。</p><h2>本地替代方案</h2><p>对于可重复的自动化、CI 流水线、大文件或敏感配置，请使用可信的本地工具，例如 <code>yq</code>、某种语言的 YAML 库，或项目自带的格式化器。浏览器工具更适合快速转换、检查和一次性编辑。</p>"
+    }
+  }
 }

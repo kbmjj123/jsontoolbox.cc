@@ -13,6 +13,10 @@ const FEATURED_CONFIG = [
     }
   },
   {
+    slug: 'large-json-viewer',
+    category: 'view',
+  },
+  {
     slug: 'json-schema-validator',
     category: 'format',
   },

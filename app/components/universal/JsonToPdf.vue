@@ -8,8 +8,8 @@
           :label="tool.ui?.label_input || 'Input JSON'"
           placeholder='{"name": "JSON Toolbox", "version": "1.0"}'
           show-upload
-          show-load-url
           example-slug="json-to-pdf"
+          :tool="props.tool"
           @clear="clearAll"
           @paste="onPaste"
           @example-loaded="onExampleLoaded"
@@ -56,7 +56,7 @@
                 <div
                   v-if="pi === 0"
                   :style="{ fontSize: (fontSize + 4) + 'pt', fontWeight: 'bold', marginBottom: '3mm', fontFamily: 'ui-monospace, Menlo, Consolas, monospace' }"
-                >JSON Output</div>
+                >{{ props.tool.ui?.label_pdf_title || 'JSON Output' }}</div>
                 <pre
                   class="m-0 whitespace-pre-wrap break-all"
                   :style="{ fontSize: fontSize + 'pt', lineHeight: '1.5', fontFamily: 'ui-monospace, Menlo, Consolas, monospace', color: '#000', margin: 0 }"
@@ -107,14 +107,15 @@
 </template>
 
 <script setup lang="ts">
-import { jsPDF } from 'jspdf'
-import html2canvas from 'html2canvas'
-
 const props = defineProps<{ tool: any }>()
 const { t } = useI18n()
 const toast = useToast()
 
 const inputJson = ref('')
+onMounted(() => {
+  const text = useJsonInbox().consumeInbox()
+  if (text != null) inputJson.value = text
+})
 const formattedJson = ref('')
 const error = ref('')
 const fontSize = ref(10)
@@ -195,23 +196,70 @@ const format = (silent = false) => {
     formattedJson.value = JSON.stringify(JSON.parse(inputJson.value), null, 2)
     if (!silent) toast.success(t('toast.formatted'))
   }
-  catch (e) { error.value = (e as Error).message; formattedJson.value = ''; if (!silent) toast.error((e as Error).message) }
+  catch (e) { const msg = props.tool.ui?.error_invalid_json || (e as Error).message; error.value = msg; formattedJson.value = ''; if (!silent) toast.error(msg) }
 }
 
 const copyOutput = async () => { await copyToClipboard(formattedJson.value) }
 
-// ── PDF export: html2canvas → image → jsPDF (reliable CJK support) ──
-const downloadPdf = async () => {
-  if (!formattedJson.value) return
+// ── Text-mode PDF export ──
+// The built-in PDF fonts (Courier/Helvetica) only cover Latin-1. Content that
+// stays inside that range is written as real, selectable text. Anything else
+// (CJK, Cyrillic, emoji…) needs an embedded font we do not ship yet, so it
+// falls back to a rendered snapshot — and the UI says so explicitly.
+const LATIN1_ONLY = /^[\u0000-\u00FF]*$/
 
-  const isLandscape = orientation.value === 'landscape'
+const buildTextPdf = async () => {
+  const { jsPDF } = await import('jspdf')
+  const doc = new jsPDF({ orientation: orientation.value, unit: 'mm', format: 'a4' })
+  const contentW = PAGE_W_MM.value - MARGIN_MM * 2
+  const lineH = fontSize.value * 0.3528 * 1.5 // pt → mm, 1.5 line height
+  const title = props.tool.ui?.label_pdf_title || 'JSON Output'
+
+  doc.setFont('courier', 'normal')
+  doc.setFontSize(fontSize.value)
+
+  const bodyLines = doc.splitTextToSize(formattedJson.value, contentW) as string[]
+  const perPage = Math.max(1, Math.floor((PAGE_H_MM.value - MARGIN_MM * 2 - 6) / lineH))
+
+  const chunks: string[][] = []
+  let firstPage = true
+  for (let i = 0; i < bodyLines.length;) {
+    let room = perPage
+    if (firstPage) room -= 3 // title block
+    chunks.push(bodyLines.slice(i, i + room))
+    i += room
+    firstPage = false
+  }
+  if (chunks.length === 0) chunks.push([])
+
+  chunks.forEach((lines, pi) => {
+    if (pi > 0) doc.addPage()
+    let y = MARGIN_MM
+    if (pi === 0) {
+      doc.setFont('courier', 'bold')
+      doc.setFontSize(fontSize.value + 4)
+      doc.text(title, MARGIN_MM, y)
+      doc.setFont('courier', 'normal')
+      doc.setFontSize(fontSize.value)
+      y += 10
+    }
+    doc.text(lines, MARGIN_MM, y, { lineHeightFactor: 1.5 })
+    doc.setFontSize(8)
+    doc.text(`${pi + 1} / ${chunks.length}`, PAGE_W_MM.value - MARGIN_MM, PAGE_H_MM.value - 5, { align: 'right' })
+    doc.setFontSize(fontSize.value)
+  })
+
+  doc.save('json-output.pdf')
+}
+
+// ── Snapshot fallback: html2canvas → image → jsPDF ──
+const buildSnapshotPdf = async () => {
+  const [{ jsPDF }, { default: html2canvas }] = await Promise.all([import('jspdf'), import('html2canvas')])
   const doc = new jsPDF({ orientation: orientation.value, unit: 'mm', format: 'a4' })
 
-  // Build each page as an HTML element, render to canvas, add to PDF
   for (let pi = 0; pi < pages.value.length; pi++) {
     if (pi > 0) doc.addPage()
 
-    // Create a visible container (clipped by overflow:hidden on parent)
     const wrapper = document.createElement('div')
     wrapper.style.cssText = 'position:fixed;left:0;top:0;overflow:hidden;width:1px;height:1px;opacity:0.01;pointer-events:none;'
 
@@ -227,12 +275,11 @@ const downloadPdf = async () => {
       'box-sizing:border-box',
     ].join(';')
 
-    // Title on first page
     if (pi === 0) {
-      const title = document.createElement('div')
-      title.style.cssText = `font-size:${fontSize.value + 4}pt;font-weight:bold;margin-bottom:8mm;font-family:ui-monospace,Menlo,Consolas,monospace;`
-      title.textContent = 'JSON Output'
-      container.appendChild(title)
+      const titleEl = document.createElement('div')
+      titleEl.style.cssText = `font-size:${fontSize.value + 4}pt;font-weight:bold;margin-bottom:8mm;font-family:ui-monospace,Menlo,Consolas,monospace;`
+      titleEl.textContent = props.tool.ui?.label_pdf_title || 'JSON Output'
+      container.appendChild(titleEl)
     }
 
     const pre = document.createElement('pre')
@@ -244,23 +291,31 @@ const downloadPdf = async () => {
     document.body.appendChild(wrapper)
 
     try {
-      const canvas = await html2canvas(container, {
-        scale: 2,
-        useCORS: true,
-        backgroundColor: '#ffffff',
-      })
-
-      const imgData = canvas.toDataURL('image/png')
+      const canvas = await html2canvas(container, { scale: 2, useCORS: true, backgroundColor: '#ffffff' })
       const pageContentW = PAGE_W_MM.value - MARGIN_MM * 2
-      // Use actual canvas aspect ratio to avoid stretching on the last page
       const imgH = pageContentW * (canvas.height / canvas.width)
-      doc.addImage(imgData, 'PNG', MARGIN_MM, MARGIN_MM, pageContentW, imgH)
+      doc.addImage(canvas.toDataURL('image/png'), 'PNG', MARGIN_MM, MARGIN_MM, pageContentW, imgH)
     } finally {
       document.body.removeChild(wrapper)
     }
   }
 
   doc.save('json-output.pdf')
+}
+
+const downloadPdf = async () => {
+  if (!formattedJson.value) return
+  try {
+    if (LATIN1_ONLY.test(formattedJson.value)) {
+      await buildTextPdf()
+    } else {
+      await buildSnapshotPdf()
+      toast.info(props.tool.ui?.notice_snapshot_fallback || 'This PDF was rendered as an image because the JSON contains characters outside the built-in PDF fonts.')
+    }
+  } catch (e) {
+    toast.error(props.tool.ui?.error_pdf_generation || 'The PDF could not be generated')
+    throw e
+  }
 }
 
 const downloadTxt = () => {

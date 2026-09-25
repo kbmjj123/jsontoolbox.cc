@@ -68,58 +68,39 @@
 										<Icon name="lucide:arrow-right" class="w-3 h-3" />
 									</NuxtLinkLocale>
 								</li>
-							</ul>
-						</div>
+								</ul>
+								</div>
 
-					<!-- Support links -->
-					<div>
-						<strong
-							class="mb-5 text-xs font-bold uppercase tracking-widest text-surface-900 dark:text-surface-100">
-							{{ $t('app.footer.support_title') || 'Support' }}
-						</strong>
-						<ul class="space-y-3">
-							<li>
-								<NuxtLinkLocale to="/about"
-									class="text-sm font-medium text-surface-500 hover:text-primary-600 hover:translate-x-1 transition-all inline-block dark:text-surface-400 dark:hover:text-primary-400">
-									{{ $t('app.footer.support.about_us') }}
-								</NuxtLinkLocale>
-							</li>
-							<li>
-								<NuxtLinkLocale to="/contact"
-									class="text-sm font-medium text-surface-500 hover:text-primary-600 hover:translate-x-1 transition-all inline-block dark:text-surface-400 dark:hover:text-primary-400">
-									{{ $t('app.footer.support.contact') }}
-								</NuxtLinkLocale>
-							</li>
-							<li>
-								<NuxtLinkLocale to="/privacy"
-									class="text-sm font-medium text-surface-500 hover:text-primary-600 hover:translate-x-1 transition-all inline-block dark:text-surface-400 dark:hover:text-primary-400">
-									{{ $t('app.footer.support.privacy') }}
-								</NuxtLinkLocale>
-							</li>
-							<li>
-								<NuxtLinkLocale to="/terms-of-service"
-									class="text-sm font-medium text-surface-500 hover:text-primary-600 hover:translate-x-1 transition-all inline-block dark:text-surface-400 dark:hover:text-primary-400">
-									{{ $t('app.footer.support.terms') }}
-								</NuxtLinkLocale>
-							</li>
-						</ul>
-					</div>
-
-					</div>
-				</div>
+								</div>
+								</div>
 
 			</div>
 
-			<!-- Bottom bar: privacy + copyright -->
-			<div class="border-t border-surface-200/60 dark:border-surface-700/60 pt-6 flex flex-col sm:flex-row items-center justify-between gap-3 text-xs text-surface-400 dark:text-surface-500">
+			<!-- Bottom bar: copyright (left) + privacy links (right) -->
+			<div class="border-t border-surface-200/60 dark:border-surface-700/60 pt-6 flex flex-col sm:flex-row items-center justify-between gap-4 text-xs text-surface-400 dark:text-surface-500">
 				<div class="flex items-center gap-1.5">
 					<Icon name="lucide:shield-check" class="w-3.5 h-3.5 text-green-500 shrink-0" />
 					<span>{{ $t('app.footer.privacy_notice') }}</span>
-					<NuxtLinkLocale to="/privacy" class="text-primary-500 hover:text-primary-600 dark:text-primary-400 dark:hover:text-primary-300 underline underline-offset-2">
+					<p>&copy; {{ new Date().getFullYear() }} {{ $t('app.footer.copyright') }}</p>
+				</div>
+				<nav class="flex flex-wrap items-center justify-center sm:justify-end gap-x-5 gap-y-2">
+					<NuxtLinkLocale to="/about"
+						class="font-medium text-surface-500 hover:text-primary-600 transition-all dark:text-surface-400 dark:hover:text-primary-400">
+						{{ $t('app.footer.support.about_us') }}
+					</NuxtLinkLocale>
+					<NuxtLinkLocale to="/contact"
+						class="font-medium text-surface-500 hover:text-primary-600 transition-all dark:text-surface-400 dark:hover:text-primary-400">
+						{{ $t('app.footer.support.contact') }}
+					</NuxtLinkLocale>
+					<NuxtLinkLocale to="/privacy"
+						class="font-medium text-surface-500 hover:text-primary-600 transition-all dark:text-surface-400 dark:hover:text-primary-400">
 						{{ $t('app.footer.support.privacy') }}
 					</NuxtLinkLocale>
-				</div>
-				<p>&copy; {{ new Date().getFullYear() }} {{ $t('app.footer.copyright') }}</p>
+					<NuxtLinkLocale to="/terms-of-service"
+						class="font-medium text-surface-500 hover:text-primary-600 transition-all dark:text-surface-400 dark:hover:text-primary-400">
+						{{ $t('app.footer.support.terms') }}
+					</NuxtLinkLocale>
+				</nav>
 			</div>
 
 		</div>

@@ -8,8 +8,8 @@
           :label="tool.ui?.label_input || 'Input JSON'"
           placeholder='{"name": "JSON Toolbox", "version": "1.0"}'
           show-upload
-          show-load-url
           example-slug="json-schema-generator"
+          :tool="props.tool"
           @clear="clearAll"
           @paste="onPaste"
           @example-loaded="onExampleLoaded"
@@ -19,6 +19,9 @@
 
     <template #second>
       <div class="h-full pl-3 flex flex-col overflow-hidden">
+        <p v-if="outputSchema" class="mb-2 rounded-lg bg-surface-100 px-3 py-2 text-[11px] text-surface-500 dark:bg-surface-800 dark:text-surface-400">
+          {{ tool.ui?.warning_sample_based || 'Generated from the sample you provided. Review it before use.' }}
+        </p>
         <JsonOutputPanel
           :label="tool.ui?.label_output || 'JSON Schema'"
           :content="outputSchema"
@@ -46,6 +49,13 @@
           <option value="tab">Tab</option>
         </select>
       </div>
+      <div class="flex items-center gap-2">
+        <label class="text-xs font-bold text-surface-600 dark:text-surface-400">{{ props.tool.ui?.option_draft || 'Draft:' }}</label>
+        <select v-model="draft" class="rounded-lg border border-surface-200 bg-white px-2 py-1 text-xs dark:border-surface-700 dark:bg-surface-800">
+          <option value="draft-07">{{ props.tool.ui?.option_draft_7 || 'Draft-07' }}</option>
+          <option value="2020-12">{{ props.tool.ui?.option_draft_2020 || '2020-12' }}</option>
+        </select>
+      </div>
       <label class="flex items-center gap-1.5 cursor-pointer select-none">
         <input type="checkbox" v-model="includeRequired" class="rounded border-surface-300">
         <span class="text-xs font-bold text-surface-600 dark:text-surface-400">{{ tool.ui?.option_required || 'Required' }}</span>
@@ -53,6 +63,14 @@
       <label class="flex items-center gap-1.5 cursor-pointer select-none">
         <input type="checkbox" v-model="additionalProperties" class="rounded border-surface-300">
         <span class="text-xs font-bold text-surface-600 dark:text-surface-400">{{ tool.ui?.option_additional || 'Additional' }}</span>
+      </label>
+      <label class="flex items-center gap-1.5 cursor-pointer select-none">
+        <input type="checkbox" v-model="detectFormats" class="rounded border-surface-300">
+        <span class="text-xs font-bold text-surface-600 dark:text-surface-400">{{ tool.ui?.option_formats || 'Detect formats' }}</span>
+      </label>
+      <label class="flex items-center gap-1.5 cursor-pointer select-none">
+        <input type="checkbox" v-model="includeExamples" class="rounded border-surface-300">
+        <span class="text-xs font-bold text-surface-600 dark:text-surface-400">{{ tool.ui?.option_examples || 'Include examples' }}</span>
       </label>
     </template>
   </ResizablePanel>
@@ -65,11 +83,18 @@ const { t } = useI18n()
 const toast = useToast()
 
 const inputJson = ref('')
+onMounted(() => {
+  const text = useJsonInbox().consumeInbox()
+  if (text != null) inputJson.value = text
+})
 const outputSchema = ref('')
 const error = ref('')
 const indent = ref<number | string>(2)
 const includeRequired = ref(true)
 const additionalProperties = ref(false)
+const detectFormats = ref(true)
+const includeExamples = ref(false)
+const draft = ref<'draft-07' | '2020-12'>('draft-07')
 const fullscreen = ref(false)
 
 const inputEditorRef = ref<InstanceType<typeof import('~/components/tool/JsonInputEditor.vue').default>>()
@@ -93,7 +118,7 @@ watch(inputJson, () => {
 })
 
 // Re-generate when options change; re-format input when indent changes
-watch([indent, includeRequired, additionalProperties], () => {
+watch([indent, includeRequired, additionalProperties, detectFormats, includeExamples, draft], () => {
   if (inputJson.value.trim()) {
     formatInputInPlace()
     generate()
@@ -113,19 +138,35 @@ const onPaste = () => {
 
 const generate = (silent = false) => {
   error.value = ''
-  if (!inputJson.value.trim()) { outputSchema.value = ''; return }
+  if (!inputJson.value.trim()) {
+    error.value = props.tool.ui?.error_empty_input || 'Enter JSON sample data first'
+    outputSchema.value = ''
+    if (!silent) toast.error(error.value)
+    return
+  }
+  let parsed: unknown
   try {
-    const parsed = JSON.parse(inputJson.value)
+    parsed = JSON.parse(inputJson.value)
+  } catch (e) {
+    error.value = props.tool.ui?.error_invalid_json || 'Input is not valid JSON'
+    outputSchema.value = ''
+    if (!silent) toast.error(error.value)
+    return
+  }
+  try {
     outputSchema.value = generateSchemaText(parsed, {
       indent: indent.value as number | 'tab',
       includeRequired: includeRequired.value,
       additionalProperties: additionalProperties.value,
+      detectFormats: detectFormats.value,
+      includeExamples: includeExamples.value,
+      draft: draft.value,
     })
     if (!silent) toast.success(t('toast.generated'))
   } catch (e) {
-    error.value = (e as Error).message
+    error.value = props.tool.ui?.error_generation || 'The JSON Schema could not be generated'
     outputSchema.value = ''
-    if (!silent) toast.error((e as Error).message)
+    if (!silent) toast.error(error.value)
   }
 }
 
