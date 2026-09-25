@@ -213,6 +213,10 @@ const encodingOptions = [
 ]
 
 const inputJson = ref('')
+onMounted(() => {
+  const text = useJsonInbox().consumeInbox()
+  if (text != null) inputJson.value = text
+})
 const error = ref('')
 const fullscreen = ref(false)
 const inputEditorRef = ref()

@@ -158,6 +158,10 @@ const ui = computed<Record<string, string>>(() => (props.tool?.ui ?? {}) as Reco
 const SAMPLE_PLACEHOLDER = '{\n  "id": 1,\n  "name": "Alice",\n  "email": "alice@example.com"\n}'
 
 const inputJson = ref('')
+onMounted(() => {
+  const text = useJsonInbox().consumeInbox()
+  if (text != null) inputJson.value = text
+})
 const outputCode = ref('')
 const error = ref('')
 const language = ref<Lang>('typescript')

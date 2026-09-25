@@ -236,12 +236,17 @@
         </div>
       </div>
     </section>
+
+    <!-- Global tool-picker modal (hero upload/paste entry) -->
+    <ToolPickerModal />
+
   </div>
 </template>
 
 <script setup lang="ts">
 const { featuredTools } = useTools()
 const { t } = useI18n()
+const { openPicker } = useToolPicker()
 const { getBlogList } = useBlog()
 
 // FAQ items from i18n (逐个取值，避免 returnObjects 返回消息 AST)

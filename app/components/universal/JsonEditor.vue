@@ -267,6 +267,10 @@ const props = withDefaults(defineProps<{
 const tool = computed(() => props.tool)
 
 const inputJson = ref('')
+onMounted(() => {
+  const text = useJsonInbox().consumeInbox()
+  if (text != null) inputJson.value = text
+})
 const outputJson = ref('')
 const error = ref('')
 const parseError = ref<ParseError | null>(null)

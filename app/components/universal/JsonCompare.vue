@@ -216,6 +216,10 @@ const { isFullscreen, toggle: toggleFullscreen } = useFullscreen()
 const RENDER_CAP = 500
 
 const leftJson = ref('')
+onMounted(() => {
+  const text = useJsonInbox().consumeInbox()
+  if (text != null) leftJson.value = text
+})
 const rightJson = ref('')
 const error = ref('')
 const diffs = ref<DiffEntry[]>([])

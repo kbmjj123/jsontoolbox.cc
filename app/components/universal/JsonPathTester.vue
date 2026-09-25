@@ -120,6 +120,10 @@ const toast = useToast()
 const ui = computed(() => props.tool?.ui)
 
 const inputJson = ref('')
+onMounted(() => {
+  const text = useJsonInbox().consumeInbox()
+  if (text != null) inputJson.value = text
+})
 const jsonPath = ref('')
 const error = ref('')
 const results = ref<Array<{ path: string; pointer: string; type: string; value: any }>>([])

@@ -112,6 +112,10 @@ const { t } = useI18n()
 const toast = useToast()
 
 const inputJson = ref('')
+onMounted(() => {
+  const text = useJsonInbox().consumeInbox()
+  if (text != null) inputJson.value = text
+})
 const formattedJson = ref('')
 const error = ref('')
 const fontSize = ref(10)

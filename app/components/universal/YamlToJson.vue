@@ -61,6 +61,10 @@ const { t } = useI18n()
 const toast = useToast()
 
 const inputYaml = ref('')
+onMounted(() => {
+  const text = useJsonInbox().consumeInbox()
+  if (text != null) inputYaml.value = text
+})
 const outputJson = ref('')
 const error = ref('')
 const indent = ref(2)

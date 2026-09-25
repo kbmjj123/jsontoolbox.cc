@@ -84,6 +84,10 @@ const { t } = useI18n()
 const toast = useToast()
 
 const jsonData = ref('')
+onMounted(() => {
+  const text = useJsonInbox().consumeInbox()
+  if (text != null) jsonData.value = text
+})
 const schemaData = ref('')
 const schemaError = ref('')
 const result = ref<{ valid: boolean; fieldErrors: FieldError[] } | null>(null)

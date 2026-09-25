@@ -50,6 +50,7 @@
       "subtitle": "Preview images, colors, and media right inside your JSON, open huge files in seconds, and convert across 12+ formats — all in your browser.",
       "cta_primary": "Explore JSON Tools",
       "cta_secondary": "Open JSON Editor",
+      "cta_upload": "Upload or paste JSON",
       "capability_1": "Inline image & color preview",
       "capability_2": "Opens huge JSON & NDJSON",
       "capability_3": "12+ format conversions",
@@ -155,6 +156,16 @@
         }
       }
     }
+  },
+  "picker": {
+    "title": "Open JSON in a tool",
+    "close": "Close",
+    "drop_or_click": "Drop a file or click to upload",
+    "hint": "JSON, CSV, YAML, XML or any text — up to 5 MB opens in the tool you pick",
+    "paste_placeholder": "…or paste your content here",
+    "search": "Search tools",
+    "privacy": "Everything stays in your browser. Nothing is uploaded.",
+    "large_file_note": "large file — opens in the dedicated viewer"
   },
   "tools": {
     "page_title": "All JSON Tools — Free Online JSON Tools",

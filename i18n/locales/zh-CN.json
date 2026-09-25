@@ -51,6 +51,7 @@
       "subtitle": "在 JSON 中直接预览图片、颜色和媒体，秒开超大文件，并在 12+ 种格式间自由转换——全程都在浏览器里完成。",
       "cta_primary": "浏览所有工具",
       "cta_secondary": "打开 JSON 编辑器",
+      "cta_upload": "上传 / 粘贴 JSON",
       "capability_1": "内联图片与颜色预览",
       "capability_2": "秒开超大 JSON / NDJSON",
       "capability_3": "12+ 种格式互转",
@@ -156,6 +157,16 @@
         }
       }
     }
+  },
+  "picker": {
+    "title": "用工具打开 JSON",
+    "close": "关闭",
+    "drop_or_click": "拖入文件或点击上传",
+    "hint": "JSON、CSV、YAML、XML 或任意文本——5MB 以内会进入你选择的工具",
+    "paste_placeholder": "…或在此粘贴内容",
+    "search": "搜索工具",
+    "privacy": "一切都在浏览器本地完成，不会上传任何数据。",
+    "large_file_note": "大文件——将在专用查看器中打开"
   },
   "tools": {
     "page_title": "所有JSON工具 — 免费在线JSON工具",

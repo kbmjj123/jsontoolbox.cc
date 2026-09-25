@@ -145,6 +145,10 @@ const toast = useToast()
 const ui = computed<Record<string, string>>(() => (props.tool?.ui ?? {}) as Record<string, string>)
 
 const inputJson = ref('')
+onMounted(() => {
+  const text = useJsonInbox().consumeInbox()
+  if (text != null) inputJson.value = text
+})
 const outputTs = ref('')
 const error = ref('')
 const rootName = ref('RootObject')

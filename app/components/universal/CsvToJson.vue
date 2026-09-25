@@ -150,6 +150,10 @@ const { t } = useI18n()
 const toast = useToast()
 
 const inputCsv = ref('')
+onMounted(() => {
+  const text = useJsonInbox().consumeInbox()
+  if (text != null) inputCsv.value = text
+})
 const outputJson = ref('')
 const parsedOutputData = ref<unknown>(null)
 const error = ref('')

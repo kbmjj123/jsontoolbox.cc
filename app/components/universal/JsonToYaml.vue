@@ -56,6 +56,10 @@ const { t } = useI18n()
 const toast = useToast()
 
 const inputJson = ref('')
+onMounted(() => {
+  const text = useJsonInbox().consumeInbox()
+  if (text != null) inputJson.value = text
+})
 const outputYaml = ref('')
 const error = ref('')
 /** Which step failed, so the message can pick the right localized label. */

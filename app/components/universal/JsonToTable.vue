@@ -110,6 +110,10 @@ const ui = computed<Record<string, string>>(() => props.tool?.ui ?? {})
 const PREVIEW_ROW_LIMIT = 100
 
 const inputJson = ref('')
+onMounted(() => {
+  const text = useJsonInbox().consumeInbox()
+  if (text != null) inputJson.value = text
+})
 const error = ref('')
 const headers = ref<string[]>([])
 const sourceRows = ref<Record<string, any>[]>([])
