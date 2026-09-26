@@ -66,6 +66,12 @@
       <slot name="toolbar-left" />
       <slot name="toolbar-right" />
     </div>
+
+    <!-- Optional content below the toolbar (e.g. results). Rendered inside the
+         container so it stays visible in fullscreen. -->
+    <div v-if="$slots.below" class="mt-3 shrink-0 min-h-0">
+      <slot name="below" />
+    </div>
   </div>
 </template>
 

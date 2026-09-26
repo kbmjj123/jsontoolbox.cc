@@ -89,9 +89,13 @@ const toast = useToast()
 const MAX_LAYERS = 10
 
 const inputText = ref('')
+const inboxApplied = ref(false)
 onMounted(() => {
   const text = useJsonInbox().consumeInbox()
-  if (text != null) inputText.value = text
+  if (text != null) {
+    inputText.value = text
+    inboxApplied.value = true
+  }
 })
 const outputText = ref('')
 const error = ref('')
@@ -193,5 +197,5 @@ const clearAll = () => {
   statusLabel.value = ''
 }
 
-onMounted(() => { inputEditorRef.value?.loadDefaultExample() })
+onMounted(() => { if (!inboxApplied.value) inputEditorRef.value?.loadDefaultExample() })
 </script>

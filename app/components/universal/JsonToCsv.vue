@@ -213,9 +213,13 @@ const encodingOptions = [
 ]
 
 const inputJson = ref('')
+const inboxApplied = ref(false)
 onMounted(() => {
   const text = useJsonInbox().consumeInbox()
-  if (text != null) inputJson.value = text
+  if (text != null) {
+    inputJson.value = text
+    inboxApplied.value = true
+  }
 })
 const error = ref('')
 const fullscreen = ref(false)
@@ -402,6 +406,7 @@ const onDocumentClick = (e: MouseEvent) => {
 }
 onMounted(() => {
   document.addEventListener('click', onDocumentClick)
+  if (inboxApplied.value) return
   inputEditorRef.value?.loadDefaultExample()
 })
 onUnmounted(() => {

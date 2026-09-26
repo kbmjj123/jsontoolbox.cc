@@ -711,8 +711,9 @@ onMounted(async () => {
   // Check for shared content first
   await loadSharedContent()
 
-  // If no shared content, load default example
-  if (!isSharedSession.value) {
+  // If no shared content (and no content handed over from the hero picker),
+  // load default example
+  if (!isSharedSession.value && !inboxApplied.value) {
     loadDefaultExample()
   }
 })

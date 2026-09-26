@@ -6,18 +6,22 @@
       <div class="flex gap-2 items-center shrink-0 sm:ml-auto">
         <!-- Built-in example dropdown -->
         <div v-if="hasExamples" ref="exampleMenuRef" class="relative">
-          <button @click="showExampleMenu = !showExampleMenu"
+          <button ref="exampleToggleRef" @click="toggleExampleMenu"
             class="text-xs text-primary-600 hover:text-primary-700 dark:text-primary-400">
             {{ props.tool?.ui?.btn_example ?? $t('system.example') }}
           </button>
-          <div v-if="showExampleMenu"
-            class="absolute right-0 top-full mt-1 bg-white dark:bg-surface-800 border border-surface-200 dark:border-surface-700 rounded-lg shadow-lg p-1 z-50 min-w-[140px]">
-            <button v-for="ex in examples" :key="ex.id"
-              @click="onExampleSelect(ex.id)"
-              class="w-full text-left px-3 py-1.5 text-xs hover:bg-surface-100 dark:hover:bg-surface-700 rounded">
-              {{ getLabel(ex) }}
-            </button>
-          </div>
+          <!-- Teleported to <body>: the header bar is a horizontal scroll
+               container (overflow-x-auto) and would clip an in-flow dropdown. -->
+          <Teleport to="body">
+            <div v-if="showExampleMenu" ref="exampleMenuElRef" :style="menuStyle"
+              class="fixed z-[9999] bg-white dark:bg-surface-800 border border-surface-200 dark:border-surface-700 rounded-lg shadow-lg p-1 min-w-[140px]">
+              <button v-for="ex in examples" :key="ex.id"
+                @click="onExampleSelect(ex.id)"
+                class="w-full text-left px-3 py-1.5 text-xs hover:bg-surface-100 dark:hover:bg-surface-700 rounded">
+                {{ getLabel(ex) }}
+              </button>
+            </div>
+          </Teleport>
         </div>
         <slot name="actions" />
         <button
@@ -244,6 +248,9 @@ import SensitiveFieldWarning from '~/components/tool/SensitiveFieldWarning.vue'
 import { useSensitiveFieldDetection } from '~/composables/useSensitiveFieldDetection'
 import { useDebounceFn } from '@vueuse/core'
 
+const { t } = useI18n()
+const toast = useToast()
+
 interface Props {
   modelValue: string
   label?: string
@@ -330,9 +337,39 @@ const emit = defineEmits<{
 const { examples, hasExamples, getLabel, loadById, loadDefault } = useToolExample(props.exampleSlug)
 const showExampleMenu = ref(false)
 const exampleMenuRef = ref<HTMLElement>()
+const exampleToggleRef = ref<HTMLElement>()
+const exampleMenuElRef = ref<HTMLElement>()
+const menuStyle = ref<Record<string, string>>({})
+
+/** The header bar scrolls horizontally (overflow-x-auto), which clips an
+ *  in-flow absolute dropdown, so the menu is teleported to <body> and
+ *  positioned manually against the toggle button. */
+function updateMenuPos() {
+  const el = exampleToggleRef.value
+  if (!el) return
+  const rect = el.getBoundingClientRect()
+  menuStyle.value = {
+    top: `${rect.bottom + 4}px`,
+    right: `${Math.max(8, window.innerWidth - rect.right)}px`,
+  }
+}
+
+function toggleExampleMenu() {
+  showExampleMenu.value = !showExampleMenu.value
+  if (showExampleMenu.value) {
+    updateMenuPos()
+    nextTick(updateMenuPos)
+  }
+}
+
 const onExampleSelect = (id: string) => {
   const ex = examples.value.find(e => e.id === id)
-  if (ex) { emit('update:modelValue', ex.input); emit('example-loaded', ex.input) }
+  if (ex) {
+    emit('update:modelValue', ex.input)
+    emit('example-loaded', ex.input)
+    // Feedback even when the example matches what is already loaded.
+    toast.success(t('system.exampleLoaded'))
+  }
   showExampleMenu.value = false
 }
 const loadDefaultExample = () => {
@@ -340,10 +377,26 @@ const loadDefaultExample = () => {
   if (ex) { emit('update:modelValue', ex.input); emit('example-loaded', ex.input) }
 }
 const handleClickOutside = (e: MouseEvent) => {
-  if (exampleMenuRef.value && !exampleMenuRef.value.contains(e.target as HTMLElement)) showExampleMenu.value = false
+  if (!showExampleMenu.value) return
+  const target = e.target as HTMLElement
+  // The menu lives in <body>, so both the toggle and the menu count as inside.
+  if (exampleToggleRef.value?.contains(target)) return
+  if (exampleMenuElRef.value?.contains(target)) return
+  showExampleMenu.value = false
 }
-onMounted(() => { document.addEventListener('click', handleClickOutside) })
-onUnmounted(() => { document.removeEventListener('click', handleClickOutside) })
+function onViewportChange() {
+  if (showExampleMenu.value) updateMenuPos()
+}
+onMounted(() => {
+  document.addEventListener('click', handleClickOutside)
+  window.addEventListener('scroll', onViewportChange, true)
+  window.addEventListener('resize', onViewportChange)
+})
+onUnmounted(() => {
+  document.removeEventListener('click', handleClickOutside)
+  window.removeEventListener('scroll', onViewportChange, true)
+  window.removeEventListener('resize', onViewportChange)
+})
 
 const gutterRef = ref<HTMLDivElement>()
 const textareaRef = ref<HTMLTextAreaElement>()

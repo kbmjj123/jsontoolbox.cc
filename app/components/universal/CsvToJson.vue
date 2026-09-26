@@ -150,9 +150,13 @@ const { t } = useI18n()
 const toast = useToast()
 
 const inputCsv = ref('')
+const inboxApplied = ref(false)
 onMounted(() => {
   const text = useJsonInbox().consumeInbox()
-  if (text != null) inputCsv.value = text
+  if (text != null) {
+    inputCsv.value = text
+    inboxApplied.value = true
+  }
 })
 const outputJson = ref('')
 const parsedOutputData = ref<unknown>(null)
@@ -395,6 +399,7 @@ watch(indent, () => {
 })
 
 onMounted(() => {
+  if (inboxApplied.value) return
   inputEditorRef.value?.loadDefaultExample()
 })
 </script>
