@@ -11,7 +11,7 @@
   <ShareLinkErrorState
     v-if="shareLoadError"
     :reason="shareLoadError"
-    :detail="shareLoadDetail"
+    :detail="shareLoadDetail ?? undefined"
     @open-empty="clearAndReset"
     @paste-manual="focusInput"
   />
@@ -250,6 +250,7 @@
 
 <script setup lang="ts">
 import type { ParseError, FieldError } from '~/types/jsonErrors'
+import type { LoadFailureReason } from '~/composables/useSharedPayloadLoader'
 import { useLargeFileGate } from '~/composables/useLargeFile'
 import { useNodeEditing } from '~/composables/useNodeEditing'
 import { useClipboardActions } from '~/composables/useClipboardActions'
@@ -267,9 +268,13 @@ const props = withDefaults(defineProps<{
 const tool = computed(() => props.tool)
 
 const inputJson = ref('')
+const inboxApplied = ref(false)
 onMounted(() => {
   const text = useJsonInbox().consumeInbox()
-  if (text != null) inputJson.value = text
+  if (text != null) {
+    inputJson.value = text
+    inboxApplied.value = true
+  }
 })
 const outputJson = ref('')
 const error = ref('')
@@ -407,7 +412,7 @@ const shareSettings = ref(true)
 const isSharedReadonly = ref(false)
 const isSharedSession = ref(false)
 const sharedPayload = ref<any>(null)
-const shareLoadError = ref<string | null>(null)
+const shareLoadError = ref<LoadFailureReason | null>(null)
 const shareLoadDetail = ref<string | null>(null)
 
 function openShareModal() {

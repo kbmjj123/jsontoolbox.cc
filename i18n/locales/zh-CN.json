@@ -242,7 +242,10 @@
     "shareWarning": "分享链接会在 URL 中编码 JSON 内容。请勿分享密码、令牌或敏感数据。",
     "pasted": "已粘贴",
     "pasteFailed": "粘贴失败",
-    "pasteHint": "请按 Ctrl+V 粘贴"
+    "pasteHint": "请按 Ctrl+V 粘贴",
+    "fullscreen": "全屏",
+    "exitFullscreen": "退出全屏",
+    "escFullscreen": "按 ESC 退出全屏"
   },
   "toast": {
     "converted": "转换成功",

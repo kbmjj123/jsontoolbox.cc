@@ -244,7 +244,7 @@ import type { SharePayloadV1 } from '~/utils/share'
 const props = defineProps<{
   state: ShareModalState
   payload?: SharePayloadV1 | null
-  sensitiveFields?: Array<{ path: string; key: string }>
+  sensitiveFields?: ReadonlyArray<{ readonly path: string; readonly key: string }>
   urlLength?: number
   errorMessage?: string
   canNativeShare?: boolean

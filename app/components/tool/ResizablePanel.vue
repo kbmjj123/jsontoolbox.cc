@@ -17,7 +17,7 @@
             v-if="isFullscreen"
             class="text-xs text-surface-400 dark:text-surface-500 bg-surface-100 dark:bg-surface-800 px-3 py-1 rounded-full"
           >
-            Press ESC to exit fullscreen
+            {{ escHint || t('system.escFullscreen') }}
           </span>
         </Transition>
       </div>
@@ -25,7 +25,7 @@
         <button
           @click="toggle"
           class="rp-fullscreen-btn text-surface-400 hover:text-surface-600 dark:text-surface-500 dark:hover:text-surface-300"
-          :title="isFullscreen ? 'Exit fullscreen' : 'Fullscreen'"
+          :title="isFullscreen ? t('system.exitFullscreen') : t('system.fullscreen')"
         >
           <Icon :name="isFullscreen ? 'lucide:minimize' : 'lucide:maximize'" class="w-4 h-4" />
         </button>
@@ -84,6 +84,8 @@ interface Props {
   responsive?: boolean
   class?: string
   fullscreen?: boolean
+  /** Overrides the localized "press ESC" hint shown while fullscreen. */
+  escHint?: string
 }
 
 const props = withDefaults(defineProps<Props>(), {
@@ -97,6 +99,8 @@ const props = withDefaults(defineProps<Props>(), {
 })
 
 const emit = defineEmits<{ 'update:fullscreen': [value: boolean] }>()
+
+const { t } = useI18n()
 
 // Fullscreen state/behaviour is shared with the Large JSON Viewer via
 // useFullscreen(), so the button, the ESC hint and the body scroll lock behave
