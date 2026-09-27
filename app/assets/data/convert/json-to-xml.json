@@ -93,7 +93,7 @@
     ],
     "example": {
       "input": "{\n  \"user\": {\n    \"name\": \"Alice\",\n    \"age\": 30\n  }\n}",
-      "output": "<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n<user>\n  <name>Alice</name>\n  <age>30</age>\n</user>",
+      "output": "<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n<root>\n  <user>\n    <name>Alice</name>\n    <age>30</age>\n  </user>\n</root>",
       "useCase": "Convert JSON data into XML for testing, documentation, or integration with a system that expects XML."
     },
     "faq": [
@@ -284,7 +284,7 @@
     ],
     "example": {
       "input": "{\n  \"user\": {\n    \"name\": \"Alice\",\n    \"age\": 30\n  }\n}",
-      "output": "<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n<user>\n  <name>Alice</name>\n  <age>30</age>\n</user>",
+      "output": "<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n<root>\n  <user>\n    <name>Alice</name>\n    <age>30</age>\n  </user>\n</root>",
       "useCase": "Convert JSON data into XML for testing, documentation, or integration with a system that expects XML."
     },
     "faq": [
@@ -318,7 +318,7 @@
       },
       {
         "question": "null 值会怎么处理？",
-        "answer": "null 通常会被写成空元素或空文本。不同工具的处理方式不同，如果空值和缺失字段对下游系统有区别，请在转换后复核。"
+        "answer": "null 会作为元素内容输出，文本为字符串 null（既不是空元素也不是空文本）。不同工具的处理方式不同，如果空值和缺失字段对下游系统有区别，请在转换后复核。"
       },
       {
         "question": "键名里包含特殊字符怎么办？",

@@ -58,7 +58,12 @@ const toast = useToast()
 const inputJson = ref('')
 onMounted(() => {
   const text = useJsonInbox().consumeInbox()
-  if (text != null) inputJson.value = text
+  if (text != null) {
+    inputJson.value = text
+    nextTick(() => convertToYaml(true))
+  } else {
+    inputEditorRef.value?.loadDefaultExample()
+  }
 })
 const outputYaml = ref('')
 const error = ref('')

@@ -75,7 +75,12 @@ const toast = useToast()
 const inputJson = ref('')
 onMounted(() => {
   const text = useJsonInbox().consumeInbox()
-  if (text != null) inputJson.value = text
+  if (text != null) {
+    inputJson.value = text
+    nextTick(() => convertToXml(true))
+  } else {
+    inputEditorRef.value?.loadDefaultExample()
+  }
 })
 const outputXml = ref('')
 const error = ref('')

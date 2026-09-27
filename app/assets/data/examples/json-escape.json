@@ -16,5 +16,11 @@
     "label_en": "JSON Array String",
     "label_zh": "JSON 数组字符串",
     "input": "[{\"id\": 1, \"text\": \"Line one\"}, {\"id\": 2, \"text\": \"Line two\\nNew line\"}]"
+  },
+  {
+    "id": "escape-quotes-backslashes",
+    "label_en": "Quotes & Backslash Path",
+    "label_zh": "引号与反斜杠路径",
+    "input": "{\"name\":\"Alice\",\"message\":\"She said \\\"OK\\\"\",\"path\":\"C:\\\\Users\\\\test\"}"
   }
 ]

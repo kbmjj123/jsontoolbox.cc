@@ -1,0 +1,16 @@
+[
+  {
+    "id": "user",
+    "label_en": "User Object",
+    "label_zh": "用户对象",
+    "input": "{\n  \"name\": \"Alice\",\n  \"age\": 30,\n  \"email\": \"alice@example.com\"\n}",
+    "input2": "{\n  \"type\": \"object\",\n  \"properties\": {\n    \"name\": { \"type\": \"string\", \"minLength\": 1 },\n    \"age\": { \"type\": \"number\", \"minimum\": 0 },\n    \"email\": { \"type\": \"string\", \"pattern\": \"^[^@]+@[^@]+$\" }\n  },\n  \"required\": [\"name\", \"email\"]\n}"
+  },
+  {
+    "id": "order",
+    "label_en": "Order With Items",
+    "label_zh": "含数组项的订单",
+    "input": "{\n  \"orderId\": \"A-1001\",\n  \"items\": [\n    { \"sku\": \"X1\", \"qty\": 2 },\n    { \"sku\": \"X2\", \"qty\": 1 }\n  ],\n  \"total\": 59.97\n}",
+    "input2": "{\n  \"type\": \"object\",\n  \"properties\": {\n    \"orderId\": { \"type\": \"string\" },\n    \"items\": {\n      \"type\": \"array\",\n      \"minItems\": 1,\n      \"items\": {\n        \"type\": \"object\",\n        \"properties\": {\n          \"sku\": { \"type\": \"string\" },\n          \"qty\": { \"type\": \"integer\", \"minimum\": 1 }\n        },\n        \"required\": [\"sku\", \"qty\"]\n      }\n    },\n    \"total\": { \"type\": \"number\" }\n  },\n  \"required\": [\"orderId\", \"items\"]\n}"
+  }
+]

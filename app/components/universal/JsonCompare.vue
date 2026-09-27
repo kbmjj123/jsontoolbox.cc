@@ -1,124 +1,74 @@
 <template>
-  <!-- Fullscreen-capable wrapper: in fullscreen the toolbar + editors + results
-       all live inside the enlarged view. -->
-  <div
-    class="relative"
-    :class="isFullscreen
-      ? 'cmp-fullscreen fixed inset-0 z-50 bg-white dark:bg-surface-900 p-4 flex flex-col overflow-hidden'
-      : ''"
-  >
-    <!-- Top bar: options toolbar + fullscreen toggle -->
-    <div class="flex items-center justify-between gap-2 mb-3 shrink-0">
-      <div class="flex flex-wrap items-center gap-2">
-        <button type="button" class="lf-btn-sm" :class="{ 'active': sortKeys }" @click="sortKeys = !sortKeys">
-          <Icon name="lucide:sort-asc" class="h-3.5 w-3.5" />
-          {{ tool.ui?.btn_sort_keys || 'Sort object keys' }}
-        </button>
+  <ResizablePanel v-model:fullscreen="fullscreen" :initial-ratio="0.5" responsive>
+    <template #first>
+      <div class="h-full pr-3">
+        <JsonInputEditor
+          ref="leftEditor"
+          v-model="leftJson"
+          editor-mode="codemirror"
+          :label="tool.ui?.label_json_a || 'JSON A (Original)'"
+          placeholder='{"name": "Alice", "age": 30}'
+          show-upload
+          @clear="onClearLeft"
+        />
+      </div>
+    </template>
 
-        <button type="button" class="lf-btn-sm" :class="{ 'active': ignoreOrder }" @click="ignoreOrder = !ignoreOrder">
-          <Icon name="lucide:list-ordered" class="h-3.5 w-3.5" />
-          {{ tool.ui?.btn_ignore_order || 'Ignore array order' }}
-        </button>
+    <template #second>
+      <div class="h-full pl-3">
+        <JsonInputEditor
+          ref="rightEditor"
+          v-model="rightJson"
+          editor-mode="codemirror"
+          :label="tool.ui?.label_json_b || 'JSON B (Modified)'"
+          placeholder='{"name": "Alice", "age": 31, "email": "alice@example.com"}'
+          show-upload
+          @clear="onClearRight"
+        />
+      </div>
+    </template>
+    <!-- Actions: the panel's bottom toolbar row, same as the other tools -->
+    <template #toolbar-left>
+      <button type="button" class="lf-btn-sm shrink-0" :class="{ 'active': sortKeys }" @click="sortKeys = !sortKeys">
+        <Icon name="lucide:sort-asc" class="h-3.5 w-3.5" />
+        {{ tool.ui?.btn_sort_keys || 'Sort object keys' }}
+      </button>
 
-        <div class="lf-input-sm flex items-center gap-1.5">
-          <Icon name="lucide:filter" class="h-3.5 w-3.5 text-surface-400 shrink-0" />
-          <input
-            v-model="ignoreFields"
-            :placeholder="tool.ui?.ignore_fields || 'Ignore fields (e.g. updatedAt)'"
-            class="bg-transparent outline-none w-44 placeholder:text-surface-400"
-          />
-        </div>
+      <button type="button" class="lf-btn-sm shrink-0" :class="{ 'active': ignoreOrder }" @click="ignoreOrder = !ignoreOrder">
+        <Icon name="lucide:list-ordered" class="h-3.5 w-3.5" />
+        {{ tool.ui?.btn_ignore_order || 'Ignore array order' }}
+      </button>
 
-        <button type="button" class="lf-btn-sm" @click="swap">
-          <Icon name="lucide:arrow-left-right" class="h-3.5 w-3.5" />
-          {{ tool.ui?.btn_swap || 'Swap inputs' }}
-        </button>
-
-        <button type="button" class="lf-btn-sm-primary" @click="compare()">
-          <Icon name="lucide:git-compare" class="h-3.5 w-3.5" />
-          {{ tool.ui?.btn_compare || 'Compare' }}
-        </button>
+      <div class="lf-input-sm flex items-center gap-1.5 shrink-0">
+        <Icon name="lucide:filter" class="h-3.5 w-3.5 text-surface-400 shrink-0" />
+        <input
+          v-model="ignoreFields"
+          :placeholder="tool.ui?.ignore_fields || 'Ignore fields (e.g. updatedAt)'"
+          class="bg-transparent outline-none w-44 placeholder:text-surface-400"
+        />
       </div>
 
-      <div class="flex items-center gap-2 shrink-0">
-        <Transition name="esc-hint">
-          <span
-            v-if="isFullscreen"
-            class="text-xs text-surface-400 dark:text-surface-500 bg-surface-100 dark:bg-surface-800 px-3 py-1 rounded-full"
-          >
-            {{ tool.ui?.hint_esc_fullscreen || 'Press ESC to exit fullscreen' }}
-          </span>
-        </Transition>
-        <button
-          type="button"
-          class="lf-btn-icon-sm"
-          :title="isFullscreen ? 'Exit fullscreen' : 'Fullscreen'"
-          @click="toggleFullscreen"
-        >
-          <Icon :name="isFullscreen ? 'lucide:minimize' : 'lucide:maximize'" class="w-4 h-4" />
-        </button>
-      </div>
-    </div>
+      <button type="button" class="lf-btn-sm shrink-0" @click="swap">
+        <Icon name="lucide:arrow-left-right" class="h-3.5 w-3.5" />
+        {{ tool.ui?.btn_swap || 'Swap inputs' }}
+      </button>
 
-    <!-- Mobile: stacked layout -->
-    <div class="grid grid-cols-1 gap-4 lg:hidden">
-      <JsonInputEditor
-        v-model="leftJson"
-        :label="tool.ui?.label_json_a || 'JSON A (Original)'"
-        placeholder='{"name": "Alice", "age": 30}'
-        @clear="onClearLeft"
-      />
-      <JsonInputEditor
-        v-model="rightJson"
-        :label="tool.ui?.label_json_b || 'JSON B (Modified)'"
-        placeholder='{"name": "Alice", "age": 31, "email": "alice@example.com"}'
-        @clear="onClearRight"
-      />
-    </div>
+      <button type="button" class="lf-btn-sm-primary shrink-0" @click="compare()">
+        <Icon name="lucide:git-compare" class="h-3.5 w-3.5" />
+        {{ tool.ui?.btn_compare || 'Compare' }}
+      </button>
+    </template>
 
-    <!-- Desktop: resizable split (kept inside the fullscreen wrapper) -->
-    <div class="hidden lg:block" :class="isFullscreen ? 'flex-1 min-h-0' : ''">
-      <ResizablePanel :initial-ratio="0.5" responsive :class="isFullscreen ? 'h-full' : ''">
-        <template #first>
-          <div class="h-full pr-3">
-            <JsonInputEditor
-              ref="leftEditor"
-              v-model="leftJson"
-              editor-mode="codemirror"
-              :label="tool.ui?.label_json_a || 'JSON A (Original)'"
-              placeholder='{"name": "Alice", "age": 30}'
-              show-upload
-              @clear="onClearLeft"
-            />
-          </div>
-        </template>
-        <template #second>
-          <div class="h-full pl-3">
-            <JsonInputEditor
-              ref="rightEditor"
-              v-model="rightJson"
-              editor-mode="codemirror"
-              :label="tool.ui?.label_json_b || 'JSON B (Modified)'"
-              placeholder='{"name": "Alice", "age": 31, "email": "alice@example.com"}'
-              show-upload
-              @clear="onClearRight"
-            />
-          </div>
-        </template>
-        <!-- Hide the panel's own fullscreen button; the outer wrapper owns it. -->
-        <template #header-right />
-      </ResizablePanel>
-    </div>
+    <!-- Results sit below the editors and stay visible in fullscreen -->
+    <template #below>
+      <!-- Error -->
+      <div v-if="error" class="mb-3 rounded-xl bg-red-50 border border-red-200 p-3 text-xs text-red-700 dark:bg-red-900/30 dark:border-red-800 dark:text-red-400">{{ error }}</div>
 
-    <!-- Error -->
-    <div v-if="error" class="mt-4 rounded-xl bg-red-50 border border-red-200 p-3 text-xs text-red-700 dark:bg-red-900/30 dark:border-red-800 dark:text-red-400 shrink-0">{{ error }}</div>
-
-    <!-- Structured result -->
-    <div
-      v-if="compared && diffs.length"
-      class="mt-4"
-      :class="isFullscreen ? 'max-h-[45vh] overflow-y-auto shrink-0' : ''"
-    >
+      <!-- Structured result -->
+      <div
+        v-if="compared && diffs.length"
+        :class="fullscreen ? 'max-h-[45vh] overflow-y-auto' : ''"
+      >
       <div class="flex flex-wrap items-center justify-between gap-2 mb-2">
         <div class="flex items-center gap-2 text-xs">
           <span class="font-semibold">{{ diffs.length }} {{ tool.ui?.status_total || 'differences' }}</span>
@@ -191,13 +141,14 @@
       </p>
     </div>
 
-    <div
-      v-else-if="compared && !diffs.length"
-      class="mt-4 rounded-xl bg-green-50 border border-green-200 p-3 text-xs text-green-700 dark:bg-green-900/30 dark:border-green-800 dark:text-green-400"
-    >
-      {{ tool.ui?.status_identical || 'The JSON documents are structurally identical.' }}
-    </div>
-  </div>
+      <div
+        v-else-if="compared && !diffs.length"
+        class="rounded-xl bg-green-50 border border-green-200 p-3 text-xs text-green-700 dark:bg-green-900/30 dark:border-green-800 dark:text-green-400"
+      >
+        {{ tool.ui?.status_identical || 'The JSON documents are structurally identical.' }}
+      </div>
+    </template>
+  </ResizablePanel>
 </template>
 
 <script setup lang="ts">
@@ -211,7 +162,8 @@ const props = defineProps<{ tool: any }>()
 const tool = props.tool
 const { t } = useI18n()
 const toast = useToast()
-const { isFullscreen, toggle: toggleFullscreen } = useFullscreen()
+// Fullscreen is owned by ResizablePanel, like every other tool page.
+const fullscreen = ref(false)
 
 const RENDER_CAP = 500
 

@@ -37,7 +37,9 @@
 import type { LoadFailureReason } from '~/composables/useSharedPayloadLoader'
 
 const props = defineProps<{
-  reason: LoadFailureReason
+  /** Nullable because callers render this component behind `v-if`. The
+   *  `description` fallback covers the missing case. */
+  reason?: LoadFailureReason | null
   detail?: string
 }>()
 

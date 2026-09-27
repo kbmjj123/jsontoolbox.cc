@@ -87,9 +87,13 @@ const { t } = useI18n()
 const toast = useToast()
 
 const inputJson = ref('')
+const inboxApplied = ref(false)
 onMounted(() => {
   const text = useJsonInbox().consumeInbox()
-  if (text != null) inputJson.value = text
+  if (text != null) {
+    inputJson.value = text
+    inboxApplied.value = true
+  }
 })
 const outputJson = ref('')
 const error = ref('')
@@ -195,5 +199,5 @@ const clearAll = () => {
   friendlyError.value = ''
 }
 
-onMounted(() => { inputEditorRef.value?.loadDefaultExample() })
+onMounted(() => { if (!inboxApplied.value) inputEditorRef.value?.loadDefaultExample() })
 </script>

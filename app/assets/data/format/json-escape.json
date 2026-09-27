@@ -186,6 +186,7 @@
       "status_escaped": "Escaped JSON string",
       "status_unescaped": "Unescaped text",
       "status_invalid": "Input is not a valid JSON string representation",
+      "status_no_escapes": "Input is a valid string, but it contains no JSON escape sequences to decode",
       "placeholder_output": "Output will appear here..."
     }
   },
@@ -359,7 +360,8 @@
       "option_decode_layers": "只解码一层",
       "status_escaped": "已生成转义后的 JSON 字符串",
       "status_unescaped": "已还原为文本",
-      "status_invalid": "输入不是合法的 JSON 字符串表示"
+      "status_invalid": "输入不是合法的 JSON 字符串表示",
+      "status_no_escapes": "输入是合法的字符串，但其中不含需要解码的 JSON 转义序列"
     },
     "article": {
       "title": "如何转义和反转义 JSON 字符串",

@@ -19,9 +19,6 @@
 
     <template #second>
       <div class="h-full pl-3 flex flex-col overflow-hidden">
-        <p v-if="outputSchema" class="mb-2 rounded-lg bg-surface-100 px-3 py-2 text-[11px] text-surface-500 dark:bg-surface-800 dark:text-surface-400">
-          {{ tool.ui?.warning_sample_based || 'Generated from the sample you provided. Review it before use.' }}
-        </p>
         <JsonOutputPanel
           :label="tool.ui?.label_output || 'JSON Schema'"
           :content="outputSchema"
@@ -32,6 +29,9 @@
           @copy="copyOutput"
           @download="downloadOutput"
         />
+        <p v-if="outputSchema" class="mt-2 shrink-0 rounded-lg bg-surface-100 px-3 py-2 text-[11px] text-surface-500 dark:bg-surface-800 dark:text-surface-400">
+          {{ tool.ui?.warning_sample_based || 'Generated from the sample you provided. Review it before use.' }}
+        </p>
       </div>
     </template>
 
@@ -83,9 +83,13 @@ const { t } = useI18n()
 const toast = useToast()
 
 const inputJson = ref('')
+const inboxApplied = ref(false)
 onMounted(() => {
   const text = useJsonInbox().consumeInbox()
-  if (text != null) inputJson.value = text
+  if (text != null) {
+    inputJson.value = text
+    inboxApplied.value = true
+  }
 })
 const outputSchema = ref('')
 const error = ref('')
@@ -128,6 +132,12 @@ watch([indent, includeRequired, additionalProperties, detectFormats, includeExam
 const onExampleLoaded = () => {
   nextTick(() => generate())
 }
+
+// Other tool pages seed the default example on mount; do the same here so the
+// page demonstrates a generated schema immediately (handed-over content wins).
+onMounted(() => {
+  if (!inboxApplied.value) inputEditorRef.value?.loadDefaultExample()
+})
 
 const onPaste = () => {
   nextTick(() => {

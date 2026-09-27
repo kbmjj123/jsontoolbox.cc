@@ -240,6 +240,7 @@
     "fix": "Fix",
     "share": "Share",
     "example": "Example",
+    "exampleLoaded": "Example loaded",
     "cancel": "Cancel",
     "loading": "Loading...",
     "loadUrlHint": "Enter a public JSON URL. Content is fetched directly in your browser.",
@@ -250,7 +251,10 @@
     "shareWarning": "Share links encode JSON content in the URL. Do not share passwords, tokens, or sensitive data.",
     "pasted": "Pasted!",
     "pasteFailed": "Paste failed",
-    "pasteHint": "Press Ctrl+V to paste"
+    "pasteHint": "Press Ctrl+V to paste",
+    "fullscreen": "Fullscreen",
+    "exitFullscreen": "Exit fullscreen",
+    "escFullscreen": "Press ESC to exit fullscreen"
   },
   "toast": {
     "converted": "Converted successfully",

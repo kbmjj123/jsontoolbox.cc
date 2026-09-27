@@ -79,9 +79,13 @@ const { t } = useI18n()
 const toast = useToast()
 
 const inputJson = ref('')
+const inboxApplied = ref(false)
 onMounted(() => {
   const text = useJsonInbox().consumeInbox()
-  if (text != null) inputJson.value = text
+  if (text != null) {
+    inputJson.value = text
+    inboxApplied.value = true
+  }
 })
 const outputJson = ref('')
 const csvContent = ref('')
@@ -198,6 +202,7 @@ const downloadExcel = async () => {
 }
 
 onMounted(() => {
+  if (inboxApplied.value) return
   inputEditorRef.value?.loadDefaultExample()
 })
 </script>
