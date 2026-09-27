@@ -332,11 +332,11 @@ const convert = (silent = false) => {
     selectedColumns.value = [...keys]
     if (!silent) toast.success(t('toast.converted'))
   } catch (e) {
-    // Auto-conversion runs while the user is still typing — a raw JSON.parse
-    // message there would be noise (and would leak engine English on the zh
-    // page). Only an explicit Convert surfaces it.
+    // Auto-conversion runs while the user is still typing — surfacing an error
+    // there would be noise. On an explicit Convert we show a localized message
+    // instead of the engine's English JSON.parse text (which would leak on zh).
     if (silent) error.value = ''
-    else fail((e as Error).message, false)
+    else fail(ui.value?.error_invalid_input || (e as Error).message, false)
   }
 }
 

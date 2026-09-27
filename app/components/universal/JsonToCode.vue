@@ -18,15 +18,6 @@
 
     <template #second>
       <div class="h-full pl-3 flex flex-col overflow-hidden">
-        <!-- Sample-based disclaimer: every shape, null and optional flag below
-             is inferred from the current JSON document, not from a contract. -->
-        <div
-          v-if="showSampleWarning"
-          class="mb-2 flex items-start gap-2 rounded-lg border border-amber-200 bg-amber-50 px-3 py-2 text-xs text-amber-800 dark:border-amber-800 dark:bg-amber-900/20 dark:text-amber-300"
-        >
-          <Icon name="lucide:info" class="h-3.5 w-3.5 mt-0.5 shrink-0" />
-          <span>{{ ui.warning_sample_based }}</span>
-        </div>
         <JsonOutputPanel
           :label="ui.label_output"
           :content="outputCode"
@@ -35,6 +26,15 @@
           :download-filename="downloadFilename"
           @load-example="loadExample"
         />
+        <!-- Sample-based disclaimer: every shape, null and optional flag above
+             is inferred from the current JSON document, not from a contract. -->
+        <div
+          v-if="showSampleWarning"
+          class="mt-2 shrink-0 flex items-start gap-2 rounded-lg border border-amber-200 bg-amber-50 px-3 py-2 text-xs text-amber-800 dark:border-amber-800 dark:bg-amber-900/20 dark:text-amber-300"
+        >
+          <Icon name="lucide:info" class="h-3.5 w-3.5 mt-0.5 shrink-0" />
+          <span>{{ ui.warning_sample_based }}</span>
+        </div>
       </div>
     </template>
 
@@ -52,6 +52,10 @@
             <option value="python">Python</option>
             <option value="go">Go</option>
             <option value="rust">Rust</option>
+            <option value="java">Java</option>
+            <option value="kotlin">Kotlin</option>
+            <option value="csharp">C#</option>
+            <option value="swift">Swift</option>
           </select>
         </div>
 
@@ -102,7 +106,7 @@
 
 <script setup lang="ts">
 // ── IR: what a JSON position can hold ────────────────────────────────────
-type Lang = 'typescript' | 'python' | 'go' | 'rust'
+type Lang = 'typescript' | 'python' | 'go' | 'rust' | 'java' | 'kotlin' | 'csharp' | 'swift'
 type Prim = 'string' | 'int' | 'float' | 'bool' | 'null' | 'unknown'
 type StrFormat = 'date-time' | 'date' | 'email' | 'uuid' | 'uri' | null
 
@@ -172,7 +176,10 @@ const fullscreen = ref(false)
 
 const inputEditorRef = ref<InstanceType<typeof import('~/components/tool/JsonInputEditor.vue').default>>()
 
-const EXTENSION: Record<Lang, string> = { typescript: 'ts', python: 'py', go: 'go', rust: 'rs' }
+const EXTENSION: Record<Lang, string> = {
+  typescript: 'ts', python: 'py', go: 'go', rust: 'rs',
+  java: 'java', kotlin: 'kt', csharp: 'cs', swift: 'swift',
+}
 
 const downloadFilename = computed(() => {
   const base = rootName.value.trim() || 'RootObject'
@@ -193,19 +200,28 @@ const PRIM_TYPE: Record<Lang, Record<Prim, string>> = {
   python: { string: 'str', int: 'int', float: 'float', bool: 'bool', null: 'None', unknown: 'Any' },
   go: { string: 'string', int: 'int', float: 'float64', bool: 'bool', null: 'interface{}', unknown: 'interface{}' },
   rust: { string: 'String', int: 'i64', float: 'f64', bool: 'bool', null: 'serde_json::Value', unknown: 'serde_json::Value' },
+  // Boxed types on purpose: a JSON model field can always arrive as null, and
+  // Java primitives cannot represent that.
+  java: { string: 'String', int: 'Integer', float: 'Double', bool: 'Boolean', null: 'Object', unknown: 'Object' },
+  kotlin: { string: 'String', int: 'Int', float: 'Double', bool: 'Boolean', null: 'Any?', unknown: 'Any?' },
+  csharp: { string: 'string', int: 'int', float: 'double', bool: 'bool', null: 'object?', unknown: 'dynamic' },
+  swift: { string: 'String', int: 'Int', float: 'Double', bool: 'Bool', null: 'Any?', unknown: 'Any' },
 }
 
 const UNKNOWN_TYPE: Record<Lang, string> = {
   typescript: 'unknown', python: 'Any', go: 'interface{}', rust: 'serde_json::Value',
+  java: 'Object', kotlin: 'Any?', csharp: 'dynamic', swift: 'Any',
 }
 
 /** Shape with `null` as the only witness, kept as-is when "preserve null" is on. */
 const NULL_ONLY_TYPE: Record<Lang, string> = {
   typescript: 'null', python: 'Any | None', go: 'interface{}', rust: 'Option<serde_json::Value>',
+  java: 'Object', kotlin: 'Any?', csharp: 'object?', swift: 'Any?',
 }
 
 const EMPTY_ARRAY_TYPE: Record<Lang, string> = {
   typescript: 'unknown[]', python: 'list[Any]', go: '[]interface{}', rust: 'Vec<serde_json::Value>',
+  java: 'List<Object>', kotlin: 'List<Any?>', csharp: 'List<dynamic>', swift: '[Any]',
 }
 
 /** Richer types used when "detect common formats" is enabled. */
@@ -214,6 +230,10 @@ const FORMAT_TYPE: Record<Lang, Partial<Record<NonNullable<StrFormat>, string>>>
   python: { 'date-time': 'datetime.datetime', date: 'datetime.date', uuid: 'uuid.UUID' },
   go: { 'date-time': 'time.Time', date: 'time.Time' },
   rust: {},
+  java: { 'date-time': 'OffsetDateTime', date: 'LocalDate', uuid: 'UUID' },
+  kotlin: { 'date-time': 'OffsetDateTime', date: 'LocalDate', uuid: 'UUID' },
+  csharp: { 'date-time': 'DateTimeOffset', date: 'DateOnly', uuid: 'Guid' },
+  swift: { 'date-time': 'Date', date: 'Date', uuid: 'UUID' },
 }
 
 // ── Naming rules ─────────────────────────────────────────────────────────
@@ -287,6 +307,60 @@ const tsKey = (key: string): string => (/^[A-Za-z_$][A-Za-z0-9_$]*$/.test(key) ?
 const rsName = (key: string): string => {
   const name = snakeName(key)
   return RS_KEYWORDS.has(name) ? `r#${name}` : name
+}
+
+/** `user-profile` / `user id` → `userProfile` — the member style of Java,
+ *  Kotlin, C# and Swift. */
+const camelName = (key: string): string => {
+  const parts = wordPieces(key)
+  if (parts.length === 0) return 'field'
+  const head = parts[0].charAt(0).toLowerCase() + parts[0].slice(1)
+  const tail = parts.slice(1).map((p) => p.charAt(0).toUpperCase() + p.slice(1)).join('')
+  const name = head + tail
+  return /^[0-9]/.test(name) ? `_${name}` : name
+}
+
+const JAVA_KEYWORDS = new Set([
+  'abstract', 'assert', 'boolean', 'break', 'byte', 'case', 'catch', 'char', 'class', 'const',
+  'continue', 'default', 'do', 'double', 'else', 'enum', 'extends', 'final', 'finally', 'float',
+  'for', 'goto', 'if', 'implements', 'import', 'instanceof', 'int', 'interface', 'long', 'native',
+  'new', 'package', 'private', 'protected', 'public', 'return', 'short', 'static', 'strictfp',
+  'super', 'switch', 'synchronized', 'this', 'throw', 'throws', 'transient', 'try', 'void',
+  'volatile', 'while',
+])
+
+const KOTLIN_KEYWORDS = new Set([
+  'as', 'break', 'class', 'continue', 'do', 'else', 'false', 'for', 'fun', 'if', 'in', 'interface',
+  'is', 'null', 'object', 'package', 'return', 'super', 'this', 'throw', 'true', 'try', 'typealias',
+  'typeof', 'val', 'var', 'when', 'while',
+])
+
+const CSHARP_KEYWORDS = new Set([
+  'abstract', 'as', 'base', 'bool', 'break', 'byte', 'case', 'catch', 'char', 'checked', 'class',
+  'const', 'continue', 'decimal', 'default', 'delegate', 'do', 'double', 'else', 'enum', 'event',
+  'explicit', 'extern', 'false', 'finally', 'fixed', 'float', 'for', 'foreach', 'goto', 'if',
+  'implicit', 'in', 'int', 'interface', 'internal', 'is', 'lock', 'long', 'namespace', 'new',
+  'null', 'object', 'operator', 'out', 'override', 'params', 'private', 'protected', 'public',
+  'readonly', 'ref', 'return', 'sbyte', 'sealed', 'short', 'sizeof', 'stackalloc', 'static',
+  'string', 'struct', 'switch', 'this', 'throw', 'true', 'try', 'typeof', 'uint', 'ulong',
+  'unchecked', 'unsafe', 'ushort', 'using', 'virtual', 'void', 'volatile', 'while',
+])
+
+const SWIFT_KEYWORDS = new Set([
+  'Any', 'as', 'associatedtype', 'break', 'case', 'catch', 'class', 'continue', 'default', 'defer',
+  'deinit', 'do', 'else', 'enum', 'extension', 'fallthrough', 'false', 'for', 'func', 'guard',
+  'if', 'import', 'in', 'init', 'inout', 'internal', 'is', 'let', 'nil', 'operator', 'private',
+  'protocol', 'public', 'repeat', 'rethrows', 'return', 'self', 'static', 'struct', 'subscript',
+  'super', 'switch', 'throw', 'true', 'try', 'typealias', 'var', 'where', 'while',
+])
+
+/** Keyword-safe member name: `@class` in C#, backticks in Kotlin/Swift, suffix in Java. */
+const memberName = (key: string, lang: Lang): string => {
+  const name = camelName(key)
+  if (lang === 'java') return JAVA_KEYWORDS.has(name) ? `${name}_` : name
+  if (lang === 'kotlin') return KOTLIN_KEYWORDS.has(name) ? `\`${name}\`` : name
+  if (lang === 'csharp') return CSHARP_KEYWORDS.has(name) ? `@${name}` : name
+  return SWIFT_KEYWORDS.has(name) ? `\`${name}\`` : name
 }
 
 const singularize = (word: string): string => {
@@ -379,14 +453,20 @@ const wrapNullable = (text: string, lang: Lang): string => {
   if (lang === 'typescript') return `${text} | null`
   if (lang === 'python') return `${text} | None`
   if (lang === 'go') return `*${text}`
-  return `Option<${text}>`
+  if (lang === 'rust') return `Option<${text}>`
+  // Java uses boxed reference types, which are already nullable.
+  if (lang === 'java') return text
+  if (text.endsWith('?')) return text
+  return `${text}?` // kotlin, csharp, swift
 }
 
 const arrayOf = (text: string, lang: Lang): string => {
   if (lang === 'typescript') return text.includes(' | ') ? `(${text})[]` : `${text}[]`
   if (lang === 'python') return `list[${text}]`
   if (lang === 'go') return `[]${text}`
-  return `Vec<${text}>`
+  if (lang === 'rust') return `Vec<${text}>`
+  if (lang === 'java' || lang === 'kotlin' || lang === 'csharp') return `List<${text}>`
+  return `[${text}]` // swift
 }
 
 const scalarText = (prim: Prim, format: StrFormat, ctx: Ectx): string => {
@@ -394,8 +474,11 @@ const scalarText = (prim: Prim, format: StrFormat, ctx: Ectx): string => {
     const mapped = FORMAT_TYPE[ctx.opts.language][format]
     if (mapped) {
       if (mapped.startsWith('datetime.')) ctx.needs.add('datetime')
-      if (mapped.startsWith('uuid.')) ctx.needs.add('uuid')
-      if (mapped === 'time.Time') ctx.needs.add('time')
+      else if (mapped.startsWith('uuid.')) ctx.needs.add('uuid')
+      else if (mapped === 'time.Time') ctx.needs.add('time')
+      // Java/Kotlin/C#/Swift: record the import the emitter has to emit.
+      else if (format === 'date-time' || format === 'date') ctx.needs.add('datetime')
+      else if (format === 'uuid') ctx.needs.add('uuid')
       return mapped
     }
   }
@@ -467,8 +550,10 @@ const describe = (node: NodeIR, hint: string, ctx: Ectx): TypeIR => {
 
   const parts = rest.map((member) => describe(member, hint, ctx))
   if (parts.some((part) => part.unknownish)) return unknownIR()
-  // Go and Rust have no union types: a mixed position degrades to "any JSON".
-  if (parts.length > 1 && (lang === 'go' || lang === 'rust')) return unknownIR()
+  // Only TypeScript and Python model unions natively. Java, Kotlin, C#, Swift,
+  // Go and Rust degrade a mixed position to "any JSON" instead of inventing
+  // union syntax the target does not have.
+  if (parts.length > 1 && lang !== 'typescript' && lang !== 'python') return unknownIR()
 
   if (parts.length === 1) {
     const [part] = parts
@@ -512,11 +597,15 @@ const buildRows = (node: ObjectNode, owner: string, ctx: Ectx): Row[] => {
     const base = irText(ir, ctx)
     let type = base
     if (lang === 'rust' && optional && !type.startsWith('Option<')) type = `Option<${type}>`
+    if ((lang === 'kotlin' || lang === 'csharp' || lang === 'swift') && optional) {
+      type = type.endsWith('?') ? type : `${type}?`
+    }
     let name = field.key
     if (lang === 'typescript') name = tsKey(field.key)
     else if (lang === 'python') name = pyName(field.key)
     else if (lang === 'go') name = goName(field.key)
-    else name = rsName(field.key)
+    else if (lang === 'rust') name = rsName(field.key)
+    else name = memberName(field.key, lang)
     if (lang !== 'typescript') name = uniqueMember(name, used)
     return { key: field.key, name, rename: name !== field.key, type, optional, hasDefault: optional, format: ir.format }
   })
@@ -567,6 +656,65 @@ const renderStruct = (node: ObjectNode, name: string, ctx: Ectx): string => {
     return `type ${name} struct {\n${lines.join('\n')}\n}`
   }
 
+  if (opts.language === 'java') {
+    // A .java file may hold only one public top-level class, so nested
+    // declarations stay package-private and the file still compiles.
+    const isRoot = name === ctx.opts.root
+    const pub = isRoot && opts.addExport ? 'public ' : ''
+    if (rows.length === 0) return `${pub}class ${name} {\n}`
+    const lines: string[] = []
+    for (const row of rows) {
+      if (opts.detectFormats && row.format) lines.push(`${pad}/** format: ${row.format} */`)
+      if (row.rename) lines.push(`${pad}@JsonProperty(${JSON.stringify(row.key)})`)
+      lines.push(`${pad}public ${row.type} ${row.name};`)
+    }
+    return `${pub}class ${name} {\n${lines.join('\n')}\n}`
+  }
+
+  if (opts.language === 'kotlin') {
+    if (rows.length === 0) return `data class ${name}()`
+    const lines: string[] = []
+    for (const row of rows) {
+      if (opts.detectFormats && row.format) lines.push(`${pad}/** format: ${row.format} */`)
+      if (row.rename) lines.push(`${pad}@SerialName(${JSON.stringify(row.key)})`)
+      lines.push(`${pad}val ${row.name}: ${row.type}${row.optional ? ' = null' : ''},`)
+    }
+    return `data class ${name}(\n${lines.join('\n')}\n)`
+  }
+
+  if (opts.language === 'csharp') {
+    const pub = opts.addExport ? 'public ' : ''
+    if (rows.length === 0) return `${pub}class ${name}\n{\n}`
+    const lines: string[] = []
+    for (const row of rows) {
+      if (opts.detectFormats && row.format) lines.push(`${pad}/// format: ${row.format}`)
+      if (row.rename) lines.push(`${pad}[JsonPropertyName(${JSON.stringify(row.key)})]`)
+      lines.push(`${pad}${pub}${row.type} ${pascalName(row.name)} { get; set; }`)
+    }
+    return `${pub}class ${name}\n{\n${lines.join('\n')}\n}`
+  }
+
+  if (opts.language === 'swift') {
+    const pub = opts.addExport ? 'public ' : ''
+    if (rows.length === 0) return `${pub}struct ${name}: Codable {\n}`
+    const lines: string[] = []
+    for (const row of rows) {
+      if (opts.detectFormats && row.format) lines.push(`${pad}/// format: ${row.format}`)
+      const decl = row.optional ? 'var' : 'let'
+      lines.push(`${pad}${pub}${decl} ${row.name}: ${row.type}`)
+    }
+    if (rows.some((row) => row.rename)) {
+      const cases = rows.map((row) =>
+        row.rename
+          ? `${pad}${pad}case ${row.name} = ${JSON.stringify(row.key)}`
+          : `${pad}${pad}case ${row.name}`,
+      )
+      lines.push('', `${pad}enum CodingKeys: String, CodingKey {`, ...cases, `${pad}}`)
+    }
+    return `${pub}struct ${name}: Codable {\n${lines.join('\n')}\n}`
+  }
+
+  // rust
   const pub = opts.addExport ? 'pub ' : ''
   if (rows.length === 0) return `#[derive(Debug, Serialize, Deserialize)]\n${pub}struct ${name} {}`
   const lines: string[] = []
@@ -591,7 +739,11 @@ const arrayRootAlias = (itemText: string, ctx: Ectx): string => {
   if (opts.language === 'typescript') return `${exp}type ${opts.root} = ${arrayOf(itemText, 'typescript')}`
   if (opts.language === 'python') return `${opts.root} = list[${itemText}]`
   if (opts.language === 'go') return `type ${opts.root} []${itemText}`
-  return `${pub}type ${opts.root} = Vec<${itemText}>;`
+  if (opts.language === 'rust') return `${pub}type ${opts.root} = Vec<${itemText}>;`
+  if (opts.language === 'kotlin') return `typealias ${opts.root} = ${arrayOf(itemText, 'kotlin')}`
+  if (opts.language === 'swift') return `typealias ${opts.root} = ${arrayOf(itemText, 'swift')}`
+  // Java and C# have no top-level type alias, so document the root shape.
+  return `// ${opts.root} = ${arrayOf(itemText, opts.language)}`
 }
 
 const scalarRootAlias = (text: string, ctx: Ectx): string => {
@@ -601,7 +753,10 @@ const scalarRootAlias = (text: string, ctx: Ectx): string => {
   if (opts.language === 'typescript') return `${exp}type ${opts.root} = ${text}`
   if (opts.language === 'python') return `${opts.root} = ${text}`
   if (opts.language === 'go') return `type ${opts.root} ${text}`
-  return `${pub}type ${opts.root} = ${text};`
+  if (opts.language === 'rust') return `${pub}type ${opts.root} = ${text};`
+  if (opts.language === 'kotlin') return `typealias ${opts.root} = ${text}`
+  if (opts.language === 'swift') return `typealias ${opts.root} = ${text}`
+  return `// ${opts.root} = ${text}`
 }
 
 const generateCode = (input: unknown, opts: GenOptions): string => {
@@ -653,6 +808,46 @@ const generateCode = (input: unknown, opts: GenOptions): string => {
     const head = ['package main']
     if (ctx.needs.has('time')) head.push('', 'import "time"')
     return `${head.join('\n')}\n\n${parts.join('\n\n')}`
+  }
+
+  if (opts.language === 'java') {
+    const imports: string[] = []
+    if (parts.some((decl) => decl.includes('List<'))) imports.push('import java.util.List;')
+    if (ctx.needs.has('datetime')) imports.push('import java.time.*;')
+    if (ctx.needs.has('uuid')) imports.push('import java.util.UUID;')
+    if (parts.some((decl) => decl.includes('@JsonProperty'))) {
+      imports.push('import com.fasterxml.jackson.annotation.JsonProperty;')
+    }
+    const head = imports.length > 0 ? `${imports.join('\n')}\n\n` : ''
+    return `${head}${parts.join('\n\n')}`
+  }
+
+  if (opts.language === 'kotlin') {
+    const imports: string[] = []
+    if (ctx.needs.has('datetime')) imports.push('import java.time.*')
+    if (ctx.needs.has('uuid')) imports.push('import java.util.UUID')
+    if (parts.some((decl) => decl.includes('@SerialName'))) {
+      imports.push('import kotlinx.serialization.SerialName')
+    }
+    const head = imports.length > 0 ? `${imports.join('\n')}\n\n` : ''
+    return `${head}${parts.join('\n\n')}`
+  }
+
+  if (opts.language === 'csharp') {
+    const usings: string[] = ['#nullable enable']
+    if (parts.some((decl) => decl.includes('List<'))) usings.push('using System.Collections.Generic;')
+    if (ctx.needs.has('datetime') || ctx.needs.has('uuid')) usings.push('using System;')
+    if (parts.some((decl) => decl.includes('[JsonPropertyName'))) {
+      usings.push('using System.Text.Json.Serialization;')
+    }
+    return `${usings.join('\n')}\n\n${parts.join('\n\n')}`
+  }
+
+  if (opts.language === 'swift') {
+    const needsFoundation = ctx.needs.has('datetime') || ctx.needs.has('uuid')
+      || parts.some((decl) => decl.includes(': Date') || decl.includes(': UUID'))
+    const head = needsFoundation ? 'import Foundation\n\n' : ''
+    return `${head}${parts.join('\n\n')}`
   }
 
   const usesSerde = parts.some((decl) => decl.includes('struct '))
