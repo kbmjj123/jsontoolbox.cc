@@ -19,15 +19,6 @@
 
     <template #second>
       <div class="h-full pl-3 flex flex-col overflow-hidden">
-        <!-- Sample-based disclaimer: generated declarations are a starting
-             point inferred from one sample, not a verified API contract. -->
-        <div
-          v-if="showSampleWarning"
-          class="mb-2 flex items-start gap-2 rounded-lg border border-amber-200 bg-amber-50 px-3 py-2 text-xs text-amber-800 dark:border-amber-800 dark:bg-amber-900/20 dark:text-amber-300"
-        >
-          <Icon name="lucide:info" class="h-3.5 w-3.5 mt-0.5 shrink-0" />
-          <span>{{ ui.warning_sample_based }}</span>
-        </div>
         <JsonOutputPanel
           :label="ui.label_output"
           :content="outputTs"
@@ -37,6 +28,15 @@
           @copy="copyOutput"
           @download="downloadOutput"
         />
+        <!-- Sample-based disclaimer: generated declarations are a starting
+             point inferred from one sample, not a verified API contract. -->
+        <div
+          v-if="showSampleWarning"
+          class="mt-2 flex items-start gap-2 rounded-lg border border-amber-200 bg-amber-50 px-3 py-2 text-xs text-amber-800 dark:border-amber-800 dark:bg-amber-900/20 dark:text-amber-300"
+        >
+          <Icon name="lucide:info" class="h-3.5 w-3.5 mt-0.5 shrink-0" />
+          <span>{{ ui.warning_sample_based }}</span>
+        </div>
       </div>
     </template>
 
@@ -45,13 +45,6 @@
         <button @click="generateTypescript(false)" class="btn-primary px-5 py-2 text-xs">
           <Icon name="lucide:code" class="h-4 w-4 mr-1.5" />
           {{ ui.btn_generate }}
-        </button>
-
-        <button
-          @click="loadExample"
-          class="rounded-lg border border-surface-200 bg-white px-3 py-2 text-xs font-medium text-surface-600 hover:bg-surface-50 dark:border-surface-700 dark:bg-surface-800 dark:text-surface-300 dark:hover:bg-surface-700"
-        >
-          {{ ui.btn_example }}
         </button>
 
         <div class="flex items-center gap-2">
@@ -147,7 +140,12 @@ const ui = computed<Record<string, string>>(() => (props.tool?.ui ?? {}) as Reco
 const inputJson = ref('')
 onMounted(() => {
   const text = useJsonInbox().consumeInbox()
-  if (text != null) inputJson.value = text
+  if (text != null) {
+    inputJson.value = text
+    nextTick(() => generateTypescript(true))
+  } else {
+    inputEditorRef.value?.loadDefaultExample()
+  }
 })
 const outputTs = ref('')
 const error = ref('')
@@ -188,10 +186,6 @@ watch([rootName, outputKind, addExport, markOptional, preserveNull, detectFormat
 
 const onExampleLoaded = () => {
   nextTick(() => generateTypescript(true))
-}
-
-const loadExample = () => {
-  inputEditorRef.value?.loadDefaultExample()
 }
 
 const onPaste = () => {
