@@ -137,15 +137,33 @@ const escapeText = () => {
   toast.success(props.tool.ui?.status_escaped)
 }
 
+/** Show a failure: clear the output and surface the message everywhere. */
+const fail = (message: string) => {
+  outputText.value = ''
+  error.value = message
+  statusLabel.value = message
+  toast.error(message)
+}
+
 const unescapeText = () => {
   error.value = ''
-  let current = inputText.value
+  const source = inputText.value
+  if (!source) {
+    fail(props.tool.ui?.status_invalid)
+    return
+  }
+
+  let current = source
   let layers = 0
+  /** True once the input has been accepted as a JSON string representation, so
+   *  "nothing to decode" can be told apart from "not a JSON string". */
+  let decodable = false
 
   while (layers < MAX_LAYERS) {
     let decoded: unknown
     try {
       decoded = decodeLayer(current)
+      decodable = true
     } catch {
       break
     }
@@ -156,10 +174,7 @@ const unescapeText = () => {
   }
 
   if (layers === 0) {
-    outputText.value = ''
-    error.value = props.tool.ui?.status_invalid
-    statusLabel.value = props.tool.ui?.status_invalid
-    toast.error(props.tool.ui?.status_invalid)
+    fail(decodable ? props.tool.ui?.status_no_escapes : props.tool.ui?.status_invalid)
     return
   }
 

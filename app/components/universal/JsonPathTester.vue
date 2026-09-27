@@ -3,11 +3,14 @@
     <template #first>
       <div class="h-full pr-3">
         <JsonInputEditor
+          ref="inputEditorRef"
           v-model="inputJson"
           :label="ui?.label_input ?? 'Input JSON'"
           placeholder='{"store": {"books": [{"title": "The Great Gatsby", "price": 10.99}]}}'
           show-upload
+          example-slug="json-path-tester"
           @clear="clearAll"
+          @example-loaded="onExampleLoaded"
         />
       </div>
     </template>
@@ -52,6 +55,9 @@
               <button v-if="results.length > 0" @click="copyResults" class="text-xs text-surface-400 hover:text-surface-600 dark:hover:text-surface-300">
                 {{ ui?.btn_copy_results ?? 'Copy results' }}
               </button>
+              <button @click="clearAll" class="text-xs text-surface-400 hover:text-surface-600 dark:hover:text-surface-300">
+                {{ $t('system.clearAll') }}
+              </button>
             </div>
           </div>
           <div class="rounded-xl border border-surface-200 bg-surface-50 p-4 font-mono text-sm overflow-auto dark:border-surface-700 dark:bg-surface-800" :class="fullscreen ? 'h-full' : 'min-h-[12rem] max-h-[30rem]'">
@@ -73,42 +79,37 @@
       </div>
     </template>
 
-    <template #toolbar-left>
-      <button @click="loadExample" class="text-xs text-primary-600 hover:text-primary-700 dark:text-primary-400">{{ ui?.btn_example ?? 'Example' }}</button>
-      <button @click="clearAll" class="rounded-xl border border-surface-200 bg-white px-4 py-2 text-xs font-bold text-surface-700 hover:bg-surface-50 dark:border-surface-700 dark:bg-surface-800 dark:text-surface-300 dark:hover:bg-surface-700">
-        {{ $t('system.clearAll') }}
-      </button>
+    <!-- Reference panel lives inside the container so it also shows in fullscreen -->
+    <template #below>
+      <div class="rounded-xl border border-surface-200 dark:border-surface-700 overflow-hidden">
+        <button @click="showReference = !showReference" class="w-full flex items-center justify-between px-4 py-3 bg-surface-50 dark:bg-surface-800 hover:bg-surface-100 dark:hover:bg-surface-700 transition-colors">
+          <span class="text-sm font-bold text-surface-700 dark:text-surface-300"><Icon name="lucide:book-open" class="h-4 w-4 mr-2 inline" />{{ ui?.label_reference ?? 'JSONPath Reference' }}</span>
+          <Icon :name="showReference ? 'lucide:chevron-up' : 'lucide:chevron-down'" class="h-4 w-4 text-surface-500" />
+        </button>
+        <div v-if="showReference" class="p-4 border-t border-surface-200 dark:border-surface-700">
+          <p class="mb-3 text-xs text-surface-500 dark:text-surface-400">{{ ui?.note_supported_syntax ?? '' }}</p>
+          <div class="mb-4">
+            <h4 class="text-xs font-bold text-surface-600 dark:text-surface-400 mb-2">{{ ui?.label_operators ?? 'Operators' }}</h4>
+            <div class="overflow-x-auto">
+              <table class="w-full text-xs">
+                <thead><tr class="border-b border-surface-200 dark:border-surface-700"><th class="text-left py-1 px-2 font-bold text-surface-600 dark:text-surface-400">{{ ui?.col_operator ?? 'Operator' }}</th><th class="text-left py-1 px-2 font-bold text-surface-600 dark:text-surface-400">{{ ui?.col_description ?? 'Description' }}</th><th class="text-left py-1 px-2 font-bold text-surface-600 dark:text-surface-400">{{ ui?.col_example ?? 'Example' }}</th></tr></thead>
+                <tbody><tr v-for="op in operators" :key="op.symbol" class="border-b border-surface-100 dark:border-surface-800"><td class="py-1 px-2 font-mono text-primary-600 dark:text-primary-400">{{ op.symbol }}</td><td class="py-1 px-2 text-surface-700 dark:text-surface-300">{{ op.description }}</td><td class="py-1 px-2 font-mono text-surface-500 dark:text-surface-400">{{ op.example }}</td></tr></tbody>
+              </table>
+            </div>
+          </div>
+          <div>
+            <h4 class="text-xs font-bold text-surface-600 dark:text-surface-400 mb-2">{{ ui?.label_filter_operators ?? 'Filter Operators' }}</h4>
+            <div class="overflow-x-auto">
+              <table class="w-full text-xs">
+                <thead><tr class="border-b border-surface-200 dark:border-surface-700"><th class="text-left py-1 px-2 font-bold text-surface-600 dark:text-surface-400">{{ ui?.col_operator ?? 'Operator' }}</th><th class="text-left py-1 px-2 font-bold text-surface-600 dark:text-surface-400">{{ ui?.col_description ?? 'Description' }}</th><th class="text-left py-1 px-2 font-bold text-surface-600 dark:text-surface-400">{{ ui?.col_example ?? 'Example' }}</th></tr></thead>
+                <tbody><tr v-for="filter in filterOperators" :key="filter.operator" class="border-b border-surface-100 dark:border-surface-800"><td class="py-1 px-2 font-mono text-primary-600 dark:text-primary-400">{{ filter.operator }}</td><td class="py-1 px-2 text-surface-700 dark:text-surface-300">{{ filter.description }}</td><td class="py-1 px-2 font-mono text-surface-500 dark:text-surface-400 text-xs">{{ filter.example }}</td></tr></tbody>
+              </table>
+            </div>
+          </div>
+        </div>
+      </div>
     </template>
   </ResizablePanel>
-
-  <!-- Reference Panel (Collapsible) -->
-  <div class="mt-4 rounded-xl border border-surface-200 dark:border-surface-700 overflow-hidden">
-    <button @click="showReference = !showReference" class="w-full flex items-center justify-between px-4 py-3 bg-surface-50 dark:bg-surface-800 hover:bg-surface-100 dark:hover:bg-surface-700 transition-colors">
-      <span class="text-sm font-bold text-surface-700 dark:text-surface-300"><Icon name="lucide:book-open" class="h-4 w-4 mr-2 inline" />{{ ui?.label_reference ?? 'JSONPath Reference' }}</span>
-      <Icon :name="showReference ? 'lucide:chevron-up' : 'lucide:chevron-down'" class="h-4 w-4 text-surface-500" />
-    </button>
-    <div v-if="showReference" class="p-4 border-t border-surface-200 dark:border-surface-700">
-      <p class="mb-3 text-xs text-surface-500 dark:text-surface-400">{{ ui?.note_supported_syntax ?? '' }}</p>
-      <div class="mb-4">
-        <h4 class="text-xs font-bold text-surface-600 dark:text-surface-400 mb-2">{{ ui?.label_operators ?? 'Operators' }}</h4>
-        <div class="overflow-x-auto">
-          <table class="w-full text-xs">
-            <thead><tr class="border-b border-surface-200 dark:border-surface-700"><th class="text-left py-1 px-2 font-bold text-surface-600 dark:text-surface-400">{{ ui?.col_operator ?? 'Operator' }}</th><th class="text-left py-1 px-2 font-bold text-surface-600 dark:text-surface-400">{{ ui?.col_description ?? 'Description' }}</th><th class="text-left py-1 px-2 font-bold text-surface-600 dark:text-surface-400">{{ ui?.col_example ?? 'Example' }}</th></tr></thead>
-            <tbody><tr v-for="op in operators" :key="op.symbol" class="border-b border-surface-100 dark:border-surface-800"><td class="py-1 px-2 font-mono text-primary-600 dark:text-primary-400">{{ op.symbol }}</td><td class="py-1 px-2 text-surface-700 dark:text-surface-300">{{ op.description }}</td><td class="py-1 px-2 font-mono text-surface-500 dark:text-surface-400">{{ op.example }}</td></tr></tbody>
-          </table>
-        </div>
-      </div>
-      <div>
-        <h4 class="text-xs font-bold text-surface-600 dark:text-surface-400 mb-2">{{ ui?.label_filter_operators ?? 'Filter Operators' }}</h4>
-        <div class="overflow-x-auto">
-          <table class="w-full text-xs">
-            <thead><tr class="border-b border-surface-200 dark:border-surface-700"><th class="text-left py-1 px-2 font-bold text-surface-600 dark:text-surface-400">{{ ui?.col_operator ?? 'Operator' }}</th><th class="text-left py-1 px-2 font-bold text-surface-600 dark:text-surface-400">{{ ui?.col_description ?? 'Description' }}</th><th class="text-left py-1 px-2 font-bold text-surface-600 dark:text-surface-400">{{ ui?.col_example ?? 'Example' }}</th></tr></thead>
-            <tbody><tr v-for="filter in filterOperators" :key="filter.operator" class="border-b border-surface-100 dark:border-surface-800"><td class="py-1 px-2 font-mono text-primary-600 dark:text-primary-400">{{ filter.operator }}</td><td class="py-1 px-2 text-surface-700 dark:text-surface-300">{{ filter.description }}</td><td class="py-1 px-2 font-mono text-surface-500 dark:text-surface-400 text-xs">{{ filter.example }}</td></tr></tbody>
-          </table>
-        </div>
-      </div>
-    </div>
-  </div>
 </template>
 
 <script setup lang="ts">
@@ -120,9 +121,13 @@ const toast = useToast()
 const ui = computed(() => props.tool?.ui)
 
 const inputJson = ref('')
+const inboxApplied = ref(false)
 onMounted(() => {
   const text = useJsonInbox().consumeInbox()
-  if (text != null) inputJson.value = text
+  if (text != null) {
+    inputJson.value = text
+    inboxApplied.value = true
+  }
 })
 const jsonPath = ref('')
 const error = ref('')
@@ -130,15 +135,14 @@ const results = ref<Array<{ path: string; pointer: string; type: string; value: 
 const showReference = ref(false)
 const fullscreen = ref(false)
 
-const exampleJson = {
-  store: {
-    name: "Online Store",
-    books: [
-      { id: 1, title: "The Great Gatsby", author: "F. Scott Fitzgerald", price: 10.99, inStock: true, tags: ["fiction", "classic"] },
-      { id: 2, title: "1984", author: "George Orwell", price: 8.99, inStock: false, tags: ["fiction", "dystopian"] }
-    ],
-    address: { city: "New York", country: "USA" }
-  }
+const inputEditorRef = ref()
+/** Seeded with the built-in example so loading it returns matches right away. */
+const DEFAULT_EXAMPLE_EXPRESSION = '$.store.books[*].title'
+
+/** An example is only useful together with a query, so seed one and run it. */
+const onExampleLoaded = () => {
+  jsonPath.value = DEFAULT_EXAMPLE_EXPRESSION
+  nextTick(() => evaluate())
 }
 
 // Only examples the evaluator actually supports (no slices, no regex filters).
@@ -232,9 +236,7 @@ const evaluate = () => {
 
 const clearAll = () => { error.value = ''; results.value = [] }
 
-const loadExample = () => {
-  inputJson.value = JSON.stringify(exampleJson, null, 2)
-  jsonPath.value = '$.store.books[*].title'
-  evaluate()
-}
+onMounted(() => {
+  if (!inboxApplied.value) inputEditorRef.value?.loadDefaultExample()
+})
 </script>
