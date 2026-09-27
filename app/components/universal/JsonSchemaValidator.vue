@@ -3,11 +3,14 @@
     <template #first>
       <div class="h-full pr-3">
         <JsonInputEditor
+          ref="jsonEditorRef"
           v-model="jsonData"
           :label="tool.ui?.label_json_data || 'JSON Data'"
           placeholder='{"name": "Alice", "age": 30}'
           show-upload
+          example-slug="json-schema-validator"
           @clear="clearJsonData"
+          @example-loaded-secondary="onSchemaExample"
         />
       </div>
     </template>
@@ -43,7 +46,7 @@
           <div v-else class="flex flex-col flex-1 min-h-0">
             <div class="flex flex-col items-center justify-center gap-2 p-4 text-center">
               <Icon name="lucide:x-circle" class="w-8 h-8 text-red-400 dark:text-red-500" />
-              <p class="text-sm font-medium text-red-700 dark:text-red-400">{{ result.fieldErrors.length }} {{ result.fieldErrors.length === 1 ? 'error' : 'errors' }} found</p>
+              <p class="text-sm font-medium text-red-700 dark:text-red-400">{{ errorsFoundLabel(result.fieldErrors.length) }}</p>
             </div>
             <div class="flex-1 min-h-0 overflow-auto border-t border-red-200 dark:border-red-800">
               <JsonErrorsPanel :field-errors="result.fieldErrors" @locate-field-error="onLocateFieldError" />
@@ -66,9 +69,6 @@
         <Icon name="lucide:check-circle" class="h-4 w-4 mr-1.5" />
         {{ $t('system.validate') }}
       </button>
-      <button @click="loadSample" class="rounded-xl border border-surface-200 bg-white px-4 py-2 text-xs font-bold text-surface-700 hover:bg-surface-50 dark:border-surface-700 dark:bg-surface-800 dark:text-surface-300 dark:hover:bg-surface-700">
-        {{ tool.ui?.btn_load_sample }}
-      </button>
       <button @click="clearAll" class="rounded-xl border border-surface-200 bg-white px-4 py-2 text-xs font-bold text-surface-700 hover:bg-surface-50 dark:border-surface-700 dark:bg-surface-800 dark:text-surface-300 dark:hover:bg-surface-700">
         {{ $t('system.clearAll') }}
       </button>
@@ -84,9 +84,13 @@ const { t } = useI18n()
 const toast = useToast()
 
 const jsonData = ref('')
+const inboxApplied = ref(false)
 onMounted(() => {
   const text = useJsonInbox().consumeInbox()
-  if (text != null) jsonData.value = text
+  if (text != null) {
+    jsonData.value = text
+    inboxApplied.value = true
+  }
 })
 const schemaData = ref('')
 const schemaError = ref('')
@@ -110,13 +114,17 @@ const parsedData = computed(() => {
   try { return JSON.parse(jsonData.value) } catch { return null }
 })
 
+/** "{count} error(s) found", localized. */
+const errorsFoundLabel = (count: number): string =>
+  (props.tool.ui?.status_errors_found ?? '{count} error(s) found').replace('{count}', String(count))
+
 const validate = () => {
   schemaError.value = ''
   result.value = null
   errorMap.value = {}
 
   if (!jsonData.value.trim() || !schemaData.value.trim()) {
-    schemaError.value = 'Please enter both JSON data and JSON Schema.'
+    schemaError.value = props.tool.ui?.error_both_required ?? 'Please enter both JSON data and JSON Schema.'
     return
   }
 
@@ -124,7 +132,8 @@ const validate = () => {
   try {
     data = JSON.parse(jsonData.value)
   } catch (e) {
-    schemaError.value = `Invalid JSON data: ${(e as Error).message}`
+    schemaError.value = (props.tool.ui?.error_invalid_json_data ?? 'Invalid JSON data: {message}')
+      .replace('{message}', (e as Error).message)
     return
   }
 
@@ -139,7 +148,7 @@ const validate = () => {
   if (errors.length === 0) {
     toast.success(t('toast.validated'))
   } else {
-    toast.error(`${errors.length} validation error(s) found`)
+    toast.error(errorsFoundLabel(errors.length))
   }
 
   // Build errorMap for tree nodes
@@ -158,22 +167,26 @@ const onLocateFieldError = (err: FieldError) => {
   nextTick(() => { locatePath.value = dotPath })
 }
 
-const loadSample = () => {
-  jsonData.value = JSON.stringify({ name: 'Alice', age: 30, email: 'alice@example.com' }, null, 2)
-  schemaData.value = JSON.stringify({
-    type: 'object',
-    properties: {
-      name: { type: 'string', minLength: 1 },
-      age: { type: 'number', minimum: 0 },
-      email: { type: 'string', pattern: '^[^@]+@[^@]+$' },
-    },
-    required: ['name', 'email'],
-  }, null, 2)
+/** Examples carry both inputs: `input` is the JSON data, `input2` the schema. */
+const jsonEditorRef = ref()
+const onSchemaExample = (schema: string) => {
+  schemaData.value = schema
 }
+
+onMounted(() => {
+  if (!inboxApplied.value) jsonEditorRef.value?.loadDefaultExample()
+})
 
 const clearJsonData = () => { schemaError.value = '' }
 const clearSchemaData = () => { schemaError.value = '' }
-const clearAll = () => { schemaError.value = ''; result.value = null; errorMap.value = {} }
+// "Clear All" must clear the inputs too, like the other tool pages do.
+const clearAll = () => {
+  jsonData.value = ''
+  schemaData.value = ''
+  schemaError.value = ''
+  result.value = null
+  errorMap.value = {}
+}
 
 const copyResult = async () => {
   if (!result.value) return

@@ -328,6 +328,9 @@ const emit = defineEmits<{
   locateError: []
   copyError: []
   'example-loaded': [input: string]
+  /** Second input of a two-input tool (e.g. JSON data + JSON Schema). Only
+   *  emitted when the selected example actually defines `input2`. */
+  'example-loaded-secondary': [input: string]
   /** Emitted whenever content enters the editor (upload / paste). `text` is
    *  included so the parent can hand it off without reading a stale v-model. */
   'file-size': [info: { bytes: number; oversized: boolean; text: string; fileName?: string }]
@@ -367,6 +370,7 @@ const onExampleSelect = (id: string) => {
   if (ex) {
     emit('update:modelValue', ex.input)
     emit('example-loaded', ex.input)
+    if (ex.input2 != null) emit('example-loaded-secondary', ex.input2)
     // Feedback even when the example matches what is already loaded.
     toast.success(t('system.exampleLoaded'))
   }
@@ -374,7 +378,10 @@ const onExampleSelect = (id: string) => {
 }
 const loadDefaultExample = () => {
   const ex = examples.value[0]
-  if (ex) { emit('update:modelValue', ex.input); emit('example-loaded', ex.input) }
+  if (!ex) return
+  emit('update:modelValue', ex.input)
+  emit('example-loaded', ex.input)
+  if (ex.input2 != null) emit('example-loaded-secondary', ex.input2)
 }
 const handleClickOutside = (e: MouseEvent) => {
   if (!showExampleMenu.value) return

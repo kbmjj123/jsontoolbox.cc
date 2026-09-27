@@ -39,7 +39,10 @@
       "error_array_less_min": "is less than minimum",
       "error_array_greater_max": "is greater than maximum",
       "error_enum_invalid": "Value must be one of:",
-      "btn_load_sample": "Load Sample"
+      "btn_load_sample": "Load Sample",
+      "error_both_required": "Please enter both JSON data and JSON Schema.",
+      "error_invalid_json_data": "Invalid JSON data: {message}",
+      "status_errors_found": "{count} error(s) found"
     },
     "hero": {
       "trustHtml": "Runs in your browser. Your JSON is not uploaded by this tool."
@@ -195,7 +198,10 @@
       "error_array_less_min": "小于最小值",
       "error_array_greater_max": "大于最大值",
       "error_enum_invalid": "值必须为以下之一：",
-      "btn_load_sample": "加载示例"
+      "btn_load_sample": "加载示例",
+      "error_both_required": "请同时输入 JSON 数据和 JSON Schema。",
+      "error_invalid_json_data": "JSON 数据无效：{message}",
+      "status_errors_found": "发现 {count} 处错误"
     },
     "hero": {
       "trustHtml": "在你的浏览器中运行。你的 JSON不会被本工具上传。"

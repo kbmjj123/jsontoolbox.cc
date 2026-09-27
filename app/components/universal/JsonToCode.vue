@@ -45,13 +45,6 @@
           {{ ui.btn_generate }}
         </button>
 
-        <button
-          @click="loadExample"
-          class="rounded-lg border border-surface-200 bg-white px-3 py-2 text-xs font-medium text-surface-600 hover:bg-surface-50 dark:border-surface-700 dark:bg-surface-800 dark:text-surface-300 dark:hover:bg-surface-700"
-        >
-          {{ ui.btn_example }}
-        </button>
-
         <div class="flex items-center gap-2">
           <label class="text-xs font-bold text-surface-600 dark:text-surface-400">{{ ui.label_language }}</label>
           <select v-model="language" class="rounded-lg border border-surface-200 bg-white px-2 py-1 text-xs dark:border-surface-700 dark:bg-surface-800 dark:text-surface-100">
@@ -158,9 +151,13 @@ const ui = computed<Record<string, string>>(() => (props.tool?.ui ?? {}) as Reco
 const SAMPLE_PLACEHOLDER = '{\n  "id": 1,\n  "name": "Alice",\n  "email": "alice@example.com"\n}'
 
 const inputJson = ref('')
+const inboxApplied = ref(false)
 onMounted(() => {
   const text = useJsonInbox().consumeInbox()
-  if (text != null) inputJson.value = text
+  if (text != null) {
+    inputJson.value = text
+    inboxApplied.value = true
+  }
 })
 const outputCode = ref('')
 const error = ref('')
@@ -745,6 +742,12 @@ const loadExample = () => {
 const onExampleLoaded = () => {
   nextTick(() => generate(true))
 }
+
+// Seed the default example on mount like the other tool pages; content handed
+// over from the homepage picker takes precedence.
+onMounted(() => {
+  if (!inboxApplied.value) inputEditorRef.value?.loadDefaultExample()
+})
 
 const onPaste = () => {
   nextTick(() => {

@@ -362,11 +362,10 @@ const convert = () => {
       toast.error(error.value)
       return
     }
-    if (table.inconsistent) {
-      error.value = props.tool.ui?.error_inconsistent_columns
-      toast.error(error.value)
-      return
-    }
+    // A ragged row must not block the whole export: convert anyway and warn.
+    // Missing cells are padded and extras ignored below; the preview highlights
+    // the offending row indexes (`raggedRows`).
+    const inconsistent = table.inconsistent
 
     const result = table.allRows.map(row => {
       const obj: Record<string, unknown> = {}
@@ -378,7 +377,11 @@ const convert = () => {
 
     parsedOutputData.value = result
     outputJson.value = JSON.stringify(result, null, indent.value)
-    toast.success(t('toast.converted'))
+    if (inconsistent) {
+      toast.warning(props.tool.ui?.error_inconsistent_columns)
+    } else {
+      toast.success(t('toast.converted'))
+    }
   } catch {
     error.value = props.tool.ui?.error_parse
     toast.error(error.value)
