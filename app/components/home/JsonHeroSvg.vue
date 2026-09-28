@@ -23,23 +23,27 @@ const colorMode = useColorMode()
 
 const isLight = computed(() => colorMode.value === 'light')
 
+// Keep this list in sync with the @@TOKEN@@ placeholders in
+// app/assets/svg/json-hero.svg: a token without an entry here stays visible as
+// raw text, and an entry whose token no longer exists is dead weight.
 const tokens = computed<Record<string, string>>(() => ({
-  '@@PIPELINE@@': t('home.hero.svg.pipeline'),
+  '@@WORKSPACE@@': t('home.hero.svg.workspace'),
   '@@LOCAL@@': t('home.hero.svg.local'),
   '@@RAW_JSON@@': t('home.hero.svg.raw_json'),
-  '@@INPUT@@': t('home.hero.svg.input'),
-  '@@FORMAT@@': t('home.hero.svg.format'),
-  '@@READABLE@@': t('home.hero.svg.readable'),
-  '@@EXPLORE@@': t('home.hero.svg.explore'),
-  '@@TREE@@': t('home.hero.svg.tree'),
-  '@@TABLE@@': t('home.hero.svg.table'),
-  '@@VIEW@@': t('home.hero.svg.view'),
-  '@@CONVERT@@': t('home.hero.svg.convert'),
-  '@@CSV@@': t('home.hero.svg.csv'),
+  '@@LARGE_FILE@@': t('home.hero.svg.large_file'),
+  '@@LARGE_JSON_LABEL@@': t('home.hero.svg.large_json_label'),
   '@@PARSE@@': t('home.hero.svg.parse'),
   '@@READY@@': t('home.hero.svg.ready'),
+  '@@RICH_PREVIEW@@': t('home.hero.svg.rich_preview'),
+  '@@IMAGE_COLOR_MEDIA@@': t('home.hero.svg.image_color_media'),
+  '@@RICH_TREE@@': t('home.hero.svg.rich_tree'),
+  '@@EXPLORE@@': t('home.hero.svg.explore'),
+  '@@TABLE_VIEW@@': t('home.hero.svg.table_view'),
+  '@@VIEW@@': t('home.hero.svg.view'),
+  '@@CONVERT@@': t('home.hero.svg.convert'),
+  '@@FORMATS_26@@': t('home.hero.svg.formats_26'),
+  '@@RUNS_IN_BROWSER@@': t('home.hero.svg.runs_in_browser'),
   '@@NO_UPLOAD@@': t('home.hero.svg.no_upload'),
-  '@@PROCESSED_LOCALLY@@': t('home.hero.svg.processed_locally'),
 }))
 
 const svgHtml = computed(() => {
