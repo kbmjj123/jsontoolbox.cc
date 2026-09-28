@@ -142,6 +142,13 @@
 </template>
 
 <script setup lang="ts">
+import {
+  convertValue,
+  detectDelimiter,
+  parseCsv,
+  splitHeaderRow,
+} from '~/utils/csv'
+
 /** Number of parsed rows rendered in the preview table (stated in the page copy). */
 const PREVIEW_ROW_LIMIT = 10
 
@@ -195,73 +202,6 @@ const EMPTY_TABLE: ParsedTable = {
   usableHeaders: 0,
 }
 
-/** Count separators that are outside double-quoted sections. */
-function countOutsideQuotes(line: string, sep: string): number {
-  let count = 0
-  let inQuotes = false
-  for (let i = 0; i < line.length; i++) {
-    const ch = line[i]
-    if (inQuotes) {
-      if (ch === '"') {
-        if (line[i + 1] === '"') i++
-        else inQuotes = false
-      }
-      continue
-    }
-    if (ch === '"') { inQuotes = true; continue }
-    if (ch === sep) count++
-  }
-  return count
-}
-
-/**
- * Auto-detection is a convenience, not a guarantee: it scores each candidate by
- * how consistently it splits the first rows into the same number of columns.
- */
-function detectDelimiter(text: string): string {
-  const lines = text.split(/\r?\n/).filter(l => l.trim() !== '').slice(0, 5)
-  let best = ','
-  let bestScore = -Infinity
-  for (const sep of [',', ';', '\t', '|']) {
-    const counts = lines.map(l => countOutsideQuotes(l, sep) + 1)
-    if (counts.length === 0) continue
-    const first = counts[0]
-    const consistent = counts.filter(c => c === first).length
-    const score = consistent * 1000 + Math.min(first, 50)
-    if (score > bestScore) { bestScore = score; best = sep }
-  }
-  return best
-}
-
-function parseCsv(text: string, sep: string): string[][] {
-  const rows: string[][] = []
-  let current: string[] = []
-  let field = ''
-  let inQuotes = false
-
-  for (let i = 0; i < text.length; i++) {
-    const ch = text[i]
-    if (inQuotes) {
-      if (ch === '"') {
-        if (text[i + 1] === '"') { field += '"'; i++ }
-        else inQuotes = false
-      } else field += ch
-    } else {
-      if (ch === '"') inQuotes = true
-      else if (ch === sep) { current.push(field); field = '' }
-      else if (ch === '\n' || ch === '\r') {
-        if (ch === '\r' && text[i + 1] === '\n') i++
-        current.push(field); field = ''
-        if (current.length > 0 && !(current.length === 1 && current[0] === '')) rows.push(current)
-        current = []
-      } else field += ch
-    }
-  }
-  current.push(field)
-  if (current.length > 0 && !(current.length === 1 && current[0] === '')) rows.push(current)
-  return rows
-}
-
 const resolvedDelimiter = computed(() =>
   delimiter.value === 'auto' ? detectDelimiter(inputCsv.value) : delimiter.value
 )
@@ -274,24 +214,10 @@ const parsedTable = computed<ParsedTable>(() => {
   const rows = parseCsv(inputCsv.value, resolvedDelimiter.value)
   if (rows.length === 0) return EMPTY_TABLE
 
-  let headers: string[]
-  let allRows: string[][]
-
-  if (hasHeader.value) {
-    headers = rows[0].map(h => (trimValues.value ? h.trim() : h))
-    allRows = rows.slice(1)
-  } else {
-    headers = rows[0].map((_, i) => `column_${i + 1}`)
-    allRows = rows
-  }
-
-  let usableHeaders = hasHeader.value ? 0 : headers.length
-  if (hasHeader.value) {
-    headers = headers.map((h, i) => {
-      if (h !== '') { usableHeaders++; return h }
-      return `column_${i + 1}`
-    })
-  }
+  const { headers, dataRows: allRows, usableHeaders } = splitHeaderRow(rows, {
+    hasHeader: hasHeader.value,
+    trim: trimValues.value,
+  })
 
   const columnCount = headers.length
 
@@ -325,20 +251,6 @@ const showingLabel = computed(() => {
   return template ? template.replace('{shown}', shown).replace('{total}', total) : `${shown} / ${total}`
 })
 
-/** Value conversion for one cell: trim → empty policy → optional type inference. */
-function convertValue(raw: string): unknown {
-  const value = trimValues.value ? raw.trim() : raw
-  if (value === '') return emptyAsNull.value ? null : ''
-  if (!typeInference.value) return value
-  if (value === 'true') return true
-  if (value === 'false') return false
-  if (/^-?\d+$/.test(value) || /^-?\d+\.\d+$/.test(value)) {
-    const n = Number(value)
-    if (!Number.isNaN(n)) return n
-  }
-  return value
-}
-
 const convert = () => {
   error.value = ''
   outputJson.value = ''
@@ -370,7 +282,11 @@ const convert = () => {
     const result = table.allRows.map(row => {
       const obj: Record<string, unknown> = {}
       table.headers.forEach((h, i) => {
-        obj[h] = convertValue(row[i] ?? '')
+        obj[h] = convertValue(row[i] ?? '', {
+          trimValues: trimValues.value,
+          typeInference: typeInference.value,
+          emptyAsNull: emptyAsNull.value,
+        })
       })
       return obj
     })

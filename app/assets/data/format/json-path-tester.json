@@ -9,7 +9,8 @@
     "json-editor"
   ],
   "recommends": [
-    "json-compare"
+    "json-compare",
+    "json-to-text"
   ],
   "en": {
     "name": "JSONPath Tester",

@@ -1,0 +1,484 @@
+{
+  "slug": "txt-to-json",
+  "category": "convert",
+  "component": "TxtToJson",
+  "icon": "lucide:file-text",
+  "sort": 14,
+  "applicationCategory": "DeveloperApplication",
+  "nextSteps": ["json-editor", "csv-to-json", "json-to-text"],
+  "recommends": [
+    "json-schema-validator",
+    "large-json-viewer",
+    "json-to-csv",
+    "json-to-table",
+    "json-schema-generator",
+    "json-to-typescript",
+    "jsonc-to-json"
+  ],
+  "en": {
+    "name": "TXT to JSON Converter",
+    "description": "Convert plain text, TXT files, line lists, key-value text, and delimited records into JSON. Pick one of three parsing modes, review the live preview and warnings, then copy or download the result.",
+    "hero": {
+      "trustHtml": "Runs in your browser. Your text is not uploaded by this tool."
+    },
+    "meta": {
+      "title": "TXT to JSON Converter – Free Online Text to JSON Tool",
+      "description": "Convert TXT and plain text to JSON online. Turn lines into a JSON array, key-value text into an object, or delimited text into JSON records. Free, browser-based, and no upload required.",
+      "keywords": [
+        "txt to json",
+        "txt to json converter",
+        "convert txt to json",
+        "text to json converter",
+        "convert text to json",
+        "convert text file to json",
+        "txt file to json",
+        "free txt to json converter"
+      ]
+    },
+    "ui": {
+      "label_input": "Input Text or TXT File",
+      "label_output": "JSON Output",
+      "placeholder_input": "Paste text or open a .txt file...",
+      "placeholder_output": "Converted JSON will appear here...",
+      "label_mode": "Parsing mode:",
+      "option_lines_array": "Lines to JSON array",
+      "option_key_value": "Key-value text to object",
+      "option_delimited_rows": "Delimited text to objects",
+      "option_delimiter": "Delimiter:",
+      "option_auto_delimiter": "Auto-detect",
+      "option_delimiter_comma": "Comma (,)",
+      "option_delimiter_semicolon": "Semicolon (;)",
+      "option_delimiter_tab": "Tab",
+      "option_delimiter_pipe": "Pipe (|)",
+      "option_key_separator": "Key separator:",
+      "option_separator_colon": "Colon (:)",
+      "option_separator_equals": "Equals (=)",
+      "option_has_header": "First row is header",
+      "option_infer_types": "Infer basic types",
+      "option_empty_as_null": "Convert empty values to null",
+      "option_trim_values": "Trim whitespace",
+      "option_skip_empty": "Skip empty lines",
+      "option_unique": "Remove duplicate lines",
+      "option_indent": "Indent:",
+      "option_indent_2": "2 spaces",
+      "option_indent_4": "4 spaces",
+      "btn_convert": "Convert to JSON",
+      "preview_title": "Parsed Preview",
+      "preview_lines": "Lines:",
+      "preview_keys": "Keys:",
+      "preview_key": "Key",
+      "preview_value": "Value",
+      "preview_rows": "Rows:",
+      "preview_columns": "Columns:",
+      "preview_showing": "Showing {shown} of {total}",
+      "preview_empty": "Enter text to preview the parsed result",
+      "error_empty_input": "Enter text or open a file first",
+      "error_no_lines": "No usable lines were found",
+      "error_no_pairs": "No key-value pairs were found",
+      "error_no_headers": "No usable headers were found",
+      "error_inconsistent_columns": "Some rows contain a different number of columns",
+      "warning_duplicate_keys": "{count} duplicate key(s) were found: the last value is kept",
+      "warning_skipped_lines": "{count} line(s) were skipped: no key separator was found",
+      "warning_empty_keys": "{count} line(s) were skipped: the key was empty"
+    },
+    "features": [
+      {
+        "icon": "lucide:file-text",
+        "title": "TXT and Plain Text Input",
+        "description": "Paste plain text into the editor or open a local .txt, .csv, .tsv, .text, or .log file. The file is read in your browser and never uploaded."
+      },
+      {
+        "icon": "lucide:list",
+        "title": "Lines to JSON Array",
+        "description": "Turn one item per line into a JSON array, in the original input order. Empty lines can be skipped and duplicate values can be removed while keeping the position of the first occurrence."
+      },
+      {
+        "icon": "lucide:braces",
+        "title": "Key-Value Text to Object",
+        "description": "Parse lines such as name: Alice or name=Alice into a JSON object. The line is split at the first separator only, so url: https://example.com/a:b keeps the full URL as its value."
+      },
+      {
+        "icon": "lucide:table-2",
+        "title": "Delimited Text to Records",
+        "description": "Convert comma-, tab-, semicolon-, or pipe-separated text into a JSON array of objects, with auto-detection available. Use the first row as headers, or let the tool name the columns column_1, column_2, and so on."
+      },
+      {
+        "icon": "lucide:scan-search",
+        "title": "Preview and Parsing Warnings",
+        "description": "Review the first 10 parsed lines, key-value entries, or data rows before exporting. Duplicate keys, skipped lines, and rows with a different number of columns are reported in the preview."
+      },
+      {
+        "icon": "lucide:badge-check",
+        "title": "Optional Type Inference",
+        "description": "When enabled, lowercase true and false become booleans and plain integers or decimals such as 30 or 1.5 become numbers. It is off by default, so values such as 00123, 1.10, TRUE, and NULL stay strings."
+      },
+      {
+        "icon": "lucide:copy",
+        "title": "Copy JSON Output",
+        "description": "Copy the generated JSON to the clipboard for use in scripts, APIs, configuration files, test fixtures, or frontend applications. The copy always contains every parsed item, not just the previewed ones."
+      },
+      {
+        "icon": "lucide:download",
+        "title": "Download JSON File",
+        "description": "Download the full result as a .json file after reviewing the parsed structure and warnings."
+      },
+      {
+        "icon": "lucide:shield-check",
+        "title": "Browser-Based Processing",
+        "description": "Text parsing and JSON generation happen in your browser. No account is required and the input text is not sent to a remote conversion service."
+      }
+    ],
+    "guide": [
+      {
+        "title": "Paste or open text",
+        "description": "Paste plain text into the input editor or open a local .txt file. The input can be a line list, key-value text, or a delimited table."
+      },
+      {
+        "title": "Choose a parsing mode",
+        "description": "Select Lines to JSON array for one item per line, Key-value text to object for key/value records, or Delimited text to objects for table-like data. Loading a built-in example switches the mode for you."
+      },
+      {
+        "title": "Configure parsing rules",
+        "description": "The available options depend on the mode: the delimiter and header switch appear in delimited mode, the key separator appears in key-value mode, and skip empty lines and remove duplicate lines apply to line and key-value text. Type inference, empty-value, trim, and indent options are always available."
+      },
+      {
+        "title": "Review the preview",
+        "description": "Check the detected lines, keys, rows, and columns together with any duplicate-key, skipped-line, or uneven-row warnings before creating the final JSON."
+      },
+      {
+        "title": "Convert and export",
+        "description": "Click Convert to JSON, then copy the result or download it as a .json file. The output also updates automatically while you type, so you can adjust the options and watch the result change. Validate the output before sending it to another system."
+      }
+    ],
+    "example": {
+      "title": "Convert Delimited Text to JSON",
+      "description": "A small comma-separated table with a header row, converted into an array of JSON objects.",
+      "inputLabel": "Delimited Text",
+      "input": "name,age,city\nAlice,30,New York\nBob,25,London",
+      "inputExplanation": "Comma-separated text whose first line is the header row.",
+      "outputLabel": "JSON Array",
+      "output": "[\n  {\n    \"name\": \"Alice\",\n    \"age\": 30,\n    \"city\": \"New York\"\n  },\n  {\n    \"name\": \"Bob\",\n    \"age\": 25,\n    \"city\": \"London\"\n  }\n]",
+      "outputExplanation": "Shown with Infer basic types enabled. The option is off by default, so 30 and 25 remain the strings \"30\" and \"25\" unless you turn it on.",
+      "note": "Indent is set to 2 spaces in this example. The downloaded file always contains every parsed row, even when the preview shows only the first 10."
+    },
+    "faq": [
+      {
+        "question": "What does this TXT to JSON converter do?",
+        "answer": "It converts plain text into JSON using a parsing mode you choose. Lines to JSON array turns one item per line into a JSON array, Key-value text to object turns key/value lines into a single JSON object, and Delimited text to objects turns table-like text into an array of JSON objects."
+      },
+      {
+        "question": "Can I convert a TXT file to JSON?",
+        "answer": "Yes. Open a .txt, .csv, .tsv, .text, or .log file from your device, or paste its contents. Then choose the parsing mode that matches the file, review the preview, and copy or download the generated JSON."
+      },
+      {
+        "question": "How do I convert a list of lines to a JSON array?",
+        "answer": "Choose Lines to JSON array and paste one value per line. Three lines containing Alice, Bob, and Charlie become [\"Alice\", \"Bob\", \"Charlie\"]. The array keeps the original input order."
+      },
+      {
+        "question": "Can I convert key-value text to JSON?",
+        "answer": "Yes. Choose Key-value text to object and use lines such as name: Alice or name=Alice. The line is split at the first separator only, so a line such as url: https://example.com/a:b produces the key url with the full URL as its value."
+      },
+      {
+        "question": "Which key separators are supported?",
+        "answer": "Colon (:) and equals (=). Select the one that matches your input. Lines without the selected separator are skipped and counted in the preview instead of failing the whole conversion."
+      },
+      {
+        "question": "Can I convert CSV-like text to JSON?",
+        "answer": "Yes. Choose Delimited text to objects, select the delimiter, and indicate whether the first row contains headers. Each data row becomes one JSON object."
+      },
+      {
+        "question": "Which delimiters are supported?",
+        "answer": "Comma, tab, semicolon, and pipe, plus auto-detection. Auto-detection scores each candidate by how consistently it splits the first rows into the same number of columns, so choose the delimiter manually when the input is ambiguous or when a delimiter also appears inside values."
+      },
+      {
+        "question": "Does it support quoted values?",
+        "answer": "Yes in delimited mode. A field wrapped in double quotes may contain the delimiter and line breaks, and two consecutive double quotes inside a quoted field represent one literal double quote."
+      },
+      {
+        "question": "Can I convert text without a header row?",
+        "answer": "Yes. Turn off First row is header and the converter names the columns column_1, column_2, column_3, and so on. A blank cell inside a header row falls back to the same generated name."
+      },
+      {
+        "question": "Does it infer numbers and booleans?",
+        "answer": "Only when Infer basic types is enabled, and only for a narrow set of values: lowercase true and false become booleans, and plain integers or decimals such as 30, -7, or 1.5 become numbers. Values such as TRUE, NULL, 1e5, .5, +5, 00123, 1.10, and 2026-09-18 stay strings. Keep the option off when identifiers, postal codes, version strings, or formatted values must remain text."
+      },
+      {
+        "question": "What happens to empty lines and empty values?",
+        "answer": "In line and key-value mode, Skip empty lines is on by default and removes blank lines. Empty values become empty strings, or null when Convert empty values to null is enabled. In delimited mode, blank lines are dropped by the parser and missing cells become empty values."
+      },
+      {
+        "question": "What happens when duplicate keys appear?",
+        "answer": "The converter reports how many duplicate keys were found and keeps the last value for that key. The key itself stays at the position of its first appearance, because a JSON object cannot hold two separate properties with the same name."
+      },
+      {
+        "question": "Can I remove duplicate lines?",
+        "answer": "Yes. In Lines to JSON array mode, turn on Remove duplicate lines. The first occurrence keeps its position and later duplicates are dropped, so the remaining order still follows the input."
+      },
+      {
+        "question": "Can I convert indented text to nested JSON?",
+        "answer": "No. Indented or hierarchy text is not supported because indentation rules are ambiguous. Flatten the text into one item per line, key-value pairs, or delimited rows, and then convert it."
+      },
+      {
+        "question": "Can I convert ChatGPT or AI-generated text to JSON?",
+        "answer": "Only when the text follows a recognizable structure such as one item per line, key-value pairs, or a consistent delimiter. This page is not a natural-language parser and does not guess field names or schemas from prose."
+      },
+      {
+        "question": "Can I convert text to JSON Lines?",
+        "answer": "No. This page outputs a JSON array for line and delimited input, or a JSON object for key-value input. There is no JSONL output mode."
+      },
+      {
+        "question": "Does the preview limit the exported JSON?",
+        "answer": "No. The preview shows the first 10 parsed lines, key-value entries, or data rows so you can check the parsing rules quickly. Copy and download always use every parsed item."
+      },
+      {
+        "question": "Can I convert a large TXT file?",
+        "answer": "The practical limit depends on file size, number of lines, browser memory, parsing mode, and preview rendering. Very large files may be slow to render in the editor, in which case a local parser or command-line tool is a better fit."
+      },
+      {
+        "question": "Is my text uploaded to a server?",
+        "answer": "No. The page reads the input and generates JSON in your browser. You should still avoid entering passwords, access tokens, private customer data, or confidential production text into any browser-based tool."
+      },
+      {
+        "question": "Is this a free TXT to JSON converter?",
+        "answer": "Yes. You can paste or open text, choose a parsing mode, review the output, and copy or download JSON without creating an account."
+      }
+    ],
+    "article": {
+      "title": "How to Convert TXT and Plain Text to JSON",
+      "content": "<h2>What Is TXT to JSON Conversion?</h2><p>TXT to JSON conversion turns unstructured or semi-structured text into a JSON object or array. Unlike a fixed file-format conversion, plain text does not define one universal structure, so the converter has to apply explicit parsing rules.</p><p>A line list, a key-value file, and a CSV-like table are all text, but they should produce different JSON shapes. Choosing the correct parsing mode matters more than changing the file extension.</p><h2>Choose the Right Parsing Mode</h2><ul><li><strong>Lines to array:</strong> use when each non-empty line is one string value.</li><li><strong>Key-value text:</strong> use when each line holds a key and a value separated by a colon or an equals sign.</li><li><strong>Delimited rows:</strong> use when the text has columns separated by commas, tabs, semicolons, or pipes.</li></ul><h2>Convert Lines to a JSON Array</h2><p>Input:</p><pre><code>Alice\nBob\nCharlie</code></pre><p>Output:</p><pre><code>[\"Alice\", \"Bob\", \"Charlie\"]</code></pre><p>This mode suits lists of IDs, URLs, emails, tags, and keywords. The array keeps the input order, and Remove duplicate lines drops later duplicates while keeping the first occurrence in place.</p><h2>Convert Key-Value Text to a JSON Object</h2><p>Input:</p><pre><code>name: Alice\nage: 30\nactive: true</code></pre><p>Output with Infer basic types enabled:</p><pre><code>{\n  \"name\": \"Alice\",\n  \"age\": 30,\n  \"active\": true\n}</code></pre><p>With the option off, which is the default, the output is:</p><pre><code>{\n  \"name\": \"Alice\",\n  \"age\": \"30\",\n  \"active\": \"true\"\n}</code></pre><p>Key-value parsing splits each line at the <strong>first</strong> separator only. A line such as <code>url: https://example.com/a:b</code> yields the key <code>url</code> and the value <code>https://example.com/a:b</code>, rather than breaking the URL apart. Lines with no separator, or with an empty key, are skipped and counted in the preview instead of failing the conversion.</p><h2>Convert Delimited Text to JSON Records</h2><p>Input:</p><pre><code>name,age,city\nAlice,30,New York\nBob,25,London</code></pre><p>Output:</p><pre><code>[\n  {\"name\":\"Alice\",\"age\":\"30\",\"city\":\"New York\"},\n  {\"name\":\"Bob\",\"age\":\"25\",\"city\":\"London\"}\n]</code></pre><p>Use a CSV-compatible parser when fields can contain delimiters, escaped quotes, or line breaks. In delimited mode, quoted fields are supported: a value wrapped in double quotes may contain the delimiter and line breaks, and two consecutive double quotes inside it represent one literal quote. A simple split on the delimiter is not sufficient for that kind of data.</p><h2>Type Inference Can Change Values</h2><p>Plain text carries no reliable type system. This converter only infers a narrow set of values, and only when Infer basic types is enabled: lowercase <code>true</code> and <code>false</code> become booleans, and plain integers or decimals matching <code>-?\\d+</code> or <code>-?\\d+\\.\\d+</code> become numbers.</p><ul><li><strong>Leading zeros:</strong> <code>00123</code> stays the string \"00123\".</li><li><strong>Version strings:</strong> <code>1.10</code> would lose its trailing zero as a number, so it stays text when inference is off.</li><li><strong>Uppercase and null-like text:</strong> <code>TRUE</code>, <code>FALSE</code>, and <code>NULL</code> are not recognized and stay strings.</li><li><strong>Scientific notation:</strong> <code>1e5</code> is not recognized and stays a string.</li><li><strong>Dates and postal codes:</strong> these are treated as text unless you enable inference and they happen to match the numeric patterns.</li></ul><p>Keep type inference disabled when preserving the exact source text matters more than convenience.</p><h2>Headers and Uneven Rows</h2><p>Delimited input may contain a header row, missing values, extra values, or blank headers. When First row is header is off, or a header cell is blank, the converter generates the names <code>column_1</code>, <code>column_2</code>, and so on. Rows with a different number of columns are highlighted in the preview and reported as a warning; the conversion still runs, missing cells become empty values, and extra values beyond the column count are ignored.</p><h2>Text to JSON Is Not Natural-Language Understanding</h2><p>Plain text can be ambiguous. A paragraph, a log file, a Markdown document, or an AI response cannot become a meaningful JSON structure without rules. Use an explicit pattern such as one item per line, key-value pairs, or a consistent delimiter. For AI-generated output, first make sure it follows a predictable structure.</p><h2>TXT to JSON vs JSON String Parsing</h2><p>TXT to JSON can mean several things. This page handles structured plain text and text files. If the input is already a JSON-encoded string such as <code>\"{\\\"name\\\":\\\"Alice\\\"}\"</code>, use a JSON unescape workflow instead. If the input is an ordinary JSON document, use a JSON formatter or validator rather than a text converter.</p><h2>TXT to JSON vs JSONL</h2><p>A JSON array stores many values inside one JSON document. JSON Lines stores one JSON value per line. This page outputs a JSON array or a JSON object and does not provide a JSONL output mode, so if a downstream system needs JSONL, convert it with a separate step.</p><h2>Privacy and Browser-Based Processing</h2><p>This converter reads text and generates JSON in the browser rather than uploading the input to a remote service. That is useful for internal lists and development data, but it is not a secret-management system. Avoid entering credentials, tokens, private customer records, or confidential production text into any online tool.</p><h2>When to Use a Local Parser</h2><p>For very large files, repeatable data pipelines, strict CSV compatibility, confidential data, or automated processing, use a local parser or command-line workflow. Browser conversion is best suited to quick transformations, inspection, and small-to-medium inputs.</p>"
+    }
+  },
+  "zh": {
+    "name": "TXT 转 JSON 转换器",
+    "description": "把纯文本、TXT 文件、行列表、键值文本和分隔符记录转换成 JSON。选择三种解析模式之一，查看实时预览与警告，然后复制或下载结果。",
+    "hero": {
+      "trustHtml": "在你的浏览器里运行。你输入的文本不会被本工具上传。"
+    },
+    "meta": {
+      "title": "TXT 转 JSON 转换器 – 免费在线文本转 JSON 工具",
+      "description": "在线把 TXT 和纯文本转换成 JSON：一行一个值转成数组，键值文本转成对象，分隔符文本转成 JSON 记录。免费、浏览器本地处理、无需上传。",
+      "keywords": [
+        "txt to json",
+        "txt 转 json",
+        "txt转json",
+        "文本转json",
+        "txt文件转json",
+        "convert txt to json",
+        "text to json converter",
+        "文本转json在线工具"
+      ]
+    },
+    "ui": {
+      "label_input": "输入文本或 TXT 文件",
+      "label_output": "JSON 输出",
+      "placeholder_input": "粘贴文本，或打开 .txt 文件...",
+      "placeholder_output": "转换后的 JSON 会显示在这里...",
+      "label_mode": "解析模式：",
+      "option_lines_array": "每行转 JSON 数组",
+      "option_key_value": "键值文本转对象",
+      "option_delimited_rows": "分隔文本转对象",
+      "option_delimiter": "分隔符：",
+      "option_auto_delimiter": "自动检测",
+      "option_delimiter_comma": "逗号 (,)",
+      "option_delimiter_semicolon": "分号 (;)",
+      "option_delimiter_tab": "制表符",
+      "option_delimiter_pipe": "竖线 (|)",
+      "option_key_separator": "键值分隔符：",
+      "option_separator_colon": "冒号 (:)",
+      "option_separator_equals": "等号 (=)",
+      "option_has_header": "第一行是表头",
+      "option_infer_types": "推断基础类型",
+      "option_empty_as_null": "空值转成 null",
+      "option_trim_values": "去除首尾空白",
+      "option_skip_empty": "跳过空行",
+      "option_unique": "去除重复行",
+      "option_indent": "缩进：",
+      "option_indent_2": "2 空格",
+      "option_indent_4": "4 空格",
+      "btn_convert": "转换为 JSON",
+      "preview_title": "解析预览",
+      "preview_lines": "行数：",
+      "preview_keys": "键数：",
+      "preview_key": "键",
+      "preview_value": "值",
+      "preview_rows": "行数：",
+      "preview_columns": "列数：",
+      "preview_showing": "显示 {shown} / 共 {total}",
+      "preview_empty": "输入文本后即可预览解析结果",
+      "error_empty_input": "请先输入文本或打开文件",
+      "error_no_lines": "没有找到可用的行",
+      "error_no_pairs": "没有找到可用的键值对",
+      "error_no_headers": "没有找到可用的表头",
+      "error_inconsistent_columns": "部分行的列数与其他行不一致",
+      "warning_duplicate_keys": "发现 {count} 个重复键：保留最后一次的值",
+      "warning_skipped_lines": "已跳过 {count} 行：未找到键值分隔符",
+      "warning_empty_keys": "已跳过 {count} 行：键为空"
+    },
+    "features": [
+      {
+        "icon": "lucide:file-text",
+        "title": "支持 TXT 与纯文本输入",
+        "description": "把纯文本粘贴到编辑器，或从本地打开 .txt、.csv、.tsv、.text、.log 文件。文件在浏览器里读取，不会上传。"
+      },
+      {
+        "icon": "lucide:list",
+        "title": "每行转 JSON 数组",
+        "description": "把一行一个值转成 JSON 数组，顺序与输入顺序一致。可以跳过空行，也可以去除重复值，同时保留首次出现的位置。"
+      },
+      {
+        "icon": "lucide:braces",
+        "title": "键值文本转对象",
+        "description": "把 name: Alice 或 name=Alice 这样的行解析成 JSON 对象。只在第一个分隔符处切分，所以 url: https://example.com/a:b 会保留完整 URL 作为值。"
+      },
+      {
+        "icon": "lucide:table-2",
+        "title": "分隔文本转记录",
+        "description": "把逗号、制表符、分号或竖线分隔的文本转成 JSON 对象数组，支持自动检测分隔符。可以用第一行作表头，也可以让工具生成 column_1、column_2 这样的列名。"
+      },
+      {
+        "icon": "lucide:scan-search",
+        "title": "预览与解析警告",
+        "description": "导出前预览前 10 条解析结果。重复键、被跳过的行、列数不一致的行都会在预览区提示。"
+      },
+      {
+        "icon": "lucide:badge-check",
+        "title": "可选的类型推断",
+        "description": "开启后，小写的 true 和 false 会变成布尔值，30、1.5 这样的整数或小数会变成数字。默认关闭，因此 00123、1.10、TRUE、NULL 都保持字符串。"
+      },
+      {
+        "icon": "lucide:copy",
+        "title": "复制 JSON 输出",
+        "description": "把生成的 JSON 复制到剪贴板，用于脚本、接口、配置文件、测试数据或前端应用。复制的内容始终是全部解析结果，而不只是预览的那几条。"
+      },
+      {
+        "icon": "lucide:download",
+        "title": "下载 JSON 文件",
+        "description": "确认解析结果和警告后，把完整结果下载为 .json 文件。"
+      },
+      {
+        "icon": "lucide:shield-check",
+        "title": "浏览器本地处理",
+        "description": "文本解析和 JSON 生成都在你的浏览器里完成。不需要注册账号，输入文本也不会发送到远程转换服务。"
+      }
+    ],
+    "guide": [
+      {
+        "title": "粘贴或打开文本",
+        "description": "把纯文本粘贴到输入编辑器，或从本地打开 .txt 文件。输入可以是行列表、键值文本，也可以是分隔文本表格。"
+      },
+      {
+        "title": "选择解析模式",
+        "description": "一行一个值选「每行转 JSON 数组」，键值记录选「键值文本转对象」，表格类数据选「分隔文本转对象」。加载内置示例会自动切换到对应模式。"
+      },
+      {
+        "title": "配置解析规则",
+        "description": "可用选项随模式变化：分隔模式下有分隔符和表头开关，键值模式下有键值分隔符，行列表和键值模式下有跳过空行与去除重复行。类型推断、空值处理、去空白和缩进选项始终可用。"
+      },
+      {
+        "title": "查看预览",
+        "description": "检查识别出的行数、键数、行数和列数，以及重复键、跳过行、列数不一致等警告，确认无误后再生成最终 JSON。"
+      },
+      {
+        "title": "转换并导出",
+        "description": "点击「转换为 JSON」，然后复制结果或下载为 .json 文件。输入时结果也会自动更新，可以边调选项边看变化。发送给其他系统前请先校验输出。"
+      }
+    ],
+    "example": {
+      "title": "把分隔文本转换成 JSON",
+      "description": "一个带表头的逗号分隔小表格，转换成 JSON 对象数组。",
+      "inputLabel": "分隔文本",
+      "input": "name,age,city\nAlice,30,New York\nBob,25,London",
+      "inputExplanation": "逗号分隔的文本，第一行是表头。",
+      "outputLabel": "JSON 数组",
+      "output": "[\n  {\n    \"name\": \"Alice\",\n    \"age\": 30,\n    \"city\": \"New York\"\n  },\n  {\n    \"name\": \"Bob\",\n    \"age\": 25,\n    \"city\": \"London\"\n  }\n]",
+      "outputExplanation": "这里开启了「推断基础类型」。该选项默认关闭，所以不开启时 30 和 25 会保持字符串 \"30\" 和 \"25\"。",
+      "note": "本例缩进为 2 空格。即使预览只显示前 10 行，下载的文件始终包含全部解析结果。"
+    },
+    "faq": [
+      {
+        "question": "这个 TXT 转 JSON 转换器做什么？",
+        "answer": "它按你选择的解析模式把纯文本转换成 JSON：「每行转 JSON 数组」把一行一个值转成数组，「键值文本转对象」把键值行转成单个 JSON 对象，「分隔文本转对象」把表格类文本转成 JSON 对象数组。"
+      },
+      {
+        "question": "能把 TXT 文件转成 JSON 吗？",
+        "answer": "可以。从本地打开 .txt、.csv、.tsv、.text 或 .log 文件，也可以直接粘贴内容。然后选择匹配文件的解析模式，查看预览，再复制或下载生成的 JSON。"
+      },
+      {
+        "question": "怎么把多行文本转成 JSON 数组？",
+        "answer": "选择「每行转 JSON 数组」，粘贴一行一个值。包含 Alice、Bob、Charlie 的三行会变成 [\"Alice\", \"Bob\", \"Charlie\"]，数组顺序与输入顺序一致。"
+      },
+      {
+        "question": "能把键值文本转成 JSON 吗？",
+        "answer": "可以。选择「键值文本转对象」，使用 name: Alice 或 name=Alice 这样的行。只在第一个分隔符处切分，所以 url: https://example.com/a:b 会得到键 url 和完整的 URL 值。"
+      },
+      {
+        "question": "支持哪些键值分隔符？",
+        "answer": "冒号 (:) 和等号 (=)，选择与你的输入匹配的那一个。没有该分隔符的行会被跳过并在预览里计数，不会导致整次转换失败。"
+      },
+      {
+        "question": "能把类 CSV 文本转成 JSON 吗？",
+        "answer": "可以。选择「分隔文本转对象」，选择分隔符，并指定第一行是否为表头。每一行数据会成为一个 JSON 对象。"
+      },
+      {
+        "question": "支持哪些分隔符？",
+        "answer": "逗号、制表符、分号和竖线，另外还有自动检测。自动检测按「能否把前几行稳定切成相同列数」打分，所以输入有歧义、或分隔符也出现在值里面时，请手动选择分隔符。"
+      },
+      {
+        "question": "支持带引号的值吗？",
+        "answer": "分隔模式支持。双引号包裹的字段里可以包含分隔符和换行，字段内连续两个双引号表示一个真正的双引号。"
+      },
+      {
+        "question": "没有表头行也能转换吗？",
+        "answer": "可以。关掉「第一行是表头」，转换器会把列命名为 column_1、column_2、column_3 等。表头行里的空单元格也会回落到同样的生成名称。"
+      },
+      {
+        "question": "会推断数字和布尔值吗？",
+        "answer": "只有开启「推断基础类型」时才会，而且范围很窄：小写的 true 和 false 变成布尔值，30、-7、1.5 这样的整数或小数变成数字。TRUE、NULL、1e5、.5、+5、00123、1.10、2026-09-18 都保持字符串。如果 ID、邮编、版本号或带格式的值必须保持文本，请不要开启这个选项。"
+      },
+      {
+        "question": "空行和空值怎么处理？",
+        "answer": "在行列表和键值模式下，「跳过空行」默认开启，会去掉空行。空值会变成空字符串；开启「空值转成 null」时变成 null。在分隔模式下，解析器会丢弃空行，缺失的单元格变成空值。"
+      },
+      {
+        "question": "出现重复键会怎样？",
+        "answer": "转换器会提示发现多少个重复键，并保留该键最后一次的值。键本身仍停在首次出现的位置，因为 JSON 对象不能有两个同名属性。"
+      },
+      {
+        "question": "能去除重复行吗？",
+        "answer": "可以。在「每行转 JSON 数组」模式下开启「去除重复行」。首次出现的行保留在原位置，后面的重复项被丢弃，剩余顺序仍与输入一致。"
+      },
+      {
+        "question": "能把缩进文本转成嵌套 JSON 吗？",
+        "answer": "不能。缩进层级文本的规则有歧义，本页不支持。请先把文本整理成一行一个值、键值对或分隔行，再进行转换。"
+      },
+      {
+        "question": "能把 ChatGPT 或 AI 生成的文本转成 JSON 吗？",
+        "answer": "只有在文本本身有可识别结构时才可以，比如一行一个值、键值对或统一的分隔符。本页不是自然语言解析器，不会从一段文字里猜字段名或结构。"
+      },
+      {
+        "question": "能把文本转成 JSON Lines 吗？",
+        "answer": "不能。本页在行列表和分隔模式下输出 JSON 数组，在键值模式下输出 JSON 对象，没有 JSONL 输出模式。"
+      },
+      {
+        "question": "预览会限制导出的 JSON 吗？",
+        "answer": "不会。预览只显示前 10 条解析结果，方便快速检查解析规则。复制和下载始终包含全部解析结果。"
+      },
+      {
+        "question": "能转换很大的 TXT 文件吗？",
+        "answer": "实际能处理多大取决于文件大小、行数、浏览器内存、解析模式和预览渲染。很大的文件在编辑器里可能会卡，这种情况更适合用本地解析器或命令行工具。"
+      },
+      {
+        "question": "我的文本会被上传到服务器吗？",
+        "answer": "不会。本页在你的浏览器里读取输入并生成 JSON。但仍然不要把密码、访问令牌、客户隐私数据或生产环境的机密文本粘贴到任何在线工具里。"
+      },
+      {
+        "question": "这个 TXT 转 JSON 转换器免费吗？",
+        "answer": "免费。粘贴或打开文本、选择解析模式、查看结果、复制或下载 JSON，都不需要注册账号。"
+      }
+    ],
+    "article": {
+      "title": "如何把 TXT 和纯文本转换成 JSON",
+      "content": "<h2>什么是 TXT 转 JSON</h2><p>TXT 转 JSON 是把无结构或半结构化文本转换成 JSON 对象或数组的过程。和固定文件格式转换不同，纯文本本身没有统一结构，所以转换器必须应用明确的解析规则。</p><p>行列表、键值文件和类 CSV 表格都是文本，但它们应该生成完全不同的 JSON 形状。选对解析模式比改文件后缀重要得多。</p><h2>选择合适的解析模式</h2><ul><li><strong>每行转数组：</strong>每个非空行是一个字符串值。</li><li><strong>键值文本：</strong>每行是用冒号或等号分隔的键和值。</li><li><strong>分隔行：</strong>文本里有按逗号、制表符、分号或竖线分隔的列。</li></ul><h2>把行列表转换成 JSON 数组</h2><p>输入：</p><pre><code>Alice\nBob\nCharlie</code></pre><p>输出：</p><pre><code>[\"Alice\", \"Bob\", \"Charlie\"]</code></pre><p>这个模式适合 ID、URL、邮箱、标签、关键词这类列表。数组保持输入顺序；开启「去除重复行」时会丢掉后面的重复项，首次出现的位置不变。</p><h2>把键值文本转换成 JSON 对象</h2><p>输入：</p><pre><code>name: Alice\nage: 30\nactive: true</code></pre><p>开启「推断基础类型」时的输出：</p><pre><code>{\n  \"name\": \"Alice\",\n  \"age\": 30,\n  \"active\": true\n}</code></pre><p>默认关闭该选项时，输出是：</p><pre><code>{\n  \"name\": \"Alice\",\n  \"age\": \"30\",\n  \"active\": \"true\"\n}</code></pre><p>键值解析只在<strong>第一个</strong>分隔符处切分。<code>url: https://example.com/a:b</code> 会得到键 <code>url</code> 和值 <code>https://example.com/a:b</code>，而不会把 URL 拆开。没有分隔符或键为空的行会被跳过并在预览里计数，不会让整次转换失败。</p><h2>把分隔文本转换成 JSON 记录</h2><p>输入：</p><pre><code>name,age,city\nAlice,30,New York\nBob,25,London</code></pre><p>输出：</p><pre><code>[\n  {\"name\":\"Alice\",\"age\":\"30\",\"city\":\"New York\"},\n  {\"name\":\"Bob\",\"age\":\"25\",\"city\":\"London\"}\n]</code></pre><p>当字段里可能出现分隔符、转义引号或换行时，必须使用兼容 CSV 的解析器。分隔模式支持带引号的字段：双引号包裹的值里可以包含分隔符和换行，连续两个双引号表示一个真正的双引号。这种数据不能靠简单地按分隔符切分来处理。</p><h2>类型推断会改变值</h2><p>纯文本没有可靠的类型系统。本转换器只在开启「推断基础类型」时推断很窄的一类值：小写的 <code>true</code> 和 <code>false</code> 变成布尔值，符合 <code>-?\\d+</code> 或 <code>-?\\d+\\.\\d+</code> 的整数或小数变成数字。</p><ul><li><strong>前导零：</strong><code>00123</code> 保持字符串 \"00123\"。</li><li><strong>版本号：</strong><code>1.10</code> 转成数字会丢掉末尾的 0，所以关闭推断时它保持文本。</li><li><strong>大写与空值样式的文本：</strong><code>TRUE</code>、<code>FALSE</code>、<code>NULL</code> 都不识别，保持字符串。</li><li><strong>科学计数法：</strong><code>1e5</code> 不识别，保持字符串。</li><li><strong>日期和邮编：</strong>除非开启推断且恰好匹配数字格式，否则按文本处理。</li></ul><p>当保留原始文本比方便更重要时，请不要开启类型推断。</p><h2>表头与行列不齐</h2><p>分隔文本可能有表头行，也可能有缺失值、多余值或空表头。关闭「第一行是表头」，或表头单元格为空时，转换器会生成 <code>column_1</code>、<code>column_2</code> 这样的列名。列数与其他行不一致的行会在预览里高亮并给出警告；转换仍会执行，缺失的单元格变成空值，超出列数的多余值被忽略。</p><h2>文本转 JSON 不是自然语言理解</h2><p>纯文本本身有歧义。一段话、日志文件、Markdown 文档或 AI 回答，不可能在没有规则的情况下变成有意义的 JSON 结构。请使用明确的模式：一行一个值、键值对或统一的分隔符。对于 AI 生成的输出，先确保它遵循可预测的结构。</p><h2>TXT 转 JSON 与 JSON 字符串解析的区别</h2><p>「TXT 转 JSON」可能指几件不同的事。本页处理的是结构化的纯文本和文本文件。如果输入已经是 JSON 编码的字符串，例如 <code>\"{\\\"name\\\":\\\"Alice\\\"}\"</code>，请改用 JSON 反转义的流程。如果输入本身就是普通的 JSON 文档，请用 JSON 格式化或验证工具，而不是文本转换器。</p><h2>TXT 转 JSON 与 JSONL 的区别</h2><p>JSON 数组把很多值放在一个 JSON 文档里；JSON Lines 是每行一个 JSON 值。本页输出 JSON 数组或 JSON 对象，不提供 JSONL 输出模式，所以下游系统需要 JSONL 时要再单独转换一步。</p><h2>隐私与浏览器本地处理</h2><p>本转换器在你的浏览器里读取文本并生成 JSON，不会把输入上传到远程服务。这对内部清单和开发数据很方便，但它不是密钥管理系统。不要把凭证、令牌、客户隐私数据或生产环境机密文本粘贴到任何在线工具里。</p><h2>什么时候改用本地解析器</h2><p>处理超大文件、可重复的数据管道、严格的 CSV 兼容要求、机密数据或自动化处理时，请用本地解析器或命令行流程。浏览器转换更适合快速处理、查看和小到中等体积的输入。</p>"
+    }
+  }
+}

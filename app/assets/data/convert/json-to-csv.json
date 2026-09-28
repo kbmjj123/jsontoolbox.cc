@@ -11,7 +11,9 @@
   ],
   "recommends": [
     "json-editor",
-    "large-json-viewer"
+    "large-json-viewer",
+    "txt-to-json",
+    "json-to-text"
   ],
   "en": {
     "name": "JSON to CSV Converter",

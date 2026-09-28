@@ -15,7 +15,9 @@
     "json-schema-generator",
     "json-to-typescript",
     "json-to-yaml",
-    "json-to-code"
+    "json-to-code",
+    "jsonc-to-json",
+    "json-parse-stringify"
   ],
   "en": {
     "name": "JSON Editor",

@@ -1,0 +1,400 @@
+{
+  "slug": "jsonc-to-json",
+  "category": "convert",
+  "component": "JsoncToJson",
+  "icon": "lucide:message-square-off",
+  "sort": 16,
+  "applicationCategory": "DeveloperApplication",
+  "nextSteps": ["json-editor", "json-minifier"],
+  "recommends": ["json-schema-validator", "json-path-tester", "json-to-text", "large-json-viewer"],
+  "en": {
+    "name": "JSONC to JSON Converter",
+    "description": "Convert JSONC or JSON with comments into standard JSON. Remove line comments, block comments, and trailing commas without touching comment-like text inside strings, then validate, format, copy, or download the result.",
+    "hero": {
+      "trustHtml": "Runs in your browser. Your JSONC is not uploaded by this tool."
+    },
+    "meta": {
+      "title": "JSONC to JSON Converter – Remove Comments Online",
+      "description": "Convert JSONC to standard JSON online. Remove comments and trailing commas, validate the result, and copy or download formatted JSON. Free, browser-based, and no upload required.",
+      "keywords": [
+        "jsonc to json",
+        "jsonc converter",
+        "convert jsonc to json",
+        "json with comments",
+        "remove comments from json",
+        "json comments converter",
+        "jsonc to json online",
+        "json comment remover"
+      ]
+    },
+    "ui": {
+      "label_input": "Input JSONC",
+      "label_output": "Standard JSON Output",
+      "placeholder_input": "Paste JSONC or open a .jsonc file...",
+      "placeholder_output": "Standard JSON output will appear here...",
+      "option_remove_line_comments": "Remove line comments",
+      "option_remove_block_comments": "Remove block comments",
+      "option_remove_trailing_commas": "Remove trailing commas",
+      "option_indent": "Indent:",
+      "option_indent_2": "2 spaces",
+      "option_indent_4": "4 spaces",
+      "option_indent_minified": "Minified",
+      "btn_convert": "Convert to JSON",
+      "label_comments_removed": "Comments removed:",
+      "label_trailing_commas_removed": "Trailing commas removed:",
+      "label_warnings": "Warnings:",
+      "warning_comment_removed": "Comments were removed from the output",
+      "error_empty_input": "Enter JSONC or open a file first",
+      "error_invalid_jsonc": "Input is not valid JSONC",
+      "error_invalid_json": "The converted output is not valid standard JSON",
+      "error_unclosed_comment": "Unclosed block comment",
+      "error_invalid_trailing_comma": "Invalid comma with no value before it",
+      "error_position": "at line {line}, column {column}"
+    },
+    "features": [
+      {
+        "icon": "lucide:message-square-off",
+        "title": "Remove JSONC Comments",
+        "description": "Remove JavaScript-style line comments and block comments while preserving comment-like text inside quoted strings."
+      },
+      {
+        "icon": "lucide:brackets",
+        "title": "Remove Trailing Commas",
+        "description": "Drop commas that sit directly before } or ] so the result can be read by strict JSON parsers. A comma with no value before it is reported as an error instead of being silently removed."
+      },
+      {
+        "icon": "lucide:check-circle-2",
+        "title": "Validate Standard JSON",
+        "description": "Parse the cleaned output after conversion and confirm that it is valid standard JSON before copying or downloading it. If it is not, the error is reported with a line and column."
+      },
+      {
+        "icon": "lucide:settings-2",
+        "title": "Pretty or Minified Output",
+        "description": "Choose two-space, four-space, or minified output after comments and trailing commas have been removed."
+      },
+      {
+        "icon": "lucide:scan-search",
+        "title": "Conversion Diagnostics",
+        "description": "See how many comments and trailing commas were removed, and get a line and column for unclosed block comments, stray commas, and syntax errors."
+      },
+      {
+        "icon": "lucide:copy",
+        "title": "Copy Clean JSON",
+        "description": "Copy the converted strict JSON to your clipboard for APIs, configuration files, scripts, build pipelines, or other JSON-based workflows."
+      },
+      {
+        "icon": "lucide:download",
+        "title": "Download .json",
+        "description": "Download the cleaned result as a standard .json file for applications and systems that do not accept JSONC comments."
+      },
+      {
+        "icon": "lucide:upload",
+        "title": "Paste or Open JSONC",
+        "description": "Paste JSONC text or open a local .jsonc, .json, or .txt file. The source is read and processed in your browser."
+      },
+      {
+        "icon": "lucide:shield-check",
+        "title": "Browser-Based Processing",
+        "description": "Comment removal, parsing, validation, and formatting happen in your browser. No account is required and the source is not sent to a remote service."
+      }
+    ],
+    "guide": [
+      {
+        "title": "Enter JSONC",
+        "description": "Paste JSONC content or open a .jsonc, .json, or .txt file. JSONC may contain line comments, block comments, and trailing commas that standard JSON does not accept."
+      },
+      {
+        "title": "Choose what to remove",
+        "description": "Line comments, block comments, and trailing commas are all removed by default. Turn an option off to leave that syntax in place, which usually stops the result from being valid standard JSON."
+      },
+      {
+        "title": "Convert and validate",
+        "description": "Click Convert to JSON to remove the selected extensions and parse the result as strict JSON. Review the comment and trailing-comma counts, and any error reported with its line and column."
+      },
+      {
+        "title": "Format the output",
+        "description": "Choose two-space, four-space, or minified output. The output no longer contains comments, because standard JSON has no comment syntax."
+      },
+      {
+        "title": "Copy or download",
+        "description": "Copy the cleaned JSON or download it as a .json file, and test the result with the application, API, or parser that will consume it. Keep the original JSONC file, because comments cannot be recovered from standard JSON."
+      }
+    ],
+    "example": {
+      "title": "Convert JSONC to Standard JSON",
+      "description": "Remove comments and a trailing comma without touching comment-like text inside strings.",
+      "inputLabel": "Input JSONC",
+      "input": "{\n  // Display name shown in the UI\n  \"name\": \"Alice\",\n  \"url\": \"https://example.com/a//b\",\n  \"roles\": [\n    \"admin\",\n    \"editor\",\n  ],\n  /* Feature flag */\n  \"enabled\": true\n}",
+      "inputExplanation": "One line comment, one block comment, one trailing comma, and a URL that contains // inside a string.",
+      "outputLabel": "Standard JSON",
+      "output": "{\n  \"name\": \"Alice\",\n  \"url\": \"https://example.com/a//b\",\n  \"roles\": [\n    \"admin\",\n    \"editor\"\n  ],\n  \"enabled\": true\n}",
+      "outputExplanation": "Two-space indentation with the default options. The // inside the URL is string content and is kept.",
+      "note": "The converter reports 2 comments removed and 1 trailing comma removed. Comments cannot be restored from the output, so keep the original file."
+    },
+    "faq": [
+      {
+        "question": "What is JSONC?",
+        "answer": "JSONC usually means JSON with Comments. It is a JSON-like format that allows JavaScript-style line comments and block comments, and some implementations also allow trailing commas. Standard JSON does not allow these extensions."
+      },
+      {
+        "question": "Does standard JSON support comments?",
+        "answer": "No. Standard JSON does not support // comments, /* block comments */, or # comments. If a file contains them, it is JSONC, JSON5, or another extended format rather than strict JSON."
+      },
+      {
+        "question": "What does this JSONC to JSON converter remove?",
+        "answer": "It removes line comments, block comments, and trailing commas before } or ]. Each of the three has its own checkbox, and all three are on by default. It also reports how many of each were removed."
+      },
+      {
+        "question": "Are comments inside strings preserved?",
+        "answer": "Yes. The converter scans the input token by token and copies quoted strings verbatim, so the // in \"https://example.com/a//b\" and the /* */ in \"/* not a comment */\" are kept as string content."
+      },
+      {
+        "question": "Does it remove trailing commas?",
+        "answer": "Yes, by default. A comma that sits directly before } or ] is removed. Commas inside string values are never touched, and a comma with no value before it, such as the comma in [,1], is reported as an error with its line and column instead of being removed."
+      },
+      {
+        "question": "Does JSONC to JSON preserve comments?",
+        "answer": "No. Standard JSON has no comment syntax, so comments cannot remain in the output. This page also does not export comments to a separate file. Keep the original JSONC file if you need the comments later."
+      },
+      {
+        "question": "Is JSONC the same as JSON5?",
+        "answer": "No. JSONC and JSON5 overlap but are not identical. JSON5 may allow unquoted keys, single-quoted strings, hexadecimal numbers, Infinity, NaN, and other extensions. This page does not parse JSON5, so JSON5-only syntax is reported as a syntax error."
+      },
+      {
+        "question": "Can I use this for VS Code settings.json?",
+        "answer": "You can use it to convert JSONC content into strict JSON, but be careful: VS Code settings.json is commonly JSONC and may rely on comments for human documentation. Keep the original file if you want to continue editing it in VS Code."
+      },
+      {
+        "question": "Can I convert tsconfig.json or other configuration files?",
+        "answer": "Yes, when the file uses supported JSONC syntax. The result is only a format conversion; it does not validate the configuration schema of TypeScript, ESLint, Webpack, or another application."
+      },
+      {
+        "question": "Can I add comments to standard JSON?",
+        "answer": "No, not with // or /* */ while keeping the document valid standard JSON. Use JSONC or JSON5, store comments as ordinary data fields such as _comment when appropriate, or maintain external documentation."
+      },
+      {
+        "question": "Why should I not remove comments with a regular expression?",
+        "answer": "A regular expression can mistake comment-like text inside quoted strings for real comments. Values such as URLs, patterns, and descriptions may contain // or /* */. This page uses a character scanner that copies quoted strings verbatim instead."
+      },
+      {
+        "question": "What happens if I turn off comment or trailing comma removal?",
+        "answer": "The syntax is left in the output, so the result usually fails strict JSON parsing and the page reports the error with a line and column. Use this to see which part of a file is not standard JSON."
+      },
+      {
+        "question": "Can I format or minify the converted JSON?",
+        "answer": "Yes. After comments and trailing commas are removed, the result can be formatted with two or four spaces, or minified into compact standard JSON."
+      },
+      {
+        "question": "Can I convert large JSONC files?",
+        "answer": "The practical limit depends on file size, comment count, nesting depth, browser memory, and output rendering. Large files may be slow to render in the editor, in which case a local JSONC parser or a build-time conversion step is a better fit."
+      },
+      {
+        "question": "Is my JSONC uploaded to a server?",
+        "answer": "No. The page parses and converts JSONC in your browser. You should still avoid entering credentials, access tokens, private customer data, or confidential production configuration into any browser-based tool."
+      },
+      {
+        "question": "Is this a free JSONC to JSON converter?",
+        "answer": "Yes. You can paste or open supported JSONC content, remove comments and trailing commas, validate the result, and copy or download standard JSON without creating an account."
+      }
+    ],
+    "article": {
+      "title": "How to Convert JSONC to Standard JSON",
+      "content": "<h2>What Is JSONC?</h2><p>JSONC commonly means JSON with Comments. It extends standard JSON with JavaScript-style comments, and some implementations also allow trailing commas. JSONC is useful for human-edited configuration, because comments can explain settings without a separate document.</p><p>Standard JSON is stricter: it does not allow line comments, block comments, or trailing commas. A JSONC-to-JSON converter removes those extensions and produces output that ordinary JSON parsers can read.</p><h2>JSON vs JSONC vs JSON5</h2><ul><li><strong>JSON:</strong> strict data format with objects, arrays, strings, numbers, booleans, and null.</li><li><strong>JSONC:</strong> a JSON-like configuration format that allows comments, and in many implementations trailing commas.</li><li><strong>JSON5:</strong> a broader extension that may also allow unquoted keys, single-quoted strings, hexadecimal numbers, Infinity, and NaN.</li></ul><p>Do not label every JSON-like configuration file as JSONC without checking which syntax and parser it actually uses. This page handles JSONC and standard JSON; it does not parse JSON5-only syntax.</p><h2>How to Convert JSONC to JSON</h2><ol><li><strong>Enter JSONC:</strong> paste the content or open a .jsonc, .json, or .txt file.</li><li><strong>Choose what to remove:</strong> line comments, block comments, and trailing commas are each controlled by a checkbox.</li><li><strong>Convert:</strong> the selected syntax is removed and the result is parsed as strict JSON.</li><li><strong>Read the diagnostics:</strong> check how many comments and trailing commas were removed, or the line and column of the reported error.</li><li><strong>Format or minify:</strong> choose two-space, four-space, or minified output.</li><li><strong>Copy or download:</strong> save the standard JSON for a parser, API, deployment step, or production workflow.</li></ol><h2>Why Regex Comment Removal Breaks URLs</h2><p>A naive approach such as replacing <code>//.*$</code> on every line also deletes content inside quoted strings:</p><pre><code>{\n  \"url\": \"https://example.com/a//b\",\n  \"pattern\": \"/* not a comment */\"\n}</code></pre><p>Both <code>//</code> and <code>/* */</code> here are ordinary data. A safe converter scans the document character by character, tracks whether it is inside a quoted string, and copies string content verbatim, including escape sequences. Only comment markers found outside strings are removed.</p><h2>Trailing Commas</h2><p>A trailing comma is a comma that appears directly before a closing <code>}</code> or <code>]</code>:</p><pre><code>{\n  \"host\": \"localhost\",\n  \"port\": 8080,\n}</code></pre><p>Standard JSON does not allow it, but many hand-edited configuration files contain it. The converter removes it and counts the change. A comma with no value before it, such as in <code>[,1]</code> or <code>{,}</code>, is not a trailing comma; it is reported as an error with its line and column rather than being removed, because guessing the intended structure would be unsafe.</p><h2>Conversion Is Lossy</h2><p>Removing comments is a one-way operation. Standard JSON has no comment syntax, so once the output is written, the comment text and its position are gone:</p><pre><code>{\n  // user name\n  \"name\": \"Alice\"\n}</code></pre><p>becomes:</p><pre><code>{\n  \"name\": \"Alice\"\n}</code></pre><p>Keep the original JSONC file as the editable source of truth, and generate the standard JSON from it whenever a downstream tool needs strict JSON. Duplicating a comment into a data field such as <code>_comment</code> keeps the text in the document, but it becomes ordinary data that every consumer has to ignore.</p><h2>JSONC in VS Code and Configuration Files</h2><p>VS Code uses JSONC for settings.json, launch.json, and many extension configuration files, which is why comments there are common. TypeScript, ESLint, and other tools also accept JSONC in some files. Converting such a file is only a format conversion: it does not validate the configuration schema, and the target application still has to accept the result.</p><h2>Privacy and Browser-Based Processing</h2><p>This page parses and converts JSONC in the browser rather than uploading the source to a remote service. That suits commented configuration files and development data, but it is not a secret-management system. Avoid entering credentials, tokens, private customer records, or confidential production configuration into any online tool.</p><h2>When to Use a Local Converter</h2><p>For build pipelines, repeated conversions, very large files, or confidential configuration, use a local JSONC parser or a build-time step so the strict JSON is generated automatically from the commented source.</p>"
+    }
+  },
+  "zh": {
+    "name": "JSONC 转 JSON 转换器",
+    "description": "把 JSONC 或带注释的 JSON 转换成标准 JSON。删除行注释、块注释和尾随逗号，同时不破坏字符串里像注释的文本，然后校验、格式化、复制或下载结果。",
+    "hero": {
+      "trustHtml": "在你的浏览器里运行。你输入的 JSONC 不会被本工具上传。"
+    },
+    "meta": {
+      "title": "JSONC 转 JSON 转换器 – 在线移除注释",
+      "description": "在线把 JSONC 转成标准 JSON：移除注释和尾随逗号、校验结果、复制或下载格式化后的 JSON。免费、浏览器本地处理、无需上传。",
+      "keywords": [
+        "jsonc to json",
+        "jsonc 转换器",
+        "jsonc转json",
+        "带注释的json",
+        "json 删除注释",
+        "remove comments from json",
+        "json注释转换器",
+        "jsonc to json online"
+      ]
+    },
+    "ui": {
+      "label_input": "输入 JSONC",
+      "label_output": "标准 JSON 输出",
+      "placeholder_input": "粘贴 JSONC，或打开 .jsonc 文件...",
+      "placeholder_output": "标准 JSON 输出会显示在这里...",
+      "option_remove_line_comments": "删除行注释",
+      "option_remove_block_comments": "删除块注释",
+      "option_remove_trailing_commas": "删除尾随逗号",
+      "option_indent": "缩进：",
+      "option_indent_2": "2 空格",
+      "option_indent_4": "4 空格",
+      "option_indent_minified": "压缩（一行）",
+      "btn_convert": "转换为 JSON",
+      "label_comments_removed": "已删除注释：",
+      "label_trailing_commas_removed": "已删除尾随逗号：",
+      "label_warnings": "提示：",
+      "warning_comment_removed": "输出中的注释已被删除",
+      "error_empty_input": "请先输入 JSONC 或打开文件",
+      "error_invalid_jsonc": "输入不是合法的 JSONC",
+      "error_invalid_json": "转换后的输出不是合法的标准 JSON",
+      "error_unclosed_comment": "块注释未闭合",
+      "error_invalid_trailing_comma": "逗号前面没有值",
+      "error_position": "第 {line} 行，第 {column} 列"
+    },
+    "features": [
+      {
+        "icon": "lucide:message-square-off",
+        "title": "删除 JSONC 注释",
+        "description": "删除 JavaScript 风格的行注释和块注释，同时保留引号字符串里像注释的文本。"
+      },
+      {
+        "icon": "lucide:brackets",
+        "title": "删除尾随逗号",
+        "description": "去掉紧邻 } 或 ] 前的逗号，让严格 JSON 解析器能读取结果。如果逗号前面根本没有值，则报错误而不是悄悄删掉。"
+      },
+      {
+        "icon": "lucide:check-circle-2",
+        "title": "校验标准 JSON",
+        "description": "转换后解析清洗结果，确认它是合法的标准 JSON 才允许复制或下载。不合法时会带行号和列号报错。"
+      },
+      {
+        "icon": "lucide:settings-2",
+        "title": "格式化或压缩输出",
+        "description": "删除注释和尾随逗号后，可以选择 2 空格、4 空格或压缩成一行输出。"
+      },
+      {
+        "icon": "lucide:scan-search",
+        "title": "转换诊断信息",
+        "description": "显示删除了多少注释和尾随逗号，并为未闭合的块注释、多余逗号和语法错误给出行号与列号。"
+      },
+      {
+        "icon": "lucide:copy",
+        "title": "复制干净的 JSON",
+        "description": "把转换后的严格 JSON 复制到剪贴板，用于接口、配置文件、脚本、构建流水线或其他基于 JSON 的流程。"
+      },
+      {
+        "icon": "lucide:download",
+        "title": "下载 .json",
+        "description": "把清洗后的结果下载为标准 .json 文件，供不接受 JSONC 注释的应用和系统使用。"
+      },
+      {
+        "icon": "lucide:upload",
+        "title": "粘贴或打开 JSONC",
+        "description": "粘贴 JSONC 文本，或从本地打开 .jsonc、.json、.txt 文件。源文件在你的浏览器里读取和处理。"
+      },
+      {
+        "icon": "lucide:shield-check",
+        "title": "浏览器本地处理",
+        "description": "注释删除、解析、校验和格式化都在你的浏览器里完成。不需要注册账号，源文件也不会发送到远程服务。"
+      }
+    ],
+    "guide": [
+      {
+        "title": "输入 JSONC",
+        "description": "粘贴 JSONC 内容，或打开 .jsonc、.json、.txt 文件。JSONC 里可能有标准 JSON 不接受的行注释、块注释和尾随逗号。"
+      },
+      {
+        "title": "选择要删除什么",
+        "description": "行注释、块注释和尾随逗号默认全部删除。关掉某个选项会保留对应语法，通常会导致结果不再是合法的标准 JSON。"
+      },
+      {
+        "title": "转换并校验",
+        "description": "点击「转换为 JSON」，删除所选扩展语法并按严格 JSON 解析结果。查看注释和尾随逗号的数量，以及带行号列号的错误提示。"
+      },
+      {
+        "title": "格式化输出",
+        "description": "选择 2 空格、4 空格或压缩输出。输出里不会再有注释，因为标准 JSON 没有注释语法。"
+      },
+      {
+        "title": "复制或下载",
+        "description": "复制清洗后的 JSON，或下载为 .json 文件，并用真正消费它的应用、接口或解析器测一遍。请保留原始 JSONC 文件，因为注释无法从标准 JSON 里恢复。"
+      }
+    ],
+    "example": {
+      "title": "把 JSONC 转换成标准 JSON",
+      "description": "删除注释和一个尾随逗号，同时不破坏字符串里像注释的文本。",
+      "inputLabel": "输入 JSONC",
+      "input": "{\n  // Display name shown in the UI\n  \"name\": \"Alice\",\n  \"url\": \"https://example.com/a//b\",\n  \"roles\": [\n    \"admin\",\n    \"editor\",\n  ],\n  /* Feature flag */\n  \"enabled\": true\n}",
+      "inputExplanation": "一个行注释、一个块注释、一个尾随逗号，以及一个字符串里含 // 的 URL。",
+      "outputLabel": "标准 JSON",
+      "output": "{\n  \"name\": \"Alice\",\n  \"url\": \"https://example.com/a//b\",\n  \"roles\": [\n    \"admin\",\n    \"editor\"\n  ],\n  \"enabled\": true\n}",
+      "outputExplanation": "默认选项下的 2 空格缩进。URL 里的 // 属于字符串内容，被保留。",
+      "note": "转换器会提示删除了 2 个注释和 1 个尾随逗号。注释无法从输出恢复，请保留原始文件。"
+    },
+    "faq": [
+      {
+        "question": "什么是 JSONC？",
+        "answer": "JSONC 通常指「带注释的 JSON」。它是一种类 JSON 格式，允许 JavaScript 风格的行注释和块注释，部分实现还允许尾随逗号。标准 JSON 不允许这些扩展。"
+      },
+      {
+        "question": "标准 JSON 支持注释吗？",
+        "answer": "不支持。标准 JSON 不支持 // 注释、/* 块注释 */ 和 # 注释。如果文件里有这些，它就是 JSONC、JSON5 或其他扩展格式，而不是严格 JSON。"
+      },
+      {
+        "question": "这个 JSONC 转 JSON 转换器会删除什么？",
+        "answer": "删除行注释、块注释，以及 } 或 ] 前的尾随逗号。三者各有独立开关，默认全部开启，并且会显示各自删除了多少个。"
+      },
+      {
+        "question": "字符串里的注释会被保留吗？",
+        "answer": "会。转换器逐字符扫描输入，引号内的字符串原样复制，所以 \"https://example.com/a//b\" 里的 // 和 \"/* not a comment */\" 里的 /* */ 都作为字符串内容保留。"
+      },
+      {
+        "question": "会删除尾随逗号吗？",
+        "answer": "默认会。紧邻 } 或 ] 前的逗号会被删除。字符串值里的逗号绝不改动；而像 [,1] 这种前面没有值的逗号，会带行号列号报为错误，不会被删除。"
+      },
+      {
+        "question": "JSONC 转 JSON 能保留注释吗？",
+        "answer": "不能。标准 JSON 没有注释语法，注释无法留在输出里，本页也不会把注释导出到单独的文件。以后还需要注释的话，请保留原始 JSONC 文件。"
+      },
+      {
+        "question": "JSONC 和 JSON5 是同一个东西吗？",
+        "answer": "不是。两者有重叠但并不相同。JSON5 还允许无引号键名、单引号字符串、十六进制数字、Infinity、NaN 等扩展。本页不解析 JSON5，所以只用 JSON5 语法的内容会被报为语法错误。"
+      },
+      {
+        "question": "可以用它处理 VS Code 的 settings.json 吗？",
+        "answer": "可以用它把 JSONC 内容转成严格 JSON，但要注意：VS Code 的 settings.json 通常是 JSONC，注释可能是给人看的说明。如果还要在 VS Code 里继续编辑，请保留原始文件。"
+      },
+      {
+        "question": "能转换 tsconfig.json 或其他配置文件吗？",
+        "answer": "可以，前提是文件使用的是受支持的 JSONC 语法。这只是一次格式转换，不会校验 TypeScript、ESLint、Webpack 等其他应用的配置 schema。"
+      },
+      {
+        "question": "能给标准 JSON 加注释吗？",
+        "answer": "加了 // 或 /* */ 就不能再保持合法的标准 JSON。可以改用 JSONC 或 JSON5，在合适时把注释存成 _comment 这样的数据字段，或者单独维护一份文档。"
+      },
+      {
+        "question": "为什么不能用正则删除注释？",
+        "answer": "正则会把引号字符串里像注释的文本也当成注释删掉。URL、正则模式、描述文字里都可能含有 // 或 /* */。本页用的是逐字符扫描，字符串内容原样复制，因此不会误删。"
+      },
+      {
+        "question": "关掉注释或尾随逗号删除会怎样？",
+        "answer": "对应语法会留在输出里，结果通常无法通过严格 JSON 解析，页面会带行号列号报出错误。可以用这种方式定位文件里到底哪一部分不是标准 JSON。"
+      },
+      {
+        "question": "能格式化或压缩转换后的 JSON 吗？",
+        "answer": "可以。删除注释和尾随逗号后，可以选择 2 空格、4 空格，或压缩成紧凑的标准 JSON。"
+      },
+      {
+        "question": "能转换很大的 JSONC 文件吗？",
+        "answer": "实际能处理多大取决于文件大小、注释数量、嵌套深度、浏览器内存和输出渲染。很大的文件在编辑器里可能很慢，这种情况更适合用本地 JSONC 解析器或在构建阶段转换。"
+      },
+      {
+        "question": "我的 JSONC 会被上传到服务器吗？",
+        "answer": "不会。本页在你的浏览器里解析并转换 JSONC。但仍然不要把凭证、访问令牌、客户隐私数据或生产环境机密配置粘贴到任何在线工具里。"
+      },
+      {
+        "question": "这个 JSONC 转 JSON 转换器免费吗？",
+        "answer": "免费。可以粘贴或打开受支持的 JSONC 内容、删除注释和尾随逗号、校验结果、复制或下载标准 JSON，都不需要注册账号。"
+      }
+    ],
+    "article": {
+      "title": "如何把 JSONC 转换成标准 JSON",
+      "content": "<h2>什么是 JSONC</h2><p>JSONC 通常指「带注释的 JSON」。它在标准 JSON 之上扩展了 JavaScript 风格注释，部分实现还允许尾随逗号。JSONC 适合人工编辑的配置，因为注释可以直接说明配置含义，不需要另写文档。</p><p>标准 JSON 更严格：不允许行注释、块注释和尾随逗号。JSONC 转 JSON 转换器就是去掉这些扩展，产出普通 JSON 解析器能读的内容。</p><h2>JSON、JSONC 与 JSON5</h2><ul><li><strong>JSON：</strong>严格的数据格式，只有对象、数组、字符串、数字、布尔和 null。</li><li><strong>JSONC：</strong>类 JSON 的配置格式，允许注释，很多实现还允许尾随逗号。</li><li><strong>JSON5：</strong>更宽的扩展，可能还允许无引号键名、单引号字符串、十六进制数字、Infinity 和 NaN。</li></ul><p>不要看到类 JSON 的配置文件就认定它是 JSONC，先确认它实际用的语法和解析器。本页处理 JSONC 和标准 JSON，不解析只有 JSON5 才有的语法。</p><h2>如何把 JSONC 转成 JSON</h2><ol><li><strong>输入 JSONC：</strong>粘贴内容，或打开 .jsonc、.json、.txt 文件。</li><li><strong>选择要删除什么：</strong>行注释、块注释和尾随逗号各有独立开关。</li><li><strong>转换：</strong>删除所选语法，并按严格 JSON 解析结果。</li><li><strong>看诊断信息：</strong>检查删除了多少注释和尾随逗号，或者错误的行号列号。</li><li><strong>格式化或压缩：</strong>选择 2 空格、4 空格或压缩输出。</li><li><strong>复制或下载：</strong>把标准 JSON 交给解析器、接口、部署步骤或生产流程。</li></ol><h2>为什么正则删注释会破坏 URL</h2><p>简单的做法，例如把每行的 <code>//.*$</code> 替换掉，会把引号字符串里的内容一起删掉：</p><pre><code>{\n  \"url\": \"https://example.com/a//b\",\n  \"pattern\": \"/* not a comment */\"\n}</code></pre><p>这里的 <code>//</code> 和 <code>/* */</code> 都是普通数据。安全的转换器会逐字符扫描文档，记录当前是否在引号字符串内，并把字符串内容原样复制（包括转义序列）。只有字符串外的注释标记才会被删除。</p><h2>尾随逗号</h2><p>尾随逗号指紧邻 <code>}</code> 或 <code>]</code> 之前的那个逗号：</p><pre><code>{\n  \"host\": \"localhost\",\n  \"port\": 8080,\n}</code></pre><p>标准 JSON 不允许它，但很多手工编辑的配置文件里有。转换器会删掉它并计数。而像 <code>[,1]</code> 或 <code>{,}</code> 里前面没有值的逗号并不是尾随逗号，会被带行号列号报为错误而不是删除，因为猜测原本想要的结构并不安全。</p><h2>转换是有损的</h2><p>删除注释是单向操作。标准 JSON 没有注释语法，输出一旦写出，注释文本和位置就消失了：</p><pre><code>{\n  // user name\n  \"name\": \"Alice\"\n}</code></pre><p>会变成：</p><pre><code>{\n  \"name\": \"Alice\"\n}</code></pre><p>请把原始 JSONC 文件当作可编辑的唯一来源，下游工具需要严格 JSON 时再从它生成。把注释复制成 <code>_comment</code> 这样的数据字段虽然能把文字留在文档里，但它变成了普通数据，每个消费方都要额外忽略它。</p><h2>JSONC 在 VS Code 和配置文件里</h2><p>VS Code 的 settings.json、launch.json 和很多扩展配置文件都用 JSONC，所以那里的注释很常见。TypeScript、ESLint 等工具在某些文件里也接受 JSONC。转换这类文件只是一次格式转换：它不校验配置 schema，目标应用仍然要能接受结果。</p><h2>隐私与浏览器本地处理</h2><p>本页在你的浏览器里解析并转换 JSONC，不会把源内容上传到远程服务。这适合带注释的配置文件和开发数据，但它不是密钥管理系统。不要把凭证、令牌、客户隐私数据或生产环境机密配置粘贴到任何在线工具里。</p><h2>什么时候改用本地转换器</h2><p>用于构建流水线、需要反复转换、文件很大或配置涉及机密时，请使用本地 JSONC 解析器或在构建阶段处理，让严格 JSON 自动从带注释的源文件生成。</p>"
+    }
+  }
+}

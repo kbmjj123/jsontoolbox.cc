@@ -1,0 +1,424 @@
+{
+  "slug": "json-parse-stringify",
+  "category": "convert",
+  "component": "JsonParseStringify",
+  "icon": "lucide:repeat-2",
+  "sort": 18,
+  "applicationCategory": "DeveloperApplication",
+  "nextSteps": ["json-editor", "json-escape"],
+  "recommends": ["json-minifier", "json-to-text", "json-schema-validator", "txt-to-json"],
+  "en": {
+    "name": "JSON Parse and Stringify",
+    "description": "Parse JSON text into a JSON value, or stringify JSON data into JSON text. Handle complete documents, quoted JSON string literals, and escaped payloads, then format, copy, or download the result in your browser.",
+    "hero": {
+      "trustHtml": "Runs in your browser. Your JSON is not uploaded by this tool."
+    },
+    "meta": {
+      "title": "JSON Parse and Stringify Online – Free Tool",
+      "description": "Parse JSON strings into objects or stringify JSON data online. Handle escaped JSON, quoted payloads, pretty output, compact output, and syntax errors in your browser. Free and no upload required.",
+      "keywords": [
+        "json parse online",
+        "json stringify online",
+        "json string to json object",
+        "convert string to json",
+        "convert json to string",
+        "json parse stringify",
+        "json string parser",
+        "json stringify tool"
+      ]
+    },
+    "ui": {
+      "label_mode": "Operation:",
+      "option_parse": "Parse JSON",
+      "option_stringify": "Stringify JSON",
+      "label_input": "Input",
+      "label_output": "Output",
+      "label_input_type": "Input type:",
+      "option_json_document": "JSON document",
+      "option_json_string": "JSON string literal",
+      "option_auto_detect": "Auto-detect",
+      "label_indent": "Indent:",
+      "option_compact": "Compact",
+      "option_indent_2": "2 spaces",
+      "option_indent_4": "4 spaces",
+      "option_include_quotes": "Include surrounding quotes",
+      "btn_parse": "Parse JSON",
+      "btn_stringify": "Stringify JSON",
+      "label_result_type": "Result type:",
+      "type_object": "object",
+      "type_array": "array",
+      "type_string": "string",
+      "type_number": "number",
+      "type_boolean": "boolean",
+      "type_null": "null",
+      "label_characters": "Characters:",
+      "placeholder_input": "Paste JSON or a JSON string...",
+      "placeholder_output": "Result will appear here...",
+      "error_empty_input": "Enter JSON data first",
+      "error_invalid_json": "Input is not valid JSON",
+      "error_invalid_string": "Input is not a valid JSON string literal",
+      "error_parse_failed": "The JSON string could not be parsed",
+      "error_position": "at line {line}, column {column}"
+    },
+    "features": [
+      {
+        "icon": "lucide:braces",
+        "title": "Parse JSON Strings",
+        "description": "Parse JSON text, quoted JSON string literals, and escaped payloads into a readable result. Objects, arrays, strings, numbers, booleans, and null are all supported as the top-level value."
+      },
+      {
+        "icon": "lucide:quote",
+        "title": "Stringify JSON Data",
+        "description": "Turn a JSON object, array, or primitive value into JSON text, with an option to include the surrounding quotes of a complete JSON string literal for embedding."
+      },
+      {
+        "icon": "lucide:scan-search",
+        "title": "Detect Input Representation",
+        "description": "Choose auto-detect, a complete JSON document, or a JSON string literal. Auto-detect unwraps one serialization layer, but only when the inner text is itself valid JSON."
+      },
+      {
+        "icon": "lucide:settings-2",
+        "title": "Pretty or Compact Output",
+        "description": "Choose compact serialization or formatted output with two-space or four-space indentation. Compact output suits embedding, formatted output is easier to inspect."
+      },
+      {
+        "icon": "lucide:repeat-2",
+        "title": "Handle Nested Serialization",
+        "description": "Decode one JSON string layer at a time when JSON has been embedded inside another JSON value, a log field, a database column, or a configuration variable."
+      },
+      {
+        "icon": "lucide:copy",
+        "title": "Copy the Result",
+        "description": "Copy parsed JSON or stringified output to the clipboard for code, API requests, logs, configuration, tests, or documentation."
+      },
+      {
+        "icon": "lucide:download",
+        "title": "Download Output",
+        "description": "Download the result as a .json file after parsing, or as a .txt file after stringifying."
+      },
+      {
+        "icon": "lucide:shield-check",
+        "title": "Browser-Based Processing",
+        "description": "Parsing and stringification happen in your browser. No account is required and the input is not sent to a remote service."
+      }
+    ],
+    "guide": [
+      {
+        "title": "Choose Parse or Stringify",
+        "description": "Choose Parse when you have JSON text or a JSON string and need the value it represents. Choose Stringify when you have JSON data and need a JSON text representation."
+      },
+      {
+        "title": "Enter the input",
+        "description": "Paste a JSON document, a quoted JSON string, or an escaped payload. In Parse mode, pick auto-detect, JSON document, or JSON string literal to say how the input should be read."
+      },
+      {
+        "title": "Configure the output",
+        "description": "Choose compact output or formatted output with two or four spaces. In Stringify mode, decide whether the result needs the surrounding quotes of a complete JSON string literal."
+      },
+      {
+        "title": "Run the operation",
+        "description": "Click Parse JSON or Stringify JSON. The result also updates while you type. If the input is invalid, the error is reported with a line and column."
+      },
+      {
+        "title": "Copy or download",
+        "description": "Check the result type and the output representation, then copy or download it. Test the result with the language or parser that will consume it."
+      }
+    ],
+    "example": {
+      "title": "Parse a Quoted JSON String",
+      "description": "A JSON string literal holding an object, parsed back into the object itself.",
+      "inputLabel": "Input JSON String",
+      "input": "\"{\\\"name\\\":\\\"Alice\\\",\\\"age\\\":30}\"",
+      "inputExplanation": "A quoted JSON string literal: the object was serialized and stored as a string value.",
+      "outputLabel": "Parsed JSON",
+      "output": "{\n  \"name\": \"Alice\",\n  \"age\": 30\n}",
+      "outputExplanation": "Auto-detect unwrapped the string layer and formatted the result with two-space indentation.",
+      "note": "Switch to Stringify with Include surrounding quotes to turn the object back into the original quoted string literal."
+    },
+    "faq": [
+      {
+        "question": "What is JSON.parse used for?",
+        "answer": "JSON.parse converts valid JSON text into a value, such as an object, array, string, number, boolean, or null. The text has to follow JSON syntax."
+      },
+      {
+        "question": "What is JSON.stringify used for?",
+        "answer": "JSON.stringify converts a value into JSON text. It can produce compact output or formatted output with indentation, and it escapes the characters that JSON strings require."
+      },
+      {
+        "question": "What is the difference between parsing and stringifying?",
+        "answer": "Parsing goes from JSON text to a value. Stringifying goes from a value to JSON text. They are usually reverse operations, although formatting choices and unsupported values can make the round trip differ in whitespace."
+      },
+      {
+        "question": "Can I convert a JSON string to a JSON object?",
+        "answer": "Yes. Paste a valid JSON string or quoted payload in Parse mode. The result may be an object, an array, a primitive value, or null, depending on the top-level JSON value."
+      },
+      {
+        "question": "Does a JSON string always produce an object?",
+        "answer": "No. JSON can represent objects, arrays, strings, numbers, booleans, and null, so a parsed JSON string can produce an array or a primitive value instead of an object. The result type is shown above the output."
+      },
+      {
+        "question": "What is the difference between JSON text and a JSON string literal?",
+        "answer": "A JSON document such as {\"name\":\"Alice\"} is an object document. A JSON string literal holding that document is written as \"{\\\"name\\\":\\\"Alice\\\"}\". The literal needs one parse step to recover the inner text and another to turn that text into an object."
+      },
+      {
+        "question": "How does auto-detect decide what to do?",
+        "answer": "Auto-detect parses the input once. If the result is a string whose content starts with { or [ and parses as valid JSON, it unwraps exactly one layer. Otherwise the string is treated as the intended value. Use JSON string literal mode when you want the extra layer to be required rather than guessed."
+      },
+      {
+        "question": "Why do I see extra backslashes?",
+        "answer": "Backslashes usually mean the JSON text was stored inside another string layer, and each serialization layer adds escaping. Parse one layer at a time instead of deleting backslashes by hand."
+      },
+      {
+        "question": "Can I parse double-escaped JSON?",
+        "answer": "Yes, one layer at a time. Choose JSON string literal mode in Parse mode to require the extra layer, then repeat the operation on the result only after checking it."
+      },
+      {
+        "question": "Can I stringify JSON with indentation?",
+        "answer": "Yes. Choose compact output, or formatted output with two or four spaces. Formatted output is easier to inspect; compact output is better for embedding or transport."
+      },
+      {
+        "question": "Can I include surrounding quotes in stringify output?",
+        "answer": "Yes. Turn on Include surrounding quotes and the result is a complete JSON string literal, with the inner text escaped and wrapped in double quotes. With the option off, you get the JSON text itself, which is what most embedding workflows paste directly."
+      },
+      {
+        "question": "Does stringify preserve all JavaScript values?",
+        "answer": "It serializes JSON-compatible values. The input here has to be valid JSON, so JavaScript-specific values such as undefined, functions, symbols, BigInt, NaN, and Infinity cannot be entered in the first place."
+      },
+      {
+        "question": "Does it escape non-ASCII characters or forward slashes?",
+        "answer": "No. The output keeps non-ASCII characters as they are and does not escape forward slashes. There is no Unicode-escaping or slash-escaping option on this page."
+      },
+      {
+        "question": "Can I use this tool to convert arbitrary text into JSON?",
+        "answer": "No. Parse mode expects JSON-formatted text. Turning natural language or loosely structured text into a new JSON structure is a different task; use the TXT to JSON page, which applies explicit parsing rules."
+      },
+      {
+        "question": "How is this different from JSON Escape and Unescape?",
+        "answer": "Parse and stringify convert between JSON text and JSON values. Escape and unescape work on string escape sequences inside a value. A stringified payload sometimes needs both, so check which layer you are looking at before choosing a tool."
+      },
+      {
+        "question": "Can I use this for API responses and logs?",
+        "answer": "Yes. Paste an API response or a log field that contains JSON text, then use Parse to inspect the value. If the field holds nested or double-escaped JSON, decode one layer at a time."
+      },
+      {
+        "question": "Is my data uploaded to a server?",
+        "answer": "No. The page parses and stringifies in your browser. You should still avoid entering passwords, API keys, access tokens, private customer data, or confidential production logs into any browser-based tool."
+      },
+      {
+        "question": "Is this a free JSON Parse and Stringify tool?",
+        "answer": "Yes. You can parse JSON strings, stringify JSON data, format the result, and copy or download the output without creating an account."
+      }
+    ],
+    "article": {
+      "title": "How to Parse and Stringify JSON Online",
+      "content": "<h2>What Are JSON.parse and JSON.stringify?</h2><p><code>JSON.parse()</code> and <code>JSON.stringify()</code> convert between JSON text and values. JSON.parse reads valid JSON text and returns an object, array, primitive value, or null. JSON.stringify takes a value and returns JSON text.</p><p>An online Parse and Stringify tool is useful for inspecting stringified API fields, debugging logs, preparing embedded payloads, and checking how formatting and escaping change the output.</p><h2>Parse vs Stringify</h2><table><thead><tr><th>Operation</th><th>Input</th><th>Output</th></tr></thead><tbody><tr><td>Parse</td><td>JSON text</td><td>JSON-compatible value</td></tr><tr><td>Stringify</td><td>JSON-compatible value</td><td>JSON text</td></tr></tbody></table><h2>How to Parse a JSON String</h2><ol><li><strong>Choose Parse.</strong></li><li><strong>Paste the input:</strong> a JSON document or a quoted JSON string literal.</li><li><strong>Say how to read it:</strong> auto-detect, JSON document, or JSON string literal.</li><li><strong>Run Parse</strong> and check the reported result type.</li><li><strong>Repeat only when needed:</strong> if the result is still a string holding JSON text, parse one more layer.</li></ol><h2>How to Stringify JSON</h2><ol><li><strong>Choose Stringify.</strong></li><li><strong>Enter JSON data:</strong> an object, array, string, number, boolean, or null.</li><li><strong>Choose formatting:</strong> compact, two spaces, or four spaces.</li><li><strong>Choose quote behaviour:</strong> turn on Include surrounding quotes when the result must be a complete JSON string literal.</li><li><strong>Copy or download</strong> the output.</li></ol><h2>JSON Documents and JSON String Literals</h2><p>A JSON document stands on its own:</p><pre><code>{\"name\":\"Alice\",\"age\":30}</code></pre><p>A JSON string literal holds that document as a string value, so the quotes inside it are escaped:</p><pre><code>\"{\\\"name\\\":\\\"Alice\\\",\\\"age\\\":30}\"</code></pre><p>The literal needs two steps: one parse to recover the inner text, and another to turn that text into a value. This page does one layer per operation, so a payload that was serialized several times has to be decoded one layer at a time, with a check in between.</p><h2>How Auto-Detect Decides</h2><p>Auto-detect parses the input once. If the result is a string whose content starts with <code>{</code> or <code>[</code> and parses as valid JSON, it unwraps exactly one layer; otherwise the string is kept as the value. That heuristic handles the common case of a serialized API or log field, but it is still a guess.</p><p>Use JSON string literal mode when the extra layer must be there: it reports an error if the parsed value is not a string, and another if that string is not valid JSON. Use JSON document mode when the input should already be a complete document and must not be unwrapped.</p><h2>Reading the Result Type</h2><p>JSON is not only objects. A parsed value can be an object, an array, a string, a number, a boolean, or null, and the type is shown above the output. Code that assumes an object will fail on an array or a primitive, so check the type before writing a parser against the result.</p><h2>Surrounding Quotes and Embedding</h2><p>With Include surrounding quotes off, stringify returns JSON text such as <code>{\"id\":1}</code>, which is what most templates and config files expect. With the option on, the result is a complete JSON string literal such as <code>\"{\\\"id\\\":1}\"</code>, which is what you need when the value has to be stored as a string inside another JSON document.</p><h2>What This Page Does Not Do</h2><p>Parse mode expects JSON-formatted text, so it does not turn prose or loosely structured text into JSON. It also does not escape non-ASCII characters or forward slashes, and it cannot accept JavaScript-only values, because the input has to be valid JSON. For escape sequences inside a string, use the JSON Escape and Unescape page; for human-readable text extraction, use the JSON to Text page; for structured plain text, use the TXT to JSON page.</p><h2>Privacy and Browser-Based Processing</h2><p>Parsing and stringification happen in the browser, so pasted payloads stay on your device. That suits API responses and log fields, but it is not a secret-management system. Avoid entering credentials, tokens, or confidential production logs into any online tool.</p><h2>When to Use Local Code</h2><p>For repeated pipelines, very large payloads, or confidential data, run <code>JSON.parse</code> and <code>JSON.stringify</code> in your own environment, where you control logging, error handling, and data retention. The browser tool is best for inspection, debugging, and one-off conversion.</p>"
+    }
+  },
+  "zh": {
+    "name": "JSON 解析与序列化",
+    "description": "把 JSON 文本解析成 JSON 值，或把 JSON 数据序列化成 JSON 文本。支持完整文档、带引号的 JSON 字符串和转义后的载荷，然后格式化、复制或下载结果。",
+    "hero": {
+      "trustHtml": "在你的浏览器里运行。你输入的 JSON 不会被本工具上传。"
+    },
+    "meta": {
+      "title": "JSON 解析与序列化 – 免费在线工具",
+      "description": "在线解析 JSON 字符串或序列化 JSON 数据。处理转义 JSON、带引号载荷、格式化输出、压缩输出和语法错误，全部在浏览器里完成。免费、无需上传。",
+      "keywords": [
+        "json parse online",
+        "json stringify online",
+        "json字符串转对象",
+        "字符串转json",
+        "json转字符串",
+        "json parse stringify",
+        "json字符串解析",
+        "json序列化工具"
+      ]
+    },
+    "ui": {
+      "label_mode": "操作：",
+      "option_parse": "解析 JSON",
+      "option_stringify": "序列化 JSON",
+      "label_input": "输入",
+      "label_output": "输出",
+      "label_input_type": "输入类型：",
+      "option_json_document": "JSON 文档",
+      "option_json_string": "JSON 字符串字面量",
+      "option_auto_detect": "自动识别",
+      "label_indent": "缩进：",
+      "option_compact": "压缩",
+      "option_indent_2": "2 空格",
+      "option_indent_4": "4 空格",
+      "option_include_quotes": "包含外层引号",
+      "btn_parse": "解析 JSON",
+      "btn_stringify": "序列化 JSON",
+      "label_result_type": "结果类型：",
+      "type_object": "对象",
+      "type_array": "数组",
+      "type_string": "字符串",
+      "type_number": "数字",
+      "type_boolean": "布尔",
+      "type_null": "null",
+      "label_characters": "字符数：",
+      "placeholder_input": "粘贴 JSON 或 JSON 字符串...",
+      "placeholder_output": "结果会显示在这里...",
+      "error_empty_input": "请先输入 JSON 数据",
+      "error_invalid_json": "输入不是合法的 JSON",
+      "error_invalid_string": "输入不是合法的 JSON 字符串字面量",
+      "error_parse_failed": "这个 JSON 字符串无法解析",
+      "error_position": "第 {line} 行，第 {column} 列"
+    },
+    "features": [
+      {
+        "icon": "lucide:braces",
+        "title": "解析 JSON 字符串",
+        "description": "把 JSON 文本、带引号的 JSON 字符串字面量和转义载荷解析成可读结果。对象、数组、字符串、数字、布尔和 null 都可以作为顶层值。"
+      },
+      {
+        "icon": "lucide:quote",
+        "title": "序列化 JSON 数据",
+        "description": "把 JSON 对象、数组或基本类型值转成 JSON 文本，并可选择带上完整 JSON 字符串字面量的外层引号，便于嵌入。"
+      },
+      {
+        "icon": "lucide:scan-search",
+        "title": "识别输入形态",
+        "description": "可选自动识别、完整 JSON 文档或 JSON 字符串字面量。自动识别只会在内层文本本身是合法 JSON 时才解开一层序列化。"
+      },
+      {
+        "icon": "lucide:settings-2",
+        "title": "格式化或压缩输出",
+        "description": "可选压缩输出，或 2 空格、4 空格的格式化输出。压缩适合嵌入，格式化便于查看。"
+      },
+      {
+        "icon": "lucide:repeat-2",
+        "title": "处理嵌套序列化",
+        "description": "当 JSON 被嵌进另一个 JSON 值、日志字段、数据库列或配置变量里时，一次解开一层 JSON 字符串。"
+      },
+      {
+        "icon": "lucide:copy",
+        "title": "复制结果",
+        "description": "把解析或序列化后的输出复制到剪贴板，用于代码、接口请求、日志、配置、测试或文档。"
+      },
+      {
+        "icon": "lucide:download",
+        "title": "下载输出",
+        "description": "解析后可下载为 .json 文件，序列化后可下载为 .txt 文件。"
+      },
+      {
+        "icon": "lucide:shield-check",
+        "title": "浏览器本地处理",
+        "description": "解析和序列化都在你的浏览器里完成。不需要注册账号，输入也不会发送到远程服务。"
+      }
+    ],
+    "guide": [
+      {
+        "title": "选择解析还是序列化",
+        "description": "有 JSON 文本或 JSON 字符串、想拿到它表示的值时选「解析」；有 JSON 数据、想要 JSON 文本表示时选「序列化」。"
+      },
+      {
+        "title": "输入内容",
+        "description": "粘贴 JSON 文档、带引号的 JSON 字符串或转义后的载荷。解析模式下再选择自动识别、JSON 文档或 JSON 字符串字面量，说明输入该怎么读。"
+      },
+      {
+        "title": "配置输出",
+        "description": "选择压缩输出，或 2 空格、4 空格的格式化输出。序列化模式下决定结果是否需要完整 JSON 字符串字面量的外层引号。"
+      },
+      {
+        "title": "执行操作",
+        "description": "点击「解析 JSON」或「序列化 JSON」。输入时结果也会自动更新。输入不合法时会带行号列号报错。"
+      },
+      {
+        "title": "复制或下载",
+        "description": "确认结果类型和输出形态，然后复制或下载。用真正消费它的语言或解析器再测一遍。"
+      }
+    ],
+    "example": {
+      "title": "解析带引号的 JSON 字符串",
+      "description": "一个装着对象的 JSON 字符串字面量，解析回对象本身。",
+      "inputLabel": "输入 JSON 字符串",
+      "input": "\"{\\\"name\\\":\\\"Alice\\\",\\\"age\\\":30}\"",
+      "inputExplanation": "带引号的 JSON 字符串字面量：对象被序列化后作为一个字符串值存储。",
+      "outputLabel": "解析后的 JSON",
+      "output": "{\n  \"name\": \"Alice\",\n  \"age\": 30\n}",
+      "outputExplanation": "自动识别解开了字符串层，并用 2 空格缩进格式化结果。",
+      "note": "切换到「序列化」并开启「包含外层引号」，可以把对象还原成最初的带引号字符串字面量。"
+    },
+    "faq": [
+      {
+        "question": "JSON.parse 用来做什么？",
+        "answer": "JSON.parse 把合法的 JSON 文本转换成值，可能是对象、数组、字符串、数字、布尔或 null。文本必须遵循 JSON 语法。"
+      },
+      {
+        "question": "JSON.stringify 用来做什么？",
+        "answer": "JSON.stringify 把值转换成 JSON 文本。它可以输出压缩形式，也可以按缩进输出格式化形式，并会转义 JSON 字符串要求的字符。"
+      },
+      {
+        "question": "解析和序列化有什么区别？",
+        "answer": "解析是从 JSON 文本到值，序列化是从值到 JSON 文本。二者通常互为逆操作，但格式化选择和不支持的值会让往返结果在空白上有所不同。"
+      },
+      {
+        "question": "能把 JSON 字符串转成 JSON 对象吗？",
+        "answer": "可以。在解析模式下粘贴合法的 JSON 字符串或带引号载荷。结果可能是对象、数组、基本类型值或 null，取决于顶层 JSON 值是什么。"
+      },
+      {
+        "question": "JSON 字符串一定会解析成对象吗？",
+        "answer": "不一定。JSON 可以表示对象、数组、字符串、数字、布尔和 null，所以解析结果可能是数组或基本类型值，而不一定是对象。结果类型会显示在输出上方。"
+      },
+      {
+        "question": "JSON 文本和 JSON 字符串字面量有什么区别？",
+        "answer": "{\"name\":\"Alice\"} 这样的 JSON 文档本身就是一个对象文档。装着它的 JSON 字符串字面量写作 \"{\\\"name\\\":\\\"Alice\\\"}\"。后者需要先解析一次拿到内层文本，再解析一次才能变成对象。"
+      },
+      {
+        "question": "自动识别是怎么判断的？",
+        "answer": "自动识别先解析一次输入。如果结果是字符串，且内容以 { 或 [ 开头并能解析成合法 JSON，就只解开一层；否则把这个字符串当作目标值。需要强制存在这一层时，请用「JSON 字符串字面量」模式，而不是让页面去猜。"
+      },
+      {
+        "question": "为什么会看到多余的反斜杠？",
+        "answer": "反斜杠通常说明 JSON 文本被存进了另一层字符串里，每序列化一层就多一层转义。请一层一层解析，不要手动删反斜杠。"
+      },
+      {
+        "question": "能解析双重转义的 JSON 吗？",
+        "answer": "能，一次解一层。在解析模式下选择「JSON 字符串字面量」来强制要求这一层，确认中间结果后再对结果重复操作。"
+      },
+      {
+        "question": "序列化时能带缩进吗？",
+        "answer": "可以。选择压缩输出，或 2 空格、4 空格的格式化输出。格式化便于查看，压缩适合嵌入和传输。"
+      },
+      {
+        "question": "序列化输出能带外层引号吗？",
+        "answer": "可以。开启「包含外层引号」后，结果是完整的 JSON 字符串字面量：内层文本被转义并用双引号包裹。关闭时得到的是 JSON 文本本身，多数嵌入场景直接粘贴的就是这个。"
+      },
+      {
+        "question": "序列化会保留所有 JavaScript 值吗？",
+        "answer": "它序列化的是 JSON 兼容的值。本页输入必须是合法 JSON，所以 undefined、函数、symbol、BigInt、NaN、Infinity 这类 JavaScript 特有的值根本无法输入。"
+      },
+      {
+        "question": "会转义非 ASCII 字符或正斜杠吗？",
+        "answer": "不会。输出保留非 ASCII 字符原样，也不转义正斜杠。本页没有 Unicode 转义或斜杠转义选项。"
+      },
+      {
+        "question": "能用这个工具把任意文本转成 JSON 吗？",
+        "answer": "不能。解析模式只接受 JSON 格式的文本。把自然语言或结构松散的文本变成新的 JSON 结构是另一件事，请用 TXT 转 JSON 页面，那里有明确的解析规则。"
+      },
+      {
+        "question": "它和 JSON 转义/反转义有什么区别？",
+        "answer": "解析和序列化负责 JSON 文本与 JSON 值之间的转换；转义和反转义处理的是值内部的字符串转义序列。序列化后的载荷有时两步都要做，所以先看清楚自己在处理哪一层，再选工具。"
+      },
+      {
+        "question": "能用于处理接口响应和日志吗？",
+        "answer": "可以。粘贴接口响应，或日志里含 JSON 文本的字段，然后用「解析」查看它表示的值。字段里是嵌套或双重转义的 JSON 时，一层一层解。"
+      },
+      {
+        "question": "我的数据会被上传到服务器吗？",
+        "answer": "不会。本页在你的浏览器里解析和序列化。但仍然不要把密码、API 密钥、访问令牌、客户隐私数据或生产环境机密日志粘贴到任何在线工具里。"
+      },
+      {
+        "question": "这个 JSON 解析与序列化工具免费吗？",
+        "answer": "免费。可以解析 JSON 字符串、序列化 JSON 数据、格式化结果、复制或下载输出，都不需要注册账号。"
+      }
+    ],
+    "article": {
+      "title": "如何在线解析与序列化 JSON",
+      "content": "<h2>JSON.parse 和 JSON.stringify 是什么</h2><p><code>JSON.parse()</code> 和 <code>JSON.stringify()</code> 负责在 JSON 文本和值之间转换。JSON.parse 读取合法 JSON 文本，返回对象、数组、基本类型值或 null；JSON.stringify 接收值并返回 JSON 文本。</p><p>在线的解析与序列化工具适合查看被序列化的接口字段、调试日志、准备嵌入载荷，以及确认格式化和转义会怎样改变输出。</p><h2>解析与序列化对比</h2><table><thead><tr><th>操作</th><th>输入</th><th>输出</th></tr></thead><tbody><tr><td>解析</td><td>JSON 文本</td><td>JSON 兼容的值</td></tr><tr><td>序列化</td><td>JSON 兼容的值</td><td>JSON 文本</td></tr></tbody></table><h2>如何解析 JSON 字符串</h2><ol><li><strong>选择「解析」。</strong></li><li><strong>粘贴输入：</strong>JSON 文档或带引号的 JSON 字符串字面量。</li><li><strong>说明读法：</strong>自动识别、JSON 文档或 JSON 字符串字面量。</li><li><strong>执行解析</strong>，查看显示的结果类型。</li><li><strong>必要时才重复：</strong>如果结果仍是装着 JSON 文本的字符串，再解一层。</li></ol><h2>如何序列化 JSON</h2><ol><li><strong>选择「序列化」。</strong></li><li><strong>输入 JSON 数据：</strong>对象、数组、字符串、数字、布尔或 null。</li><li><strong>选择格式：</strong>压缩、2 空格或 4 空格。</li><li><strong>选择引号行为：</strong>结果必须是完整 JSON 字符串字面量时开启「包含外层引号」。</li><li><strong>复制或下载</strong>输出。</li></ol><h2>JSON 文档与 JSON 字符串字面量</h2><p>JSON 文档本身独立存在：</p><pre><code>{\"name\":\"Alice\",\"age\":30}</code></pre><p>装着它的 JSON 字符串字面量把内部引号做了转义：</p><pre><code>\"{\\\"name\\\":\\\"Alice\\\",\\\"age\\\":30}\"</code></pre><p>字面量需要两步：先解析出内层文本，再把它解析成值。本页每次操作只解一层，所以被序列化多次的载荷要一层一层解，中间还要确认结果。</p><h2>自动识别如何判断</h2><p>自动识别先解析一次输入。如果结果是字符串，且内容以 <code>{</code> 或 <code>[</code> 开头并能解析成合法 JSON，就只解开一层；否则把这个字符串当作目标值。这个启发式覆盖了接口或日志字段被序列化这种常见情况，但它仍然是猜测。</p><p>需要强制存在这一层时，请用「JSON 字符串字面量」模式：解析结果不是字符串会报错，字符串本身不是合法 JSON 也会报错。输入本该是完整文档、不允许被解开时，请用「JSON 文档」模式。</p><h2>看懂结果类型</h2><p>JSON 不只表示对象。解析结果可能是对象、数组、字符串、数字、布尔或 null，类型会显示在输出上方。默认拿到对象的代码遇到数组或基本类型值会出错，所以先确认类型再写解析逻辑。</p><h2>外层引号与嵌入</h2><p>关闭「包含外层引号」时，序列化返回 JSON 文本，例如 <code>{\"id\":1}</code>，多数模板和配置文件要的就是这个。开启时，结果是完整的 JSON 字符串字面量，例如 <code>\"{\\\"id\\\":1}\"</code>，当这个值要作为字符串存进另一个 JSON 文档时需要的就是这个。</p><h2>本页不做什么</h2><p>解析模式只接受 JSON 格式的文本，因此不会把散文或结构松散的文本转成 JSON；不转义非 ASCII 字符和正斜杠；也不能接受 JavaScript 特有的值，因为输入必须是合法 JSON。字符串内部的转义序列请用 JSON 转义/反转义页面；面向阅读的文本提取请用 JSON 转文本页面；结构化纯文本请用 TXT 转 JSON 页面。</p><h2>隐私与浏览器本地处理</h2><p>解析和序列化都在浏览器里完成，粘贴的载荷留在你的设备上。这适合接口响应和日志字段，但它不是密钥管理系统。不要把凭证、令牌或生产环境机密日志粘贴到任何在线工具里。</p><h2>什么时候改用本地代码</h2><p>处理可重复的流水线、超大载荷或机密数据时，请在自己的环境里调用 <code>JSON.parse</code> 和 <code>JSON.stringify</code>，这样日志、错误处理和数据留存都由你控制。浏览器工具适合查看、调试和一次性转换。</p>"
+    }
+  }
+}

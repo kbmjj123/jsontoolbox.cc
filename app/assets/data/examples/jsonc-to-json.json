@@ -1,0 +1,20 @@
+[
+  {
+    "id": "settings",
+    "label_en": "Commented Config",
+    "label_zh": "带注释的配置",
+    "input": "{\n  // Display name shown in the UI\n  \"name\": \"Alice\",\n  \"url\": \"https://example.com/a//b\",\n  \"roles\": [\n    \"admin\",\n    \"editor\",\n  ],\n  /* Feature flag */\n  \"enabled\": true\n}"
+  },
+  {
+    "id": "trailing",
+    "label_en": "Trailing Commas",
+    "label_zh": "尾随逗号",
+    "input": "{\n  \"host\": \"localhost\",\n  \"port\": 8080,\n  \"tags\": [\"dev\", \"local\",],\n}"
+  },
+  {
+    "id": "unclosed",
+    "label_en": "Unclosed Block Comment",
+    "label_zh": "未闭合的块注释",
+    "input": "{\n  \"name\": \"Alice\",\n  /* this comment is never closed\n  \"enabled\": true\n}"
+  }
+]

@@ -1,0 +1,20 @@
+[
+  {
+    "id": "lines",
+    "label_en": "Line List",
+    "label_zh": "行列表",
+    "input": "Alice\nBob\nCharlie\n\nDiana\nAlice"
+  },
+  {
+    "id": "keyvalue",
+    "label_en": "Key-Value Text",
+    "label_zh": "键值文本",
+    "input": "name: Alice\nage: 30\nactive: true\nurl: https://example.com/a:b"
+  },
+  {
+    "id": "delimited",
+    "label_en": "Delimited Table",
+    "label_zh": "分隔文本表格",
+    "input": "name,age,city\nAlice,30,New York\nBob,25,London"
+  }
+]

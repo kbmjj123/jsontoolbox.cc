@@ -8,7 +8,8 @@
   "nextSteps": [
     "json-to-csv",
     "json-to-excel",
-    "json-to-html"
+    "json-to-html",
+    "html-to-json"
   ],
   "recommends": [
     "json-editor"

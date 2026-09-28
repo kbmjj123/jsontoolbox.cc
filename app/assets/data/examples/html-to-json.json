@@ -1,0 +1,20 @@
+[
+  {
+    "id": "simple",
+    "label_en": "Table with Header",
+    "label_zh": "带表头的表格",
+    "input": "<table>\n  <thead>\n    <tr><th>Name</th><th>Age</th><th>City</th></tr>\n  </thead>\n  <tbody>\n    <tr><td>Alice</td><td>30</td><td>New York</td></tr>\n    <tr><td>Bob</td><td>25</td><td>London</td></tr>\n  </tbody>\n</table>"
+  },
+  {
+    "id": "no-th",
+    "label_en": "Headerless Table",
+    "label_zh": "无表头表格",
+    "input": "<table>\n  <tr><td>Alice</td><td>30</td></tr>\n  <tr><td>Bob</td><td>25</td></tr>\n</table>"
+  },
+  {
+    "id": "colspan",
+    "label_en": "Table with Colspan",
+    "label_zh": "含 colspan 的表格",
+    "input": "<table>\n  <thead>\n    <tr><th>Name</th><th colspan=\"2\">Contact</th></tr>\n  </thead>\n  <tbody>\n    <tr><td>Alice</td><td>alice@example.com</td><td>+1 555</td></tr>\n  </tbody>\n</table>"
+  }
+]

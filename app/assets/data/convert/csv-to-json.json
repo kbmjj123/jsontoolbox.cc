@@ -9,7 +9,10 @@
     "json-editor",
     "json-to-csv"
   ],
-  "recommends": [],
+  "recommends": [
+    "txt-to-json",
+    "html-to-json"
+  ],
   "en": {
     "name": "CSV to JSON Converter",
     "description": "Convert CSV, TSV, or delimited text into JSON online in your browser. Paste data or open a file, choose the delimiter and header behavior, preview the parsed rows, and export an array of JSON objects with optional type inference.",
