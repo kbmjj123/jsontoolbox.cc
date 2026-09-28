@@ -239,7 +239,7 @@ grep -c "{slug}" .output/public/__sitemap__/en-US.xml
 
 | 议题 | 结论 |
 |---|---|
-| URL | `/tools/convert/txt-to-json`。文档 `docs/upgrade/txt-to-json.md` 建议的扁平 `/tools/txt-to-json` 与 `[category]/[slug].vue` 路由不兼容 |
+| URL | `/tools/convert/txt-to-json`。原始规划建议的扁平 `/tools/txt-to-json` 与 `[category]/[slug].vue` 路由不兼容 |
 | CSV parser | 抽到 `app/utils/csv.ts`，`CsvToJson.vue` 改为 import，行为零变更 |
 | 模式范围 | 3 种：lines / key-value / delimited。indented-nested 不实现，FAQ 明说不支持 |
 | 类型推断 | 复用 `convertValue`，默认关闭 |
@@ -288,20 +288,20 @@ grep -c "{slug}" .output/public/__sitemap__/en-US.xml
 - ui 键终稿 **44 键**，en/zh 一一对应
 - features 9 / guide 5 / faq 20，en/zh 对齐
 - `example` 用形状 B，`outputExplanation` 声明 number 需开启类型推断（默认 30 是字符串）
-- 英文页已预渲染通过（无 "Tool component not found"、无空 `<h2>`）；zh 页与 sitemap 待构建完成确认
+- 中英双语页均已预渲染通过（无 "Tool component not found"、无空 `<h2>`），sitemap 两种语言均已收录
 
 ### 8.2 JSON to Text（2026-09-28）
 
-- 文档 `docs/upgrade/json-to-txt.md`，实际 URL `/tools/convert/json-to-text`（文档写的 `/tools/json-to-text` 同样不兼容路由）
+- 实际 URL `/tools/convert/json-to-text`（原始规划写的 `/tools/json-to-text` 同样不兼容路由）
 - 5 种输出模式：flatten / key-value / values / keys-paths / JSON Lines
-- **ASCII tree 与 readable outline 属文档第二版且无输出规范 → 不实现**，删除 `option_ascii_tree` / `option_readable`，并新增 FAQ 明说没有该视图
+- **ASCII tree 与 readable outline 属规划第二版且无输出规范 → 不实现**，删除 `option_ascii_tree` / `option_readable`，并新增 FAQ 明说没有该视图
 - 数组开关（`option_array_mode`）只作用于**文档内部**的数组；根文档永远逐层展开，否则会产出空路径行
 - 空容器默认跳过，开启后输出 `{}` / `[]`；`formatLeaf` 必须显式处理这两种值，否则 `String({})` 会输出 `[object Object]`
 - 与 txt-to-json 互为反向工具，两边 `nextSteps` 互相回填
 
 ### 8.3 JSONC to JSON（2026-09-28）
 
-- 文档 `docs/upgrade/jsonc-to-json.md`，URL `/tools/convert/jsonc-to-json`
+- URL `/tools/convert/jsonc-to-json`
 - 核心：注释剥离用**逐字符状态机**（`stripJsonc`），绝不用正则——否则会破坏 `"https://example.com/a//b"`
 - JSON5 模式属第二版 → 删除 `label_mode` / `option_jsonc` / `option_json5` / `option_strict_json` / `warning_json5_feature`，FAQ 明说「本页不解析 JSON5」
 - 尾随逗号 vs 非法逗号要区分：`}`/`]` 前的逗号删除并计数；前面无值的逗号（如 `[,1]`）报 `error_invalid_trailing_comma`，不猜结构
@@ -311,7 +311,7 @@ grep -c "{slug}" .output/public/__sitemap__/en-US.xml
 
 ### 8.4 HTML to JSON（2026-09-28）
 
-- 文档 `docs/upgrade/html-to-json.md`，URL `/tools/convert/html-to-json`
+- URL `/tools/convert/html-to-json`
 - 首版只做 **HTML Table → JSON**；DOM Tree 模式属第二版 → 删除 `label_mode` / `option_table` / `option_dom_tree`，FAQ 明说没有该模式
 - 未实现的第二版项：`option_all_tables`（提取所有表）、`option_preserve_html`、`option_include_attributes`、colspan/rowspan 网格展开
 - 解析用 `DOMParser`（仅客户端；SSR 时输入为空不会触发，无需额外守卫），两个坑：
@@ -323,8 +323,8 @@ grep -c "{slug}" .output/public/__sitemap__/en-US.xml
 
 ### 8.5 JSON Parse and Stringify（2026-09-28）
 
-- 文档 `docs/upgrade/json-stringify.md`。文档推荐 URL `/tools/json-parse-stringify`（首期双模式页面，后续再按 GSC 拆成 json-parse / json-stringify 两页）→ 实际 `/tools/convert/json-parse-stringify`
-- 与站内已有 `json-escape` 的分工（文档给的边界表，必须守住）：
+- 原始规划推荐 URL `/tools/json-parse-stringify`（首期双模式页面，后续再按 GSC 拆成 json-parse / json-stringify 两页）→ 实际 `/tools/convert/json-parse-stringify`
+- 与站内已有 `json-escape` 的分工（必须守住的边界）：
   | 页面 | 行为 |
   |---|---|
   | 本页 | JSON 文本 ↔ JSON 值（parse / stringify） |
@@ -337,18 +337,19 @@ grep -c "{slug}" .output/public/__sitemap__/en-US.xml
 
 ### 8.6 JSON to TOON（2026-09-28）
 
-- 文档 `docs/upgrade/json-to-toon.md`，URL `/tools/convert/json-to-toon`
+- URL `/tools/convert/json-to-toon`
 - **这页不能凭记忆编格式**。实现前先读规范 `https://raw.githubusercontent.com/toon-format/spec/main/SPEC.md`（v4.1），编解码器落在 `app/utils/toon.ts`
 - 实现子集（FAQ 里逐条列明）：对象/嵌套对象、基本类型数组内联形式、统一对象数组表格形式、非统一数组列表形式、空数组 `key: []`、空对象 `key:`、根基本类型/根对象/根数组、逗号/制表符/竖线分隔符
 - 未实现（FAQ 明说）：键式表格根形式 `[N:]{...}`、嵌套字段组 `field{sub1,sub2}`、键折叠、路径展开
 - **必须有 round-trip 测试**：`node --experimental-strip-types` 可直接跑 `.ts`（类型会被剥离）。52 个用例覆盖 17 个规范原文示例 + 3 种分隔符 + 往返一致 + 4 类畸形输入必须报错
 - 解码器会校验声明的数组长度与实际行/条目数一致，不一致就报错（不静默接受）
-- token 估算用 `ceil(chars / 4)`，**两侧同公式**，并在 UI 与 FAQ 明说「不是模型分词器计数」——文档明确禁止写死「省 30%–60%」
+- token 估算用 `ceil(chars / 4)`，**两侧同公式**，并在 UI 与 FAQ 明说「不是模型分词器计数」——原始规划明确禁止写死「省 30%–60%」
 - 对比基准永远是**压缩 JSON**，不是带缩进的 JSON
 
 ### 后续可做（本文档不覆盖）
 
 - 上游回填：`json-escape`、`large-json-viewer`
-- 文档提到的 `jsonl-viewer`、`json-prompt-generator`、`json-diff` 站内不存在，**不要引用**
+- 规划文档提到的 `jsonl-viewer`、`json-prompt-generator`、`json-diff` 站内不存在，**不要引用**
+- `app/components/universal/JsonToYaml.vue:137` 注释仍引用 `docs/upgrade/json-to-yaml.md`，该文件早已删除，属既有陈旧引用
 - 文档其他位置还提到 `json-to-text`、`jsonc-to-json`，现已存在，可以正常引用
 - 独立议题（跨页横切，勿夹带）：修 `ToolRelated` props、修 FAQPage、修 sitemap 排除 `examples/`
