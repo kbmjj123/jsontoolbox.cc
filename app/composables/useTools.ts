@@ -48,6 +48,30 @@ const FEATURED_CONFIG = [
     slug: 'json-to-xml',
     category: 'convert',
   },
+  {
+    slug: 'txt-to-json',
+    category: 'convert',
+  },
+  {
+    slug: 'json-to-text',
+    category: 'convert',
+  },
+  {
+    slug: 'jsonc-to-json',
+    category: 'convert',
+  },
+  {
+    slug: 'html-to-json',
+    category: 'convert',
+  },
+  {
+    slug: 'json-parse-stringify',
+    category: 'convert',
+  },
+  {
+    slug: 'json-to-toon',
+    category: 'convert',
+  },
 ]
 
 // 1. 预加载所有 JSON 文件

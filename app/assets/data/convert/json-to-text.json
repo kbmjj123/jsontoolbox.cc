@@ -1,0 +1,410 @@
+{
+  "slug": "json-to-text",
+  "category": "convert",
+  "component": "JsonToText",
+  "icon": "lucide:type",
+  "sort": 15,
+  "applicationCategory": "DeveloperApplication",
+  "nextSteps": ["json-editor", "txt-to-json"],
+  "recommends": ["json-to-csv", "json-to-table", "json-path-tester", "json-minifier", "json-parse-stringify"],
+  "en": {
+    "name": "JSON to Text Converter",
+    "description": "Turn JSON into readable plain text in your browser. Extract flattened paths, key-value lines, keys, values, or JSON Lines from valid JSON, then copy or download the result as a .txt file.",
+    "hero": {
+      "trustHtml": "Runs in your browser. Your JSON is not uploaded by this tool."
+    },
+    "meta": {
+      "title": "JSON to Text Converter – Extract Readable Text Online",
+      "description": "Convert JSON to plain text online. Flatten nested objects into key-value paths, extract keys or values, generate JSON Lines, and copy or download the result. Free and browser-based.",
+      "keywords": [
+        "json to text converter",
+        "json to text",
+        "convert json to text",
+        "json to string",
+        "convert json to string",
+        "json to txt",
+        "json text converter",
+        "json flatten to text"
+      ]
+    },
+    "ui": {
+      "label_input": "Input JSON",
+      "label_output": "Text Output",
+      "placeholder_input": "Paste JSON or open a .json file...",
+      "placeholder_output": "Text output will appear here...",
+      "label_mode": "Output mode:",
+      "option_flatten": "Flatten to paths",
+      "option_key_value": "Key-value lines",
+      "option_values": "Values only",
+      "option_keys": "Keys and paths",
+      "option_jsonl": "JSON Lines",
+      "option_separator": "Separator:",
+      "option_separator_colon": "Colon (:)",
+      "option_separator_equals": "Equals (=)",
+      "option_array_mode": "Array handling:",
+      "option_array_each_line": "One item per line",
+      "option_array_inline": "Keep arrays on one line",
+      "option_include_empty": "Include empty objects and arrays",
+      "option_include_paths": "Include paths",
+      "btn_convert": "Convert to Text",
+      "label_characters": "Characters:",
+      "label_lines": "Lines:",
+      "error_empty_input": "Enter JSON or open a file first",
+      "error_invalid_json": "Input is not valid JSON",
+      "error_no_output": "No text output was generated"
+    },
+    "features": [
+      {
+        "icon": "lucide:file-text",
+        "title": "Readable Plain Text",
+        "description": "Turn valid JSON into text that is easier to read, search, paste into documentation, or share with people who do not need the original JSON syntax."
+      },
+      {
+        "icon": "lucide:route",
+        "title": "Flatten Nested Paths",
+        "description": "Print one leaf value per line with its dot-notation path, such as user.name: Alice. Array items use bracketed indexes such as items[0].id."
+      },
+      {
+        "icon": "lucide:list",
+        "title": "Keys or Values Only",
+        "description": "Extract only the paths found in the document, or only the leaf values, when you need a field list, a text list, or a simplified view of the source data."
+      },
+      {
+        "icon": "lucide:equal",
+        "title": "Key-Value Output",
+        "description": "Generate lines such as name: Alice or user.name = Alice in reports, debugging notes, and text-based workflows. Use a colon or an equals sign, and show the leaf key or the full path."
+      },
+      {
+        "icon": "lucide:network",
+        "title": "JSON Lines Output",
+        "description": "Write an array as one JSON value per line for logs, data pipelines, and JSONL-compatible tools. This is different from minified JSON, which keeps one whole document on a single line."
+      },
+      {
+        "icon": "lucide:copy",
+        "title": "Copy the Result",
+        "description": "Copy the generated text, paths, values, or JSON Lines to your clipboard for documentation, email, reports, scripts, bug tickets, or API debugging."
+      },
+      {
+        "icon": "lucide:download",
+        "title": "Download TXT",
+        "description": "Download the full output as a .txt file for local storage, sharing, text processing, or another development workflow."
+      },
+      {
+        "icon": "lucide:shield-check",
+        "title": "Browser-Based Processing",
+        "description": "JSON parsing and text generation happen in your browser. No account is required and the source JSON is not sent to a remote service."
+      }
+    ],
+    "guide": [
+      {
+        "title": "Enter valid JSON",
+        "description": "Paste a JSON object or array into the input editor, or open a local .json file. The input has to parse successfully before text can be extracted."
+      },
+      {
+        "title": "Choose an output mode",
+        "description": "Select flatten to paths, key-value lines, values only, keys and paths, or JSON Lines. Each mode produces a different text shape from the same JSON."
+      },
+      {
+        "title": "Configure arrays and separators",
+        "description": "Choose whether array items appear as indexed paths or stay together on one line, and whether key-value lines use a colon or an equals sign. Turn on empty containers when their presence matters."
+      },
+      {
+        "title": "Convert and review",
+        "description": "Click Convert to Text and check the line count, character count, paths, and values. The output also updates automatically while you type, so you can compare modes directly."
+      },
+      {
+        "title": "Copy or download",
+        "description": "Copy the text to your clipboard or download it as a .txt file. Keep the original JSON when you need to preserve machine-readable structure and data types."
+      }
+    ],
+    "example": {
+      "title": "Flatten JSON to Readable Text",
+      "description": "A nested object with one array, printed as one path-value pair per line.",
+      "inputLabel": "Input JSON",
+      "input": "{\n  \"user\": {\n    \"name\": \"Alice\",\n    \"roles\": [\"admin\", \"editor\"],\n    \"address\": {\n      \"city\": \"Shanghai\",\n      \"country\": \"CN\"\n    }\n  }\n}",
+      "inputExplanation": "An object nested two levels deep, containing an array of two strings.",
+      "outputLabel": "Flattened Text",
+      "output": "user.name: Alice\nuser.roles[0]: admin\nuser.roles[1]: editor\nuser.address.city: Shanghai\nuser.address.country: CN",
+      "outputExplanation": "Default options: colon separator, array items as indexed paths, empty objects and arrays excluded.",
+      "note": "A leaf value is printed without JSON quoting, so \"Shanghai\" appears as Shanghai. Empty objects and arrays are skipped unless Include empty objects and arrays is enabled."
+    },
+    "faq": [
+      {
+        "question": "What does a JSON to Text converter do?",
+        "answer": "It parses valid JSON and produces a plain-text representation. This page offers five modes: flattened paths with values, key-value lines, values only, keys and paths only, and JSON Lines."
+      },
+      {
+        "question": "Is JSON to Text the same as JSON.stringify?",
+        "answer": "No. JSON.stringify serializes a value into JSON syntax. This page extracts or flattens the content into readable lines instead, so braces, brackets, and quotation marks are removed from the output."
+      },
+      {
+        "question": "What is flattened JSON text?",
+        "answer": "Flattened JSON text represents each leaf value with its path. For example, the nested value user.profile.name is printed as a line such as user.profile.name: Alice, and array items use bracketed indexes such as items[0].id."
+      },
+      {
+        "question": "Can I extract only JSON values?",
+        "answer": "Yes. Values only mode prints every leaf value on its own line without property names or JSON punctuation. Use it carefully, because values alone lose the context that explains where they came from."
+      },
+      {
+        "question": "Can I extract JSON keys and paths?",
+        "answer": "Yes. Keys and paths mode prints every path found in the document, such as user.name and items[0].id. It is useful for API documentation, field inventories, and drafting JSONPath queries."
+      },
+      {
+        "question": "How are arrays represented?",
+        "answer": "Array handling offers two options for arrays inside the document. One item per line prints indexed paths such as tags[0] and tags[1]; keep arrays on one line prints the whole array as compact JSON on a single line. The root document is always walked, so a root array is never collapsed. In JSON Lines mode a root array becomes one JSON value per line."
+      },
+      {
+        "question": "What happens to empty objects and arrays?",
+        "answer": "By default they produce no lines, because they contain no leaf values. Turn on Include empty objects and arrays to print them as {} or [] with their path."
+      },
+      {
+        "question": "Can I convert JSON to key-value text?",
+        "answer": "Yes. Choose key-value lines and pick a colon or an equals sign. By default the line uses the leaf key, such as name: Alice; turn on Include paths to print the full path instead, such as user.name: Alice."
+      },
+      {
+        "question": "Are dots inside key names escaped?",
+        "answer": "No. Keys are used exactly as they appear, so a key that already contains a dot makes the flattened path ambiguous. This is one reason plain-text output is not a lossless replacement for JSON."
+      },
+      {
+        "question": "Can I generate JSON Lines?",
+        "answer": "Yes. JSON Lines mode writes one JSON value per line: each item of a root array becomes one line, and a document that is not an array is written as a single line. This differs from minified JSON, which keeps one complete document on one line."
+      },
+      {
+        "question": "Does JSON to Text preserve data types?",
+        "answer": "No. Plain text does not carry JSON types: a number, a boolean, null, and a string all become textual output, and strings lose their surrounding quotes. Keep the original JSON when exact machine-readable types matter."
+      },
+      {
+        "question": "Can I convert JSON into a readable report?",
+        "answer": "Flattened paths, key-value lines, and keys and paths modes make JSON easier to inspect or paste into a report. The result is still a text representation of the data, not a validated business report."
+      },
+      {
+        "question": "Does it produce an ASCII tree or an indented outline?",
+        "answer": "No. This page produces the five flat text modes listed above. An ASCII tree or an indented outline view is not available."
+      },
+      {
+        "question": "Can I convert JSON to text for an LLM prompt?",
+        "answer": "Flattened paths and key-value lines are convenient when a text representation reads better, but converting JSON to text removes structural and type information. To reduce size while keeping valid JSON, compare JSON minification instead."
+      },
+      {
+        "question": "Can I convert a large JSON file?",
+        "answer": "The practical limit depends on browser memory, nesting depth, number of leaf values, output size, and rendering performance. Very large documents may be slow to render, in which case a local command-line workflow is a better fit."
+      },
+      {
+        "question": "Can I convert the text output back to JSON?",
+        "answer": "Usually not without extra rules. Values-only output, key-value lines, and path lists may lose types, array boundaries, empty containers, and the difference between null and the string \"null\". Keep the original JSON when reversible conversion matters."
+      },
+      {
+        "question": "Is my JSON uploaded to a server?",
+        "answer": "No. The page parses JSON and generates text in your browser. You should still avoid entering passwords, API keys, access tokens, private customer data, or confidential production payloads into any browser-based tool."
+      },
+      {
+        "question": "Is this a free JSON to Text converter?",
+        "answer": "Yes. You can convert JSON into readable text, paths, keys, values, or JSON Lines, then copy or download the result without creating an account."
+      }
+    ],
+    "article": {
+      "title": "How to Convert JSON to Readable Text",
+      "content": "<h2>What Is a JSON to Text Converter?</h2><p>A JSON to Text converter turns structured JSON into a plain-text representation. That makes nested API responses, configuration data, and exported records easier to search, paste into documents, or share with people who do not need the original JSON syntax.</p><p>There is no single universal JSON-to-text output. A flattened path list, a key-value report, a values-only list, and a JSON Lines file all serve different purposes. Pick the representation that matches the next step in your workflow.</p><h2>The Output Modes on This Page</h2><ul><li><strong>Flatten to paths:</strong> one leaf value per line with its path, such as <code>user.name: Alice</code> or <code>items[0].id: 1</code>.</li><li><strong>Key-value lines:</strong> lines such as <code>name: Alice</code> or <code>user.name = Alice</code>, with the leaf key or the full path.</li><li><strong>Values only:</strong> leaf values on their own lines, without keys or paths.</li><li><strong>Keys and paths:</strong> a list of the paths found in the document.</li><li><strong>JSON Lines:</strong> one JSON value per line, usually one object per array item.</li></ul><h2>How to Convert JSON to Text</h2><ol><li><strong>Enter JSON:</strong> paste a valid object or array, or open a local .json file.</li><li><strong>Select an output mode:</strong> flattened paths, key-value lines, values, keys and paths, or JSON Lines.</li><li><strong>Configure arrays:</strong> choose indexed paths such as <code>tags[0]</code>, or keep each array on one line as compact JSON.</li><li><strong>Choose a separator:</strong> for flattened and key-value output, use a colon or an equals sign.</li><li><strong>Review the result:</strong> check the line count, character count, paths, and values before copying.</li><li><strong>Export:</strong> copy the text or download it as a .txt file.</li></ol><h2>Flattened Paths Explained</h2><p>Input:</p><pre><code>{\n  \"user\": {\n    \"name\": \"Alice\",\n    \"address\": { \"city\": \"Shanghai\" }\n  }\n}</code></pre><p>Output in flatten mode:</p><pre><code>user.name: Alice\nuser.address.city: Shanghai</code></pre><p>Object keys are joined with dots and array items use bracketed indexes. A key that already contains a dot is used exactly as written, which makes that path ambiguous — one of the reasons flattened text is not a lossless format.</p><h2>Arrays: Indexed or Inline</h2><p>With One item per line, <code>[\"admin\", \"editor\"]</code> under <code>user.roles</code> becomes:</p><pre><code>user.roles[0]: admin\nuser.roles[1]: editor</code></pre><p>With Keep arrays on one line, it becomes a single line:</p><pre><code>user.roles: [\"admin\",\"editor\"]</code></pre><p>Use indexed paths when you need to address or diff individual items, and inline output when the array is only a value you want to read at a glance.</p><h2>Empty Objects and Arrays</h2><p>A leaf is a value that is not a container: a string, number, boolean, or null. Empty objects and arrays hold no leaf, so they produce no lines by default. Enable Include empty objects and arrays when their presence itself is information you need, and they are printed as <code>{}</code> or <code>[]</code> with their path.</p><h2>JSON Lines Is Not Minified JSON</h2><p>Minified JSON keeps one complete JSON document on a single line. JSON Lines writes one JSON value per line, so a root array of two records becomes two lines, each a valid JSON document on its own:</p><pre><code>{\"id\":1,\"name\":\"Alice\"}\n{\"id\":2,\"name\":\"Bob\"}</code></pre><p>That shape is easier to stream, append to, and process line by line. This page does not read JSONL input; it produces JSONL as an output mode.</p><h2>Plain Text Is Not Lossless</h2><p>Converting JSON to text drops information. Numbers, booleans, null, and strings all become text, strings lose their quotes, empty containers disappear unless you include them, and a key containing a dot cannot be told apart from a path separator. Keep the original JSON whenever reversible conversion, exact types, or machine-readable structure matters.</p><h2>Privacy and Browser-Based Processing</h2><p>This page parses JSON and generates text in the browser rather than uploading the input to a remote service. That suits API responses and development data, but it is not a secret-management system. Avoid entering credentials, tokens, private customer records, or confidential production payloads into any online tool.</p><h2>When to Use a Local Converter</h2><p>For very large documents, repeatable pipelines, or confidential data, use a local script or command-line tool such as jq. Browser conversion is best suited to quick inspection, documentation, and small-to-medium inputs.</p>"
+    }
+  },
+  "zh": {
+    "name": "JSON 转文本转换器",
+    "description": "在浏览器里把 JSON 转成可读的纯文本。从合法 JSON 中提取扁平路径、键值行、键名、值或 JSON Lines，然后复制结果或下载为 .txt 文件。",
+    "hero": {
+      "trustHtml": "在你的浏览器里运行。你输入的 JSON 不会被本工具上传。"
+    },
+    "meta": {
+      "title": "JSON 转文本转换器 – 在线提取可读文本",
+      "description": "在线把 JSON 转成纯文本：把嵌套对象扁平化成键值路径、提取键名或值、生成 JSON Lines，然后复制或下载结果。免费、浏览器本地处理。",
+      "keywords": [
+        "json to text converter",
+        "json 转文本",
+        "json转text",
+        "convert json to text",
+        "json to string",
+        "json to txt",
+        "json文本转换器",
+        "json 扁平化"
+      ]
+    },
+    "ui": {
+      "label_input": "输入 JSON",
+      "label_output": "文本输出",
+      "placeholder_input": "粘贴 JSON，或打开 .json 文件...",
+      "placeholder_output": "文本输出会显示在这里...",
+      "label_mode": "输出模式：",
+      "option_flatten": "扁平化为路径",
+      "option_key_value": "键值行",
+      "option_values": "只要值",
+      "option_keys": "键名与路径",
+      "option_jsonl": "JSON Lines",
+      "option_separator": "分隔符：",
+      "option_separator_colon": "冒号 (:)",
+      "option_separator_equals": "等号 (=)",
+      "option_array_mode": "数组处理：",
+      "option_array_each_line": "每项一行",
+      "option_array_inline": "数组保持一行",
+      "option_include_empty": "包含空对象和空数组",
+      "option_include_paths": "包含路径",
+      "btn_convert": "转换为文本",
+      "label_characters": "字符数：",
+      "label_lines": "行数：",
+      "error_empty_input": "请先输入 JSON 或打开文件",
+      "error_invalid_json": "输入不是合法的 JSON",
+      "error_no_output": "没有生成任何文本输出"
+    },
+    "features": [
+      {
+        "icon": "lucide:file-text",
+        "title": "可读的纯文本",
+        "description": "把合法 JSON 转成更容易阅读、搜索、粘进文档的文本，也方便分享给不需要原始 JSON 语法的人。"
+      },
+      {
+        "icon": "lucide:route",
+        "title": "扁平化嵌套路径",
+        "description": "每个叶子值一行，带上点号路径，例如 user.name: Alice。数组项使用带序号的方括号，例如 items[0].id。"
+      },
+      {
+        "icon": "lucide:list",
+        "title": "只要键名或值",
+        "description": "只提取文档里的路径，或只提取叶子值，用于字段清单、文本列表或源数据的简化视图。"
+      },
+      {
+        "icon": "lucide:equal",
+        "title": "键值输出",
+        "description": "生成 name: Alice 或 user.name = Alice 这样的行，用于报告、调试记录和文本工作流。可选冒号或等号，也可以选择显示叶子键名还是完整路径。"
+      },
+      {
+        "icon": "lucide:network",
+        "title": "JSON Lines 输出",
+        "description": "把数组写成每行一个 JSON 值，适合日志、数据管道和兼容 JSONL 的工具。这不同于压缩 JSON —— 压缩后整个文档仍然只有一行。"
+      },
+      {
+        "icon": "lucide:copy",
+        "title": "复制结果",
+        "description": "把生成的文本、路径、值或 JSON Lines 复制到剪贴板，用于文档、邮件、报告、脚本、缺陷单或接口调试。"
+      },
+      {
+        "icon": "lucide:download",
+        "title": "下载 TXT",
+        "description": "把完整输出下载为 .txt 文件，便于本地保存、分享、文本处理或接入其他开发流程。"
+      },
+      {
+        "icon": "lucide:shield-check",
+        "title": "浏览器本地处理",
+        "description": "JSON 解析和文本生成都在你的浏览器里完成。不需要注册账号，源 JSON 也不会发送到远程服务。"
+      }
+    ],
+    "guide": [
+      {
+        "title": "输入合法 JSON",
+        "description": "把 JSON 对象或数组粘贴到输入编辑器，或从本地打开 .json 文件。必须先解析成功，才能提取文本。"
+      },
+      {
+        "title": "选择输出模式",
+        "description": "选择扁平化为路径、键值行、只要值、键名与路径或 JSON Lines。同一份 JSON 在不同模式下会得到不同的文本形态。"
+      },
+      {
+        "title": "配置数组与分隔符",
+        "description": "选择数组项显示为带序号的路径，还是合并成一行；键值行用冒号还是等号。空容器重要时把它包含进来。"
+      },
+      {
+        "title": "转换并查看",
+        "description": "点击「转换为文本」，检查行数、字符数、路径和值。输入时结果也会自动更新，可以直接对比各个模式。"
+      },
+      {
+        "title": "复制或下载",
+        "description": "把文本复制到剪贴板，或下载为 .txt 文件。需要保留机器可读的结构和数据类型时，请保留原始 JSON。"
+      }
+    ],
+    "example": {
+      "title": "把 JSON 扁平化为可读文本",
+      "description": "一个含数组的嵌套对象，输出为每行一个路径-值对。",
+      "inputLabel": "输入 JSON",
+      "input": "{\n  \"user\": {\n    \"name\": \"Alice\",\n    \"roles\": [\"admin\", \"editor\"],\n    \"address\": {\n      \"city\": \"Shanghai\",\n      \"country\": \"CN\"\n    }\n  }\n}",
+      "inputExplanation": "嵌套两层的对象，其中包含一个由两个字符串组成的数组。",
+      "outputLabel": "扁平化文本",
+      "output": "user.name: Alice\nuser.roles[0]: admin\nuser.roles[1]: editor\nuser.address.city: Shanghai\nuser.address.country: CN",
+      "outputExplanation": "默认选项：冒号分隔、数组项用带序号的路径、排除空对象和空数组。",
+      "note": "叶子值输出时不带 JSON 引号，所以 \"Shanghai\" 会显示为 Shanghai。除非开启「包含空对象和空数组」，否则空对象和空数组会被跳过。"
+    },
+    "faq": [
+      {
+        "question": "JSON 转文本转换器做什么？",
+        "answer": "它解析合法 JSON 并生成纯文本表示。本页提供五种模式：带值的扁平路径、键值行、只要值、键名与路径、以及 JSON Lines。"
+      },
+      {
+        "question": "JSON 转文本等同于 JSON.stringify 吗？",
+        "answer": "不同。JSON.stringify 是把值序列化成 JSON 语法；本页是把内容提取或扁平化成可读的行，输出里不会有花括号、方括号和引号。"
+      },
+      {
+        "question": "什么是扁平化 JSON 文本？",
+        "answer": "扁平化文本用路径表示每个叶子值。例如嵌套值 user.profile.name 会输出成 user.profile.name: Alice 这样的一行，数组项使用带序号的方括号，例如 items[0].id。"
+      },
+      {
+        "question": "能只提取 JSON 的值吗？",
+        "answer": "可以。「只要值」模式会把每个叶子值单独成行输出，不带属性名和 JSON 标点。请谨慎使用，因为只有值会丢失「这个值来自哪里」的上下文。"
+      },
+      {
+        "question": "能只提取 JSON 的键名和路径吗？",
+        "answer": "可以。「键名与路径」模式会输出文档里的所有路径，例如 user.name 和 items[0].id。适合接口文档、字段清单和起草 JSONPath 查询。"
+      },
+      {
+        "question": "数组怎么表示？",
+        "answer": "「数组处理」针对文档内部的数组，有两个选项：「每项一行」输出带序号的路径，例如 tags[0]、tags[1]；「数组保持一行」把整个数组作为紧凑 JSON 输出在一行里。根文档始终会被逐层展开，所以根数组不会被合并。JSON Lines 模式下，根数组会变成每行一个 JSON 值。"
+      },
+      {
+        "question": "空对象和空数组怎么处理？",
+        "answer": "默认不产生任何行，因为它们不含叶子值。开启「包含空对象和空数组」后，会带路径输出为 {} 或 []。"
+      },
+      {
+        "question": "能把 JSON 转成键值文本吗？",
+        "answer": "可以。选择「键值行」，再选冒号或等号。默认使用叶子键名，例如 name: Alice；开启「包含路径」后输出完整路径，例如 user.name: Alice。"
+      },
+      {
+        "question": "键名里的点号会被转义吗？",
+        "answer": "不会。键名按原样使用，所以本身含点号的键会让扁平路径产生歧义。这也是纯文本输出不能无损替代 JSON 的原因之一。"
+      },
+      {
+        "question": "能生成 JSON Lines 吗？",
+        "answer": "可以。JSON Lines 模式每行写一个 JSON 值：根数组的每一项成为一行，非数组的文档写成一行。这不同于压缩 JSON —— 压缩后整个完整文档仍在一行里。"
+      },
+      {
+        "question": "JSON 转文本会保留数据类型吗？",
+        "answer": "不会。纯文本不携带 JSON 类型：数字、布尔、null 和字符串都会变成文本，字符串还会丢掉外层引号。需要精确机器可读类型时请保留原始 JSON。"
+      },
+      {
+        "question": "能把 JSON 转成可读的报告吗？",
+        "answer": "扁平化路径、键值行和键名与路径这几种模式都能让 JSON 更容易查看或粘进报告。但结果仍然是数据的文本表示，不是经过校验的业务报告。"
+      },
+      {
+        "question": "会生成 ASCII 树或缩进大纲吗？",
+        "answer": "不会。本页只提供上面列出的五种扁平文本模式，没有 ASCII 树或缩进大纲视图。"
+      },
+      {
+        "question": "能把 JSON 转成给大模型提示词用的文本吗？",
+        "answer": "扁平化路径和键值行在文本更易读时比较方便，但转成文本会丢掉结构和类型信息。如果只是想缩小体积并保留合法 JSON，请改用 JSON 压缩来对比。"
+      },
+      {
+        "question": "能转换很大的 JSON 文件吗？",
+        "answer": "实际能处理多大取决于浏览器内存、嵌套深度、叶子值数量、输出体积和渲染性能。非常大的文档可能渲染很慢，这种情况更适合用本地命令行流程。"
+      },
+      {
+        "question": "能把输出的文本再转回 JSON 吗？",
+        "answer": "通常需要额外规则才能做到。「只要值」、键值行和路径列表都可能丢失类型、数组边界、空容器，以及 null 与字符串 \"null\" 的区别。需要可逆转换时请保留原始 JSON。"
+      },
+      {
+        "question": "我的 JSON 会被上传到服务器吗？",
+        "answer": "不会。本页在你的浏览器里解析 JSON 并生成文本。但仍然不要把密码、API 密钥、访问令牌、客户隐私数据或生产环境机密数据粘贴到任何在线工具里。"
+      },
+      {
+        "question": "这个 JSON 转文本转换器免费吗？",
+        "answer": "免费。可以把 JSON 转成可读文本、路径、键名、值或 JSON Lines，然后复制或下载结果，都不需要注册账号。"
+      }
+    ],
+    "article": {
+      "title": "如何把 JSON 转换成可读文本",
+      "content": "<h2>什么是 JSON 转文本转换器</h2><p>JSON 转文本转换器把结构化的 JSON 变成纯文本表示。这让嵌套的接口响应、配置数据和导出记录更容易搜索、粘进文档，或分享给不需要原始 JSON 语法的人。</p><p>并不存在唯一的「JSON 转文本」输出形态。扁平路径列表、键值报告、只要值的列表和 JSON Lines 文件，各自服务不同的目的。请选择与你下一步工作流匹配的那种表示。</p><h2>本页的输出模式</h2><ul><li><strong>扁平化为路径：</strong>每个叶子值一行并带路径，例如 <code>user.name: Alice</code> 或 <code>items[0].id: 1</code>。</li><li><strong>键值行：</strong><code>name: Alice</code> 或 <code>user.name = Alice</code> 这样的行，可用叶子键名或完整路径。</li><li><strong>只要值：</strong>叶子值单独成行，不带键名和路径。</li><li><strong>键名与路径：</strong>列出文档里出现的所有路径。</li><li><strong>JSON Lines：</strong>每行一个 JSON 值，通常对应数组的一项。</li></ul><h2>如何把 JSON 转成文本</h2><ol><li><strong>输入 JSON：</strong>粘贴合法的对象或数组，或打开本地 .json 文件。</li><li><strong>选择输出模式：</strong>扁平化路径、键值行、值、键名与路径或 JSON Lines。</li><li><strong>配置数组：</strong>选择带序号的路径（如 <code>tags[0]</code>），或让整个数组以紧凑 JSON 保持一行。</li><li><strong>选择分隔符：</strong>扁平化和键值输出可选冒号或等号。</li><li><strong>查看结果：</strong>复制前检查行数、字符数、路径和值。</li><li><strong>导出：</strong>复制文本，或下载为 .txt 文件。</li></ol><h2>扁平化路径说明</h2><p>输入：</p><pre><code>{\n  \"user\": {\n    \"name\": \"Alice\",\n    \"address\": { \"city\": \"Shanghai\" }\n  }\n}</code></pre><p>扁平化模式输出：</p><pre><code>user.name: Alice\nuser.address.city: Shanghai</code></pre><p>对象的键用点号连接，数组项用带序号的方括号。键名里本身含点号时按原样使用，会让路径产生歧义 —— 这也是扁平文本不是无损格式的原因之一。</p><h2>数组：带序号还是一行</h2><p>选择「每项一行」时，<code>user.roles</code> 下的 <code>[\"admin\", \"editor\"]</code> 会变成：</p><pre><code>user.roles[0]: admin\nuser.roles[1]: editor</code></pre><p>选择「数组保持一行」时，则只有一行：</p><pre><code>user.roles: [\"admin\",\"editor\"]</code></pre><p>需要定位或对比单个元素时用带序号的路径；数组只是你想一眼扫过的值时，用一行输出。</p><h2>空对象与空数组</h2><p>叶子值指不是容器的值：字符串、数字、布尔或 null。空对象和空数组不含叶子，所以默认不产生任何行。当「空容器本身」就是你需要的信息时，开启「包含空对象和空数组」，它们会带路径输出为 <code>{}</code> 或 <code>[]</code>。</p><h2>JSON Lines 不是压缩 JSON</h2><p>压缩 JSON 把完整的一个 JSON 文档放在一行里。JSON Lines 是每行一个 JSON 值，所以包含两条记录的根数组会变成两行，每行各自都是合法 JSON 文档：</p><pre><code>{\"id\":1,\"name\":\"Alice\"}\n{\"id\":2,\"name\":\"Bob\"}</code></pre><p>这种形态更便于流式处理、追加和逐行解析。本页不读取 JSONL 输入，只把 JSONL 作为一种输出模式。</p><h2>纯文本不是无损格式</h2><p>把 JSON 转成文本会丢失信息。数字、布尔、null 和字符串都会变成文本，字符串丢掉引号，空容器默认消失，含点号的键也无法与路径分隔符区分。只要涉及可逆转换、精确类型或机器可读结构，请保留原始 JSON。</p><h2>隐私与浏览器本地处理</h2><p>本页在你的浏览器里解析 JSON 并生成文本，不会把输入上传到远程服务。这适合接口响应和开发数据，但它不是密钥管理系统。不要把凭证、令牌、客户隐私数据或生产环境机密数据粘贴到任何在线工具里。</p><h2>什么时候改用本地转换器</h2><p>处理超大文档、可重复的流水线或机密数据时，请用本地脚本或 jq 这类命令行工具。浏览器转换更适合快速查看、写文档和小到中等体积的输入。</p>"
+    }
+  }
+}

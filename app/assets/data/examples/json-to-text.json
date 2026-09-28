@@ -1,0 +1,20 @@
+[
+  {
+    "id": "nested",
+    "label_en": "Nested Object",
+    "label_zh": "嵌套对象",
+    "input": "{\n  \"user\": {\n    \"name\": \"Alice\",\n    \"roles\": [\"admin\", \"editor\"],\n    \"address\": {\n      \"city\": \"Shanghai\",\n      \"country\": \"CN\"\n    }\n  }\n}"
+  },
+  {
+    "id": "records",
+    "label_en": "Array of Records",
+    "label_zh": "记录数组",
+    "input": "[\n  { \"id\": 1, \"name\": \"Alice\", \"active\": true },\n  { \"id\": 2, \"name\": \"Bob\", \"active\": false }\n]"
+  },
+  {
+    "id": "empty-containers",
+    "label_en": "Empty Containers",
+    "label_zh": "空对象与空数组",
+    "input": "{\n  \"name\": \"Alice\",\n  \"tags\": [],\n  \"profile\": {}\n}"
+  }
+]

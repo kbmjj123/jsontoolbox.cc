@@ -4,7 +4,7 @@
   "component": "LargeJsonViewer",
   "icon": "lucide:eye",
   "featured": false,
-  "recommends": ["json-to-csv", "json-editor"],
+  "recommends": ["json-to-csv", "json-editor", "json-to-text"],
   "en": {
     "name": "Large JSON Viewer",
     "description": "Open large JSON and NDJSON files in your browser and search them locally. Read-only viewing with line numbers, full-text search by key, value or path, jump-to-match, and exports — no upload.",
