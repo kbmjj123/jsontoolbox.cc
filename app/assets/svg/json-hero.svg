@@ -8,11 +8,13 @@
   aria-labelledby="title description"
   class="json-data-flow-svg"
 >
-  <title id="title">JsonToolBox local JSON workflow</title>
+  <title id="title">JsonToolBox local JSON workspace</title>
   <desc id="description">
-    Raw JSON flows through a local JSON processing node and becomes formatted
-    JSON, an explorable tree, a data table, and CSV output.
+    Raw JSON with images, colors, and media flows through a local JSON
+    processing node and becomes a rich preview, an explorable tree, a data
+    table, search and errors, and conversion to many formats.
   </desc>
+
 
   <style>
     /*
@@ -23,6 +25,7 @@
       - In Vue/Tailwind usage, prefer overriding CSS variables
         from the wrapper class instead.
     */
+
 
     .json-data-flow-svg {
       --panel: #0f172a;
@@ -59,7 +62,13 @@
       --local-bg: rgba(15, 34, 47, 0.9);
       --local-border: rgba(74, 222, 128, 0.22);
       --local-text: #bbf7d0;
+      --preview-bg: #1e293b;
+      --preview-border: #334155;
+      --color-swatch: #7c3aed;
+      --media-bg: #0b1322;
+      --media-border: #1f2a40;
     }
+
 
     .json-data-flow-svg.is-light {
       --panel: #ffffff;
@@ -96,7 +105,13 @@
       --local-bg: #effdf4;
       --local-border: rgba(22, 163, 74, 0.22);
       --local-text: #166534;
+      --preview-bg: #f1f5f9;
+      --preview-border: #dbe7f3;
+      --color-swatch: #7c3aed;
+      --media-bg: #f8fafc;
+      --media-border: #dbe7f3;
     }
+
 
     .ui-font {
       font-family:
@@ -104,11 +119,13 @@
         "Segoe UI", sans-serif;
     }
 
+
     .code-font {
       font-family:
         "JetBrains Mono", "SFMono-Regular", Consolas, "Liberation Mono", Menlo,
         monospace;
     }
+
 
     .panel {
       fill: url(#panelGradient);
@@ -116,11 +133,13 @@
       stroke-width: 1;
     }
 
+
     .card {
       fill: var(--card);
       stroke: var(--card-border);
       stroke-width: 1;
     }
+
 
     .card-soft {
       fill: var(--card-soft);
@@ -128,14 +147,17 @@
       stroke-width: 1;
     }
 
+
     .card-header {
       fill: var(--card-header);
     }
+
 
     .card-header-line {
       stroke: var(--card-header-border);
       stroke-width: 1;
     }
+
 
     .card-title {
       fill: var(--text);
@@ -144,18 +166,21 @@
       letter-spacing: 0.01em;
     }
 
+
     .card-caption {
       fill: var(--muted);
       font-size: 11px;
       font-weight: 500;
     }
 
+
     .top-label {
       fill: var(--muted);
       font-size: 12px;
-      font-weight: 600;
+      font-weight: 650;
       letter-spacing: 0.04em;
     }
+
 
     .code {
       fill: var(--code);
@@ -163,11 +188,13 @@
       font-weight: 500;
     }
 
+
     .code-key {
       fill: var(--key);
       font-size: 10.5px;
       font-weight: 500;
     }
+
 
     .code-string {
       fill: var(--string);
@@ -175,11 +202,13 @@
       font-weight: 500;
     }
 
+
     .code-number {
       fill: var(--number);
       font-size: 10.5px;
       font-weight: 500;
     }
+
 
     .code-keyword {
       fill: var(--keyword);
@@ -187,14 +216,16 @@
       font-weight: 500;
     }
 
+
     .flow-line {
       fill: none;
       stroke: url(#flowGradient);
       stroke-width: 1.4;
       stroke-linecap: round;
       stroke-dasharray: 4 7;
-      opacity: 0.4;
+      opacity: 0.45;
     }
+
 
     .flow-line-soft {
       fill: none;
@@ -204,30 +235,35 @@
       opacity: 0.28;
     }
 
+
     .flow-particle {
       fill: var(--cyan);
       filter: url(#particleGlow);
     }
 
+
     .core-ring {
       fill: none;
       stroke: url(#coreRingGradient);
       stroke-width: 1.5;
-      opacity: 0.62;
+      opacity: 0.55;
     }
+
 
     .core-box {
       fill: url(#coreGradient);
       stroke: var(--cyan);
-      stroke-opacity: 0.62;
+      stroke-opacity: 0.55;
       stroke-width: 1.2;
     }
+
 
     .core-braces {
       fill: #e0f2fe;
       font-size: 30px;
       font-weight: 700;
     }
+
 
     .core-title {
       fill: #f8fafc;
@@ -236,6 +272,7 @@
       letter-spacing: 0.02em;
     }
 
+
     .core-status {
       fill: var(--cyan);
       font-size: 10px;
@@ -243,10 +280,12 @@
       letter-spacing: 0.06em;
     }
 
+
     .status-dot {
       fill: var(--green);
       filter: url(#statusGlow);
     }
+
 
     .local-pill {
       fill: var(--local-bg);
@@ -254,121 +293,149 @@
       stroke-width: 1;
     }
 
+
     .local-text {
       fill: var(--local-text);
       font-size: 11px;
       font-weight: 600;
     }
 
+
     .output-card {
-      opacity: 0.22;
+      opacity: 1;
       transform-origin: center;
     }
+
 
     .source-card {
       opacity: 1;
       transform-origin: center;
     }
 
+
     .json-core {
       transform-origin: 344px 282px;
     }
+
 
     .source-card {
       animation: sourceCard 9.2s cubic-bezier(0.4, 0, 0.2, 1) infinite;
     }
 
+
     .source-flow {
       animation: linePulse 9.2s ease-in-out infinite;
     }
+
 
     .core-ring-outer {
       animation: corePulse 9.2s ease-in-out infinite;
       transform-origin: 344px 282px;
     }
 
+
     .core-ring-inner {
       animation: corePulseInner 9.2s ease-in-out infinite;
       transform-origin: 344px 282px;
     }
 
+
     .json-core {
       animation: coreBox 9.2s ease-in-out infinite;
     }
+
 
     .core-status-parse,
     .core-status-ready {
       transform-origin: 344px 350px;
     }
 
+
     .core-status-parse {
       animation: parseLabel 9.2s ease-in-out infinite;
     }
+
 
     .core-status-ready {
       animation: readyLabel 9.2s ease-in-out infinite;
     }
 
-    .format-card {
-      animation: outputFormat 9.2s cubic-bezier(0.4, 0, 0.2, 1) infinite;
+
+    .preview-card {
+      animation: outputPreview 9.2s cubic-bezier(0.4, 0, 0.2, 1) infinite;
     }
+
 
     .tree-card {
       animation: outputTree 9.2s cubic-bezier(0.4, 0, 0.2, 1) infinite;
     }
 
+
     .table-card {
       animation: outputTable 9.2s cubic-bezier(0.4, 0, 0.2, 1) infinite;
     }
 
-    .csv-card {
-      animation: outputCsv 9.2s cubic-bezier(0.4, 0, 0.2, 1) infinite;
+
+    .convert-card {
+      animation: outputConvert 9.2s cubic-bezier(0.4, 0, 0.2, 1) infinite;
     }
 
-    .format-flow {
-      animation: outputLineFormat 9.2s ease-in-out infinite;
+
+    .preview-flow {
+      animation: outputLinePreview 9.2s ease-in-out infinite;
     }
+
 
     .tree-flow {
       animation: outputLineTree 9.2s ease-in-out infinite;
     }
 
+
     .table-flow {
       animation: outputLineTable 9.2s ease-in-out infinite;
     }
 
-    .csv-flow {
-      animation: outputLineCsv 9.2s ease-in-out infinite;
+
+    .convert-flow {
+      animation: outputLineConvert 9.2s ease-in-out infinite;
     }
+
 
     .particle-source-1 {
       animation: sourceParticle1 9.2s linear infinite;
     }
 
+
     .particle-source-2 {
       animation: sourceParticle2 9.2s linear infinite;
     }
 
-    .particle-format {
-      animation: particleFormat 9.2s linear infinite;
+
+    .particle-preview {
+      animation: particlePreview 9.2s linear infinite;
     }
+
 
     .particle-tree {
       animation: particleTree 9.2s linear infinite;
     }
 
+
     .particle-table {
       animation: particleTable 9.2s linear infinite;
     }
 
-    .particle-csv {
-      animation: particleCsv 9.2s linear infinite;
+
+    .particle-convert {
+      animation: particleConvert 9.2s linear infinite;
     }
+
 
     .core-glow {
       animation: glowPulse 9.2s ease-in-out infinite;
       transform-origin: 344px 282px;
     }
+
 
     @keyframes sourceCard {
       0%,
@@ -377,11 +444,13 @@
         transform: translate(-8px, 5px);
       }
 
+
       16%,
       82% {
         opacity: 1;
         transform: translate(0, 0);
       }
+
 
       96%,
       100% {
@@ -390,6 +459,7 @@
       }
     }
 
+
     @keyframes linePulse {
       0%,
       15% {
@@ -397,11 +467,13 @@
         stroke-dashoffset: 0;
       }
 
+
       25%,
       74% {
         opacity: 0.78;
         stroke-dashoffset: -42;
       }
+
 
       88%,
       100% {
@@ -410,6 +482,7 @@
       }
     }
 
+
     @keyframes corePulse {
       0%,
       17% {
@@ -417,11 +490,13 @@
         transform: scale(0.92);
       }
 
+
       28%,
       52% {
         opacity: 0.98;
         transform: scale(1.05);
       }
+
 
       66%,
       100% {
@@ -430,6 +505,7 @@
       }
     }
 
+
     @keyframes corePulseInner {
       0%,
       20% {
@@ -437,11 +513,13 @@
         transform: scale(0.8);
       }
 
+
       30%,
       56% {
         opacity: 0.76;
         transform: scale(1.04);
       }
+
 
       68%,
       100% {
@@ -450,22 +528,26 @@
       }
     }
 
+
     @keyframes coreBox {
       0%,
       16% {
         transform: scale(0.96);
       }
 
+
       27%,
       51% {
         transform: scale(1.04);
       }
+
 
       62%,
       100% {
         transform: scale(1);
       }
     }
+
 
     @keyframes glowPulse {
       0%,
@@ -474,11 +556,13 @@
         transform: scale(0.76);
       }
 
+
       28%,
       48% {
         opacity: 0.28;
         transform: scale(1.2);
       }
+
 
       64%,
       100% {
@@ -487,6 +571,7 @@
       }
     }
 
+
     @keyframes parseLabel {
       0%,
       22% {
@@ -494,11 +579,13 @@
         transform: translateY(3px);
       }
 
+
       28%,
       42% {
         opacity: 1;
         transform: translateY(0);
       }
+
 
       49%,
       100% {
@@ -507,6 +594,7 @@
       }
     }
 
+
     @keyframes readyLabel {
       0%,
       40% {
@@ -514,11 +602,13 @@
         transform: translateY(3px);
       }
 
+
       47%,
       75% {
         opacity: 1;
         transform: translateY(0);
       }
+
 
       84%,
       100% {
@@ -527,165 +617,190 @@
       }
     }
 
-    @keyframes outputFormat {
+
+    @keyframes outputPreview {
       0%,
       39% {
-        opacity: 0.12;
-        transform: translate(8px, 6px) scale(0.96);
+        opacity: 0.7;
+        transform: translate(0, 0) scale(1);
       }
+
 
       48%,
       84% {
         opacity: 1;
-        transform: translate(0, 0) scale(1);
+        transform: translate(0, 0) scale(1.02);
       }
+
 
       96%,
       100% {
-        opacity: 0.25;
-        transform: translate(4px, 3px) scale(0.98);
+        opacity: 0.7;
+        transform: translate(0, 0) scale(1);
       }
     }
+
 
     @keyframes outputTree {
       0%,
       45% {
-        opacity: 0.12;
-        transform: translate(8px, 6px) scale(0.96);
+        opacity: 0.7;
+        transform: translate(0, 0) scale(1);
       }
+
 
       54%,
       84% {
         opacity: 1;
-        transform: translate(0, 0) scale(1);
+        transform: translate(0, 0) scale(1.02);
       }
+
 
       96%,
       100% {
-        opacity: 0.25;
-        transform: translate(4px, 3px) scale(0.98);
+        opacity: 0.7;
+        transform: translate(0, 0) scale(1);
       }
     }
+
 
     @keyframes outputTable {
       0%,
       51% {
-        opacity: 0.12;
-        transform: translate(8px, 6px) scale(0.96);
+        opacity: 0.7;
+        transform: translate(0, 0) scale(1);
       }
+
 
       60%,
       84% {
         opacity: 1;
-        transform: translate(0, 0) scale(1);
+        transform: translate(0, 0) scale(1.02);
       }
+
 
       96%,
       100% {
-        opacity: 0.25;
-        transform: translate(4px, 3px) scale(0.98);
+        opacity: 0.7;
+        transform: translate(0, 0) scale(1);
       }
     }
 
-    @keyframes outputCsv {
+
+    @keyframes outputConvert {
       0%,
       57% {
-        opacity: 0.12;
-        transform: translate(8px, 6px) scale(0.96);
+        opacity: 0.7;
+        transform: translate(0, 0) scale(1);
       }
+
 
       66%,
       84% {
         opacity: 1;
+        transform: translate(0, 0) scale(1.02);
+      }
+
+
+      96%,
+      100% {
+        opacity: 0.7;
         transform: translate(0, 0) scale(1);
       }
+    }
+
+
+    @keyframes outputLinePreview {
+      0%,
+      40% {
+        opacity: 0.25;
+        stroke-dashoffset: 0;
+      }
+
+
+      48%,
+      83% {
+        opacity: 0.75;
+        stroke-dashoffset: -34;
+      }
+
 
       96%,
       100% {
         opacity: 0.25;
-        transform: translate(4px, 3px) scale(0.98);
-      }
-    }
-
-    @keyframes outputLineFormat {
-      0%,
-      40% {
-        opacity: 0.08;
-        stroke-dashoffset: 0;
-      }
-
-      48%,
-      83% {
-        opacity: 0.65;
-        stroke-dashoffset: -34;
-      }
-
-      96%,
-      100% {
-        opacity: 0.1;
         stroke-dashoffset: -68;
       }
     }
+
 
     @keyframes outputLineTree {
       0%,
       46% {
-        opacity: 0.08;
+        opacity: 0.25;
         stroke-dashoffset: 0;
       }
 
+
       54%,
       83% {
-        opacity: 0.65;
+        opacity: 0.75;
         stroke-dashoffset: -34;
       }
 
+
       96%,
       100% {
-        opacity: 0.1;
+        opacity: 0.25;
         stroke-dashoffset: -68;
       }
     }
+
 
     @keyframes outputLineTable {
       0%,
       52% {
-        opacity: 0.08;
+        opacity: 0.25;
         stroke-dashoffset: 0;
       }
+
 
       60%,
       83% {
-        opacity: 0.65;
+        opacity: 0.75;
         stroke-dashoffset: -34;
       }
 
+
       96%,
       100% {
-        opacity: 0.1;
+        opacity: 0.25;
         stroke-dashoffset: -68;
       }
     }
 
-    @keyframes outputLineCsv {
+
+    @keyframes outputLineConvert {
       0%,
       58% {
-        opacity: 0.08;
+        opacity: 0.25;
         stroke-dashoffset: 0;
       }
 
+
       66%,
       83% {
-        opacity: 0.65;
+        opacity: 0.75;
         stroke-dashoffset: -34;
       }
 
+
       96%,
       100% {
-        opacity: 0.1;
+        opacity: 0.25;
         stroke-dashoffset: -68;
       }
     }
+
 
     @keyframes sourceParticle1 {
       0%,
@@ -694,15 +809,18 @@
         offset-distance: 0%;
       }
 
+
       18% {
         opacity: 1;
         offset-distance: 0%;
       }
 
+
       30% {
         opacity: 1;
         offset-distance: 100%;
       }
+
 
       32%,
       100% {
@@ -711,6 +829,7 @@
       }
     }
 
+
     @keyframes sourceParticle2 {
       0%,
       20% {
@@ -718,15 +837,18 @@
         offset-distance: 0%;
       }
 
+
       23% {
         opacity: 1;
         offset-distance: 0%;
       }
 
+
       35% {
         opacity: 1;
         offset-distance: 100%;
       }
+
 
       37%,
       100% {
@@ -735,22 +857,26 @@
       }
     }
 
-    @keyframes particleFormat {
+
+    @keyframes particlePreview {
       0%,
       43% {
         opacity: 0;
         offset-distance: 0%;
       }
 
+
       47% {
         opacity: 1;
         offset-distance: 0%;
       }
 
+
       57% {
         opacity: 1;
         offset-distance: 100%;
       }
+
 
       59%,
       100% {
@@ -759,6 +885,7 @@
       }
     }
 
+
     @keyframes particleTree {
       0%,
       49% {
@@ -766,15 +893,18 @@
         offset-distance: 0%;
       }
 
+
       53% {
         opacity: 1;
         offset-distance: 0%;
       }
 
+
       63% {
         opacity: 1;
         offset-distance: 100%;
       }
+
 
       65%,
       100% {
@@ -783,6 +913,7 @@
       }
     }
 
+
     @keyframes particleTable {
       0%,
       55% {
@@ -790,15 +921,18 @@
         offset-distance: 0%;
       }
 
+
       59% {
         opacity: 1;
         offset-distance: 0%;
       }
 
+
       69% {
         opacity: 1;
         offset-distance: 100%;
       }
+
 
       71%,
       100% {
@@ -807,22 +941,26 @@
       }
     }
 
-    @keyframes particleCsv {
+
+    @keyframes particleConvert {
       0%,
       61% {
         opacity: 0;
         offset-distance: 0%;
       }
 
+
       65% {
         opacity: 1;
         offset-distance: 0%;
       }
 
+
       75% {
         opacity: 1;
         offset-distance: 100%;
       }
+
 
       77%,
       100% {
@@ -831,35 +969,36 @@
       }
     }
 
+
     .particle-source-1 {
       offset-path: path("M254 158 C294 158, 276 230, 302 253");
     }
+
 
     .particle-source-2 {
       offset-path: path("M254 158 C294 158, 276 230, 302 253");
     }
 
-    .particle-format {
+
+    .particle-preview {
       offset-path: path("M387 251 C406 229, 411 175, 439 149");
     }
+
 
     .particle-tree {
       offset-path: path("M398 278 C414 278, 423 278, 439 278");
     }
 
+
     .particle-table {
       offset-path: path("M387 305 C407 326, 414 364, 439 391");
     }
 
-    /*
-      Fixed final CSV connector:
-      It now ends at the true left-center entry of the CSV node:
-      card x = 454, y = 464, height = 52
-      left-center target = 454, 490
-    */
-    .particle-csv {
+
+    .particle-convert {
       offset-path: path("M352 361 C355 413, 405 490, 454 490");
     }
+
 
     @media (prefers-reduced-motion: reduce) {
       .source-card,
@@ -869,23 +1008,24 @@
       .json-core,
       .core-status-parse,
       .core-status-ready,
-      .format-card,
+      .preview-card,
       .tree-card,
       .table-card,
-      .csv-card,
-      .format-flow,
+      .convert-card,
+      .preview-flow,
       .tree-flow,
       .table-flow,
-      .csv-flow,
+      .convert-flow,
       .particle-source-1,
       .particle-source-2,
-      .particle-format,
+      .particle-preview,
       .particle-tree,
       .particle-table,
-      .particle-csv,
+      .particle-convert,
       .core-glow {
         animation: none !important;
       }
+
 
       .output-card,
       .source-card {
@@ -893,23 +1033,28 @@
         transform: none !important;
       }
 
+
       .core-status-parse {
         opacity: 0 !important;
       }
+
 
       .core-status-ready {
         opacity: 1 !important;
         transform: none !important;
       }
 
+
       .flow-line {
         opacity: 0.65 !important;
         stroke-dashoffset: 0 !important;
       }
 
+
       .flow-particle {
         display: none;
       }
+
 
       .core-glow {
         opacity: 0.12 !important;
@@ -917,6 +1062,7 @@
       }
     }
   </style>
+
 
   <defs>
     <linearGradient
@@ -932,6 +1078,7 @@
       <stop offset="1" stop-color="var(--panel-deep)" />
     </linearGradient>
 
+
     <linearGradient
       id="flowGradient"
       x1="170"
@@ -945,6 +1092,7 @@
       <stop offset="1" stop-color="var(--purple)" />
     </linearGradient>
 
+
     <radialGradient
       id="coreGradient"
       cx="0"
@@ -956,6 +1104,7 @@
       <stop offset="0.56" stop-color="#123858" />
       <stop offset="1" stop-color="#0d2237" />
     </radialGradient>
+
 
     <linearGradient
       id="coreRingGradient"
@@ -970,9 +1119,11 @@
       <stop offset="1" stop-color="var(--purple)" />
     </linearGradient>
 
+
     <pattern id="dotGrid" width="22" height="22" patternUnits="userSpaceOnUse">
       <circle cx="1" cy="1" r="0.7" fill="var(--grid)" opacity="0.2" />
     </pattern>
+
 
     <filter id="panelShadow" x="-20%" y="-20%" width="140%" height="150%">
       <feDropShadow
@@ -984,6 +1135,7 @@
       />
     </filter>
 
+
     <filter id="particleGlow" x="-200%" y="-200%" width="400%" height="400%">
       <feGaussianBlur stdDeviation="2.3" result="blur" />
       <feMerge>
@@ -991,6 +1143,7 @@
         <feMergeNode in="SourceGraphic" />
       </feMerge>
     </filter>
+
 
     <filter id="statusGlow" x="-200%" y="-200%" width="400%" height="400%">
       <feGaussianBlur stdDeviation="2" result="blur" />
@@ -1001,18 +1154,22 @@
     </filter>
   </defs>
 
+
   <!-- Main panel -->
   <g filter="url(#panelShadow)">
     <rect class="panel" x="1" y="1" width="718" height="558" rx="28" />
   </g>
 
+
   <!-- Background grid -->
   <rect x="2" y="2" width="716" height="556" rx="28" fill="url(#dotGrid)" opacity="0.48" />
+
 
   <!-- Ambient colors -->
   <circle cx="530" cy="130" r="170" fill="var(--blue)" opacity="0.055" />
   <circle cx="356" cy="340" r="160" fill="var(--purple)" opacity="0.045" />
   <circle cx="120" cy="440" r="140" fill="var(--green)" opacity="0.03" />
+
 
   <!-- Header -->
   <g class="ui-font">
@@ -1026,15 +1183,19 @@
       stroke="var(--window-border)"
     />
 
+
     <circle cx="47" cy="41" r="4" fill="#fb7185" opacity="0.82" />
     <circle cx="62" cy="41" r="4" fill="#facc15" opacity="0.82" />
     <circle cx="77" cy="41" r="4" fill="var(--green)" opacity="0.82" />
 
-    <text x="104" y="45" class="top-label">@@PIPELINE@@</text>
+
+    <text x="104" y="45" class="top-label">@@WORKSPACE@@</text>
+
 
     <circle class="status-dot" cx="606" cy="41" r="4" />
     <text x="618" y="45" class="top-label">@@LOCAL@@</text>
   </g>
+
 
   <!-- Raw JSON source -->
   <g class="source-card">
@@ -1042,45 +1203,59 @@
     <rect class="card-header" x="42" y="92" width="212" height="34" rx="16" />
     <path class="card-header-line" d="M42 110 H254" />
 
+
     <g class="ui-font">
       <rect x="57" y="103" width="8" height="8" rx="2" fill="var(--blue)" opacity="0.9" />
       <text x="76" y="113" class="card-title">@@RAW_JSON@@</text>
-      <text x="191" y="113" class="card-caption">@@INPUT@@</text>
+      <text x="191" y="113" class="card-caption">@@LARGE_FILE@@</text>
     </g>
+
 
     <g class="code-font">
       <text x="58" y="148" class="code">{</text>
-      <text x="68" y="148" class="code-key">"users"</text>
-      <text x="113" y="148" class="code">:[{</text>
-      <text x="132" y="148" class="code-key">"id"</text>
-      <text x="157" y="148" class="code">:</text>
-      <text x="164" y="148" class="code-number">1</text>
-      <text x="171" y="148" class="code">,</text>
+      <text x="68" y="148" class="code-key">"product"</text>
+      <text x="123" y="148" class="code">:</text>
+      <text x="131" y="148" class="code-string">"Aurora"</text>
+      <text x="188" y="148" class="code">,</text>
 
-      <text x="58" y="168" class="code-key">"name"</text>
-      <text x="94" y="168" class="code">:</text>
-      <text x="102" y="168" class="code-string">"Ada"</text>
-      <text x="134" y="168" class="code">},{</text>
-      <text x="151" y="168" class="code-key">"id"</text>
-      <text x="176" y="168" class="code">:</text>
-      <text x="183" y="168" class="code-number">2</text>
-      <text x="190" y="168" class="code">...</text>
 
-      <text x="58" y="188" class="code">}]}</text>
+      <text x="58" y="168" class="code-key">"cover"</text>
+      <text x="103" y="168" class="code">:</text>
+      <text x="111" y="168" class="code-string">"https://…/lamp.jpg"</text>
+      <text x="204" y="168" class="code">,</text>
+
+
+      <text x="58" y="188" class="code-key">"themeColor"</text>
+      <text x="131" y="188" class="code">:</text>
+      <text x="139" y="188" class="code-string">"#7C3AED"</text>
+      <text x="204" y="188" class="code">,</text>
+
+
+      <text x="58" y="208" class="code-key">"items"</text>
+      <text x="103" y="208" class="code">:[{</text>
+      <text x="123" y="208" class="code-key">"id"</text>
+      <text x="148" y="208" class="code">:</text>
+      <text x="155" y="208" class="code-number">1</text>
+      <text x="162" y="208" class="code">},…]</text>
+      <text x="204" y="208" class="code">}</text>
     </g>
+
 
     <rect x="58" y="201" width="101" height="8" rx="4" fill="var(--border-soft)" />
     <rect x="58" y="201" width="62" height="8" rx="4" fill="var(--blue)" opacity="0.45" />
-    <text x="168" y="209" class="card-caption ui-font">compact</text>
+    <text x="168" y="209" class="card-caption ui-font">@@LARGE_JSON_LABEL@@</text>
   </g>
+
 
   <!-- Input connection -->
   <path class="flow-line source-flow" d="M254 158 C294 158, 276 230, 301 253" />
+
 
   <!-- Core ambient glow -->
   <g class="core-glow">
     <circle cx="344" cy="282" r="101" fill="var(--blue)" opacity="0.18" />
   </g>
+
 
   <!-- Core rings -->
   <g class="core-ring-outer">
@@ -1090,13 +1265,16 @@
     <circle cx="286" cy="354" r="2.5" fill="var(--green)" opacity="0.72" />
   </g>
 
+
   <g class="core-ring-inner">
     <circle class="core-ring" cx="344" cy="282" r="76" opacity="0.56" stroke-dasharray="3 8" />
   </g>
 
+
   <!-- JSON core -->
   <g class="json-core">
     <rect class="core-box" x="292" y="230" width="104" height="104" rx="25" />
+
 
     <path
       d="M312 253 C304 258, 304 267, 312 272 C304 277, 304 286, 312 291"
@@ -1106,6 +1284,7 @@
       opacity="0.9"
     />
 
+
     <path
       d="M376 253 C384 258, 384 267, 376 272 C384 277, 384 286, 376 291"
       stroke="#bae6fd"
@@ -1114,54 +1293,65 @@
       opacity="0.9"
     />
 
+
     <text x="344" y="282" text-anchor="middle" class="core-braces code-font">{ }</text>
     <text x="344" y="316" text-anchor="middle" class="core-title ui-font">JSON</text>
   </g>
+
 
   <g class="ui-font">
     <text x="344" y="350" text-anchor="middle" class="core-status core-status-parse">@@PARSE@@</text>
     <text x="344" y="350" text-anchor="middle" class="core-status core-status-ready">@@READY@@</text>
   </g>
 
+
   <!-- Output flow lines -->
-  <path class="flow-line format-flow" d="M387 251 C406 229, 411 175, 439 149" />
+  <path class="flow-line preview-flow" d="M387 251 C406 229, 411 175, 439 149" />
   <path class="flow-line tree-flow" d="M398 278 C414 278, 423 278, 439 278" />
   <path class="flow-line table-flow" d="M387 305 C407 326, 414 364, 439 391" />
+  <path class="flow-line convert-flow" d="M352 361 C355 413, 405 490, 454 490" />
 
-  <!-- Fixed CSV connection: ends at x=454, y=490 -->
-  <path class="flow-line csv-flow" d="M352 361 C355 413, 405 490, 454 490" />
 
   <!-- Static connector paths -->
   <path class="flow-line-soft" d="M387 251 C406 229, 411 175, 439 149" />
   <path class="flow-line-soft" d="M398 278 C414 278, 423 278, 439 278" />
   <path class="flow-line-soft" d="M387 305 C407 326, 414 364, 439 391" />
-
-  <!-- Fixed static CSV connection -->
   <path class="flow-line-soft" d="M352 361 C355 413, 405 490, 454 490" />
 
-  <!-- Format output -->
-  <g class="output-card format-card">
+
+  <!-- Rich Preview output -->
+  <g class="output-card preview-card">
     <rect class="card" x="439" y="92" width="224" height="100" rx="16" />
     <rect class="card-header" x="439" y="92" width="224" height="31" rx="16" />
     <path class="card-header-line" d="M439 108 H663" />
 
+
     <g class="ui-font">
       <rect x="454" y="102" width="8" height="8" rx="2" fill="var(--cyan)" />
-      <text x="473" y="113" class="card-title">@@FORMAT@@</text>
-      <text x="601" y="113" class="card-caption">@@READABLE@@</text>
+      <text x="473" y="113" class="card-title">@@RICH_PREVIEW@@</text>
+      <text x="601" y="113" class="card-caption">@@IMAGE_COLOR_MEDIA@@</text>
     </g>
 
-    <g class="code-font">
-      <text x="456" y="144" class="code">{</text>
-      <text x="470" y="160" class="code-key">"users"</text>
-      <text x="516" y="160" class="code">: [</text>
-      <text x="484" y="176" class="code">{</text>
-      <text x="496" y="176" class="code-key">"name"</text>
-      <text x="535" y="176" class="code">:</text>
-      <text x="542" y="176" class="code-string">"Ada"</text>
-      <text x="580" y="176" class="code">}</text>
+
+    <!-- Preview content: image thumbnail, color swatch, media icon -->
+    <g>
+      <!-- Image thumbnail placeholder -->
+      <rect x="456" y="128" width="56" height="56" rx="8" fill="var(--preview-bg)" stroke="var(--preview-border)" />
+      <rect x="456" y="128" width="56" height="56" rx="8" fill="url(#previewGradient)" opacity="0.9" />
+
+
+      <!-- Color swatch -->
+      <rect x="522" y="128" width="36" height="20" rx="6" fill="var(--color-swatch)" stroke="var(--preview-border)" />
+      <text x="564" y="142" class="code" fill="var(--muted)">#7C3AED</text>
+
+
+      <!-- Media icon -->
+      <rect x="522" y="156" width="36" height="20" rx="6" fill="var(--media-bg)" stroke="var(--media-border)" />
+      <polygon points="528,158 528,174 542,166" fill="var(--cyan)" opacity="0.9" />
+      <text x="564" y="170" class="code" fill="var(--muted)">preview.mp4</text>
     </g>
   </g>
+
 
   <!-- Tree output -->
   <g class="output-card tree-card">
@@ -1169,22 +1359,25 @@
     <rect class="card-header" x="439" y="220" width="224" height="31" rx="16" />
     <path class="card-header-line" d="M439 236 H663" />
 
+
     <g class="ui-font">
       <rect x="454" y="230" width="8" height="8" rx="2" fill="var(--purple)" />
-      <text x="473" y="241" class="card-title">@@EXPLORE@@</text>
-      <text x="603" y="241" class="card-caption">@@TREE@@</text>
+      <text x="473" y="241" class="card-title">@@RICH_TREE@@</text>
+      <text x="603" y="241" class="card-caption">@@EXPLORE@@</text>
     </g>
 
+
     <g class="code-font">
-      <text x="458" y="272" class="code-key">⌄ users</text>
+      <text x="458" y="272" class="code-key">⌄ product</text>
       <text x="473" y="289" class="code">⌄ 0</text>
       <text x="491" y="289" class="code-key">id</text>
       <text x="516" y="289" class="code-number">1</text>
       <text x="473" y="306" class="code">⌄ 1</text>
-      <text x="491" y="306" class="code-key">name</text>
-      <text x="529" y="306" class="code-string">Lin</text>
+      <text x="491" y="306" class="code-key">cover</text>
+      <text x="529" y="306" class="code-string">"…/lamp.jpg"</text>
     </g>
   </g>
+
 
   <!-- Table output -->
   <g class="output-card table-card">
@@ -1192,17 +1385,20 @@
     <rect class="card-header" x="439" y="348" width="224" height="31" rx="16" />
     <path class="card-header-line" d="M439 364 H663" />
 
+
     <g class="ui-font">
       <rect x="454" y="358" width="8" height="8" rx="2" fill="var(--yellow)" />
-      <text x="473" y="369" class="card-title">@@TABLE@@</text>
+      <text x="473" y="369" class="card-title">@@TABLE_VIEW@@</text>
       <text x="599" y="369" class="card-caption">@@VIEW@@</text>
     </g>
+
 
     <g class="code-font">
       <rect x="456" y="391" width="187" height="18" rx="4" fill="var(--table-header)" />
       <text x="467" y="404" class="code-key">ID</text>
       <text x="516" y="404" class="code-key">NAME</text>
       <text x="573" y="404" class="code-key">ROLE</text>
+
 
       <path d="M456 416 H643" stroke="var(--table-line)" />
       <text x="467" y="430" class="code-number">1</text>
@@ -1211,42 +1407,60 @@
     </g>
   </g>
 
-  <!-- CSV output -->
-  <g class="output-card csv-card">
+
+  <!-- Convert output -->
+  <g class="output-card convert-card">
     <rect class="card-soft" x="454" y="464" width="209" height="52" rx="14" />
+
 
     <g class="ui-font">
       <rect x="469" y="478" width="8" height="8" rx="2" fill="var(--green)" />
       <text x="488" y="488" class="card-title">@@CONVERT@@</text>
-      <text x="598" y="488" class="card-caption">@@CSV@@</text>
+      <text x="598" y="488" class="card-caption">@@FORMATS_26@@</text>
     </g>
+
 
     <g class="code-font">
       <text x="470" y="507" class="code">
-        <tspan fill="var(--key)">id</tspan>
-        <tspan fill="var(--muted-2)">,</tspan>
-        <tspan fill="var(--key)">name</tspan>
-        <tspan fill="var(--muted-2)">,</tspan>
-        <tspan fill="var(--key)">role</tspan>
+        <tspan fill="var(--key)">JSON</tspan>
+        <tspan fill="var(--muted-2)"> → </tspan>
+        <tspan fill="var(--string)">YAML</tspan>
+        <tspan fill="var(--muted-2)"> · </tspan>
+        <tspan fill="var(--string)">CSV</tspan>
+        <tspan fill="var(--muted-2)"> · </tspan>
+        <tspan fill="var(--string)">XML</tspan>
+        <tspan fill="var(--muted-2)"> · </tspan>
+        <tspan fill="var(--muted)">+23</tspan>
       </text>
-      <text x="564" y="507" class="code-string"> → CSV</text>
     </g>
   </g>
+
 
   <!-- Animated particles -->
   <rect class="flow-particle particle-source-1" x="-3.5" y="-3.5" width="7" height="7" rx="2" />
   <rect class="flow-particle particle-source-2" x="-3.5" y="-3.5" width="7" height="7" rx="2" />
 
-  <circle class="flow-particle particle-format" r="4" />
+
+  <circle class="flow-particle particle-preview" r="4" />
   <circle class="flow-particle particle-tree" r="4" />
   <circle class="flow-particle particle-table" r="4" />
-  <circle class="flow-particle particle-csv" r="4" />
+  <circle class="flow-particle particle-convert" r="4" />
+
 
   <!-- Privacy pill -->
   <g class="ui-font">
     <rect class="local-pill" x="42" y="478" width="337" height="42" rx="21" />
     <circle class="status-dot" cx="65" cy="499" r="4" />
-    <text x="79" y="503" class="local-text">@@PROCESSED_LOCALLY@@</text>
+    <text x="79" y="503" class="local-text">@@RUNS_IN_BROWSER@@</text>
     <text x="310" y="503" class="card-caption">@@NO_UPLOAD@@</text>
   </g>
+
+
+  <!-- Preview gradient definition for thumbnail -->
+  <defs>
+    <linearGradient id="previewGradient" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0%" stop-color="#7c3aed" stop-opacity="0.9" />
+      <stop offset="100%" stop-color="#38bdf8" stop-opacity="0.9" />
+    </linearGradient>
+  </defs>
 </svg>
