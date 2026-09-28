@@ -21,7 +21,8 @@ export default defineEventHandler(async () => {
   }
 
   const categories = readdirSync(dataDir, { withFileTypes: true })
-    .filter(entry => entry.isDirectory())
+    // examples/ holds sample data, not tool definitions
+    .filter(entry => entry.isDirectory() && entry.name !== 'examples')
     .map(entry => entry.name)
 
   for (const category of categories) {

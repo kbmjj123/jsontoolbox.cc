@@ -186,15 +186,22 @@ onMounted(() => { if (!inboxApplied.value) inputEditorRef.value?.loadDefaultExam
 
 ## 6. 已知缺陷（新增页面会同步命中，别当 bug 修）
 
+### 仍未修
+
 | # | 缺陷 | 位置 | 影响 |
 |---|---|---|---|
 | 1 | `hero.trustHtml` 不渲染 | 无消费方 | 写了不显示，只作全站口径统一 |
-| 2 | Related Tools 卡片区恒空 | `ToolSeoContent.vue:75-81` 传 `next-steps`/`recommends`，但 `ToolRelated.vue:27-30` 只声明 `tools` | `nextSteps`/`recommends` **只在 `ToolSeoContent.vue:101-107` 渲染成正文下方内链** |
 | 3 | `meta.keywords` 不进 `<meta>` | `[slug].vue:112-115` 只传 title/description | 只用于 SEO 自检 |
-| 4 | FAQ 拿不到富摘要 | `[slug].vue:178-192` 只 `defineQuestion`，无人声明 `FAQPage` | 产出孤儿 Question 节点 |
-| 5 | sitemap 混入 `/tools/examples/*` | `server/api/sitemap-urls.ts:23-30` 未排除 `examples/`（`server/utils/tools.ts:65` 有排除） | en-US sitemap 多 18 条幽灵 URL |
 | 6 | `JsonOutputPanel` 视图切换按钮硬编码英文 | `:17,23,31` `Rich`/`Text`/`Table` | 用 `show-view-toggle=false` 或接受 |
 | 7 | 缺 `_meta.json` 的分类不显示 | `useTools.ts:66-75,124-145` | 新增目录必须配 `_meta.json` |
+
+### 已修（2026-09-29，勿再当缺陷处理）
+
+| # | 原缺陷 | 修法 |
+|---|---|---|
+| 2 | Related Tools 卡片区恒空：`ToolSeoContent.vue` 传 `next-steps`/`recommends`，但 `ToolRelated.vue` 只声明 `tools` | 调用方改为合并成一个 `tools` 数组传入；同时补上 `$t('tool.related_title')` 标题（该 i18n key 此前一直是孤儿）。**注意：`ToolRelated.vue` 的 props 仍是单数组 `tools`，不要改回传两个 prop** |
+| 4 | FAQ 拿不到富摘要：只 `defineQuestion`，无人声明 `FAQPage` | 同一处 `useSchemaOrg` 里加 `defineWebPage({ '@type': ['WebPage', 'FAQPage'] })`。`questionResolver` 只在主 WebPage 的 `@type` 含 `FAQPage` 时才把 Question 挂进 `mainEntity`；`defineWebPage` 的 idPrefix 是 PrimaryWebPageId，会合并进已有的 WebPage 节点，不会新增一个 |
+| 5 | sitemap 混入 `/tools/examples/*` | `server/api/sitemap-urls.ts` 的目录过滤加 `entry.name !== 'examples'`，与 `server/utils/tools.ts:65` 保持一致 |
 
 ---
 
@@ -348,8 +355,7 @@ grep -c "{slug}" .output/public/__sitemap__/en-US.xml
 
 ### 后续可做（本文档不覆盖）
 
-- 上游回填：`json-escape`、`large-json-viewer`
 - 规划文档提到的 `jsonl-viewer`、`json-prompt-generator`、`json-diff` 站内不存在，**不要引用**
-- `app/components/universal/JsonToYaml.vue:137` 注释仍引用 `docs/upgrade/json-to-yaml.md`，该文件早已删除，属既有陈旧引用
+- §6「仍未修」里的四项：`hero.trustHtml` 死字段、`meta.keywords` 不进 HTML、`JsonOutputPanel` 视图切换英文硬编码、`_meta.json` 缺失导致分类不显示
 - 文档其他位置还提到 `json-to-text`、`jsonc-to-json`，现已存在，可以正常引用
 - 独立议题（跨页横切，勿夹带）：修 `ToolRelated` props、修 FAQPage、修 sitemap 排除 `examples/`

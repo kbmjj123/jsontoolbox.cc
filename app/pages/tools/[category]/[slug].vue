@@ -177,8 +177,12 @@ useSchemaOrg([
 
 // FAQ Schema.org (when tool has FAQ items)
 if (tool.value?.faq?.length) {
-  useSchemaOrg(
-    tool.value.faq.map((item: { question: string; answer: string }) =>
+  useSchemaOrg([
+    // questionResolver only attaches questions to mainEntity when the primary
+    // WebPage also declares the FAQPage type. Without this node the questions
+    // are emitted but never referenced, so no FAQ rich result is produced.
+    defineWebPage({ '@type': ['WebPage', 'FAQPage'] }),
+    ...tool.value.faq.map((item: { question: string; answer: string }) =>
       defineQuestion({
         '@type': 'Question',
         name: item.question,
@@ -187,7 +191,7 @@ if (tool.value?.faq?.length) {
           text: item.answer,
         },
       })
-    )
-  )
+    ),
+  ])
 }
 </script>

@@ -134,7 +134,7 @@ const convertToYaml = (silent = false) => {
     outputYaml.value = YAML.stringify(parsed, {
       // Emit with the YAML 1.1 schema so scalars that YAML 1.1 parsers would
       // reinterpret (yes/no/on/off, dates, bare numbers) are quoted as strings.
-      // Plain values such as "localhost" stay unquoted (see docs/upgrade/json-to-yaml.md, note #4).
+      // Plain values such as "localhost" stay unquoted.
       schema: 'yaml-1.1',
       indent: indent.value,
       // Never fold scalars across lines: a wrapped plain scalar is harder to

@@ -6,7 +6,8 @@
   "sort": 3,
   "applicationCategory": "DeveloperApplication",
   "nextSteps": [
-    "json-editor"
+    "json-editor",
+    "json-parse-stringify"
   ],
   "recommends": [
     "json-minifier",

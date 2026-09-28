@@ -72,10 +72,12 @@
     </section>
 
     <!-- Related Tools -->
-    <section v-if="tool.nextSteps?.length || tool.recommends?.length">
+    <section v-if="relatedSlugs.length > 0">
+      <h2 class="mb-4 text-lg font-bold text-surface-900 dark:text-surface-100">
+        {{ $t('tool.related_title') }}
+      </h2>
       <ToolRelated
-        :next-steps="tool.nextSteps"
-        :recommends="tool.recommends"
+        :tools="relatedSlugs"
         :current-slug="tool.slug"
       />
     </section>
@@ -96,6 +98,14 @@ const props = defineProps<{
 }>()
 
 const { getToolBySingleSlug } = useTools()
+
+// ToolRelated takes one flat slug list, so nextSteps and recommends are merged
+// here. Passing them separately left the component's `tools` prop undefined and
+// the whole block rendered empty.
+const relatedSlugs = computed(() => [
+  ...(props.tool.nextSteps || []),
+  ...(props.tool.recommends || []),
+])
 
 // Derive article links from nextSteps + recommends (no need to maintain article.links in JSON)
 const articleLinks = computed(() => {
