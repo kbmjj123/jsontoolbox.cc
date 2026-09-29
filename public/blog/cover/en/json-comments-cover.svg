@@ -1,0 +1,168 @@
+<svg
+  width="1200"
+  height="630"
+  viewBox="0 0 1200 630"
+  xmlns="http://www.w3.org/2000/svg"
+  role="img"
+  aria-labelledby="title description"
+>
+  <title id="title">Comments in JSON: Why Not Allowed and What to Use Instead</title>
+  <desc id="desc">
+    A JsonToolBox developer guide cover comparing JSON, JSONC, and JSON5, showing a comment being stripped from a JSONC file.
+  </desc>
+
+  <rect width="1200" height="630" fill="#f8fafc" />
+
+  <!-- Decorative background bars -->
+  <g fill="#e2e8f0" opacity="0.7">
+    <rect x="72" y="70" width="188" height="12" rx="4" />
+    <rect x="72" y="98" width="128" height="12" rx="4" />
+    <rect x="72" y="126" width="164" height="12" rx="4" />
+
+    <rect x="940" y="70" width="180" height="12" rx="4" />
+    <rect x="988" y="98" width="132" height="12" rx="4" />
+    <rect x="956" y="126" width="164" height="12" rx="4" />
+
+    <rect x="120" y="530" width="146" height="10" rx="4" />
+    <rect x="120" y="554" width="98" height="10" rx="4" />
+    <rect x="952" y="530" width="138" height="10" rx="4" />
+    <rect x="992" y="554" width="98" height="10" rx="4" />
+  </g>
+
+  <!-- Oversized brace watermark -->
+  <text
+    x="70"
+    y="392"
+    font-family="ui-monospace, SFMono-Regular, Menlo, Consolas, monospace"
+    font-size="210"
+    font-weight="600"
+    fill="#0ea5e9"
+    opacity="0.14"
+  >{</text>
+  <text
+    x="1010"
+    y="392"
+    font-family="ui-monospace, SFMono-Regular, Menlo, Consolas, monospace"
+    font-size="210"
+    font-weight="600"
+    fill="#0ea5e9"
+    opacity="0.14"
+  >}</text>
+
+  <!-- Eyebrow -->
+  <text
+    x="600"
+    y="112"
+    text-anchor="middle"
+    font-family="ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, sans-serif"
+    font-size="24"
+    font-weight="700"
+    letter-spacing="6"
+    fill="#0ea5e9"
+  >JSON TOOLBOX GUIDE</text>
+
+  <!-- Headline -->
+  <text
+    x="600"
+    y="196"
+    text-anchor="middle"
+    font-family="ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, sans-serif"
+    font-size="72"
+    font-weight="800"
+    fill="#0f172a"
+  >Comments in JSON</text>
+
+  <!-- Sub headline -->
+  <text
+    x="600"
+    y="248"
+    text-anchor="middle"
+    font-family="ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, sans-serif"
+    font-size="34"
+    font-weight="500"
+    fill="#475569"
+  >Why they&#8217;re not allowed &#38; what to use instead</text>
+
+  <!-- Code card -->
+  <rect x="300" y="300" width="600" height="196" rx="20" fill="#ffffff" stroke="#e2e8f0" stroke-width="2" />
+  <rect x="300" y="300" width="600" height="44" rx="20" fill="#0f172a" />
+  <rect x="300" y="326" width="600" height="18" fill="#0f172a" />
+  <g>
+    <circle cx="330" cy="322" r="6" fill="#f87171" />
+    <circle cx="352" cy="322" r="6" fill="#fbbf24" />
+    <circle cx="374" cy="322" r="6" fill="#34d399" />
+  </g>
+  <text
+    x="396"
+    y="329"
+    font-family="ui-monospace, SFMono-Regular, Menlo, Consolas, monospace"
+    font-size="17"
+    fill="#94a3b8"
+  >config.jsonc</text>
+
+  <!-- Removed comment line -->
+  <text
+    x="336"
+    y="382"
+    font-family="ui-monospace, SFMono-Regular, Menlo, Consolas, monospace"
+    font-size="19"
+    fill="#94a3b8"
+  >// region for the EU deploy</text>
+  <line x1="336" y1="376" x2="700" y2="376" stroke="#ef4444" stroke-width="3" stroke-linecap="round" />
+  <g>
+    <circle cx="836" cy="376" r="15" fill="#fee2e2" />
+    <path d="M829 376 L836 383 L845 369" fill="none" stroke="#ef4444" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" />
+  </g>
+
+  <!-- Preserved string line -->
+  <text
+    x="336"
+    y="428"
+    font-family="ui-monospace, SFMono-Regular, Menlo, Consolas, monospace"
+    font-size="19"
+    fill="#334155"
+  >"url": "https://site.com</text>
+  <text
+    x="596"
+    y="428"
+    font-family="ui-monospace, SFMono-Regular, Menlo, Consolas, monospace"
+    font-size="19"
+    font-weight="700"
+    fill="#0ea5e9"
+  >//a</text>
+  <text
+    x="630"
+    y="428"
+    font-family="ui-monospace, SFMono-Regular, Menlo, Consolas, monospace"
+    font-size="19"
+    fill="#334155"
+  >"</text>
+  <g>
+    <circle cx="836" cy="422" r="15" fill="#dcfce7" />
+    <path d="M829 422 L834 427 L844 415" fill="none" stroke="#16a34a" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" />
+  </g>
+
+  <!-- Output label -->
+  <text
+    x="336"
+    y="472"
+    font-family="ui-monospace, SFMono-Regular, Menlo, Consolas, monospace"
+    font-size="17"
+    fill="#64748b"
+  >&#8594; strict JSON, comments removed</text>
+
+  <!-- Footer chips -->
+  <g font-family="ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, sans-serif" font-size="19" font-weight="700">
+    <rect x="336" y="524" width="108" height="36" rx="18" fill="#e0f2fe" />
+    <text x="390" y="548" text-anchor="middle" fill="#0284c7">JSON</text>
+
+    <rect x="458" y="524" width="112" height="36" rx="18" fill="#dcfce7" />
+    <text x="514" y="548" text-anchor="middle" fill="#16a34a">JSONC</text>
+
+    <rect x="584" y="524" width="108" height="36" rx="18" fill="#fef3c7" />
+    <text x="638" y="548" text-anchor="middle" fill="#b45309">JSON5</text>
+
+    <rect x="706" y="524" width="112" height="36" rx="18" fill="#ede9fe" />
+    <text x="762" y="548" text-anchor="middle" fill="#7c3aed">HJSON</text>
+  </g>
+</svg>

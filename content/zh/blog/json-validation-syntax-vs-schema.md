@@ -5,7 +5,7 @@ h1: "JSON 校验详解：语法校验、JSON Schema 与业务规则的区别"
 category: "json_tools"
 date: 2026-09-03
 lastmod: 2026-09-03
-image: "/images/blog/zh/json-validation-syntax-vs-schema-cover.svg"
+image: "/blog/cover/zh/json-validation-syntax-vs-schema-cover.svg"
 tags:
   - "JSON"
   - "JSON 校验"

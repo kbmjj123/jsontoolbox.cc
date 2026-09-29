@@ -5,7 +5,7 @@ h1: "JSON Validation Explained: Syntax Checks vs JSON Schema Validation"
 category: "json_tools"
 date: 2026-09-03
 lastmod: 2026-09-03
-image: "/images/blog/en/json-validation-syntax-vs-schema-cover.svg"
+image: "/blog/cover/en/json-validation-syntax-vs-schema-cover.svg"
 tags:
   - "JSON"
   - "JSON Validation"
