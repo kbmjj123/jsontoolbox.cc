@@ -11,6 +11,18 @@ interface BlogEntry {
   content: string
 }
 
+/**
+ * Check whether a Markdown file is a draft (`draft: true` in frontmatter).
+ * Drafts are excluded from llms.txt / llms-full.txt and the sitemap.
+ */
+export function isDraft(raw: string): boolean {
+  const draftMatch = raw.match(/^draft:\s*(.+)$/mi)
+  if (!draftMatch) return false
+
+  const value = draftMatch[1].trim().replace(/^["']|["']$/g, '').toLowerCase()
+  return value === 'true' || value === 'yes' || value === '1'
+}
+
 export function getBlogs(): BlogEntry[] {
   const contentDir = resolve(process.cwd(), 'content/en/blog')
   if (!existsSync(contentDir)) return []
@@ -22,6 +34,9 @@ export function getBlogs(): BlogEntry[] {
     try {
       const raw = readFileSync(resolve(contentDir, file), 'utf-8')
       const slug = file.replace('.md$', '')
+
+      // 草稿文章不对外输出
+      if (isDraft(raw)) continue
 
       // Parse frontmatter
       const fmMatch = raw.match(/^---\n([\s\S]*?)\n---/)

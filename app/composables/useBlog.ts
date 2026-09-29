@@ -9,8 +9,15 @@ export const useBlog = () => {
     return locales.some((l: string) => l === locale.value || l.startsWith(locale.value + '-'))
   }
 
+  // Helper: drafts (frontmatter `draft: true`) never surface on the site
+  const isPublished = (post: any): boolean => post?.draft !== true
+
+  // Helper: locale match + published
+  const isVisible = (post: any): boolean => isPublished(post) && matchesLocale(post)
+
   /**
    * Get all blog posts for the current locale, sorted by date DESC
+   * Draft posts (`draft: true`) are excluded.
    * @param limit - Max number of posts to return (optional)
    */
   const getBlogList = (limit?: number) => {
@@ -22,7 +29,7 @@ export const useBlog = () => {
         .order('date', 'DESC')
         .all()
 
-      const filtered = allPosts.filter(matchesLocale)
+      const filtered = allPosts.filter(isVisible)
       return limit ? filtered.slice(0, limit) : filtered
     }, {
       watch: [locale]
@@ -31,16 +38,20 @@ export const useBlog = () => {
 
   /**
    * Get a single blog post by slug
+   * Returns null for draft posts, so the page can 404/redirect.
    * @param slug - The post slug (e.g. 'what-is-json')
    */
   const getBlogPost = (slug: string) => {
     const key = `blog-post-${locale.value}-${slug}`
 
-		return useAsyncData(key, () => {
-			return queryCollection('blog')
+		return useAsyncData(key, async () => {
+			const post = await queryCollection('blog')
 				// 精准匹配：路径必须等于 /en/blog/slug
 				.where('path', '=', `/${locale.value}/blog/${slug}`)
 				.first()
+
+			// 草稿不对外可见
+			return isPublished(post) ? post : null
 		})
   }
 
@@ -58,7 +69,7 @@ export const useBlog = () => {
         .all()
 
       return allPosts
-        .filter(post => matchesLocale(post) && !post.path?.endsWith(`/${currentSlug}`))
+        .filter(post => isVisible(post) && !post.path?.endsWith(`/${currentSlug}`))
         .slice(0, limit)
     }, {
       watch: [locale]
@@ -76,7 +87,7 @@ export const useBlog = () => {
         .order('date', 'DESC')
         .all()
 
-      const localePosts = allPosts.filter(matchesLocale)
+      const localePosts = allPosts.filter(isVisible)
       const currentIndex = localePosts.findIndex(p => p.path === path)
 
       if (currentIndex === -1) return [null, null]
@@ -107,7 +118,7 @@ export const useBlog = () => {
       return allPosts.filter(post => {
         const path: string = post.path || ''
         const slug = path.split('/').pop() || ''
-        return slugSet.has(slug) && matchesLocale(post)
+        return slugSet.has(slug) && isVisible(post)
       })
     }, {
       watch: [locale]
@@ -116,12 +127,14 @@ export const useBlog = () => {
 
   /**
    * Get all blog posts across all locales (for sitemap generation)
-   * This is locale-unaware — returns every published post.
+   * This is locale-unaware — returns every published post (drafts excluded).
    */
   const getAllBlogPostsForSitemap = async () => {
-    return queryCollection('blog')
-      .select('path', 'date', 'lastmod')
+    const posts = await queryCollection('blog')
+      .select('path', 'date', 'lastmod', 'draft')
       .all()
+
+    return posts.filter(isPublished)
   }
 
   return {
