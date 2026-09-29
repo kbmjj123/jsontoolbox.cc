@@ -1,0 +1,207 @@
+<svg
+  width="1200"
+  height="630"
+  viewBox="0 0 1200 630"
+  xmlns="http://www.w3.org/2000/svg"
+  role="img"
+  aria-labelledby="svg-title svg-description"
+>
+  <title id="svg-title">JSON vs JSONL: When to Use Each</title>
+  <desc id="svg-description">
+    A JsonToolBox guide cover contrasting a single JSON document with JSON Lines, where each line is one independent record.
+  </desc>
+
+  <style>
+    :root {
+      --bg-color: #f8fafc;
+      --line-color: #e2e8f0;
+      --brace-color: #0284c7;
+      --title-color: #0f172a;
+      --subtitle-color: #475569;
+      --brand-color: #64748b;
+      --card-bg: #ffffff;
+      --card-border: #e2e8f0;
+      --key-color: #0369a1;
+      --value-color: #334155;
+      --punct-color: #94a3b8;
+    }
+
+    :root.dark {
+      --bg-color: #0f172a;
+      --line-color: #1e293b;
+      --brace-color: #38bdf8;
+      --title-color: #e2e8f0;
+      --subtitle-color: #94a3b8;
+      --brand-color: #94a3b8;
+      --card-bg: #111c33;
+      --card-border: #1e293b;
+      --key-color: #7dd3fc;
+      --value-color: #cbd5e1;
+      --punct-color: #64748b;
+    }
+  </style>
+
+  <!-- Background -->
+  <rect width="1200" height="630" fill="var(--bg-color)" />
+
+  <!-- Decorative code-like background lines -->
+  <g fill="var(--line-color)" opacity="0.6">
+    <rect x="72" y="56" width="188" height="14" rx="4" />
+    <rect x="72" y="86" width="140" height="14" rx="4" />
+    <rect x="72" y="116" width="172" height="14" rx="4" />
+
+    <rect x="940" y="56" width="184" height="14" rx="4" />
+    <rect x="986" y="86" width="140" height="14" rx="4" />
+    <rect x="954" y="116" width="170" height="14" rx="4" />
+  </g>
+
+  <!-- Big JSON braces -->
+  <text
+    x="74"
+    y="410"
+    font-family="ui-monospace, SFMono-Regular, Menlo, Consolas, monospace"
+    font-size="190"
+    font-weight="600"
+    fill="var(--brace-color)"
+    opacity="0.18"
+  >{</text>
+
+  <text
+    x="1000"
+    y="410"
+    font-family="ui-monospace, SFMono-Regular, Menlo, Consolas, monospace"
+    font-size="190"
+    font-weight="600"
+    fill="var(--brace-color)"
+    opacity="0.18"
+  >}</text>
+
+  <!-- Eyebrow -->
+  <text
+    x="600"
+    y="98"
+    text-anchor="middle"
+    font-family="ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, Segoe UI, Roboto, sans-serif"
+    font-size="22"
+    font-weight="700"
+    letter-spacing="6"
+    fill="#0284c7"
+  >FORMAT GUIDE</text>
+
+  <!-- Title -->
+  <text
+    x="600"
+    y="176"
+    text-anchor="middle"
+    font-family="ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, Segoe UI, Roboto, sans-serif"
+    font-size="58"
+    font-weight="750"
+    fill="var(--title-color)"
+  >JSON vs JSONL</text>
+
+  <!-- Subtitle -->
+  <text
+    x="600"
+    y="222"
+    text-anchor="middle"
+    font-family="ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, Segoe UI, Roboto, sans-serif"
+    font-size="25"
+    fill="var(--subtitle-color)"
+  >One document, or one record per line</text>
+
+  <!-- JSON card -->
+  <g transform="translate(96 268)">
+    <rect x="0" y="0" width="464" height="228" rx="20" fill="var(--card-bg)" stroke="#93c5fd" stroke-width="2" />
+    <rect x="0" y="0" width="464" height="44" rx="20" fill="#eff6ff" />
+    <rect x="0" y="22" width="464" height="22" fill="#eff6ff" />
+    <circle cx="28" cy="22" r="6" fill="#3b82f6" />
+    <text
+      x="46"
+      y="28"
+      font-family="ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, Segoe UI, Roboto, sans-serif"
+      font-size="16"
+      font-weight="700"
+      fill="#1d4ed8"
+    >data.json</text>
+    <text
+      x="438"
+      y="28"
+      text-anchor="end"
+      font-family="ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, Segoe UI, Roboto, sans-serif"
+      font-size="13"
+      fill="#64748b"
+    >one document</text>
+
+    <g font-family="ui-monospace, SFMono-Regular, Menlo, Consolas, monospace" font-size="17">
+      <text x="28" y="82" fill="var(--punct-color)">[</text>
+      <text x="46" y="106"><tspan fill="var(--punct-color)">{ </tspan><tspan fill="var(--key-color)">"id"</tspan><tspan fill="var(--punct-color)">: </tspan><tspan fill="var(--value-color)">1</tspan><tspan fill="var(--punct-color)"> }</tspan><tspan fill="var(--value-color)">,</tspan></text>
+      <text x="46" y="132"><tspan fill="var(--punct-color)">{ </tspan><tspan fill="var(--key-color)">"id"</tspan><tspan fill="var(--punct-color)">: </tspan><tspan fill="var(--value-color)">2</tspan><tspan fill="var(--punct-color)"> }</tspan><tspan fill="var(--value-color)">,</tspan></text>
+      <text x="46" y="158"><tspan fill="var(--punct-color)">{ </tspan><tspan fill="var(--key-color)">"id"</tspan><tspan fill="var(--punct-color)">: </tspan><tspan fill="var(--value-color)">3</tspan><tspan fill="var(--punct-color)"> }</tspan></text>
+      <text x="28" y="184" fill="var(--punct-color)">]</text>
+      <text x="28" y="212" font-family="ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, Segoe UI, Roboto, sans-serif" font-size="14" fill="#64748b">parse the whole file · commas · one value</text>
+    </g>
+  </g>
+
+  <!-- JSONL card -->
+  <g transform="translate(640 268)">
+    <rect x="0" y="0" width="464" height="228" rx="20" fill="var(--card-bg)" stroke="#86efac" stroke-width="2" />
+    <rect x="0" y="0" width="464" height="44" rx="20" fill="#ecfdf5" />
+    <rect x="0" y="22" width="464" height="22" fill="#ecfdf5" />
+    <circle cx="28" cy="22" r="6" fill="#22c55e" />
+    <text
+      x="46"
+      y="28"
+      font-family="ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, Segoe UI, Roboto, sans-serif"
+      font-size="16"
+      font-weight="700"
+      fill="#15803d"
+    >data.jsonl</text>
+    <text
+      x="438"
+      y="28"
+      text-anchor="end"
+      font-family="ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, Segoe UI, Roboto, sans-serif"
+      font-size="13"
+      fill="#64748b"
+    >one record per line</text>
+
+    <!-- line numbers gutter -->
+    <g font-family="ui-monospace, SFMono-Regular, Menlo, Consolas, monospace" font-size="13" fill="#cbd5e1">
+      <text x="28" y="82">1</text>
+      <text x="28" y="132">2</text>
+      <text x="28" y="158">3</text>
+    </g>
+
+    <g font-family="ui-monospace, SFMono-Regular, Menlo, Consolas, monospace" font-size="17">
+      <text x="46" y="82"><tspan fill="var(--punct-color)">{ </tspan><tspan fill="var(--key-color)">"id"</tspan><tspan fill="var(--punct-color)">: </tspan><tspan fill="var(--value-color)">1</tspan><tspan fill="var(--punct-color)"> }</tspan></text>
+      <text x="46" y="132"><tspan fill="var(--punct-color)">{ </tspan><tspan fill="var(--key-color)">"id"</tspan><tspan fill="var(--punct-color)">: </tspan><tspan fill="var(--value-color)">2</tspan><tspan fill="var(--punct-color)"> }</tspan></text>
+      <text x="46" y="158"><tspan fill="var(--punct-color)">{ </tspan><tspan fill="var(--key-color)">"id"</tspan><tspan fill="var(--punct-color)">: </tspan><tspan fill="var(--value-color)">3</tspan><tspan fill="var(--punct-color)"> }</tspan></text>
+    </g>
+
+    <!-- streaming arrow -->
+    <path d="M28 100 H436" fill="none" stroke="#86efac" stroke-width="2" stroke-dasharray="6 6" />
+    <text
+      x="28"
+      y="212"
+      font-family="ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, Segoe UI, Roboto, sans-serif"
+      font-size="14"
+      fill="#64748b"
+    >read line by line · append · no commas</text>
+  </g>
+
+  <!-- Bottom strip -->
+  <g font-family="ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, Segoe UI, Roboto, sans-serif" font-size="17" font-weight="600">
+    <rect x="252" y="524" width="696" height="40" rx="20" fill="#f1f5f9" stroke="var(--card-border)" stroke-width="2" />
+    <text x="600" y="550" text-anchor="middle" fill="#475569">Same JSON values · different read and write model</text>
+  </g>
+
+  <!-- Brand / site name -->
+  <text
+    x="600"
+    y="600"
+    text-anchor="middle"
+    font-family="ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, Segoe UI, Roboto, sans-serif"
+    font-size="18"
+    fill="var(--brand-color)"
+  >JsonToolBox · Developer Guide</text>
+</svg>
