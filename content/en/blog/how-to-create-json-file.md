@@ -6,6 +6,7 @@ category: "json_tools"
 date: 2026-09-29
 lastmod: 2026-09-29
 image: "/blog/cover/en/how-to-create-json-file-cover.svg"
+draft: true
 tags:
   - "JSON"
   - "Beginners"
@@ -17,8 +18,7 @@ promo:
   slug: "json-editor"
   text: "Want to write, format, and validate JSON without installing anything?"
   btn: "Open JSON Editor"
-locales:
-  - "en"
+locales: ["en"]
 ---
 
 # How to Create a JSON File: Step-by-Step Guide for Beginners
@@ -281,6 +281,8 @@ The specification is the [W3C Web Application Manifest](https://www.w3.org/TR/ap
 **Framework manifests** — frameworks generate or consume their own. Next.js, for example, supports `app/manifest.json` (or `manifest.ts`) and serves the file for you.
 
 The syntax rules in this guide apply to all of them: valid JSON first, correct fields second. Many editors accept comments in these files because they read them as JSONC — but the platform that consumes the file may not, so check before shipping comments.
+
+For step-by-step examples with the required fields for each spec — PWA web app manifests and Chrome extension Manifest V3 — see [How to Create a manifest.json File](/blog/how-to-create-manifest-json).
 
 ## FAQ
 
