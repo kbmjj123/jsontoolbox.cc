@@ -1,0 +1,20 @@
+[
+  {
+    "id": "trailing-comma",
+    "label_en": "Trailing Comma & Single Quotes",
+    "label_zh": "尾随逗号与单引号",
+    "input": "{\n  'name': 'Alice',\n  'age': 28,\n  'tags': ['admin', 'user',],\n}"
+  },
+  {
+    "id": "unquoted-keys",
+    "label_en": "Unquoted Keys & Comment",
+    "label_zh": "未加引号的键与注释",
+    "input": "// config\n{\n  host: 'localhost',\n  port: 5432,\n  ssl: { enabled: True },\n}"
+  },
+  {
+    "id": "python-constants",
+    "label_en": "Python Constants",
+    "label_zh": "Python 常量",
+    "input": "{\n  active: True,\n  count: None,\n  ratio: NaN,\n  retry: False,\n}"
+  }
+]

@@ -1,0 +1,240 @@
+{
+  "slug": "jsonl-to-json",
+  "category": "convert",
+  "component": "JsonlToJson",
+  "icon": "lucide:file-json",
+  "sort": 22,
+  "applicationCategory": "DeveloperApplication",
+  "nextSteps": [
+    "json-to-jsonl"
+  ],
+  "recommends": [
+    "json-minifier",
+    "json-to-csv"
+  ],
+  "en": {
+    "name": "JSONL to JSON",
+    "description": "Convert JSONL (JSON Lines / NDJSON) to JSON in your browser. Parse each line into a value and collect them into a pretty-printed JSON array. Copy or download the result without uploading your data.",
+    "hero": {
+      "trustHtml": "Runs in your browser. Your JSONL is not uploaded by this tool."
+    },
+    "meta": {
+      "title": "JSONL to JSON Converter – Convert JSON Lines to JSON Online",
+      "description": "Convert JSONL to JSON online. Parse each line of JSON Lines into a value and collect them into a JSON array. Copy or download the JSON in your browser.",
+      "keywords": [
+        "jsonl to json",
+        "convert jsonl to json",
+        "jsonl to json converter",
+        "ndjson to json",
+        "json lines to json",
+        "parse jsonl"
+      ]
+    },
+    "features": [
+      {
+        "icon": "lucide:file-json",
+        "title": "Parse Each Line",
+        "description": "Each non-empty line is parsed as an independent JSON value. Blank lines are skipped so they do not break the conversion."
+      },
+      {
+        "icon": "lucide:braces",
+        "title": "Collect Into a JSON Array",
+        "description": "The parsed values are gathered into a single JSON array and pretty-printed with indentation for easy reading."
+      },
+      {
+        "icon": "lucide:check-circle-2",
+        "title": "Report Line Errors",
+        "description": "If a line is not valid JSON, the tool reports which line failed so you can fix the source instead of guessing."
+      },
+      {
+        "icon": "lucide:copy",
+        "title": "Copy or Download",
+        "description": "Copy the JSON array to your clipboard or download it as a .json file for use in APIs, scripts, or data processing."
+      },
+      {
+        "icon": "lucide:shield-check",
+        "title": "Browser-Based Processing",
+        "description": "Parsing and conversion happen in your browser. The page does not require an account or upload your JSONL to a remote service."
+      }
+    ],
+    "ui": {
+      "label_input": "JSON Lines Input",
+      "placeholder_input": "{\"id\": 1, \"name\": \"Alice\"}\n{\"id\": 2, \"name\": \"Bob\"}",
+      "label_output": "JSON Output",
+      "placeholder_output": "JSON will appear here...",
+      "btn_convert": "Convert to JSON",
+      "btn_copy": "Copy",
+      "btn_download": "Download JSON",
+      "error_empty_input": "Enter JSON Lines or open a file first",
+      "error_invalid_json": "Line {line} is not valid JSON",
+      "error_processing": "The JSON Lines could not be converted"
+    },
+    "guide": [
+      {
+        "title": "Enter JSON Lines",
+        "description": "Paste JSONL or NDJSON into the input: one JSON value per line. Blank lines are ignored."
+      },
+      {
+        "title": "Convert to JSON",
+        "description": "Click Convert to JSON. Each line is parsed and the values are collected into a JSON array."
+      },
+      {
+        "title": "Copy or download",
+        "description": "Copy the JSON array or download it as a .json file. If a line fails to parse, fix it in the source and try again."
+      }
+    ],
+    "example": {
+      "title": "JSONL to JSON Example",
+      "description": "Convert one JSON value per line into a single JSON array.",
+      "inputLabel": "JSON Lines Input",
+      "input": "{ \"id\": 1, \"name\": \"Alice\" }\n{ \"id\": 2, \"name\": \"Bob\" }",
+      "inputExplanation": "Two independent JSON objects, one on each line.",
+      "outputLabel": "JSON Output",
+      "output": "[\n  {\n    \"id\": 1,\n    \"name\": \"Alice\"\n  },\n  {\n    \"id\": 2,\n    \"name\": \"Bob\"\n  }\n]",
+      "outputExplanation": "Each line becomes an element of the resulting JSON array. The output is valid, pretty-printed JSON.",
+      "note": "JSON Lines and NDJSON are the same format: one JSON value per line."
+    },
+    "faq": [
+      {
+        "question": "What is JSONL?",
+        "answer": "JSONL (JSON Lines), also called NDJSON, is a format where each line is a separate, complete JSON value. This tool collects those lines into a single JSON array."
+      },
+      {
+        "question": "How does JSONL to JSON conversion work?",
+        "answer": "Each non-empty line is parsed as one JSON value. The parsed values are gathered into an array and pretty-printed. Blank lines are skipped."
+      },
+      {
+        "question": "What if one line is invalid?",
+        "answer": "The tool reports the line number that failed to parse. Fix that line in the source and convert again. It does not silently skip bad lines."
+      },
+      {
+        "question": "Does it support NDJSON?",
+        "answer": "Yes. NDJSON and JSONL are the same line-delimited format, so NDJSON input works exactly like JSONL."
+      },
+      {
+        "question": "What if my input is already a JSON array on one line?",
+        "answer": "That single line is parsed as one value, so the output is an array containing your original array. Put one value per line if you want each record to become a separate element."
+      },
+      {
+        "question": "Is this a free JSONL to JSON converter?",
+        "answer": "Yes. You can convert JSON Lines to JSON, copy the result, or download it as a .json file without creating an account."
+      }
+    ],
+    "article": {
+      "title": "How to Convert JSONL to JSON Online",
+      "content": "<h2>What Is JSONL?</h2><p>JSONL (JSON Lines), also called NDJSON, stores data as one JSON value per line. Each line is independent, which makes the format easy to stream and log. An NDJSON to JSON step collects those lines into a single array; you can parse JSONL line by line or all at once. Converting it to a JSON array makes the data easier to use in APIs and scripts that expect a single document.</p><h2>How to Convert JSONL to JSON</h2><ol><li><strong>Enter JSON Lines:</strong> paste one JSON value per line into the input.</li><li><strong>Convert:</strong> each non-empty line is parsed as a value.</li><li><strong>Collect:</strong> the values are gathered into a JSON array and pretty-printed.</li><li><strong>Copy or download:</strong> use the result as a standard JSON array.</li></ol><h2>Handling Errors</h2><p>If a line is not valid JSON, the tool reports the failing line number. Blank lines are skipped automatically. Fix the reported line and convert again.</p><h2>When to Use It</h2><ul><li><strong>Import logs:</strong> turn line-delimited logs into a JSON array for analysis.</li><li><strong>Data pipelines:</strong> many tools emit JSONL; convert it for systems that expect one document.</li><li><strong>Storage migration:</strong> move JSONL exports into a single JSON file.</li></ul><h2>Privacy</h2><p>Conversion runs entirely in your browser. Your JSONL is not uploaded and no account is required. Do not paste passwords, tokens, or production credentials into any online tool.</p>"
+    }
+  },
+  "zh": {
+    "name": "JSONL 转 JSON",
+    "description": "在浏览器里把 JSONL（JSON Lines / NDJSON）转换成 JSON。逐行解析每个值，并汇总成一个带缩进的 JSON 数组。复制或下载结果，全程不上传你的数据。",
+    "hero": {
+      "trustHtml": "在你的浏览器中运行。你的 JSONL 不会被本工具上传。"
+    },
+    "meta": {
+      "title": "JSONL 转 JSON 转换器 — 在线将 JSON Lines 转为 JSON",
+      "description": "在线把 JSONL 转为 JSON：逐行解析 JSON Lines 的每个值，并汇总成一个 JSON 数组。在浏览器中复制或下载 JSON。",
+      "keywords": [
+        "jsonl 转 json",
+        "ndjson 转 json",
+        "json lines 转 json",
+        "jsonl 转 json 转换器",
+        "解析 jsonl"
+      ]
+    },
+    "features": [
+      {
+        "icon": "lucide:file-json",
+        "title": "逐行解析",
+        "description": "每一行非空内容都会被当作独立的 JSON 值来解析。空行会被跳过，不会让转换失败。"
+      },
+      {
+        "icon": "lucide:braces",
+        "title": "汇总成 JSON 数组",
+        "description": "解析出的值会被收集到一个 JSON 数组里，并加上缩进，便于阅读。"
+      },
+      {
+        "icon": "lucide:check-circle-2",
+        "title": "报告行错误",
+        "description": "如果某一行不是合法的 JSON，工具会指出是哪一行出错，方便你修正源数据，而不是靠猜。"
+      },
+      {
+        "icon": "lucide:copy",
+        "title": "复制或下载",
+        "description": "把 JSON 数组复制到剪贴板，或下载为 .json 文件，用于 API、脚本或数据处理。"
+      },
+      {
+        "icon": "lucide:shield-check",
+        "title": "浏览器本地处理",
+        "description": "解析与转换都在你的浏览器中完成。本页不需要注册账号，也不会把你的 JSONL 上传到远端服务。"
+      }
+    ],
+    "ui": {
+      "label_input": "JSON Lines 输入",
+      "placeholder_input": "{\"id\": 1, \"name\": \"Alice\"}\n{\"id\": 2, \"name\": \"Bob\"}",
+      "label_output": "JSON 输出",
+      "placeholder_output": "JSON 会显示在这里...",
+      "btn_convert": "转换为 JSON",
+      "btn_copy": "复制",
+      "btn_download": "下载 JSON",
+      "error_empty_input": "请先输入 JSON Lines 或打开文件",
+      "error_invalid_json": "第 {line} 行不是有效的 JSON",
+      "error_processing": "这段 JSON Lines 无法被转换"
+    },
+    "guide": [
+      {
+        "title": "输入 JSON Lines",
+        "description": "把 JSONL 或 NDJSON 粘贴到输入框：每行一个 JSON 值。空行会被忽略。"
+      },
+      {
+        "title": "转换为 JSON",
+        "description": "点击“转换为 JSON”。每一行会被解析，所有值会被收集进一个 JSON 数组。"
+      },
+      {
+        "title": "复制或下载",
+        "description": "复制 JSON 数组，或把它下载为 .json 文件。如果某行解析失败，修正源数据后再试一次。"
+      }
+    ],
+    "example": {
+      "title": "JSONL 转 JSON 示例",
+      "description": "把每行一个 JSON 值转换为一个 JSON 数组。",
+      "inputLabel": "JSON Lines 输入",
+      "input": "{ \"id\": 1, \"name\": \"Alice\" }\n{ \"id\": 2, \"name\": \"Bob\" }",
+      "inputExplanation": "两个相互独立的 JSON 对象，各占一行。",
+      "outputLabel": "JSON 输出",
+      "output": "[\n  {\n    \"id\": 1,\n    \"name\": \"Alice\"\n  },\n  {\n    \"id\": 2,\n    \"name\": \"Bob\"\n  }\n]",
+      "outputExplanation": "每一行变成结果数组里的一个元素。输出是合法的、带缩进的 JSON。",
+      "note": "JSON Lines 和 NDJSON 是同一种格式：每行一个 JSON 值。"
+    },
+    "faq": [
+      {
+        "question": "什么是 JSONL？",
+        "answer": "JSONL（JSON Lines），也叫 NDJSON，是一种每行一个独立、完整 JSON 值的格式。本工具会把这些行收集成一个 JSON 数组。"
+      },
+      {
+        "question": "JSONL 转 JSON 是怎么做的？",
+        "answer": "每一行非空内容会被解析成一个 JSON 值，这些解析后的值会被收集进数组并美化输出。空行会被跳过。"
+      },
+      {
+        "question": "如果某一行无效怎么办？",
+        "answer": "工具会报告是哪一行解析失败。在源数据里修正那一行再转换即可，它不会悄悄跳过坏行。"
+      },
+      {
+        "question": "支持 NDJSON 吗？",
+        "answer": "支持。NDJSON 和 JSONL 是同一种按行分隔的格式，所以 NDJSON 输入和 JSONL 表现一致。"
+      },
+      {
+        "question": "如果输入本身就是一个单行 JSON 数组呢？",
+        "answer": "那一行会被解析成单个值，输出就是“包含了你原来那个数组”的数组。如果你希望每条记录变成独立元素，请每行放一个值。"
+      },
+      {
+        "question": "这是免费的 JSONL 转 JSON 转换器吗？",
+        "answer": "是。你可以把 JSON Lines 转为 JSON、复制结果，或下载成 .json 文件，且不需要注册账号。"
+      }
+    ],
+    "article": {
+      "title": "如何在线把 JSONL 转为 JSON",
+      "content": "<h2>什么是 JSONL？</h2><p>JSONL（JSON Lines），也叫 NDJSON，把数据存成每行一个 JSON 值。每一行彼此独立，因此这种格式很容易流式传输和记录日志。ndjson 转 json（即 json lines 转 json）把这些行收集成一个数组；你可以逐行解析 jsonl，也可以一次性解析。把它转成 JSON 数组后，在需要单个文档的 API 和脚本里用起来更方便。</p><h2>如何把 JSONL 转为 JSON</h2><ol><li><strong>输入 JSON Lines：</strong>把每行一个 JSON 值粘贴到输入框。</li><li><strong>转换：</strong>每一行非空内容会被解析成一个值。</li><li><strong>汇总：</strong>这些值被收集进一个 JSON 数组并美化输出。</li><li><strong>复制或下载：</strong>把结果当作标准 JSON 数组使用。</li></ol><h2>错误处理</h2><p>如果某一行不是合法的 JSON，工具会指出出错的行号。空行会自动跳过。修正报告的那一行后再转换即可。</p><h2>什么时候用它</h2><ul><li><strong>导入日志：</strong>把按行分隔的日志转成 JSON 数组用于分析。</li><li><strong>数据管道：</strong>很多工具输出 JSONL；转成单文档以适配其他系统。</li><li><strong>存储迁移：</strong>把 JSONL 导出文件搬进一个 JSON 文件。</li></ul><h2>隐私</h2><p>转换完全在你的浏览器中运行，JSONL 不会被上传，也不需要账号。请勿在任何在线工具里粘贴密码、令牌或生产环境凭据。</p>"
+    }
+  }
+}

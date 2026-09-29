@@ -1,0 +1,322 @@
+{
+  "slug": "json-repair",
+  "category": "format",
+  "component": "JsonRepair",
+  "icon": "lucide:wrench",
+  "sort": 4,
+  "applicationCategory": "DeveloperApplication",
+  "nextSteps": [
+    "json-editor",
+    "json-minifier"
+  ],
+  "recommends": [
+    "json-schema-validator"
+  ],
+  "en": {
+    "name": "JSON Repair",
+    "description": "Repair broken or invalid JSON in your browser. Fix trailing commas, single quotes, unquoted keys, missing brackets, comments, and Python constants, then copy or download valid JSON without uploading your data.",
+    "hero": {
+      "trustHtml": "Runs in your browser. Your JSON is not uploaded by this tool."
+    },
+    "meta": {
+      "title": "JSON Repair – Fix Invalid JSON Online for Free",
+      "description": "Repair JSON online by fixing common syntax errors: trailing commas, single quotes, unquoted keys, missing brackets, comments, and Python constants. Copy or download valid JSON in your browser.",
+      "keywords": [
+        "json repair",
+        "repair json",
+        "fix json",
+        "fix invalid json",
+        "json fixer",
+        "repair json online",
+        "json syntax error fix",
+        "repair broken json"
+      ]
+    },
+    "features": [
+      {
+        "icon": "lucide:wrench",
+        "title": "Fix Common JSON Errors",
+        "description": "Repair JSON with trailing commas, single quotes instead of double quotes, unquoted object keys, and missing closing brackets. The tool applies best-effort fixes and returns valid JSON when the structure can be recovered."
+      },
+      {
+        "icon": "lucide:message-square-off",
+        "title": "Strip JSON Comments",
+        "description": "Remove single-line (//) and block (/* */) comments from JSON-like input. Comments are not valid standard JSON, so they are stripped before the result is serialized."
+      },
+      {
+        "icon": "lucide:quote",
+        "title": "Normalize Quotes",
+        "description": "Convert single quotes to double quotes and normalize smart quotes (\u201c \u201d \u2018 \u2019) to straight quotes. Unquoted object keys are wrapped in double quotes so the document parses."
+      },
+      {
+        "icon": "lucide:binary",
+        "title": "Handle Python and JS Constants",
+        "description": "Convert Python constants such as True, False, and None, plus common JavaScript values such as NaN and Infinity, into valid JSON values when they appear in the input."
+      },
+      {
+        "icon": "lucide:check-circle-2",
+        "title": "Validate After Repair",
+        "description": "The repaired output is parsed to confirm it is valid JSON before it is shown. If the document cannot be recovered, the tool reports an error instead of returning a partial or misleading result."
+      },
+      {
+        "icon": "lucide:copy",
+        "title": "Copy or Download",
+        "description": "Copy the repaired JSON to your clipboard or download it as a .json file for use in APIs, configuration, tests, or other development workflows."
+      },
+      {
+        "icon": "lucide:upload",
+        "title": "Paste or Open JSON",
+        "description": "Paste broken JSON into the input or open a local file. The repair runs in your browser, so the source text is not uploaded to a server."
+      },
+      {
+        "icon": "lucide:shield-check",
+        "title": "Browser-Based Processing",
+        "description": "Repair, validation, and formatting happen in your browser. The page does not require an account or send your JSON to a remote service."
+      }
+    ],
+    "ui": {
+      "label_input": "Broken JSON",
+      "placeholder_input": "{ name: \"Alice\", age: 28, active: True, }",
+      "label_output": "Repaired JSON",
+      "placeholder_output": "Repaired JSON will appear here...",
+      "label_indent": "Indent",
+      "indent_2": "2 spaces",
+      "indent_4": "4 spaces",
+      "indent_tab": "Tab",
+      "unit_chars": "characters",
+      "unit_bytes": "bytes",
+      "label_input_size": "Input size",
+      "label_output_size": "Repaired size",
+      "btn_repair": "Repair JSON",
+      "btn_copy": "Copy",
+      "btn_download": "Download JSON",
+      "error_empty_input": "Enter JSON or open a file first",
+      "error_cannot_repair": "This JSON could not be repaired",
+      "error_processing": "The JSON could not be processed"
+    },
+    "guide": [
+      {
+        "title": "Paste broken JSON",
+        "description": "Paste invalid JSON into the input field, or open a local .json file. The page accepts documents with trailing commas, single quotes, unquoted keys, comments, or missing brackets."
+      },
+      {
+        "title": "Repair the input",
+        "description": "Click Repair JSON. The tool attempts best-effort fixes and parses the result. If the document can be recovered, valid JSON is produced; otherwise an error is reported."
+      },
+      {
+        "title": "Review the valid output",
+        "description": "Check the repaired JSON in the output panel. Use the indent selector to switch between 2 spaces, 4 spaces, or a tab for the displayed result."
+      },
+      {
+        "title": "Copy or download",
+        "description": "Copy the repaired JSON or download it as a .json file. Validate it with a JSON schema validator before using it in production if the data is important."
+      }
+    ],
+    "example": {
+      "title": "JSON Repair Example",
+      "description": "Recover an invalid JSON document that uses comments, single quotes, unquoted keys, and a trailing comma.",
+      "inputLabel": "Broken JSON",
+      "input": "// user record\n{\n  name: 'Alice',\n  age: 28,\n  active: True,\n  tags: ['admin', 'user',],\n}",
+      "inputExplanation": "This document is not valid JSON: it has a // comment, single-quoted strings, an unquoted key, a Python True, and a trailing comma before the closing bracket.",
+      "outputLabel": "Repaired JSON",
+      "output": "{\n  \"name\": \"Alice\",\n  \"age\": 28,\n  \"active\": true,\n  \"tags\": [\n    \"admin\",\n    \"user\"\n  ]\n}",
+      "outputExplanation": "The repair strips the comment, converts quotes and the key, maps True to true, removes the trailing comma, and produces valid, parseable JSON.",
+      "note": "Repair is best-effort. It cannot invent missing data, so a document that is too structurally broken may still fail to repair."
+    },
+    "faq": [
+      {
+        "question": "What does JSON repair do?",
+        "answer": "JSON repair takes invalid JSON and applies best-effort fixes so the result is valid, parseable JSON. In short, it helps you fix JSON that other tools reject. It addresses common problems such as trailing commas, single quotes, unquoted keys, missing closing brackets, comments, and Python or JavaScript constants."
+      },
+      {
+        "question": "Can it fix invalid JSON?",
+        "answer": "It can fix invalid JSON when the structure can be recovered. It cannot invent missing data or guess an entirely wrong structure. If the input is too broken, the tool reports an error instead of returning a misleading result."
+      },
+      {
+        "question": "Does it remove comments from JSON?",
+        "answer": "Yes. Single-line (//) and block (/* */) comments are stripped, because comments are not part of standard JSON. If you specifically need JSON with comments, use a JSONC tool instead."
+      },
+      {
+        "question": "Does it change my data values?",
+        "answer": "Repair changes syntax, not your values. String contents, numbers, and structure are preserved. Constants such as Python True/False/None are mapped to their JSON equivalents true/false/null so the document becomes valid."
+      },
+      {
+        "question": "How are single quotes and unquoted keys handled?",
+        "answer": "Single quotes are converted to double quotes, and unquoted object keys are wrapped in double quotes. Smart quotes are also normalized to straight quotes so the document parses."
+      },
+      {
+        "question": "Can it handle Python or JavaScript constants?",
+        "answer": "Yes. Values such as True, False, None, NaN, and Infinity are converted to valid JSON values when they appear in the input. This is useful when pasting output from a Python or Node.js REPL."
+      },
+      {
+        "question": "Is my JSON data safe?",
+        "answer": "Yes. Repair, validation, and formatting run in your browser. Your JSON is not uploaded to a server and no account is required. Avoid pasting secrets such as passwords, tokens, or production credentials into any online tool."
+      },
+      {
+        "question": "What if repair fails?",
+        "answer": "If the document cannot be recovered, the tool shows an error instead of producing partial output. Review the source for missing or duplicated structural characters, then try again."
+      },
+      {
+        "question": "Is this a free JSON repair tool?",
+        "answer": "Yes. You can repair JSON, review the result, copy it, or download it without creating an account."
+      }
+    ],
+    "article": {
+      "title": "How to Repair Invalid JSON Online",
+      "content": "<h2>What Is JSON Repair?</h2><p>JSON repair is the process of turning invalid JSON into valid, parseable JSON. Real-world JSON often breaks because of copy-paste from code, exported configuration, or REPL output. A JSON fixer applies best-effort corrections so the document can be parsed again.</p><h2>Common JSON Errors This Tool Fixes</h2><ul><li><strong>Trailing commas:</strong> a comma before a closing <code>}</code> or <code>]</code> is removed.</li><li><strong>Single quotes:</strong> strings written with single quotes are converted to double quotes.</li><li><strong>Unquoted keys:</strong> object keys without quotes are wrapped in double quotes.</li><li><strong>Missing brackets:</strong> unclosed <code>{</code> or <code>[</code> are closed when the structure allows it.</li><li><strong>Comments:</strong> <code>//</code> and <code>/* */</code> comments are stripped.</li><li><strong>Python and JS constants:</strong> <code>True</code>, <code>False</code>, <code>None</code>, <code>NaN</code>, and <code>Infinity</code> are mapped to valid JSON.</li></ul><h2>How to Repair Broken JSON</h2><ol><li><strong>Paste the broken JSON:</strong> include comments, single quotes, or trailing commas if present.</li><li><strong>Repair:</strong> the tool applies fixes and parses the result.</li><li><strong>Review:</strong> confirm the output is valid JSON and adjust the indent if needed.</li><li><strong>Copy or download:</strong> use the repaired document in your workflow.</li></ol><h2>Repair vs Format</h2><p>Repair fixes syntax so the document becomes valid JSON. Formatting, by contrast, only changes indentation and spacing of JSON that is already valid. Use repair first; if you only need readable spacing on valid JSON, a formatter is enough.</p><h2>Limits of JSON Repair</h2><p>JSON syntax error fix is best-effort. It cannot invent missing data or recover a document whose structure is fundamentally wrong. If the input is too broken, the tool reports an error rather than returning a misleading result. After repair, validate important data with a JSON schema validator before using it in production.</p><h2>Privacy</h2><p>Repair runs entirely in your browser. Your JSON is not uploaded, and no account is required. Do not paste passwords, tokens, or production credentials into any online tool.</p>"
+    }
+  },
+  "zh": {
+    "name": "JSON 修复",
+    "description": "在浏览器里修复损坏或无效的 JSON：修掉尾随逗号、单引号、未加引号的键、缺失的括号、注释以及 Python 常量，然后复制或下载合法的 JSON，全程不上传你的数据。",
+    "hero": {
+      "trustHtml": "在你的浏览器中运行。你的 JSON 不会被本工具上传。"
+    },
+    "meta": {
+      "title": "JSON 修复 — 免费在线修复无效的 JSON",
+      "description": "在线修复 JSON 的常见语法错误：尾随逗号、单引号、未加引号的键、缺失的括号、注释以及 Python 常量。在浏览器中复制或下载合法的 JSON。",
+      "keywords": [
+        "json 修复",
+        "修复 json",
+        "json 修复工具",
+        "修复无效 json",
+        "在线修复 json",
+        "json 语法错误修复",
+        "修复损坏的 json"
+      ]
+    },
+    "features": [
+      {
+        "icon": "lucide:wrench",
+        "title": "修复常见 JSON 错误",
+        "description": "修复带尾随逗号、用单引号代替双引号、对象键未加引号、以及缺少闭合括号的 JSON。工具会做最大努力的修复，在结构可恢复时返回合法的 JSON。"
+      },
+      {
+        "icon": "lucide:message-square-off",
+        "title": "去除 JSON 注释",
+        "description": "从类 JSON 输入中删除单行（//）和块注释（/* */）。注释不属于标准 JSON，会在结果序列化之前被去掉。"
+      },
+      {
+        "icon": "lucide:quote",
+        "title": "统一引号",
+        "description": "把单引号转换为双引号，并把弯引号（“ ” ‘ ’）规范为直引号。未加引号的对象键会被包上双引号，使文档能够解析。"
+      },
+      {
+        "icon": "lucide:binary",
+        "title": "处理 Python 与 JS 常量",
+        "description": "当输入中出现 Python 常量（如 True、False、None）以及常见的 JavaScript 值（如 NaN、Infinity）时，会转换为合法的 JSON 值。"
+      },
+      {
+        "icon": "lucide:check-circle-2",
+        "title": "修复后校验",
+        "description": "修复后的输出会经过解析确认是合法的 JSON 才显示。如果文档无法恢复，工具会报错，而不是返回不完整或误导性的结果。"
+      },
+      {
+        "icon": "lucide:copy",
+        "title": "复制或下载",
+        "description": "把修复后的 JSON 复制到剪贴板，或下载为 .json 文件，用于 API、配置、测试或其他开发流程。"
+      },
+      {
+        "icon": "lucide:upload",
+        "title": "粘贴或打开文件",
+        "description": "把损坏的 JSON 粘贴到输入框，或打开本地文件。修复在你的浏览器中运行，源文本不会被上传到服务器。"
+      },
+      {
+        "icon": "lucide:shield-check",
+        "title": "浏览器本地处理",
+        "description": "修复、校验与格式化都在你的浏览器中完成。本页不需要注册账号，也不会把你的 JSON 发送到远端服务。"
+      }
+    ],
+    "ui": {
+      "label_input": "损坏的 JSON",
+      "placeholder_input": "{ name: \"Alice\", age: 28, active: True, }",
+      "label_output": "修复后的 JSON",
+      "placeholder_output": "修复后的 JSON 会显示在这里...",
+      "label_indent": "缩进",
+      "indent_2": "2 个空格",
+      "indent_4": "4 个空格",
+      "indent_tab": "Tab",
+      "unit_chars": "字符",
+      "unit_bytes": "字节",
+      "label_input_size": "输入体积",
+      "label_output_size": "修复后体积",
+      "btn_repair": "修复 JSON",
+      "btn_copy": "复制",
+      "btn_download": "下载 JSON",
+      "error_empty_input": "请先输入 JSON 或打开文件",
+      "error_cannot_repair": "这段 JSON 无法被修复",
+      "error_processing": "这段 JSON 无法处理"
+    },
+    "guide": [
+      {
+        "title": "粘贴损坏的 JSON",
+        "description": "把无效的 JSON 粘贴到输入框，或打开本地 .json 文件。页面接受带尾随逗号、单引号、未加引号的键、注释或缺失括号的文档。"
+      },
+      {
+        "title": "修复输入",
+        "description": "点击“修复 JSON”。工具会做最大努力的修复并解析结果。如果文档能恢复，就生成合法的 JSON；否则会报错。"
+      },
+      {
+        "title": "查看合法输出",
+        "description": "在输出面板检查修复后的 JSON。用缩进选择器在 2 空格、4 空格或 Tab 之间切换显示效果。"
+      },
+      {
+        "title": "复制或下载",
+        "description": "复制修复后的 JSON，或把它下载为 .json 文件。如果数据重要，建议再用 JSON Schema 校验器验证后再用于生产。"
+      }
+    ],
+    "example": {
+      "title": "JSON 修复示例",
+      "description": "恢复一段无效的 JSON：它带有注释、单引号、未加引号的键以及尾随逗号。",
+      "inputLabel": "损坏的 JSON",
+      "input": "// 用户记录\n{\n  name: 'Alice',\n  age: 28,\n  active: True,\n  tags: ['admin', 'user',],\n}",
+      "inputExplanation": "这段文档不是合法的 JSON：有 // 注释、单引号字符串、未加引号的键、Python 的 True，以及闭合括号前的尾随逗号。",
+      "outputLabel": "修复后的 JSON",
+      "output": "{\n  \"name\": \"Alice\",\n  \"age\": 28,\n  \"active\": true,\n  \"tags\": [\n    \"admin\",\n    \"user\"\n  ]\n}",
+      "outputExplanation": "修复过程去掉注释、转换引号与键、把 True 映射为 true、去掉尾随逗号，最终得到合法、可解析的 JSON。",
+      "note": "修复是最大努力的，它无法凭空补出缺失的数据，所以结构损坏过于严重的文档仍可能修复失败。"
+    },
+    "faq": [
+      {
+        "question": "JSON 修复是做什么的？",
+        "answer": "JSON 修复会接收无效的 JSON，做最大努力的修复，让结果变成合法、可解析的 JSON，也就是帮你修复无效 json。它处理尾随逗号、单引号、未加引号的键、缺失的闭合括号、注释，以及 Python 或 JavaScript 常量等常见问题。"
+      },
+      {
+        "question": "能修复无效 json 吗？",
+        "answer": "当结构可恢复时，它可以修复无效 json。它无法凭空补出缺失的数据，也无法猜测完全错误的结构。如果输入损坏过于严重，工具会报错，而不是返回误导性的结果。"
+      },
+      {
+        "question": "它会去掉 JSON 里的注释吗？",
+        "answer": "会。单行（//）和块注释（/* */）都会被去掉，因为注释不属于标准 JSON。如果你确实需要带注释的 JSON，请改用 JSONC 工具。"
+      },
+      {
+        "question": "修复会改变我的数据值吗？",
+        "answer": "修复只改语法，不改你的数据值。字符串内容、数字和结构体都会保留。像 Python 的 True/False/None 这类常量会被映射成 JSON 对应的 true/false/null，使文档合法。"
+      },
+      {
+        "question": "单引号和未加引号的键怎么处理？",
+        "answer": "单引号会被转换为双引号，未加引号的对象键会被包上双引号。弯引号也会被规范为直引号，让文档可以解析。"
+      },
+      {
+        "question": "能处理 Python 或 JavaScript 常量吗？",
+        "answer": "可以。当输入中出现 True、False、None、NaN、Infinity 等值时，会被转换为合法的 JSON 值。从 Python 或 Node.js 交互式环境粘贴输出时尤其有用。"
+      },
+      {
+        "question": "我的 JSON 数据安全吗？",
+        "answer": "安全。修复、校验与格式化都在你的浏览器中运行，JSON 不会被上传到服务器，也不需要注册账号。请不要在任何在线工具里粘贴密码、令牌或生产环境的凭据。"
+      },
+      {
+        "question": "修复失败怎么办？",
+        "answer": "如果文档无法恢复，工具会显示错误而不是输出半成品。检查源文档是否有缺失或重复的结构符号，然后再试一次。"
+      },
+      {
+        "question": "这是免费的 JSON 修复工具吗？",
+        "answer": "是。校验、修复、查看结果、复制与下载都不需要注册账号。"
+      }
+    ],
+    "article": {
+      "title": "如何在线修复无效的 JSON",
+      "content": "<h2>什么是 JSON 修复？</h2><p>JSON 修复是把无效的 JSON 变成合法、可解析 JSON 的过程。现实中的 JSON 经常因为从代码里复制、导出的配置或交互式环境输出而损坏。JSON 修复工具会做最大努力的修正，让文档可以再次被解析。</p><h2>本工具能修复的常见 JSON 错误</h2><ul><li><strong>尾随逗号：</strong>闭合 <code>}</code> 或 <code>]</code> 前的逗号会被去掉。</li><li><strong>单引号：</strong>用单引号写的字符串会被转换成双引号。</li><li><strong>未加引号的键：</strong>没有引号的键会被包上双引号。</li><li><strong>缺失括号：</strong>在结构允许时会补上未闭合的 <code>{</code> 或 <code>[</code>。</li><li><strong>注释：</strong><code>//</code> 与 <code>/* */</code> 注释会被去掉。</li><li><strong>Python 与 JS 常量：</strong><code>True</code>、<code>False</code>、<code>None</code>、<code>NaN</code>、<code>Infinity</code> 会映射成合法的 JSON。</li></ul><h2>如何修复损坏的 JSON</h2><ol><li><strong>粘贴损坏的 JSON：</strong>可以包含注释、单引号或尾随逗号。</li><li><strong>修复：</strong>工具应用修复并解析结果。</li><li><strong>查看：</strong>确认输出是合法 JSON，必要时调整缩进。</li><li><strong>复制或下载：</strong>把修复后的文档用于你的工作流。</li></ol><h2>修复与格式化的区别</h2><p>修复是把语法改对，让文档变成合法 JSON；而格式化只是给本来就合法的 JSON 调整缩进和空格。先修复；如果你只需要给合法 JSON 换个好看的间距，用格式化工具就够了。</p><h2>JSON 修复的局限</h2><p>json 语法错误修复是最大努力的，无法凭空补出缺失的数据，也恢复不了结构根本错误的文档。如果输入损坏过于严重，工具会报错而不是返回误导性的结果。修复之后，重要的数据建议再用 JSON Schema 校验器验证，再用于生产。</p><h2>隐私</h2><p>修复完全在你的浏览器中运行，JSON 不会被上传，也不需要账号。请不要在任何在线工具里粘贴密码、令牌或生产环境凭据。</p>"
+    }
+  }
+}

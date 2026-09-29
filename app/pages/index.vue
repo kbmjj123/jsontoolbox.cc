@@ -251,11 +251,16 @@ const { getBlogList } = useBlog()
 
 // FAQ items from i18n (逐个取值，避免 returnObjects 返回消息 AST)
 const faqItems = computed(() => {
-  const count = 5
-  return Array.from({ length: count }, (_, i) => ({
-    question: t(`home.faq.items.${i}.question`),
-    answer: t(`home.faq.items.${i}.answer`),
-  }))
+  const items: { question: string; answer: string }[] = []
+  let i = 0
+  while (true) {
+    const key = `home.faq.items.${i}.question`
+    const question = t(key)
+    if (!question || question === key) break // key 缺失即停止
+    items.push({ question, answer: t(`home.faq.items.${i}.answer`) })
+    i++
+  }
+  return items
 })
 
 // Blog posts via useBlog composable

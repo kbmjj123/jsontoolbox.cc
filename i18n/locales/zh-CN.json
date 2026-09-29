@@ -134,6 +134,26 @@
         {
           "question": "可以用于商业项目吗？",
           "answer": "当然可以。JSON工具箱采用 MIT 许可证，可自由用于个人和商业项目，没有任何限制。"
+        },
+        {
+          "question": "什么是 JSON？",
+          "answer": "JSON（JavaScript 对象表示法）是一种轻量、基于文本的格式，用于存储和交换结构化数据。它用键值对和有序列表表达数据，是 Web API 和配置文件最常用的格式。完整介绍请看我们的《什么是 JSON》指南。"
+        },
+        {
+          "question": "JSON 和 JSONL 有什么区别？",
+          "answer": "JSON 把数据存成单个文档（通常是一个数组或对象）。JSONL（JSON Lines）让每行放一个 JSON 值，便于流式传输或追加记录。用 JSON 转 JSONL 和 JSONL 转 JSON 工具可以在两者间转换。"
+        },
+        {
+          "question": "如何格式化或美化 JSON？",
+          "answer": "把 JSON 粘贴进 JSON 编辑器或 JSON 压缩工具，两者都能把紧凑的 JSON 重新缩进成易读的格式，也可以再压缩回单行。"
+        },
+        {
+          "question": "如何把 JSON 转换成 CSV 或 Excel？",
+          "answer": "用 JSON 转 CSV 可以把对象数组变成表格。Excel 转 JSON 与 JSON 转 Excel 可以在 JSON 和 .xlsx 文件之间互转，CSV 转 JSON 则负责反向转换。"
+        },
+        {
+          "question": "什么是 JSON Schema 校验？",
+          "answer": "JSON Schema 描述一个 JSON 文档应有的结构——必填字段、类型和格式。JSON Schema 校验器会检查你的数据是否符合。关于解析错误与结构违规的区别，请看《JSON 校验：语法 vs Schema》。"
         }
       ]
     },

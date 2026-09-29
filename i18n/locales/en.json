@@ -133,6 +133,26 @@
         {
           "question": "Can I use it for commercial projects?",
           "answer": "Absolutely. JSON Toolbox is licensed under MIT and can be used for personal and commercial projects without any restrictions."
+        },
+        {
+          "question": "What is JSON?",
+          "answer": "JSON (JavaScript Object Notation) is a lightweight, text-based format for storing and exchanging structured data. It uses key-value pairs and ordered lists, and is the most common format for web APIs and configuration files. See our What is JSON guide for a full introduction."
+        },
+        {
+          "question": "What is the difference between JSON and JSONL?",
+          "answer": "JSON stores data as a single document, usually one array or object. JSONL (JSON Lines) puts one JSON value on each line, which makes it easy to stream or append records. Use the JSON to JSONL and JSONL to JSON tools to convert between them."
+        },
+        {
+          "question": "How do I format or pretty-print JSON?",
+          "answer": "Paste your JSON into the JSON Editor or JSON Minifier. Both can re-indent compact JSON into a readable, pretty-printed layout, and can also minify it back to a single line."
+        },
+        {
+          "question": "How do I convert JSON to CSV or Excel?",
+          "answer": "Use JSON to CSV to turn an array of objects into a spreadsheet table. Excel to JSON and JSON to Excel move data between JSON and .xlsx files, while CSV to JSON handles the reverse direction."
+        },
+        {
+          "question": "What is JSON schema validation?",
+          "answer": "JSON Schema describes the expected structure of a JSON document: required fields, types, and formats. The JSON Schema Validator checks whether your data conforms. See JSON validation: syntax vs schema for the difference between a parse error and a schema violation."
         }
       ]
     },
