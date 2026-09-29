@@ -6,6 +6,7 @@
   "sort": 4,
   "applicationCategory": "DeveloperApplication",
   "nextSteps": [
+    "excel-to-json",
     "json-to-csv",
     "csv-to-json"
   ],

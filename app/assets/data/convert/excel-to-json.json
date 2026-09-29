@@ -1,0 +1,294 @@
+{
+  "slug": "excel-to-json",
+  "category": "convert",
+  "component": "ExcelToJson",
+  "icon": "lucide:table-2",
+  "sort": 20,
+  "applicationCategory": "DeveloperApplication",
+  "nextSteps": [
+    "json-to-excel",
+    "csv-to-json"
+  ],
+  "recommends": [
+    "json-to-csv"
+  ],
+  "en": {
+    "name": "Excel to JSON",
+    "description": "Convert Excel and CSV files to JSON in your browser. Upload an .xlsx, .xls, or .csv file, choose a sheet, and get a JSON array where each row becomes an object. Copy or download the result without uploading your data to a server.",
+    "hero": {
+      "trustHtml": "Runs in your browser. Your file is not uploaded by this tool."
+    },
+    "meta": {
+      "title": "Excel to JSON Converter – Convert XLSX to JSON Online",
+      "description": "Convert Excel to JSON online. Upload an .xlsx, .xls, or .csv file, pick a sheet, and turn each row into a JSON object. Copy or download the JSON in your browser.",
+      "keywords": [
+        "excel to json",
+        "convert excel to json",
+        "xlsx to json",
+        "excel to json converter",
+        "convert xls to json",
+        "excel json",
+        "xlsx to json online",
+        "spreadsheet to json"
+      ]
+    },
+    "features": [
+      {
+        "icon": "lucide:upload",
+        "title": "Upload Excel or CSV",
+        "description": "Open a local .xlsx, .xls, or .csv file. The file is read in your browser, so its contents are not uploaded to a server."
+      },
+      {
+        "icon": "lucide:layout-grid",
+        "title": "Pick a Sheet",
+        "description": "When a workbook contains more than one sheet, choose the sheet you want to convert. The selected sheet's rows become the JSON output."
+      },
+      {
+        "icon": "lucide:braces",
+        "title": "Rows Become Objects",
+        "description": "The first row is used as keys and each following row becomes a JSON object. The result is a JSON array you can use directly in code."
+      },
+      {
+        "icon": "lucide:table",
+        "title": "Preserve Cell Types",
+        "description": "Numbers stay numbers and text stays text. Empty cells are returned as empty strings so the object shape stays consistent across rows."
+      },
+      {
+        "icon": "lucide:copy",
+        "title": "Copy or Download",
+        "description": "Copy the JSON array to your clipboard or download it as a .json file for use in APIs, scripts, or data pipelines."
+      },
+      {
+        "icon": "lucide:shield-check",
+        "title": "Browser-Based Processing",
+        "description": "Reading, parsing, and conversion happen in your browser. The page does not require an account or send your file to a remote service."
+      }
+    ],
+    "ui": {
+      "label_input": "Excel / CSV file",
+      "label_output": "JSON Output",
+      "btn_choose": "Choose file",
+      "label_drop": "Drop an .xlsx, .xls, or .csv file here",
+      "label_sheet": "Sheet",
+      "placeholder_output": "JSON output will appear here...",
+      "status_rows": "{count} rows",
+      "btn_copy": "Copy",
+      "btn_download": "Download JSON",
+      "error_no_file": "Please choose an Excel or CSV file",
+      "error_read": "This file could not be read",
+      "error_empty": "No rows were found in the selected sheet",
+      "error_processing": "The file could not be converted",
+      "label_preview": "Source Preview",
+      "btn_view_text": "Text",
+      "btn_view_rich": "Rich",
+      "btn_view_table": "Table",
+      "note_preview_limit": "Showing first {shown} of {total} rows"
+    },
+    "guide": [
+      {
+        "title": "Choose an Excel or CSV file",
+        "description": "Click Choose file or drop an .xlsx, .xls, or .csv file into the input area. The file is read locally in your browser."
+      },
+      {
+        "title": "Select a sheet",
+        "description": "If the workbook has more than one sheet, pick the one you want to convert. The first row of that sheet is used as the JSON keys."
+      },
+      {
+        "title": "Review the JSON output",
+        "description": "Each row becomes a JSON object and all rows form an array. Numbers and text keep their cell types, and empty cells become empty strings."
+      },
+      {
+        "title": "Copy or download",
+        "description": "Copy the JSON array or download it as a .json file. Validate or clean the data afterward if you plan to use it in production."
+      }
+    ],
+    "example": {
+      "title": "Excel to JSON Example",
+      "description": "Turn the first sheet of a spreadsheet into a JSON array of objects.",
+      "inputLabel": "Spreadsheet (first sheet)",
+      "input": "Name,Age,Active\nAlice,28,TRUE\nBob,34,FALSE",
+      "inputExplanation": "This shows the first sheet as comma-separated values. Column headers become keys and each row becomes one JSON object.",
+      "outputLabel": "JSON Output",
+      "output": "[\n  {\n    \"Name\": \"Alice\",\n    \"Age\": 28,\n    \"Active\": true\n  },\n  {\n    \"Name\": \"Bob\",\n    \"Age\": 34,\n    \"Active\": false\n  }\n]",
+      "outputExplanation": "Each row is converted to an object. Numbers stay numbers and the TRUE/FALSE cells become JSON true/false values.",
+      "note": "Excel stores TRUE/FALSE and numbers in its own format; the converter maps them to the matching JSON types."
+    },
+    "faq": [
+      {
+        "question": "What file types can I convert?",
+        "answer": "You can convert .xlsx, .xls, and .csv files. Whether you convert xls to json or xlsx to json, the same parser reads all three formats, so a CSV export behaves like a single-sheet spreadsheet."
+      },
+      {
+        "question": "How are rows turned into JSON?",
+        "answer": "The first row of the selected sheet is treated as column headers and used as object keys. Each subsequent row becomes one JSON object. The final result is a JSON array of those objects."
+      },
+      {
+        "question": "What if my workbook has multiple sheets?",
+        "answer": "A sheet selector appears when more than one sheet is present. Choose the sheet you want; only the selected sheet is converted."
+      },
+      {
+        "question": "Are numbers and dates preserved?",
+        "answer": "Numeric cells are kept as JSON numbers and text cells as strings. Boolean cells such as TRUE/FALSE become JSON true/false. Spreadsheet date serials may be returned as numbers rather than formatted dates, because the converter reads raw cell values."
+      },
+      {
+        "question": "How are empty cells handled?",
+        "answer": "Empty cells are returned as empty strings so that every object has the same set of keys. If you need null instead, post-process the output."
+      },
+      {
+        "question": "Can I convert a large Excel file?",
+        "answer": "The practical limit depends on browser memory and the size of the file. Very large sheets may slow the page or the download. For huge exports, a local command-line tool such as a Python or Node script can be more reliable."
+      },
+      {
+        "question": "Is my file data safe?",
+        "answer": "Yes. The file is read and parsed in your browser. It is not uploaded to a server and no account is required. Avoid files that contain passwords, tokens, or other sensitive production data."
+      },
+      {
+        "question": "Is this a free Excel to JSON converter?",
+        "answer": "Yes. You can convert an Excel or CSV file, review the JSON, copy it, or download it without creating an account."
+      }
+    ],
+    "article": {
+      "title": "How to Convert Excel to JSON Online",
+      "content": "<h2>What Is Excel to JSON Conversion?</h2><p>Excel to JSON conversion, also called spreadsheet to JSON conversion, reads a table and produces a JSON array where each row becomes an object. An Excel JSON result is a portable format for moving tabular data from Excel or CSV into a web API, a configuration file, or a data pipeline.</p><h2>How the Conversion Works</h2><ol><li><strong>Open the file:</strong> choose an .xlsx, .xls, or .csv file. The file is read in your browser.</li><li><strong>Use the first row as keys:</strong> the header row becomes the object keys.</li><li><strong>Map each row:</strong> every following row becomes one JSON object.</li><li><strong>Collect the rows:</strong> all objects are returned as a JSON array.</li></ol><h2>Cell Types</h2><p>Numeric cells stay numbers, text cells stay strings, and boolean cells such as TRUE/FALSE become JSON true/false. Empty cells are returned as empty strings so that every object keeps the same keys. Raw date serials may appear as numbers because the converter reads the underlying cell value.</p><h2>Multiple Sheets</h2><p>When a workbook has more than one sheet, select the sheet you want to convert. Only the selected sheet is turned into JSON.</p><h2>When to Use It</h2><ul><li><strong>API payloads:</strong> turn a spreadsheet export into request bodies.</li><li><strong>Configuration:</strong> move tabular settings into JSON config.</li><li><strong>Data pipelines:</strong> feed cleaned rows into scripts.</li><li><strong>Prototyping:</strong> quickly get sample JSON from a table.</li></ul><h2>Privacy</h2><p>Conversion runs entirely in your browser. Your file is not uploaded and no account is required. Do not open files that contain passwords, tokens, or production credentials in any online tool.</p>"
+    }
+  },
+  "zh": {
+    "name": "Excel 转 JSON",
+    "description": "在浏览器里把 Excel 和 CSV 文件转换成 JSON。上传 .xlsx、.xls 或 .csv 文件，选择工作表，每一行会变成一个对象，最终输出一个 JSON 数组。复制或下载结果，全程不上传你的数据。",
+    "hero": {
+      "trustHtml": "在你的浏览器中运行。你的文件不会被本工具上传。"
+    },
+    "meta": {
+      "title": "Excel 转 JSON 转换器 — 在线把 XLSX 转为 JSON",
+      "description": "excel 转 json 在线：上传 .xlsx、.xls 或 .csv 文件，选择工作表，让每一行变成一个 JSON 对象。在浏览器中复制或下载 JSON。",
+      "keywords": [
+        "excel 转 json",
+        "xlsx 转 json",
+        "excel 转 json 在线",
+        "转换 excel 为 json",
+        "xls 转 json",
+        "表格转 json",
+        "excel json 转换"
+      ]
+    },
+    "features": [
+      {
+        "icon": "lucide:upload",
+        "title": "上传 Excel 或 CSV",
+        "description": "打开本地 .xlsx、.xls 或 .csv 文件。文件在你的浏览器中读取，内容不会被上传到服务器。"
+      },
+      {
+        "icon": "lucide:layout-grid",
+        "title": "选择工作表",
+        "description": "当工作簿包含多个工作表时，可以选择要转换的那一个。所选工作表里的行会变成 JSON 输出。"
+      },
+      {
+        "icon": "lucide:braces",
+        "title": "每行变成一个对象",
+        "description": "第一行用作键，其后的每一行变成一个 JSON 对象。结果是一个可以直接在代码中使用的 JSON 数组。"
+      },
+      {
+        "icon": "lucide:table",
+        "title": "保留单元格类型",
+        "description": "数字保持为数字，文本保持为文本。空单元格返回为空字符串，使每一行的对象结构保持一致。"
+      },
+      {
+        "icon": "lucide:copy",
+        "title": "复制或下载",
+        "description": "把 JSON 数组复制到剪贴板，或下载为 .json 文件，用于 API、脚本或数据管道。"
+      },
+      {
+        "icon": "lucide:shield-check",
+        "title": "浏览器本地处理",
+        "description": "读取、解析与转换都在你的浏览器中完成。本页不需要注册账号，也不会把你的文件发送到远端服务。"
+      }
+    ],
+    "ui": {
+      "label_input": "Excel / CSV 文件",
+      "label_output": "JSON 输出",
+      "btn_choose": "选择文件",
+      "label_drop": "把 .xlsx、.xls 或 .csv 文件拖到这里",
+      "label_sheet": "工作表",
+      "placeholder_output": "JSON 输出会显示在这里...",
+      "status_rows": "{count} 行",
+      "btn_copy": "复制",
+      "btn_download": "下载 JSON",
+      "error_no_file": "请选择一个 Excel 或 CSV 文件",
+      "error_read": "无法读取这个文件",
+      "error_empty": "所选工作表中没有可读的行",
+      "error_processing": "这个文件无法被转换",
+      "label_preview": "源数据预览",
+      "btn_view_text": "文本",
+      "btn_view_rich": "结构",
+      "btn_view_table": "表格",
+      "note_preview_limit": "仅预览前 {shown} 行，共 {total} 行"
+    },
+    "guide": [
+      {
+        "title": "选择 Excel 或 CSV 文件",
+        "description": "点击“选择文件”，或把 .xlsx、.xls 或 .csv 文件拖入输入区。文件会在你的浏览器本地读取。"
+      },
+      {
+        "title": "选择工作表",
+        "description": "如果工作簿有多个工作表，请选择要转换的那一个。该工作表的第一行会作为 JSON 的键。"
+      },
+      {
+        "title": "查看 JSON 输出",
+        "description": "每一行变成一个 JSON 对象，所有行组成一个数组。数字和文本会保留各自的单元格类型，空单元格变成空字符串。"
+      },
+      {
+        "title": "复制或下载",
+        "description": "复制 JSON 数组，或把它下载为 .json 文件。如果准备用于生产，建议后续再做校验或清洗。"
+      }
+    ],
+    "example": {
+      "title": "Excel 转 JSON 示例",
+      "description": "把电子表格的第一个工作表转换为 JSON 对象数组。",
+      "inputLabel": "电子表格（第一个工作表）",
+      "input": "Name,Age,Active\nAlice,28,TRUE\nBob,34,FALSE",
+      "inputExplanation": "这里用逗号分隔的形式表示第一个工作表。列标题会变成键，每一行会变成一个 JSON 对象。",
+      "outputLabel": "JSON 输出",
+      "output": "[\n  {\n    \"Name\": \"Alice\",\n    \"Age\": 28,\n    \"Active\": true\n  },\n  {\n    \"Name\": \"Bob\",\n    \"Age\": 34,\n    \"Active\": false\n  }\n]",
+      "outputExplanation": "每一行被转换成一个对象。数字保持为数字，TRUE/FALSE 单元格变成 JSON 的 true/false。",
+      "note": "Excel 以自身格式存储 TRUE/FALSE 和数字，转换器会把它们映射成对应的 JSON 类型。"
+    },
+    "faq": [
+      {
+        "question": "可以转换哪些文件类型？",
+        "answer": "可以转换 .xlsx、.xls 和 .csv 文件。无论 xlsx 转 json 还是 xls 转 json，用的都是同一个解析器，所以 CSV 导出文件的行为和单工作表电子表格一样。"
+      },
+      {
+        "question": "行是如何变成 JSON 的？",
+        "answer": "所选工作表的第一行被视为列标题，用作对象的键；其后每一行变成一个 JSON 对象。最终结果就是这些对象组成的 JSON 数组。"
+      },
+      {
+        "question": "如果工作簿有多个工作表怎么办？",
+        "answer": "当出现多个工作表时，会显示一个工作表选择器。选择你要转换的那一个，只有所选工作表会被转换。"
+      },
+      {
+        "question": "数字和日期会保留吗？",
+        "answer": "数字单元格会保留为 JSON 数字，文本单元格保留为字符串，TRUE/FALSE 这类布尔单元格会变成 JSON 的 true/false。电子表格的日期序列号可能以数字形式返回，因为转换器读取的是单元格的原始值。"
+      },
+      {
+        "question": "空单元格怎么处理？",
+        "answer": "空单元格会返回为空字符串，使每个对象都拥有相同的键集合。如果你需要 null，可以对输出再做一次后处理。"
+      },
+      {
+        "question": "可以转换很大的 Excel 文件吗？",
+        "answer": "实际限制取决于浏览器内存和文件大小。非常大的工作表可能拖慢页面或下载。对于超大的导出文件，本地的命令行工具（例如 Python 或 Node 脚本）往往更可靠。"
+      },
+      {
+        "question": "我的文件数据安全吗？",
+        "answer": "安全。文件在你的浏览器中读取和解析，不会被上传到服务器，也不需要注册账号。请勿打开含有密码、令牌或其他敏感生产数据的文件。"
+      },
+      {
+        "question": "这是免费的 Excel 转 JSON 转换器吗？",
+        "answer": "是。你可以转换 Excel 或 CSV 文件、查看 JSON、复制或下载，且不需要注册账号。"
+      }
+    ],
+    "article": {
+      "title": "如何在线把 Excel 转为 JSON",
+      "content": "<h2>什么是 Excel 转 JSON？</h2><p>转换 excel 为 json（也叫表格转 json）是指读取一张电子表格，并生成一个 JSON 数组，其中每一行变成一个对象。Excel JSON 转换常用于把表格数据从 Excel 或 CSV 搬进 Web API、配置文件或数据管道。</p><h2>转换是怎么进行的</h2><ol><li><strong>打开文件：</strong>选择 .xlsx、.xls 或 .csv 文件，文件在你的浏览器中读取。</li><li><strong>用第一行作为键：</strong>标题行变成对象的键。</li><li><strong>映射每一行：</strong>其后的每一行变成一个 JSON 对象。</li><li><strong>收集所有行：</strong>所有对象以 JSON 数组的形式返回。</li></ol><h2>单元格类型</h2><p>数字单元格保持为数字，文本单元格保持为字符串，TRUE/FALSE 这类布尔单元格会变成 JSON 的 true/false。空单元格返回为空字符串，使每个对象都保留相同的键。原始的日期序列号可能以数字形式出现，因为转换器读取的是单元格底层的值。</p><h2>多个工作表</h2><p>当工作簿有多个工作表时，选择你要转换的那一个，只有所选工作表会被转成 JSON。</p><h2>什么时候用它</h2><ul><li><strong>API 请求体：</strong>把表格导出变成请求数据。</li><li><strong>配置：</strong>把表格设置搬进 JSON 配置。</li><li><strong>数据管道：</strong>把清洗后的行喂给脚本。</li><li><strong>原型：</strong>从一张表快速得到示例 JSON。</li></ul><h2>隐私</h2><p>转换完全在你的浏览器中运行，文件不会被上传，也不需要账号。请勿在任何在线工具中打开含有密码、令牌或生产环境凭据的文件。</p>"
+    }
+  }
+}

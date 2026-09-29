@@ -1,0 +1,194 @@
+<svg
+  width="1200"
+  height="630"
+  viewBox="0 0 1200 630"
+  xmlns="http://www.w3.org/2000/svg"
+  role="img"
+  aria-labelledby="svg-title svg-description"
+>
+  <title id="svg-title">How to Open, View, and Edit a JSON File</title>
+  <desc id="svg-description">
+    A JsonToolBox tutorial cover showing a .json file being opened in a browser editor, with Windows, macOS, and browser options.
+  </desc>
+
+  <style>
+    :root {
+      --bg-color: #f8fafc;
+      --line-color: #e2e8f0;
+      --brace-color: #0284c7;
+      --title-color: #0f172a;
+      --subtitle-color: #475569;
+      --brand-color: #64748b;
+      --card-bg: #ffffff;
+      --card-border: #e2e8f0;
+      --key-color: #0369a1;
+      --value-color: #334155;
+      --punct-color: #cbd5e1;
+    }
+
+    :root.dark {
+      --bg-color: #0f172a;
+      --line-color: #1e293b;
+      --brace-color: #38bdf8;
+      --title-color: #e2e8f0;
+      --subtitle-color: #94a3b8;
+      --brand-color: #94a3b8;
+      --card-bg: #111c33;
+      --card-border: #1e293b;
+      --key-color: #7dd3fc;
+      --value-color: #cbd5e1;
+      --punct-color: #475569;
+    }
+  </style>
+
+  <!-- Background -->
+  <rect width="1200" height="630" fill="var(--bg-color)" />
+
+  <!-- Decorative code-like background lines -->
+  <g fill="var(--line-color)" opacity="0.6">
+    <rect x="72" y="56" width="184" height="14" rx="4" />
+    <rect x="72" y="86" width="136" height="14" rx="4" />
+    <rect x="72" y="116" width="168" height="14" rx="4" />
+
+    <rect x="944" y="56" width="180" height="14" rx="4" />
+    <rect x="990" y="86" width="136" height="14" rx="4" />
+    <rect x="958" y="116" width="166" height="14" rx="4" />
+  </g>
+
+  <!-- Big JSON braces -->
+  <text
+    x="74"
+    y="410"
+    font-family="ui-monospace, SFMono-Regular, Menlo, Consolas, monospace"
+    font-size="190"
+    font-weight="600"
+    fill="var(--brace-color)"
+    opacity="0.18"
+  >{</text>
+
+  <text
+    x="1000"
+    y="410"
+    font-family="ui-monospace, SFMono-Regular, Menlo, Consolas, monospace"
+    font-size="190"
+    font-weight="600"
+    fill="var(--brace-color)"
+    opacity="0.18"
+  >}</text>
+
+  <!-- Eyebrow -->
+  <text
+    x="600"
+    y="96"
+    text-anchor="middle"
+    font-family="ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, Segoe UI, Roboto, sans-serif"
+    font-size="22"
+    font-weight="700"
+    letter-spacing="6"
+    fill="#0284c7"
+  >TUTORIAL</text>
+
+  <!-- Title -->
+  <text
+    x="600"
+    y="172"
+    text-anchor="middle"
+    font-family="ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, Segoe UI, Roboto, sans-serif"
+    font-size="54"
+    font-weight="750"
+    fill="var(--title-color)"
+  >How to Open a JSON File</text>
+
+  <!-- Subtitle -->
+  <text
+    x="600"
+    y="218"
+    text-anchor="middle"
+    font-family="ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, Segoe UI, Roboto, sans-serif"
+    font-size="25"
+    fill="var(--subtitle-color)"
+  >View and edit it on Windows, macOS, Linux, or in a browser</text>
+
+  <!-- File card -->
+  <g transform="translate(96 258)">
+    <rect x="0" y="0" width="420" height="244" rx="20" fill="var(--card-bg)" stroke="var(--card-border)" stroke-width="2" />
+
+    <!-- file icon -->
+    <g transform="translate(28 26)">
+      <path d="M0 0 H34 L48 14 V60 H0 Z" fill="#eff6ff" stroke="#93c5fd" stroke-width="2" />
+      <path d="M34 0 V14 H48" fill="none" stroke="#93c5fd" stroke-width="2" />
+    </g>
+    <text
+      x="100"
+      y="48"
+      font-family="ui-monospace, SFMono-Regular, Menlo, Consolas, monospace"
+      font-size="19"
+      font-weight="700"
+      fill="var(--value-color)"
+    >data.json</text>
+
+    <!-- content preview -->
+    <g font-family="ui-monospace, SFMono-Regular, Menlo, Consolas, monospace" font-size="15">
+      <text x="28" y="100" fill="var(--punct-color)">{</text>
+      <text x="44" y="124"><tspan fill="var(--key-color)">"name"</tspan><tspan fill="var(--punct-color)">: </tspan><tspan fill="var(--value-color)">"Ada"</tspan><tspan fill="var(--punct-color)">,</tspan></text>
+      <text x="44" y="150"><tspan fill="var(--key-color)">"active"</tspan><tspan fill="var(--punct-color)">: </tspan><tspan fill="var(--value-color)">true</tspan></text>
+      <text x="28" y="176" fill="var(--punct-color)">}</text>
+    </g>
+
+    <!-- action chips -->
+    <g font-family="ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, Segoe UI, Roboto, sans-serif" font-size="14" font-weight="600">
+      <rect x="28" y="198" width="86" height="30" rx="15" fill="#eff6ff" stroke="#93c5fd" stroke-width="2" />
+      <text x="71" y="218" text-anchor="middle" fill="#1d4ed8">Open</text>
+
+      <rect x="126" y="198" width="86" height="30" rx="15" fill="#ecfdf5" stroke="#86efac" stroke-width="2" />
+      <text x="169" y="218" text-anchor="middle" fill="#15803d">View</text>
+
+      <rect x="224" y="198" width="86" height="30" rx="15" fill="#fffbeb" stroke="#fcd34d" stroke-width="2" />
+      <text x="267" y="218" text-anchor="middle" fill="#b45309">Edit</text>
+
+      <rect x="322" y="198" width="70" height="30" rx="15" fill="#f5f3ff" stroke="#c4b5fd" stroke-width="2" />
+      <text x="357" y="218" text-anchor="middle" fill="#7c3aed">Save</text>
+    </g>
+  </g>
+
+  <!-- Platform list -->
+  <g transform="translate(552 258)" font-family="ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, Segoe UI, Roboto, sans-serif">
+    <rect x="0" y="0" width="552" height="244" rx="20" fill="var(--card-bg)" stroke="#93c5fd" stroke-width="2" />
+    <rect x="0" y="0" width="552" height="44" rx="20" fill="#eff6ff" />
+    <rect x="0" y="22" width="552" height="22" fill="#eff6ff" />
+    <circle cx="28" cy="22" r="6" fill="#3b82f6" />
+    <text x="46" y="28" font-size="16" font-weight="700" fill="#1d4ed8">Open it with</text>
+
+    <g font-size="16">
+      <circle cx="30" cy="78" r="5" fill="#0284c7" />
+      <text x="48" y="83" fill="var(--value-color)">Windows — Notepad, Notepad++, VS Code</text>
+
+      <circle cx="30" cy="116" r="5" fill="#0284c7" />
+      <text x="48" y="121" fill="var(--value-color)">macOS — TextEdit (plain text), VS Code</text>
+
+      <circle cx="30" cy="154" r="5" fill="#0284c7" />
+      <text x="48" y="159" fill="var(--value-color)">Linux — nano, gedit, VS Code</text>
+
+      <circle cx="30" cy="192" r="5" fill="#0284c7" />
+      <text x="48" y="197" fill="var(--value-color)">Browser — drag &amp; drop or Ctrl / Cmd + O</text>
+    </g>
+
+    <rect x="28" y="214" width="212" height="0" fill="none" />
+  </g>
+
+  <!-- Bottom strip -->
+  <g font-family="ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, Segoe UI, Roboto, sans-serif" font-size="17" font-weight="600">
+    <rect x="252" y="524" width="696" height="40" rx="20" fill="#f1f5f9" stroke="var(--card-border)" stroke-width="2" />
+    <text x="600" y="550" text-anchor="middle" fill="#475569">Plain text — any editor opens it, the browser needs none</text>
+  </g>
+
+  <!-- Brand / site name -->
+  <text
+    x="600"
+    y="600"
+    text-anchor="middle"
+    font-family="ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, Segoe UI, Roboto, sans-serif"
+    font-size="18"
+    fill="var(--brand-color)"
+  >JsonToolBox · Developer Guide</text>
+</svg>

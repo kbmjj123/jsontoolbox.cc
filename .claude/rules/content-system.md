@@ -19,6 +19,7 @@ schema:
   h1: string              // Optional — custom H1 override
   date: Date              // Required — publish date
   lastmod: Date           // Optional — last modified
+  draft: boolean          // Default: false — true hides the post everywhere (list/detail/prev-next/sitemap/llms.txt)
   image: string           // Optional — cover image
   tags: string[]          // Optional
   author: string          // Default: 'JSON Toolbox Team'

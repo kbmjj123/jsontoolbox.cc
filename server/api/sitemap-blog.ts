@@ -1,6 +1,7 @@
 // Sitemap Blog API - returns blog URLs for sitemap generation
 import { readdirSync, readFileSync, existsSync } from 'fs'
 import { resolve } from 'path'
+import { isDraft } from '../utils/blog'
 
 interface BlogSitemapEntry {
   loc: string
@@ -30,6 +31,10 @@ export default defineEventHandler(() => {
 
       try {
         const raw = readFileSync(filePath, 'utf-8')
+
+        // 草稿文章不进 sitemap
+        if (isDraft(raw)) continue
+
         // Extract frontmatter dates
         const dateMatch = raw.match(/^date:\s*(.+)$/m)
         const lastmodMatch = raw.match(/^lastmod:\s*(.+)$/m)

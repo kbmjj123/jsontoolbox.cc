@@ -13,6 +13,7 @@ export default defineContentConfig({
         h1: z.string().optional(),
         date: z.date(),
         lastmod: z.date().optional(),
+        draft: z.boolean().default(false),
         image: z.string().optional(),
         tags: z.array(z.string()).optional(),
         author: z.string().default('JSON Toolbox Team'),

@@ -1,0 +1,222 @@
+<svg
+  width="1200"
+  height="630"
+  viewBox="0 0 1200 630"
+  xmlns="http://www.w3.org/2000/svg"
+  role="img"
+  aria-labelledby="svg-title svg-description"
+>
+  <title id="svg-title">JSON vs YAML: When to Use Each Format</title>
+  <desc id="svg-description">
+    A JsonToolBox guide cover comparing punctuation-based JSON with indentation-based YAML, shown side by side.
+  </desc>
+
+  <style>
+    :root {
+      --bg-color: #f8fafc;
+      --line-color: #e2e8f0;
+      --brace-color: #0284c7;
+      --title-color: #0f172a;
+      --subtitle-color: #475569;
+      --brand-color: #64748b;
+      --card-bg: #ffffff;
+      --card-border: #e2e8f0;
+      --key-color: #0369a1;
+      --value-color: #334155;
+      --punct-color: #fb7185;
+      --comment-color: #94a3b8;
+    }
+
+    :root.dark {
+      --bg-color: #0f172a;
+      --line-color: #1e293b;
+      --brace-color: #38bdf8;
+      --title-color: #e2e8f0;
+      --subtitle-color: #94a3b8;
+      --brand-color: #94a3b8;
+      --card-bg: #111c33;
+      --card-border: #1e293b;
+      --key-color: #7dd3fc;
+      --value-color: #cbd5e1;
+      --punct-color: #fda4af;
+      --comment-color: #64748b;
+    }
+  </style>
+
+  <!-- Background -->
+  <rect width="1200" height="630" fill="var(--bg-color)" />
+
+  <!-- Decorative code-like background lines -->
+  <g fill="var(--line-color)" opacity="0.6">
+    <rect x="72" y="52" width="182" height="14" rx="4" />
+    <rect x="72" y="82" width="132" height="14" rx="4" />
+    <rect x="72" y="112" width="162" height="14" rx="4" />
+
+    <rect x="950" y="52" width="178" height="14" rx="4" />
+    <rect x="996" y="82" width="132" height="14" rx="4" />
+    <rect x="964" y="112" width="160" height="14" rx="4" />
+  </g>
+
+  <!-- Big JSON braces -->
+  <text
+    x="74"
+    y="408"
+    font-family="ui-monospace, SFMono-Regular, Menlo, Consolas, monospace"
+    font-size="190"
+    font-weight="600"
+    fill="var(--brace-color)"
+    opacity="0.18"
+  >{</text>
+
+  <text
+    x="1000"
+    y="408"
+    font-family="ui-monospace, SFMono-Regular, Menlo, Consolas, monospace"
+    font-size="190"
+    font-weight="600"
+    fill="var(--brace-color)"
+    opacity="0.18"
+  >}</text>
+
+  <!-- Eyebrow -->
+  <text
+    x="600"
+    y="94"
+    text-anchor="middle"
+    font-family="ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, Segoe UI, Roboto, sans-serif"
+    font-size="22"
+    font-weight="700"
+    letter-spacing="6"
+    fill="#0284c7"
+  >FORMAT GUIDE</text>
+
+  <!-- Title -->
+  <text
+    x="600"
+    y="172"
+    text-anchor="middle"
+    font-family="ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, Segoe UI, Roboto, sans-serif"
+    font-size="58"
+    font-weight="750"
+    fill="var(--title-color)"
+  >JSON vs YAML</text>
+
+  <!-- Subtitle -->
+  <text
+    x="600"
+    y="218"
+    text-anchor="middle"
+    font-family="ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, Segoe UI, Roboto, sans-serif"
+    font-size="25"
+    fill="var(--subtitle-color)"
+  >Machines read JSON · humans edit YAML</text>
+
+  <!-- JSON card -->
+  <g transform="translate(96 256)">
+    <rect x="0" y="0" width="464" height="244" rx="20" fill="var(--card-bg)" stroke="#93c5fd" stroke-width="2" />
+    <rect x="0" y="0" width="464" height="44" rx="20" fill="#eff6ff" />
+    <rect x="0" y="22" width="464" height="22" fill="#eff6ff" />
+    <circle cx="28" cy="22" r="6" fill="#3b82f6" />
+    <text
+      x="46"
+      y="28"
+      font-family="ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, Segoe UI, Roboto, sans-serif"
+      font-size="16"
+      font-weight="700"
+      fill="#1d4ed8"
+    >JSON</text>
+    <text
+      x="438"
+      y="28"
+      text-anchor="end"
+      font-family="ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, Segoe UI, Roboto, sans-serif"
+      font-size="13"
+      fill="#64748b"
+    >for machines</text>
+
+    <g font-family="ui-monospace, SFMono-Regular, Menlo, Consolas, monospace" font-size="16">
+      <text x="28" y="82" fill="var(--punct-color)">{</text>
+      <text x="46" y="108"><tspan fill="var(--key-color)">"name"</tspan><tspan fill="var(--punct-color)">: </tspan><tspan fill="var(--value-color)">"Ada"</tspan><tspan fill="var(--punct-color)">,</tspan></text>
+      <text x="46" y="134"><tspan fill="var(--key-color)">"active"</tspan><tspan fill="var(--punct-color)">: </tspan><tspan fill="var(--value-color)">true</tspan><tspan fill="var(--punct-color)">,</tspan></text>
+      <text x="46" y="160"><tspan fill="var(--key-color)">"roles"</tspan><tspan fill="var(--punct-color)">: [</tspan><tspan fill="var(--value-color)">"admin"</tspan><tspan fill="var(--punct-color)">,</tspan><tspan fill="var(--value-color)">"editor"</tspan><tspan fill="var(--punct-color)">]</tspan></text>
+      <text x="28" y="188" fill="var(--punct-color)">}</text>
+    </g>
+
+    <!-- punctuation markers -->
+    <g fill="#fecaca">
+      <rect x="46" y="114" width="62" height="7" rx="3" />
+      <rect x="150" y="114" width="6" height="7" rx="3" />
+    </g>
+
+    <text
+      x="28"
+      y="226"
+      font-family="ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, Segoe UI, Roboto, sans-serif"
+      font-size="14"
+      fill="#64748b"
+    >braces, quotes, commas · no comments</text>
+  </g>
+
+  <!-- YAML card -->
+  <g transform="translate(640 256)">
+    <rect x="0" y="0" width="464" height="244" rx="20" fill="var(--card-bg)" stroke="#86efac" stroke-width="2" />
+    <rect x="0" y="0" width="464" height="44" rx="20" fill="#ecfdf5" />
+    <rect x="0" y="22" width="464" height="22" fill="#ecfdf5" />
+    <circle cx="28" cy="22" r="6" fill="#22c55e" />
+    <text
+      x="46"
+      y="28"
+      font-family="ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, Segoe UI, Roboto, sans-serif"
+      font-size="16"
+      font-weight="700"
+      fill="#15803d"
+    >YAML</text>
+    <text
+      x="438"
+      y="28"
+      text-anchor="end"
+      font-family="ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, Segoe UI, Roboto, sans-serif"
+      font-size="13"
+      fill="#64748b"
+    >for humans</text>
+
+    <g font-family="ui-monospace, SFMono-Regular, Menlo, Consolas, monospace" font-size="16">
+      <text x="28" y="82"><tspan fill="var(--key-color)">name</tspan><tspan fill="var(--punct-color)">: </tspan><tspan fill="var(--value-color)">Ada</tspan></text>
+      <text x="28" y="108"><tspan fill="var(--key-color)">active</tspan><tspan fill="var(--punct-color)">: </tspan><tspan fill="var(--value-color)">true</tspan></text>
+      <text x="28" y="134"><tspan fill="var(--key-color)">roles</tspan><tspan fill="var(--punct-color)">:</tspan></text>
+      <text x="46" y="160"><tspan fill="var(--value-color)">- admin</tspan></text>
+      <text x="46" y="186"><tspan fill="var(--value-color)">- editor</tspan></text>
+      <text x="28" y="216"><tspan fill="var(--comment-color)"># indented by two spaces</tspan></text>
+    </g>
+
+    <!-- indentation guides -->
+    <g stroke="#bbf7d0" stroke-width="2">
+      <path d="M34 148 V192" />
+      <path d="M28 82 V108" stroke="#d1fae5" />
+    </g>
+
+    <text
+      x="28"
+      y="240"
+      font-family="ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, Segoe UI, Roboto, sans-serif"
+      font-size="14"
+      fill="#64748b"
+    >indentation, no commas · comments allowed</text>
+  </g>
+
+  <!-- Bottom strip -->
+  <g font-family="ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, Segoe UI, Roboto, sans-serif" font-size="17" font-weight="600">
+    <rect x="264" y="524" width="672" height="40" rx="20" fill="#f1f5f9" stroke="var(--card-border)" stroke-width="2" />
+    <text x="600" y="550" text-anchor="middle" fill="#475569">Same shapes · different readers</text>
+  </g>
+
+  <!-- Brand / site name -->
+  <text
+    x="600"
+    y="600"
+    text-anchor="middle"
+    font-family="ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, Segoe UI, Roboto, sans-serif"
+    font-size="18"
+    fill="var(--brand-color)"
+  >JsonToolBox · Developer Guide</text>
+</svg>

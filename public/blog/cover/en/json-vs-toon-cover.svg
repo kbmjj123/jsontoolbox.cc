@@ -1,0 +1,214 @@
+<svg
+  width="1200"
+  height="630"
+  viewBox="0 0 1200 630"
+  xmlns="http://www.w3.org/2000/svg"
+  role="img"
+  aria-labelledby="svg-title svg-description"
+>
+  <title id="svg-title">JSON vs TOON: When a Token-Efficient Format Pays Off</title>
+  <desc id="svg-description">
+    A JsonToolBox guide cover comparing punctuation-heavy JSON with TOON's tabular form, where field names are declared once.
+  </desc>
+
+  <style>
+    :root {
+      --bg-color: #f8fafc;
+      --line-color: #e2e8f0;
+      --brace-color: #0284c7;
+      --title-color: #0f172a;
+      --subtitle-color: #475569;
+      --brand-color: #64748b;
+      --card-bg: #ffffff;
+      --card-border: #e2e8f0;
+      --key-color: #0369a1;
+      --value-color: #334155;
+      --punct-color: #fb7185;
+    }
+
+    :root.dark {
+      --bg-color: #0f172a;
+      --line-color: #1e293b;
+      --brace-color: #38bdf8;
+      --title-color: #e2e8f0;
+      --subtitle-color: #94a3b8;
+      --brand-color: #94a3b8;
+      --card-bg: #111c33;
+      --card-border: #1e293b;
+      --key-color: #7dd3fc;
+      --value-color: #cbd5e1;
+      --punct-color: #fda4af;
+    }
+  </style>
+
+  <!-- Background -->
+  <rect width="1200" height="630" fill="var(--bg-color)" />
+
+  <!-- Decorative code-like background lines -->
+  <g fill="var(--line-color)" opacity="0.6">
+    <rect x="72" y="56" width="186" height="14" rx="4" />
+    <rect x="72" y="86" width="138" height="14" rx="4" />
+    <rect x="72" y="116" width="170" height="14" rx="4" />
+
+    <rect x="942" y="56" width="182" height="14" rx="4" />
+    <rect x="988" y="86" width="138" height="14" rx="4" />
+    <rect x="956" y="116" width="168" height="14" rx="4" />
+  </g>
+
+  <!-- Big JSON braces -->
+  <text
+    x="74"
+    y="410"
+    font-family="ui-monospace, SFMono-Regular, Menlo, Consolas, monospace"
+    font-size="190"
+    font-weight="600"
+    fill="var(--brace-color)"
+    opacity="0.18"
+  >{</text>
+
+  <text
+    x="1000"
+    y="410"
+    font-family="ui-monospace, SFMono-Regular, Menlo, Consolas, monospace"
+    font-size="190"
+    font-weight="600"
+    fill="var(--brace-color)"
+    opacity="0.18"
+  >}</text>
+
+  <!-- Eyebrow -->
+  <text
+    x="600"
+    y="96"
+    text-anchor="middle"
+    font-family="ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, Segoe UI, Roboto, sans-serif"
+    font-size="22"
+    font-weight="700"
+    letter-spacing="6"
+    fill="#0284c7"
+  >FORMAT GUIDE</text>
+
+  <!-- Title -->
+  <text
+    x="600"
+    y="174"
+    text-anchor="middle"
+    font-family="ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, Segoe UI, Roboto, sans-serif"
+    font-size="58"
+    font-weight="750"
+    fill="var(--title-color)"
+  >JSON vs TOON</text>
+
+  <!-- Subtitle -->
+  <text
+    x="600"
+    y="220"
+    text-anchor="middle"
+    font-family="ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, Segoe UI, Roboto, sans-serif"
+    font-size="25"
+    fill="var(--subtitle-color)"
+  >Same data model · fewer tokens for uniform records</text>
+
+  <!-- JSON card -->
+  <g transform="translate(96 266)">
+    <rect x="0" y="0" width="464" height="232" rx="20" fill="var(--card-bg)" stroke="#93c5fd" stroke-width="2" />
+    <rect x="0" y="0" width="464" height="44" rx="20" fill="#eff6ff" />
+    <rect x="0" y="22" width="464" height="22" fill="#eff6ff" />
+    <circle cx="28" cy="22" r="6" fill="#3b82f6" />
+    <text
+      x="46"
+      y="28"
+      font-family="ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, Segoe UI, Roboto, sans-serif"
+      font-size="16"
+      font-weight="700"
+      fill="#1d4ed8"
+    >minified JSON</text>
+    <text
+      x="438"
+      y="28"
+      text-anchor="end"
+      font-family="ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, Segoe UI, Roboto, sans-serif"
+      font-size="13"
+      fill="#64748b"
+    >keys repeat</text>
+
+    <g font-family="ui-monospace, SFMono-Regular, Menlo, Consolas, monospace" font-size="16">
+      <text x="26" y="84"><tspan fill="var(--punct-color)">{</tspan><tspan fill="var(--value-color)">"users"</tspan><tspan fill="var(--punct-color)">:[</tspan></text>
+      <text x="26" y="112"><tspan fill="var(--punct-color)">{</tspan><tspan fill="var(--key-color)">"id"</tspan><tspan fill="var(--punct-color)">:</tspan><tspan fill="var(--value-color)">1</tspan><tspan fill="var(--punct-color)">,</tspan><tspan fill="var(--key-color)">"name"</tspan><tspan fill="var(--punct-color)">:</tspan><tspan fill="var(--value-color)">"Ada"</tspan><tspan fill="var(--punct-color)">},</tspan></text>
+      <text x="26" y="140"><tspan fill="var(--punct-color)">{</tspan><tspan fill="var(--key-color)">"id"</tspan><tspan fill="var(--punct-color)">:</tspan><tspan fill="var(--value-color)">2</tspan><tspan fill="var(--punct-color)">,</tspan><tspan fill="var(--key-color)">"name"</tspan><tspan fill="var(--punct-color)">:</tspan><tspan fill="var(--value-color)">"Bob"</tspan><tspan fill="var(--punct-color)">}]}</tspan></text>
+    </g>
+
+    <!-- repeated-key markers -->
+    <g fill="#fecaca">
+      <rect x="26" y="120" width="96" height="8" rx="4" />
+      <rect x="160" y="120" width="120" height="8" rx="4" />
+      <rect x="26" y="148" width="96" height="8" rx="4" />
+      <rect x="160" y="148" width="120" height="8" rx="4" />
+    </g>
+
+    <text
+      x="26"
+      y="196"
+      font-family="ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, Segoe UI, Roboto, sans-serif"
+      font-size="14"
+      fill="#64748b"
+    >braces, quotes and commas on every record</text>
+  </g>
+
+  <!-- TOON card -->
+  <g transform="translate(640 266)">
+    <rect x="0" y="0" width="464" height="232" rx="20" fill="var(--card-bg)" stroke="#86efac" stroke-width="2" />
+    <rect x="0" y="0" width="464" height="44" rx="20" fill="#ecfdf5" />
+    <rect x="0" y="22" width="464" height="22" fill="#ecfdf5" />
+    <circle cx="28" cy="22" r="6" fill="#22c55e" />
+    <text
+      x="46"
+      y="28"
+      font-family="ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, Segoe UI, Roboto, sans-serif"
+      font-size="16"
+      font-weight="700"
+      fill="#15803d"
+    >TOON</text>
+    <text
+      x="438"
+      y="28"
+      text-anchor="end"
+      font-family="ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, Segoe UI, Roboto, sans-serif"
+      font-size="13"
+      fill="#64748b"
+    >keys once</text>
+
+    <g font-family="ui-monospace, SFMono-Regular, Menlo, Consolas, monospace" font-size="16">
+      <text x="28" y="84"><tspan fill="var(--value-color)">users</tspan><tspan fill="var(--punct-color)">[</tspan><tspan fill="var(--value-color)">2</tspan><tspan fill="var(--punct-color)">]{</tspan><tspan fill="var(--key-color)">id,name</tspan><tspan fill="var(--punct-color)">}:</tspan></text>
+      <text x="28" y="120"><tspan fill="var(--value-color)">  1,Ada</tspan></text>
+      <text x="28" y="148"><tspan fill="var(--value-color)">  2,Bob</tspan></text>
+    </g>
+
+    <!-- header highlight -->
+    <rect x="24" y="92" width="248" height="6" rx="3" fill="#bbf7d0" />
+
+    <text
+      x="28"
+      y="196"
+      font-family="ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, Segoe UI, Roboto, sans-serif"
+      font-size="14"
+      fill="#64748b"
+    >tabular form: header once, one row per record</text>
+  </g>
+
+  <!-- Bottom strip -->
+  <g font-family="ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, Segoe UI, Roboto, sans-serif" font-size="17" font-weight="600">
+    <rect x="228" y="524" width="744" height="40" rx="20" fill="#f1f5f9" stroke="var(--card-border)" stroke-width="2" />
+    <text x="600" y="550" text-anchor="middle" fill="#475569">Measure against minified JSON · not a fixed percentage</text>
+  </g>
+
+  <!-- Brand / site name -->
+  <text
+    x="600"
+    y="600"
+    text-anchor="middle"
+    font-family="ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, Segoe UI, Roboto, sans-serif"
+    font-size="18"
+    fill="var(--brand-color)"
+  >JsonToolBox · Developer Guide</text>
+</svg>

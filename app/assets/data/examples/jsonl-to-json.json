@@ -1,0 +1,14 @@
+[
+  {
+    "id": "records",
+    "label_en": "Two JSON Objects",
+    "label_zh": "两个 JSON 对象",
+    "input": "{\"id\": 1, \"name\": \"Alice\", \"active\": true}\n{\"id\": 2, \"name\": \"Bob\", \"active\": false}"
+  },
+  {
+    "id": "numbers",
+    "label_en": "Mixed Values",
+    "label_zh": "混合值",
+    "input": "1\n\"hello\"\n{ \"key\": \"value\" }"
+  }
+]

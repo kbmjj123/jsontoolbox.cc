@@ -10,6 +10,7 @@ category: "json_tools"
 h1: "Custom H1 if different from title (optional)"
 date: 2026-09-03
 lastmod: 2026-09-03
+draft: false
 author: "JSON Toolbox Team"
 image: "/blog/cover/{locale}/{slug}-cover.svg"
 tags: ["JSON", "JSON Editor", "Related Tool", "Topic"]
@@ -31,6 +32,7 @@ promo:
 | `h1` | ❌ | Override if H1 should differ from `<title>` |
 | `date` | ✅ | Publish date, YYYY-MM-DD format |
 | `lastmod` | ❌ | Last modified date |
+| `draft` | ❌ | Default `false`. Set `true` to hide the post from listing, detail page, prev/next, sitemap and llms.txt until it's ready |
 | `author` | ❌ | Default: "JSON Toolbox Team" |
 | `image` | ❌ | Cover image path. Use pattern: `/blog/cover/{locale}/{slug}-cover.svg` |
 | `tags` | ❌ | Array of relevant tags |

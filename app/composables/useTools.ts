@@ -45,6 +45,10 @@ const FEATURED_CONFIG = [
     category: 'format',
   },
   {
+    slug: 'json-repair',
+    category: 'format',
+  },
+  {
     slug: 'json-to-xml',
     category: 'convert',
   },
@@ -70,6 +74,22 @@ const FEATURED_CONFIG = [
   },
   {
     slug: 'json-to-toon',
+    category: 'convert',
+  },
+  {
+    slug: 'excel-to-json',
+    category: 'convert',
+  },
+  {
+    slug: 'json-to-jsonl',
+    category: 'convert',
+  },
+  {
+    slug: 'jsonl-to-json',
+    category: 'convert',
+  },
+  {
+    slug: 'json-array-generator',
     category: 'convert',
   },
 ]

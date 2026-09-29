@@ -1,0 +1,280 @@
+{
+  "slug": "json-array-generator",
+  "category": "convert",
+  "component": "JsonArrayGenerator",
+  "icon": "lucide:boxes",
+  "sort": 23,
+  "applicationCategory": "DeveloperApplication",
+  "nextSteps": [
+    "json-minifier",
+    "json-to-csv"
+  ],
+  "recommends": [
+    "json-editor"
+  ],
+  "en": {
+    "name": "JSON Array Generator",
+    "description": "Generate a sample JSON array in your browser. Set the number of objects and the field names, and get a pretty-printed JSON array of example objects you can copy, download, or use as test data.",
+    "hero": {
+      "trustHtml": "Runs in your browser. Your data is not uploaded by this tool."
+    },
+    "meta": {
+      "title": "JSON Array Generator – Generate a JSON Array Example Online",
+      "description": "Generate a JSON array online. Set the item count and field names to create a sample JSON array of example objects. Copy or download the result in your browser.",
+      "keywords": [
+        "json array generator",
+        "json array example",
+        "generate json array",
+        "json array maker",
+        "sample json array",
+        "create json array",
+        "json array of objects",
+        "mock json data generator",
+        "generate json array with types"
+      ]
+    },
+    "features": [
+      {
+        "icon": "lucide:boxes",
+        "title": "Set the Item Count",
+        "description": "Choose how many objects the array should contain. The generator creates exactly that many items, numbered from the first element."
+      },
+      {
+        "icon": "lucide:tags",
+        "title": "Define Field Names",
+        "description": "Type a comma-separated list of field names. Each object in the array uses those keys, so the result matches the shape you need."
+      },
+      {
+        "icon": "lucide:sparkles",
+        "title": "Smart Sample Values",
+        "description": "Field types are inferred from the name: id gets a number, email gets an address, age gets a number, and so on. Add an explicit type with field:type (such as age:int:18-65, active:bool, price:float, status:enum:active|inactive, tags:array) to force a type, and use dotted names like address.city to build nested objects."
+      },
+      {
+        "icon": "lucide:braces",
+        "title": "Pretty-Printed Output",
+        "description": "The result is a formatted JSON array you can read immediately. Copy it or download it as a .json file."
+      },
+      {
+        "icon": "lucide:copy",
+        "title": "Copy or Download",
+        "description": "Copy the generated array to your clipboard or download it as a .json file for use as fixtures, mocks, or API examples."
+      },
+      {
+        "icon": "lucide:shield-check",
+        "title": "Browser-Based Processing",
+        "description": "Generation happens in your browser. The page does not require an account or send your input to a remote service."
+      }
+    ],
+    "ui": {
+      "label_count": "Number of objects",
+      "label_fields": "Field names (comma-separated)",
+      "placeholder_fields": "id, name, email",
+      "hint_fields": "Optional types: field:type or field:type:rule. e.g. age:int:18-65, active:bool, price:float, status:enum:active|inactive, tags:array, address.city (nesting).",
+      "label_output": "Generated JSON Array",
+      "placeholder_output": "The generated array will appear here...",
+      "btn_view_text": "Text",
+      "btn_view_rich": "Rich",
+      "btn_view_table": "Table",
+      "sample_name": "Name {n}",
+      "sample_value": "value {n}",
+      "sample_text": "text {n}",
+      "btn_generate": "Generate JSON Array",
+      "btn_copy": "Copy",
+      "btn_download": "Download JSON",
+      "error_empty_fields": "Enter at least one field name",
+      "error_invalid_count": "Enter a number greater than zero",
+      "error_processing": "The array could not be generated"
+    },
+    "guide": [
+      {
+        "title": "Set the item count",
+        "description": "Enter how many objects you want in the array. The count must be a positive number."
+      },
+      {
+        "title": "List the field names",
+        "description": "Type the field names separated by commas, for example id, name, email. Add a type with field:type to force a value type (age:int:18-65, active:bool, price:float, status:enum:active|inactive, tags:array), and use dotted names like address.city to nest objects."
+      },
+      {
+        "title": "Generate the array",
+        "description": "Click Generate JSON Array. The tool builds a pretty-printed JSON array of example objects."
+      },
+      {
+        "title": "Copy or download",
+        "description": "Copy the array or download it as a .json file. Use it as test data, a mock response, or a documentation example."
+      }
+    ],
+    "example": {
+      "title": "JSON Array Generator Example",
+      "description": "Create a small array of example user objects with typed and nested fields.",
+      "inputLabel": "Settings",
+      "input": "Count: 2\nFields: id, name, email, age:int:18-40, active:bool, address.city",
+      "inputExplanation": "Two objects with inferred fields plus a typed age, a boolean flag, and a nested address.city key.",
+      "outputLabel": "Generated JSON Array",
+      "output": "[\n  {\n    \"id\": 1,\n    \"name\": \"Name 1\",\n    \"email\": \"user1@example.com\",\n    \"age\": 27,\n    \"active\": true,\n    \"address\": {\n      \"city\": \"value 1\"\n    }\n  },\n  {\n    \"id\": 2,\n    \"name\": \"Name 2\",\n    \"email\": \"user2@example.com\",\n    \"age\": 33,\n    \"active\": false,\n    \"address\": {\n      \"city\": \"value 2\"\n    }\n  }\n]",
+      "outputExplanation": "id increments per item, age is a random integer in the 18-40 range, active is a boolean, and address.city is nested into an object automatically.",
+      "note": "Sample values are placeholders for testing, not real records."
+    },
+    "faq": [
+      {
+        "question": "What does the JSON array generator do?",
+        "answer": "It builds a JSON array of example objects. You set the number of objects and the field names, and the tool produces a pretty-printed JSON array you can copy or download."
+      },
+      {
+        "question": "What sample values does it create?",
+        "answer": "Types are inferred from field names: id gets an incrementing number, email gets an address such as user1@example.com, age or price get numbers, and other fields get labeled sample text. You can override any field with an explicit type, for example age:int:18-65 or active:bool, and use dotted names like address.city to build nested objects."
+      },
+      {
+        "question": "Can I generate an empty or zero-length array?",
+        "answer": "The count must be a positive number, so the smallest array has one object. This keeps the generated example useful as test data."
+      },
+      {
+        "question": "Can I choose the value types?",
+        "answer": "Yes. Append a type to a field with a colon, for example age:int:18-65, active:bool, price:float, createdAt:date, id:uuid, website:url, or tags:array. For an enum use status:enum:active|inactive|pending. Dotted names like address.city create nested objects automatically."
+      },
+      {
+        "question": "Is the generated data real?",
+        "answer": "No. The values are placeholders for testing and documentation. Do not treat them as real people or records, and replace them before using the data in production."
+      },
+      {
+        "question": "Is this a free JSON array generator?",
+        "answer": "Yes. You can generate a JSON array, copy it, or download it as a .json file without creating an account."
+      }
+    ],
+    "article": {
+      "title": "How to Generate a JSON Array Online",
+      "content": "<h2>What Is a JSON Array Generator?</h2><p>A JSON array maker, also called a JSON array generator, lets you create json array content without writing it by hand. It builds a JSON array of objects from a few settings: set the item count and the field names and get a ready-to-use array.</p><h2>How to Generate a JSON Array</h2><ol><li><strong>Set the count:</strong> choose how many objects the array should contain.</li><li><strong>List the fields:</strong> type the field names separated by commas.</li><li><strong>Generate:</strong> the tool creates a pretty-printed JSON array.</li><li><strong>Copy or download:</strong> use the result as fixtures, mocks, or examples.</li></ol><h2>Where It Helps</h2><ul><li><strong>Test data:</strong> seed unit tests or API stubs with sample arrays.</li><li><strong>Mock responses:</strong> return a realistic array from a local mock server.</li><li><strong>Documentation:</strong> show a clear JSON array example in guides.</li><li><strong>Prototyping:</strong> quickly shape the data a form or component expects.</li></ul><h2>Sample Values</h2><p>Fields named like id receive incrementing numbers and email-style fields receive example addresses. Other fields get labeled sample text. The values are placeholders, so replace them with real data before any production use.</p><h2>Privacy</h2><p>Generation runs entirely in your browser. Your settings are not uploaded and no account is required.</p>"
+    }
+  },
+  "zh": {
+    "name": "JSON 数组生成器",
+    "description": "在浏览器里生成示例 JSON 数组。设置对象数量和字段名，即可得到一份美化输出的 JSON 示例对象数组，可复制、下载或用作测试数据。",
+    "hero": {
+      "trustHtml": "在你的浏览器中运行。你的数据不会被本工具上传。"
+    },
+    "meta": {
+      "title": "JSON 数组生成器 — 在线生成 JSON 数组示例",
+      "description": "在线生成 JSON 数组：设置对象数量和字段名，创建一个示例 JSON 对象数组。在浏览器中复制或下载结果。",
+      "keywords": [
+        "json 数组生成器",
+        "json 数组示例",
+        "生成 json 数组",
+        "json 数组例子",
+        "创建 json 数组",
+        "示例 json 数组",
+        "json 假数据生成器",
+        "生成带类型的 json 数组"
+      ]
+    },
+    "features": [
+      {
+        "icon": "lucide:boxes",
+        "title": "设置对象数量",
+        "description": "选择数组要包含多少个对象。生成器会精确创建这么多条目，从第一个元素开始编号。"
+      },
+      {
+        "icon": "lucide:tags",
+        "title": "定义字段名",
+        "description": "输入用逗号分隔的字段名。数组里每个对象都使用这些键，因此结果会符合你需要的形状。"
+      },
+      {
+        "icon": "lucide:sparkles",
+        "title": "智能示例值",
+        "description": "类型会从字段名推断：id 得到数字、email 得到地址、age 得到数字，以此类推。用 字段:类型（如 age:int:18-65、active:bool、price:float、status:enum:active|inactive、tags:array）可强制指定类型，并用 address.city 这类带点的字段名来生成嵌套对象。"
+      },
+      {
+        "icon": "lucide:braces",
+        "title": "美化输出",
+        "description": "结果是一个格式化的 JSON 数组，可以立即阅读。复制它或把它下载为 .json 文件。"
+      },
+      {
+        "icon": "lucide:copy",
+        "title": "复制或下载",
+        "description": "把生成的数组复制到剪贴板，或下载为 .json 文件，用作测试数据、mock 或 API 示例。"
+      },
+      {
+        "icon": "lucide:shield-check",
+        "title": "浏览器本地处理",
+        "description": "生成在你的浏览器中完成。本页不需要注册账号，也不会把你的输入发送到远端服务。"
+      }
+    ],
+    "ui": {
+      "label_count": "对象数量",
+      "label_fields": "字段名（逗号分隔）",
+      "placeholder_fields": "id, name, email",
+      "hint_fields": "可加类型：字段:类型 或 字段:类型:规则。例如 age:int:18-65、active:bool、price:float、status:enum:active|inactive、tags:array、address.city（嵌套）。",
+      "label_output": "生成的 JSON 数组",
+      "placeholder_output": "生成的数组会显示在这里...",
+      "btn_view_text": "文本",
+      "btn_view_rich": "树形",
+      "btn_view_table": "表格",
+      "sample_name": "名称 {n}",
+      "sample_value": "值 {n}",
+      "sample_text": "文本 {n}",
+      "btn_generate": "生成 JSON 数组",
+      "btn_copy": "复制",
+      "btn_download": "下载 JSON",
+      "error_empty_fields": "请至少输入一个字段名",
+      "error_invalid_count": "请输入大于零的数字",
+      "error_processing": "数组无法被生成"
+    },
+    "guide": [
+      {
+        "title": "设置对象数量",
+        "description": "输入你希望数组里有多少个对象。数量必须是正数。"
+      },
+      {
+        "title": "列出字段名",
+        "description": "用逗号分隔输入字段名，例如 id, name, email。在字段后加 字段:类型 可强制值的类型（age:int:18-65、active:bool、price:float、status:enum:active|inactive、tags:array），并用 address.city 这类带点的字段名来嵌套对象。"
+      },
+      {
+        "title": "生成数组",
+        "description": "点击“生成 JSON 数组”。工具会构建一个美化输出的 JSON 示例对象数组。"
+      },
+      {
+        "title": "复制或下载",
+        "description": "复制数组，或把它下载为 .json 文件。把它用作测试数据、mock 响应或文档示例。"
+      }
+    ],
+    "example": {
+      "title": "JSON 数组生成器示例",
+      "description": "创建一小段带类型与嵌套字段的示例用户对象数组。",
+      "inputLabel": "设置",
+      "input": "数量：2\n字段：id, name, email, age:int:18-40, active:bool, address.city",
+      "inputExplanation": "两个对象：在推断字段之外，加了带类型的 age、一个布尔标志，以及嵌套的 address.city 键。",
+      "outputLabel": "生成的 JSON 数组",
+      "output": "[\n  {\n    \"id\": 1,\n    \"name\": \"名称 1\",\n    \"email\": \"user1@example.com\",\n    \"age\": 27,\n    \"active\": true,\n    \"address\": {\n      \"city\": \"值 1\"\n    }\n  },\n  {\n    \"id\": 2,\n    \"name\": \"名称 2\",\n    \"email\": \"user2@example.com\",\n    \"age\": 33,\n    \"active\": false,\n    \"address\": {\n      \"city\": \"值 2\"\n    }\n  }\n]",
+      "outputExplanation": "id 随条目递增，age 是 18-40 之间的随机整数，active 是布尔值，address.city 会自动嵌套进对象。",
+      "note": "示例值只是用于测试的占位数据，并非真实记录。"
+    },
+    "faq": [
+      {
+        "question": "JSON 数组生成器是做什么的？",
+        "answer": "它构建一组示例 JSON 对象组成的数组。你设置对象数量和字段名，工具就会生成一个美化输出的 JSON 数组，供你复制或下载。"
+      },
+      {
+        "question": "它会生成什么样的示例值？",
+        "answer": "类型由字段名推断：id 得到递增数字，email 得到示例地址（如 user1@example.com），age 或 price 得到数字，其他字段得到带标签的示例文本。你可以用显式类型覆盖任意字段，例如 age:int:18-65 或 active:bool，并用 address.city 这类带点的字段名来生成嵌套对象。"
+      },
+      {
+        "question": "可以生成空数组或零长度数组吗？",
+        "answer": "数量必须是正数，因此最小的数组也有一个对象。这样生成的示例才能作为有用的测试数据。"
+      },
+      {
+        "question": "可以选择值的类型吗？",
+        "answer": "可以。在字段后用冒号指定类型，例如 age:int:18-65、active:bool、price:float、createdAt:date、id:uuid、website:url，或 tags:array。枚举用 status:enum:active|inactive|pending。address.city 这类带点的字段名会自动生成嵌套对象。"
+      },
+      {
+        "question": "生成的数据是真的吗？",
+        "answer": "不是。这些值只是用于测试和文档的占位符。不要把它们当作真实的人或记录，投入生产前请替换成真实数据。"
+      },
+      {
+        "question": "这是免费的 JSON 数组生成器吗？",
+        "answer": "是。你可以生成 JSON 数组、复制它或下载成 .json 文件，且不需要注册账号。"
+      }
+    ],
+    "article": {
+      "title": "如何在线生成 JSON 数组",
+      "content": "<h2>什么是 JSON 数组生成器？</h2><p>JSON 数组生成器（也叫 json 数组例子生成器）可以让你无需手写就创建 json 数组。它根据几个设置构建一组示例 JSON 对象组成的数组：设置对象数量和字段名，就能得到一份可直接使用的数组。</p><h2>如何生成 JSON 数组</h2><ol><li><strong>设置数量：</strong>选择数组要包含多少个对象。</li><li><strong>列出字段：</strong>用逗号分隔输入字段名。</li><li><strong>生成：</strong>工具会创建一个美化输出的 JSON 数组。</li><li><strong>复制或下载：</strong>把结果用作测试数据、mock 或示例。</li></ol><h2>适用场景</h2><ul><li><strong>测试数据：</strong>用示例数组为单元测试或 API 桩提供数据。</li><li><strong>mock 响应：</strong>在本地 mock 服务里返回逼真的数组。</li><li><strong>文档：</strong>在指南里展示清晰的 JSON 数组示例。</li><li><strong>原型：</strong>快速搭出表单或组件所期望的数据形状。</li></ul><h2>示例值</h2><p>名称类似 id 的字段会得到递增数字，email 类字段会得到示例地址，其他字段会得到带标签的示例文本。这些值都是占位符，投入生产前请替换成真实数据。</p><h2>隐私</h2><p>生成完全在你的浏览器中运行，你的设置不会被上传，也不需要账号。</p>"
+    }
+  }
+}

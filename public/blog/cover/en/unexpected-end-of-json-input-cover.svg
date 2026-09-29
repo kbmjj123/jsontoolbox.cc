@@ -1,0 +1,197 @@
+<svg
+  width="1200"
+  height="630"
+  viewBox="0 0 1200 630"
+  xmlns="http://www.w3.org/2000/svg"
+  role="img"
+  aria-labelledby="svg-title svg-description"
+>
+  <title id="svg-title">Unexpected End of JSON Input</title>
+  <desc id="svg-description">
+    A JsonToolBox debugging cover showing the SyntaxError message with a truncated JSON document and its three causes: empty, truncated, unclosed.
+  </desc>
+
+  <style>
+    :root {
+      --bg-color: #f8fafc;
+      --line-color: #e2e8f0;
+      --brace-color: #0284c7;
+      --title-color: #0f172a;
+      --subtitle-color: #475569;
+      --brand-color: #64748b;
+      --card-bg: #ffffff;
+      --card-border: #e2e8f0;
+      --code-color: #334155;
+      --muted-color: #94a3b8;
+      --error-bg: #fef2f2;
+      --error-border: #fca5a5;
+      --error-text: #b91c1c;
+    }
+
+    :root.dark {
+      --bg-color: #0f172a;
+      --line-color: #1e293b;
+      --brace-color: #38bdf8;
+      --title-color: #e2e8f0;
+      --subtitle-color: #94a3b8;
+      --brand-color: #94a3b8;
+      --card-bg: #111c33;
+      --card-border: #1e293b;
+      --code-color: #cbd5e1;
+      --muted-color: #475569;
+      --error-bg: #450a0a;
+      --error-border: #b91c1c;
+      --error-text: #fecaca;
+    }
+  </style>
+
+  <!-- Background -->
+  <rect width="1200" height="630" fill="var(--bg-color)" />
+
+  <!-- Decorative code-like background lines -->
+  <g fill="var(--line-color)" opacity="0.6">
+    <rect x="72" y="54" width="180" height="14" rx="4" />
+    <rect x="72" y="84" width="134" height="14" rx="4" />
+    <rect x="72" y="114" width="164" height="14" rx="4" />
+
+    <rect x="948" y="54" width="176" height="14" rx="4" />
+    <rect x="994" y="84" width="134" height="14" rx="4" />
+    <rect x="962" y="114" width="162" height="14" rx="4" />
+  </g>
+
+  <!-- Big JSON braces -->
+  <text
+    x="74"
+    y="412"
+    font-family="ui-monospace, SFMono-Regular, Menlo, Consolas, monospace"
+    font-size="190"
+    font-weight="600"
+    fill="var(--brace-color)"
+    opacity="0.18"
+  >{</text>
+
+  <text
+    x="1000"
+    y="412"
+    font-family="ui-monospace, SFMono-Regular, Menlo, Consolas, monospace"
+    font-size="190"
+    font-weight="600"
+    fill="var(--brace-color)"
+    opacity="0.18"
+  >}</text>
+
+  <!-- Eyebrow -->
+  <text
+    x="600"
+    y="94"
+    text-anchor="middle"
+    font-family="ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, Segoe UI, Roboto, sans-serif"
+    font-size="22"
+    font-weight="700"
+    letter-spacing="6"
+    fill="#0284c7"
+  >DEBUGGING GUIDE</text>
+
+  <!-- Title -->
+  <text
+    x="600"
+    y="168"
+    text-anchor="middle"
+    font-family="ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, Segoe UI, Roboto, sans-serif"
+    font-size="50"
+    font-weight="750"
+    fill="var(--title-color)"
+  >Unexpected End of JSON Input</text>
+
+  <!-- Subtitle -->
+  <text
+    x="600"
+    y="212"
+    text-anchor="middle"
+    font-family="ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, Segoe UI, Roboto, sans-serif"
+    font-size="25"
+    fill="var(--subtitle-color)"
+  >Empty, truncated, or unclosed — three causes, three fixes</text>
+
+  <!-- Error banner -->
+  <g transform="translate(96 248)">
+    <rect x="0" y="0" width="1008" height="56" rx="14" fill="var(--error-bg)" stroke="var(--error-border)" stroke-width="2" />
+    <circle cx="30" cy="28" r="11" fill="var(--error-border)" />
+    <text
+      x="30"
+      y="34"
+      text-anchor="middle"
+      font-family="ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, Segoe UI, Roboto, sans-serif"
+      font-size="16"
+      font-weight="700"
+      fill="#ffffff"
+    >!</text>
+    <text
+      x="54"
+      y="34"
+      font-family="ui-monospace, SFMono-Regular, Menlo, Consolas, monospace"
+      font-size="18"
+      font-weight="700"
+      fill="var(--error-text)"
+    >SyntaxError: Unexpected end of JSON input</text>
+  </g>
+
+  <!-- Truncated document card -->
+  <g transform="translate(96 328)">
+    <rect x="0" y="0" width="464" height="176" rx="18" fill="var(--card-bg)" stroke="var(--card-border)" stroke-width="2" />
+    <text
+      x="24"
+      y="34"
+      font-family="ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, Segoe UI, Roboto, sans-serif"
+      font-size="14"
+      font-weight="700"
+      fill="var(--subtitle-color)"
+    >the input</text>
+
+    <g font-family="ui-monospace, SFMono-Regular, Menlo, Consolas, monospace" font-size="17">
+      <text x="24" y="72" fill="var(--code-color)">{</text>
+      <text x="42" y="98"><tspan fill="#0369a1">"name"</tspan><tspan fill="var(--muted-color)">: </tspan><tspan fill="var(--code-color)">"Ada"</tspan><tspan fill="var(--muted-color)">,</tspan></text>
+      <text x="42" y="124"><tspan fill="#0369a1">"active"</tspan><tspan fill="var(--muted-color)">: </tspan><tspan fill="var(--code-color)">tru</tspan></text>
+      <text x="24" y="150" fill="var(--muted-color)">/* end of input */</text>
+    </g>
+
+    <!-- cut marker -->
+    <path d="M120 134 H300" stroke="#ef4444" stroke-width="3" stroke-dasharray="8 6" stroke-linecap="round" />
+  </g>
+
+  <!-- Cause cards -->
+  <g transform="translate(592 328)" font-family="ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, Segoe UI, Roboto, sans-serif">
+    <rect x="0" y="0" width="512" height="176" rx="18" fill="var(--card-bg)" stroke="var(--card-border)" stroke-width="2" />
+    <text x="24" y="34" font-size="14" font-weight="700" fill="var(--subtitle-color)">which one is it?</text>
+
+    <g font-size="15">
+      <rect x="24" y="50" width="150" height="42" rx="12" fill="#eff6ff" stroke="#93c5fd" stroke-width="2" />
+      <text x="99" y="76" text-anchor="middle" font-weight="700" fill="#1d4ed8">empty</text>
+
+      <rect x="184" y="50" width="150" height="42" rx="12" fill="#fffbeb" stroke="#fcd34d" stroke-width="2" />
+      <text x="259" y="76" text-anchor="middle" font-weight="700" fill="#b45309">truncated</text>
+
+      <rect x="344" y="50" width="144" height="42" rx="12" fill="#ecfdf5" stroke="#86efac" stroke-width="2" />
+      <text x="416" y="76" text-anchor="middle" font-weight="700" fill="#15803d">unclosed</text>
+
+      <text x="24" y="126" font-family="ui-monospace, SFMono-Regular, Menlo, Consolas, monospace" font-size="14" fill="#64748b">length === 0 · received &lt; content-length · ends with { [ " , :</text>
+      <text x="24" y="152" font-family="ui-monospace, SFMono-Regular, Menlo, Consolas, monospace" font-size="14" fill="#64748b">read text() first, then parse</text>
+    </g>
+  </g>
+
+  <!-- Bottom strip -->
+  <g font-family="ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, Segoe UI, Roboto, sans-serif" font-size="17" font-weight="600">
+    <rect x="228" y="528" width="744" height="40" rx="20" fill="#f1f5f9" stroke="var(--card-border)" stroke-width="2" />
+    <text x="600" y="554" text-anchor="middle" fill="#475569">Inspect the tail before you blame the parser</text>
+  </g>
+
+  <!-- Brand / site name -->
+  <text
+    x="600"
+    y="600"
+    text-anchor="middle"
+    font-family="ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, Segoe UI, Roboto, sans-serif"
+    font-size="18"
+    fill="var(--brand-color)"
+  >JsonToolBox · Developer Guide</text>
+</svg>
