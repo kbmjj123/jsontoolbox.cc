@@ -2,6 +2,13 @@
   "name": "jsontoolbox",
   "type": "module",
   "private": true,
+  "license": "MIT",
+  "author": "kbmjj123",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/kbmjj123/jsontoolbox.cc.git"
+  },
+  "homepage": "https://jsontoolbox.cc",
   "packageManager": "pnpm@10.25.0",
   "scripts": {
     "build": "nuxt build && cp .output/public/sitemap_index.xml .output/public/sitemap.xml",
