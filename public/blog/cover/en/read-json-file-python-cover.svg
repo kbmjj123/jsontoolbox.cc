@@ -1,0 +1,201 @@
+<svg
+  width="1200"
+  height="630"
+  viewBox="0 0 1200 630"
+  xmlns="http://www.w3.org/2000/svg"
+  role="img"
+  aria-labelledby="svg-title svg-description"
+>
+  <title id="svg-title">How to Read and Write JSON Files in Python</title>
+  <desc id="svg-description">
+    A JsonToolBox Python guide cover showing json.load, json.loads, json.dump and json.dumps, with the rule that the s suffix means string.
+  </desc>
+
+  <style>
+    :root {
+      --bg-color: #f8fafc;
+      --line-color: #e2e8f0;
+      --brace-color: #0284c7;
+      --title-color: #0f172a;
+      --subtitle-color: #475569;
+      --brand-color: #64748b;
+      --card-bg: #ffffff;
+      --card-border: #e2e8f0;
+      --py-keyword: #7c3aed;
+      --py-func: #0369a1;
+      --py-str: #15803d;
+      --py-arg: #334155;
+      --muted-color: #94a3b8;
+    }
+
+    :root.dark {
+      --bg-color: #0f172a;
+      --line-color: #1e293b;
+      --brace-color: #38bdf8;
+      --title-color: #e2e8f0;
+      --subtitle-color: #94a3b8;
+      --brand-color: #94a3b8;
+      --card-bg: #111c33;
+      --card-border: #1e293b;
+      --py-keyword: #c4b5fd;
+      --py-func: #7dd3fc;
+      --py-str: #86efac;
+      --py-arg: #cbd5e1;
+      --muted-color: #475569;
+    }
+  </style>
+
+  <!-- Background -->
+  <rect width="1200" height="630" fill="var(--bg-color)" />
+
+  <!-- Decorative code-like background lines -->
+  <g fill="var(--line-color)" opacity="0.6">
+    <rect x="72" y="52" width="180" height="14" rx="4" />
+    <rect x="72" y="82" width="130" height="14" rx="4" />
+    <rect x="72" y="112" width="160" height="14" rx="4" />
+
+    <rect x="952" y="52" width="176" height="14" rx="4" />
+    <rect x="998" y="82" width="130" height="14" rx="4" />
+    <rect x="966" y="112" width="158" height="14" rx="4" />
+  </g>
+
+  <!-- Big JSON braces -->
+  <text
+    x="74"
+    y="406"
+    font-family="ui-monospace, SFMono-Regular, Menlo, Consolas, monospace"
+    font-size="190"
+    font-weight="600"
+    fill="var(--brace-color)"
+    opacity="0.18"
+  >{</text>
+
+  <text
+    x="1000"
+    y="406"
+    font-family="ui-monospace, SFMono-Regular, Menlo, Consolas, monospace"
+    font-size="190"
+    font-weight="600"
+    fill="var(--brace-color)"
+    opacity="0.18"
+  >}</text>
+
+  <!-- Eyebrow -->
+  <text
+    x="600"
+    y="94"
+    text-anchor="middle"
+    font-family="ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, Segoe UI, Roboto, sans-serif"
+    font-size="22"
+    font-weight="700"
+    letter-spacing="6"
+    fill="#0284c7"
+  >PYTHON GUIDE</text>
+
+  <!-- Title -->
+  <text
+    x="600"
+    y="170"
+    text-anchor="middle"
+    font-family="ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, Segoe UI, Roboto, sans-serif"
+    font-size="52"
+    font-weight="750"
+    fill="var(--title-color)"
+  >Read and Write JSON in Python</text>
+
+  <!-- Subtitle -->
+  <text
+    x="600"
+    y="214"
+    text-anchor="middle"
+    font-family="ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, Segoe UI, Roboto, sans-serif"
+    font-size="25"
+    fill="var(--subtitle-color)"
+  >load, loads, dump, dumps — and the one letter that picks the right one</text>
+
+  <!-- Code card -->
+  <g transform="translate(96 250)">
+    <rect x="0" y="0" width="470" height="252" rx="20" fill="var(--card-bg)" stroke="var(--card-border)" stroke-width="2" />
+    <rect x="0" y="0" width="470" height="44" rx="20" fill="#0f172a" />
+    <rect x="0" y="22" width="470" height="22" fill="#0f172a" />
+    <circle cx="28" cy="22" r="5" fill="#f87171" />
+    <circle cx="48" cy="22" r="5" fill="#fbbf24" />
+    <circle cx="68" cy="22" r="5" fill="#34d399" />
+    <text
+      x="90"
+      y="28"
+      font-family="ui-monospace, SFMono-Regular, Menlo, Consolas, monospace"
+      font-size="15"
+      fill="#94a3b8"
+    >read_write_json.py</text>
+
+    <g font-family="ui-monospace, SFMono-Regular, Menlo, Consolas, monospace" font-size="17">
+      <text x="28" y="86"><tspan fill="var(--py-keyword)">import</tspan><tspan fill="var(--py-arg)"> json</tspan></text>
+
+      <text x="28" y="122"><tspan fill="var(--py-keyword)">with</tspan><tspan fill="var(--py-arg)"> </tspan><tspan fill="var(--py-func)">open</tspan><tspan fill="var(--py-arg)">(</tspan><tspan fill="var(--py-str)">"data.json"</tspan><tspan fill="var(--py-arg)">, </tspan><tspan fill="var(--py-str)">"r"</tspan><tspan fill="var(--py-arg)">, encoding=</tspan><tspan fill="var(--py-str)">"utf-8"</tspan><tspan fill="var(--py-arg)">) </tspan><tspan fill="var(--py-keyword)">as</tspan><tspan fill="var(--py-arg)"> f:</tspan></text>
+      <text x="46" y="148"><tspan fill="var(--py-arg)">data = json.</tspan><tspan fill="var(--py-func)">load</tspan><tspan fill="var(--py-arg)">(f)</tspan></text>
+
+      <text x="28" y="186"><tspan fill="var(--py-keyword)">with</tspan><tspan fill="var(--py-arg)"> </tspan><tspan fill="var(--py-func)">open</tspan><tspan fill="var(--py-arg)">(</tspan><tspan fill="var(--py-str)">"out.json"</tspan><tspan fill="var(--py-arg)">, </tspan><tspan fill="var(--py-str)">"w"</tspan><tspan fill="var(--py-arg)">, encoding=</tspan><tspan fill="var(--py-str)">"utf-8"</tspan><tspan fill="var(--py-arg)">) </tspan><tspan fill="var(--py-keyword)">as</tspan><tspan fill="var(--py-arg)"> f:</tspan></text>
+      <text x="46" y="212"><tspan fill="var(--py-arg)">json.</tspan><tspan fill="var(--py-func)">dump</tspan><tspan fill="var(--py-arg)">(data, f, indent=</tspan><tspan fill="var(--py-str)">2</tspan><tspan fill="var(--py-arg)">,</tspan></text>
+      <text x="46" y="238"><tspan fill="var(--py-arg)">                ensure_ascii=</tspan><tspan fill="var(--py-keyword)">False</tspan><tspan fill="var(--py-arg)">)</tspan></text>
+    </g>
+  </g>
+
+  <!-- Rule card -->
+  <g transform="translate(610 250)">
+    <rect x="0" y="0" width="494" height="252" rx="20" fill="var(--card-bg)" stroke="#c4b5fd" stroke-width="2" />
+    <rect x="0" y="0" width="494" height="44" rx="20" fill="#f5f3ff" />
+    <rect x="0" y="22" width="494" height="22" fill="#f5f3ff" />
+    <circle cx="28" cy="22" r="6" fill="#8b5cf6" />
+    <text
+      x="46"
+      y="28"
+      font-family="ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, Segoe UI, Roboto, sans-serif"
+      font-size="16"
+      font-weight="700"
+      fill="#6d28d9"
+    >the s means string</text>
+
+    <g font-family="ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, Segoe UI, Roboto, sans-serif" font-size="16">
+      <rect x="28" y="64" width="220" height="52" rx="14" fill="#eff6ff" stroke="#93c5fd" stroke-width="2" />
+      <text x="138" y="84" text-anchor="middle" font-family="ui-monospace, SFMono-Regular, Menlo, Consolas, monospace" font-size="15" fill="#1d4ed8">json.load(f)</text>
+      <text x="138" y="104" text-anchor="middle" font-size="13" fill="#475569">file object</text>
+
+      <rect x="264" y="64" width="202" height="52" rx="14" fill="#ecfdf5" stroke="#86efac" stroke-width="2" />
+      <text x="365" y="84" text-anchor="middle" font-family="ui-monospace, SFMono-Regular, Menlo, Consolas, monospace" font-size="15" fill="#15803d">json.loads(text)</text>
+      <text x="365" y="104" text-anchor="middle" font-size="13" fill="#475569">string</text>
+
+      <rect x="28" y="130" width="220" height="52" rx="14" fill="#eff6ff" stroke="#93c5fd" stroke-width="2" />
+      <text x="138" y="150" text-anchor="middle" font-family="ui-monospace, SFMono-Regular, Menlo, Consolas, monospace" font-size="15" fill="#1d4ed8">json.dump(o, f)</text>
+      <text x="138" y="170" text-anchor="middle" font-size="13" fill="#475569">file object</text>
+
+      <rect x="264" y="130" width="202" height="52" rx="14" fill="#ecfdf5" stroke="#86efac" stroke-width="2" />
+      <text x="365" y="150" text-anchor="middle" font-family="ui-monospace, SFMono-Regular, Menlo, Consolas, monospace" font-size="15" fill="#15803d">json.dumps(o)</text>
+      <text x="365" y="170" text-anchor="middle" font-size="13" fill="#475569">string</text>
+    </g>
+
+    <text
+      x="28"
+      y="216"
+      font-family="ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, Segoe UI, Roboto, sans-serif"
+      font-size="14"
+      fill="#64748b"
+    >BOM? open with encoding="utf-8-sig"</text>
+  </g>
+
+  <!-- Bottom strip -->
+  <g font-family="ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, Segoe UI, Roboto, sans-serif" font-size="17" font-weight="600">
+    <rect x="216" y="524" width="768" height="40" rx="20" fill="#f1f5f9" stroke="var(--card-border)" stroke-width="2" />
+    <text x="600" y="550" text-anchor="middle" fill="#475569">Four functions, one suffix, and the encoding traps</text>
+  </g>
+
+  <!-- Brand / site name -->
+  <text
+    x="600"
+    y="600"
+    text-anchor="middle"
+    font-family="ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, Segoe UI, Roboto, sans-serif"
+    font-size="18"
+    fill="var(--brand-color)"
+  >JsonToolBox · Developer Guide</text>
+</svg>
