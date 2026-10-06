@@ -3,10 +3,9 @@ title: "How to Create a JSON File: Step-by-Step Guide"
 description: "Create a JSON file on Windows, macOS, or Linux: write valid JSON, avoid the .json.txt trap, validate the result, and generate files from code."
 h1: "How to Create a JSON File: Step-by-Step Guide for Beginners"
 category: "json_tools"
-date: 2026-09-29
-lastmod: 2026-09-29
+date: 2026-09-30
+lastmod: 2026-09-30
 image: "/blog/cover/en/how-to-create-json-file-cover.svg"
-draft: true
 tags:
   - "JSON"
   - "Beginners"

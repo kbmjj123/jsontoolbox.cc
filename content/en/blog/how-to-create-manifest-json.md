@@ -3,10 +3,9 @@ title: "How to Create a manifest.json File: PWA & Chrome Examples"
 description: "Create a manifest.json for a PWA or Chrome extension: required fields, minimal examples, install rules, and how to debug an invalid manifest."
 h1: "How to Create a manifest.json File: PWA and Chrome Extension Examples"
 category: "json_tools"
-date: 2026-09-29
-lastmod: 2026-09-29
+date: 2026-10-01
+lastmod: 2026-10-01
 image: "/blog/cover/en/how-to-create-manifest-json-cover.svg"
-draft: true
 tags:
   - "JSON"
   - "manifest.json"

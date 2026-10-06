@@ -3,10 +3,9 @@ title: "Unexpected End of JSON Input: Causes and Fixes"
 description: "Unexpected end of JSON input: the parser ran out of text too early. Diagnose empty, truncated, or unclosed JSON, then fix it in fetch, Node, and files."
 h1: "Unexpected End of JSON Input: What It Means and How to Fix It"
 category: "json_tools"
-date: 2026-09-29
-lastmod: 2026-09-29
+date: 2026-10-04
+lastmod: 2026-10-04
 image: "/blog/cover/en/unexpected-end-of-json-input-cover.svg"
-draft: true
 tags:
   - "JSON"
   - "JSON.parse"
@@ -349,6 +348,3 @@ Because `null` is coerced to the string `"null"`, which is valid JSON. It return
 - **Other parse errors?** Read [JSON Parse Failed: 10 Common API Errors and How to Debug Them](/blog/json-parse-error-debug).
 - **Suspect the file itself?** See [How to Open, View, and Edit a JSON File](/blog/how-to-open-json-file) and [How to Create a JSON File](/blog/how-to-create-json-file).
 
----
-
-*All tools on JSON Toolbox run entirely in your browser. Your data never leaves your device.*
