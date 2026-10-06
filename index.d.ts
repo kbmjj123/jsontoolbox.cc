@@ -97,6 +97,7 @@ declare global {
     sort: number;
     nextSteps: string[];
     recommends: string[];
+    relatedPosts?: string[];
     preset: Record<string, any>;
     [key: string]: any;
   }

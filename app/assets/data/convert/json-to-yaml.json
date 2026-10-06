@@ -12,6 +12,10 @@
   "recommends": [
     "json-editor"
   ],
+  "relatedPosts": [
+    "json-vs-yaml",
+    "json-comments"
+  ],
   "en": {
     "name": "JSON to YAML Converter",
     "description": "Convert JSON objects and arrays to readable YAML online. Paste JSON or open a .json file, choose the indentation and formatting options supported by the page, then copy or download the YAML output for configuration, documentation, or development workflows.",

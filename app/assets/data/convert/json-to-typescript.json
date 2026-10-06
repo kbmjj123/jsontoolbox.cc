@@ -12,6 +12,9 @@
   "recommends": [
     "json-editor"
   ],
+  "relatedPosts": [
+    "free-realistic-json-test-data"
+  ],
   "en": {
     "name": "JSON to TypeScript Converter",
     "ui": {

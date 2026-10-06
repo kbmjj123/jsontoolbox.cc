@@ -12,6 +12,9 @@
     "json-minifier",
     "json-to-csv"
   ],
+  "relatedPosts": [
+    "json-vs-jsonl"
+  ],
   "en": {
     "name": "JSONL to JSON",
     "description": "Convert JSONL (JSON Lines / NDJSON) to JSON in your browser. Parse each line into a value and collect them into a pretty-printed JSON array. Copy or download the result without uploading your data.",

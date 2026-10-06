@@ -12,6 +12,9 @@
     "json-minifier",
     "json-to-csv"
   ],
+  "relatedPosts": [
+    "json-vs-jsonl"
+  ],
   "en": {
     "name": "JSON to JSONL",
     "description": "Convert JSON to JSONL (JSON Lines) in your browser. Turn a JSON array into one JSON value per line, ready for streaming, logging, and big-data pipelines. Copy or download the result without uploading your data.",

@@ -10,6 +10,9 @@
     "json-to-yaml"
   ],
   "recommends": [],
+  "relatedPosts": [
+    "json-vs-yaml"
+  ],
   "en": {
     "name": "YAML to JSON Converter",
     "description": "Convert YAML data to JSON online in your browser. Paste YAML or open a .yaml or .yml file, review the converted JSON, and copy or download the result. Supports common mappings, sequences, nested structures, and multiline strings.",

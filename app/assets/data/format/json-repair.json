@@ -12,6 +12,10 @@
   "recommends": [
     "json-schema-validator"
   ],
+  "relatedPosts": [
+    "unexpected-end-of-json-input",
+    "json-parse-error-debug"
+  ],
   "en": {
     "name": "JSON Repair",
     "description": "Repair broken or invalid JSON in your browser. Fix trailing commas, single quotes, unquoted keys, missing brackets, comments, and Python constants, then copy or download valid JSON without uploading your data.",

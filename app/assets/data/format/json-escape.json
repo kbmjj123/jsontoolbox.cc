@@ -13,6 +13,9 @@
     "json-minifier",
     "json-to-csv"
   ],
+  "relatedPosts": [
+    "free-realistic-json-test-data"
+  ],
   "en": {
     "name": "JSON Escape & Unescape",
     "description": "Escape raw text or JSON content into a JSON-safe string and unescape JSON string literals back to readable text. Handle quotes, backslashes, line breaks, tabs, control characters, and Unicode escapes directly in your browser.",

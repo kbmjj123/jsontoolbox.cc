@@ -13,6 +13,9 @@
   "recommends": [
     "json-editor"
   ],
+  "relatedPosts": [
+    "free-realistic-json-test-data"
+  ],
   "en": {
     "name": "JSON to Excel Converter",
     "description": "Convert a JSON array of records into an XLSX worksheet you can open in Excel, Google Sheets, and LibreOffice Calc. Flatten nested objects, collect every field, include or omit the header row, preview the rows, and download the .xlsx file directly from your browser.",

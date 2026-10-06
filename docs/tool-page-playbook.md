@@ -36,6 +36,7 @@
 |---|---|
 | `app/composables/useTools.ts:5-51` `FEATURED_CONFIG` | **不上首页**（`app/pages/index.vue:77-98` 只渲染 `featuredTools`） |
 | 上游工具 JSON 的 `nextSteps` / `recommends` | 没有入口内链 |
+| 工具 JSON 的 `relatedPosts[]` | 该工具页没有指向博客文章的内链。注意它和文章页的 promo CTA 是两套独立配置：promo 由 `content/*/blog/*.md` 的 `promo.slug` 决定（文章→工具），`relatedPosts` 决定工具→文章 |
 | `app/assets/data/examples/{slug}.json` | `JsonInputEditor` 的示例下拉为空 |
 
 ---
@@ -44,12 +45,13 @@
 
 ### 顶层（语言无关）
 
-`slug` / `category` / `component` / `icon` / `sort` / `applicationCategory` / `nextSteps[]` / `recommends[]` / `en` / `zh`
+`slug` / `category` / `component` / `icon` / `sort` / `applicationCategory` / `nextSteps[]` / `recommends[]` / `relatedPosts[]` / `en` / `zh`
 
 - `component` **必填**，缺失直接 Null
 - `slug` / `category` 缺失时由 `useTools.ts:91-92` 用文件名、目录名兜底
 - `sort` 只影响页脚前 5 与网格顺序；`applicationCategory` **无任何代码读取**
 - `nextSteps` / `recommends` 填**纯 slug**（不带 category），由 `getToolBySingleSlug`（`useTools.ts:179-184`）跨分类查找。**只能填真实存在的 slug**，否则变死链
+- `relatedPosts[]` 填**博客文章 slug**（`content/{en,zh}/blog/{slug}.md` 的文件名），渲染成工具页的 "Related Articles" 区块。只有一份顶层清单，**不做 en/zh 各自编排**：`useBlog.ts:6-16` 的 `isVisible` 会按 `draft !== true` + `locales` 命中当前语言过滤，所以草稿与该语言未翻译的文章会被静默跳过（zh 页只会显示已译的 5 篇，这是预期行为）。顺序 = 清单顺序（组件内重排，编排时主文章放第一个）
 
 ### 语言层：`en` / `zh`
 
@@ -137,6 +139,7 @@ node -e "const d=require('./app/assets/data/convert/<slug>.json');const a=Object
 | `JsonInputEditor.vue` | 输入 + 上传 + 示例 + 粘贴 | `modelValue`/`label`/`placeholder`/`accept`/`show-upload`/`example-slug`/`tool`；emits: `clear`/`example-loaded`/`file-size` |
 | `JsonOutputPanel.vue` | 输出 + 复制 + 下载 + rich/table 视图 | `content`/`parsed-data`/`error`/`highlight`/`empty-text`/`download-filename`；slots: `actions`/`footer` |
 | `ToolPanelBar.vue` | 面板内 sticky 工具条 | `sticky` |
+| `ToolRelatedPosts.vue` | 工具页 Related Articles 区块（`ToolSeoContent.vue` 在 Article 之后渲染） | `slugs`（工具 JSON 的 `relatedPosts[]`）。**标题 `<h2>` 与 `v-if` 都在组件内部**，因为工具可能只配了草稿/未译文章，标题由调用方渲染会留下空标题（同 §3 的空 `<h2>` 缺陷） |
 | `PrivacyNotice.vue` | 隐私声明 | 页面已自动渲染，**组件内不要重复加** |
 
 没有 `Select`/`Toggle`/`CopyButton`/`StatsBar` 之类的小组件 —— 选项控件一律在各 universal 内内联写 `<select>` + `<input type="checkbox">`。

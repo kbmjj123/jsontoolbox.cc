@@ -12,6 +12,9 @@
   "recommends": [
     "json-schema-generator"
   ],
+  "relatedPosts": [
+    "read-json-file-python"
+  ],
   "en": {
     "name": "JSON to Code Generator",
     "ui": {

@@ -7,6 +7,9 @@
   "applicationCategory": "DeveloperApplication",
   "nextSteps": ["json-minifier", "json-editor"],
   "recommends": ["json-to-csv", "json-to-table", "json-schema-generator", "json-parse-stringify"],
+  "relatedPosts": [
+    "json-vs-toon"
+  ],
   "en": {
     "name": "JSON to TOON Converter",
     "description": "Convert JSON to TOON and TOON back to JSON in your browser. Compare minified JSON and TOON by characters, UTF-8 bytes, and estimated tokens for your own data instead of relying on a fixed savings claim.",

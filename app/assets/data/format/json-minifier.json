@@ -12,6 +12,10 @@
   "recommends": [
     "json-to-csv"
   ],
+  "relatedPosts": [
+    "free-realistic-json-test-data",
+    "json-vs-toon"
+  ],
   "en": {
     "name": "JSON Minifier",
     "description": "Minify valid JSON by removing insignificant whitespace between JSON tokens. Create compact, single-line output without changing parsed values or structure, compare character and byte sizes, and copy or download the result directly in your browser.",

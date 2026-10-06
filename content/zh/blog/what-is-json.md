@@ -9,9 +9,9 @@ image: "/blog/cover/zh/what-is-json-cover.svg"
 tags: ["JSON", "JSON Formatter", "JSON Validator", "API Debugging", "Web Development"]
 locales: ["zh-CN", "en"]
 promo:
-  slug: "json-formatter"
+  slug: "json-editor"
   text: "🚀 直接开始格式化你的 JSON："
-  btn: "JSON Formatter"
+  btn: "打开 JSON 编辑器"
 ---
 
 <!-- # JSON 是什么？结构、语法与常见错误（开发者实战版） -->
@@ -373,7 +373,7 @@ Line2"
 
 如果你正在构建工具站，可以在这里自然引导用户使用你的工具，例如：
 
-> 把你的 JSON 粘贴到我们的 [JSON Formatter & Validator](/tools/json-formatter) 中，自动检查语法错误并格式化输出。
+> 把你的 JSON 粘贴到我们的 [JSON 编辑器](/tools/format/json-editor) 中，自动检查语法错误并格式化输出。
 
 ### 浏览器控制台快速验证
 
@@ -442,7 +442,7 @@ try {
    - 遇到 `SyntaxError` 时，先用工具格式化 JSON，再根据提示定位错误行。  
    - 对“看起来像 JSON 的字符串”保持警惕，尤其是从日志、第三方文档复制过来的内容。  
 
-> 如果你经常需要检查和格式化 JSON，可以把我们的 [JSON Formatter & Validator](/tools/json-formatter) 加入书签，快速验证任意 JSON 片段。
+> 如果你经常需要检查和格式化 JSON，可以把我们的 [JSON 编辑器](/tools/format/json-editor) 加入书签，快速验证任意 JSON 片段。
 
 ## 小结
 

@@ -20,6 +20,11 @@
     "jsonc-to-json",
     "json-parse-stringify"
   ],
+  "relatedPosts": [
+    "what-is-json",
+    "json-parse-error-debug",
+    "json-best-practices"
+  ],
   "en": {
     "name": "JSON Editor",
     "description": "Edit, validate, format, and minify JSON online in your browser. Paste or open a JSON file, make changes in a syntax-highlighted editor, and copy or download the result without an account.",

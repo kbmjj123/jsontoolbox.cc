@@ -12,6 +12,9 @@
     "json-compare",
     "json-to-text"
   ],
+  "relatedPosts": [
+    "json-validation-syntax-vs-schema"
+  ],
   "en": {
     "name": "JSONPath Tester",
     "ui": {

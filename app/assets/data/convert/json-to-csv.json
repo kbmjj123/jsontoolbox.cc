@@ -15,6 +15,9 @@
     "txt-to-json",
     "json-to-text"
   ],
+  "relatedPosts": [
+    "free-realistic-json-test-data"
+  ],
   "en": {
     "name": "JSON to CSV Converter",
     "description": "Convert JSON records to CSV online for Excel, Google Sheets, and other spreadsheet tools. Paste JSON or open a file, preview the detected columns, optionally flatten nested objects, and download a CSV file directly from your browser.",

@@ -9,7 +9,7 @@ image: "/blog/cover/zh/json-best-practices-cover.svg"
 tags: ["JSON", "JSON Editor", "API Design", "Performance", "Security"]
 locales: ["zh-CN", "en"]
 promo:
-  slug: "jsoneditor"
+  slug: "json-editor"
   text: "🚀 需要批量格式化/检查 JSON？"
   btn: "打开 JSON Editor"
 ---
