@@ -11,6 +11,10 @@
   "recommends": [
     "json-to-typescript"
   ],
+  "relatedPosts": [
+    "json-validation-syntax-vs-schema",
+    "how-to-create-json-file"
+  ],
   "en": {
     "name": "JSON Schema Generator",
     "description": "Generate a JSON Schema draft from representative JSON data. This JSON Schema generator infers object structure, arrays, basic data types, and selected string formats, then lets you review, copy, or download the generated schema for validation, API documentation, and development workflows.",

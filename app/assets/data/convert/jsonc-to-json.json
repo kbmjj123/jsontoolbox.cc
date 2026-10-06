@@ -7,6 +7,9 @@
   "applicationCategory": "DeveloperApplication",
   "nextSteps": ["json-editor", "json-minifier"],
   "recommends": ["json-schema-validator", "json-path-tester", "json-to-text", "large-json-viewer"],
+  "relatedPosts": [
+    "json-comments"
+  ],
   "en": {
     "name": "JSONC to JSON Converter",
     "description": "Convert JSONC or JSON with comments into standard JSON. Remove line comments, block comments, and trailing commas without touching comment-like text inside strings, then validate, format, copy, or download the result.",

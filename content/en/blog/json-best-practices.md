@@ -9,7 +9,7 @@ image: "/blog/cover/en/json-best-practices-cover.svg"
 tags: ["JSON", "JSON Editor", "API Design", "Performance", "Security"]
 locales: ["en", "zh-CN"]
 promo:
-  slug: "jsoneditor"
+  slug: "json-editor"
   text: "🚀 Need to batch format or check JSON?"
   btn: "Open JSON Editor"
 ---

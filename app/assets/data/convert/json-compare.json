@@ -11,6 +11,9 @@
   "recommends": [
     "json-to-csv"
   ],
+  "relatedPosts": [
+    "free-realistic-json-test-data"
+  ],
   "en": {
     "name": "JSON Compare",
     "description": "Compare two JSON documents online and identify added, removed, changed, and type-changed values. This browser-based JSON compare tool performs a structural comparison of objects and arrays, highlights differences by category, lets you ignore key order or specific fields, and helps you inspect changes by JSON path.",

@@ -12,6 +12,10 @@
   "recommends": [
     "json-editor"
   ],
+  "relatedPosts": [
+    "free-realistic-json-test-data",
+    "read-json-file-python"
+  ],
   "en": {
     "name": "JSON Array Generator",
     "description": "Generate a sample JSON array in your browser. Set the number of objects and the field names, and get a pretty-printed JSON array of example objects you can copy, download, or use as test data.",

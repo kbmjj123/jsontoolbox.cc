@@ -11,6 +11,10 @@
   "recommends": [
     "json-editor"
   ],
+  "relatedPosts": [
+    "json-validation-syntax-vs-schema",
+    "how-to-create-manifest-json"
+  ],
   "en": {
     "name": "JSON Schema Validator",
     "description": "Validate JSON data against a JSON Schema. This online JSON Schema validator lets you validate JSON against schema, check structure, data types, required fields, and constraints, and get detailed error messages — all in your browser.",
