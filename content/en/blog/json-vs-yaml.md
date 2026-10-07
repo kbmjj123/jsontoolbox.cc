@@ -6,7 +6,6 @@ category: "json_tools"
 date: 2026-09-29
 lastmod: 2026-09-29
 image: "/blog/cover/en/json-vs-yaml-cover.svg"
-draft: true
 tags:
   - "JSON"
   - "YAML"
