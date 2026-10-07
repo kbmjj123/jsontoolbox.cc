@@ -119,7 +119,7 @@
 <script setup lang="ts">
 import categoryI18n from '~/assets/config/blog-category.json'
 
-const { getBlogList } = useBlog()
+const { getBlogList, getCleanPath } = useBlog()
 const { t, locale } = useI18n()
 const localePath = useLocalePath()
 
@@ -146,12 +146,6 @@ const filteredPosts = computed(() => {
   if (activeCategory.value === 'all') return posts.value
   return posts.value.filter((p: any) => p.category === activeCategory.value)
 })
-
-// Clean locale prefix from path for routing
-const getCleanPath = (postPath: string) => {
-  if (!postPath) return '/'
-  return postPath.replace(/^\/(en|zh|zh-HK|zh-TW|ja)/, '') || '/'
-}
 
 // Format date (hydration-safe)
 const formatDate = (dateStr: string) => {
