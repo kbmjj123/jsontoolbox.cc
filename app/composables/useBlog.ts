@@ -9,6 +9,15 @@ export const useBlog = () => {
     return locales.some((l: string) => l === locale.value || l.startsWith(locale.value + '-'))
   }
 
+  // Helper: content paths carry a locale prefix (`/en/blog/what-is-json`),
+  // while routes do not (strategy `prefix_except_default` → `/blog/what-is-json`).
+  // Always run a post path through this before feeding it to NuxtLink / NuxtLinkLocale,
+  // otherwise the link keeps the `/en` (or double-prefixes) and breaks.
+  const getCleanPath = (postPath: string): string => {
+    if (!postPath) return '/'
+    return postPath.replace(/^\/(en|zh|zh-HK|zh-TW|ja)(?=\/|$)/, '') || '/'
+  }
+
   // Helper: drafts (frontmatter `draft: true`) never surface on the site
   const isPublished = (post: any): boolean => post?.draft !== true
 
@@ -138,6 +147,7 @@ export const useBlog = () => {
   }
 
   return {
+    getCleanPath,
     getBlogList,
     getBlogPost,
     getRelatedPosts,

@@ -97,7 +97,7 @@
 
         <!-- Prev / Next Navigation -->
         <nav v-if="prev || next" class="mt-16 grid grid-cols-1 gap-6 sm:grid-cols-2" aria-label="Blog navigation">
-          <NuxtLink
+          <NuxtLinkLocale
             v-if="prev"
             :to="getCleanPath(prev.path)"
             :title="prev.title"
@@ -110,10 +110,10 @@
             <span class="text-lg font-bold text-surface-900 transition-colors group-hover:text-primary-600 dark:text-surface-100 dark:group-hover:text-primary-400">
               {{ prev.title }}
             </span>
-          </NuxtLink>
+          </NuxtLinkLocale>
           <div v-else class="hidden sm:block"></div>
 
-          <NuxtLink
+          <NuxtLinkLocale
             v-if="next"
             :to="getCleanPath(next.path)"
             :title="next.title"
@@ -126,7 +126,7 @@
             <span class="text-lg font-bold text-surface-900 transition-colors group-hover:text-primary-600 dark:text-surface-100 dark:group-hover:text-primary-400">
               {{ next.title }}
             </span>
-          </NuxtLink>
+          </NuxtLinkLocale>
         </nav>
 
         <!-- Contact Feedback -->
@@ -155,7 +155,7 @@
 const route = useRoute()
 const { t, locale } = useI18n()
 const localePath = useLocalePath()
-const { getBlogPost, getSurroundingPosts } = useBlog()
+const { getBlogPost, getSurroundingPosts, getCleanPath } = useBlog()
 const { getToolBySingleSlug } = useTools()
 
 // Extract slug from catch-all route
@@ -183,12 +183,6 @@ const cta = computed(() => {
 const { data: surroundingPosts } = await getSurroundingPosts(post.value?.path || '')
 const prev = computed(() => surroundingPosts.value?.[0] ?? null)
 const next = computed(() => surroundingPosts.value?.[1] ?? null)
-
-// Clean locale prefix from path for routing
-const getCleanPath = (postPath: string) => {
-  if (!postPath) return '/'
-  return postPath.replace(/^\/(en|zh|zh-HK|zh-TW|ja)/, '') || '/'
-}
 
 // Format date
 const formatDate = (dateStr: string) => {

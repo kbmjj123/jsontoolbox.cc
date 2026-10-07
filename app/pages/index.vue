@@ -204,7 +204,7 @@
           <NuxtLinkLocale
             v-for="post in blogPosts"
             :key="post.path"
-            :to="post.path"
+            :to="getCleanPath(post.path)"
             class="group rounded-xl border border-surface-200 bg-white p-6 transition-all hover:border-primary-200 hover:shadow-md dark:border-surface-700 dark:bg-surface-900 dark:hover:border-primary-800"
           >
             <h3 class="font-bold text-surface-900 dark:text-surface-100 group-hover:text-primary-600 dark:group-hover:text-primary-400 transition-colors">
@@ -247,7 +247,7 @@
 const { featuredTools } = useTools()
 const { t } = useI18n()
 const { openPicker } = useToolPicker()
-const { getBlogList } = useBlog()
+const { getBlogList, getCleanPath } = useBlog()
 
 // FAQ items from i18n (逐个取值，避免 returnObjects 返回消息 AST)
 const faqItems = computed(() => {

@@ -10,7 +10,7 @@
       <NuxtLinkLocale
         v-for="post in posts"
         :key="post.path"
-        :to="cleanPath(post.path)"
+        :to="getCleanPath(post.path)"
         class="flex items-center gap-3 rounded-xl border border-surface-200 bg-white px-4 py-3 transition-colors hover:border-primary-200 hover:bg-primary-50/50 dark:border-surface-700 dark:bg-surface-900 dark:hover:border-primary-800 dark:hover:bg-primary-900/20"
       >
         <div class="hidden shrink-0 h-14 w-14 overflow-hidden rounded-lg bg-surface-100 sm:block dark:bg-surface-800">
@@ -48,7 +48,7 @@ const props = defineProps<{
 }>()
 
 const { locale } = useI18n()
-const { getPostsBySlugs } = useBlog()
+const { getPostsBySlugs, getCleanPath } = useBlog()
 
 const { data } = await getPostsBySlugs(props.slugs || [])
 
@@ -62,11 +62,6 @@ const posts = computed(() => {
 })
 
 const slugOf = (post: any) => (post.path || '').split('/').pop() || ''
-
-// Content paths carry a locale prefix (`/en/blog/x`); routes do not.
-const cleanPath = (postPath: string) => {
-  return (postPath || '').replace(/^\/(en|zh|zh-HK|zh-TW|ja)/, '') || '/'
-}
 
 // Locale-dependent date formatting — same try/catch guard the blog pages use
 // so a hydration mismatch never throws.
