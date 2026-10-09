@@ -94,9 +94,10 @@ const drawerOpen = ref(false)
 const isScrolled = ref(false)
 
 const navLinks = [
-  { to: '/tools',   labelKey: 'app.nav.tools' },
-  { to: '/blog',    labelKey: 'app.nav.blog' },
-  { to: '/embed',   labelKey: 'app.nav.embed' },
+  { to: '/tools',       labelKey: 'app.nav.tools' },
+  { to: '/blog',        labelKey: 'app.nav.blog' },
+  { to: '/embed',       labelKey: 'app.nav.embed' },
+  { to: '/developers',  labelKey: 'app.nav.developers' },
   // { to: '/about',   labelKey: 'app.nav.about' },
   // { to: '/contact', labelKey: 'app.nav.contact' },
 ]

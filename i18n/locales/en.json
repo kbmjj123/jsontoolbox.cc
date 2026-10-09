@@ -10,6 +10,7 @@
       "tools": "Tools",
       "blog": "Blog",
       "embed": "Embed",
+      "developers": "Developers",
       "about": "About",
       "contact": "Contact"
     },
@@ -41,6 +42,12 @@
     "open_menu": "Open menu",
     "github": "GitHub",
     "language": "Language"
+  },
+  "developers": {
+    "seo": {
+      "title": "Developers — Embed the JSON Toolbox Editor",
+      "description": "Use the JSON Toolbox editor in your own project as a Vue 3 component, Web Component, or plain script tag. Free, open source, and 100% client-side."
+    }
   },
   "home": {
     "hero": {

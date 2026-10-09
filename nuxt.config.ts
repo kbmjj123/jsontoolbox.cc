@@ -159,7 +159,14 @@ export default defineNuxtConfig({
     fallback: 'light',
     storageKey: 'nuxt-color-mode'
   },
-  css: ['~/assets/css/tailwind.css', 'photoswipe/dist/photoswipe.css'],
+  build: {
+    transpile: ['@kbmjj123/json-editor'],
+  },
+  css: [
+    '~/assets/css/tailwind.css',
+    '@kbmjj123/json-editor/style.css',
+    'photoswipe/dist/photoswipe.css',
+  ],
   tailwindcss: {
     viewer: { endpoint: '/_tailwind', exportViewer: true },
     config: {

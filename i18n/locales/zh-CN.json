@@ -10,6 +10,7 @@
       "tools": "工具",
       "blog": "博客",
       "embed": "嵌入",
+      "developers": "开发者",
       "about": "关于",
       "contact": "联系"
     },
@@ -42,6 +43,12 @@
     "open_menu": "打开菜单",
     "github": "GitHub",
     "language": "语言"
+  },
+  "developers": {
+    "seo": {
+      "title": "开发者 — 嵌入 JSON Toolbox 编辑器",
+      "description": "以 Vue 3 组件、Web Component 或纯 script 标签的方式，在你自己的项目中使用 JSON Toolbox 编辑器。免费、开源、100% 客户端。"
+    }
   },
   "home": {
     "hero": {

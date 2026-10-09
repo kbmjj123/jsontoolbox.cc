@@ -1,0 +1,33 @@
+import type { Messages } from './en'
+
+/** 简体中文。键集合必须与 `en.ts` 严格一致（类型系统会强制校验）。 */
+export const zh: Messages = {
+  valid: 'JSON 有效',
+  invalid: 'JSON 无效',
+  empty: '暂无内容 —— 在左侧粘贴 JSON。',
+  format: '格式化',
+  minify: '压缩',
+  copy: '复制',
+  copied: '已复制',
+  clear: '清空',
+  expand_all: '全部展开',
+  collapse_all: '全部折叠',
+  search: '搜索键与值',
+  search_placeholder: '搜索键与值',
+  copy_path: '复制路径',
+  copy_value: '复制值',
+  copy_jsonpath: '复制 JSONPath',
+  root: '根节点',
+  keys: '{n} 个键',
+  items: '{n} 项',
+  matches: '{n} 处匹配',
+  no_matches: '无匹配',
+  line_column: '第 {line} 行，第 {column} 列',
+  chars: '{n} 字符',
+  paste_blocked: '粘贴被拦截：{size} 超过 {limit} 上限。',
+  paste_blocked_plain: '粘贴被拦截：粘贴内容过大。',
+  editor: '编辑器',
+  tree: '树视图',
+  both: '分栏',
+  attribution: '由 {name} 提供',
+}

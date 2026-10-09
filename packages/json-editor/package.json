@@ -1,0 +1,104 @@
+{
+  "name": "@kbmjj123/json-editor",
+  "version": "0.1.0",
+  "description": "A JSON editor and read-only tree view for the web — CodeMirror 6 editing, live validation with error line locating, and a searchable tree. Vue 3 component, custom element, or plain script tag.",
+  "type": "module",
+  "license": "MIT",
+  "author": "kbmjj123",
+  "homepage": "https://jsontoolbox.cc",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/kbmjj123/jsontoolbox.cc.git",
+    "directory": "packages/json-editor"
+  },
+  "bugs": {
+    "url": "https://github.com/kbmjj123/jsontoolbox.cc/issues"
+  },
+  "keywords": [
+    "json",
+    "json-editor",
+    "json-tree",
+    "json-viewer",
+    "codemirror",
+    "vue",
+    "vue3",
+    "web-component",
+    "custom-element",
+    "client-side"
+  ],
+  "main": "./dist/index.cjs",
+  "module": "./dist/index.mjs",
+  "types": "./dist/index.d.ts",
+  "unpkg": "./dist/json-editor.iife.js",
+  "jsdelivr": "./dist/json-editor.iife.js",
+  "sideEffects": [
+    "*.css",
+    "./dist/*.css"
+  ],
+  "exports": {
+    ".": {
+      "types": "./dist/index.d.ts",
+      "import": "./dist/index.mjs",
+      "require": "./dist/index.cjs"
+    },
+    "./core": {
+      "types": "./dist/core.d.ts",
+      "import": "./dist/core.mjs",
+      "require": "./dist/core.cjs"
+    },
+    "./vue": {
+      "types": "./dist/vue.d.ts",
+      "import": "./dist/vue.mjs",
+      "require": "./dist/vue.cjs"
+    },
+    "./wc": {
+      "types": "./dist/wc.d.ts",
+      "import": "./dist/wc.mjs",
+      "require": "./dist/wc.cjs"
+    },
+    "./iife": "./dist/json-editor.iife.js",
+    "./style.css": "./dist/style.css",
+    "./package.json": "./package.json"
+  },
+  "files": [
+    "dist",
+    "README.md",
+    "LICENSE"
+  ],
+  "scripts": {
+    "build": "vite build && vite build --config vite.config.iife.ts",
+    "dev": "vite --config vite.config.demo.ts",
+    "test": "vitest run",
+    "typecheck": "vue-tsc --noEmit -p tsconfig.json"
+  },
+  "peerDependencies": {
+    "@codemirror/commands": "^6.0.0",
+    "@codemirror/lang-json": "^6.0.0",
+    "@codemirror/language": "^6.0.0",
+    "@codemirror/state": "^6.0.0",
+    "@codemirror/view": "^6.0.0",
+    "@lezer/highlight": "^1.0.0",
+    "vue": "^3.5.0"
+  },
+  "devDependencies": {
+    "@codemirror/commands": "^6.8.1",
+    "@codemirror/lang-json": "^6.0.2",
+    "@codemirror/language": "^6.12.4",
+    "@codemirror/state": "^6.7.1",
+    "@codemirror/view": "^6.43.9",
+    "@lezer/highlight": "^1.2.3",
+    "@vitejs/plugin-vue": "^5.2.1",
+    "typescript": "^5.7.3",
+    "vite": "^6.0.7",
+    "vite-plugin-dts": "^4.5.4",
+    "vitest": "^2.1.8",
+    "vue": "^3.5.18",
+    "vue-tsc": "^2.2.0"
+  },
+  "engines": {
+    "node": ">=18"
+  },
+  "publishConfig": {
+    "access": "public"
+  }
+}
