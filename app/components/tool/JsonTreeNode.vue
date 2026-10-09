@@ -49,7 +49,7 @@
             </span>
 
             <span class="ml-1.5 text-[10px] text-surface-400 dark:text-surface-500 select-none">{{ typeLabel(entry.value) }}</span>
-            <JsonValuePreview :value="entry.value" />
+            <JsonValuePreview :value="entry.value" :path="entry.childPath" />
             <button
               v-if="isArray(entry.value)"
               @click.stop="showArrayAsTable(entry.childPath)"
@@ -188,6 +188,7 @@
     <JsonValueInspector
       v-if="!props.path && inspectorValue !== null"
       :value="inspectorValue"
+      :path="inspectorPath"
       @close="inspectorValue = null"
     />
   </div>
@@ -348,7 +349,11 @@ function isBatchSelected(path: string): boolean {
 // node would make nested nodes resolve to their parent instead (and nothing
 // would ever render).
 const inspectorValue = ref<unknown>(null)
-function openInspector(value: unknown) { inspectorValue.value = value }
+const inspectorPath = ref<string | null>(null)
+function openInspector(value: unknown, path?: string) {
+  inspectorValue.value = value
+  inspectorPath.value = path ?? null
+}
 if (!props.path) {
   provide('valueInspector', { open: openInspector })
 }

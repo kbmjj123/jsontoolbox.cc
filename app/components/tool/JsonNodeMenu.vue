@@ -47,6 +47,9 @@
           <button v-if="isPrimitive" class="block w-full px-3 py-1.5 text-left hover:bg-surface-100 dark:hover:bg-surface-700" @click="start('value')">
             {{ $t('edit.editValue') }}
           </button>
+          <button v-if="isPrimitive" class="block w-full px-3 py-1.5 text-left hover:bg-surface-100 dark:hover:bg-surface-700" @click="openMedia">
+            {{ $t('media.setFromMedia') }}
+          </button>
           <button v-if="canRename" class="block w-full px-3 py-1.5 text-left hover:bg-surface-100 dark:hover:bg-surface-700" @click="start('rename')">
             {{ $t('edit.rename') }}
           </button>
@@ -121,6 +124,14 @@
           </button>
         </div>
       </template>
+
+      <!-- Set value from a pasted / uploaded file (data URI generator) -->
+      <MediaToDataUriModal
+        v-if="mediaOpen && mediaPath"
+        :path="mediaPath"
+        @insert="onMediaInsert"
+        @close="mediaOpen = false"
+      />
     </div>
   </Teleport>
 </template>
@@ -132,6 +143,7 @@ import { toJsonPath } from '~/utils/jsonPath'
 import { useToast } from '~/composables/useToast'
 import { useClipboardActions } from '~/composables/useClipboardActions'
 import { useNodeEditing, type JsonTypeName } from '~/composables/useNodeEditing'
+import MediaToDataUriModal from '~/components/tool/MediaToDataUriModal.vue'
 
 interface NodeMenuInfo {
   path: string
@@ -166,6 +178,10 @@ const pending = ref<PendingKind>(null)
 const inputA = ref('')
 const inputB = ref('')
 const firstInputRef = ref<HTMLInputElement | null>(null)
+
+// ── Set value from file (data URI generator) ──
+const mediaOpen = ref(false)
+const mediaPath = ref<string | null>(null)
 
 const typeOptions: JsonTypeName[] = ['string', 'number', 'boolean', 'null']
 
@@ -332,5 +348,18 @@ function remove() {
 
 function close() {
   emit('close')
+}
+
+function openMedia() {
+  if (!props.node) return
+  mediaPath.value = props.node.path
+  mediaOpen.value = true
+}
+
+/** Insert the generated value via the shared editor (validates JSON round-trip). */
+function onMediaInsert(value: unknown) {
+  if (!mediaPath.value || !editing) return
+  succeed(editing.setValue(mediaPath.value, value))
+  mediaOpen.value = false
 }
 </script>

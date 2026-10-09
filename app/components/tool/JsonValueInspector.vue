@@ -158,6 +158,13 @@
         <!-- Footer -->
         <div class="flex items-center justify-end gap-2 border-t border-surface-200 px-4 py-2 dark:border-surface-700">
           <button
+            v-if="canSetFromFile"
+            @click="mediaOpen = true"
+            class="rounded border border-surface-200 px-3 py-1 text-xs font-medium text-primary-600 hover:bg-surface-50 dark:border-surface-700 dark:text-primary-400 dark:hover:bg-surface-700"
+          >
+            {{ t('media.setFromMedia') }}
+          </button>
+          <button
             @click="copyValue"
             class="rounded border border-surface-200 px-3 py-1 text-xs font-medium text-surface-700 hover:bg-surface-50 dark:border-surface-700 dark:text-surface-300 dark:hover:bg-surface-700"
           >
@@ -169,6 +176,14 @@
         </div>
       </div>
     </div>
+
+    <!-- Set value from a pasted / uploaded file (data URI generator) -->
+    <MediaToDataUriModal
+      v-if="mediaOpen && props.path"
+      :path="props.path"
+      @insert="onMediaInsert"
+      @close="mediaOpen = false"
+    />
 
     <!-- Lightbox (supports both remote URLs and Base64 data URLs) -->
     <Preview
@@ -197,10 +212,30 @@ import { marked } from 'marked'
 import DOMPurify from 'dompurify'
 import { copyToClipboard } from '~/utils'
 import type { PreviewImage } from '~/composables/useImagePreview'
+import { useNodeEditing } from '~/composables/useNodeEditing'
+import MediaToDataUriModal from '~/components/tool/MediaToDataUriModal.vue'
 
-const props = defineProps<{ value: unknown }>()
+const props = defineProps<{ value: unknown; path?: string }>()
 const emit = defineEmits<{ close: [] }>()
 const { t } = useI18n()
+
+// Provided by JsonEditor; null in read-only contexts (validator, large viewer).
+const editing = inject<ReturnType<typeof useNodeEditing> | null>('nodeEditing', null)
+const mediaOpen = ref(false)
+const isPrimitiveValue = computed(
+  () => props.value === null || typeof props.value !== 'object',
+)
+const canSetFromFile = computed(
+  () => !!editing && !!props.path && isPrimitiveValue.value,
+)
+
+function onMediaInsert(value: unknown) {
+  if (!props.path || !editing) return
+  const ok = editing.setValue(props.path, value)
+  mediaOpen.value = false
+  // A successful edit changes the document; close so the inspector re-syncs.
+  if (ok) emit('close')
+}
 
 const kind = computed<ValueKind | null>(() => detectValueKind(props.value))
 const stringValue = computed(() =>
