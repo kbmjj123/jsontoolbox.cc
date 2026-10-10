@@ -139,7 +139,7 @@
 <script setup lang="ts">
 import { computed, nextTick, ref } from 'vue'
 import { copyToClipboard } from '~/utils'
-import { toJsonPath } from '~/utils/jsonPath'
+import { toJsonPath } from '@kbmjj123/json-editor/core'
 import { useToast } from '~/composables/useToast'
 import { useClipboardActions } from '~/composables/useClipboardActions'
 import { useNodeEditing, type JsonTypeName } from '~/composables/useNodeEditing'

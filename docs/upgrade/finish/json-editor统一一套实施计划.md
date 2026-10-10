@@ -12,6 +12,7 @@
 
 1. **编辑器这件事只剩一份实现。** 判定标准：包的 `src/` 是真源，站点不得再存在等价的第二份。
 2. **包的定位是对外分发为主**（外部开发者嵌入 + 换取外链）。包不得引入 Nuxt 依赖（`useI18n` / `useToast` / `useState` / `navigateTo` / `~/` 别名 / auto-import），不得依赖 Tailwind 设计系统。
+2-bis. **包的 core 保持纯 `JSON.parse` 语义**（2026-10-10 定）：不做自动修复（`jsonrepair` 不进包）、不做 BigInt 兜底（默认路径不开启）、不养友好错误文案表（`useJsonFixer.ts:282-326` 的 `ERROR_PATTERNS` 留站点）。站的增强一律留在站点侧。包内 `parseJson` 的 `bigInt` 选项保持 opt-in 现状，不作为统一后的共享默认行为。
 3. **L4 站点外壳明确划在包外**：分享 payload、5MB 大文件转交、敏感字段遮罩、示例下拉、Nuxt i18n、站点设计系统。这些通过 slot 与 `messages` 注入，不进包。
 4. **包不引入 `marked` + `DOMPurify`**。值检查器拆开：时间戳 / Base64 / JWT / 颜色的**纯识别逻辑**进包；**Markdown 预览**留在站点。
 5. **copy-accuracy 阻断级**（`.claude/rules/copy-accuracy.md` §5）：
@@ -78,7 +79,7 @@
 | `buildSourceMap` | `app/utils/sourceMap.ts:10-145` | `src/core/sourceMap.ts:9-140` | 几乎逐字相同 |
 | `toJsonPath` | `app/utils/jsonPath.ts:10-17` | `src/core/path.ts:10-17` | 完全相同 |
 | `jsonTypeLabel` | `app/utils/jsonPath.ts:22-26` | `src/core/path.ts:21-26` | 相同 |
-| `parseJson` + BigInt 兜底 | `app/composables/useJsonParser.ts:13-57` | `src/core/parse.ts:27-57` | 同构；**站点这份零消费者** |
+| `parseJson` + BigInt 兜底 | `app/composables/useJsonParser.ts:13-57` | `src/core/parse.ts:27-57` | 同构；文件内 `parseJson`/`hasLargeNumbers`/`validateJson` **无人调用**，仅 `getErrorLocation` 有 2 个消费者 → P1 已删文件 |
 | `getErrorLocation` | `useJsonParser.ts:74-87` | `src/core/parse.ts:93-103` | 相同 |
 | `validateJson` | `useJsonParser.ts:94-103` | `src/core/parse.ts:105-112` | 相同 |
 | 树模型 | `JsonTreeNode.vue:93` 递归自调用 + `JsonOutputPanel.vue:442-456` 全展开路径集合 | `src/core/tree.ts:97-109` 扁平 `flattenVisible` | **模型不同**，是 L3 的主要摩擦点 |
@@ -89,10 +90,11 @@
 
 | 文件 | 阶段 | 改动 |
 |---|---|---|
-| `app/utils/sourceMap.ts` | P1 | 退化为 re-export 或删除 |
-| `app/utils/jsonPath.ts` | P1 | 同上 |
-| `app/composables/useJsonParser.ts` | P1 | 删除（零消费者，死代码） |
-| `app/composables/useJsonEditor.ts` | P1 | 删除（零消费者，死代码） |
+| `app/utils/sourceMap.ts` | P1 ✅ | **已删除**，改由 `@kbmjj123/json-editor/core` 提供 |
+| `app/utils/jsonPath.ts` | P1 ✅ | **已删除**，同上 |
+| `app/composables/useJsonParser.ts` | P1 ✅ | **已删除**（并非死代码：`getErrorLocation` 被 2 个工具使用，已改为直接 import 包） |
+| `app/composables/useJsonEditor.ts` | P1 ✅ | **已删除**（确认零消费者，真死代码） |
+| `package.json`（根） | P1 ✅ | `postinstall` 增加构建包；新增 `build:pkg` 脚本。修复「dist 被 gitignore，新克隆后站点构建必失败」的隐患 |
 | `app/composables/useJsonPath.ts` / `useTreeSearch.ts` / `useNodeEditing.ts` | P3.1 | 迁入包，站点改为 import 包 |
 | `app/components/tool/CodeMirrorEditor.vue` | P2 | 退化为薄适配层或删除 |
 | `app/components/tool/JsonInputEditor.vue` | P2 | 改 CM 来源（**先不动，见 P2 风险面**） |
@@ -121,12 +123,20 @@
 
 > 已固化的行为契约（改动即视为回归）：**`buildSourceMap` 记录的是冒号所在行，不是值所在行**——`map.set` 发生在消费 `:` 之后、解析值之前。键与冒号之间的换行会计入，冒号之后的换行不计。
 
-### P1 — L1 统一
+### P1 — L1 统一 ✅ 已完成（2026-10-10）
 
-1. 确认包的 `src/core` 覆盖站点全部需求；缺的行为（**`jsonrepair` 修复链路、BigInt 兜底、错误友好文案映射 `useJsonFixer.ts:282-326` 的 `ERROR_PATTERNS`**）逐条判定：进 core / 留站点 / 做成可选。见 §5 未决问题。
-2. `app/utils/sourceMap.ts`、`app/utils/jsonPath.ts` 改为 re-export 包的实现；全仓 grep 消费者逐个验证。
-3. 删除 `useJsonParser.ts`、`useJsonEditor.ts`。
-4. 验收：包 typecheck + test；站点 `pnpm build`；§P0 的基线页面比对无差异。
+1. **前提（§0 2-bis）**：`jsonrepair` 修复、BigInt 兜底、友好错误文案映射**都不进包**，包的 core 保持纯 `JSON.parse` 语义。站点走 §5 #7 的 **A 方案**：调用包的 core，增强叠在外面。
+2. **纯函数替换**（P0 差分已证明输出全等）：删除 `app/utils/sourceMap.ts`、`app/utils/jsonPath.ts`，11 处 import 改为 `@kbmjj123/json-editor/core`。
+   - 注意 `JsonEditor.vue` 里的 `buildSourceMap` 原本是 **Nuxt auto-import**（`app/utils/*` 无 import 行），删除文件后必须显式补 import，否则静默失效。
+3. **parse 收敛**：
+   - `useJsonFixer.getJsonError` → 调用包 `analyzeJson`（归一化消息 + 行列一次给出），站点只补 `errorKey → i18n` 友好文案映射。原实现里的 `offset` 无人消费，已移除（`ParseError.offset` 本就是可选字段）。
+   - `JsonEditor.vue` 的 `parsedData` → `parseJson(...).data`。
+   - 删除 `useJsonParser.ts`：`getErrorLocation` 的两个消费者（`JsonParseStringify.vue`、`JsoncToJson.vue`）改为直接 import 包。文件内 `parseJson` / `hasLargeNumbers` / `validateJson` 确认无人调用，随文件删除（其 BigInt 分支本就是本次「不进包」的对象）。
+   - 删除 `useJsonEditor.ts`（零消费者）。
+4. **修隐患**：`packages/json-editor/dist` 被 gitignore，而站点经 `@kbmjj123/json-editor` 依赖它 —— 新克隆仓库装完依赖直接 `pnpm build` 会失败。已把构建包加进根 `postinstall`，并新增 `build:pkg`。
+5. 验收：站点 `pnpm build` 通过（332 条路由预渲染，0 error）；旗舰页及受影响的 `json-parse-stringify` / `jsonc-to-json` / `json-path-tester` / `json-compare` / `large-json-viewer` / `developers` 均正常产出且无 "Tool component not found"。
+
+> **未做（有意保留）**：`JsonEditor.vue` 里仍有 4 处裸 `JSON.parse`（`:306`、`:544`、`:555`、`:594`、`:659`）在 try/catch 内。它们只是直接调用平台 API，不含重复逻辑；真正重复的部分（错误归一化 + 行列计算 + BigInt 包装）已只在包里有一份。改成 `parseJson` 需要重构这些函数的错误流（含 toast / `lastAction` / jsonrepair 回退），收益低、无测试覆盖，故不动。若日后要彻底消除，单独立项并先补测试。
 
 ### P2 — L2 统一
 
@@ -194,11 +204,20 @@ cd /tmp/je-smoke && python3 -m http.server 8099
 | # | 问题 | 影响 |
 |---|---|---|
 | 1 | **视图枚举不兼容**：包 `editor\|tree\|both` vs 站点 `text\|rich\|table` | P4 前必须定：包扩展语义，还是站点做映射 |
-| 2 | **`jsonrepair` 修复链路**是否进包 | 站点把「修复」缝进了格式化；进包会让 core 不再是纯 `JSON.parse` 语义，且包此前明确「不支持自动修复」 |
-| 3 | **BigInt 兜底 / 错误友好文案映射**（`ERROR_PATTERNS`）是否进包 | 进包则包要维护一份错误文案表（en/zh）；不进则站点保留自己的映射层 |
+| 2 | ~~`jsonrepair` 修复链路是否进包~~ → **不进包**（已定 2026-10-10） | 站点保留自己的修复链路；包维持「不支持自动修复」的既有文案承诺（见 §0 2-bis） |
+| 3 | ~~BigInt 兜底是否进包~~ → **不进包**（已定 2026-10-10） | 包内 `parseJson` 的 `bigInt` 保持 opt-in，不成为共享默认；站点保留自己的兜底 |
+| 3-bis | 错误友好文案映射（`ERROR_PATTERNS`）是否进包 | 按「不进包」同一原则：留站点。进包就要养 en/zh 两份文案表，与纯 `JSON.parse` 定位冲突。若以后希望包也有友好报错，单独立项 |
 | 4 | **表格导出 CSV** 是否复用 `app/utils/csv.ts` | 包内目前无 CSV 实现；复用需把该 util 也搬进包 |
 | 5 | **树渲染模型**：扁平 `flattenVisible` vs 递归组件 | L3 必须二选一重写一边。倾向保留包的扁平模型（搜索高亮与展开态控制更简单），把站点递归组件的能力平移过来 |
 | 6 | 站点 i18n（`useI18n`）与包 `messages` prop 的桥接方式 | 站点有约 15 个 key 命名空间要映射进包的 ~80 键 |
+| 7 | **站点的 parse 层要不要改为调用包的 `parseJson`** | 承 #2/#3 而来：增强不进包，但站点若继续自带 parse，则 parse 仍是一份独立实现，与「不长期维护两套」冲突。见下方说明 | |
+
+### #7 说明：增强留站点 ≠ parse 一定两套
+
+站的 parse 是「裸 `JSON.parse` → 失败后 `jsonrepair` 修复 → BigInt 兜底 → 友好文案映射」四层叠加（分散在 `JsonEditor.vue:521` 的 `parsedData`、`useJsonFixer`、`JsonInputEditor`）。既然增强层不进包，有两种收敛方式：
+
+- **A（收敛）**：站点改为调用包的 `parseJson` / `analyzeJson`，把 jsonrepair 修复、BigInt 兜底、友好文案**叠在外面**当装饰层。parse 只剩一份实现（包的），站点的增强行为全部保留。
+- **B（不动）**：站点保留自己的 parse 实现，本轮只统一已被差分证明等价的 `buildSourceMap` / `toJsonPath` / `jsonTypeLabel`。风险最低，但 parse 这一层仍是两套。
 
 ---
 

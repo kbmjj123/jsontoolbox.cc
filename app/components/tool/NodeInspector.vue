@@ -94,7 +94,7 @@
 <script setup lang="ts">
 import { ref, computed, watch } from 'vue'
 import { enclosingContainerStart, extractNodeAt, type SearchTextHit } from '~/utils/textSearch'
-import { toJsonPath } from '~/utils/jsonPath'
+import { toJsonPath } from '@kbmjj123/json-editor/core'
 
 const props = defineProps<{
   hit: SearchTextHit

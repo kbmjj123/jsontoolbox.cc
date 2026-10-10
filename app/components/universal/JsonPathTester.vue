@@ -114,7 +114,7 @@
 
 <script setup lang="ts">
 import { evaluateJsonPath } from '~/composables/useJsonPath'
-import { jsonTypeLabel, toJsonPath } from '~/utils/jsonPath'
+import { jsonTypeLabel, toJsonPath } from '@kbmjj123/json-editor/core'
 
 const props = defineProps<{ tool: any }>()
 const toast = useToast()

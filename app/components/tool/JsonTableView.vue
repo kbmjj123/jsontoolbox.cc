@@ -219,7 +219,7 @@
 
 <script setup lang="ts">
 import { copyToClipboard } from '~/utils'
-import { toJsonPath } from '~/utils/jsonPath'
+import { toJsonPath } from '@kbmjj123/json-editor/core'
 import { useToast } from '~/composables/useToast'
 import { isColorValue, getColorStyle, isPossibleImageUrl } from '~/utils/mediaPreview'
 import type { PreviewImage } from '~/composables/useImagePreview'

@@ -86,12 +86,12 @@
 </template>
 
 <script setup lang="ts">
+import { getErrorLocation } from '@kbmjj123/json-editor/core'
 import { useDebounceFn } from '@vueuse/core'
 
 const props = defineProps<{ tool: any }>()
 const { t } = useI18n()
 const toast = useToast()
-const { getErrorLocation } = useJsonParser()
 
 // Every visible string comes from the page's ui block. No English fallbacks:
 // a missing key renders as an empty label instead of leaking English into zh.

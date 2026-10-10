@@ -214,7 +214,7 @@
 <script setup lang="ts">
 import type { FieldError } from '~/types/jsonErrors'
 import type { SearchMode } from '~/composables/useTreeSearch'
-import { jsonTypeLabel } from '~/utils/jsonPath'
+import { jsonTypeLabel } from '@kbmjj123/json-editor/core'
 import { generateCsv } from '~/composables/useExcelCompat'
 
 const { t } = useI18n()

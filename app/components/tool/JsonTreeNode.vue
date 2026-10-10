@@ -198,7 +198,7 @@
 import type { PreviewImage } from '~/composables/useImagePreview'
 import type { useTreeSearch } from '~/composables/useTreeSearch'
 import type { FieldError } from '~/types/jsonErrors'
-import { toJsonPath, jsonTypeLabel } from '~/utils/jsonPath'
+import { toJsonPath, jsonTypeLabel } from '@kbmjj123/json-editor/core'
 import { isColorValue } from '~/utils/mediaPreview'
 import { useNodeEditing } from '~/composables/useNodeEditing'
 
