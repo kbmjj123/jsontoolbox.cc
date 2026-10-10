@@ -96,7 +96,7 @@
 | `app/composables/useJsonEditor.ts` | P1 ✅ | **已删除**（确认零消费者，真死代码） |
 | `package.json`（根） | P1 ✅ | `postinstall` 增加构建包；新增 `build:pkg` 脚本。修复「dist 被 gitignore，新克隆后站点构建必失败」的隐患 |
 | `app/composables/useJsonPath.ts` / `useTreeSearch.ts` / `useNodeEditing.ts` | P3.1 | 迁入包，站点改为 import 包 |
-| `app/components/tool/CodeMirrorEditor.vue` | P2 | 退化为薄适配层或删除 |
+| `app/components/tool/CodeMirrorEditor.vue` | P2 ✅ | 改用包 `createCodeMirror`，皮肤 + diff/高亮 StateField 作为扩展注入；删除 `vue-codemirror6` |
 | `app/components/tool/JsonInputEditor.vue` | P2 | 改 CM 来源（**先不动，见 P2 风险面**） |
 | `app/components/universal/JsonEditor.vue` | P4 | 改为「包组件 + 外壳注入」 |
 | `app/components/tool/PackageJsonEditor.vue` | P4 | 扩充 prop / 事件转发 / slot（当前仅 5 个 prop，`error`/`select`/`oversized-paste` 全丢，`:19-30`） |
@@ -138,10 +138,17 @@
 
 > **未做（有意保留）**：`JsonEditor.vue` 里仍有 4 处裸 `JSON.parse`（`:306`、`:544`、`:555`、`:594`、`:659`）在 try/catch 内。它们只是直接调用平台 API，不含重复逻辑；真正重复的部分（错误归一化 + 行列计算 + BigInt 包装）已只在包里有一份。改成 `parseJson` 需要重构这些函数的错误流（含 toast / `lastAction` / jsonrepair 回退），收益低、无测试覆盖，故不动。若日后要彻底消除，单独立项并先补测试。
 
-### P2 — L2 统一
+### P2 — L2 统一 ✅ 已完成（2026-10-10）
 
-1. 站点 `tool/CodeMirrorEditor.vue`（`vue-codemirror6`）↔ 包 `src/vue/useCodeMirror.ts`（裸 `@codemirror/*`）收敛成一份。
-2. **风险面控制**：`JsonInputEditor.vue` 被 28 个页面的输入区使用。建议**先只让旗舰页切到包的 CM**，`JsonInputEditor` 暂不动，把回归面压到最小；确认稳定后再收口输入区。
+1. 站点 `tool/CodeMirrorEditor.vue`（`vue-codemirror6`）↔ 包 `src/vue/useCodeMirror.ts`（裸 `@codemirror/*`）收敛成一份：包 `createCodeMirror` 新增 `extensions` 注入点，站点把皮肤（`Prec.high(EditorView.theme(...))`）与 diff / 高亮两个 `StateField` 作为扩展注入，移除 `vue-codemirror6` 依赖与 `nuxt.config.ts` 的 transpile 残留。
+2. **风险面控制**：`JsonInputEditor.vue` 暂不动（仍走它自己的 CM 来源），回归面压在旗舰页与 `json-compare` 的对比编辑器上。
+3. **顺手修的 bug**：重写时原先 `highlightLines` 误走 `decorationEffect`（diff 字段），导致 flash/subtle 高亮与 diff 装饰共用一个 StateField、`clearLineDecorations` 会误清高亮。已拆成 `highlightEffect` 独立字段，与 `decorationEffect` 分离。
+4. **验证**：
+   - 真机（浏览器）已验证旗舰页 `/tools/format/json-editor`：CM 经包挂载、皮肤与语法高亮生效、暗色切换正常、输入实时同步到输出、**0 console error**（P2 前一轮）。
+   - 新增 `packages/json-editor/test/codemirror-extensions.test.ts`：确定性断言「注入的装饰 StateField 能在目标行解析到 `diff-added` 装饰」——正是 `setLineDecorations` 依赖的路径（jsdom 下 CodeMirror 的 RAF/measure 不稳定，故只读 `view.state.field(field)` 而非 DOM 类名）。
+   - 包 57 测试全绿；站点 `pnpm build` 332 路由 0 error。
+   - **未做（环境限制）**：本环境无 Playwright / 浏览器，未重跑「在 json-compare 输入两段 JSON、点 Compare、肉眼确认 `.diff-added/.diff-removed/.diff-changed` 行底色」的真机视觉检查。建议发布前手动过一遍（或装 Playwright 后补一个 e2e）。
+5. ** `--je-bg-hover` / `--je-bg-active` 说明**：包 baseTheme 引用这两个变量，但站点 `.cm-host` 未定义；站点皮肤用 `Prec.high` 把 `.cm-activeLine` 设透明、`.cm-selectionBackground` 设 `#b5d5ff80 !important`，恰好覆盖了这两处，故未定义变量不产生可见副作用。
 
 ### P3 — L3 包补齐
 
