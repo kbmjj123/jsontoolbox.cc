@@ -2,6 +2,7 @@ import { describe, expect, it } from 'vitest'
 import {
   analyzeJson,
   getErrorLocation,
+  hasLargeNumbers,
   normalizeJsonError,
   parseJson,
   validateJson,
@@ -214,5 +215,132 @@ describe('sourceMap', () => {
     const map = buildSourceMap('{"a":"{\\"not\\":1}"}')
     expect(map.has('a')).toBe(true)
     expect(map.has('not')).toBe(false)
+  })
+})
+
+// ── Boundaries ────────────────────────────────────────────────────────────
+// Pinned before L1 unification: the site has a near-identical copy of these
+// functions (app/utils/sourceMap.ts, app/utils/jsonPath.ts) with 1 and 10
+// consumers respectively. These cases define the contract the swap must keep.
+
+describe('sourceMap boundaries', () => {
+  it('records the line of the colon, not the value', () => {
+    // The map is written right after `:` is consumed — a value on the next
+    // line still records the colon's line.
+    expect(buildSourceMap('{\n  "a":\n    1\n}').get('a')).toBe(2)
+    // A newline between key and colon *is* counted.
+    expect(buildSourceMap('{\n  "a"\n  : 1\n}').get('a')).toBe(3)
+  })
+
+  it('returns an empty map for empty containers', () => {
+    expect(buildSourceMap('{}').size).toBe(0)
+    expect(buildSourceMap('[]').size).toBe(0)
+  })
+
+  it('maps a top-level array', () => {
+    const map = buildSourceMap('[\n  1,\n  2\n]')
+    expect(map.get('0')).toBe(2)
+    expect(map.get('1')).toBe(3)
+  })
+
+  it('maps nested arrays', () => {
+    const map = buildSourceMap('{"m":[[1,2],{"k":3}]}')
+    expect(map.get('m[0][0]')).toBe(1)
+    expect(map.get('m[1].k')).toBe(1)
+  })
+
+  it('treats keys containing dots or brackets as opaque', () => {
+    // Known limitation shared with buildTree: `a.b` is indistinguishable
+    // from a nested path. Pinned so the swap cannot change it silently.
+    const map = buildSourceMap('{"a.b":1,"c[0]":2}')
+    expect(map.has('a.b')).toBe(true)
+    expect(map.has('c[0]')).toBe(true)
+  })
+
+  it('does not break on escaped quotes or backslashes', () => {
+    const map = buildSourceMap('{"a":"he said \\"hi\\"","b":"c:\\\\d"}')
+    expect([...map.keys()]).toEqual(['a', 'b'])
+  })
+
+  it('ignores structural characters inside strings', () => {
+    const map = buildSourceMap('{"a":"[]{},:","b":1}')
+    expect([...map.keys()]).toEqual(['a', 'b'])
+    expect(map.get('b')).toBe(1)
+  })
+
+  it('counts CRLF line endings', () => {
+    expect(buildSourceMap('{\r\n  "a": 1\r\n}').get('a')).toBe(2)
+  })
+
+  it('records every sibling when a value spans lines', () => {
+    const json = '{\n  "a": {\n    "x": 1\n  },\n  "b": 2\n}'
+    const map = buildSourceMap(json)
+    expect(map.get('a')).toBe(2)
+    expect(map.get('a.x')).toBe(3)
+    expect(map.get('b')).toBe(5)
+  })
+})
+
+describe('path boundaries', () => {
+  it('prefixes dotted keys without disambiguating them', () => {
+    expect(toJsonPath('a.b')).toBe('$.a.b')
+    expect(toJsonPath('users[0]')).toBe('$.users[0]')
+  })
+
+  it('lists array ancestors', () => {
+    expect(ancestorPaths('users[0]')).toEqual(['users'])
+    expect(ancestorPaths('[0]')).toEqual([])
+  })
+
+  it('labels undefined as undefined', () => {
+    // The signature promises JsonTypeName, but the runtime returns whatever
+    // `typeof` yields. Pinned: the site copy has the same cast.
+    expect(jsonTypeLabel(undefined)).toBe('undefined')
+  })
+})
+
+describe('parse boundaries', () => {
+  it('strips both engine error formats', () => {
+    expect(normalizeJsonError('Unexpected token } in JSON at position 12')).toBe('Unexpected token } in JSON')
+    expect(normalizeJsonError('Unexpected token } in JSON at position 12 (line 1 column 13)')).toBe(
+      'Unexpected token } in JSON'
+    )
+    expect(normalizeJsonError('Unexpected token } (line 1 column 13)')).toBe('Unexpected token }')
+    expect(normalizeJsonError('Unexpected end of JSON input')).toBe('Unexpected end of JSON input')
+  })
+
+  it('locates a position deterministically', () => {
+    // Synthetic messages: the engines disagree on wording and position.
+    expect(getErrorLocation('abc\ndef', 'boom at position 0')).toEqual({ line: 1, column: 1 })
+    expect(getErrorLocation('abc\ndef', 'boom at position 4')).toEqual({ line: 2, column: 1 })
+    expect(getErrorLocation('abc\ndef', 'boom at position 5')).toEqual({ line: 2, column: 2 })
+  })
+
+  it('clamps a position beyond the text and returns null without one', () => {
+    expect(getErrorLocation('abc\ndef', 'boom at position 100')).toEqual({ line: 2, column: 4 })
+    expect(getErrorLocation('abc', 'boom')).toBeNull()
+  })
+
+  it('restores negative big integers', () => {
+    const { data } = parseJson('{"n":-12345678901234567890}', { bigInt: true })
+    expect((data as { n: bigint }).n).toBe(-12345678901234567890n)
+  })
+
+  it('leaves big integers inside arrays untouched', () => {
+    // The rewrite only matches `:`-prefixed numbers, so array members keep
+    // the lossy Number conversion.
+    const { data } = parseJson('{"a":[12345678901234567890]}', { bigInt: true })
+    expect(typeof (data as { a: unknown[] }).a[0]).toBe('number')
+  })
+
+  it('needs 16 digits before it rewrites', () => {
+    expect(hasLargeNumbers('{"n":123456789012345}')).toBe(false)
+    expect(hasLargeNumbers('{"n":1234567890123456}')).toBe(true)
+  })
+
+  it('reports errors on the bigInt path too', () => {
+    const { data, error } = parseJson('{"n":1,}', { bigInt: true })
+    expect(data).toBeNull()
+    expect(error).toBeTruthy()
   })
 })
