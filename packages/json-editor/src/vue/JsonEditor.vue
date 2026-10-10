@@ -1,5 +1,9 @@
 <template>
-  <div class="je-root" :class="{ 'je-dark': isDark }" :style="{ height: resolvedHeight }">
+  <div
+    class="je-root"
+    :class="{ 'je-dark': isDark, 'je-flat': !bordered }"
+    :style="{ height: resolvedHeight }"
+  >
     <div class="je-toolbar">
       <button
         type="button"
@@ -74,12 +78,19 @@
       />
     </div>
 
-    <div :class="['je-status', errorInfo && 'is-error']">
+    <div v-if="showStatus" :class="['je-status', errorInfo && 'is-error']">
       <span class="je-dot" :class="{ 'is-error': !!errorInfo }" />
       <span class="je-status-message">{{ statusText }}</span>
-      <span v-if="errorInfo?.location" class="je-status-loc">
+      <button
+        v-if="errorInfo?.location"
+        type="button"
+        class="je-status-loc je-jump"
+        :title="t('jump_to_error')"
+        :aria-label="t('jump_to_error')"
+        @click="jumpToError"
+      >
         {{ t('line_column', { line: errorInfo.location.line, column: errorInfo.location.column }) }}
-      </span>
+      </button>
       <span class="je-status-right">{{ t('chars', { n: text.length }) }}</span>
     </div>
 
@@ -90,7 +101,7 @@
 </template>
 
 <script setup lang="ts">
-import { computed, ref, watch } from 'vue'
+import { computed, nextTick, ref, watch } from 'vue'
 import CodeEditor from './CodeEditor.vue'
 import TreeView from './TreeView.vue'
 import { useTheme, type ThemeOption } from './useTheme'
@@ -104,21 +115,30 @@ import '../styles/index.css'
 
 export type JsonEditorView = 'editor' | 'tree' | 'both'
 
-const props = defineProps<{
-  modelValue?: string
-  view?: JsonEditorView
-  theme?: ThemeOption
-  locale?: Locale
-  messages?: Partial<Messages>
-  readOnly?: boolean
-  placeholder?: string
-  indent?: IndentOption
-  maxBytes?: number
-  height?: string
-  /** Show a small "powered by jsontoolbox.cc" link. Off by default. */
-  attribution?: boolean
-  attributionUrl?: string
-}>()
+// `bordered` / `showStatus` need real defaults: Vue casts an absent Boolean
+// prop to `false`, so a `?? true` fallback would never kick in.
+const props = withDefaults(
+  defineProps<{
+    modelValue?: string
+    view?: JsonEditorView
+    theme?: ThemeOption
+    locale?: Locale
+    messages?: Partial<Messages>
+    readOnly?: boolean
+    placeholder?: string
+    indent?: IndentOption
+    maxBytes?: number
+    height?: string
+    /** Show the outer border and rounded corners. */
+    bordered?: boolean
+    /** Show the status bar (validity, error location, character count). */
+    showStatus?: boolean
+    /** Show a small "powered by jsontoolbox.cc" link. Off by default. */
+    attribution?: boolean
+    attributionUrl?: string
+  }>(),
+  { bordered: true, showStatus: true }
+)
 
 // Resolution order for every optional prop: explicit prop → plugin defaults
 // (`app.use(JsonEditorPlugin, {...})`) → built-in default.
@@ -131,6 +151,8 @@ const resolvedHeight = computed(() => props.height ?? pluginOptions?.height ?? '
 const readOnly = computed(() => props.readOnly ?? false)
 const maxBytes = computed(() => props.maxBytes ?? 0)
 const placeholder = computed(() => props.placeholder ?? '')
+const bordered = computed(() => props.bordered)
+const showStatus = computed(() => props.showStatus)
 const attribution = computed(() => props.attribution ?? false)
 const attributionUrl = computed(() => props.attributionUrl ?? 'https://jsontoolbox.cc')
 
@@ -183,6 +205,16 @@ const statusText = computed(() => {
   if (!hasContent.value) return t.value('empty')
   return errorInfo.value ? `${t.value('invalid')} — ${errorInfo.value.message}` : t.value('valid')
 })
+
+async function jumpToError() {
+  const location = errorInfo.value?.location
+  if (!location) return
+  // The editor is not mounted in tree-only mode, so reveal it first.
+  if (view.value === 'tree') view.value = 'editor'
+  await nextTick()
+  editorRef.value?.scrollToLine(location.line)
+  editorRef.value?.flashLines(location.line)
+}
 
 function onOversizedPaste(info: { bytes: number; text: string }) {
   emit('oversized-paste', info)

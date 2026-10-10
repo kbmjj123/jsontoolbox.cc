@@ -24,6 +24,7 @@ export const en = {
   matches: '{n} matches',
   no_matches: 'No matches',
   line_column: 'Line {line}, column {column}',
+  jump_to_error: 'Jump to the error line',
   chars: '{n} chars',
   paste_blocked: 'Paste blocked: {size} exceeds the {limit} limit.',
   paste_blocked_plain: 'Paste blocked: the pasted content is too large.',

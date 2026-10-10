@@ -15,6 +15,12 @@
   min-height: 0;
 }
 
+/* `bordered: false` — keeps the layout, drops the frame. */
+.je-root.je-flat {
+  border: none;
+  border-radius: 0;
+}
+
 .je-root *,
 .je-root *::before,
 .je-root *::after {
@@ -387,6 +393,18 @@
 .je-status-loc {
   font-family: var(--je-font-mono);
   flex: 0 0 auto;
+}
+
+/* The error location doubles as a "jump to line" button. */
+button.je-status-loc.je-jump {
+  border: none;
+  background: none;
+  padding: 0;
+  color: inherit;
+  font: inherit;
+  cursor: pointer;
+  text-decoration: underline;
+  text-underline-offset: 2px;
 }
 
 .je-status-right {

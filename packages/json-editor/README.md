@@ -94,10 +94,11 @@ const value = ref('{"name": "JSON Toolbox"}')
 
 | Prop | Type | Default | Description |
 |------|------|---------|-------------|
-| `modelValue` / `value` | `string` | `""` | JSON text. |
+| `modelValue` | `string` | `""` | JSON text (the element uses the `value` attribute). |
 | `view` | `'editor' \| 'tree' \| 'both'` | `'both'` | Active view. |
 | `theme` | `'light' \| 'dark' \| 'auto'` | `'auto'` | Theme. |
 | `locale` | `'en' \| 'zh'` | `'en'` | UI language. |
+| `messages` | `Partial<Messages>` | — | Override individual UI strings. |
 | `indent` | `2 \| 4 \| 'tab'` | `2` | Formatter indentation. |
 | `readOnly` | `boolean` | `false` | Disable editing. |
 | `height` | `string` | `'420px'` | Editor height. |
@@ -112,10 +113,14 @@ const value = ref('{"name": "JSON Toolbox"}')
 
 | Event | Payload | Description |
 |-------|---------|-------------|
-| `update:modelValue` / `input` | `string` | Text changed. |
+| `update:modelValue` | `string` | Text changed. |
 | `update:view` | `'editor' \| 'tree' \| 'both'` | View changed. |
-| `error` | `{ message, location }` | Validation error. |
+| `error` | `{ message, location } \| null` | Validation result (re-emitted on every edit). |
 | `select` | `{ path, jsonPath, value }` | Tree node selected. |
+| `oversized-paste` | `{ bytes, text }` | A paste exceeded `maxBytes`; the text was not inserted. |
+
+The custom element emits the same information as DOM events — `input`,
+`error`, `select` — with the payload on `event.detail`.
 
 ---
 

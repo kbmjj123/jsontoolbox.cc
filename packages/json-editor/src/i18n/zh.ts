@@ -23,6 +23,7 @@ export const zh: Messages = {
   matches: '{n} 处匹配',
   no_matches: '无匹配',
   line_column: '第 {line} 行，第 {column} 列',
+  jump_to_error: '跳转到错误行',
   chars: '{n} 字符',
   paste_blocked: '粘贴被拦截：{size} 超过 {limit} 上限。',
   paste_blocked_plain: '粘贴被拦截：粘贴内容过大。',

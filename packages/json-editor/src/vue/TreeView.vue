@@ -75,7 +75,21 @@
         </template>
 
         <span class="je-row-actions">
-          <button type="button" :title="t('copy_path')" :aria-label="t('copy_path')" @click.stop="copyPath(node)">
+          <button
+            v-if="node.path"
+            type="button"
+            :title="t('copy_path')"
+            :aria-label="t('copy_path')"
+            @click.stop="copyPath(node)"
+          >
+            <span v-html="icons.brackets" />
+          </button>
+          <button
+            type="button"
+            :title="t('copy_jsonpath')"
+            :aria-label="t('copy_jsonpath')"
+            @click.stop="copyJsonPath(node)"
+          >
             <span v-html="icons.braces" />
           </button>
           <button type="button" :title="t('copy_value')" :aria-label="t('copy_value')" @click.stop="copyValue(node)">
@@ -120,7 +134,7 @@ const props = withDefaults(
 
 const emit = defineEmits<{
   select: [info: { path: string; jsonPath: string; value: unknown }]
-  copied: [info: { kind: 'path' | 'value'; text: string }]
+  copied: [info: { kind: 'path' | 'jsonPath' | 'value'; text: string }]
 }>()
 
 const pluginOptions = useJsonEditorOptions()
@@ -214,10 +228,17 @@ function previewChunks(node: TreeNode) {
   return splitByQuery(preview + more, query.value)
 }
 
+/** Copies the internal path form (`users[0].profile`). */
 async function copyPath(node: TreeNode) {
+  const ok = await copyText(node.path)
+  if (ok) emit('copied', { kind: 'path', text: node.path })
+}
+
+/** Copies the JSONPath form (`$.users[0].profile`). */
+async function copyJsonPath(node: TreeNode) {
   const text = toJsonPath(node.path)
   const ok = await copyText(text)
-  if (ok) emit('copied', { kind: 'path', text })
+  if (ok) emit('copied', { kind: 'jsonPath', text })
 }
 
 async function copyValue(node: TreeNode) {
