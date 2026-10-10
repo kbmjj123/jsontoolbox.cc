@@ -192,7 +192,6 @@ export default defineNuxtConfig({
         'jsonrepair',
         'marked',
         'photoswipe',
-        'vue-codemirror6',
       ]
     },
     server: {

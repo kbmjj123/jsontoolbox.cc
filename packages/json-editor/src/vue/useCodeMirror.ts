@@ -49,6 +49,12 @@ export interface CreateCodeMirrorOptions {
   root?: ShadowRoot | Document
   /** Refuse pastes larger than this many bytes. `0` disables the check. */
   maxBytes?: number
+  /**
+   * Extra CodeMirror extensions appended after the built-ins. Use this for
+   * host-specific behaviour (custom decorations, themes) without forking the
+   * editor. Wrap in `Prec.high(...)` to override the built-in theme.
+   */
+  extensions?: Extension[]
   onDocChange?: (value: string) => void
   onOversizedPaste?: (info: { bytes: number; text: string }) => void
   onReady?: (view: EditorView) => void
@@ -119,6 +125,7 @@ export function createCodeMirror(options: CreateCodeMirrorOptions): CodeMirrorHa
     indent = 2,
     root,
     maxBytes = 0,
+    extensions: extraExtensions = [],
     onDocChange,
     onOversizedPaste,
     onReady,
@@ -163,6 +170,7 @@ export function createCodeMirror(options: CreateCodeMirrorOptions): CodeMirrorHa
   ]
 
   if (placeholderText) extensions.push(placeholder(placeholderText))
+  extensions.push(...extraExtensions)
 
   const view = new EditorView({
     state: EditorState.create({ doc, extensions }),
