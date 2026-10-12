@@ -705,3 +705,60 @@ button.je-status-loc.je-jump {
   color: var(--je-fg-faint);
   white-space: normal;
 }
+
+/* ── Value inspector (P3-7) ────────────────────────────────── */
+
+.je-value-insight {
+  margin-left: 8px;
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  vertical-align: middle;
+}
+
+.je-insight {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 12px;
+}
+
+.je-swatch {
+  width: 14px;
+  height: 14px;
+  border-radius: 3px;
+  border: 1px solid var(--je-border);
+  flex: 0 0 auto;
+}
+
+.je-insight-val {
+  color: var(--je-accent);
+  font-weight: 600;
+}
+
+.je-insight-sub {
+  color: var(--je-fg-faint);
+  font-size: 11px;
+}
+
+.je-insight-img {
+  width: 28px;
+  height: 28px;
+  object-fit: cover;
+  border-radius: 4px;
+  border: 1px solid var(--je-border);
+}
+
+.je-insight-pre {
+  margin: 4px 0 0;
+  padding: 6px 8px;
+  background: var(--je-bg-alt);
+  border: 1px solid var(--je-border);
+  border-radius: 6px;
+  font-size: 11px;
+  max-width: 320px;
+  max-height: 200px;
+  overflow: auto;
+  white-space: pre-wrap;
+  word-break: break-word;
+}

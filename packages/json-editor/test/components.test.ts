@@ -116,6 +116,14 @@ describe('TreeView', () => {
     expect(wrapper.text()).toContain('1 matches')
   })
 
+  it('shows a value-insight chip for a recognized leaf (e.g. a color)', () => {
+    const wrapper = mount(TreeView, {
+      props: { text: '{"color":"#ff0000","epoch":1690000000000}' },
+    })
+    expect(wrapper.find('.je-insight').exists()).toBe(true)
+    expect(wrapper.find('.je-swatch').exists()).toBe(true)
+  })
+
   it('emits select with the path pair when a row is clicked', async () => {
     const wrapper = mount(TreeView, { props: { text: SAMPLE } })
     await wrapper.findAll('.je-row')[1].trigger('click')

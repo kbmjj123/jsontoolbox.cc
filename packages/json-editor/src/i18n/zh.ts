@@ -71,4 +71,9 @@ export const zh: Messages = {
   hide_all: '隐藏全部',
   export_csv: '导出 CSV',
   no_table_data: '这不是一个行列表，请切换到树视图或分栏视图查看。',
+  insight_color: '颜色',
+  insight_timestamp: '时间',
+  insight_jwt: 'JWT',
+  insight_base64: 'Base64',
+  bytes: '{n} 字节',
 }

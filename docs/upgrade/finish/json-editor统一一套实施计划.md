@@ -164,7 +164,7 @@
 - 新增 `TableView`：排序、列显隐、导出 CSV（导出是否复用 `app/utils/csv.ts` 见 §5）✅ done 2026-10-12
 
 **3.3 值检查器（拆分）**
-- 进包：时间戳 / Base64 / JWT / 颜色的**纯识别**（类型判定逻辑在 `app/utils/mediaPreview.ts`）
+- 进包：时间戳 / Base64 / JWT / 颜色的**纯识别**（类型判定逻辑在 `app/utils/mediaPreview.ts`）✅ done 2026-10-12：新增 `core/valueInspector.ts`（framework-free，含 `inspectValue` 统一入口）+ `ValueInsight.vue`（内联色块/时间/JWT 解码/Base64 预览，不含 Markdown/lightbox）
 - 留站点：Markdown 预览（`marked` + `DOMPurify`）、图片 lightbox、`MediaToDataUriModal`
 
 **3.4 i18n**

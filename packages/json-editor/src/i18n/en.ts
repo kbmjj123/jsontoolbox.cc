@@ -72,6 +72,11 @@ export const en = {
   hide_all: 'Hide all',
   export_csv: 'Export CSV',
   no_table_data: 'This is not a list of rows. Use the Tree or Split view to inspect it.',
+  insight_color: 'Color',
+  insight_timestamp: 'Timestamp',
+  insight_jwt: 'JWT',
+  insight_base64: 'Base64',
+  bytes: '{n} bytes',
 } as const
 
 export type MessageKey = keyof typeof en

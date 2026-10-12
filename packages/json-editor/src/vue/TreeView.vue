@@ -150,6 +150,13 @@
             @click.stop
           />
           <span v-else class="je-value" :class="'is-' + node.type">{{ displayValue(node) }}</span>
+          <ValueInsight
+            v-if="!(editingValuePath && editingValuePath === node.path)"
+            class="je-value-insight"
+            :value="node.value"
+            :locale="locale"
+            :messages="messages"
+          />
         </template>
 
         <span class="je-row-actions">
@@ -279,6 +286,7 @@ import { icons } from './icons'
 import { copyText } from './clipboard'
 import { useJsonEditorOptions } from './options'
 import { useNodeEditing, coerceScalarInput, type JsonPrimitiveType } from './useNodeEditing'
+import ValueInsight from './ValueInsight.vue'
 import '../styles/index.css'
 
 const props = withDefaults(

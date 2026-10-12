@@ -2,8 +2,9 @@ import JsonEditor from './JsonEditor.vue'
 import CodeEditor from './CodeEditor.vue'
 import TreeView from './TreeView.vue'
 import TableView from './TableView.vue'
+import ValueInsight from './ValueInsight.vue'
 
-export { JsonEditor, CodeEditor, TreeView, TableView }
+export { JsonEditor, CodeEditor, TreeView, TableView, ValueInsight }
 export { useNodeEditing, coerceScalarInput, type NodeEditingNotify, type UseNodeEditingOptions } from './useNodeEditing'
 export { JsonEditorPlugin, type JsonEditorPluginOptions } from './plugin'
 export { useTheme, type ThemeOption } from './useTheme'
