@@ -563,3 +563,145 @@ button.je-status-loc.je-jump {
 .je-attribution a:hover {
   text-decoration: underline;
 }
+
+/* ── Table view (P3-6) ──────────────────────────────────── */
+
+.je-table-wrap {
+  display: flex;
+  flex-direction: column;
+  min-height: 0;
+  flex: 1 1 auto;
+  overflow: hidden;
+}
+
+.je-table-empty {
+  flex: 1 1 auto;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--je-fg-faint);
+  padding: 24px;
+  text-align: center;
+}
+
+.je-table-bar {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 6px 10px;
+  border-bottom: 1px solid var(--je-border);
+  background: var(--je-bg-alt);
+}
+
+.je-table-count {
+  font-size: 12px;
+  color: var(--je-fg-faint);
+}
+
+.je-col-toggle {
+  position: relative;
+}
+
+.je-col-menu {
+  position: absolute;
+  z-index: 5;
+  top: calc(100% + 4px);
+  left: 0;
+  min-width: 180px;
+  max-height: 260px;
+  overflow: auto;
+  background: var(--je-bg);
+  border: 1px solid var(--je-border);
+  border-radius: 8px;
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.12);
+  padding: 6px;
+}
+
+.je-col-item {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 3px 4px;
+  font-size: 13px;
+  cursor: pointer;
+  border-radius: 6px;
+}
+
+.je-col-item:hover {
+  background: var(--je-bg-alt);
+}
+
+.je-col-item span {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.je-col-actions {
+  display: flex;
+  gap: 6px;
+  padding-top: 6px;
+  margin-top: 4px;
+  border-top: 1px solid var(--je-border);
+}
+
+.je-btn-sm {
+  padding: 3px 8px;
+  font-size: 12px;
+}
+
+.je-table-scroll {
+  flex: 1 1 auto;
+  overflow: auto;
+  min-height: 0;
+}
+
+.je-table {
+  border-collapse: collapse;
+  width: 100%;
+  font-size: 13px;
+  font-family: var(--je-font);
+}
+
+.je-th,
+.je-td {
+  border-bottom: 1px solid var(--je-border);
+  border-right: 1px solid var(--je-border);
+  padding: 6px 10px;
+  text-align: left;
+  vertical-align: top;
+  white-space: nowrap;
+}
+
+.je-th {
+  position: sticky;
+  top: 0;
+  background: var(--je-bg-alt);
+  cursor: pointer;
+  user-select: none;
+  font-weight: 600;
+}
+
+.je-th:hover {
+  color: var(--je-accent);
+}
+
+.je-th.is-sorted {
+  color: var(--je-accent);
+}
+
+.je-th-label {
+  margin-right: 4px;
+}
+
+.je-td {
+  max-width: 360px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.je-td-empty {
+  text-align: center;
+  color: var(--je-fg-faint);
+  white-space: normal;
+}

@@ -62,7 +62,16 @@ export const en = {
   editor: 'Editor',
   tree: 'Tree',
   both: 'Split',
+  table: 'Table',
   attribution: 'Powered by {name}',
+  sort_asc: 'Sort ascending',
+  sort_desc: 'Sort descending',
+  columns: 'Columns',
+  column: 'Column',
+  show_all: 'Show all',
+  hide_all: 'Hide all',
+  export_csv: 'Export CSV',
+  no_table_data: 'This is not a list of rows. Use the Tree or Split view to inspect it.',
 } as const
 
 export type MessageKey = keyof typeof en

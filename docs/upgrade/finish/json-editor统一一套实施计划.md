@@ -161,7 +161,7 @@
 - `TreeView.vue` 接 5 种搜索模式
 - 新增节点菜单：改名 / 改值 / 改类型 / 增删 / 移动（对齐 `JsonNodeMenu.vue:48-78` 的 `edit.*` 能力集）
 - 新增 undo / redo / 批量赋值（暴露为 composable + 工具条 slot）
-- 新增 `TableView`：排序、列显隐、导出 CSV（导出是否复用 `app/utils/csv.ts` 见 §5）
+- 新增 `TableView`：排序、列显隐、导出 CSV（导出是否复用 `app/utils/csv.ts` 见 §5）✅ done 2026-10-12
 
 **3.3 值检查器（拆分）**
 - 进包：时间戳 / Base64 / JWT / 颜色的**纯识别**（类型判定逻辑在 `app/utils/mediaPreview.ts`）
@@ -210,11 +210,11 @@ cd /tmp/je-smoke && python3 -m http.server 8099
 
 | # | 问题 | 影响 |
 |---|---|---|
-| 1 | **视图枚举不兼容**：包 `editor\|tree\|both` vs 站点 `text\|rich\|table` | P4 前必须定：包扩展语义，还是站点做映射 |
+| 1 | ~~**视图枚举不兼容**：包 `editor\|tree\|both` vs 站点 `text\|rich\|table`~~ → **包扩展语义（已定 2026-10-12，P3-6）** | 包 `JsonEditorView` 扩为 `'editor'|'tree'|'both'|'table'`，`view="table"` 渲染 `TableView`；站点 P4 做映射或改投包语义 |
 | 2 | ~~`jsonrepair` 修复链路是否进包~~ → **不进包**（已定 2026-10-10） | 站点保留自己的修复链路；包维持「不支持自动修复」的既有文案承诺（见 §0 2-bis） |
 | 3 | ~~BigInt 兜底是否进包~~ → **不进包**（已定 2026-10-10） | 包内 `parseJson` 的 `bigInt` 保持 opt-in，不成为共享默认；站点保留自己的兜底 |
 | 3-bis | 错误友好文案映射（`ERROR_PATTERNS`）是否进包 | 按「不进包」同一原则：留站点。进包就要养 en/zh 两份文案表，与纯 `JSON.parse` 定位冲突。若以后希望包也有友好报错，单独立项 |
-| 4 | **表格导出 CSV** 是否复用 `app/utils/csv.ts` | 包内目前无 CSV 实现；复用需把该 util 也搬进包 |
+| 4 | ~~**表格导出 CSV** 是否复用 `app/utils/csv.ts`~~ → **不复用，包内自建纯 `toCsv`（已定 2026-10-12，P3-6）** | 包保持零站点依赖；`core/csv.ts` 的 `toCsv` 行为对齐站 `generateCsv`（RFC4180 引号），嵌套值改 JSON.stringify；P3-8 站点可改投包实现 |
 | 5 | **树渲染模型**：扁平 `flattenVisible` vs 递归组件 | L3 必须二选一重写一边。倾向保留包的扁平模型（搜索高亮与展开态控制更简单），把站点递归组件的能力平移过来 |
 | 6 | 站点 i18n（`useI18n`）与包 `messages` prop 的桥接方式 | 站点有约 15 个 key 命名空间要映射进包的 ~80 键 |
 | 7 | **站点的 parse 层要不要改为调用包的 `parseJson`** | 承 #2/#3 而来：增强不进包，但站点若继续自带 parse，则 parse 仍是一份独立实现，与「不长期维护两套」冲突。见下方说明 | |

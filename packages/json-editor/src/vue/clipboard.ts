@@ -33,3 +33,30 @@ export async function copyText(text: string): Promise<boolean> {
     return false
   }
 }
+
+/**
+ * Trigger a browser download for `content`.
+ *
+ * Returns `false` when no DOM is available (SSR / non-browser), so callers can
+ * fall back to copying the text instead.
+ */
+export function downloadFile(filename: string, content: string, mime = 'text/plain'): boolean {
+  if (typeof document === 'undefined' || typeof URL === 'undefined' || !URL.createObjectURL) {
+    return false
+  }
+  try {
+    const blob = new Blob([content], { type: `${mime};charset=utf-8` })
+    const url = URL.createObjectURL(blob)
+    const a = document.createElement('a')
+    a.href = url
+    a.download = filename
+    document.body.appendChild(a)
+    a.click()
+    document.body.removeChild(a)
+    // Revoke on the next tick so the click has a chance to start the download.
+    setTimeout(() => URL.revokeObjectURL(url), 0)
+    return true
+  } catch {
+    return false
+  }
+}

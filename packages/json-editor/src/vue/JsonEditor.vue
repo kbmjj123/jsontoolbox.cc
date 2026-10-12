@@ -49,13 +49,13 @@
         :class="{ 'je-btn-active': view === option }"
         @click="view = option"
       >
-        {{ t(option === 'editor' ? 'editor' : option === 'tree' ? 'tree' : 'both') }}
+        {{ t(option === 'editor' ? 'editor' : option === 'tree' ? 'tree' : option === 'table' ? 'table' : 'both') }}
       </button>
     </div>
 
     <div class="je-body">
       <CodeEditor
-        v-if="view !== 'tree'"
+        v-if="view === 'editor' || view === 'both'"
         ref="editorRef"
         v-model="text"
         :read-only="readOnly"
@@ -69,7 +69,7 @@
         @oversized-paste="onOversizedPaste"
       />
       <TreeView
-        v-if="view !== 'editor'"
+        v-if="view === 'tree' || view === 'both'"
         class="je-pane"
         v-model:text="text"
         :locale="resolvedLocale"
@@ -78,6 +78,14 @@
         :editable="!readOnly"
         :on-notify="onNotify"
         @select="onSelect"
+      />
+      <TableView
+        v-if="view === 'table'"
+        class="je-pane"
+        :value="parsedValue"
+        :locale="resolvedLocale"
+        :messages="resolvedMessages"
+        :on-notify="onNotify"
       />
     </div>
 
@@ -107,16 +115,17 @@
 import { computed, nextTick, ref, watch } from 'vue'
 import CodeEditor from './CodeEditor.vue'
 import TreeView from './TreeView.vue'
+import TableView from './TableView.vue'
 import { useTheme, type ThemeOption } from './useTheme'
 import { useJsonEditorOptions } from './options'
 import { icons } from './icons'
 import { copyText } from './clipboard'
 import { createTranslator, type Locale, type Messages } from '../i18n'
-import { analyzeJson, type ErrorLocation } from '../core/parse'
+import { analyzeJson, parseJson, type ErrorLocation } from '../core/parse'
 import type { IndentOption } from '../core/format'
 import '../styles/index.css'
 
-export type JsonEditorView = 'editor' | 'tree' | 'both'
+export type JsonEditorView = 'editor' | 'tree' | 'both' | 'table'
 
 // `bordered` / `showStatus` need real defaults: Vue casts an absent Boolean
 // prop to `false`, so a `?? true` fallback would never kick in.
@@ -196,7 +205,7 @@ const { isDark } = useTheme(resolvedTheme)
 const t = computed(() => createTranslator(resolvedLocale.value, resolvedMessages.value))
 
 const editorRef = ref<InstanceType<typeof CodeEditor> | null>(null)
-const viewOptions: JsonEditorView[] = ['editor', 'tree', 'both']
+const viewOptions: JsonEditorView[] = ['editor', 'tree', 'both', 'table']
 
 const hasContent = computed(() => text.value.trim().length > 0)
 const errorInfo = computed(() => {
@@ -211,11 +220,18 @@ const statusText = computed(() => {
   return errorInfo.value ? `${t.value('invalid')} — ${errorInfo.value.message}` : t.value('valid')
 })
 
+/** Parsed JSON passed to the table view. `null` when empty or invalid. */
+const parsedValue = computed<unknown>(() => {
+  if (!hasContent.value) return null
+  const r = parseJson(text.value)
+  return r.error ? null : r.data
+})
+
 async function jumpToError() {
   const location = errorInfo.value?.location
   if (!location) return
-  // The editor is not mounted in tree-only mode, so reveal it first.
-  if (view.value === 'tree') view.value = 'editor'
+  // The editor is not mounted in tree/table-only mode, so reveal it first.
+  if (view.value === 'tree' || view.value === 'table') view.value = 'editor'
   await nextTick()
   editorRef.value?.scrollToLine(location.line)
   editorRef.value?.flashLines(location.line)

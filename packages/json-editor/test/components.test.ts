@@ -252,6 +252,25 @@ describe('JsonEditor', () => {
     })
     expect(withBadge.get('.je-attribution a').attributes('href')).toBe('https://jsontoolbox.cc')
   })
+
+  it('renders the table view for an array of records (no CodeMirror mount)', () => {
+    const wrapper = mount(JsonEditor, {
+      props: { modelValue: '[{"title":"Demo","users":1},{"title":"X","users":2}]', view: 'table' },
+    })
+    expect(wrapper.find('.je-table').exists()).toBe(true)
+    const headers = wrapper.findAll('.je-th').map((h) => h.text().replace(/[▲▼]/g, '').trim())
+    expect(headers).toContain('title')
+    expect(headers).toContain('users')
+    // Editor / tree panes are not rendered in table-only view.
+    expect(wrapper.find('.cm-editor').exists()).toBe(false)
+  })
+
+  it('shows the table notice for non-array JSON', () => {
+    const wrapper = mount(JsonEditor, {
+      props: { modelValue: '{"a":1}', view: 'table' },
+    })
+    expect(wrapper.find('.je-table-empty').exists()).toBe(true)
+  })
 })
 
 describe('JsonEditorElement', () => {
