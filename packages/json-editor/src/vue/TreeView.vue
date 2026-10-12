@@ -149,9 +149,9 @@
             @keyup.esc="editingValuePath = ''"
             @click.stop
           />
-          <span v-else class="je-value" :class="'is-' + node.type">{{ displayValue(node) }}</span>
+          <span v-else class="je-value" :class="'is-' + node.type">{{ isMasked(node) ? MASK_GLYPH : displayValue(node) }}</span>
           <ValueInsight
-            v-if="!(editingValuePath && editingValuePath === node.path)"
+            v-if="!(editingValuePath && editingValuePath === node.path) && !isMasked(node)"
             class="je-value-insight"
             :value="node.value"
             :locale="locale"
@@ -306,6 +306,10 @@ const props = withDefaults(
     onNotify?: (message: string, kind: 'error' | 'success') => void
     /** Localize a plain English message before notifying. */
     localize?: (message: string) => string
+    /** Hide values at sensitive paths (render `••••`). Opt-in host feature. */
+    masked?: boolean
+    /** Dot-paths whose leaf values should be redacted when `masked` is true. */
+    sensitivePaths?: string[]
   }>(),
   {
     value: undefined,
@@ -314,6 +318,8 @@ const props = withDefaults(
     defaultExpandDepth: 2,
     editable: true,
     indent: 2,
+    masked: false,
+    sensitivePaths: () => [],
   }
 )
 
@@ -441,6 +447,17 @@ function displayValue(node: TreeNode): string {
   return node.type === 'string' ? `"${formatScalar(node.value)}"` : formatScalar(node.value)
 }
 
+const MASK_GLYPH = '••••'
+
+/** Whether a leaf node's value should be redacted (host opt-in masking). */
+function isMasked(node: TreeNode): boolean {
+  return (
+    props.masked &&
+    !!node.path &&
+    (props.sensitivePaths?.includes(node.path) ?? false)
+  )
+}
+
 function previewChunks(node: TreeNode) {
   const preview = node.children
     .slice(0, 3)
@@ -557,6 +574,7 @@ function commitRename(node: TreeNode) {
 }
 
 function startEditValue(node: TreeNode) {
+  if (isMasked(node)) return
   editingValuePath.value = node.path
   valueDraft.value = displayValue(node)
   openMenuPath.value = ''

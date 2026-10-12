@@ -69,6 +69,16 @@ describe('TreeView', () => {
     ])
   })
 
+  it('redacts leaf values at sensitive paths when masked', () => {
+    const wrapper = mount(TreeView, {
+      props: { text: SAMPLE, masked: true, sensitivePaths: ['title'] },
+    })
+    const row = wrapper.findAll('.je-row')[1] // `title` leaf, path === 'title'
+    expect(row.find('.je-value').text()).toBe('••••')
+    // The value-insight chip is suppressed for masked leaves.
+    expect(row.find('.je-value-insight').exists()).toBe(false)
+  })
+
   it('filters by key search and reports the match count', async () => {
     const wrapper = mount(TreeView, { props: { text: SAMPLE } })
     const input = wrapper.get('input[type="search"]')
