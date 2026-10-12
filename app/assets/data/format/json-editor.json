@@ -46,7 +46,10 @@
       "placeholder_input": "Paste or type JSON here...",
       "placeholder_output": "Formatted JSON will appear here...",
       "error_empty_input": "Enter JSON or open a file first",
-      "error_invalid_json": "The input is not valid JSON"
+      "error_invalid_json": "The input is not valid JSON",
+      "view_text": "Text",
+      "view_rich": "Tree",
+      "view_table": "Table"
     },
     "hero": {
       "trustHtml": "Runs in your browser. Your JSON is not uploaded by this tool."
@@ -85,12 +88,12 @@
       {
         "icon": "lucide:sparkles",
         "title": "Readable Value Hints",
-        "description": "Recognize selected value patterns such as URLs or email-like strings when supported by the interface. These hints are visual conveniences and are not a substitute for runtime or schema validation."
+        "description": "The editor labels common value patterns such as colors, timestamps, JWTs, and Base64 so they are easier to scan. These hints are visual conveniences and are not a substitute for runtime or schema validation."
       },
       {
         "icon": "lucide:binary",
         "title": "Copy Node Path & Value",
-        "description": "Right-click any node in the tree view to copy its JSONPath (e.g. $.users[0].name), the raw value, the full node, or the parent path. Each leaf also shows its JSON type and array index so you can locate fields without expanding everything."
+        "description": "Select any node in the tree view to copy its JSONPath (e.g. $.users[0].name) or the raw value. Each leaf also shows its JSON type and array index so you can locate fields without expanding everything."
       },
       {
         "icon": "lucide:copy",
@@ -115,7 +118,7 @@
       {
         "icon": "lucide:search",
         "title": "Search & Jump to Node",
-        "description": "Search the tree by key, value, path, all scopes, or a JSONPath expression. Open the results list to see every match with its path, value type, and parent array, then jump straight to the node in the tree. Export the matches as .txt, .json or .csv, and reuse one of your recent searches from the search history."
+        "description": "Search the tree by key, value, path, all scopes, or a JSONPath expression. Matching nodes are highlighted and revealed in the tree so you can jump straight to them."
       },
       {
         "icon": "lucide:edit",
@@ -124,28 +127,28 @@
       },
       {
         "icon": "lucide:image",
-        "title": "Media and Value Previews",
-        "description": "Inspect string values that look like images, audio, video, PDFs, colors, timestamps, JWTs, Base64, UUIDs, IP addresses, Markdown, or regular expressions. Audio, video and PDF previews load only after you ask for them, large Base64 payloads decode on demand, and remote resources are flagged as third-party requests."
+        "title": "Value Previews",
+        "description": "Inspect string values that look like colors, timestamps, JWTs, or Base64. Colors are shown as a swatch, timestamps can be read in local time, UTC, or ISO, and JWT or Base64 payloads can be decoded for inspection."
       },
       {
         "icon": "lucide:sparkles",
         "title": "Smart Value Detection",
-        "description": "String values that look like timestamps, JWTs, Base64, URLs, colors, emails, UUIDs, IP addresses, Markdown, or regular expressions are labelled with a type chip and one-click actions: open or copy a link, start an email, decode a JWT or Base64 payload, and read a timestamp as local time, UTC, or ISO. Markdown values are previewed as rendered HTML that is sanitized in your browser."
+        "description": "String values that look like colors, timestamps, JWTs, or Base64 are labelled with a type chip: colors show a swatch, timestamps can be read as local time, UTC, or ISO, and JWT or Base64 payloads can be decoded for inspection."
       },
       {
         "icon": "lucide:git-branch",
         "title": "JSONPath Query",
-        "description": "Query the document with a basic JSONPath subset: property access, array indexes, the * wildcard, recursive descent ($..key), and simple [?(@.field==\"value\")] filters. Results list every match with its path and value and jump straight to the node. This is a partial subset, not a fully JSONPath-compliant engine — slices, unions and script expressions are not supported."
+        "description": "Query the document with a basic JSONPath subset: property access, array indexes, the * wildcard, recursive descent ($..key), and simple [?(@.field==\"value\")] filters. Matching nodes are highlighted and revealed in the tree. This is a partial subset, not a fully JSONPath-compliant engine — slices, unions and script expressions are not supported."
       },
       {
         "icon": "lucide:clipboard",
         "title": "Clipboard Workflow",
-        "description": "Pasted JSON is formatted automatically, and pasted text that looks like a URL or Base64 is flagged rather than silently rewritten. Copy the document as formatted or minified JSON, copy any tree node, or replace a node with whatever is currently on your clipboard."
+        "description": "Pasted JSON is formatted automatically, and pasted text that looks like a URL or Base64 is flagged rather than silently rewritten. Copy the document as formatted or minified JSON, or copy any tree node's path or value."
       },
       {
         "icon": "lucide:table",
         "title": "Array Table View",
-        "description": "Turn any object array into a sortable table. Hide or resize columns, filter rows by text, copy a selected row or its JSONPath, and export the full array as CSV — all in your browser."
+        "description": "Turn any object array into a sortable table. Hide or show columns, sort by any column, and export the full array as CSV — all in your browser."
       }
     ],
     "guide": [
@@ -231,7 +234,7 @@
       },
       {
         "question": "Can I use a tree or table view?",
-        "answer": "Yes. When the output is a JSON array of objects, the output panel offers a Table view. You can sort columns, hide or resize columns, filter rows, copy a row or its JSONPath, and export the array as CSV. Tree nodes can also open any nested array directly as a table."
+        "answer": "Yes. When the output is a JSON array of objects, the output panel offers a Table view. You can sort columns, hide or show columns, and export the array as CSV. The tree view also supports search and node editing."
       },
       {
         "question": "Is this a free online JSON editor?",
@@ -268,7 +271,10 @@
       "placeholder_input": "在此粘贴或输入 JSON……",
       "placeholder_output": "格式化结果将显示在这里……",
       "error_empty_input": "请先输入 JSON 或打开文件",
-      "error_invalid_json": "输入不是合法的 JSON"
+      "error_invalid_json": "输入不是合法的 JSON",
+      "view_text": "文本",
+      "view_rich": "树形",
+      "view_table": "表格"
     },
     "hero": {
       "trustHtml": "在你的浏览器中运行。你的 JSON不会被本工具上传。"
@@ -307,12 +313,12 @@
       {
         "icon": "lucide:sparkles",
         "title": "更易读的值提示",
-        "description": "界面会识别部分取值规律，例如看起来像 URL 或邮箱的字符串。这类提示只是视觉上的便利，不能替代运行时校验或 Schema 校验。"
+        "description": "编辑器会为颜色、时间戳、JWT、Base64 等常见取值标注类型，方便快速扫读。这类提示只是视觉上的便利，不能替代运行时校验或 Schema 校验。"
       },
       {
         "icon": "lucide:binary",
         "title": "复制节点路径与值",
-        "description": "在树形视图中右键任意节点，即可复制它的 JSONPath（如 $.users[0].name）、原始值、整个节点或父节点路径。每个叶子节点还会显示 JSON 类型与数组下标，不逐层展开也能定位字段。"
+        "description": "在树形视图中选择任意节点，即可复制它的 JSONPath（如 $.users[0].name）或原始值。每个叶子节点还会显示 JSON 类型与数组下标，不逐层展开也能定位字段。"
       },
       {
         "icon": "lucide:copy",
@@ -337,7 +343,7 @@
       {
         "icon": "lucide:search",
         "title": "搜索并跳转到节点",
-        "description": "可以按键名、值、路径、全部范围或 JSONPath 表达式搜索树形视图。结果列表会给出每条匹配的路径、值类型与所属数组，点击即可跳到树中对应节点。匹配结果可导出为 .txt、.json 或 .csv，也可以从搜索历史里复用之前的关键词。"
+        "description": "可以按键名、值、路径、全部范围或 JSONPath 表达式搜索树形视图。匹配节点会在树中高亮并展开，点击即可直接跳到对应位置。"
       },
       {
         "icon": "lucide:edit",
@@ -347,27 +353,27 @@
       {
         "icon": "lucide:image",
         "title": "媒体与常见值预览",
-        "description": "可以检视看起来像图片、音频、视频、PDF、颜色、时间戳、JWT、Base64、UUID、IP 地址、Markdown 或正则表达式的字符串值。音频、视频与 PDF 要你主动点击后才加载，较大的 Base64 按需解码，远程资源会提示可能产生第三方请求。"
+        "description": "可以检视看起来像颜色、时间戳、JWT 或 Base64 的字符串值。颜色会显示为色块；时间戳可按本地时间、UTC 或 ISO 读取；JWT 或 Base64 的载荷可解码后查看。"
       },
       {
         "icon": "lucide:sparkles",
         "title": "值类型智能识别",
-        "description": "看起来像时间戳、JWT、Base64、URL、颜色、邮箱、UUID、IP、Markdown 或正则表达式的字符串值，会标注类型芯片并提供一键操作：打开或复制链接、发邮件、解码 JWT 或 Base64，以及按本地时间、UTC、ISO 三种方式查看时间戳。Markdown 值会在浏览器内渲染为经过净化的 HTML 预览。"
+        "description": "看起来像颜色、时间戳、JWT 或 Base64 的字符串值会标注类型芯片：颜色显示为色块，时间戳可按本地时间、UTC 或 ISO 读取，JWT 或 Base64 的载荷可解码后查看。"
       },
       {
         "icon": "lucide:git-branch",
         "title": "JSONPath 查询",
-        "description": "用 JSONPath 的基础子集查询文档：属性访问、数组下标、* 通配符、递归下降（$..key），以及简单的 [?(@.field==\"value\")] 过滤。结果会列出每条匹配的路径与值，并可直接跳转到对应节点。这只是部分子集，不是完整兼容 JSONPath 规范的引擎——不支持切片、并集和脚本表达式。"
+        "description": "用 JSONPath 的基础子集查询文档：属性访问、数组下标、* 通配符、递归下降（$..key），以及简单的 [?(@.field==\"value\")] 过滤。匹配节点会在树中高亮并展开。这只是部分子集，不是完整兼容 JSONPath 规范的引擎——不支持切片、并集和脚本表达式。"
       },
       {
         "icon": "lucide:clipboard",
         "title": "剪贴板工作流",
-        "description": "粘贴 JSON 会自动格式化；如果粘贴的内容看起来像 URL 或 Base64，只会给出提示，不会擅自改写。你可以把文档复制为格式化或压缩后的 JSON、复制任意树节点，或用剪贴板里的内容替换某个节点。"
+        "description": "粘贴 JSON 会自动格式化；如果粘贴的内容看起来像 URL 或 Base64，只会给出提示，不会擅自改写。你可以把文档复制为格式化或压缩后的 JSON，也可以复制任意树节点的路径或值。"
       },
       {
         "icon": "lucide:table",
         "title": "数组表格视图",
-        "description": "把任意对象数组变成可排序的表格：隐藏列或拖动调整列宽、按文本筛选行、复制选中的整行或其 JSONPath，并把整个数组导出为 CSV——全部在浏览器本地完成。"
+        "description": "把任意对象数组变成可排序的表格：隐藏或显示列、按任意列排序，并把整个数组导出为 CSV——全部在浏览器本地完成。"
       }
     ],
     "guide": [
@@ -453,7 +459,7 @@
       },
       {
         "question": "可以使用树形视图或表格视图吗？",
-        "answer": "可以。当输出是对象数组时，输出面板提供表格视图：排序、隐藏或调整列宽、筛选行、复制整行或其 JSONPath，并把数组导出为 CSV。树形视图里的嵌套数组也可以直接以表格打开。"
+        "answer": "可以。当输出是对象数组时，输出面板提供表格视图：排序、隐藏或显示列，并把数组导出为 CSV。树形视图也支持搜索和节点编辑。"
       },
       {
         "question": "这是免费的在线 JSON 编辑器吗？",
@@ -466,7 +472,7 @@
     ],
     "article": {
       "title": "如何在线编辑 JSON",
-      "content": "<h2>什么是在线 JSON 编辑器？</h2><p>JSON 编辑器是一种用于查看、修改、验证和格式化 JSON 数据的工具。JSON，即 JavaScript Object Notation，广泛应用于 API 响应、应用设置、配置文件、数据交换和测试数据。与普通文本编辑器不同，JSON 编辑器能够识别对象、数组、字符串、数字、布尔值和 null 等结构。</p><p>使用在线 JSON 编辑器，可以在不安装软件或配置开发环境的情况下快速修改数据。你可以粘贴 JSON、查看层级结构、更新字段、检查语法，并在完成后复制或导出结果。</p><h2>为什么使用在线 JSON 编辑器？</h2><p>当 JSON 被压缩为一行，或者包含多层嵌套对象时，直接阅读和修改往往比较困难。在线 JSON 编辑器可以通过缩进和语法高亮改善可读性，同时在编辑过程中提供实时验证反馈。</p><ul><li><strong>查看结构化数据：</strong>通过清晰的缩进查看对象和数组的层级关系</li><li><strong>快速修改内容：</strong>更新值、添加属性、删除字段或修改数组项目</li><li><strong>减少语法错误：</strong>在编辑时及时发现无效的 JSON 语法</li><li><strong>准备开发数据：</strong>整理 API 响应、测试数据和配置内容</li><li><strong>无需安装软件：</strong>打开浏览器即可开始编辑</li></ul><h2>主要功能</h2><ul><li><strong>语法高亮：</strong>使用不同颜色区分键名、字符串、数字、数组和对象，让 JSON 更容易阅读</li><li><strong>实时验证：</strong>帮助定位缺少逗号、括号不匹配、引号错误和其他语法问题</li><li><strong>格式化：</strong>为压缩的 JSON 添加统一的缩进和换行</li><li><strong>压缩：</strong>去掉多余空白，生成更适合传输和存储的单行 JSON</li><li><strong>值提示：</strong>识别 URL、邮箱等常见取值规律，只是视觉提示，不等同于校验结论</li><li><strong>复制和下载：</strong>复制最终结果，或将其保存为 .json 文件</li><li><strong>本地处理：</strong>在浏览器中完成编辑和格式化，不需要上传数据</li></ul><h2>如何在线编辑 JSON</h2><ol><li><strong>粘贴或输入 JSON：</strong>将对象或数组添加到输入区域，可以使用 API 响应、配置文件或开发项目中的数据。</li><li><strong>查看数据结构：</strong>通过语法高亮和缩进识别键名、值、嵌套对象和数组。</li><li><strong>编辑数据：</strong>修改字符串、数字、布尔值或 null，也可以添加新键、删除属性或修改数组项目。</li><li><strong>检查错误：</strong>通过实时验证状态确认 JSON 语法是否正确，再导出结果。</li><li><strong>格式化 JSON：</strong>根据需要选择 2 个空格、4 个空格或压缩格式。</li><li><strong>整理键名：</strong>需要统一对象属性顺序时，可以启用按键名排序功能。</li><li><strong>导出结果：</strong>将编辑后的 JSON 复制到其他应用，或下载为 .json 文件。</li></ol><h2>需要记住的 JSON 语法规则</h2><ul><li><strong>双引号：</strong>属性名和字符串值必须使用双引号</li><li><strong>逗号：</strong>属性和数组元素之间用逗号分隔，最后一项通常不加尾随逗号</li><li><strong>对象：</strong>用花括号包裹键值对</li><li><strong>数组：</strong>用方括号包裹有序的值</li><li><strong>基础值：</strong>标准 JSON 支持字符串、数字、布尔值和 null</li><li><strong>没有注释：</strong>标准 JSON 不允许注释，JSONC 或 JSON5 需要不同的解析器</li></ul><h2>常见的 JSON 编辑场景</h2><p>JSON 编辑器适用于许多日常开发和数据处理任务。你可以更新环境设置、修正 API 响应示例、准备模拟数据、编辑多语言文件、查看应用程序输出，或创建用于测试的小型 JSON 文档。</p><ul><li>修改用户名称、状态、标识符或账户设置</li><li>为 API 响应示例添加或删除字段</li><li>更新包含标签、权限、产品或其他记录的数组</li><li>在应用程序使用前检查嵌套配置选项</li><li>将压缩的 JSON 转换为便于代码审查的可读格式</li></ul><h2>JSON 编辑器和 JSON 格式化工具的区别</h2><p>虽然这两个概念经常一起出现，但 JSON 编辑器和 JSON 格式化工具的主要用途并不相同。</p><ul><li><strong>JSON 编辑器：</strong>可以交互式修改 JSON 内容，包括值、键名、对象和数组</li><li><strong>JSON 格式化工具：</strong>通过添加缩进和换行改善现有 JSON 的可读性</li><li><strong>JSON 验证器：</strong>检查文本是否符合 JSON 语法，并报告发现的错误</li><li><strong>JSON Schema 校验器：</strong>检查解析后的数据是否满足另一份结构与约束定义</li><li><strong>JSON 压缩器：</strong>删除不必要的空白字符，生成更紧凑的 JSON</li></ul><p>很多工具会把这些能力合在一起，但它们回答的是不同的问题。一份文档可以是合法的 JSON，却仍然通不过 JSON Schema 或应用自身的校验。</p><h2>格式化与压缩</h2><p>格式化让嵌套的对象和数组更容易读，压缩去掉空白但不改变解析后的值。开发和评审阶段保留格式化输出，只有在需要紧凑传输或存储时才用压缩输出。</p><h2>对象键名的顺序</h2><p>这个编辑器保留键名在文档中的原始顺序，不会替你重排。如果你需要先统一顺序再对比两份文档，请使用带显式「排序键名」选项的比较工具；同时注意，如果项目有意保持某种展示顺序，重排键名会让 diff 变得很吵。</p><h2>编辑 JSON 的最佳实践</h2><ul><li><strong>先验证：</strong>进行大量修改前，先确认输入内容是有效 JSON</li><li><strong>使用双引号：</strong>JSON 的属性名和字符串值必须使用双引号</li><li><strong>保持格式统一：</strong>选择符合项目或团队规范的缩进方式</li><li><strong>检查数据类型：</strong>确认数字、布尔值、null 和字符串的表示方式正确</li><li><strong>检查嵌套结构：</strong>确认每个左大括号或左方括号都有对应的右侧闭合符号</li><li><strong>保存备份：</strong>替换原始 JSON 文件前，先保留一份副本</li><li><strong>编辑后测试：</strong>如果 JSON 被应用程序或 API 使用，应在目标环境中测试更新后的数据</li></ul><h2>安全编辑配置文件</h2><p>修改配置文件前先备份，并确认使用这份配置的应用如何解释取值。<code>\"false\"</code> 是字符串，<code>false</code> 才是布尔值；看起来像数字的编号如果涉及前导零或精确格式，可能必须保持为字符串。</p><p>改完后校验 JSON 语法，并在安全环境里实测配置。JSON 合法不等于应用会接受这些字段名、类型和取值。</p><h2>编辑 API 响应与测试数据</h2><p>你可以用编辑器准备 mock 接口数据、删掉响应里的某些字段，或为测试用例改值。要让 fixture 可靠，请保持预期的数据类型，并用应用实际使用的 schema 或运行时解析器验证结果。</p><h2>大型 JSON 文件</h2><p>浏览器编辑器需要把原文以及解析、高亮后的内容都放在内存里。文件越大，语法高亮、校验、格式化和渲染的开销越高。遇到特别大的 JSON，改用本地编辑器、流式解析器，或专门面向大文件的查看工具。</p><h2>浏览器本地与隐私</h2><p>这个编辑器在浏览器里处理 JSON，不会把它发到远程服务。这对私有的开发数据很方便，但它不是密钥管理系统：不要在任何在线编辑器里输入密码、访问令牌、私钥、客户数据或生产环境的机密配置。</p><p>可选的「分享」按钮是唯一会把文档带离页面的操作：它会把 JSON 压缩后编码进链接本身（URL 片段）。没有服务器收到这份 JSON，但链接本身就是一份数据副本——拿到链接的人都能解码，它也可能被存进浏览器历史或聊天记录。会让链接过长的文档会被拒绝，并改为提供下载。</p><h2>进阶编辑工作流</h2><p>处理结构化数据时，除了纯文本编辑，你可能还需要树形视图、表格视图、查询、修复、Schema 校验或图形视图。这些视图对庞大或陌生的文档很有用，但它们和标准的语法编辑是不同能力，应当区分看待。</p><h2>一个页面完成编辑、格式化与校验</h2><p>用户通常是带着三种需求之一过来的：想找在线 JSON 编辑器改值，想找在线 JSON 格式化工具把文档变可读，或者想做 JSON 校验确认文本合法。这个页面是免费的 JSON 编辑器，内置了校验能力，同时也干另外两件事，所以你粘贴一次就能在三件事之间切换，不用把文本复制到别的站点。</p><p>作为编辑器，它支持语法高亮、树形视图和搜索，可以在线编辑 JSON。作为格式化工具，它支持在线 JSON 格式化，也能 JSON 美化（按 2 空格或 4 空格缩进，作用相当于 JSON 验证器之外的美化器）。作为校验工具，它支持在线 JSON 校验和 JSON 语法校验，会给出出错的行号和列号。它也支持打开本地 .json 文件，不必粘贴。合起来看，这就是同一个输入上的 JSON 格式化验证与编辑能力。</p>"
+      "content": "<h2>什么是在线 JSON 编辑器？</h2><p>JSON 编辑器是一种用于查看、修改、验证和格式化 JSON 数据的工具。JSON，即 JavaScript Object Notation，广泛应用于 API 响应、应用设置、配置文件、数据交换和测试数据。与普通文本编辑器不同，JSON 编辑器能够识别对象、数组、字符串、数字、布尔值和 null 等结构。</p><p>使用在线 JSON 编辑器，可以在不安装软件或配置开发环境的情况下快速修改数据。你可以粘贴 JSON、查看层级结构、更新字段、检查语法，并在完成后复制或导出结果。</p><h2>为什么使用在线 JSON 编辑器？</h2><p>当 JSON 被压缩为一行，或者包含多层嵌套对象时，直接阅读和修改往往比较困难。在线 JSON 编辑器可以通过缩进和语法高亮改善可读性，同时在编辑过程中提供实时验证反馈。</p><ul><li><strong>查看结构化数据：</strong>通过清晰的缩进查看对象和数组的层级关系</li><li><strong>快速修改内容：</strong>更新值、添加属性、删除字段或修改数组项目</li><li><strong>减少语法错误：</strong>在编辑时及时发现无效的 JSON 语法</li><li><strong>准备开发数据：</strong>整理 API 响应、测试数据和配置内容</li><li><strong>无需安装软件：</strong>打开浏览器即可开始编辑</li></ul><h2>主要功能</h2><ul><li><strong>语法高亮：</strong>使用不同颜色区分键名、字符串、数字、数组和对象，让 JSON 更容易阅读</li><li><strong>实时验证：</strong>帮助定位缺少逗号、括号不匹配、引号错误和其他语法问题</li><li><strong>格式化：</strong>为压缩的 JSON 添加统一的缩进和换行</li><li><strong>压缩：</strong>去掉多余空白，生成更适合传输和存储的单行 JSON</li><li><strong>复制和下载：</strong>复制最终结果，或将其保存为 .json 文件</li><li><strong>本地处理：</strong>在浏览器中完成编辑和格式化，不需要上传数据</li></ul><h2>如何在线编辑 JSON</h2><ol><li><strong>粘贴或输入 JSON：</strong>将对象或数组添加到输入区域，可以使用 API 响应、配置文件或开发项目中的数据。</li><li><strong>查看数据结构：</strong>通过语法高亮和缩进识别键名、值、嵌套对象和数组。</li><li><strong>编辑数据：</strong>修改字符串、数字、布尔值或 null，也可以添加新键、删除属性或修改数组项目。</li><li><strong>检查错误：</strong>通过实时验证状态确认 JSON 语法是否正确，再导出结果。</li><li><strong>格式化 JSON：</strong>根据需要选择 2 个空格、4 个空格或压缩格式。</li><li><strong>整理键名：</strong>需要统一对象属性顺序时，可以启用按键名排序功能。</li><li><strong>导出结果：</strong>将编辑后的 JSON 复制到其他应用，或下载为 .json 文件。</li></ol><h2>需要记住的 JSON 语法规则</h2><ul><li><strong>双引号：</strong>属性名和字符串值必须使用双引号</li><li><strong>逗号：</strong>属性和数组元素之间用逗号分隔，最后一项通常不加尾随逗号</li><li><strong>对象：</strong>用花括号包裹键值对</li><li><strong>数组：</strong>用方括号包裹有序的值</li><li><strong>基础值：</strong>标准 JSON 支持字符串、数字、布尔值和 null</li><li><strong>没有注释：</strong>标准 JSON 不允许注释，JSONC 或 JSON5 需要不同的解析器</li></ul><h2>常见的 JSON 编辑场景</h2><p>JSON 编辑器适用于许多日常开发和数据处理任务。你可以更新环境设置、修正 API 响应示例、准备模拟数据、编辑多语言文件、查看应用程序输出，或创建用于测试的小型 JSON 文档。</p><ul><li>修改用户名称、状态、标识符或账户设置</li><li>为 API 响应示例添加或删除字段</li><li>更新包含标签、权限、产品或其他记录的数组</li><li>在应用程序使用前检查嵌套配置选项</li><li>将压缩的 JSON 转换为便于代码审查的可读格式</li></ul><h2>JSON 编辑器和 JSON 格式化工具的区别</h2><p>虽然这两个概念经常一起出现，但 JSON 编辑器和 JSON 格式化工具的主要用途并不相同。</p><ul><li><strong>JSON 编辑器：</strong>可以交互式修改 JSON 内容，包括值、键名、对象和数组</li><li><strong>JSON 格式化工具：</strong>通过添加缩进和换行改善现有 JSON 的可读性</li><li><strong>JSON 验证器：</strong>检查文本是否符合 JSON 语法，并报告发现的错误</li><li><strong>JSON Schema 校验器：</strong>检查解析后的数据是否满足另一份结构与约束定义</li><li><strong>JSON 压缩器：</strong>删除不必要的空白字符，生成更紧凑的 JSON</li></ul><p>很多工具会把这些能力合在一起，但它们回答的是不同的问题。一份文档可以是合法的 JSON，却仍然通不过 JSON Schema 或应用自身的校验。</p><h2>格式化与压缩</h2><p>格式化让嵌套的对象和数组更容易读，压缩去掉空白但不改变解析后的值。开发和评审阶段保留格式化输出，只有在需要紧凑传输或存储时才用压缩输出。</p><h2>对象键名的顺序</h2><p>这个编辑器保留键名在文档中的原始顺序，不会替你重排。如果你需要先统一顺序再对比两份文档，请使用带显式「排序键名」选项的比较工具；同时注意，如果项目有意保持某种展示顺序，重排键名会让 diff 变得很吵。</p><h2>编辑 JSON 的最佳实践</h2><ul><li><strong>先验证：</strong>进行大量修改前，先确认输入内容是有效 JSON</li><li><strong>使用双引号：</strong>JSON 的属性名和字符串值必须使用双引号</li><li><strong>保持格式统一：</strong>选择符合项目或团队规范的缩进方式</li><li><strong>检查数据类型：</strong>确认数字、布尔值、null 和字符串的表示方式正确</li><li><strong>检查嵌套结构：</strong>确认每个左大括号或左方括号都有对应的右侧闭合符号</li><li><strong>保存备份：</strong>替换原始 JSON 文件前，先保留一份副本</li><li><strong>编辑后测试：</strong>如果 JSON 被应用程序或 API 使用，应在目标环境中测试更新后的数据</li></ul><h2>安全编辑配置文件</h2><p>修改配置文件前先备份，并确认使用这份配置的应用如何解释取值。<code>\"false\"</code> 是字符串，<code>false</code> 才是布尔值；看起来像数字的编号如果涉及前导零或精确格式，可能必须保持为字符串。</p><p>改完后校验 JSON 语法，并在安全环境里实测配置。JSON 合法不等于应用会接受这些字段名、类型和取值。</p><h2>编辑 API 响应与测试数据</h2><p>你可以用编辑器准备 mock 接口数据、删掉响应里的某些字段，或为测试用例改值。要让 fixture 可靠，请保持预期的数据类型，并用应用实际使用的 schema 或运行时解析器验证结果。</p><h2>大型 JSON 文件</h2><p>浏览器编辑器需要把原文以及解析、高亮后的内容都放在内存里。文件越大，语法高亮、校验、格式化和渲染的开销越高。遇到特别大的 JSON，改用本地编辑器、流式解析器，或专门面向大文件的查看工具。</p><h2>浏览器本地与隐私</h2><p>这个编辑器在浏览器里处理 JSON，不会把它发到远程服务。这对私有的开发数据很方便，但它不是密钥管理系统：不要在任何在线编辑器里输入密码、访问令牌、私钥、客户数据或生产环境的机密配置。</p><p>可选的「分享」按钮是唯一会把文档带离页面的操作：它会把 JSON 压缩后编码进链接本身（URL 片段）。没有服务器收到这份 JSON，但链接本身就是一份数据副本——拿到链接的人都能解码，它也可能被存进浏览器历史或聊天记录。会让链接过长的文档会被拒绝，并改为提供下载。</p><h2>进阶编辑工作流</h2><p>处理结构化数据时，除了纯文本编辑，你可能还需要树形视图、表格视图、查询、修复、Schema 校验或图形视图。这些视图对庞大或陌生的文档很有用，但它们和标准的语法编辑是不同能力，应当区分看待。</p><h2>一个页面完成编辑、格式化与校验</h2><p>用户通常是带着三种需求之一过来的：想找在线 JSON 编辑器改值，想找在线 JSON 格式化工具把文档变可读，或者想做 JSON 校验确认文本合法。这个页面是免费的 JSON 编辑器，内置了校验能力，同时也干另外两件事，所以你粘贴一次就能在三件事之间切换，不用把文本复制到别的站点。</p><p>作为编辑器，它支持语法高亮、树形视图和搜索，可以在线编辑 JSON。作为格式化工具，它支持在线 JSON 格式化，也能 JSON 美化（按 2 空格或 4 空格缩进，作用相当于 JSON 验证器之外的美化器）。作为校验工具，它支持在线 JSON 校验和 JSON 语法校验，会给出出错的行号和列号。它也支持打开本地 .json 文件，不必粘贴。合起来看，这就是同一个输入上的 JSON 格式化验证与编辑能力。</p>"
     }
   }
 }
