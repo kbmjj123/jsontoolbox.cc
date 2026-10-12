@@ -1,4 +1,5 @@
 import { jsonTypeLabel, type JsonTypeName } from './path'
+import { evaluateJsonPath } from './jsonPath'
 
 export interface TreeNode {
   /** Tree path used by the UI: `users[0].name`. Root is `''`. */
@@ -108,12 +109,16 @@ export function flattenVisible(root: TreeNode, expanded: Set<string>): TreeNode[
   return out
 }
 
+export type TreeSearchMode = 'key' | 'value' | 'path' | 'all' | 'jsonpath'
+
 export interface TreeSearchOptions {
-  /** Match against keys. Default `true`. */
+  /** Search mode. Default `'key'` (matches the site's tree-search default). */
+  mode?: TreeSearchMode
+  /** Match against keys (legacy fallback, used only when `mode` is unset). */
   keys?: boolean
-  /** Match against values. Default `true`. */
+  /** Match against values (legacy fallback, used only when `mode` is unset). */
   values?: boolean
-  /** Default `false`. */
+  /** Default `false`. Ignored in `jsonpath` mode (expressions are case-sensitive). */
   caseSensitive?: boolean
 }
 
@@ -123,23 +128,64 @@ export interface TreeSearchResult {
   /** Every ancestor of a match — expand these to reveal the matches. */
   ancestors: Set<string>
   total: number
+  /** `true` only in `jsonpath` mode when the expression is invalid/unsupported. */
+  invalid: boolean
+}
+
+const MAX_SEARCH_RESULTS = 5000
+
+/** Resolve the effective mode, honouring the legacy `keys`/`values` booleans. */
+function resolveMode(options: TreeSearchOptions): TreeSearchMode | 'none' {
+  if (options.mode) return options.mode
+  // The legacy `keys`/`values` booleans are only honoured when explicitly
+  // supplied — otherwise we fall through to the new `'key'` default (the
+  // site's tree-search default), so `searchTree(root, q)` means "search keys".
+  if (options.keys !== undefined || options.values !== undefined) {
+    const keys = options.keys ?? true
+    const values = options.values ?? true
+    if (keys && values) return 'all'
+    if (keys && !values) return 'key'
+    if (!keys && values) return 'value'
+    return 'none'
+  }
+  return 'key'
 }
 
 /**
  * Search the tree. Returns matched paths plus the ancestors needed to reveal
  * them, so the caller can expand without walking the tree again.
+ *
+ * `jsonpath` mode delegates to `evaluateJsonPath`; when the expression is
+ * unsupported/invalid the result has `invalid: true` and empty matches — callers
+ * should surface an "invalid expression" hint rather than a zero-results state.
  */
 export function searchTree(
   root: TreeNode,
   query: string,
   options: TreeSearchOptions = {}
 ): TreeSearchResult {
-  const { keys = true, values = true, caseSensitive = false } = options
-  const matches = new Set<string>()
-  const ancestors = new Set<string>()
-
+  const caseSensitive = options.caseSensitive ?? false
+  const empty: TreeSearchResult = { matches: new Set(), ancestors: new Set(), total: 0, invalid: false }
   const needle = query.trim()
-  if (!needle) return { matches, ancestors, total: 0 }
+  if (!needle) return empty
+
+  const mode = resolveMode(options)
+  if (mode === 'none') return empty
+
+  // JSONPath bypasses the plain substring walk: expressions are case-sensitive.
+  if (mode === 'jsonpath') {
+    const found = evaluateJsonPath(root.value, needle)
+    if (found === null) return { matches: new Set(), ancestors: new Set(), total: 0, invalid: true }
+    const matches = new Set<string>()
+    const ancestors = new Set<string>()
+    for (const hit of found) {
+      if (matches.size >= MAX_SEARCH_RESULTS) break
+      if (matches.has(hit.path)) continue
+      matches.add(hit.path)
+      for (const ancestor of ancestorPaths(hit.path)) ancestors.add(ancestor)
+    }
+    return { matches, ancestors, total: matches.size, invalid: false }
+  }
 
   const target = caseSensitive ? needle : needle.toLowerCase()
   const hit = (text: string) => {
@@ -147,12 +193,15 @@ export function searchTree(
     return haystack.includes(target)
   }
 
+  const matches = new Set<string>()
+  const ancestors = new Set<string>()
   const walk = (node: TreeNode) => {
     let matched = false
-    if (keys && hit(node.key)) matched = true
-    if (!matched && values && node.children.length === 0) {
+    if ((mode === 'key' || mode === 'all') && hit(node.key)) matched = true
+    if (!matched && (mode === 'value' || mode === 'all') && node.children.length === 0) {
       if (hit(formatScalar(node.value))) matched = true
     }
+    if (!matched && (mode === 'path' || mode === 'all') && hit(node.path)) matched = true
     if (matched) {
       matches.add(node.path)
       for (const ancestor of ancestorPaths(node.path)) ancestors.add(ancestor)
@@ -161,7 +210,7 @@ export function searchTree(
   }
 
   walk(root)
-  return { matches, ancestors, total: matches.size }
+  return { matches, ancestors, total: matches.size, invalid: false }
 }
 
 /** How a leaf value is rendered (and searched) as text. */

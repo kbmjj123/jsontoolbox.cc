@@ -194,6 +194,33 @@ describe('tree', () => {
     expect(ancestorPaths('users[0].profile.email')).toEqual(['users[0].profile', 'users[0]', 'users'])
     expect(ancestorPaths('name')).toEqual([])
   })
+
+  it('supports the five search modes', () => {
+    // key: only the key "email" matches
+    expect(searchTree(root, 'email', { mode: 'key' }).total).toBe(1)
+    // value: the email address as a leaf value
+    expect(searchTree(root, 'a@b.c', { mode: 'value' }).total).toBe(1)
+    // path: an ancestor segment appears in the path
+    expect(searchTree(root, 'profile', { mode: 'path' }).total).toBeGreaterThan(0)
+    // all: union of the above
+    expect(searchTree(root, 'email', { mode: 'all' }).total).toBe(1)
+    // jsonpath: delegated evaluation, internal tree path format
+    const jp = searchTree(root, "$.users[?(@.id==1)]", { mode: 'jsonpath' })
+    expect(jp.total).toBe(1)
+    expect(jp.matches.has('users[0]')).toBe(true)
+    expect(jp.invalid).toBe(false)
+  })
+
+  it('flags an invalid JSONPath expression', () => {
+    const r = searchTree(root, '$.users[0:2]', { mode: 'jsonpath' })
+    expect(r.invalid).toBe(true)
+    expect(r.total).toBe(0)
+  })
+
+  it('is case-sensitive in jsonpath mode', () => {
+    // value-mode walk lowercases the query; jsonpath must not.
+    expect(searchTree(root, "$.users[?(@.email=='A@B.C')]", { mode: 'jsonpath' }).total).toBe(0)
+  })
 })
 
 describe('sourceMap', () => {
