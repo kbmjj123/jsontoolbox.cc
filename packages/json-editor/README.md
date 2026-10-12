@@ -180,6 +180,57 @@ import { parseJson, formatJson, buildTree, searchTree } from '@kbmjj123/json-edi
 
 ---
 
+### Standalone TreeView / TableView (`/vue`)
+
+If you only need the read-only tree or the array table — for example to pair
+with your own editor — import them from the `/vue` subpath:
+
+```vue
+<script setup lang="ts">
+import { TreeView, TableView } from '@kbmjj123/json-editor/vue'
+import '@kbmjj123/json-editor/style.css'
+
+const text = '{"users":[{"name":"Ada","email":"ada@example.com"}]}'
+const sensitivePaths = ['users[0].email']
+const parsedArray = [{ name: 'Ada', email: 'ada@example.com' }]
+</script>
+
+<template>
+  <!-- Read-only, with sensitive leaf values redacted as •••• -->
+  <TreeView
+    :text="text"
+    locale="en"
+    :editable="false"
+    :masked="true"
+    :sensitive-paths="sensitivePaths"
+  />
+  <!-- A top-level array of objects renders as a sortable table -->
+  <TableView :value="parsedArray" locale="en" />
+</template>
+```
+
+`TreeView` props:
+
+| Prop | Type | Default | Description |
+|------|------|---------|-------------|
+| `value` | `unknown` | — | Parsed JSON value (alternative to `text`). |
+| `text` | `string` | — | Raw JSON text to parse. |
+| `locale` | `'en' \| 'zh'` | `'en'` | UI language. |
+| `defaultExpandDepth` | `number` | `2` | Expand container nodes to this depth on first render. |
+| `editable` | `boolean` | `true` | Show node-editing controls (rename, add, remove, batch, undo/redo). |
+| `indent` | `2 \| 4 \| 'tab'` | `2` | Re-indent used when writing edits back to text. |
+| `masked` | `boolean` | `false` | Redact leaf values at sensitive paths as `••••`. |
+| `sensitivePaths` | `string[]` | `[]` | Dot-paths (e.g. `users[0].email`) redacted when `masked` is `true`. |
+
+`TreeView` events: `select` (`{ path, jsonPath, value }`), `copied`
+(`{ kind: 'path' | 'jsonPath' | 'value', text }`), `update:text` (edited text).
+
+`TableView` props: `value` (parsed array, required), `locale`, `messages`.
+A top-level array of objects is shown as a sortable table; you can hide/show
+columns and export the array as CSV.
+
+---
+
 ## Styling
 
 The component ships with its own CSS and uses the `--je-*` custom property
