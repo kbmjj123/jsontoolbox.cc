@@ -36,7 +36,7 @@ describe('evaluateJsonPath — supported subset', () => {
 
   it('resolves recursive descent $..key', () => {
     const r = evaluateJsonPath(data, '$..price')
-    expect(r?.map((m) => m.value).sort((a, b) => a - b)).toEqual([8.99, 9.95, 399])
+    expect(r?.map((m) => m.value as number).sort((a, b) => a - b)).toEqual([8.99, 9.95, 399])
   })
 
   it('resolves filter ==', () => {

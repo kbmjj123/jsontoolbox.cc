@@ -71,9 +71,12 @@
       <TreeView
         v-if="view !== 'editor'"
         class="je-pane"
-        :text="text"
+        v-model:text="text"
         :locale="resolvedLocale"
         :messages="resolvedMessages"
+        :indent="indentValue"
+        :editable="!readOnly"
+        :on-notify="onNotify"
         @select="onSelect"
       />
     </div>
@@ -136,6 +139,8 @@ const props = withDefaults(
     /** Show a small "powered by jsontoolbox.cc" link. Off by default. */
     attribution?: boolean
     attributionUrl?: string
+    /** Receive node-edit notifications (errors/success) from the tree view. */
+    onNotify?: (message: string, kind: 'error' | 'success') => void
   }>(),
   { bordered: true, showStatus: true }
 )

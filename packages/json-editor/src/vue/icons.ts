@@ -25,6 +25,11 @@ export const icons = {
     '<path d="m21.73 18-8-14a2 2 0 0 0-3.48 0l-8 14A2 2 0 0 0 4 21h16a2 2 0 0 0 1.73-3"/><path d="M12 9v4"/><path d="M12 17h.01"/>'
   ),
   x: wrap('<path d="M18 6 6 18"/><path d="m6 6 12 12"/>'),
+  undo: wrap('<path d="M9 14 4 9l5-5"/><path d="M4 9h10.5a5.5 5.5 0 0 1 5.5 5.5 5.5 5.5 0 0 1-5.5 5.5H11"/>'),
+  redo: wrap('<path d="m15 14 5-5-5-5"/><path d="M20 9H9.5A5.5 5.5 0 0 0 4 14.5 5.5 5.5 0 0 0 9.5 20H13"/>'),
+  dots: wrap('<circle cx="12" cy="5" r="1.5"/><circle cx="12" cy="12" r="1.5"/><circle cx="12" cy="19" r="1.5"/>'),
+  chevronUp: wrap('<path d="m18 15-6-6-6 6"/>'),
+  chevronDown: wrap('<path d="m6 9 6 6 6-6"/>'),
 } as const
 
 export type IconName = keyof typeof icons

@@ -329,6 +329,26 @@
   font-size: 0.9em;
 }
 
+.je-count.is-error {
+  color: var(--je-danger, #d33);
+}
+
+.je-mode {
+  font: inherit;
+  font-size: 12px;
+  padding: 5px 8px;
+  border: 1px solid var(--je-border);
+  border-radius: 8px;
+  background: var(--je-bg);
+  color: var(--je-fg);
+  outline: none;
+  cursor: pointer;
+}
+
+.je-mode:focus {
+  border-color: var(--je-accent);
+}
+
 .je-mark {
   background: var(--je-mark);
   border-radius: 2px;
@@ -363,6 +383,94 @@
 .je-row-actions svg {
   width: 12px;
   height: 12px;
+}
+
+/* ── Node editing (package) ─────────────────────────────── */
+
+.je-row {
+  position: relative;
+}
+
+.je-row.is-batch {
+  background: var(--je-bg-active);
+}
+
+.je-batch-check {
+  align-self: center;
+}
+
+.je-menu {
+  position: absolute;
+  right: 8px;
+  top: 100%;
+  z-index: 20;
+  display: flex;
+  flex-direction: column;
+  min-width: 132px;
+  background: var(--je-bg);
+  border: 1px solid var(--je-border);
+  border-radius: 8px;
+  box-shadow: 0 6px 16px rgba(0, 0, 0, 0.18);
+  padding: 4px;
+}
+
+.je-menu button {
+  text-align: left;
+  border: none;
+  background: none;
+  padding: 6px 8px;
+  border-radius: 6px;
+  color: var(--je-fg);
+  cursor: pointer;
+  font: inherit;
+  font-size: 12px;
+}
+
+.je-menu button:hover {
+  background: var(--je-bg-hover);
+}
+
+.je-menu-danger {
+  color: var(--je-danger, #d33);
+}
+
+.je-inline-input {
+  font: inherit;
+  font-size: 12px;
+  padding: 2px 6px;
+  border: 1px solid var(--je-accent);
+  border-radius: 6px;
+  background: var(--je-bg);
+  color: var(--je-fg);
+  outline: none;
+  min-width: 56px;
+}
+
+.je-inline-form {
+  display: inline-flex;
+  gap: 4px;
+  align-items: center;
+}
+
+.je-batch-bar {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  padding: 6px 10px;
+  border-top: 1px solid var(--je-border);
+  background: var(--je-bg-alt);
+}
+
+.je-batch-input {
+  flex: 1 1 auto;
+  font: inherit;
+  font-size: 12px;
+  padding: 4px 8px;
+  border: 1px solid var(--je-border);
+  border-radius: 6px;
+  background: var(--je-bg);
+  color: var(--je-fg);
+  outline: none;
 }
 
 /* ── Status / error ──────────────────────────────────────── */

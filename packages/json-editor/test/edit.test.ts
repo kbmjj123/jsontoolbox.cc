@@ -115,6 +115,34 @@ describe('edit — copy / move / batch', () => {
   })
 })
 
+describe('edit — removeAt / setTypeOp', () => {
+  it('removeAt deletes a nested field and rebuilds ancestors', () => {
+    const data = { a: { b: 1, c: 2 }, d: [10, 20] }
+    const next = removeAt(data, parseTreePath('a.c'))
+    expect(next).toEqual({ a: { b: 1 }, d: [10, 20] })
+    // original untouched (immutability)
+    expect(data.a.c).toBe(2)
+  })
+
+  it('removeAt drops an array element by index', () => {
+    const data = { d: [10, 20, 30] }
+    const next = removeAt(data, parseTreePath('d[1]'))
+    expect((next as { d: number[] }).d).toEqual([10, 30])
+  })
+
+  it('setTypeOp coerces a string leaf to a number', () => {
+    const data = { a: '42' }
+    const next = setTypeOp(data, 'a', 'number')
+    expect((next as { a: unknown }).a).toBe(42)
+  })
+
+  it('setTypeOp coerces a number leaf to a boolean', () => {
+    const data = { a: 0 }
+    const next = setTypeOp(data, 'a', 'boolean')
+    expect((next as { a: unknown }).a).toBe(false)
+  })
+})
+
 describe('edit — commitEdit', () => {
   it('parses, mutates, validates and re-stringifies', () => {
     const r = commitEdit('{"a":1}', 2, (d) => setAt(d, parseTreePath('a'), 2))

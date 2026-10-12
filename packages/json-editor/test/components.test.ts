@@ -16,6 +16,11 @@ import { registerJsonEditor, type JsonEditorElement } from '../src/wc'
 
 const SAMPLE = '{"title":"Demo","users":[{"name":"Ada","age":36}]}'
 
+/** Last element of an array (ES2020-safe; avoids `Array.prototype.at`). */
+function last<T>(arr: T[] | undefined): T | undefined {
+  return arr && arr.length > 0 ? arr[arr.length - 1] : undefined
+}
+
 /** `copyText` falls back to `execCommand` when the async API is missing. */
 function stubClipboard() {
   const writeText = vi.fn().mockResolvedValue(undefined)
@@ -43,9 +48,10 @@ describe('TreeView', () => {
     const wrapper = mount(TreeView, { props: { text: SAMPLE } })
     const row = wrapper.findAll('.je-row')[1] // `title`
 
-    // The root node has an empty path, so its path button is hidden.
+    // The root node has an empty path, so its path + actions buttons are hidden.
     expect(wrapper.findAll('.je-row')[0].findAll('.je-row-actions button')).toHaveLength(2)
-    expect(row.findAll('.je-row-actions button')).toHaveLength(3)
+    // A non-root leaf shows copy path / jsonpath / value plus the actions menu.
+    expect(row.findAll('.je-row-actions button')).toHaveLength(4)
 
     await row.findAll('button')[0].trigger('click')
     expect(writeText).toHaveBeenLastCalledWith('title')
@@ -75,6 +81,41 @@ describe('TreeView', () => {
     expect(wrapper.text()).toContain('No matches')
   })
 
+  it('switches search mode and reflects it in the count', async () => {
+    const wrapper = mount(TreeView, { props: { text: SAMPLE } })
+    const input = wrapper.get('input[type="search"]')
+    const select = wrapper.get('select.je-mode')
+
+    // Default mode is "key": only the `users` key matches.
+    await input.setValue('users')
+    await nextTick()
+    expect(wrapper.text()).toContain('1 matches')
+
+    // Path mode also matches every descendant path containing "users".
+    await select.setValue('path')
+    await nextTick()
+    expect(wrapper.text()).toContain('matches')
+    expect(wrapper.text()).not.toContain('No matches')
+  })
+
+  it('shows the invalid-expression hint for unsupported JSONPath', async () => {
+    const wrapper = mount(TreeView, { props: { text: SAMPLE } })
+    const input = wrapper.get('input[type="search"]')
+    const select = wrapper.get('select.je-mode')
+
+    await select.setValue('jsonpath')
+    await nextTick()
+    await input.setValue('$.users[0:2]')
+    await nextTick()
+    expect(wrapper.text()).toContain('Invalid or unsupported JSONPath expression')
+
+    // A supported expression clears the hint and reports matches.
+    await input.setValue("$.users[?(@.age==36)]")
+    await nextTick()
+    expect(wrapper.text()).not.toContain('Invalid or unsupported JSONPath expression')
+    expect(wrapper.text()).toContain('1 matches')
+  })
+
   it('emits select with the path pair when a row is clicked', async () => {
     const wrapper = mount(TreeView, { props: { text: SAMPLE } })
     await wrapper.findAll('.je-row')[1].trigger('click')
@@ -83,6 +124,78 @@ describe('TreeView', () => {
       jsonPath: '$.title',
       value: 'Demo',
     })
+  })
+
+  it('renames a field through the actions menu and writes back text', async () => {
+    const wrapper = mount(TreeView, { props: { text: SAMPLE } })
+    const row = wrapper.findAll('.je-row')[1] // `title`
+    await last(row.findAll('.je-row-actions button'))!.trigger('click') // actions menu
+    await nextTick()
+    await wrapper.find('.je-menu button').trigger('click') // first item: Rename
+    await nextTick()
+    const input = wrapper.find('.je-inline-input')
+    await input.setValue('heading')
+    await input.trigger('keyup.enter')
+    await nextTick()
+    expect(last(wrapper.emitted('update:text'))?.[0]).toContain('"heading"')
+    expect(last(wrapper.emitted('update:text'))?.[0]).not.toContain('"title"')
+  })
+
+  it('adds a field through the actions menu', async () => {
+    const wrapper = mount(TreeView, { props: { text: SAMPLE } })
+    // `users[0]` is an object container — Add field is available there.
+    const row = wrapper.findAll('.je-row')[3]
+    await last(row.findAll('.je-row-actions button'))!.trigger('click')
+    await nextTick()
+    const addFieldBtn = wrapper.findAll('.je-menu button').find((b) => b.text() === 'Add field')!
+    await addFieldBtn.trigger('click')
+    await nextTick()
+    const inputs = wrapper.findAll('.je-inline-input')
+    await inputs[0].setValue('count')
+    await inputs[1].setValue('3')
+    await inputs[1].trigger('keyup.enter')
+    await nextTick()
+    const out = last(wrapper.emitted('update:text'))?.[0] as string
+    expect(out).toContain('"count"')
+    expect(out).toContain('3')
+  })
+
+  it('supports undo after an edit', async () => {
+    const wrapper = mount(TreeView, { props: { text: SAMPLE } })
+    const before = (last(wrapper.emitted('update:text'))?.[0] as string) ?? SAMPLE
+    const row = wrapper.findAll('.je-row')[1]
+    await last(row.findAll('.je-row-actions button'))!.trigger('click')
+    await nextTick()
+    await wrapper.find('.je-menu button').trigger('click') // Rename
+    await nextTick()
+    await wrapper.find('.je-inline-input').setValue('heading')
+    await wrapper.find('.je-inline-input').trigger('keyup.enter')
+    await nextTick()
+    // Click undo
+    const undoBtn = wrapper.findAll('.je-btn-icon').find((b) => b.attributes('aria-label') === 'Undo')!
+    await undoBtn.trigger('click')
+    await nextTick()
+    expect(last(wrapper.emitted('update:text'))?.[0]).toBe(before)
+  })
+
+  it('applies a batch value to selected nodes', async () => {
+    const wrapper = mount(TreeView, { props: { text: SAMPLE } })
+    // Turn on batch mode
+    const batchBtn = wrapper.findAll('.je-btn').find((b) => b.text() === 'Batch select')!
+    await batchBtn.trigger('click')
+    await nextTick()
+    // Select the `title` and `users` rows (both have paths)
+    const rows = wrapper.findAll('.je-row')
+    await rows[1].find('.je-batch-check').trigger('click')
+    await rows[2].find('.je-batch-check').trigger('click')
+    await nextTick()
+    await wrapper.find('.je-batch-input').setValue('42')
+    await wrapper.find('.je-batch-bar .je-btn').trigger('click')
+    await nextTick()
+    const out = last(wrapper.emitted('update:text'))?.[0] as string
+    // Batch value 42 is coerced to a number where the target was a leaf; here
+    // it replaces both selected nodes' values.
+    expect(out).toContain('42')
   })
 })
 

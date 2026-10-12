@@ -3,6 +3,7 @@ import CodeEditor from './CodeEditor.vue'
 import TreeView from './TreeView.vue'
 
 export { JsonEditor, CodeEditor, TreeView }
+export { useNodeEditing, coerceScalarInput, type NodeEditingNotify, type UseNodeEditingOptions } from './useNodeEditing'
 export { JsonEditorPlugin, type JsonEditorPluginOptions } from './plugin'
 export { useTheme, type ThemeOption } from './useTheme'
 export { useMessages } from './useMessages'
