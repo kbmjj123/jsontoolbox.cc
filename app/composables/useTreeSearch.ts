@@ -1,5 +1,5 @@
 import type { Ref } from 'vue'
-import { evaluateJsonPath } from '~/composables/useJsonPath'
+import { evaluateJsonPath } from '@kbmjj123/json-editor'
 
 export type SearchMode = 'key' | 'value' | 'path' | 'all' | 'jsonpath'
 

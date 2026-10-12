@@ -113,7 +113,7 @@
 </template>
 
 <script setup lang="ts">
-import { evaluateJsonPath } from '~/composables/useJsonPath'
+import { evaluateJsonPath } from '@kbmjj123/json-editor'
 import { jsonTypeLabel, toJsonPath } from '@kbmjj123/json-editor/core'
 
 const props = defineProps<{ tool: any }>()

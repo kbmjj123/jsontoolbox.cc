@@ -1,81 +1,17 @@
 import type { Ref } from 'vue'
+import {
+  parseTreePath,
+  getAt,
+  setAt,
+  removeAt,
+  deepClone,
+  convertValueToType,
+  type JsonSegment,
+} from '@kbmjj123/json-editor'
 
-export type JsonSegment = string | number
 export type JsonTypeName = 'string' | 'number' | 'boolean' | 'null'
 
 const MAX_HISTORY = 100
-
-/**
- * Parse a tree dot-path (`users[0].name`, `items[2]`, ``) into segments
- * (`['users', 0, 'name']`). Keys containing `.` or `[` are not addressable —
- * the same limitation the tree itself has when building child paths.
- */
-export function parseTreePath(path: string): JsonSegment[] {
-  if (!path) return []
-  const segs: JsonSegment[] = []
-  const re = /([^.[\]]+)|\[(\d+)\]/g
-  let m: RegExpExecArray | null
-  while ((m = re.exec(path)) !== null) {
-    if (m[1] !== undefined) segs.push(m[1])
-    else if (m[2] !== undefined) segs.push(Number(m[2]))
-  }
-  return segs
-}
-
-function getAt(data: unknown, segs: JsonSegment[]): unknown {
-  let cur: any = data
-  for (const s of segs) {
-    if (cur === null || cur === undefined) return undefined
-    cur = cur[s as any]
-  }
-  return cur
-}
-
-/** Immutable set: rebuilds only the ancestors on the way down. */
-function setAt(data: unknown, segs: JsonSegment[], value: unknown): unknown {
-  if (segs.length === 0) return value
-  const [head, ...rest] = segs
-  if (Array.isArray(data)) {
-    const idx = typeof head === 'number' ? head : Number(head)
-    if (!Number.isInteger(idx)) throw new Error('Invalid array index')
-    const copy = data.slice()
-    copy[idx] = rest.length ? setAt(data[idx], rest, value) : value
-    return copy
-  }
-  if (data !== null && typeof data === 'object') {
-    const copy: any = { ...data }
-    copy[head as string] = rest.length ? setAt((data as any)[head as string], rest, value) : value
-    return copy
-  }
-  throw new Error('Cannot set a value inside a primitive')
-}
-
-/** Immutable delete of the last segment (object key or array index). */
-function removeAt(data: unknown, segs: JsonSegment[]): unknown {
-  if (segs.length === 0) throw new Error('The root node cannot be removed')
-  const parentSegs = segs.slice(0, -1)
-  const last = segs[segs.length - 1]
-  const parent = getAt(data, parentSegs)
-  if (Array.isArray(parent)) {
-    const idx = typeof last === 'number' ? last : Number(last)
-    if (!Number.isInteger(idx) || idx < 0 || idx >= parent.length) throw new Error('Invalid array index')
-    const copy = parent.slice()
-    copy.splice(idx, 1)
-    return parentSegs.length ? setAt(data, parentSegs, copy) : copy
-  }
-  if (parent !== null && typeof parent === 'object') {
-    const key = String(last)
-    if (!(key in (parent as Record<string, unknown>))) throw new Error('Field not found')
-    const copy: any = { ...parent }
-    delete copy[key]
-    return parentSegs.length ? setAt(data, parentSegs, copy) : copy
-  }
-  throw new Error('Cannot remove from a primitive')
-}
-
-function deepClone<T>(value: T): T {
-  return value === undefined ? (null as unknown as T) : (JSON.parse(JSON.stringify(value)) as T)
-}
 
 /**
  * Node-level editing for the JSON tree.
@@ -165,19 +101,7 @@ export function useNodeEditing(inputJson: Ref<string>, indent: Ref<number | stri
     return commit((data) => {
       const segs = parseTreePath(path)
       const current = getAt(data, segs)
-      let converted: unknown
-      if (type === 'null') {
-        converted = null
-      } else if (type === 'string') {
-        converted = current !== null && typeof current === 'object' ? JSON.stringify(current) : String(current)
-      } else if (type === 'number') {
-        const n = Number(current)
-        converted = Number.isFinite(n) ? n : 0
-      } else {
-        converted = typeof current === 'string'
-          ? current !== '' && current !== 'false' && current !== '0'
-          : Boolean(current)
-      }
+      const converted = convertValueToType(current, type)
       return setAt(data, segs, converted)
     })
   }
