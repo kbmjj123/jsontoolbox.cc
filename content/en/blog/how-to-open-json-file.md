@@ -3,8 +3,8 @@ title: "How to Open, View, and Edit a JSON File Online"
 description: "Open a JSON file on Windows, Mac, or Linux, view it in Chrome, Firefox, or Edge, edit and format it in VS Code, and fix files that refuse to open."
 h1: "How to Open, View, and Edit a JSON File Online"
 category: "json_tools"
-date: 2026-09-29
-lastmod: 2026-09-29
+date: 2026-10-13
+lastmod: 2026-10-13
 image: "/blog/cover/en/how-to-open-json-file-cover.svg"
 tags:
   - "JSON"
