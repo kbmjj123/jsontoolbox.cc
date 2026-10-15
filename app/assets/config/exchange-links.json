@@ -27,6 +27,15 @@
 		"alt": "Featured on Twelve Tools"
 	},
 	{
+		"name": "Featured on LaunchIt",
+		"url": "https://launchit.fast",
+		"type": "image",
+		"imageUrl": "https://launchit.fast/img/launching.svg",
+		"imageWidth": 150,
+		"imageHeight": 54,
+		"alt": "Featured on LaunchIt"
+	},
+	{
 		"name": "LaunchClash",
 		"url": "https://launchclash.com/product/jsontoolbox",
 		"type": "image",
