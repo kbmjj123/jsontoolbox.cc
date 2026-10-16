@@ -3,10 +3,9 @@ title: "JSON vs JSONL: What's the Difference and When to Use Each"
 description: "JSONL stores one JSON value per line. Compare JSON and JSONL, learn when each format fits, and convert or inspect JSONL files in your browser."
 h1: "JSON vs JSONL: When to Use Each and Why It Matters"
 category: "json_tools"
-date: 2026-09-30
-lastmod: 2026-09-30
+date: 2026-10-13
+lastmod: 2026-10-13
 image: "/blog/cover/en/json-vs-jsonl-cover.svg"
-draft: true
 tags:
   - "JSON"
   - "JSONL"
