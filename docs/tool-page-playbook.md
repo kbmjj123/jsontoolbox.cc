@@ -51,7 +51,7 @@
 - `slug` / `category` 缺失时由 `useTools.ts:91-92` 用文件名、目录名兜底
 - `sort` 只影响页脚前 5 与网格顺序；`applicationCategory` **无任何代码读取**
 - `nextSteps` / `recommends` 填**纯 slug**（不带 category），由 `getToolBySingleSlug`（`useTools.ts:179-184`）跨分类查找。**只能填真实存在的 slug**，否则变死链
-- `relatedPosts[]` 填**博客文章 slug**（`content/{en,zh}/blog/{slug}.md` 的文件名），渲染成工具页的 "Related Articles" 区块。只有一份顶层清单，**不做 en/zh 各自编排**：`useBlog.ts:6-16` 的 `isVisible` 会按 `draft !== true` + `locales` 命中当前语言过滤，所以草稿与该语言未翻译的文章会被静默跳过（zh 页只会显示已译的 5 篇，这是预期行为）。顺序 = 清单顺序（组件内重排，编排时主文章放第一个）
+- `relatedPosts[]` 填**博客文章 slug**（`content/{en,zh}/blog/{slug}.md` 的文件名），渲染成工具页的 "Related Articles" 区块。只有一份顶层清单，**不做 en/zh 各自编排**：`useBlog.ts` 的 `isVisible` 会按 `draft !== true` + **内容路径前缀**（`/en/blog/…` vs `/zh/blog/…`）过滤当前语言，所以草稿与该语言未翻译的文章会被静默跳过（zh 页只会显示已译的 5 篇，这是预期行为）。**语言判定不要读 frontmatter 的 `locales`**：那是手写的「有哪些译本」清单，多个文件同时写了两种语言（如 `content/en/blog/what-is-json.md` 写 `["en", "zh-CN"]`），当成语言白名单会让同一 slug 的中英两版同时命中，页面上出现中英混排。顺序 = 清单顺序（组件内重排，编排时主文章放第一个）
 
 ### 语言层：`en` / `zh`
 

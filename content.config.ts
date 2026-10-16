@@ -22,6 +22,10 @@ export default defineContentConfig({
           text: z.string(),
           btn: z.string()
         }).optional(),
+        // "Which translations exist" — informational only. Do NOT use it to
+        // decide whether a post belongs to the current locale: several files
+        // list both languages. Language membership comes from the content path
+        // (`/en/blog/...` vs `/zh/blog/...`), see `useBlog.ts#matchesLocale`.
         locales: z.array(z.string())
       })
     }),
