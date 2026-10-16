@@ -36,6 +36,9 @@
       "privacy_notice": "所有JSON处理在浏览器本地完成，数据不会发送到任何服务器。"
     }
   },
+  "common": {
+    "toc": "目录"
+  },
   "nav": {
     "local_badge": "免费 · 开源",
     "toggle_theme": "切换主题",

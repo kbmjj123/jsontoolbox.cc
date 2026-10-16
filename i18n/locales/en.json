@@ -35,6 +35,9 @@
       "privacy_notice": "All JSON processing runs in your browser. No data is sent to any server."
     }
   },
+  "common": {
+    "toc": "Table of Contents"
+  },
   "nav": {
     "local_badge": "Free · Open Source",
     "toggle_theme": "Toggle theme",
