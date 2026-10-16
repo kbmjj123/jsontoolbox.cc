@@ -1,0 +1,32 @@
+name: CI
+
+on:
+  push:
+    branches: [main, develop]
+  pull_request:
+
+jobs:
+  json-editor:
+    name: '@kbmjj123/json-editor'
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: pnpm/action-setup@v4
+        with:
+          version: 10.25.0
+
+      # No `cache: pnpm` — the repo gitignores pnpm-lock.yaml, so setup-node
+      # cannot derive a cache key from it.
+      - uses: actions/setup-node@v4
+        with:
+          node-version-file: .nvmrc
+
+      # Only the package and its workspace deps — the Nuxt site is not needed
+      # to typecheck, test or build this package.
+      # No --frozen-lockfile: pnpm-lock.yaml is gitignored in this repo.
+      - run: pnpm install --filter @kbmjj123/json-editor...
+
+      - run: pnpm --filter @kbmjj123/json-editor run typecheck
+      - run: pnpm --filter @kbmjj123/json-editor run test
+      - run: pnpm --filter @kbmjj123/json-editor run build

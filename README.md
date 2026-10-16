@@ -29,7 +29,7 @@ Everything runs in your browser. Your JSON is parsed, converted, and rendered lo
 - **Hosted version:** [https://jsontoolbox.cc](https://jsontoolbox.cc)
 - **Embed in documentation:** generate an iframe snippet (editor or viewer, light/dark, height, readonly, branding) with the [embed generator](https://jsontoolbox.cc/embed)
 - **Self-host:** deploy the whole toolbox on your own infrastructure
-- **Reuse components:** the tool components are ordinary Vue 3 SFCs in `app/components/universal/` and can be copied into another Nuxt/Vue 3 project (no npm package is published yet)
+- **Reuse components:** install the standalone editor from npm (`@kbmjj123/json-editor`) or drop it in with a script tag from jsDelivr/unpkg. See the [developers page](https://jsontoolbox.cc/developers).
 
 ---
 

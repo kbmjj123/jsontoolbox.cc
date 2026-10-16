@@ -10,6 +10,7 @@
       "tools": "Tools",
       "blog": "Blog",
       "embed": "Embed",
+      "developers": "Developers",
       "about": "About",
       "contact": "Contact"
     },
@@ -44,6 +45,12 @@
     "open_menu": "Open menu",
     "github": "GitHub",
     "language": "Language"
+  },
+  "developers": {
+    "seo": {
+      "title": "Developers — Embed the JSON Toolbox Editor",
+      "description": "Use the JSON Toolbox editor in your own project as a Vue 3 component, Web Component, or plain script tag. Free, open source, and 100% client-side."
+    }
   },
   "home": {
     "hero": {
@@ -411,7 +418,23 @@
     "decode": "Decode",
     "decodeFailed": "This value could not be decoded as Base64.",
     "loadPreview": "Load preview",
-    "loadFailed": "The preview could not be loaded."
+    "loadFailed": "The preview could not be loaded.",
+    "setFromMedia": "Set value from file…",
+    "insertTitle": "Embed file into JSON",
+    "dropOrPaste": "Drop, paste, or choose a file",
+    "pasteHint": "Paste an image from clipboard, or drop a file",
+    "mime": "MIME",
+    "encodedSize": "Encoded size",
+    "sizeWarning": "This will add about {size} to your JSON. For large files, an external URL keeps the document small.",
+    "outputMode": "Output",
+    "modeDataUri": "Embed as data URI",
+    "modeChunked": "Split into chunks",
+    "modeExternalUrl": "Reference external URL",
+    "chunkCount": "{n} chunks",
+    "externalUrlPlaceholder": "https://… or ./assets/logo.png",
+    "chunkedNote": "Stored as an array of Base64 chunks; reassemble on read.",
+    "insert": "Insert into JSON",
+    "readFailed": "Could not read this file."
   },
   "value": {
     "inspect": "Inspect value",

@@ -1,48 +1,41 @@
 <template>
-  <div class="cm-host h-full">
-    <CodeMirror
-      ref="cmRef"
-      :model-value="modelValue"
-      @update:model-value="emit('update:modelValue', $event)"
-      :lang="json()"
-      :linter="jsonParseLinter()"
-      :extensions="extensions"
-      :placeholder="placeholder"
-      :readonly="readonly"
-      :disabled="disabled"
-      :dark="isDark"
-      :basic="false"
-      :minimal="true"
-      :tab-size="2"
-      :preserve-scroll-position="true"
-      @ready="onReady"
-    />
-  </div>
+  <div ref="hostRef" class="cm-host h-full" />
 </template>
 
 <script setup lang="ts">
-import CodeMirror from 'vue-codemirror6'
-import { json, jsonParseLinter } from '@codemirror/lang-json'
-import { EditorView, Decoration, lineNumbers } from '@codemirror/view'
-import { RangeSetBuilder, type Extension } from '@codemirror/state'
-import { syntaxHighlighting, HighlightStyle } from '@codemirror/language'
-import { tags } from '@lezer/highlight'
-import { LARGE_FILE_MAX_BYTES, byteLength } from '~/composables/useLargeFile'
+/**
+ * CodeMirror 6 host for the site.
+ *
+ * L2 统一后：编辑器内核（json 语言、keymap、history、错误行、粘贴闸门、
+ * 缩进、滚动定位）由 `@kbmjj123/json-editor` 的 `createCodeMirror` 提供，
+ * 这里只保留站点自己的皮肤与装饰（diff 行底色、点击定位高亮），作为扩展注入。
+ *
+ * 不再使用 `vue-codemirror6`：自定义元素场景需要 `EditorView({ root })`，
+ * 而 Vue 封装层不暴露该参数，两边各写一份不如共用包里那一份。
+ */
+import { onMounted, onUnmounted, ref, watch } from 'vue'
+import { createCodeMirror, type CodeMirrorHandle } from '@kbmjj123/json-editor/vue'
+import { EditorView, Decoration, type DecorationSet } from '@codemirror/view'
+import { Prec, RangeSetBuilder, StateEffect, StateField, type Extension } from '@codemirror/state'
+import { LARGE_FILE_MAX_BYTES } from '~/composables/useLargeFile'
 
-const props = withDefaults(defineProps<{
-  modelValue: string
-  placeholder?: string
-  readonly?: boolean
-  disabled?: boolean
-  /** When true, paste events carrying more than LARGE_FILE_MAX_BYTES are
-   *  refused (and reported via `file-size`) instead of being inserted. */
-  blockOversized?: boolean
-}>(), {
-  placeholder: '',
-  readonly: false,
-  disabled: false,
-  blockOversized: false,
-})
+const props = withDefaults(
+  defineProps<{
+    modelValue: string
+    placeholder?: string
+    readonly?: boolean
+    disabled?: boolean
+    /** When true, paste events carrying more than LARGE_FILE_MAX_BYTES are
+     *  refused (and reported via `file-size`) instead of being inserted. */
+    blockOversized?: boolean
+  }>(),
+  {
+    placeholder: '',
+    readonly: false,
+    disabled: false,
+    blockOversized: false,
+  }
+)
 
 const emit = defineEmits<{
   'update:modelValue': [value: string]
@@ -52,137 +45,64 @@ const emit = defineEmits<{
   'file-size': [info: { bytes: number; oversized: boolean; text: string }]
 }>()
 
-const cmRef = ref<any>()
-const isDark = ref(false)
+const hostRef = ref<HTMLElement | null>(null)
+let handle: CodeMirrorHandle | null = null
 
-// ── Color mode detection ──
-let observer: MutationObserver | null = null
+// ── Line decorations (diff view) ───────────────────────────
+const decorationEffect = StateEffect.define<DecorationSet>()
+const highlightEffect = StateEffect.define<DecorationSet>()
 
-const checkDark = () => {
-  isDark.value = document.documentElement.classList.contains('dark')
+function fieldFor(effect: StateEffect<DecorationSet>) {
+  return StateField.define<DecorationSet>({
+    create: () => Decoration.none,
+    update(value, tr) {
+      for (const e of tr.effects) if (e.is(effect)) return e.value
+      return value.map(tr.changes)
+    },
+    provide: (field) => EditorView.decorations.from(field),
+  })
 }
 
-onMounted(() => {
-  checkDark()
-  observer = new MutationObserver(checkDark)
-  observer.observe(document.documentElement, { attributes: true, attributeFilter: ['class'] })
-})
-
-onUnmounted(() => {
-  observer?.disconnect()
-})
-
-// ── Extensions (static — no computed, to avoid reconfigure loops) ──
-const extensions: Extension[] = [
-  EditorView.theme({
-    '&': {
-      height: '100%',
-      fontSize: '14px',
-      fontFamily: "'Menlo', 'Monaco', 'Consolas', 'Liberation Mono', 'Courier New', monospace",
-    },
-    '.cm-scroller': {
-      overflow: 'auto',
-    },
-    '.cm-content': {
-      padding: '16px 0',
-      lineHeight: '1.5',
-    },
-    '.cm-line': {
-      padding: '0 16px',
-    },
-    '&.cm-focused': {
-      outline: 'none',
-    },
-    '.cm-gutters': {
-      backgroundColor: 'transparent',
-      border: 'none',
-      borderRight: '1px solid rgba(148, 163, 184, 0.25)',
-      color: '#94a3b8',
-    },
-    '.cm-lineNumbers .cm-gutterElement': {
-      padding: '0 8px 0 12px',
-      minWidth: '32px',
-    },
-    '.cm-activeLineGutter': {
-      backgroundColor: 'transparent',
-    },
-    '.cm-activeLine': {
-      backgroundColor: 'transparent',
-    },
-    '.cm-selectionBackground': {
-      backgroundColor: '#b5d5ff80 !important',
-    },
-    '&.cm-focused .cm-selectionBackground': {
-      backgroundColor: '#b5d5ff80 !important',
-    },
-    // JSON syntax colors — aligned with JsonOutputPanel (handled via HighlightStyle below)
-    // Diff line highlight classes
-    '.diff-added': {
-      backgroundColor: 'rgba(34, 197, 94, 0.10)',
-    },
-    '.diff-removed': {
-      backgroundColor: 'rgba(239, 68, 68, 0.10)',
-    },
-    '.diff-changed': {
-      backgroundColor: 'rgba(234, 179, 8, 0.10)',
-    },
-  }),
-  EditorView.lineWrapping,
-  lineNumbers(),
-  // JSON syntax colors — aligned with JsonOutputPanel
-  syntaxHighlighting(HighlightStyle.define([
-    { tag: tags.propertyName, color: '#7c3aed' },               // key — purple-600
-    { tag: tags.string, color: '#16a34a' },                      // string value — green-600
-    { tag: tags.number, color: '#d97706' },                      // number — amber-600
-    { tag: tags.bool, color: '#2563eb' },                        // boolean — blue-600
-    { tag: tags.null, color: '#2563eb' },                        // null — blue-600
-    { tag: tags.punctuation, color: '#64748b' },                 // brackets, commas — slate-500
-    { tag: tags.separator, color: '#64748b' },                   // colon — slate-500
-  ])),
-  syntaxHighlighting(HighlightStyle.define([
-    { tag: tags.propertyName, color: '#c084fc' },               // key — purple-400 (dark)
-    { tag: tags.string, color: '#4ade80' },                      // string value — green-400 (dark)
-    { tag: tags.number, color: '#fbbf24' },                      // number — amber-400 (dark)
-    { tag: tags.bool, color: '#60a5fa' },                        // boolean — blue-400 (dark)
-    { tag: tags.null, color: '#60a5fa' },                        // null — blue-400 (dark)
-    { tag: tags.punctuation, color: '#94a3b8' },                 // brackets, commas — slate-400 (dark)
-    { tag: tags.separator, color: '#94a3b8' },                   // colon — slate-400 (dark)
-  ], { dark: true })),
-  // Hand off oversized pastes to the Large JSON Explorer instead of letting
-  // CodeMirror insert (and freeze on) multi-MB content. Checked before the
-  // default paste handler runs, so the oversized text never enters the editor.
-  EditorView.domEventHandlers({
-    paste(event) {
-      if (!props.blockOversized) return false
-      const clip = event as ClipboardEvent
-      const text = clip.clipboardData?.getData('text') ?? ''
-      if (!text) return false
-      const bytes = byteLength(text)
-      if (bytes > LARGE_FILE_MAX_BYTES) {
-        event.preventDefault()
-        emit('file-size', { bytes, oversized: true, text })
-        return true
-      }
-      return false
-    },
-  }),
+// ── Site skin ──────────────────────────────────────────────
+// `Prec.high` 保证覆盖包内置的 baseTheme（字号/行高/内边距/选区色不同）。
+const siteExtensions: Extension[] = [
+  fieldFor(decorationEffect),
+  fieldFor(highlightEffect),
+  Prec.high(
+    EditorView.theme({
+      '&': {
+        height: '100%',
+        fontSize: '14px',
+        fontFamily: "'Menlo', 'Monaco', 'Consolas', 'Liberation Mono', 'Courier New', monospace",
+      },
+      '.cm-scroller': { overflow: 'auto', lineHeight: '1.5' },
+      '.cm-content': { padding: '16px 0', lineHeight: '1.5' },
+      '.cm-line': { padding: '0 16px' },
+      '&.cm-focused': { outline: 'none' },
+      '.cm-gutters': {
+        backgroundColor: 'transparent',
+        border: 'none',
+        borderRight: '1px solid rgba(148, 163, 184, 0.25)',
+        color: '#94a3b8',
+      },
+      '.cm-lineNumbers .cm-gutterElement': { padding: '0 8px 0 12px', minWidth: '32px' },
+      '.cm-activeLineGutter': { backgroundColor: 'transparent' },
+      '.cm-activeLine': { backgroundColor: 'transparent' },
+      '.cm-selectionBackground': { backgroundColor: '#b5d5ff80 !important' },
+      '&.cm-focused .cm-selectionBackground': { backgroundColor: '#b5d5ff80 !important' },
+      // Diff line highlight classes
+      '.diff-added': { backgroundColor: 'rgba(34, 197, 94, 0.10)' },
+      '.diff-removed': { backgroundColor: 'rgba(239, 68, 68, 0.10)' },
+      '.diff-changed': { backgroundColor: 'rgba(234, 179, 8, 0.10)' },
+    })
+  ),
 ]
 
-// ── Ready handler ──
-let editorView: EditorView | undefined
-
-function onReady(payload: { view: EditorView }) {
-  editorView = payload.view
-  // Scroll events happen on .cm-scroller (scrollDOM), not the outer .cm-editor.
-  // domEventHandlers registers on .cm-editor where scroll doesn't bubble to.
-  // So we attach directly to scrollDOM.
-  editorView.scrollDOM.addEventListener('scroll', onScrollNative)
-  emit('ready', payload.view)
-}
-
+// ── Scroll events ──────────────────────────────────────────
+// 滚动发生在 .cm-scroller（scrollDOM）上，不会冒泡到外层 .cm-editor。
 function onScrollNative() {
-  if (!editorView) return
-  const dom = editorView.scrollDOM
+  const dom = handle?.view.scrollDOM
+  if (!dom) return
   emit('scroll', {
     scrollTop: dom.scrollTop,
     scrollHeight: dom.scrollHeight,
@@ -190,146 +110,146 @@ function onScrollNative() {
   })
 }
 
-onUnmounted(() => {
-  editorView?.scrollDOM.removeEventListener('scroll', onScrollNative)
+onMounted(() => {
+  if (!hostRef.value) return
+
+  handle = createCodeMirror({
+    parent: hostRef.value,
+    doc: props.modelValue,
+    readOnly: props.readonly || props.disabled,
+    placeholder: props.placeholder,
+    indent: 2,
+    maxBytes: props.blockOversized ? LARGE_FILE_MAX_BYTES : 0,
+    extensions: siteExtensions,
+    onDocChange: (value) => emit('update:modelValue', value),
+    onOversizedPaste: ({ bytes, text }) => emit('file-size', { bytes, oversized: true, text }),
+    onReady: (view) => {
+      view.scrollDOM.addEventListener('scroll', onScrollNative)
+      emit('ready', view)
+    },
+  })
 })
 
-// ── Line decorations (direct dispatch) ──
-function setLineDecorations(lines: Array<{ line: number; type: 'added' | 'removed' | 'changed' }>) {
-  console.log('[CM] setLineDecorations called, editorView:', !!editorView, 'lines:', lines)
-  if (!editorView) return
+onUnmounted(() => {
+  handle?.view.scrollDOM.removeEventListener('scroll', onScrollNative)
+  handle?.destroy()
+  handle = null
+})
 
-  const clsMap = { added: 'diff-added', removed: 'diff-removed', changed: 'diff-changed' }
-  const doc = editorView.state.doc
-  console.log('[CM] doc.lines:', doc.lines)
+// 只把外部改动写进编辑器，不回灌自己的输入。
+watch(
+  () => props.modelValue,
+  (value) => {
+    if (handle && value !== handle.getValue()) handle.setValue(value)
+  }
+)
 
+// ── Exposed methods ────────────────────────────────────────
+function addLineDecoration(effect: StateEffect<DecorationSet>, lines: Array<{ line: number; cls: string }>) {
+  if (!handle) return
+  const doc = handle.view.state.doc
   const builder = new RangeSetBuilder<Decoration>()
   const sorted = [...lines]
     .filter(({ line }) => line >= 1 && line <= doc.lines)
     .sort((a, b) => a.line - b.line)
-
-  for (const { line, type } of sorted) {
-    const lineObj = doc.line(line)
-    const cls = clsMap[type as keyof typeof clsMap]
-    builder.add(lineObj.from, lineObj.from, Decoration.line({ attributes: { class: cls } }))
+  for (const { line, cls } of sorted) {
+    const from = doc.line(line).from
+    builder.add(from, from, Decoration.line({ attributes: { class: cls } }))
   }
+  handle.view.dispatch({ effects: effect.of(builder.finish()) })
+}
 
-  const ds = builder.finish()
-  console.log('[CM] dispatching decorations, size:', ds.size)
-  editorView.dispatch({
-    effects: decorationFieldEffect.of(ds),
-  })
+function setLineDecorations(lines: Array<{ line: number; type: 'added' | 'removed' | 'changed' }>) {
+  const clsMap = { added: 'diff-added', removed: 'diff-removed', changed: 'diff-changed' }
+  addLineDecoration(
+    decorationEffect,
+    lines.map(({ line, type }) => ({ line, cls: clsMap[type] }))
+  )
 }
 
 function clearLineDecorations() {
-  if (!editorView) return
-  editorView.dispatch({
-    effects: decorationFieldEffect.of(Decoration.none),
-  })
+  handle?.view.dispatch({ effects: decorationEffect.of(Decoration.none) })
 }
 
-// ── Highlight methods (for click-to-locate) ──
 let highlightTimer: ReturnType<typeof setTimeout> | null = null
 
-function highlightLine(line: number, style: 'flash' | 'subtle') {
-  highlightLines(line, 0, style)
-}
-
 function highlightLines(startLine: number, endLine: number, style: 'flash' | 'subtle') {
-  if (!editorView) return
-  if (highlightTimer) { clearTimeout(highlightTimer); highlightTimer = null }
+  if (!handle) return
+  if (highlightTimer) {
+    clearTimeout(highlightTimer)
+    highlightTimer = null
+  }
 
   if (startLine <= 0) {
-    editorView.dispatch({ effects: highlightEffect.of(Decoration.none) })
+    handle.view.dispatch({ effects: highlightEffect.of(Decoration.none) })
     return
   }
 
-  const doc = editorView.state.doc
+  const doc = handle.view.state.doc
   const sLine = Math.max(1, Math.min(startLine, doc.lines))
   const eLine = endLine > 0 ? Math.max(sLine, Math.min(endLine, doc.lines)) : sLine
-
   const cls = style === 'flash' ? 'cm-highlight-flash' : 'cm-highlight-subtle'
-  const builder = new RangeSetBuilder<Decoration>()
-  for (let l = sLine; l <= eLine; l++) {
-    const lineObj = doc.line(l)
-    builder.add(lineObj.from, lineObj.from, Decoration.line({ attributes: { class: cls } }))
-  }
-  editorView.dispatch({ effects: highlightEffect.of(builder.finish()) })
+  const lines = []
+  for (let l = sLine; l <= eLine; l++) lines.push({ line: l, cls })
+  addLineDecoration(highlightEffect, lines)
 
   if (style === 'flash') {
     highlightTimer = setTimeout(() => {
-      editorView?.dispatch({ effects: highlightEffect.of(Decoration.none) })
+      handle?.view.dispatch({ effects: highlightEffect.of(Decoration.none) })
       highlightTimer = null
     }, 2000)
   }
 }
 
-// ── Exposed methods ──
-function scrollToLine(line: number) {
-  if (!editorView) return
-  const lineObj = editorView.state.doc.line(Math.max(1, Math.min(line, editorView.state.doc.lines)))
-  editorView.dispatch({
-    effects: EditorView.scrollIntoView(lineObj.from, { y: 'center' }),
-  })
-}
-
 function scrollToRatio(ratio: number) {
-  if (!editorView) return
-  const dom = editorView.scrollDOM
+  const dom = handle?.view.scrollDOM
+  if (!dom) return
   const maxScroll = dom.scrollHeight - dom.clientHeight
   dom.scrollTop = Math.max(0, Math.min(ratio * maxScroll, maxScroll))
 }
 
-function getView(): EditorView | undefined {
-  return editorView
-}
-
-// ── StateField for line decorations ──
-import { StateField, StateEffect } from '@codemirror/state'
-
-const decorationFieldEffect = StateEffect.define<any>()
-const highlightEffect = StateEffect.define<any>()
-const decorationField = StateField.define({
-  create() { return Decoration.none },
-  update(value, tr) {
-    for (const e of tr.effects) {
-      if (e.is(decorationFieldEffect)) {
-        console.log('[CM] StateField received decoration effect, size:', e.value.size)
-        return e.value
-      }
-    }
-    return value.map(tr.changes)
-  },
-  provide: f => EditorView.decorations.from(f),
-})
-
-const highlightField = StateField.define({
-  create() { return Decoration.none },
-  update(value, tr) {
-    for (const e of tr.effects) {
-      if (e.is(highlightEffect)) return e.value
-    }
-    return value.map(tr.changes)
-  },
-  provide: f => EditorView.decorations.from(f),
-})
-
-// Add StateFields to extensions
-extensions.push(decorationField)
-extensions.push(highlightField)
-
 defineExpose({
-  scrollToLine,
+  scrollToLine: (line: number) => handle?.scrollToLine(line),
   scrollToRatio,
-  highlightLine,
+  highlightLine: (line: number, style: 'flash' | 'subtle') => highlightLines(line, 0, style),
   highlightLines,
   setLineDecorations,
   clearLineDecorations,
-  getView,
 })
 </script>
 
 <style>
+/* 包的语法高亮读的是 --je-* 变量，宿主在这里提供明暗两套值（与站点现有
+   JSON 配色一致）。暗色跟随 html.dark，无需重建编辑器。 */
+.cm-host {
+  --je-bg: transparent;
+  --je-fg: #1e293b;
+  --je-fg-muted: #64748b;
+  --je-fg-faint: #94a3b8;
+  --je-border: rgba(148, 163, 184, 0.25);
+  --je-key: #7c3aed;
+  --je-string: #16a34a;
+  --je-number: #d97706;
+  --je-boolean: #2563eb;
+  --je-null: #2563eb;
+  --je-punctuation: #64748b;
+  --je-danger: #dc2626;
+}
+
+.dark .cm-host {
+  --je-fg: #e2e8f0;
+  --je-fg-muted: #94a3b8;
+  --je-fg-faint: #64748b;
+  --je-border: rgba(148, 163, 184, 0.24);
+  --je-key: #c084fc;
+  --je-string: #4ade80;
+  --je-number: #fbbf24;
+  --je-boolean: #60a5fa;
+  --je-null: #60a5fa;
+  --je-punctuation: #94a3b8;
+  --je-danger: #f87171;
+}
+
 .cm-highlight-flash {
   background-color: rgba(251, 191, 36, 0.3) !important;
   animation: cm-flash-fade 2s forwards;
@@ -344,8 +264,14 @@ defineExpose({
   background-color: rgba(251, 191, 36, 0.1) !important;
 }
 @keyframes cm-flash-fade {
-  0% { background-color: rgba(251, 191, 36, 0.3); }
-  70% { background-color: rgba(251, 191, 36, 0.3); }
-  100% { background-color: transparent; }
+  0% {
+    background-color: rgba(251, 191, 36, 0.3);
+  }
+  70% {
+    background-color: rgba(251, 191, 36, 0.3);
+  }
+  100% {
+    background-color: transparent;
+  }
 }
 </style>

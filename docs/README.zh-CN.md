@@ -29,7 +29,7 @@
 - **在线使用：** [https://jsontoolbox.cc](https://jsontoolbox.cc)
 - **嵌入文档：** 用 [嵌入生成器](https://jsontoolbox.cc/embed) 生成 iframe 代码片段（编辑器/查看器、亮色/暗色、高度、只读、是否显示品牌）
 - **自建部署：** 在你的基础设施上部署完整工具箱
-- **复用组件：** 工具组件是 `app/components/universal/` 下的普通 Vue 3 单文件组件，可复制到其他 Nuxt/Vue 3 项目中使用（目前尚未发布 npm 包）
+- **复用组件：** 从 npm 安装独立编辑器 `@kbmjj123/json-editor`，或用 jsDelivr/unpkg 的 script 标签直接引入。详情见[开发者页面](https://jsontoolbox.cc/developers)。
 
 ---
 

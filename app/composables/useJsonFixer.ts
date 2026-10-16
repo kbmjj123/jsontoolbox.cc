@@ -1,4 +1,7 @@
 import { jsonrepair } from 'jsonrepair'
+// L1: 解析与错误定位统一走包的 core（纯 JSON.parse 语义）。站点只叠加自己的
+// 增强：jsonrepair 修复、以及 ERROR_PATTERNS → i18n 友好文案键的映射。
+import { analyzeJson } from '@kbmjj123/json-editor/core'
 import type { ParseError } from '~/types/jsonErrors'
 
 /**
@@ -291,37 +294,15 @@ export const useJsonFixer = () => {
    * Returns structured ParseError or null if valid
    */
   const getJsonError = (input: string): ParseError | null => {
-    try {
-      JSON.parse(input)
-      return null
-    } catch (e) {
-      const error = e as Error
-      const match = error.message.match(/position (\d+)/)
-      let line = 1
-      let column = 1
-      let offset: number | undefined
+    // `analyzeJson` 一次给出归一化消息 + 行列；站点增强层只补 errorKey。
+    const { error, location } = analyzeJson(input)
+    if (!error) return null
 
-      if (match) {
-        offset = parseInt(match[1])
-        const lines = input.substring(0, offset).split('\n')
-        line = lines.length
-        column = lines[lines.length - 1].length + 1
-      }
-
-      // Strip redundant position info from message since we provide line/column
-      const cleanMessage = error.message
-        .replace(/\s+at position \d+.*$/, '')
-        .replace(/\s+\(line \d+ column \d+\).*$/, '')
-
-      const errorKey = getErrorKey(cleanMessage)
-
-      return {
-        message: cleanMessage,
-        line,
-        column,
-        offset,
-        errorKey
-      }
+    return {
+      message: error,
+      line: location?.line ?? 1,
+      column: location?.column ?? 1,
+      errorKey: getErrorKey(error)
     }
   }
 

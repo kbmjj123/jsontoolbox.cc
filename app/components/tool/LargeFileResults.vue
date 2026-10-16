@@ -103,7 +103,7 @@
 <script setup lang="ts">
 import type { SearchTextHit } from '~/utils/textSearch'
 import { lineMatchSegments } from '~/utils/textSearch'
-import { toJsonPath } from '~/utils/jsonPath'
+import { toJsonPath } from '@kbmjj123/json-editor/core'
 import type { FileFormat } from '~/workers/recordStream.worker'
 
 const props = defineProps<{

@@ -1,10 +1,9 @@
 /**
- * Build a map from JSON path → source line number.
- * Recursively scans the raw JSON string.
+ * Build a map from tree path → 1-based source line number.
  *
- * Path format matches tree components' getFullPath: "users[0].name"
+ * Path format matches `buildTree`: `users[0].name`.
  *
- * Example: '{"config":{"debug":true}}'
+ * Example: `'{"config":{"debug":true}}'`
  *   → Map { "config" → 1, "config.debug" → 1 }
  */
 export function buildSourceMap(json: string): Map<string, number> {
@@ -48,7 +47,7 @@ export function buildSourceMap(json: string): Map<string, number> {
     while (i < json.length && /[^,}\]\s]/.test(json[i])) i++
   }
 
-  /** Skip any value (string, number, bool, null, object, array) without recording */
+  /** Advance past any value without recording it. */
   const skipValue = () => {
     skipWs()
     if (i >= json.length) return
@@ -61,7 +60,7 @@ export function buildSourceMap(json: string): Map<string, number> {
 
   const skipObject = () => {
     i++ // {
-    while (true) {
+    for (;;) {
       skipWs()
       if (i >= json.length || json[i] === '}') { i++; return }
       if (json[i] === ',') { i++; continue }
@@ -78,15 +77,13 @@ export function buildSourceMap(json: string): Map<string, number> {
 
   const skipArray = () => {
     i++ // [
-    while (true) {
+    for (;;) {
       skipWs()
       if (i >= json.length || json[i] === ']') { i++; return }
       if (json[i] === ',') { i++; continue }
       skipValue()
     }
   }
-
-  // ── Path builder (matches tree's getFullPath format) ────────
 
   const joinPath = (parent: string, key: string, isIndex: boolean): string => {
     if (!parent) return key
@@ -101,13 +98,13 @@ export function buildSourceMap(json: string): Map<string, number> {
     const ch = json[i]
     if (ch === '{') { parseObject(path); return }
     if (ch === '[') { parseArray(path); return }
-    // string/primitive — advance past the value
+    // string / primitive — advance past the value
     skipValue()
   }
 
   const parseObject = (parentPath: string) => {
     i++ // {
-    while (true) {
+    for (;;) {
       skipWs()
       if (i >= json.length || json[i] === '}') { i++; return }
       if (json[i] === ',') { i++; continue }
@@ -127,7 +124,7 @@ export function buildSourceMap(json: string): Map<string, number> {
   const parseArray = (parentPath: string) => {
     i++ // [
     let index = 0
-    while (true) {
+    for (;;) {
       skipWs()
       if (i >= json.length || json[i] === ']') { i++; return }
       if (json[i] === ',') { i++; continue }
@@ -137,8 +134,6 @@ export function buildSourceMap(json: string): Map<string, number> {
       index++
     }
   }
-
-  // ── Entry ───────────────────────────────────────────────────
 
   parseValue('')
   return map

@@ -10,6 +10,7 @@
       "tools": "工具",
       "blog": "博客",
       "embed": "嵌入",
+      "developers": "开发者",
       "about": "关于",
       "contact": "联系"
     },
@@ -45,6 +46,12 @@
     "open_menu": "打开菜单",
     "github": "GitHub",
     "language": "语言"
+  },
+  "developers": {
+    "seo": {
+      "title": "开发者 — 嵌入 JSON Toolbox 编辑器",
+      "description": "以 Vue 3 组件、Web Component 或纯 script 标签的方式，在你自己的项目中使用 JSON Toolbox 编辑器。免费、开源、100% 客户端。"
+    }
   },
   "home": {
     "hero": {
@@ -402,7 +409,23 @@
     "decode": "解码",
     "decodeFailed": "该值无法按 Base64 解码。",
     "loadPreview": "加载预览",
-    "loadFailed": "预览加载失败。"
+    "loadFailed": "预览加载失败。",
+    "setFromMedia": "从文件设置值…",
+    "insertTitle": "将文件嵌入 JSON",
+    "dropOrPaste": "拖入、粘贴或选择文件",
+    "pasteHint": "从剪贴板粘贴图片，或拖入文件",
+    "mime": "MIME",
+    "encodedSize": "编码后大小",
+    "sizeWarning": "这会给 JSON 增加约 {size}。大文件建议改用外部 URL 以保持文档精简。",
+    "outputMode": "输出",
+    "modeDataUri": "嵌入为 data URI",
+    "modeChunked": "拆分为分块",
+    "modeExternalUrl": "引用外部 URL",
+    "chunkCount": "{n} 块",
+    "externalUrlPlaceholder": "https://… 或 ./assets/logo.png",
+    "chunkedNote": "以 Base64 分块数组存储，读取时再拼接。",
+    "insert": "插入 JSON",
+    "readFailed": "无法读取该文件。"
   },
   "value": {
     "inspect": "检视值",

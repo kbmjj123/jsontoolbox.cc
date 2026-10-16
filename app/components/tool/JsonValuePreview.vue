@@ -55,12 +55,12 @@ import { getTypeIcon } from '~/composables/useSmartJsonValue'
 import { copyToClipboard } from '~/utils'
 import { useToast } from '~/composables/useToast'
 
-const props = defineProps<{ value: unknown }>()
+const props = defineProps<{ value: unknown; path?: string }>()
 const { t } = useI18n()
 const toast = useToast()
 
 // Provided by the root JsonTreeNode — the inspector is a single shared instance.
-const inspector = inject<{ open: (value: unknown) => void } | null>('valueInspector', null)
+const inspector = inject<{ open: (value: unknown, path?: string) => void } | null>('valueInspector', null)
 
 const kind = computed<ValueKind | null>(() => detectValueKind(props.value))
 const stringValue = computed(() => (typeof props.value === 'string' ? props.value : String(props.value ?? '')))
@@ -87,7 +87,7 @@ const label = computed(() => {
 })
 
 function inspect() {
-  inspector?.open(props.value)
+  inspector?.open(props.value, props.path)
 }
 
 function openLink() {

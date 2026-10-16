@@ -84,6 +84,10 @@
 					<p>&copy; {{ new Date().getFullYear() }} {{ $t('app.footer.copyright') }}</p>
 				</div>
 				<nav class="flex flex-wrap items-center justify-center sm:justify-end gap-x-5 gap-y-2">
+					<NuxtLinkLocale to="/developers"
+						class="font-medium text-surface-500 hover:text-primary-600 transition-all dark:text-surface-400 dark:hover:text-primary-400">
+						{{ $t('app.nav.developers') }}
+					</NuxtLinkLocale>
 					<NuxtLinkLocale to="/about"
 						class="font-medium text-surface-500 hover:text-primary-600 transition-all dark:text-surface-400 dark:hover:text-primary-400">
 						{{ $t('app.footer.support.about_us') }}

@@ -152,7 +152,7 @@
 </template>
 
 <script setup lang="ts">
-import { toJsonPath } from '~/utils/jsonPath'
+import { toJsonPath } from '@kbmjj123/json-editor/core'
 import { copyToClipboard, downloadFile } from '~/utils/index'
 import { useFullscreen } from '~/composables/useFullscreen'
 import { useDiffLineMapping, type DiffEntry, type LineDecoration } from '~/composables/useDiffLineMapping'

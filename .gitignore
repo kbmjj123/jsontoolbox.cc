@@ -40,3 +40,6 @@ gsc-service-account.json
 
 # Generated test data
 libs/json-generator/output/
+
+# Package demo build output (source is demo/index.html + demo/*.ts)
+packages/json-editor/demo/demo-dist

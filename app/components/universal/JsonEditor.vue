@@ -251,6 +251,9 @@
 <script setup lang="ts">
 import type { ParseError, FieldError } from '~/types/jsonErrors'
 import type { LoadFailureReason } from '~/composables/useSharedPayloadLoader'
+// L1: JSON 纯函数统一走 @kbmjj123/json-editor/core，站点只在外层叠加自己的
+// 增强（jsonrepair 修复、友好错误文案）。包的 core 保持纯 JSON.parse 语义。
+import { buildSourceMap, parseJson } from '@kbmjj123/json-editor/core'
 import { useLargeFileGate } from '~/composables/useLargeFile'
 import { useNodeEditing } from '~/composables/useNodeEditing'
 import { useClipboardActions } from '~/composables/useClipboardActions'
@@ -517,11 +520,7 @@ async function loadSharedContent() {
 // Explorer by `largeFile` instead of being parsed here.
 const parsedData = computed(() => {
   if (largeFile.blocked.value) return null
-  try {
-    return JSON.parse(inputJson.value)
-  } catch {
-    return null
-  }
+  return parseJson(inputJson.value).data
 })
 
 // Batch selections refer to paths in the previous document — drop them once it

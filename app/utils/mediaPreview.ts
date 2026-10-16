@@ -253,13 +253,46 @@ export interface DecodedBase64 {
   bytes: number
 }
 
-function sniffImageMime(binary: string): string | null {
+export function sniffImageMime(binary: string): string | null {
   if (binary.startsWith('\u0089PNG')) return 'image/png'
   if (binary.charCodeAt(0) === 0xff && binary.charCodeAt(1) === 0xd8) return 'image/jpeg'
   if (binary.startsWith('GIF8')) return 'image/gif'
   if (binary.startsWith('RIFF') && binary.includes('WEBP')) return 'image/webp'
   if (/^\s*<svg|^\s*<\?xml/i.test(binary)) return 'image/svg+xml'
   return null
+}
+
+/**
+ * Warn (never block) when an embedded file would bloat the JSON document.
+ * Below the 5 MB whole-document editing ceiling; a sane "this is getting big"
+ * signal for inline data URIs.
+ */
+export const MEDIA_EMBED_WARN_BYTES = 1024 * 1024
+
+/** Encode raw bytes as standard Base64 (browser `btoa`). Chunked to avoid
+ *  the 65k-arg limit of `String.fromCharCode`. */
+export function bytesToBase64(bytes: Uint8Array): string {
+  let binary = ''
+  const chunk = 0x8000
+  for (let i = 0; i < bytes.length; i += chunk) {
+    binary += String.fromCharCode(...bytes.subarray(i, i + chunk))
+  }
+  return btoa(binary)
+}
+
+/** Build a `data:` URI from a MIME type and a Base64 payload. */
+export function buildDataUri(mime: string, base64: string): string {
+  return `data:${mime};base64,${base64}`
+}
+
+/**
+ * Split a Base64 string into fixed-length chunks — used by the "chunked"
+ * output mode so very large payloads become an array of strings rather than
+ * one unreadable line.
+ */
+export function splitBase64Chunks(base64: string, size = 4096): string[] {
+  const re = new RegExp(`.{1,${size}}`, 'g')
+  return base64.match(re) ?? []
 }
 
 export function decodeBase64(value: string): DecodedBase64 | null {
