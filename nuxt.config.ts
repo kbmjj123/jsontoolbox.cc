@@ -7,9 +7,21 @@ export default defineNuxtConfig({
     preset: "static",
     static: true,
     prerender: {
-      failOnError: false,
+      // A silently skipped route is worse than a failed build: with `false`, a
+      // broken `/` made the crawler find no links, the site shipped with only
+      // 12 prerendered routes and Cloudflare still reported "Success".
+      failOnError: true,
       autoSubfolderIndex: false,
+      // Crawler entry points. `/` alone is not enough: when the home page
+      // fails to render (it did once — unstorage 1.17.6 rejected `/` as a
+      // cache key), the crawler finds no links and the whole site collapses to
+      // the 12 routes prerendered from the initial list. These extra entries
+      // keep the crawl alive even if one entry breaks.
       routes: [
+        '/',
+        '/zh',
+        '/tools',
+        '/blog',
         '/llms.txt',
         '/llms-full.txt'
       ]

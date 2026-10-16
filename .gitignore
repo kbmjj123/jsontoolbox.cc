@@ -26,7 +26,11 @@ logs
 .env.*
 !.env.example
 !.env.seo.example
-pnpm-lock.yaml
+
+# pnpm-lock.yaml is intentionally tracked: without it CI/CD (Cloudflare Pages)
+# re-resolves every dependency on each build and can pick up a breaking patch
+# release that never ran locally (it did once — unstorage 1.17.6 broke
+# prerendering of `/`). Install with --frozen-lockfile everywhere.
 
 public/1.html
 public/1.md
