@@ -14,6 +14,7 @@ promo:
   btn: "打开 JSON 编辑器"
 ---
 
+
 小型 JSON 示例适合学习语法，但不足以测试真实应用。
 
 一个生产环境的 JSON 文档可能包含嵌套对象、数组、可选字段、时间戳、图片 URL、颜色值、元数据、用户资料、支付详情、库存记录和错误信息。大型 JSON 文件还会暴露解析器、编辑器、查看器、搜索功能和虚拟渲染组件的性能问题。
@@ -196,6 +197,10 @@ promo:
 - [JSON 压缩](/tools/format/json-minifier) — 移除空白压缩 JSON
 - [JSON 比较](/tools/convert/json-compare) — 高亮两个 JSON 文档的差异
 - [JSON 转 TypeScript](/tools/convert/json-to-typescript) — 从 JSON 生成 TypeScript 接口
+
+![JSON Editor tool interface](/blog/screenshots/zh/free-realistic-json-test-data/01-json-editor.webp)
+
+*The JSON Editor tool.*
 
 JsonToolBox 专为浏览器端 JSON 工作流设计，数据在本地处理，无需注册或上传文件。
 

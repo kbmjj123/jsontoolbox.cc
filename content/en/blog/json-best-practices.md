@@ -14,6 +14,7 @@ promo:
   btn: "Open JSON Editor"
 ---
 
+
 <!-- # JSON Best Practices in Real Projects: API Design, Performance, and Security -->
 
 In most web projects, JSON has become the de facto standard for data exchange. But "using JSON" and "using JSON well" are two different things:  
@@ -26,6 +27,10 @@ This article covers **API design, performance optimization, and security practic
 > If you're designing or refactoring APIs, you can paste example JSON into the [JSON Editor](/) on the homepage to adjust the structure while instantly checking format and validity.
 
 ---
+
+![JSON Editor tool interface](/blog/screenshots/en/json-best-practices/01-json-editor.webp)
+
+*The JSON Editor tool.*
 
 ## 1. Standardizing API Response Structures
 

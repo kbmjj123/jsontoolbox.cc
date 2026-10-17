@@ -14,12 +14,21 @@ promo:
   btn: "Open JSON Editor"
 ---
 
+
 <!-- # JSON Parse Failed: 10 Common API Errors and How to Debug Them -->
 
 In frontend and backend development, "JSON parse failed" is one of the most common errors: your code expects a JSON response, but `JSON.parse` throws an exception and the console fills with red errors.  
 This article breaks down **10 typical JSON parsing errors** from real-world debugging scenarios, and provides actionable troubleshooting steps and prevention tips to help you quickly locate and fix the root cause.
 
+![What a JSON.parse error looks like](/blog/screenshots/en/json-parse-error-debug/json-parse-error-demo.webp)
+
+*When `JSON.parse` fails, JavaScript throws a `SyntaxError` pointing at the exact offending character.*
+
 > If you have a "parse failed" JSON sample on hand, paste it into the [JSON Editor](/tools/format/json-editor) to automatically check syntax and highlight the exact error position.
+
+![JSON Repair fixes invalid JSON](/blog/screenshots/en/json-parse-error-debug/json-repair-fake-json.webp)
+
+*The JSON Repair tool turns invalid JSON (single quotes, comments) into valid JSON.*
 
 ## Overview of Typical Error Messages
 
@@ -46,6 +55,10 @@ Below, we break them down by scenario.
 - The frontend still calls `JSON.parse(responseText)` and fails with:
 
 > `SyntaxError: Unexpected token '<' in JSON at position 0`
+
+![Backend returned an HTML error page](/blog/screenshots/en/json-parse-error-debug/json-parse-html-error.webp)
+
+*When the response is HTML, `JSON.parse` fails immediately at position 0 — the `<` character.*
 
 ### Cause
 
@@ -250,6 +263,10 @@ A large payload is often valid JSON. The failure is usually a performance, memor
 - The response is cut off during transmission.  
 - Errors like:  
   > `SyntaxError: Unexpected end of JSON input`  
+
+![Truncated JSON fails to parse](/blog/screenshots/en/json-parse-error-debug/json-parse-truncated.webp)
+
+*A truncated response ends abruptly — `JSON.parse` cannot find the closing braces/brackets.*
 
 ### Causes
 

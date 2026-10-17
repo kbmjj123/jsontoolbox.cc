@@ -21,6 +21,7 @@ locales:
   - "en"
 ---
 
+
 # JSON vs YAML: When to Use Each Format
 
 JSON and YAML encode the same kinds of data — nested mappings, sequences, strings, numbers, booleans, null. You can convert between them mechanically. The difference is who each one is written for.
@@ -146,6 +147,10 @@ If a file is reviewed frequently by people who are not its author, YAML's commen
 
 - **[JSON to YAML](/tools/convert/json-to-yaml)** — paste JSON or open a `.json` file, choose the indentation, and copy or download the YAML as `.yaml`. It handles nested objects and arrays, renders JSON scalars as YAML-compatible forms, and flags that a value may be read differently by a YAML 1.1 versus a YAML 1.2 parser.
 - **[YAML to JSON](/tools/convert/yaml-to-json)** — paste YAML or open a `.yaml` / `.yml` file and get formatted JSON with two-space, four-space, or minified output. Multi-document files become a JSON array with one entry per document, and invalid YAML is reported with the line and column where parsing stopped instead of producing partial output.
+
+![JSON to YAML tool interface](/blog/screenshots/en/json-vs-yaml/01-json-to-yaml.webp)
+
+*The JSON to YAML tool.*
 
 Both run in your browser: the file is parsed locally and is not uploaded, which matters when you are converting a Kubernetes manifest or a CI config that contains internal hostnames.
 

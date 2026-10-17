@@ -21,6 +21,7 @@ promo:
 locales: ["en"]
 ---
 
+
 # How to Read and Write JSON Files in Python
 
 Python's [`json`](https://docs.python.org/3/library/json.html) module has four functions that do almost everything you need, and one letter that decides which one to call: **`s` means string.**
@@ -257,6 +258,10 @@ Most time lost to JSON bugs in Python is spent debugging data that was already b
 - **[JSON Editor](/tools/format/json-editor)** — paste or open the file to validate it live, format it with two or four spaces, minify it, and copy or download the result. Useful for confirming a file is valid before you point a script at it, and for pretty-printing an API response you are about to paste into a test fixture.
 - **[JSON Array Generator](/tools/convert/json-array-generator)** — when you need sample data rather than a single object: set the item count and field names and download a pretty-printed JSON array to use as test input.
 - **[JSON to Code Generator](/tools/convert/json-to-code)** — paste a representative sample and choose Python to get a starter `dataclass` (arrays become `list[Item]`, nested objects become separate declarations), then copy or download the `.py` file. The output is inferred from the sample, so review naming, optional fields, and nullability — it describes the shape, it does not validate runtime data.
+
+![JSON Editor tool interface](/blog/screenshots/en/read-json-file-python/01-json-editor.webp)
+
+*The JSON Editor tool.*
 
 All three run in your browser and do not upload the data, which matters when the JSON is a production payload.
 

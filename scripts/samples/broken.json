@@ -1,0 +1,6 @@
+{
+  "name": "Ada Lovelace",
+  "roles": ["admin", "editor",],
+  "active": true
+  "profile": { "city": "London", "since": 1833, }
+}

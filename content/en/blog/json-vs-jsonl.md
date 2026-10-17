@@ -21,6 +21,7 @@ locales:
   - "en"
 ---
 
+
 # JSON vs JSONL: When to Use Each and Why It Matters
 
 A 400 MB export will not open in your editor. A log file that grows all day cannot be rewritten every time a new event arrives. And a training dataset is easier to stream than to load.
@@ -201,6 +202,10 @@ If you just need the conversion, both directions are one step in the browser:
 
 - **[JSON to JSONL](/tools/convert/json-to-jsonl)** — turns a JSON array into one JSON value per line (a single object becomes a single line). The input is parsed as JSON first, so invalid input produces an error rather than a broken JSONL file. Copy the result or download it as `.jsonl`.
 - **[JSONL to JSON](/tools/convert/jsonl-to-json)** — parses each non-empty line into a value and collects them into a pretty-printed JSON array. Blank lines are skipped, and if a line is not valid JSON the tool reports which line failed, so you can fix the source instead of guessing.
+
+![JSONL to JSON tool interface](/blog/screenshots/en/json-vs-jsonl/01-jsonl-to-json.webp)
+
+*The JSONL to JSON tool.*
 
 Both run in your browser: the file is parsed locally and is not uploaded, which matters when the JSONL is production log data or a customer export.
 

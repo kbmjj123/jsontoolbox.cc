@@ -127,7 +127,6 @@ export default defineNuxtConfig({
     '@nuxtjs/seo',
     '@nuxt/eslint',
     '@nuxt/icon',
-    '@nuxt/image',
     '@nuxt/scripts',
     '@nuxt/test-utils',
     '@nuxtjs/tailwindcss',

@@ -33,7 +33,6 @@
     "@nuxt/eslint": "1.8.0",
     "@nuxt/fonts": "0.11.4",
     "@nuxt/icon": "2.0.0",
-    "@nuxt/image": "1.11.0",
     "@nuxt/scripts": "0.11.10",
     "@nuxt/test-utils": "3.19.2",
     "@nuxtjs/color-mode": "^3.5.2",
@@ -70,6 +69,8 @@
     "@tailwindcss/typography": "^0.5.19",
     "nuxt-module-feed": "^1.1.4",
     "nuxt-open-fetch": "^0.13.2",
+    "puppeteer-core": "^25.14.0",
+    "sharp": "^0.35.5",
     "tailwindcss": "^3.4.19"
   },
   "pnpm": {

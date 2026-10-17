@@ -14,6 +14,7 @@ promo:
   btn: "Open JSON Editor"
 ---
 
+
 Small JSON examples are useful for learning the syntax, but they are not enough for testing real-world applications.
 
 A production JSON document may contain nested objects, arrays, optional fields, timestamps, image URLs, colors, metadata, user profiles, payment details, inventory records, and error information. Large JSON files can also expose performance problems in parsers, editors, viewers, search features, and virtualized rendering components.
@@ -213,6 +214,10 @@ Useful tools include:
 - [JSON Minifier](/tools/format/json-minifier) for compressing JSON by removing whitespace.
 - [JSON Compare](/tools/convert/json-compare) for highlighting differences between two JSON documents.
 - [JSON to TypeScript](/tools/convert/json-to-typescript) for generating TypeScript interfaces from JSON data.
+
+![JSON Editor tool interface](/blog/screenshots/en/free-realistic-json-test-data/01-json-editor.webp)
+
+*The JSON Editor tool.*
 
 JsonToolBox is designed for browser-based JSON workflows. Data can be processed locally in the browser without creating an account or uploading files to a remote service.
 

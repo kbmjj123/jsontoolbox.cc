@@ -27,6 +27,10 @@ A `.json` file is plain text, so there is no single "JSON program" you need. Any
 
 > **Skip the setup and open it now:** paste your JSON or open a local `.json` file in the [JSON Editor](/tools/format/json-editor) — it highlights syntax, validates as you type, formats with two or four spaces, and lets you copy or download the result. It runs in your browser, so nothing is uploaded.
 
+![JSON Editor: upload a minified file, then click Format to pretty-print it](/blog/screenshots/en/how-to-open-json-file/json-editor-formatted.webp)
+
+*The JSON Editor: upload a minified file (1), then click **Format** to pretty-print it in the right panel (2). Everything runs in your browser — nothing is uploaded.*
+
 Below that quick path, this guide covers every common way to open a JSON file: Windows, macOS, Linux, Chrome, Edge, Firefox, VS Code, phones, what to do when a file refuses to open, and how to save your edits back as valid `.json`.
 
 ## What is a JSON file?

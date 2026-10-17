@@ -20,6 +20,7 @@ promo:
 locales: ["en"]
 ---
 
+
 # How to Create a manifest.json File: PWA and Chrome Extension Examples
 
 Two developers can search "how to create a manifest.json file" and need completely different files. One is adding install support to a website. The other is publishing a Chrome extension. Both files are named `manifest.json`. Almost nothing else about them is the same.
@@ -251,6 +252,10 @@ A manifest that is valid JSON can still be rejected here. Chrome validates the s
 Manifest files are small, hand-edited, and unforgiving. Three checks catch nearly every failure:
 
 **1. Validate the JSON first.** Paste the file into the [JSON Editor](/tools/format/json-editor): it highlights syntax errors as you type and can format or minify the document before you copy or download it. Because it runs in your browser, you can paste an unreleased extension manifest or an internal PWA config without sending it anywhere.
+
+![JSON Editor tool interface](/blog/screenshots/en/how-to-create-manifest-json/01-json-editor.webp)
+
+*The JSON Editor tool.*
 
 **2. Repair instead of rewriting.** If the file already has trailing commas, single quotes, unquoted keys, or comments, [JSON Repair](/tools/format/json-repair) fixes all of them at once and returns valid JSON.
 
