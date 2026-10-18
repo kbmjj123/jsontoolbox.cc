@@ -1,9 +1,10 @@
 # @kbmjj123/json-editor
 
 A framework-agnostic JSON editor for the web: CodeMirror 6 editing, live
-validation with error-line location, format/minify, and a searchable read-only
-tree view. Use it as a **Vue 3 component**, a **custom element
-(`<json-editor>`)**, or a plain **script tag** from a CDN.
+validation with error-line location, format/minify, a searchable and editable
+tree view, a table view for arrays, and a value inspector. Use it as a
+**Vue 3 component**, a **custom element (`<json-editor>`)**, or a plain
+**script tag** from a CDN.
 
 All processing happens in the browser — your JSON never leaves the device.
 
@@ -19,9 +20,15 @@ All processing happens in the browser — your JSON never leaves the device.
 - **Live validation** — reports parse errors with line/column location and a
   one-click jump to the error line.
 - **Format / minify** toolbar actions.
-- **Read-only tree view** — collapse/expand, search keys and values, copy path,
-  JSONPath or value.
-- **Three view modes** — editor only, tree only, or split side-by-side.
+- **Editable tree view** — collapse/expand, rename/add/remove nodes, batch
+  edits, undo/redo, and copy a path, JSONPath or value.
+- **Five search modes** — search by key, value, path, all of them combined, or
+  a JSONPath expression (invalid expressions are flagged).
+- **Value inspector** — click a leaf value to recognize colors, timestamps,
+  JWTs, and Base64 (with inline image preview).
+- **Table view** — a top-level array of objects renders as a sortable table
+  with CSV export.
+- **Four view modes** — editor, tree, table, or split side-by-side.
 - **Light / dark / auto** theming via CSS custom properties.
 - **Zero runtime dependencies** for the CDN bundle (Vue + CodeMirror are
   bundled).
@@ -62,7 +69,7 @@ npm install vue @codemirror/commands @codemirror/lang-json @codemirror/language 
 ```
 
 The CDN build is also available on [unpkg](https://unpkg.com/@kbmjj123/json-editor)
-and can be submitted to [cdnjs](https://cdnjs.com).
+and on [cdnjs](https://cdnjs.com).
 
 ---
 
@@ -95,7 +102,7 @@ const value = ref('{"name": "JSON Toolbox"}')
 | Prop | Type | Default | Description |
 |------|------|---------|-------------|
 | `modelValue` | `string` | `""` | JSON text (the element uses the `value` attribute). |
-| `view` | `'editor' \| 'tree' \| 'both'` | `'both'` | Active view. |
+| `view` | `'editor' \| 'tree' \| 'both' \| 'table'` | `'both'` | Active view. |
 | `theme` | `'light' \| 'dark' \| 'auto'` | `'auto'` | Theme. |
 | `locale` | `'en' \| 'zh'` | `'en'` | UI language. |
 | `messages` | `Partial<Messages>` | — | Override individual UI strings. |
@@ -182,7 +189,7 @@ import { parseJson, formatJson, buildTree, searchTree } from '@kbmjj123/json-edi
 
 ### Standalone TreeView / TableView (`/vue`)
 
-If you only need the read-only tree or the array table — for example to pair
+If you only need the tree view or the array table — for example to pair
 with your own editor — import them from the `/vue` subpath:
 
 ```vue
