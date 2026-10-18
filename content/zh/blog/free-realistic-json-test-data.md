@@ -14,6 +14,7 @@ promo:
   btn: "打开 JSON 编辑器"
 ---
 
+
 小型 JSON 示例适合学习语法，但不足以测试真实应用。
 
 一个生产环境的 JSON 文档可能包含嵌套对象、数组、可选字段、时间戳、图片 URL、颜色值、元数据、用户资料、支付详情、库存记录和错误信息。大型 JSON 文件还会暴露解析器、编辑器、查看器、搜索功能和虚拟渲染组件的性能问题。
@@ -39,10 +40,10 @@ promo:
 
 电商订单数据包含客户、地址、商品行、商品图片、税费、折扣、支付状态、履约状态和订单元数据。
 
-- [下载订单 — 1 MB](https://resources.jsontoolbox.cc/orders-1mb.json)
-- [下载订单 — 5 MB](https://resources.jsontoolbox.cc/orders-5mb.json)
-- [下载订单 — 10 MB](https://resources.jsontoolbox.cc/orders-10mb.json)
-- [下载订单 — 20 MB](https://resources.jsontoolbox.cc/orders-20mb.json)
+- <a href="https://resources.jsontoolbox.cc/orders-1mb.json" download="orders-1mb.json">下载订单 — 1 MB</a>
+- <a href="https://resources.jsontoolbox.cc/orders-5mb.json" download="orders-5mb.json">下载订单 — 5 MB</a>
+- <a href="https://resources.jsontoolbox.cc/orders-10mb.json" download="orders-10mb.json">下载订单 — 10 MB</a>
+- <a href="https://resources.jsontoolbox.cc/orders-20mb.json" download="orders-20mb.json">下载订单 — 20 MB</a>
 
 示例结构：
 
@@ -79,9 +80,9 @@ promo:
 
 用户数据集包含真实感的用户资料，含姓名、邮箱、头像、地址、公司、职位、偏好、角色和可选的社交链接。
 
-- [下载用户 — 1 MB](https://resources.jsontoolbox.cc/users-1mb.json)
-- [下载用户 — 15 MB](https://resources.jsontoolbox.cc/users-15mb.json)
-- [下载用户 — 40 MB](https://resources.jsontoolbox.cc/users-40mb.json)
+- <a href="https://resources.jsontoolbox.cc/users-1mb.json" download="users-1mb.json">下载用户 — 1 MB</a>
+- <a href="https://resources.jsontoolbox.cc/users-15mb.json" download="users-15mb.json">下载用户 — 15 MB</a>
+- <a href="https://resources.jsontoolbox.cc/users-40mb.json" download="users-40mb.json">下载用户 — 40 MB</a>
 
 可用于测试：
 
@@ -96,10 +97,10 @@ promo:
 
 日志数据集模拟 Web 应用和后端服务产生的日志记录。
 
-- [下载日志 — 1 MB](https://resources.jsontoolbox.cc/logs-1mb.json)
-- [下载日志 — 10 MB](https://resources.jsontoolbox.cc/logs-10mb.json)
-- [下载日志 — 30 MB](https://resources.jsontoolbox.cc/logs-30mb.json)
-- [下载日志 — 50 MB](https://resources.jsontoolbox.cc/logs-50mb.json)
+- <a href="https://resources.jsontoolbox.cc/logs-1mb.json" download="logs-1mb.json">下载日志 — 1 MB</a>
+- <a href="https://resources.jsontoolbox.cc/logs-10mb.json" download="logs-10mb.json">下载日志 — 10 MB</a>
+- <a href="https://resources.jsontoolbox.cc/logs-30mb.json" download="logs-30mb.json">下载日志 — 30 MB</a>
+- <a href="https://resources.jsontoolbox.cc/logs-50mb.json" download="logs-50mb.json">下载日志 — 50 MB</a>
 
 日志记录可能包含：
 
@@ -117,10 +118,10 @@ promo:
 
 工单数据集模拟项目管理和问题跟踪记录。
 
-- [下载工单 — 1 MB](https://resources.jsontoolbox.cc/issues-1mb.json)
-- [下载工单 — 10 MB](https://resources.jsontoolbox.cc/issues-10mb.json)
-- [下载工单 — 20 MB](https://resources.jsontoolbox.cc/issues-20mb.json)
-- [下载工单 — 40 MB](https://resources.jsontoolbox.cc/issues-40mb.json)
+- <a href="https://resources.jsontoolbox.cc/issues-1mb.json" download="issues-1mb.json">下载工单 — 1 MB</a>
+- <a href="https://resources.jsontoolbox.cc/issues-10mb.json" download="issues-10mb.json">下载工单 — 10 MB</a>
+- <a href="https://resources.jsontoolbox.cc/issues-20mb.json" download="issues-20mb.json">下载工单 — 20 MB</a>
+- <a href="https://resources.jsontoolbox.cc/issues-40mb.json" download="issues-40mb.json">下载工单 — 40 MB</a>
 
 每条工单可能包含：
 
@@ -140,10 +141,10 @@ promo:
 
 支付数据集表示常见的支付相关对象，如扣款、支付意向、客户、支付方式和付款。
 
-- [下载支付 — 1 MB](https://resources.jsontoolbox.cc/payments-1mb.json)
-- [下载支付 — 10 MB](https://resources.jsontoolbox.cc/payments-10mb.json)
-- [下载支付 — 20 MB](https://resources.jsontoolbox.cc/payments-20mb.json)
-- [下载支付 — 40 MB](https://resources.jsontoolbox.cc/payments-40mb.json)
+- <a href="https://resources.jsontoolbox.cc/payments-1mb.json" download="payments-1mb.json">下载支付 — 1 MB</a>
+- <a href="https://resources.jsontoolbox.cc/payments-10mb.json" download="payments-10mb.json">下载支付 — 10 MB</a>
+- <a href="https://resources.jsontoolbox.cc/payments-20mb.json" download="payments-20mb.json">下载支付 — 20 MB</a>
+- <a href="https://resources.jsontoolbox.cc/payments-40mb.json" download="payments-40mb.json">下载支付 — 40 MB</a>
 
 生成的记录可能包含：
 
@@ -163,10 +164,10 @@ promo:
 
 商品数据集包含目录数据，含商品图片、选项、变体、价格、库存、标签、SEO 元数据和发布状态。
 
-- [下载商品 — 1 MB](https://resources.jsontoolbox.cc/products-1mb.json)
-- [下载商品 — 10 MB](https://resources.jsontoolbox.cc/products-10mb.json)
-- [下载商品 — 20 MB](https://resources.jsontoolbox.cc/products-20mb.json)
-- [下载商品 — 40 MB](https://resources.jsontoolbox.cc/products-40mb.json)
+- <a href="https://resources.jsontoolbox.cc/products-1mb.json" download="products-1mb.json">下载商品 — 1 MB</a>
+- <a href="https://resources.jsontoolbox.cc/products-10mb.json" download="products-10mb.json">下载商品 — 10 MB</a>
+- <a href="https://resources.jsontoolbox.cc/products-20mb.json" download="products-20mb.json">下载商品 — 20 MB</a>
+- <a href="https://resources.jsontoolbox.cc/products-40mb.json" download="products-40mb.json">下载商品 — 40 MB</a>
 
 一个商品可能包含：
 
@@ -196,6 +197,10 @@ promo:
 - [JSON 压缩](/tools/format/json-minifier) — 移除空白压缩 JSON
 - [JSON 比较](/tools/convert/json-compare) — 高亮两个 JSON 文档的差异
 - [JSON 转 TypeScript](/tools/convert/json-to-typescript) — 从 JSON 生成 TypeScript 接口
+
+![JSON Editor tool interface](/blog/screenshots/zh/free-realistic-json-test-data/01-json-editor.webp)
+
+*The JSON Editor tool.*
 
 JsonToolBox 专为浏览器端 JSON 工作流设计，数据在本地处理，无需注册或上传文件。
 

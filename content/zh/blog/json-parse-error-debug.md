@@ -14,12 +14,17 @@ promo:
   btn: "打开 JSON Editor"
 ---
 
+
 <!-- # JSON 解析失败怎么办？接口调试中的 10 个典型错误与排查步骤 -->
 
 在前后端开发中，“JSON 解析失败”几乎是最常见的错误之一：前端调用接口，期望拿到 JSON，结果 `JSON.parse` 抛出异常，控制台一片红。  
 这篇文章从真实开发场景出发，总结 **10 类典型 JSON 解析错误**，并给出可操作的排查步骤和预防建议，帮助你快速定位问题、减少调试时间。
 
 > 如果你手边正好有一段”解析失败”的 JSON，可以先把它粘贴到 [JSON Editor](/tools/format/json-editor) 中，自动检查语法并查看错误位置。
+
+![JSON Editor tool interface](/blog/screenshots/zh/json-parse-error-debug/01-json-editor.webp)
+
+*The JSON Editor tool.*
 
 ## 典型错误信息总览
 

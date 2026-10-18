@@ -21,6 +21,7 @@ locales:
   - "en"
 ---
 
+
 # Comments in JSON: Why They're Not Allowed and What to Use Instead
 
 You paste a config file into your code, call `JSON.parse()`, and get `SyntaxError: Unexpected token /`. Everything looks correct — except for the `// TODO: bump this after launch` line at the top.
@@ -296,6 +297,10 @@ Then convert before packaging or deploying. Developers get comments; deployments
 ### 3. Convert JSONC to JSON in your browser
 
 For one-off conversions, use the [JSONC to JSON Converter](/tools/convert/jsonc-to-json). Paste JSONC or open a `.jsonc`, `.json`, or `.txt` file, and it produces standard JSON.
+
+![JSONC to JSON tool interface](/blog/screenshots/en/json-comments/01-jsonc-to-json.webp)
+
+*The JSONC to JSON tool.*
 
 What it does:
 

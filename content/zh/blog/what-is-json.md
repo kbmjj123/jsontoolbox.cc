@@ -14,6 +14,7 @@ promo:
   btn: "打开 JSON 编辑器"
 ---
 
+
 <!-- # JSON 是什么？结构、语法与常见错误（开发者实战版） -->
 
 JSON（JavaScript Object Notation）是一种轻量级的数据交换格式，几乎出现在所有现代 Web 开发和 API 设计中：从浏览器与后端通信，到配置文件（如 `package.json`、`tsconfig.json`），再到日志和消息队列。  
@@ -374,6 +375,10 @@ Line2"
 如果你正在构建工具站，可以在这里自然引导用户使用你的工具，例如：
 
 > 把你的 JSON 粘贴到我们的 [JSON 编辑器](/tools/format/json-editor) 中，自动检查语法错误并格式化输出。
+
+![JSON Editor tool interface](/blog/screenshots/zh/what-is-json/01-json-editor.webp)
+
+*The JSON Editor tool.*
 
 ### 浏览器控制台快速验证
 

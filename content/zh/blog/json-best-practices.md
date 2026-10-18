@@ -14,6 +14,7 @@ promo:
   btn: "打开 JSON Editor"
 ---
 
+
 <!-- # 前后端项目中 JSON 的最佳实践：接口设计、性能与安全 -->
 
 在大多数 Web 项目中，JSON 已经是事实上的数据交换标准。但“会用 JSON”和“用好 JSON”是两回事：  
@@ -26,6 +27,10 @@ promo:
 > 如果你正在设计或重构接口，可以把示例 JSON 粘贴到首页的 [JSON Editor](/) 中，一边调整结构，一边实时查看格式与合法性。
 
 ---
+
+![JSON Editor tool interface](/blog/screenshots/zh/json-best-practices/01-json-editor.webp)
+
+*The JSON Editor tool.*
 
 ## 一、统一接口响应结构设计
 

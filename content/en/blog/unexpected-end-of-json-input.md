@@ -21,6 +21,7 @@ locales:
   - "en"
 ---
 
+
 # Unexpected End of JSON Input: What It Means and How to Fix It
 
 ```text
@@ -33,6 +34,10 @@ This error says one thing: **the parser reached the end of the string while it w
 The useful part is that the message narrows the cause considerably. An empty API response, a truncated download, and a missing `}` are three different problems that need three different fixes — and on modern JavaScript engines they do not even produce the same message. This guide shows how to tell them apart in about a minute, and how to fix each one in `fetch()`, Node.js, React, and file reads.
 
 > **Paste it and see where it breaks:** the [JSON Repair](/tools/format/json-repair) tool fixes missing brackets, trailing commas, and quoting problems in your browser, and reports an error instead of guessing when a document cannot be recovered.
+
+![JSON Repair tool interface](/blog/screenshots/en/unexpected-end-of-json-input/01-json-repair.webp)
+
+*The JSON Repair tool.*
 
 For the wider picture — ten parse errors, not just this one — see [JSON Parse Failed: 10 Common API Errors and How to Debug Them](/blog/json-parse-error-debug).
 

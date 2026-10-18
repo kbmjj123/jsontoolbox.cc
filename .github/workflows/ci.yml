@@ -16,15 +16,14 @@ jobs:
         with:
           version: 10.25.0
 
-      # No `cache: pnpm` — the repo gitignores pnpm-lock.yaml, so setup-node
-      # cannot derive a cache key from it.
       - uses: actions/setup-node@v4
         with:
           node-version-file: .nvmrc
 
       # Only the package and its workspace deps — the Nuxt site is not needed
       # to typecheck, test or build this package.
-      # No --frozen-lockfile: pnpm-lock.yaml is gitignored in this repo.
+      # pnpm-lock.yaml is tracked, so this install is reproducible; keep it in
+      # sync with the site build (Cloudflare Pages uses --frozen-lockfile).
       - run: pnpm install --filter @kbmjj123/json-editor...
 
       - run: pnpm --filter @kbmjj123/json-editor run typecheck

@@ -14,8 +14,13 @@ promo:
   btn: "Open JSON Editor"
 ---
 
+
 JSON (JavaScript Object Notation) is a lightweight data interchange format that appears in almost every modern web development and API design scenario: from browser–backend communication to configuration files like `package.json` and `tsconfig.json`, and even structured logs and message queues.  
 Instead of a textbook-style introduction, this guide focuses on **real-world developer scenarios**, explaining JSON structure and syntax while diving deep into the mistakes you're most likely to encounter and how to debug them.
+
+![JSON Editor tool interface](/blog/screenshots/en/what-is-json/01-json-editor.webp)
+
+*The JSON Editor tool.*
 
 ## Why Developers Must Understand JSON
 

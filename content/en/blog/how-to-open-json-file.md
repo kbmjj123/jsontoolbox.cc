@@ -3,10 +3,9 @@ title: "How to Open, View, and Edit a JSON File Online"
 description: "Open a JSON file on Windows, Mac, or Linux, view it in Chrome, Firefox, or Edge, edit and format it in VS Code, and fix files that refuse to open."
 h1: "How to Open, View, and Edit a JSON File Online"
 category: "json_tools"
-date: 2026-09-29
-lastmod: 2026-09-29
+date: 2026-10-13
+lastmod: 2026-10-13
 image: "/blog/cover/en/how-to-open-json-file-cover.svg"
-draft: true
 tags:
   - "JSON"
   - "JSON Editor"
@@ -27,6 +26,10 @@ locales:
 A `.json` file is plain text, so there is no single "JSON program" you need. Any text editor opens it — the question is which tool makes it readable, tells you when it is broken, and lets you format or edit it safely.
 
 > **Skip the setup and open it now:** paste your JSON or open a local `.json` file in the [JSON Editor](/tools/format/json-editor) — it highlights syntax, validates as you type, formats with two or four spaces, and lets you copy or download the result. It runs in your browser, so nothing is uploaded.
+
+![JSON Editor: upload a minified file, then click Format to pretty-print it](/blog/screenshots/en/how-to-open-json-file/json-editor-formatted.webp)
+
+*The JSON Editor: upload a minified file (1), then click **Format** to pretty-print it in the right panel (2). Everything runs in your browser — nothing is uploaded.*
 
 Below that quick path, this guide covers every common way to open a JSON file: Windows, macOS, Linux, Chrome, Edge, Firefox, VS Code, phones, what to do when a file refuses to open, and how to save your edits back as valid `.json`.
 

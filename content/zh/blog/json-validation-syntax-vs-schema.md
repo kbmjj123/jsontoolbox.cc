@@ -23,6 +23,7 @@ locales:
   - "en"
 ---
 
+
 # JSON 校验详解：语法校验、JSON Schema 与业务规则的区别
 
 很多开发者会把"JSON 能被 `JSON.parse()` 解析"理解成"JSON 数据已经有效"。但在真实接口开发中，这两件事并不相同。
@@ -58,6 +59,10 @@ JSON 校验通常至少包括三个层次：
 如果你的代码在 `JSON.parse()` 阶段就报错，可以先阅读 [JSON 解析失败：10 个常见 API 错误与排查方法](/blog/json-parse-error-debug)。
 
 > 想先确认一段文本是否为合法 JSON，可以使用 [JSON Schema 校验器](/tools/format/json-schema-validator) 检查语法错误位置。
+
+![JSON Schema Validator tool interface](/blog/screenshots/zh/json-validation-syntax-vs-schema/01-json-schema-validator.webp)
+
+*The JSON Schema Validator tool.*
 
 ## JSON 校验不是单一步骤
 

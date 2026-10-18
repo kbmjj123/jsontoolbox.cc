@@ -20,6 +20,7 @@ promo:
 locales: ["en"]
 ---
 
+
 # How to Create a JSON File: Step-by-Step Guide for Beginners
 
 A JSON file is just a text file with the `.json` extension. You do not need special software, a paid tool, or an account — Notepad, TextEdit, and VS Code can all create one.
@@ -162,6 +163,10 @@ When several of these are present at once, fixing them by hand is slow. Paste th
 **1. Editor feedback.** VS Code underlines syntax errors as you type and shows the message on hover. This catches most problems before you save.
 
 **2. In the browser.** Paste or open the file in the [JSON Editor](/tools/format/json-editor). It validates live, highlights syntax, and lets you format or minify the document before you copy or download it — no account and no upload, because it runs in your browser.
+
+![JSON Editor tool interface](/blog/screenshots/en/how-to-create-json-file/01-json-editor.webp)
+
+*The JSON Editor tool.*
 
 **3. Command line.** Both of these parse the file and print it, so a parse error means the file is invalid:
 

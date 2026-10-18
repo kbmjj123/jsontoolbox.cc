@@ -21,6 +21,7 @@ promo:
 locales: ["en"]
 ---
 
+
 # JSON vs TOON: When a Token-Efficient Format Pays Off
 
 Every `{`, `"`, and `,` in a JSON payload costs tokens when you paste it into a prompt. Send a thousand records and you pay for the field names a thousand times.
@@ -140,6 +141,10 @@ Published benchmarks from the reference implementation and third parties report 
 Retrieval accuracy is a separate question from size. Published comparisons report small differences in either direction depending on the setup, and a model that does not reliably parse TOON will cost you far more than the tokens you saved.
 
 **The practical answer: measure it.** Convert your actual payload and read the comparison — characters, UTF-8 bytes, and estimated tokens for minified JSON and TOON side by side. The [JSON to TOON Converter](/tools/convert/json-to-toon) does exactly that, and it will tell you when TOON is the larger of the two rather than leaving you to assume.
+
+![JSON to Toon tool interface](/blog/screenshots/en/json-vs-toon/01-json-to-toon.webp)
+
+*The JSON to Toon tool.*
 
 ## When to use JSON
 

@@ -245,7 +245,7 @@
 
 <script setup lang="ts">
 const { featuredTools } = useTools()
-const { t } = useI18n()
+const { t, te } = useI18n()
 const { openPicker } = useToolPicker()
 const { getBlogList, getCleanPath } = useBlog()
 
@@ -255,9 +255,9 @@ const faqItems = computed(() => {
   let i = 0
   while (true) {
     const key = `home.faq.items.${i}.question`
-    const question = t(key)
-    if (!question || question === key) break // key 缺失即停止
-    items.push({ question, answer: t(`home.faq.items.${i}.answer`) })
+    // 用 te 探测存在性，避免 t(key) 触发 vue-i18n 的 missing key 警告
+    if (!te(key)) break
+    items.push({ question: t(key), answer: t(`home.faq.items.${i}.answer`) })
     i++
   }
   return items

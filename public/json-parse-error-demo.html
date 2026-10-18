@@ -1,0 +1,96 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>JSON.parse() error demo</title>
+<style>
+  :root { color-scheme: light; }
+  * { box-sizing: border-box; }
+  body {
+    margin: 0;
+    padding: 48px;
+    background: #ffffff;
+    color: #1f2328;
+    font-family: ui-monospace, SFMono-Regular, "SF Mono", Menlo, Consolas, monospace;
+  }
+  h1 { font-size: 18px; font-weight: 600; margin: 0 0 20px; color: #24292f; }
+  .code {
+    background: #f6f8fa;
+    border: 1px solid #d0d7de;
+    border-radius: 8px;
+    padding: 18px 20px;
+    font-size: 16px;
+    line-height: 1.7;
+    white-space: pre-wrap;
+    word-break: break-word;
+  }
+  .tok {
+    background: #cf222e;
+    color: #ffffff;
+    border-radius: 3px;
+    padding: 0 3px;
+  }
+  .err {
+    margin-top: 22px;
+    background: #fff5f5;
+    border: 1px solid #f85149;
+    border-left: 4px solid #f85149;
+    border-radius: 6px;
+    padding: 14px 18px;
+    color: #82071e;
+    font-size: 15px;
+  }
+  .err b { color: #cf222e; }
+  .pos { margin-top: 10px; color: #656d76; font-size: 13px; }
+</style>
+</head>
+<body>
+  <h1>What a JSON.parse error looks like</h1>
+  <div class="code" id="code"></div>
+  <div class="err" id="err"></div>
+  <div class="pos" id="pos"></div>
+  <script>
+    // Pick the sample from the URL: ?sample=single (default) | html | truncated
+    const SAMPLES = {
+      single: '{ "name": \'Alice\', "age": 30 }',
+      html: '<!DOCTYPE html><html><body>500 Internal Server Error</body></html>',
+      truncated: '{ "id": 1, "items": [1, 2, 3',
+    };
+    const params = new URLSearchParams(location.search);
+    const key = params.get('sample') || 'single';
+    const raw = SAMPLES[key] || SAMPLES.single;
+    const codeEl = document.getElementById('code');
+    try {
+      JSON.parse(raw);
+      codeEl.textContent = raw;
+    } catch (e) {
+      const m = e.message.match(/position (\d+)/);
+      const pos = m ? Number(m[1]) : -1;
+      let before, bad, after, posText;
+      if (pos >= 0) {
+        before = raw.slice(0, pos);
+        bad = raw.slice(pos, pos + 1);
+        after = raw.slice(pos + 1);
+        posText = 'Offending character highlighted above (position ' + pos + ')';
+      } else {
+        // Truncation errors carry no position: highlight the abrupt end.
+        before = raw.slice(0, -1);
+        bad = raw.slice(-1);
+        after = '';
+        posText = 'JSON ends abruptly here — missing closing braces / brackets';
+      }
+      codeEl.innerHTML =
+        escapeHtml(before) +
+        '<span class="tok">' + escapeHtml(bad) + '</span>' +
+        escapeHtml(after);
+      document.getElementById('err').innerHTML =
+        '<b>SyntaxError:</b> ' + escapeHtml(e.message);
+      document.getElementById('pos').textContent = posText;
+    }
+    function escapeHtml(s) {
+      return s.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
+    }
+  </script>
+</body>
+</html>

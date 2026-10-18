@@ -14,6 +14,7 @@ promo:
   btn: "Open JSON Editor"
 ---
 
+
 Small JSON examples are useful for learning the syntax, but they are not enough for testing real-world applications.
 
 A production JSON document may contain nested objects, arrays, optional fields, timestamps, image URLs, colors, metadata, user profiles, payment details, inventory records, and error information. Large JSON files can also expose performance problems in parsers, editors, viewers, search features, and virtualized rendering components.
@@ -39,10 +40,10 @@ The collection includes several common business scenarios:
 
 E-commerce order data includes customers, addresses, line items, product images, taxes, discounts, payment states, fulfillment states, and order metadata.
 
-- [Download Orders — 1 MB](https://resources.jsontoolbox.cc/orders-1mb.json)
-- [Download Orders — 5 MB](https://resources.jsontoolbox.cc/orders-5mb.json)
-- [Download Orders — 10 MB](https://resources.jsontoolbox.cc/orders-10mb.json)
-- [Download Orders — 20 MB](https://resources.jsontoolbox.cc/orders-20mb.json)
+- <a href="https://resources.jsontoolbox.cc/orders-1mb.json" download="orders-1mb.json">Download Orders — 1 MB</a>
+- <a href="https://resources.jsontoolbox.cc/orders-5mb.json" download="orders-5mb.json">Download Orders — 5 MB</a>
+- <a href="https://resources.jsontoolbox.cc/orders-10mb.json" download="orders-10mb.json">Download Orders — 10 MB</a>
+- <a href="https://resources.jsontoolbox.cc/orders-20mb.json" download="orders-20mb.json">Download Orders — 20 MB</a>
 
 Example structure:
 
@@ -96,9 +97,9 @@ This dataset is useful for testing expandable trees, nested arrays, totals, filt
 
 The users dataset contains realistic-looking user profiles with names, emails, avatars, addresses, companies, job titles, preferences, roles, and optional social links.
 
-- [Download Users — 1 MB](https://resources.jsontoolbox.cc/users-1mb.json)
-- [Download Users — 15 MB](https://resources.jsontoolbox.cc/users-15mb.json)
-- [Download Users — 40 MB](https://resources.jsontoolbox.cc/users-40mb.json)
+- <a href="https://resources.jsontoolbox.cc/users-1mb.json" download="users-1mb.json">Download Users — 1 MB</a>
+- <a href="https://resources.jsontoolbox.cc/users-15mb.json" download="users-15mb.json">Download Users — 15 MB</a>
+- <a href="https://resources.jsontoolbox.cc/users-40mb.json" download="users-40mb.json">Download Users — 40 MB</a>
 
 It can be used to test:
 
@@ -113,10 +114,10 @@ It can be used to test:
 
 The logs dataset simulates records produced by web applications and backend services.
 
-- [Download Logs — 1 MB](https://resources.jsontoolbox.cc/logs-1mb.json)
-- [Download Logs — 10 MB](https://resources.jsontoolbox.cc/logs-10mb.json)
-- [Download Logs — 30 MB](https://resources.jsontoolbox.cc/logs-30mb.json)
-- [Download Logs — 50 MB](https://resources.jsontoolbox.cc/logs-50mb.json)
+- <a href="https://resources.jsontoolbox.cc/logs-1mb.json" download="logs-1mb.json">Download Logs — 1 MB</a>
+- <a href="https://resources.jsontoolbox.cc/logs-10mb.json" download="logs-10mb.json">Download Logs — 10 MB</a>
+- <a href="https://resources.jsontoolbox.cc/logs-30mb.json" download="logs-30mb.json">Download Logs — 30 MB</a>
+- <a href="https://resources.jsontoolbox.cc/logs-50mb.json" download="logs-50mb.json">Download Logs — 50 MB</a>
 
 Log records may contain:
 
@@ -134,10 +135,10 @@ This makes the dataset suitable for testing log viewers, JSON search, syntax hig
 
 The issues dataset simulates project management and issue-tracking records.
 
-- [Download Issues — 1 MB](https://resources.jsontoolbox.cc/issues-1mb.json)
-- [Download Issues — 10 MB](https://resources.jsontoolbox.cc/issues-10mb.json)
-- [Download Issues — 20 MB](https://resources.jsontoolbox.cc/issues-20mb.json)
-- [Download Issues — 40 MB](https://resources.jsontoolbox.cc/issues-40mb.json)
+- <a href="https://resources.jsontoolbox.cc/issues-1mb.json" download="issues-1mb.json">Download Issues — 1 MB</a>
+- <a href="https://resources.jsontoolbox.cc/issues-10mb.json" download="issues-10mb.json">Download Issues — 10 MB</a>
+- <a href="https://resources.jsontoolbox.cc/issues-20mb.json" download="issues-20mb.json">Download Issues — 20 MB</a>
+- <a href="https://resources.jsontoolbox.cc/issues-40mb.json" download="issues-40mb.json">Download Issues — 40 MB</a>
 
 Each issue may include:
 
@@ -157,10 +158,10 @@ This scenario is particularly useful for testing inconsistent object shapes and 
 
 The payments dataset represents common payment-related objects such as charges, payment intents, customers, payment methods, and payouts.
 
-- [Download Payments — 1 MB](https://resources.jsontoolbox.cc/payments-1mb.json)
-- [Download Payments — 10 MB](https://resources.jsontoolbox.cc/payments-10mb.json)
-- [Download Payments — 20 MB](https://resources.jsontoolbox.cc/payments-20mb.json)
-- [Download Payments — 40 MB](https://resources.jsontoolbox.cc/payments-40mb.json)
+- <a href="https://resources.jsontoolbox.cc/payments-1mb.json" download="payments-1mb.json">Download Payments — 1 MB</a>
+- <a href="https://resources.jsontoolbox.cc/payments-10mb.json" download="payments-10mb.json">Download Payments — 10 MB</a>
+- <a href="https://resources.jsontoolbox.cc/payments-20mb.json" download="payments-20mb.json">Download Payments — 20 MB</a>
+- <a href="https://resources.jsontoolbox.cc/payments-40mb.json" download="payments-40mb.json">Download Payments — 40 MB</a>
 
 The generated records may include:
 
@@ -180,10 +181,10 @@ All payment records are synthetic. They are not connected to real payment accoun
 
 The products dataset contains catalog data with product images, options, variants, prices, inventory, tags, SEO metadata, and publication status.
 
-- [Download Products — 1 MB](https://resources.jsontoolbox.cc/products-1mb.json)
-- [Download Products — 10 MB](https://resources.jsontoolbox.cc/products-10mb.json)
-- [Download Products — 20 MB](https://resources.jsontoolbox.cc/products-20mb.json)
-- [Download Products — 40 MB](https://resources.jsontoolbox.cc/products-40mb.json)
+- <a href="https://resources.jsontoolbox.cc/products-1mb.json" download="products-1mb.json">Download Products — 1 MB</a>
+- <a href="https://resources.jsontoolbox.cc/products-10mb.json" download="products-10mb.json">Download Products — 10 MB</a>
+- <a href="https://resources.jsontoolbox.cc/products-20mb.json" download="products-20mb.json">Download Products — 20 MB</a>
+- <a href="https://resources.jsontoolbox.cc/products-40mb.json" download="products-40mb.json">Download Products — 40 MB</a>
 
 A product may contain:
 
@@ -213,6 +214,10 @@ Useful tools include:
 - [JSON Minifier](/tools/format/json-minifier) for compressing JSON by removing whitespace.
 - [JSON Compare](/tools/convert/json-compare) for highlighting differences between two JSON documents.
 - [JSON to TypeScript](/tools/convert/json-to-typescript) for generating TypeScript interfaces from JSON data.
+
+![JSON Editor tool interface](/blog/screenshots/en/free-realistic-json-test-data/01-json-editor.webp)
+
+*The JSON Editor tool.*
 
 JsonToolBox is designed for browser-based JSON workflows. Data can be processed locally in the browser without creating an account or uploading files to a remote service.
 

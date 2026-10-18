@@ -23,6 +23,7 @@ locales:
   - "zh"
 ---
 
+
 # JSON Validation Explained: Syntax Checks vs JSON Schema Validation
 
 A JSON string can be parsed without errors and still break your API.
@@ -220,6 +221,10 @@ A schema validator would report these errors:
 | `/debug` | Property `debug` is not allowed when `additionalProperties` is `false`. |
 
 You can test this interactively with the [JSON Schema Validator](/tools/format/json-schema-validator) — paste the payload and the schema side by side to see the errors.
+
+![JSON Schema Validator tool interface](/blog/screenshots/en/json-validation-syntax-vs-schema/01-json-schema-validator.webp)
+
+*The JSON Schema Validator tool.*
 
 ## Layer 3: Business Validation — Can Your Application Accept This Data?
 

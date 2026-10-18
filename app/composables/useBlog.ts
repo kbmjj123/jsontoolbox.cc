@@ -2,11 +2,17 @@
 export const useBlog = () => {
   const { locale } = useI18n()
 
-  // Helper: check if a post supports the current locale
+  // Helper: check if a post belongs to the current locale.
+  //
+  // The content path is the source of truth (`/en/blog/...` vs `/zh/blog/...`).
+  // The frontmatter `locales` field is NOT used here: it is a hand-written
+  // "which translations exist" list, and several posts declare both languages
+  // (`["en", "zh-CN"]` on the English file, `["zh-CN", "en"]` on the Chinese
+  // one). Reading it as a locale allow-list made both versions pass in either
+  // locale, so tool pages showed English and Chinese posts side by side.
   const matchesLocale = (post: any): boolean => {
-    const locales = post.locales || []
-    // Support both exact match ('en') and prefix match ('zh' matches 'zh-CN')
-    return locales.some((l: string) => l === locale.value || l.startsWith(locale.value + '-'))
+    const path: string = post?.path || ''
+    return path.startsWith(`/${locale.value}/blog/`)
   }
 
   // Helper: content paths carry a locale prefix (`/en/blog/what-is-json`),
