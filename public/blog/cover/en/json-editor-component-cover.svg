@@ -1,0 +1,189 @@
+<svg
+  width="1200"
+  height="630"
+  viewBox="0 0 1200 630"
+  xmlns="http://www.w3.org/2000/svg"
+  role="img"
+  aria-labelledby="svg-title svg-description"
+>
+  <title id="svg-title">JSON Editor Component: Vue, Web Component &amp; CDN</title>
+  <desc id="svg-description">
+    A JsonToolBox guide cover showing the open-source JSON editor as a Vue 3 component and a drop-in json-editor web component.
+  </desc>
+
+  <style>
+    :root {
+      --bg-color: #f8fafc;
+      --line-color: #e2e8f0;
+      --brace-color: #0284c7;
+      --title-color: #0f172a;
+      --subtitle-color: #475569;
+      --brand-color: #64748b;
+      --card-bg: #ffffff;
+      --card-border: #e2e8f0;
+      --key-color: #0369a1;
+      --value-color: #334155;
+      --punct-color: #fb7185;
+    }
+
+    :root.dark {
+      --bg-color: #0f172a;
+      --line-color: #1e293b;
+      --brace-color: #38bdf8;
+      --title-color: #e2e8f0;
+      --subtitle-color: #94a3b8;
+      --brand-color: #94a3b8;
+      --card-bg: #111c33;
+      --card-border: #1e293b;
+      --key-color: #7dd3fc;
+      --value-color: #cbd5e1;
+      --punct-color: #fda4af;
+    }
+  </style>
+
+  <!-- Background -->
+  <rect width="1200" height="630" fill="var(--bg-color)" />
+
+  <!-- Decorative code-like background lines -->
+  <g fill="var(--line-color)" opacity="0.6">
+    <rect x="72" y="56" width="186" height="14" rx="4" />
+    <rect x="72" y="86" width="138" height="14" rx="4" />
+    <rect x="72" y="116" width="170" height="14" rx="4" />
+
+    <rect x="942" y="56" width="182" height="14" rx="4" />
+    <rect x="988" y="86" width="138" height="14" rx="4" />
+    <rect x="956" y="116" width="168" height="14" rx="4" />
+  </g>
+
+  <!-- Big JSON braces -->
+  <text
+    x="74"
+    y="410"
+    font-family="ui-monospace, SFMono-Regular, Menlo, Consolas, monospace"
+    font-size="190"
+    font-weight="600"
+    fill="var(--brace-color)"
+    opacity="0.18"
+  >{</text>
+
+  <text
+    x="1000"
+    y="410"
+    font-family="ui-monospace, SFMono-Regular, Menlo, Consolas, monospace"
+    font-size="190"
+    font-weight="600"
+    fill="var(--brace-color)"
+    opacity="0.18"
+  >}</text>
+
+  <!-- Eyebrow -->
+  <text
+    x="600"
+    y="96"
+    text-anchor="middle"
+    font-family="ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, Segoe UI, Roboto, sans-serif"
+    font-size="22"
+    font-weight="700"
+    letter-spacing="6"
+    fill="#0284c7"
+  >OPEN SOURCE</text>
+
+  <!-- Title -->
+  <text
+    x="600"
+    y="174"
+    text-anchor="middle"
+    font-family="ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, Segoe UI, Roboto, sans-serif"
+    font-size="50"
+    font-weight="750"
+    fill="var(--title-color)"
+  >JSON Editor Component</text>
+
+  <!-- Subtitle -->
+  <text
+    x="600"
+    y="220"
+    text-anchor="middle"
+    font-family="ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, Segoe UI, Roboto, sans-serif"
+    font-size="25"
+    fill="var(--subtitle-color)"
+  >Vue 3 · Web Component · CDN script tag</text>
+
+  <!-- Vue 3 card -->
+  <g transform="translate(96 266)">
+    <rect x="0" y="0" width="464" height="232" rx="20" fill="var(--card-bg)" stroke="#93c5fd" stroke-width="2" />
+    <rect x="0" y="0" width="464" height="44" rx="20" fill="#eff6ff" />
+    <rect x="0" y="22" width="464" height="22" fill="#eff6ff" />
+    <circle cx="28" cy="22" r="6" fill="#3b82f6" />
+    <text
+      x="46"
+      y="28"
+      font-family="ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, Segoe UI, Roboto, sans-serif"
+      font-size="16"
+      font-weight="700"
+      fill="#1d4ed8"
+    >Vue 3</text>
+    <text
+      x="438"
+      y="28"
+      text-anchor="end"
+      font-family="ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, Segoe UI, Roboto, sans-serif"
+      font-size="13"
+      fill="#64748b"
+    >component</text>
+
+    <g font-family="ui-monospace, SFMono-Regular, Menlo, Consolas, monospace" font-size="17">
+      <text x="28" y="92"><tspan fill="var(--punct-color)">&lt;JsonEditor</tspan></text>
+      <text x="44" y="124"><tspan fill="var(--key-color)">v-model</tspan><tspan fill="var(--punct-color)">=</tspan><tspan fill="var(--value-color)">"value"</tspan></text>
+      <text x="44" y="152"><tspan fill="var(--key-color)">view</tspan><tspan fill="var(--punct-color)">=</tspan><tspan fill="var(--value-color)">"both"</tspan></text>
+      <text x="28" y="180"><tspan fill="var(--punct-color)">/&gt;</tspan></text>
+    </g>
+  </g>
+
+  <!-- Web Component card -->
+  <g transform="translate(640 266)">
+    <rect x="0" y="0" width="464" height="232" rx="20" fill="var(--card-bg)" stroke="#86efac" stroke-width="2" />
+    <rect x="0" y="0" width="464" height="44" rx="20" fill="#ecfdf5" />
+    <rect x="0" y="22" width="464" height="22" fill="#ecfdf5" />
+    <circle cx="28" cy="22" r="6" fill="#22c55e" />
+    <text
+      x="46"
+      y="28"
+      font-family="ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, Segoe UI, Roboto, sans-serif"
+      font-size="16"
+      font-weight="700"
+      fill="#15803d"
+    >Web Component</text>
+    <text
+      x="438"
+      y="28"
+      text-anchor="end"
+      font-family="ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, Segoe UI, Roboto, sans-serif"
+      font-size="13"
+      fill="#64748b"
+    >drop-in</text>
+
+    <g font-family="ui-monospace, SFMono-Regular, Menlo, Consolas, monospace" font-size="17">
+      <text x="28" y="92"><tspan fill="var(--punct-color)">&lt;json-editor</tspan></text>
+      <text x="44" y="124"><tspan fill="var(--key-color)">value</tspan><tspan fill="var(--punct-color)">=</tspan><tspan fill="var(--value-color)">'{</tspan><tspan fill="var(--punct-color)">"hello"</tspan><tspan fill="var(--value-color)">:</tspan><tspan fill="var(--punct-color)">"world"</tspan><tspan fill="var(--value-color)">}'</tspan></text>
+      <text x="44" y="152"><tspan fill="var(--key-color)">view</tspan><tspan fill="var(--punct-color)">=</tspan><tspan fill="var(--value-color)">"both"</tspan></text>
+      <text x="28" y="180"><tspan fill="var(--punct-color)">&gt;&lt;/json-editor&gt;</tspan></text>
+    </g>
+  </g>
+
+  <!-- Bottom strip -->
+  <g font-family="ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, Segoe UI, Roboto, sans-serif" font-size="17" font-weight="600">
+    <rect x="180" y="524" width="840" height="40" rx="20" fill="#f1f5f9" stroke="var(--card-border)" stroke-width="2" />
+    <text x="600" y="550" text-anchor="middle" fill="#475569">Drop into any app · zero wrapper code · 100% client-side</text>
+  </g>
+
+  <!-- Brand / site name -->
+  <text
+    x="600"
+    y="600"
+    text-anchor="middle"
+    font-family="ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, Segoe UI, Roboto, sans-serif"
+    font-size="18"
+    fill="var(--brand-color)"
+  >JsonToolBox · Developer Guide</text>
+</svg>
