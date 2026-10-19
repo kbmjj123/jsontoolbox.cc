@@ -1,0 +1,10 @@
+{
+  "id": "json-toolbox",
+  "name": "JSON Toolbox",
+  "version": "1.0.0",
+  "minAppVersion": "1.4.0",
+  "description": "View JSON as a collapsible rich tree with inline previews for images, colors, links, timestamps, JWT and more. Format, validate, convert to YAML or a table.",
+  "author": "kbmjj123",
+  "authorUrl": "https://jsontoolbox.cc",
+  "isDesktopOnly": false
+}
