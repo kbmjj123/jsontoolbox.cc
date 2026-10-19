@@ -1,6 +1,5 @@
 packages:
   - packages/*
-  - plugins/*
 
 ignoredBuiltDependencies:
   - '@parcel/watcher'
