@@ -163,6 +163,21 @@ pnpm build
 
 You can also run `pnpm generate` for a full prerender, or `pnpm preview` to serve a build locally.
 
+### Self-hosting with Docker
+
+Run your own instance without a Node toolchain — no build step required:
+
+```bash
+docker run -d --name jsontoolbox -p 127.0.0.1:8080:8080 ghcr.io/kbmjj123/jsontoolbox:latest
+```
+
+Then open <http://127.0.0.1:8080>.
+
+The image is a two-stage build: the prerendered static site is built once, then served by nginx (unprivileged, port 8080). All JSON processing still happens in the browser. Configuration, offline behaviour, upgrade/rollback and network exposure:
+[English](./docs/self-hosting/docker.en.md) · [简体中文](./docs/self-hosting/docker.zh-CN.md)
+
+> Image name is provisional (`ghcr.io/kbmjj123/jsontoolbox`) and arm64 has not been smoke-tested on real hardware yet.
+
 ### Notes
 
 - This is a fully client-side static site; no backend is required.

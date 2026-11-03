@@ -18,9 +18,17 @@ const config = reactive({
   lang: locale.value as string,
 })
 
+// 自托管实例生成指向自己的片段；官方站点上 origin 就是官网，输出与原来一致。
+const embedBase = computed(() =>
+  import.meta.client ? `${window.location.origin}/embed/json` : 'https://jsontoolbox.cc/embed/json',
+)
+const attributionBase = computed(() =>
+  import.meta.client ? `${window.location.origin}/tools/format/json-editor` : 'https://jsontoolbox.cc/tools/format/json-editor',
+)
+
 // ── Generated iframe URL ─────────────────────────────────────
 const embedUrl = computed(() => {
-  const base = 'https://jsontoolbox.cc/embed/json'
+  const base = embedBase.value
   const params = new URLSearchParams()
   params.set('mode', config.mode)
   params.set('theme', config.theme)
@@ -35,7 +43,7 @@ const embedUrl = computed(() => {
 
 // ── Attribution link ─────────────────────────────────────────
 const attributionUrl = computed(() => {
-  return 'https://jsontoolbox.cc/tools/format/json-editor'
+  return attributionBase.value
 })
 
 const attributionText = computed(() => {

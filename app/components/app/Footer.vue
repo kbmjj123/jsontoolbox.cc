@@ -13,7 +13,7 @@
 							class="h-8 w-8"
 						/>
 						<span class="text-2xl font-black tracking-tight text-surface-900 dark:text-surface-100">
-							<span class="text-primary-600 dark:text-primary-400">JSON</span>Toolbox
+							<span class="text-primary-600 dark:text-primary-400">{{ brandName }}</span>
 						</span>
 					</NuxtLinkLocale>
 
@@ -29,10 +29,10 @@
 						<span>All Systems Operational</span>
 					</div>
 
-					<!-- 换链组件 -->
-					<LinkExchange class="mb-2"/>
+					<!-- 换链组件：自托管默认关闭（避免第三方图片请求） -->
+					<LinkExchange v-if="flags.externalBadges" class="mb-2"/>
 
-					<div class="flex gap-3">
+					<div v-if="flags.branding" class="flex gap-3">
 						<a href="https://github.com/kbmjj123/jsontoolbox.cc" title="github" target="_blank"
 							class="flex h-11 w-11 items-center justify-center rounded-xl border border-surface-200 bg-white/50 text-surface-500 transition-all hover:border-primary-200 hover:bg-white hover:text-primary-600 hover:shadow-sm dark:border-surface-700/50 dark:bg-surface-900 dark:text-surface-400 dark:hover:border-surface-600 dark:hover:text-surface-100">
 							<Icon name="lucide:github" class="w-5 h-5" />
@@ -113,4 +113,6 @@
 
 <script setup lang="ts">
 const { allCategories } = useTools()
+const flags = useDeployFlags()
+const brandName = computed(() => flags.value.siteName || 'JSON Toolbox')
 </script>

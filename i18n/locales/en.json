@@ -285,7 +285,8 @@
     "pasteHint": "Press Ctrl+V to paste",
     "fullscreen": "Fullscreen",
     "exitFullscreen": "Exit fullscreen",
-    "escFullscreen": "Press ESC to exit fullscreen"
+    "escFullscreen": "Press ESC to exit fullscreen",
+    "loadUrlDisabled": "Loading from a URL is disabled on this self-hosted instance."
   },
   "toast": {
     "converted": "Converted successfully",
@@ -562,7 +563,8 @@
       },
       "error_submit": "Submission failed, please try again.",
       "error_network": "Network error. Please check your connection."
-    }
+    },
+    "disabled": "The contact form is disabled on this self-hosted instance."
   },
   "embed": {
     "heroTitle": "Embeddable JSON Tools for Docs & Teams",

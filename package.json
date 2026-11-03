@@ -17,7 +17,9 @@
     "generate": "nuxt generate --logLevel=info",
     "preview": "nuxt preview",
     "build:pkg": "pnpm --filter @kbmjj123/json-editor run build",
-    "postinstall": "nuxt prepare && pnpm run build:pkg"
+    "postinstall": "nuxt prepare && pnpm run build:pkg",
+    "test": "vitest run",
+    "smoke:selfhost": "node scripts/smoke-selfhost.mjs"
   },
   "dependencies": {
     "@codemirror/commands": "^6.8.1",
@@ -71,7 +73,8 @@
     "nuxt-open-fetch": "^0.13.2",
     "puppeteer-core": "^25.14.0",
     "sharp": "^0.35.5",
-    "tailwindcss": "^3.4.19"
+    "tailwindcss": "^3.4.19",
+    "vitest": "^2.1.8"
   },
   "pnpm": {
     "overrides": {

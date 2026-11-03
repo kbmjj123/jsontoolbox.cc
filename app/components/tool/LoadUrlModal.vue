@@ -25,6 +25,9 @@
             <p class="text-[11px] text-surface-400 dark:text-surface-500">
               {{ $t('system.loadUrlHint') }}
             </p>
+            <p v-if="!flags.remoteLoad" class="text-[11px] text-surface-400 dark:text-surface-500">
+              {{ $t('system.loadUrlDisabled') }}
+            </p>
           </div>
 
           <!-- Footer -->
@@ -59,6 +62,8 @@ const emit = defineEmits<{
   loaded: [text: string]
 }>()
 
+const { t } = useI18n()
+const flags = useDeployFlags()
 const inputRef = ref<HTMLInputElement>()
 const url = ref('')
 const error = ref('')
@@ -72,6 +77,14 @@ const fetchUrl = async () => {
 
   loading.value = true
   error.value = ''
+
+  // 自托管实例默认关闭从 URL 加载（避免第三方请求）。
+  if (!flags.value.remoteLoad) {
+    loading.value = false
+    error.value = t('system.loadUrlDisabled')
+    return
+  }
+
   try {
     const res = await fetch(target)
     if (!res.ok) throw new Error(`HTTP ${res.status}`)

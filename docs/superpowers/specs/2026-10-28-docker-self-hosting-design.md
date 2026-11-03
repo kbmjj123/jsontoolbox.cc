@@ -1,7 +1,7 @@
 # Docker 自托管发布能力 — 设计文档
 
 - **日期**：2026-10-28
-- **状态**：待实施（需求来源：`docs/channel/01-docker-self-hosting.md`，P0）
+- **状态**：已实现，冒烟未验证（需求来源：`docs/channel/01-docker-self-hosting.md`，P0）
 - **项目**：`jsontoolbox.cc`（Nuxt 4 静态站，31 个纯前端 JSON 工具）
 
 ---

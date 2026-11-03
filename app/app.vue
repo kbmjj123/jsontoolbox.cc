@@ -6,13 +6,21 @@
   const siteConfig = useSiteConfig()
   const { verificationMeta, customScripts } = useSiteSeo()
   const colorMode = useColorMode()
+  const flags = useDeployFlags()
+
+  // 官方分支：baseUrl 为空字符串 → 仍用 siteConfig.url，输出逐字不变。
+  // 自托管分支：运行期 JT_BASE_URL 优先；否则回落到构建期 site.url。
+  const canonicalBase = computed(() => {
+    return flags.value.baseUrl || (flags.value.selfHosted ? '' : siteConfig.url)
+  })
 
   // 动态生成 Canonical URL
   const canonicalUrl = computed(() => {
     const normalizedPath = route.path
       .replace(/^\/zh-hk(\/|$)/i, '/zh-HK$1')
       .replace(/^\/zh-tw(\/|$)/i, '/zh-TW$1')
-    return `${siteConfig.url}${normalizedPath}`.replace(/\/$/, '')
+    const base = canonicalBase.value || siteConfig.url
+    return `${base}${normalizedPath}`.replace(/\/$/, '')
   })
 
   // 动态 theme-color：跟随深色模式切换
@@ -37,6 +45,7 @@
       ...(i18nHead.value.meta || []),
       { name: 'theme-color', content: themeColor.value },
       { name: 'referrer', content: 'no-referrer-when-downgrade' },
+      ...(flags.value.selfHosted ? [{ name: 'robots', content: 'noindex, nofollow' }] : []),
       { name: 'directree-verify', content: 'directree-verify=61085737a812f3b1dd2a245d41727c05' }
     ],
     script: [...customScripts.value],

@@ -1,0 +1,35 @@
+# Build outputs & caches
+.output
+.nuxt
+.nitro
+.data
+.cache
+dist
+node_modules
+**/node_modules
+
+# VCS & local env
+.git
+.env
+.env.*
+!.env.example
+
+# Never ship SEO/credential material or anything the build does not read
+data
+reports
+docs
+libs
+scripts
+.mcp.json
+.playwright-mcp
+.vscode
+.idea
+.DS_Store
+*.log
+tsconfig.tsbuildinfo
+
+# Local-only leftovers
+public/1.html
+public/1.md
+wait-to-upload
+test_images

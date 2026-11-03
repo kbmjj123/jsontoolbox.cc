@@ -83,6 +83,7 @@ const config = useRuntimeConfig()
 const route = useRoute()
 const { t } = useI18n()
 const accessKey = config.public.formKey
+const flags = useDeployFlags()
 
 // 定义可选的主题 (建议在 i18n 文件里加上对应的翻译)
 const subjectOptions = ['general', 'bug', 'feature', 'business']
@@ -150,6 +151,13 @@ const getBrowserInfo = (): string => {
 const handleSubmit = async (e: Event) => {
   isSubmitting.value = true
   error.value = null
+
+  // 自托管实例默认关闭联系表单（避免向第三方端点提交数据）。
+  if (!flags.value.contactForm) {
+    isSubmitting.value = false
+    error.value = t('contact.disabled')
+    return
+  }
 
   try {
     // 使用 Web3Forms 的 API

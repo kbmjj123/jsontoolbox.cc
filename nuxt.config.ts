@@ -1,6 +1,17 @@
 // https://nuxt.com/docs/api/configuration/nuxt-config
 import { fileURLToPath } from 'url'
 
+// Self-hosted (Docker) build: NUXT_PUBLIC_SELF_HOSTED=1.
+// When unset, every value below resolves EXACTLY as before — the hosted site
+// must not change by a single byte.
+const selfHosted = process.env.NUXT_PUBLIC_SELF_HOSTED === '1'
+const envSiteUrl = process.env.NUXT_PUBLIC_SITE_URL
+const envSiteName = process.env.NUXT_PUBLIC_SITE_NAME || 'JSON Toolbox'
+// A self-hosted instance has no public URL at build time; use a neutral
+// placeholder the runtime config can override (JT_BASE_URL / window.origin).
+const selfHostedSiteUrl = envSiteUrl || 'http://localhost:8080'
+const resolveSiteUrl = selfHosted ? selfHostedSiteUrl : envSiteUrl || 'https://jsontoolbox.cc'
+
 export default defineNuxtConfig({
   ssr: true,
   nitro: {
@@ -68,50 +79,55 @@ export default defineNuxtConfig({
   // seo config
   site: {
     enabled: true,
-    url: process.env.NUXT_PUBLIC_SITE_URL || 'https://jsontoolbox.cc',
+    url: resolveSiteUrl,
     defaultLocale: 'en',
     trailingSlash: false,
   },
   app: {
     head: {
-      titleTemplate: '%s | JSON Toolbox',
+      titleTemplate: `%s | ${envSiteName}`,
     },
   },
   features: {
     inlineStyles: true
   },
   // Sitemap 配置
-  sitemap: {
-    autoLastmod: true,
-    discoverImages: false,
-    exclude: ['/404'],
-    sources: [
-      '/api/sitemap-urls',
-      '/api/sitemap-blog'
-    ],
-  },
+  sitemap: selfHosted
+    ? { enabled: false }
+    : {
+        autoLastmod: true,
+        discoverImages: false,
+        exclude: ['/404'],
+        sources: [
+          '/api/sitemap-urls',
+          '/api/sitemap-blog'
+        ],
+      },
   // Robots 配置
   robots: {
     groups: [
-      {
-        userAgent: '*',
-        allow: '*',
-      }
+      selfHosted
+        ? { userAgent: '*', disallow: ['/'] }
+        : { userAgent: '*', allow: '*' },
     ]
   },
-  ogImage: {
-    enabled: true,
-		fonts: [
-			'Noto+Sans+SC:400',
-			'Noto+Sans+SC:700',
-		]
-  },
+  ogImage: selfHosted
+    ? { enabled: false }
+    : {
+        enabled: true,
+        fonts: [
+          'Noto+Sans+SC:400',
+          'Noto+Sans+SC:700',
+        ]
+      },
   schemaOrg: {
     identity: 'Person'
   },
   runtimeConfig: {
     public: {
-      baseUrl: process.env.NUXT_PUBLIC_SITE_URL,
+      selfHosted,
+      siteName: envSiteName,
+      baseUrl: selfHosted ? selfHostedSiteUrl : envSiteUrl,
       umamiAnalyticsId: '',
       siteVerification: {
         google: '',
@@ -139,7 +155,7 @@ export default defineNuxtConfig({
     skipInspections: ['no-non-ascii-chars', 'no-uppercase-chars'],
   },
   i18n: {
-    baseUrl: process.env.NUXT_PUBLIC_SITE_URL,
+    baseUrl: selfHosted ? selfHostedSiteUrl : envSiteUrl,
     locales: [
       { code: 'en', name: 'English', file: 'en.json', language: 'en-US', flag: 'circle-flags:us' },
       { code: 'zh', name: '简体中文', file: 'zh-CN.json', language: 'zh-CN', flag: 'circle-flags:cn' },
@@ -163,6 +179,12 @@ export default defineNuxtConfig({
         dir: './app/assets/icons',
       },
     ],
+    // Self-hosted instances may run without internet. Default Nuxt Icon falls
+    // back to https://api.iconify.design at runtime (there is no /api/_nuxt_icon
+    // in a static build). Bundle the icons at build time instead.
+    ...(selfHosted
+      ? { clientBundle: { scan: true, includeCustomCollections: true, sizeLimitKb: 1024 } }
+      : {}),
   },
   colorMode: {
     classSuffix: '',

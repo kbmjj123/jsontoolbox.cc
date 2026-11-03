@@ -276,7 +276,8 @@
     "pasteHint": "请按 Ctrl+V 粘贴",
     "fullscreen": "全屏",
     "exitFullscreen": "退出全屏",
-    "escFullscreen": "按 ESC 退出全屏"
+    "escFullscreen": "按 ESC 退出全屏",
+    "loadUrlDisabled": "这个自托管实例已关闭从 URL 加载。"
   },
   "toast": {
     "converted": "转换成功",
@@ -553,7 +554,8 @@
       },
       "error_submit": "提交失败，请稍后重试。",
       "error_network": "网络错误，请检查连接后重试。"
-    }
+    },
+    "disabled": "这个自托管实例已关闭联系表单。"
   },
   "embed": {
     "heroTitle": "可嵌入的 JSON 工具",

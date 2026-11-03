@@ -256,8 +256,10 @@ const onExampleLoaded = () => { nextTick(() => formatJson()) }
 
 // ── Open full editor URL ─────────────────────────────────────
 const fullEditorUrl = computed(() => {
-  const base = 'https://jsontoolbox.cc/tools/format/json-editor'
-  return base
+  // 自托管实例指向自己的编辑器页；官方站点上 origin 即官网，输出不变。
+  return import.meta.client
+    ? `${window.location.origin}/tools/format/json-editor`
+    : 'https://jsontoolbox.cc/tools/format/json-editor'
 })
 </script>
 

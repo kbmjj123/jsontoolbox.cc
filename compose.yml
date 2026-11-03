@@ -1,0 +1,25 @@
+services:
+  jsontoolbox:
+    # Pin a version tag for reproducible deployments; use :latest only for a
+    # quick try-out. Final image name is pending confirmation.
+    image: ghcr.io/kbmjj123/jsontoolbox:latest
+    container_name: jsontoolbox
+    restart: unless-stopped
+    # Local machine: loopback only. To expose it on a controlled LAN, see
+    # docs/self-hosting/docker.zh-CN.md (do NOT use 0.0.0.0 on a public host).
+    ports:
+      - "127.0.0.1:8080:8080"
+    environment:
+      JT_SHOW_BRANDING: "1"
+      JT_SHOW_EXTERNAL_BADGES: "0"
+      JT_ENABLE_REMOTE_LOAD: "0"
+      JT_ENABLE_CONTACT_FORM: "0"
+      # JT_SITE_NAME: "Team JSON Tools"
+      # JT_BASE_URL: "https://json.internal:8443"
+    # Hardening options below are available but NOT enabled by default: they
+    # must pass the smoke test on your setup first.
+    # read_only: true
+    # tmpfs:
+    #   - /tmp
+    # cap_drop:
+    #   - ALL
