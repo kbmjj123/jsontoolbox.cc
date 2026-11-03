@@ -1,0 +1,71 @@
+<svg width="1200" height="630" viewBox="0 0 1200 630" xmlns="http://www.w3.org/2000/svg" role="img" aria-labelledby="title desc">
+  <title id="title">怎么打开 .json 文件：Windows、macOS、浏览器、Excel</title>
+  <desc id="desc">教程封面：.json 是纯文本，用编辑器、浏览器或在线工具查看、格式化、编辑。</desc>
+
+  <style>
+    :root {
+      --bg-color: #f8fafc;
+      --line-color: #e2e8f0;
+      --brace-color: #0284c7;
+      --title-color: #0f172a;
+      --subtitle-color: #475569;
+      --code-color: #0369a1;
+      --brand-color: #64748b;
+      --chip-bg: #e0f2fe;
+      --chip-text: #0369a1;
+    }
+    :root.dark {
+      --bg-color: #0f172a;
+      --line-color: #1e293b;
+      --brace-color: #38bdf8;
+      --title-color: #e2e8f0;
+      --subtitle-color: #94a3b8;
+      --code-color: #a5f3fc;
+      --brand-color: #64748b;
+      --chip-bg: #0c4a6e;
+      --chip-text: #bae6fd;
+    }
+  </style>
+
+  <rect width="1200" height="630" fill="var(--bg-color)"/>
+
+  <g fill="var(--line-color)" opacity="0.6">
+    <rect x="80" y="70" width="200" height="12" rx="4"/>
+    <rect x="80" y="98" width="140" height="12" rx="4"/>
+    <rect x="80" y="126" width="176" height="12" rx="4"/>
+
+    <rect x="920" y="70" width="200" height="12" rx="4"/>
+    <rect x="980" y="98" width="140" height="12" rx="4"/>
+    <rect x="944" y="126" width="176" height="12" rx="4"/>
+
+    <rect x="120" y="536" width="146" height="10" rx="4"/>
+    <rect x="120" y="560" width="98" height="10" rx="4"/>
+    <rect x="934" y="536" width="138" height="10" rx="4"/>
+    <rect x="974" y="560" width="98" height="10" rx="4"/>
+  </g>
+
+  <text x="96" y="352" font-family="ui-monospace, SFMono-Regular, Menlo, Consolas, monospace" font-size="170" fill="var(--brace-color)" opacity="0.22">{</text>
+  <text x="1012" y="352" font-family="ui-monospace, SFMono-Regular, Menlo, Consolas, monospace" font-size="170" fill="var(--brace-color)" opacity="0.22">}</text>
+
+  <text x="600" y="268" text-anchor="middle" font-family="ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif" font-size="54" font-weight="700" fill="var(--title-color)">怎么打开 .json 文件</text>
+
+  <text x="600" y="322" text-anchor="middle" font-family="ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif" font-size="24" fill="var(--subtitle-color)">Windows · macOS · 浏览器 · VS Code · 手机</text>
+
+  <g font-family="ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif" font-size="18">
+    <rect x="332" y="356" width="132" height="40" rx="20" fill="var(--chip-bg)"/>
+    <text x="398" y="382" text-anchor="middle" fill="var(--chip-text)">查看</text>
+
+    <rect x="486" y="356" width="132" height="40" rx="20" fill="var(--chip-bg)"/>
+    <text x="552" y="382" text-anchor="middle" fill="var(--chip-text)">格式化</text>
+
+    <rect x="640" y="356" width="132" height="40" rx="20" fill="var(--chip-bg)"/>
+    <text x="706" y="382" text-anchor="middle" fill="var(--chip-text)">校验</text>
+
+    <rect x="794" y="356" width="132" height="40" rx="20" fill="var(--chip-bg)"/>
+    <text x="860" y="382" text-anchor="middle" fill="var(--chip-text)">存回 .json</text>
+  </g>
+
+  <text x="600" y="452" text-anchor="middle" font-family="ui-monospace, SFMono-Regular, Menlo, Consolas, monospace" font-size="18" fill="var(--code-color)" opacity="0.95">{"name": "Ada", "active": true, "roles": ["admin", "editor"]}</text>
+
+  <text x="600" y="560" text-anchor="middle" font-family="ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif" font-size="18" fill="var(--brand-color)">JsonToolBox · 开发者指南</text>
+</svg>

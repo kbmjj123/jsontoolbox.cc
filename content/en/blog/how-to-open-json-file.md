@@ -19,6 +19,7 @@ promo:
   btn: "Open JSON Editor"
 locales:
   - "en"
+  - "zh-CN"
 ---
 
 # How to Open, View, and Edit a JSON File Online

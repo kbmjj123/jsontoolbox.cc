@@ -21,6 +21,7 @@
     "json-parse-stringify"
   ],
   "relatedPosts": [
+    "how-to-open-json-file",
     "what-is-json",
     "json-parse-error-debug",
     "json-best-practices"

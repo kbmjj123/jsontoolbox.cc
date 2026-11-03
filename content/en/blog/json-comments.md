@@ -19,6 +19,7 @@ promo:
   btn: "Open JSONC to JSON Converter"
 locales:
   - "en"
+  - "zh-CN"
 ---
 
 
