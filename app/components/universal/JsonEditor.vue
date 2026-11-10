@@ -52,60 +52,82 @@
       </div>
     </template>
 
-    <!-- Output panel (L3: package TreeView / TableView) -->
+    <!-- Output panel -->
     <template #second>
       <div class="h-full pl-3 flex flex-col overflow-hidden">
-        <div class="flex items-center justify-between gap-2 mb-2 shrink-0">
-          <span class="text-xs font-bold text-surface-600 dark:text-surface-400">{{ tool.ui?.label_output }}</span>
-          <div
-            v-if="props.showViewToggle"
-            class="inline-flex rounded-lg border border-surface-200 dark:border-surface-700 overflow-hidden"
-          >
-            <button
-              v-for="m in viewModes"
-              :key="m.value"
-              type="button"
-              @click="viewMode = m.value"
-              :class="viewMode === m.value
-                ? 'bg-primary-600 text-white dark:bg-primary-500'
-                : 'bg-white text-surface-600 hover:bg-surface-50 dark:bg-surface-800 dark:text-surface-400 dark:hover:bg-surface-700'"
-              class="px-2.5 py-1 text-[11px] font-bold transition-colors"
-            >{{ m.label }}</button>
-          </div>
-        </div>
-
-        <div class="je-host-tokens flex-1 overflow-hidden">
-          <!-- Text view: the formatted output, copy/download handled by the
-               site toolbar. -->
-          <pre
-            v-if="viewMode === 'text'"
-            class="h-full overflow-auto whitespace-pre-wrap break-words text-xs leading-relaxed text-surface-700 dark:text-surface-200 font-mono"
-          >{{ outputJson }}</pre>
-
-          <!-- Rich view: package TreeView (5-mode search, node editing,
-               undo/redo/batch, copy path — all from the package). Edits write
-               back to inputJson via update:text. -->
-          <TreeView
-            v-else-if="viewMode === 'rich'"
-            class="h-full"
-            :text="inputJson"
-            :locale="editorLocale"
-            :editable="!isSharedReadonly"
-            :indent="indent"
-            :masked="masked"
-            :sensitive-paths="[...sensitivePathSet]"
-            @update:text="inputJson = $event"
-            @select="onTreeSelect"
-          />
-
-          <!-- Table view: package TableView (sort / column toggle / CSV export). -->
-          <TableView
-            v-else
-            class="h-full"
-            :value="parsedData"
-            :locale="editorLocale"
-          />
-        </div>
+        <JsonOutputPanel
+          :label="tool.ui?.label_output"
+          :content="outputJson"
+          :error="error"
+          :friendly-message="friendlyMessage"
+          :view-mode="viewMode"
+          :parsed-data="parsedData"
+          :field-errors="fieldErrors"
+          :locate-target="locateTarget"
+          :show-copy="false"
+          :show-download="false"
+          :show-view-toggle="props.showViewToggle"
+          :enable-tree-search="true"
+          :empty-text="tool.ui?.placeholder_output || $t('system.emptyOutput')"
+          :masked="masked"
+          :sensitive-paths="sensitivePathSet"
+          @update:view-mode="viewMode = $event"
+          @update:masked="masked = $event"
+          @copy="copyOutput"
+          @download="downloadOutput"
+          @copy-path="copyPath"
+          @locate-error="onLocateFromPanel"
+          @load-example="loadDefaultExample"
+        >
+          <!-- Tree edit actions: anchored to the bottom of the rich/tree view.
+               Batch/undo/redo act on the tree, which lives here — so the
+               controls sit with their content. Gated by v-if on the slot so the
+               footer (and its border) never renders in text/table mode. -->
+          <template #footer v-if="viewMode === 'rich'">
+            <div class="flex flex-wrap items-center gap-2">
+              <button
+                @click="nodeEditing.batchMode.value = !nodeEditing.batchMode.value"
+                :class="nodeEditing.batchMode.value
+                  ? 'bg-primary-600 text-white dark:bg-primary-500'
+                  : 'bg-white text-surface-600 hover:bg-surface-50 dark:bg-surface-800 dark:text-surface-400 dark:hover:bg-surface-700'"
+                class="px-2.5 py-1 text-[11px] font-bold transition-colors"
+              >
+                {{ t('edit.batch') }}
+              </button>
+              <button
+                v-if="nodeEditing.canUndo.value"
+                @click="nodeEditing.undo()"
+                class="px-2.5 py-1 text-[11px] font-bold transition-colors bg-white text-surface-600 hover:bg-surface-50 dark:bg-surface-800 dark:text-surface-400 dark:hover:bg-surface-700"
+              >
+                {{ t('edit.undo') }}
+              </button>
+              <button
+                v-if="nodeEditing.canRedo.value"
+                @click="nodeEditing.redo()"
+                class="px-2.5 py-1 text-[11px] font-bold transition-colors bg-white text-surface-600 hover:bg-surface-50 dark:bg-surface-800 dark:text-surface-400 dark:hover:bg-surface-700"
+              >
+                {{ t('edit.redo') }}
+              </button>
+              <template v-if="nodeEditing.batchMode.value && nodeEditing.batchSelected.value.size > 0">
+                <span class="text-xs font-medium text-primary-700 dark:text-primary-300">
+                  {{ t('edit.selectedCount', { count: nodeEditing.batchSelected.value.size }) }}
+                </span>
+                <input
+                  v-model="batchValue"
+                  :placeholder="t('edit.newValue')"
+                  @keydown.enter="applyBatch"
+                  class="w-40 rounded border border-surface-200 bg-white px-2 py-1 text-xs dark:border-surface-700 dark:bg-surface-800 dark:text-surface-100 focus:outline-none focus:ring-1 focus:ring-primary-400"
+                />
+                <button @click="applyBatch" class="rounded bg-primary-600 px-2.5 py-1 text-[11px] font-medium text-white hover:bg-primary-700">
+                  {{ t('edit.apply') }}
+                </button>
+                <button @click="nodeEditing.clearBatch(); batchValue = ''" class="rounded border border-surface-200 px-2.5 py-1 text-[11px] dark:border-surface-700">
+                  {{ t('edit.clear') }}
+                </button>
+              </template>
+            </div>
+          </template>
+        </JsonOutputPanel>
       </div>
     </template>
 
@@ -227,15 +249,13 @@
 </template>
 
 <script setup lang="ts">
-import type { ParseError } from '~/types/jsonErrors'
+import type { ParseError, FieldError } from '~/types/jsonErrors'
 import type { LoadFailureReason } from '~/composables/useSharedPayloadLoader'
 // L1: JSON 纯函数统一走 @kbmjj123/json-editor/core，站点只在外层叠加自己的
 // 增强（jsonrepair 修复、友好错误文案）。包的 core 保持纯 JSON.parse 语义。
-// L3: 树 / 表格渲染层用包的 TreeView / TableView（P4）。站点只保留 L4 外壳
-// （分享 / 大文件 / 敏感遮罩 / 示例下拉 / Nuxt i18n），不再自带树组件。
 import { buildSourceMap, parseJson } from '@kbmjj123/json-editor/core'
-import { TreeView, TableView } from '@kbmjj123/json-editor/vue'
 import { useLargeFileGate } from '~/composables/useLargeFile'
+import { useNodeEditing } from '~/composables/useNodeEditing'
 import { useClipboardActions } from '~/composables/useClipboardActions'
 
 const props = withDefaults(defineProps<{
@@ -264,20 +284,43 @@ const error = ref('')
 const parseError = ref<ParseError | null>(null)
 const indent = ref<number | string>(2)
 
-// ── Clipboard workflow (F12): copy formatted / minified JSON. Node editing now
-// lives inside the package TreeView (P4), so "replace node from clipboard" is
-// no longer offered on the flagship tree. ──
-const clipboard = useClipboardActions({ inputJson, indent })
+// ── Node-level editing (P1-2): every tree edit writes back into `inputJson`,
+// so the formatted output, validation and share payload all stay in sync. ──
+const nodeEditing = useNodeEditing(inputJson, indent)
+provide('nodeEditing', nodeEditing)
 
+// Clipboard workflow (F12): one place for copy formatted / minified JSON and
+// "replace node from clipboard" (writing back through node editing).
+const clipboard = useClipboardActions({
+  inputJson,
+  indent,
+  writeNode: (path, value) => nodeEditing.setValue(path, value),
+})
+provide('clipboardActions', clipboard)
+
+const batchValue = ref('')
+function applyBatch() {
+  const paths = [...nodeEditing.batchSelected.value]
+  if (paths.length === 0) return
+  let value: unknown = batchValue.value
+  try { value = JSON.parse(batchValue.value) } catch { value = batchValue.value }
+  if (nodeEditing.batchSetValue(paths, value)) {
+    toast.success(t('toast.edited'))
+    batchValue.value = ''
+    nodeEditing.clearBatch()
+  }
+}
+watch(() => nodeEditing.batchMode.value, (on) => {
+  if (!on) {
+    nodeEditing.clearBatch()
+    batchValue.value = ''
+  }
+})
 const viewMode = ref<'text' | 'rich' | 'table'>(props.defaultViewMode)
-// View-mode toggle labels — wired to json-editor.json `ui.view_*`, both langs.
-const viewModes = computed(() => [
-  { value: 'text' as const, label: props.tool.ui?.view_text },
-  { value: 'rich' as const, label: props.tool.ui?.view_rich },
-  { value: 'table' as const, label: props.tool.ui?.view_table },
-])
 const fullscreen = ref(false)
 const lastAction = ref<'formatted' | 'minified' | 'validated'>('formatted')
+
+const fieldErrors = ref<FieldError[]>([]) // placeholder for future field-level validation
 
 // Masked display for sensitive fields
 const masked = ref(false)
@@ -319,15 +362,21 @@ watch(inputJson, useDebounceFn(() => {
   sourceMap.value = inputJson.value ? buildSourceMap(inputJson.value) : new Map()
 }, 500))
 
-// Tree node selection (package TreeView `select`): reveal the matching line in
-// the input editor via the site's source map. Replaces the old provide().
-function onTreeSelect(info: { path: string; jsonPath: string; value: unknown }) {
-  if (!info.path) return
-  const line = sourceMap.value.get(info.path)
+provide('onNodeInteraction', (path: string, type: 'click' | 'hover') => {
+  if (!path) {
+    inputEditorRef.value?.highlightLine(0, 'subtle')
+    return
+  }
+  const line = sourceMap.value.get(path)
   if (!line) return
-  inputEditorRef.value?.scrollToLine(line)
-  inputEditorRef.value?.highlightLine(line, 'flash')
-}
+
+  if (type === 'click') {
+    inputEditorRef.value?.scrollToLine(line)
+    inputEditorRef.value?.highlightLine(line, 'flash')
+  } else {
+    inputEditorRef.value?.highlightLine(line, 'subtle')
+  }
+})
 
 const { repairJson, getJsonError } = useJsonFixer()
 const share = useShareJson()
@@ -474,8 +523,15 @@ const parsedData = computed(() => {
   return parseJson(inputJson.value).data
 })
 
-const { t, locale } = useI18n()
-const editorLocale = computed(() => (locale.value === 'zh' ? 'zh' : 'en'))
+// Batch selections refer to paths in the previous document — drop them once it
+// changes so a stale path never writes into the wrong place.
+watch(parsedData, () => { nodeEditing.clearBatch() })
+
+const copyPath = async (path: string) => {
+  await copyToClipboard(path)
+}
+
+const { t } = useI18n()
 const toast = useToast()
 
 const formatJson = (silent = false) => {
@@ -591,6 +647,9 @@ const copyErrorMessage = async () => {
   setTimeout(() => { errorCopied.value = false }, 2000)
 }
 
+// Locate field error in tree — expand ancestors + scroll + flash
+const locateTarget = ref('')
+
 // In-place format: replace inputJson with formatted version
 const formatInputInPlace = () => {
   if (!inputJson.value.trim()) return
@@ -663,61 +722,3 @@ onMounted(async () => {
   }
 })
 </script>
-
-<style>
-/* TreeView / TableView 是独立挂载的（根节点 .je-pane / .je-table-wrap），
-   包内的 --je-* 令牌只定义在 .je-root 上，这里由宿主补齐明暗两套值。
-   配色与 CodeMirrorEditor.vue 的 .cm-host 保持一致，暗色跟随 html.dark。 */
-.je-host-tokens {
-  --je-bg: #ffffff;
-  --je-bg-alt: #f8fafc;
-  --je-bg-hover: rgba(148, 163, 184, 0.12);
-  --je-bg-active: rgba(148, 163, 184, 0.22);
-  --je-fg: #1e293b;
-  --je-fg-muted: #64748b;
-  --je-fg-faint: #94a3b8;
-  --je-border: rgba(148, 163, 184, 0.3);
-  --je-accent: #0052d4;
-  --je-key: #7c3aed;
-  --je-string: #16a34a;
-  --je-number: #d97706;
-  --je-boolean: #2563eb;
-  --je-null: #2563eb;
-  --je-punctuation: #64748b;
-  --je-danger: #dc2626;
-  --je-danger-bg: rgba(239, 68, 68, 0.08);
-  --je-danger-line: rgba(239, 68, 68, 0.16);
-  --je-warning: #d97706;
-  --je-mark: rgba(251, 191, 36, 0.35);
-  --je-added: rgba(34, 197, 94, 0.12);
-  --je-removed: rgba(239, 68, 68, 0.12);
-  --je-changed: rgba(234, 179, 8, 0.12);
-  --je-radius: 10px;
-  --je-font: 'Inter Variable', 'Inter', system-ui, -apple-system, BlinkMacSystemFont, sans-serif;
-  --je-font-mono: 'Menlo', 'Monaco', 'Consolas', 'Liberation Mono', 'Courier New', monospace;
-  --je-font-size: 13px;
-  --je-font-size-mono: 13px;
-}
-
-.dark .je-host-tokens {
-  --je-bg: #1e293b;
-  --je-bg-alt: #0f172a;
-  --je-bg-hover: rgba(148, 163, 184, 0.16);
-  --je-bg-active: rgba(148, 163, 184, 0.26);
-  --je-fg: #e2e8f0;
-  --je-fg-muted: #94a3b8;
-  --je-fg-faint: #64748b;
-  --je-border: rgba(148, 163, 184, 0.24);
-  --je-accent: #60a5fa;
-  --je-key: #c084fc;
-  --je-string: #4ade80;
-  --je-number: #fbbf24;
-  --je-boolean: #60a5fa;
-  --je-null: #60a5fa;
-  --je-punctuation: #94a3b8;
-  --je-danger: #f87171;
-  --je-danger-bg: rgba(248, 113, 113, 0.1);
-  --je-danger-line: rgba(248, 113, 113, 0.18);
-  --je-mark: rgba(251, 191, 36, 0.28);
-}
-</style>
