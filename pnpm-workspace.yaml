@@ -1,5 +1,6 @@
 packages:
   - packages/*
+  - extension
 
 ignoredBuiltDependencies:
   - '@parcel/watcher'

@@ -1,0 +1,22 @@
+{
+  "extName": {
+    "message": "JSON Toolbox",
+    "description": "Extension name shown in the Chrome Web Store and chrome://extensions."
+  },
+  "extDescription": {
+    "message": "Automatically beautify JSON pages with a raw/tree viewer. 100% client-side — your data never leaves your device.",
+    "description": "Store listing description."
+  },
+  "viewerTitle": {
+    "message": "JSON Toolbox viewer",
+    "description": "Title bar of the on-page JSON viewer."
+  },
+  "viewerRaw": {
+    "message": "Raw",
+    "description": "Toggle button label while in tree mode."
+  },
+  "viewerTree": {
+    "message": "Tree",
+    "description": "Toggle button label while in raw mode."
+  }
+}

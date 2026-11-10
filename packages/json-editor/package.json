@@ -42,17 +42,17 @@
       "require": "./dist/index.cjs"
     },
     "./core": {
-      "types": "./dist/core.d.ts",
+      "types": "./dist/core/index.d.ts",
       "import": "./dist/core.mjs",
       "require": "./dist/core.cjs"
     },
     "./vue": {
-      "types": "./dist/vue.d.ts",
+      "types": "./dist/vue/index.d.ts",
       "import": "./dist/vue.mjs",
       "require": "./dist/vue.cjs"
     },
     "./wc": {
-      "types": "./dist/wc.d.ts",
+      "types": "./dist/wc/index.d.ts",
       "import": "./dist/wc.mjs",
       "require": "./dist/wc.cjs"
     },

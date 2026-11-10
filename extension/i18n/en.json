@@ -1,0 +1,34 @@
+{
+  "app": {
+    "name": "JSON Toolbox",
+    "tagline": "JSON tools, right in your browser"
+  },
+  "action": {
+    "openSite": "Open full toolbox"
+  },
+  "privacy": {
+    "label": "All processing happens in your browser. Your JSON is never uploaded."
+  },
+  "config": {
+    "title": "Settings",
+    "auto": "Auto-beautify JSON pages",
+    "autoHint": "Automatically show a tree view when a whole page is a JSON document."
+  },
+  "tools": {
+    "title": "Popular tools",
+    "viewAll": "View all tools"
+  },
+  "options": {
+    "indent": "Indentation",
+    "theme": "Theme",
+    "locale": "Language",
+    "view": "Default view",
+    "themeAuto": "System",
+    "themeLight": "Light",
+    "themeDark": "Dark",
+    "viewBoth": "Editor + Tree",
+    "viewEditor": "Editor",
+    "viewTree": "Tree",
+    "viewTable": "Table"
+  }
+}

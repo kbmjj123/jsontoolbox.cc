@@ -1,0 +1,22 @@
+{
+  "extName": {
+    "message": "JSON Toolbox",
+    "description": "商店与扩展管理页里显示的名称。"
+  },
+  "extDescription": {
+    "message": "自动美化整个 JSON 页面，支持原始/树形切换。100% 本地处理，数据不会离开你的设备。",
+    "description": "商店描述。"
+  },
+  "viewerTitle": {
+    "message": "JSON Toolbox 查看器",
+    "description": "网页内 JSON 查看器的标题栏。"
+  },
+  "viewerRaw": {
+    "message": "原始",
+    "description": "树形模式下的切换按钮文字。"
+  },
+  "viewerTree": {
+    "message": "树形",
+    "description": "原始模式下的切换按钮文字。"
+  }
+}

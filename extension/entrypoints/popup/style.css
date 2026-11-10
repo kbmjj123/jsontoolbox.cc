@@ -1,0 +1,12 @@
+/* Popup-specific sizing. Chrome caps a popup at roughly 800×600. */
+html,
+body {
+  margin: 0;
+  padding: 0;
+}
+
+body {
+  width: 400px;
+  min-height: 560px;
+  overflow-x: hidden;
+}
