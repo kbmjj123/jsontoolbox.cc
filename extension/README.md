@@ -23,12 +23,16 @@ read-only JSON editor/tree view with:
 - live config: changing indentation / theme / language / default view in the
   popup applies immediately, without reloading the page
 
-Detection is deliberately conservative: only a page whose **entire body is one
-JSON `<pre>`** qualifies (Chrome wraps raw JSON in a single `<pre>`). Ordinary
-pages, blog posts and `<pre><code>` documentation samples are left completely
-untouched — **no overlay, no notification, no DOM changes**. Our own site
-(`jsontoolbox.cc`) is excluded, and documents over **2 MiB** are skipped
-silently.
+Detection is deliberately conservative: the body must contain **exactly one
+content-bearing element — a `<pre>` whose text is valid JSON**. Chrome renders a
+raw JSON response as `<pre>{...}</pre>` **plus** an empty
+`<div class="json-formatter-container">` (its own JSON-viewer mount point);
+empty childless elements and that container are ignored, and the viewer
+container is hidden while our overlay is up so "Raw" always shows plain text.
+Ordinary pages, blog posts and `<pre><code>` documentation samples have
+nav/article/footer siblings and are left completely untouched — **no overlay,
+no notification, no DOM changes**. Our own site (`jsontoolbox.cc`) is excluded,
+and documents over **2 MiB** are skipped silently.
 
 ### Popup
 
@@ -72,7 +76,7 @@ This package is a pnpm workspace member and depends on `@kbmjj123/json-editor`
 
 | Subpath | Used by |
 |---|---|
-| `/wc` (`registerJsonEditor`) | `entrypoints/content.ts` — the `<json-editor>` custom element owns its own shadow root with CSS inlined via `?inline` |
+| `/wc` (`defineJsonEditor`, `editorCss`) | `entrypoints/content.ts` — mounts the editor imperatively into a nested shadow root. **Do not switch back to `<json-editor>` / `registerJsonEditor()`**: extension content scripts run in an isolated world where `customElements` is `null`, so a custom element can never be registered (it throws `Cannot read properties of null (reading 'get')`). `editorCss` is the inlined stylesheet injected into that shadow root. |
 | `/core` (`analyzeJson`) | the detection predicate in `entrypoints/content.ts` |
 
 Design tokens are copied from the root `tailwind.config.js` into this package's
@@ -119,7 +123,12 @@ Load unpacked from `chrome://extensions` → Developer mode →
 - The install warning **does** mention all websites (expected, see above)
 - No `beautify.js`, `background.js` or `options.html` in the output
 
-**Real browser** (still required — nothing has been browser-tested yet):
+**Real browser** — automated end-to-end run with `puppeteer-core` + Chrome for
+Testing 148 against **both** `chrome-mv3` and `chrome-mv3-dev`: 12/12 checks
+pass (auto-mount, Vue editor actually rendered, raw/tree toggle both ways,
+ordinary page untouched, zero runtime errors). The manual checklist below is
+still worth running in your own Chrome profile, especially the locale and
+live-config items:
 
 1. Open a `.json` URL → tree overlay appears automatically, native `<pre>` hidden,
    floating toggle + `jsontoolbox.cc` link + always-visible top-right "JSON Toolbox ↗"

@@ -1,6 +1,5 @@
 import { browser } from 'wxt/browser'
 import { defineContentScript } from 'wxt/utils/define-content-script'
-import { registerJsonEditor } from '@kbmjj123/json-editor/wc'
 import { analyzeJson } from '@kbmjj123/json-editor/core'
 import { detectAndMount, type JsonDocument, type ViewerController, type ViewerLabels } from '../utils/detectAndMount'
 import { getOptions, STORAGE_KEY, type ExtensionOptions } from '../utils/options'
@@ -11,13 +10,21 @@ const IGNORED_TAGS = new Set([
 ])
 
 /**
+ * Chrome's built-in JSON viewer appends `<div class="json-formatter-container">`
+ * to <body> next to the raw <pre> (verified on Chrome 148). It is viewer chrome,
+ * not page content — ignore it whether empty or already rendering a tree.
+ */
+const VIEWER_CONTAINER_CLASS = 'json-formatter-container'
+
+/**
  * Chrome has no built-in JSON tree viewer: an `application/json` response is
  * wrapped into an HTML document with a SINGLE <pre> in <body>, and
  * `document.contentType` is `text/html` — so contentType is NOT used here.
  *
  * Returns null SILENTLY on every ordinary page: blogs, docs and GitHub have
- * nav/article/footer siblings, so the "exactly one meaningful body child"
- * check rejects them before any parsing or DOM mutation.
+ * nav/article/footer siblings, so the "exactly one CONTENT-bearing body child"
+ * check rejects them before any parsing or DOM mutation. Empty mount points and
+ * Chrome's own viewer container are ignored (see filter below).
  */
 function findWholePageJson(): JsonDocument | null {
   if (location.protocol !== 'http:' && location.protocol !== 'https:') return null
@@ -28,13 +35,18 @@ function findWholePageJson(): JsonDocument | null {
   const body = document.body
   if (!body) return null
 
-  const meaningful = Array.from(body.children).filter(
-    el => !IGNORED_TAGS.has(el.tagName.toLowerCase())
-  )
+  const meaningful = Array.from(body.children).filter((el): el is HTMLElement => {
+    if (!(el instanceof HTMLElement)) return false
+    if (IGNORED_TAGS.has(el.tagName.toLowerCase())) return false
+    if (el.classList.contains(VIEWER_CONTAINER_CLASS)) return false
+    // Empty, childless mount points injected by browsers / other viewers.
+    if (el.children.length === 0 && (el.textContent ?? '').trim() === '') return false
+    return true
+  })
   if (meaningful.length !== 1) return null
 
   const pre = meaningful[0]
-  if (!pre || pre.tagName.toLowerCase() !== 'pre' || !(pre instanceof HTMLElement)) return null
+  if (!pre || pre.tagName.toLowerCase() !== 'pre') return null
 
   // NOTE: do NOT reject `pre.children.length !== 0`. Chrome's own JSON viewer
   // renders `<body><pre id="json">…<span>…</span>…</pre></body>` — the <pre> has
@@ -92,7 +104,6 @@ export default defineContentScript({
       detected ??= findWholePageJson()
       if (!detected) return // silent on non-JSON pages
 
-      registerJsonEditor() // idempotent; only after detection passes
       controller = detectAndMount(detected, opts, viewerLabels())
     }
 

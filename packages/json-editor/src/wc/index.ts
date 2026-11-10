@@ -1,5 +1,5 @@
 export { defineJsonEditor } from './defineJsonEditor'
-export { JsonEditorElement, registerJsonEditor } from './element'
+export { JsonEditorElement, registerJsonEditor, editorCss } from './element'
 export type {
   JsonEditorInstance,
   JsonEditorOptions,

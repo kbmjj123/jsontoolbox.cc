@@ -1,9 +1,10 @@
-// On-page JSON viewer: mount a read-only <json-editor> over Chrome's raw JSON
-// <pre>, with an always-available 原始 / 树形 (raw / tree) toggle.
+// On-page JSON viewer: mount a read-only JSON editor over Chrome's raw <pre>,
+// with an always-available 原始 / 树形 (raw / tree) toggle.
 //
-// Both hosts use their OWN shadow roots so the host page's CSS cannot affect
-// the viewer and ours cannot leak out. The /wc element additionally owns a
-// nested shadow root with its CSS inlined, so no external stylesheet is needed.
+// Content scripts run in an isolated world where `customElements` is null, so
+// the <json-editor> custom element CANNOT be registered here. Use /wc's
+// imperative `defineJsonEditor()` instead and inject its inlined CSS ourselves.
+import { defineJsonEditor, editorCss, type JsonEditorInstance, type JsonEditorOptions } from '@kbmjj123/json-editor/wc'
 import { resolveDark, type ExtensionOptions } from './options'
 import { SITE_URL } from './constants'
 
@@ -54,9 +55,30 @@ export function detectAndMount(
   const savedDisplay = raw.style.getPropertyValue('display')
   const savedPriority = raw.style.getPropertyPriority('display')
 
-  function restoreRaw(): void {
+  // Chrome's built-in JSON viewer renders its own tree into this container and
+  // may hide the native <pre>. Take it over so "Raw" always shows plain text and
+  // our tree overlay never sits on top of a second tree.
+  const viewerContainer = document.querySelector<HTMLElement>('.json-formatter-container')
+  const savedViewerDisplay = viewerContainer?.style.getPropertyValue('display') ?? ''
+  const savedViewerPriority = viewerContainer?.style.getPropertyPriority('display') ?? ''
+
+  function restoreRawDisplay(): void {
     if (savedDisplay) raw.style.setProperty('display', savedDisplay, savedPriority)
     else raw.style.removeProperty('display')
+  }
+
+  function restoreViewerContainer(): void {
+    if (!viewerContainer) return
+    if (savedViewerDisplay) viewerContainer.style.setProperty('display', savedViewerDisplay, savedViewerPriority)
+    else viewerContainer.style.removeProperty('display')
+  }
+
+  function showRawText(): void {
+    restoreRawDisplay()
+    // Chrome's viewer may have hidden the <pre> itself (display:none); force the
+    // plain JSON text visible when the user switches to Raw.
+    if (raw.style.getPropertyValue('display') === 'none') raw.style.removeProperty('display')
+    viewerContainer?.style.setProperty('display', 'none', 'important')
   }
 
   // ── Full-screen overlay (tree mode) ──────────────────────────────────────
@@ -87,14 +109,34 @@ export function detectAndMount(
   const body = document.createElement('div')
   body.className = 'body'
 
-  // Created with createElement (not innerHTML) so the isolated world's
-  // customElements registry upgrades it. NO `attribution` attr — the single
-  // site link lives in the toolbar above.
-  const editor = document.createElement('json-editor')
-  editor.setAttribute('value', doc.text)
-  editor.setAttribute('height', '100%')
-  editor.setAttribute('readonly', '')
-  body.appendChild(editor)
+  // Nested shadow root: editor CSS stays isolated from our overlay CSS.
+  const editorMount = document.createElement('div')
+  editorMount.className = 'je-mount'
+  const editorRoot = editorMount.attachShadow({ mode: 'open' })
+  const editorStyle = document.createElement('style')
+  editorStyle.textContent = `:host { display: block; height: 100% }\n${editorCss}`
+  const editorInner = document.createElement('div')
+  editorInner.style.height = '100%'
+  editorRoot.append(editorStyle, editorInner)
+  body.appendChild(editorMount)
+
+  // `setOptions()` normalizes the FULL options object — always pass `value`,
+  // otherwise a config change would silently clear the editor.
+  function editorOptions(next: ExtensionOptions): JsonEditorOptions {
+    return {
+      value: doc.text,
+      view: next.view,
+      theme: resolveDark(next.theme) ? 'dark' : 'light',
+      locale: next.locale,
+      indent: next.indent,
+      readOnly: true,
+      height: '100%',
+      attribution: false,
+    }
+  }
+
+  // NO `attribution` — the single site link lives in the toolbar above.
+  const editor: JsonEditorInstance = defineJsonEditor(editorInner, editorOptions(options))
   wrap.append(bar, body)
   root.appendChild(wrap)
   document.body.appendChild(viewerHost)
@@ -133,7 +175,7 @@ export function detectAndMount(
         font: 600 12px system-ui, -apple-system, sans-serif }
       button:hover { border-color: #0052D4; color: #0052D4 }
       .body { flex: 1 1 auto; min-height: 0; overflow: hidden }
-      json-editor { display: block; height: 100% }
+      .je-mount { display: block; height: 100% }
     `
     toggleStyle.textContent = `
       :host { all: initial }
@@ -157,9 +199,10 @@ export function detectAndMount(
     mode = next
     if (next === 'tree') {
       raw.style.setProperty('display', 'none', 'important')
+      viewerContainer?.style.setProperty('display', 'none', 'important')
       viewerHost.style.setProperty('display', 'block', 'important')
     } else {
-      restoreRaw()
+      showRawText()
       viewerHost.style.setProperty('display', 'none', 'important')
     }
     updateLabels()
@@ -198,11 +241,7 @@ export function detectAndMount(
     if (destroyed) return
     currentLabels = nextLabels
     const dark = resolveDark(next.theme)
-    // attributeChangedCallback → setOptions() → reactive update inside /wc.
-    editor.setAttribute('theme', dark ? 'dark' : 'light')
-    editor.setAttribute('locale', next.locale)
-    editor.setAttribute('indent', String(next.indent))
-    editor.setAttribute('view', next.view)
+    editor.setOptions(editorOptions(next))
     title.textContent = nextLabels.title
     title.appendChild(siteLink)
     siteAnchor.textContent = nextLabels.site
@@ -213,10 +252,12 @@ export function detectAndMount(
   function destroy(): void {
     if (destroyed) return
     destroyed = true
-    restoreRaw()
+    editor.destroy() // no custom element → no disconnectedCallback to do this
+    restoreRawDisplay()
+    restoreViewerContainer()
     siteHost.remove()
     toggleHost.remove()
-    viewerHost.remove() // <json-editor> disconnectedCallback → app.unmount()
+    viewerHost.remove()
   }
 
   apply(options, labels)

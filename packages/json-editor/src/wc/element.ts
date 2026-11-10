@@ -10,6 +10,11 @@ import type { ThemeOption } from '../vue/useTheme'
 import type { JsonEditorView } from '../vue/JsonEditor.vue'
 import cssText from '../styles/index.css?inline'
 
+/** Inlined editor stylesheet, for consumers that mount `defineJsonEditor`
+ *  directly into their own shadow root (e.g. browser-extension content
+ *  scripts, where `customElements` is unavailable). */
+export const editorCss: string = cssText
+
 const OBSERVED = [
   'value',
   'view',
