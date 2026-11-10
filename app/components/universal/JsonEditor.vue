@@ -74,7 +74,7 @@
           </div>
         </div>
 
-        <div class="flex-1 overflow-hidden">
+        <div class="je-host-tokens flex-1 overflow-hidden">
           <!-- Text view: the formatted output, copy/download handled by the
                site toolbar. -->
           <pre
@@ -663,3 +663,61 @@ onMounted(async () => {
   }
 })
 </script>
+
+<style>
+/* TreeView / TableView 是独立挂载的（根节点 .je-pane / .je-table-wrap），
+   包内的 --je-* 令牌只定义在 .je-root 上，这里由宿主补齐明暗两套值。
+   配色与 CodeMirrorEditor.vue 的 .cm-host 保持一致，暗色跟随 html.dark。 */
+.je-host-tokens {
+  --je-bg: #ffffff;
+  --je-bg-alt: #f8fafc;
+  --je-bg-hover: rgba(148, 163, 184, 0.12);
+  --je-bg-active: rgba(148, 163, 184, 0.22);
+  --je-fg: #1e293b;
+  --je-fg-muted: #64748b;
+  --je-fg-faint: #94a3b8;
+  --je-border: rgba(148, 163, 184, 0.3);
+  --je-accent: #0052d4;
+  --je-key: #7c3aed;
+  --je-string: #16a34a;
+  --je-number: #d97706;
+  --je-boolean: #2563eb;
+  --je-null: #2563eb;
+  --je-punctuation: #64748b;
+  --je-danger: #dc2626;
+  --je-danger-bg: rgba(239, 68, 68, 0.08);
+  --je-danger-line: rgba(239, 68, 68, 0.16);
+  --je-warning: #d97706;
+  --je-mark: rgba(251, 191, 36, 0.35);
+  --je-added: rgba(34, 197, 94, 0.12);
+  --je-removed: rgba(239, 68, 68, 0.12);
+  --je-changed: rgba(234, 179, 8, 0.12);
+  --je-radius: 10px;
+  --je-font: 'Inter Variable', 'Inter', system-ui, -apple-system, BlinkMacSystemFont, sans-serif;
+  --je-font-mono: 'Menlo', 'Monaco', 'Consolas', 'Liberation Mono', 'Courier New', monospace;
+  --je-font-size: 13px;
+  --je-font-size-mono: 13px;
+}
+
+.dark .je-host-tokens {
+  --je-bg: #1e293b;
+  --je-bg-alt: #0f172a;
+  --je-bg-hover: rgba(148, 163, 184, 0.16);
+  --je-bg-active: rgba(148, 163, 184, 0.26);
+  --je-fg: #e2e8f0;
+  --je-fg-muted: #94a3b8;
+  --je-fg-faint: #64748b;
+  --je-border: rgba(148, 163, 184, 0.24);
+  --je-accent: #60a5fa;
+  --je-key: #c084fc;
+  --je-string: #4ade80;
+  --je-number: #fbbf24;
+  --je-boolean: #60a5fa;
+  --je-null: #60a5fa;
+  --je-punctuation: #94a3b8;
+  --je-danger: #f87171;
+  --je-danger-bg: rgba(248, 113, 113, 0.1);
+  --je-danger-line: rgba(248, 113, 113, 0.18);
+  --je-mark: rgba(251, 191, 36, 0.28);
+}
+</style>
