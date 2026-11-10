@@ -12,6 +12,8 @@ export const zh: Messages = {
   clear: '清空',
   expand_all: '全部展开',
   collapse_all: '全部折叠',
+  expand: '展开',
+  collapse: '收起',
   search: '搜索',
   search_placeholder: '搜索',
   search_mode: '搜索范围',

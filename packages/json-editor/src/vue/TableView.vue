@@ -65,6 +65,9 @@ import { computed, ref, watch } from 'vue'
 import { createTranslator, type Locale, type Messages } from '../i18n'
 import { toCsv } from '../core/csv'
 import { downloadFile } from './clipboard'
+import { injectJsonEditorStyles } from './injectStyles'
+
+injectJsonEditorStyles()
 
 interface Column {
   id: string

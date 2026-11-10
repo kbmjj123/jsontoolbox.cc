@@ -30,7 +30,6 @@ export interface ViewerController {
 }
 
 const ROOT_ID = 'jsontb-root'
-const TOGGLE_ID = 'jsontb-toggle'
 const SITELINK_ID = 'jsontb-sitelink'
 
 function fixedHost(id: string, extra: Record<string, string>): HTMLDivElement {
@@ -133,6 +132,13 @@ export function detectAndMount(
       height: '100%',
       attribution: false,
       imagePreview: next.imagePreview,
+      // Plugin-only UX: split-first, search in top bar, text expand toggles,
+      // bare image values, and synced split-pane scrolling.
+      allowedViews: ['both', 'table'],
+      searchInToolbar: true,
+      expandLabels: true,
+      bareImage: true,
+      linkScroll: true,
     }
   }
 
@@ -141,15 +147,6 @@ export function detectAndMount(
   wrap.append(bar, body)
   root.appendChild(wrap)
   document.body.appendChild(viewerHost)
-
-  // ── Always-visible floating toggle ──────────────────────────────────────
-  const toggleHost = fixedHost(TOGGLE_ID, { right: '16px', bottom: '16px' })
-  const toggleRoot = toggleHost.attachShadow({ mode: 'open' })
-  const toggleStyle = document.createElement('style')
-  const toggleBtn = document.createElement('button')
-  toggleBtn.type = 'button'
-  toggleRoot.append(toggleStyle, toggleBtn)
-  document.body.appendChild(toggleHost)
 
   let mode: 'tree' | 'raw' = 'tree'
   let currentLabels = labels
@@ -178,20 +175,11 @@ export function detectAndMount(
       .body { flex: 1 1 auto; min-height: 0; overflow: hidden }
       .je-mount { display: block; height: 100% }
     `
-    toggleStyle.textContent = `
-      :host { all: initial }
-      button { cursor: pointer; border: 1px solid ${line}; background: ${bg};
-        color: ${fg}; border-radius: 9999px; padding: 8px 14px;
-        box-shadow: 0 4px 14px rgba(0,0,0,.18);
-        font: 600 12px system-ui, -apple-system, sans-serif }
-      button:hover { border-color: #0052D4; color: #0052D4 }
-    `
   }
 
   function updateLabels(): void {
     // While in tree mode the button offers 「原始」; while in raw mode it offers 「树形」.
     const label = mode === 'tree' ? currentLabels.raw : currentLabels.tree
-    toggleBtn.textContent = label
     barToggle.textContent = label
   }
 
@@ -212,7 +200,6 @@ export function detectAndMount(
   function toggle(): void {
     setMode(mode === 'tree' ? 'raw' : 'tree')
   }
-  toggleBtn.addEventListener('click', toggle)
   barToggle.addEventListener('click', toggle)
 
   // ── Always-visible top-right site link (both raw and tree modes) ──────────
@@ -257,7 +244,6 @@ export function detectAndMount(
     restoreRawDisplay()
     restoreViewerContainer()
     siteHost.remove()
-    toggleHost.remove()
     viewerHost.remove()
   }
 

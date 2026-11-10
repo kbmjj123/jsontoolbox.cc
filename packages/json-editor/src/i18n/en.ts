@@ -13,6 +13,8 @@ export const en = {
   clear: 'Clear',
   expand_all: 'Expand all',
   collapse_all: 'Collapse all',
+  expand: 'Expand',
+  collapse: 'Collapse',
   search: 'Search',
   search_placeholder: 'Search',
   search_mode: 'Search in',

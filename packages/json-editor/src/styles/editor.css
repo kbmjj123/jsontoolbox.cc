@@ -293,6 +293,24 @@
   width: 16px;
 }
 
+.je-twisty-text {
+  flex: 0 0 auto;
+  margin-right: 4px;
+  border: 1px solid var(--je-border);
+  background: var(--je-bg-alt);
+  color: var(--je-fg-muted);
+  border-radius: 4px;
+  padding: 0 6px;
+  font-size: 11px;
+  line-height: 18px;
+  cursor: pointer;
+}
+
+.je-twisty-text:hover {
+  background: var(--je-bg-hover);
+  color: var(--je-fg);
+}
+
 .je-key {
   color: var(--je-key);
 }
@@ -747,6 +765,14 @@ button.je-status-loc.je-jump {
   object-fit: cover;
   border-radius: 4px;
   border: 1px solid var(--je-border);
+}
+
+.je-insight-img-bare {
+  width: auto;
+  height: auto;
+  max-width: 260px;
+  max-height: 260px;
+  object-fit: contain;
 }
 
 .je-insight-pre {

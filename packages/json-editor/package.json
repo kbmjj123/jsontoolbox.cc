@@ -1,6 +1,6 @@
 {
   "name": "@kbmjj123/json-editor",
-  "version": "0.1.0",
+  "version": "0.1.1",
   "description": "A JSON editor and read-only tree view for the web — CodeMirror 6 editing, live validation with error line locating, and a searchable tree. Vue 3 component, custom element, or plain script tag.",
   "type": "module",
   "license": "MIT",
@@ -33,7 +33,9 @@
   "jsdelivr": "./dist/json-editor.iife.js",
   "sideEffects": [
     "*.css",
-    "./dist/*.css"
+    "./dist/*.css",
+    "./dist/vue.mjs",
+    "./dist/vue.cjs"
   ],
   "exports": {
     ".": {

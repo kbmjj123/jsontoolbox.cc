@@ -59,7 +59,7 @@
         {{ tool.article.title }}
       </h2>
       <div v-html="tool.article.content" class="text-surface-700 dark:text-surface-300"></div>
-      <div v-if="articleLinks.length" class="mt-6 flex flex-wrap gap-4">
+      <!-- <div v-if="articleLinks.length" class="mt-6 flex flex-wrap gap-4">
         <NuxtLinkLocale
           v-for="link in articleLinks"
           :key="link.path"
@@ -68,7 +68,7 @@
         >
           {{ link.name }} →
         </NuxtLinkLocale>
-      </div>
+      </div> -->
     </section>
 
     <!-- Related Articles (component guards its own visibility) -->

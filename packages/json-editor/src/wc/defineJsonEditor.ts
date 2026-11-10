@@ -21,6 +21,16 @@ export interface JsonEditorOptions {
   attributionUrl?: string
   /** Show remote image previews (default ON). Local base64/data-URI images always render. */
   imagePreview?: boolean
+  /** Restrict which view-mode buttons are shown. Default: all four (editor/tree/both/table). */
+  allowedViews?: JsonEditorView[]
+  /** Render the search box in the top toolbar instead of inside the tree. */
+  searchInToolbar?: boolean
+  /** Render tree expand/collapse toggles as text instead of chevron icons. */
+  expandLabels?: boolean
+  /** Render image values as just the <img> with no surrounding label. */
+  bareImage?: boolean
+  /** Sync scroll between the editor and tree panes in Split view. */
+  linkScroll?: boolean
 }
 
 export interface JsonEditorErrorInfo {
@@ -74,6 +84,11 @@ function normalize(options: JsonEditorOptions) {
     attribution: options.attribution ?? false,
     attributionUrl: options.attributionUrl ?? 'https://jsontoolbox.cc',
     imagePreview: options.imagePreview ?? true,
+    allowedViews: options.allowedViews,
+    searchInToolbar: options.searchInToolbar ?? false,
+    expandLabels: options.expandLabels ?? false,
+    bareImage: options.bareImage ?? false,
+    linkScroll: options.linkScroll ?? false,
   }
 }
 
@@ -113,6 +128,11 @@ export function defineJsonEditor(el: HTMLElement, options: JsonEditorOptions = {
         attribution: state.attribution,
         attributionUrl: state.attributionUrl,
         imagePreview: state.imagePreview,
+        allowedViews: state.allowedViews,
+        searchInToolbar: state.searchInToolbar,
+        expandLabels: state.expandLabels,
+        bareImage: state.bareImage,
+        linkScroll: state.linkScroll,
         'onUpdate:modelValue': (value: string) => {
           state.value = value
           handlers.change.slice().forEach((fn) => fn(value))

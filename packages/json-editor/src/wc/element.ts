@@ -29,6 +29,15 @@ const OBSERVED = [
   'readonly',
 ] as const
 
+// SSR-safe base class. `HTMLElement` only exists in the browser; extending it
+// while the module is evaluated under Node (e.g. Nuxt SSR) would throw
+// "HTMLElement is not defined". On the server we fall back to a no-op base and
+// never register the element (see `registerJsonEditor` below).
+const HTMLElementBase: typeof HTMLElement =
+  typeof HTMLElement !== 'undefined'
+    ? HTMLElement
+    : (class {} as unknown as typeof HTMLElement)
+
 function readIndent(raw: string | null): IndentOption {
   if (raw === 'tab') return 'tab'
   return Number(raw) === 4 ? 4 : 2
@@ -42,7 +51,7 @@ function readIndent(raw: string | null): IndentOption {
  * into the light DOM instead (for example to theme it with page-level CSS
  * variables).
  */
-export class JsonEditorElement extends HTMLElement {
+export class JsonEditorElement extends HTMLElementBase {
   static get observedAttributes(): string[] {
     return [...OBSERVED]
   }

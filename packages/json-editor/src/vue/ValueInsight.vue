@@ -18,35 +18,55 @@
     </template>
 
     <template v-else-if="insight.kind === 'base64'">
-      <span class="je-insight-val">{{ t('insight_base64') }} · {{ t('bytes', { n: insight.bytes }) }}</span>
       <img
-        v-if="insight.image && insight.dataUrl"
-        class="je-insight-img"
+        v-if="insight.image && insight.dataUrl && bareImage"
+        class="je-insight-img je-insight-img-bare"
         :src="insight.dataUrl"
         alt=""
         @click="zoom(insight.dataUrl ?? '')"
       />
-      <span v-else class="je-insight-sub">{{ truncate(insight.text || '') }}</span>
+      <template v-else>
+        <span class="je-insight-val">{{ t('insight_base64') }} · {{ t('bytes', { n: insight.bytes }) }}</span>
+        <img
+          v-if="insight.image && insight.dataUrl"
+          class="je-insight-img"
+          :src="insight.dataUrl"
+          alt=""
+          @click="zoom(insight.dataUrl ?? '')"
+        />
+        <span v-else class="je-insight-sub">{{ truncate(insight.text || '') }}</span>
+      </template>
     </template>
 
     <template v-else-if="insight.kind === 'image'">
-      <span class="je-insight-val">{{ t('insight_image') }}</span>
       <img
-        v-if="imagePreview && !imageFailed"
-        class="je-insight-img"
+        v-if="bareImage"
+        class="je-insight-img je-insight-img-bare"
         :src="insight.url"
         alt=""
         loading="lazy"
         @error="imageFailed = true"
         @click="zoom(insight.url)"
       />
-      <a
-        v-else
-        :href="insight.url"
-        target="_blank"
-        rel="noopener noreferrer"
-        class="je-insight-link"
-      >{{ truncate(insight.url) }}</a>
+      <template v-else>
+        <span class="je-insight-val">{{ t('insight_image') }}</span>
+        <img
+          v-if="imagePreview && !imageFailed"
+          class="je-insight-img"
+          :src="insight.url"
+          alt=""
+          loading="lazy"
+          @error="imageFailed = true"
+          @click="zoom(insight.url)"
+        />
+        <a
+          v-else
+          :href="insight.url"
+          target="_blank"
+          rel="noopener noreferrer"
+          class="je-insight-link"
+        >{{ truncate(insight.url) }}</a>
+      </template>
     </template>
 
     <template v-else-if="insight.kind === 'audio' || insight.kind === 'video' || insight.kind === 'pdf'">
@@ -94,8 +114,10 @@ const props = withDefaults(
     messages?: Partial<Messages>
     /** Show remote image/URL previews (default ON). Local base64/data-URI images always render. */
     imagePreview?: boolean
+    /** Render image values as just the <img> with no surrounding label (default OFF). */
+    bareImage?: boolean
   }>(),
-  { locale: 'en', imagePreview: true }
+  { locale: 'en', imagePreview: true, bareImage: false }
 )
 
 const t = computed(() => createTranslator(props.locale, props.messages))

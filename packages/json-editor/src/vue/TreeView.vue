@@ -1,16 +1,23 @@
 <template>
   <div class="je-pane">
     <div class="je-toolbar">
-      <span class="je-search">
+      <span v-if="props.searchQuery === undefined" class="je-search">
         <span v-html="icons.search" />
         <input
-          v-model="query"
+          :value="internalQuery"
           type="search"
           :placeholder="t('search_placeholder')"
           :aria-label="t('search')"
+          @input="onSearchInput"
         />
       </span>
-      <select v-model="mode" class="je-mode" :aria-label="t('search_mode')">
+      <select
+        v-if="props.searchQuery === undefined"
+        :value="internalMode"
+        class="je-mode"
+        :aria-label="t('search_mode')"
+        @change="onSearchModeChange"
+      >
         <option value="key">{{ t('mode_key') }}</option>
         <option value="value">{{ t('mode_value') }}</option>
         <option value="path">{{ t('mode_path') }}</option>
@@ -103,12 +110,12 @@
         <button
           v-if="node.children.length"
           type="button"
-          class="je-twisty"
-          :class="{ 'is-open': expanded.has(node.path) }"
+          :class="[expandLabels ? 'je-twisty-text' : 'je-twisty', { 'is-open': expanded.has(node.path) }]"
           :aria-label="expanded.has(node.path) ? t('collapse_all') : t('expand_all')"
           @click.stop="toggle(node.path)"
         >
-          <span v-html="icons.chevronRight" />
+          <span v-if="expandLabels">{{ expanded.has(node.path) ? t('collapse') : t('expand') }}</span>
+          <span v-else v-html="icons.chevronRight" />
         </button>
         <span v-else class="je-twisty-placeholder" />
 
@@ -157,6 +164,7 @@
             :locale="locale"
             :messages="messages"
             :image-preview="imagePreview"
+            :bare-image="bareImage"
           />
         </template>
 
@@ -289,6 +297,9 @@ import { useJsonEditorOptions } from './options'
 import { useNodeEditing, coerceScalarInput, type JsonPrimitiveType } from './useNodeEditing'
 import ValueInsight from './ValueInsight.vue'
 import '../styles/index.css'
+import { injectJsonEditorStyles } from './injectStyles'
+
+injectJsonEditorStyles()
 
 const props = withDefaults(
   defineProps<{
@@ -313,6 +324,14 @@ const props = withDefaults(
     sensitivePaths?: string[]
     /** Show remote image previews (default ON). Local base64/data-URI images always render. */
     imagePreview?: boolean
+    /** Controlled search query. When provided, the host renders the search box and owns this value. */
+    searchQuery?: string
+    /** Controlled search mode. */
+    searchMode?: TreeSearchMode
+    /** Render node expand/collapse toggles as text ("Expand"/"Collapse") instead of chevron icons. */
+    expandLabels?: boolean
+    /** Render image values as just the <img> with no surrounding label. */
+    bareImage?: boolean
   }>(),
   {
     value: undefined,
@@ -407,8 +426,19 @@ watch(
   { deep: true }
 )
 
-const query = ref('')
-const mode = ref<TreeSearchMode>('key')
+const internalQuery = ref('')
+const internalMode = ref<TreeSearchMode>('key')
+// When the host passes `searchQuery`/`searchMode` (controlled mode), those win;
+// otherwise the tree keeps its own local search state (the default, site behavior).
+const query = computed(() => props.searchQuery ?? internalQuery.value)
+const mode = computed(() => props.searchMode ?? internalMode.value)
+
+function onSearchInput(e: Event) {
+  internalQuery.value = (e.target as HTMLInputElement).value
+}
+function onSearchModeChange(e: Event) {
+  internalMode.value = (e.target as HTMLSelectElement).value as TreeSearchMode
+}
 
 const result = computed(() =>
   root.value

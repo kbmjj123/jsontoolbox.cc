@@ -41,7 +41,16 @@ const VIEWER_CONTAINER_CLASS = 'json-formatter-container'
  * Chrome's own viewer container are ignored (see filter below).
  */
 function findWholePageJson(): JsonDocument | null {
-  if (location.protocol !== 'http:' && location.protocol !== 'https:')
+  // http/https are the common case; `file:` lets the viewer overlay local
+  // `*.json` files opened directly in Chrome (Chrome renders them as the same
+  // single-<pre> native JSON view). Extension injection on file:// still
+  // requires the user to enable "Allow access to file URLs" on the extension
+  // card — that step is a Chrome safeguard and cannot be coded around.
+  if (
+    location.protocol !== 'http:' &&
+    location.protocol !== 'https:' &&
+    location.protocol !== 'file:'
+  )
     return reject(`protocol=${location.protocol}`)
 
   const host = location.hostname
@@ -102,7 +111,7 @@ function viewerLabels(): ViewerLabels {
 }
 
 export default defineContentScript({
-  matches: ['<all_urls>'],
+  matches: ['<all_urls>', 'file:///*'],
   runAt: 'document_idle',
   async main(ctx) {
     diag('content script alive', { href: location.href, contentType: document.contentType })

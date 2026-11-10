@@ -4,7 +4,74 @@
     :class="{ 'je-dark': isDark, 'je-flat': !bordered }"
     :style="{ height: resolvedHeight }"
   >
-    <div class="je-toolbar">
+    <template v-if="searchInToolbar">
+      <div class="je-toolbar je-toolbar-top">
+        <div class="je-mode-group">
+          <button
+            v-for="option in allowedViewOptions"
+            :key="option"
+            type="button"
+            class="je-btn"
+            :class="{ 'je-btn-active': view === option }"
+            @click="view = option"
+          >{{ t(option) }}</button>
+        </div>
+        <span class="je-toolbar-spacer" />
+        <span class="je-search">
+          <span v-html="icons.search" />
+          <input
+            v-model="searchQuery"
+            type="search"
+            :placeholder="t('search_placeholder')"
+            :aria-label="t('search')"
+          />
+        </span>
+        <select v-model="searchMode" class="je-mode" :aria-label="t('search_mode')">
+          <option value="key">{{ t('mode_key') }}</option>
+          <option value="value">{{ t('mode_value') }}</option>
+          <option value="path">{{ t('mode_path') }}</option>
+          <option value="all">{{ t('mode_all') }}</option>
+          <option value="jsonpath">{{ t('mode_jsonpath') }}</option>
+        </select>
+      </div>
+
+      <div class="je-toolbar je-toolbar-actions">
+        <button
+          type="button"
+          class="je-btn"
+          :disabled="readOnly || !hasContent"
+          :title="t('format')"
+          @click="onFormat"
+        >
+          <span v-html="icons.alignLeft" />
+          <span>{{ t('format') }}</span>
+        </button>
+        <button
+          type="button"
+          class="je-btn"
+          :disabled="readOnly || !hasContent"
+          :title="t('minify')"
+          @click="onMinify"
+        >
+          <span v-html="icons.minimize" />
+          <span>{{ t('minify') }}</span>
+        </button>
+        <button type="button" class="je-btn" :title="t('copy')" @click="onCopy">
+          <span v-html="copied ? icons.check : icons.copy" />
+          <span>{{ copied ? t('copied') : t('copy') }}</span>
+        </button>
+
+        <span class="je-sep" />
+
+        <select v-model="indentValue" class="je-select" :aria-label="t('format')">
+          <option :value="2">2</option>
+          <option :value="4">4</option>
+          <option value="tab">Tab</option>
+        </select>
+      </div>
+    </template>
+
+    <div v-else class="je-toolbar">
       <button
         type="button"
         class="je-btn"
@@ -42,18 +109,18 @@
 
       <div class="je-sep" />
       <button
-        v-for="option in viewOptions"
+        v-for="option in allowedViewOptions"
         :key="option"
         type="button"
         class="je-btn"
         :class="{ 'je-btn-active': view === option }"
         @click="view = option"
       >
-        {{ t(option === 'editor' ? 'editor' : option === 'tree' ? 'tree' : option === 'table' ? 'table' : 'both') }}
+        {{ t(option) }}
       </button>
     </div>
 
-    <div class="je-body">
+    <div class="je-body" ref="bodyRef">
       <CodeEditor
         v-if="view === 'editor' || view === 'both'"
         ref="editorRef"
@@ -78,6 +145,10 @@
         :editable="!readOnly"
         :on-notify="onNotify"
         :image-preview="imagePreview"
+        :expand-labels="expandLabels"
+        :bare-image="bareImage"
+        :search-query="searchInToolbar ? searchQuery : undefined"
+        :search-mode="searchInToolbar ? searchMode : undefined"
         @select="onSelect"
       />
       <TableView
@@ -113,7 +184,7 @@
 </template>
 
 <script setup lang="ts">
-import { computed, nextTick, ref, watch } from 'vue'
+import { computed, nextTick, onBeforeUnmount, onMounted, ref, watch } from 'vue'
 import CodeEditor from './CodeEditor.vue'
 import TreeView from './TreeView.vue'
 import TableView from './TableView.vue'
@@ -124,7 +195,11 @@ import { copyText } from './clipboard'
 import { createTranslator, type Locale, type Messages } from '../i18n'
 import { analyzeJson, parseJson, type ErrorLocation } from '../core/parse'
 import type { IndentOption } from '../core/format'
+import type { TreeSearchMode } from '../core/tree'
 import '../styles/index.css'
+import { injectJsonEditorStyles } from './injectStyles'
+
+injectJsonEditorStyles()
 
 export type JsonEditorView = 'editor' | 'tree' | 'both' | 'table'
 
@@ -153,8 +228,16 @@ const props = withDefaults(
     onNotify?: (message: string, kind: 'error' | 'success') => void
     /** Show remote image previews (default ON). Local base64/data-URI images always render. */
     imagePreview?: boolean
+    /** Restrict which view-mode buttons are shown. Default: all four (editor/tree/both/table). */
+    allowedViews?: JsonEditorView[]
+    /** Render the search box in the top toolbar (next to the mode buttons) instead of inside the tree. */
+    searchInToolbar?: boolean
+    /** Render tree expand/collapse toggles as text ("Expand"/"Collapse") instead of chevron icons. */
+    expandLabels?: boolean
+    /** Sync the scroll position between the editor and tree panes in Split view. */
+    linkScroll?: boolean
   }>(),
-  { bordered: true, showStatus: true }
+  { bordered: true, showStatus: true, searchInToolbar: false, expandLabels: false, linkScroll: false }
 )
 
 // Resolution order for every optional prop: explicit prop → plugin defaults
@@ -208,7 +291,55 @@ const { isDark } = useTheme(resolvedTheme)
 const t = computed(() => createTranslator(resolvedLocale.value, resolvedMessages.value))
 
 const editorRef = ref<InstanceType<typeof CodeEditor> | null>(null)
-const viewOptions: JsonEditorView[] = ['editor', 'tree', 'both', 'table']
+const bodyRef = ref<HTMLElement | null>(null)
+const allowedViewOptions = computed<JsonEditorView[]>(
+  () => props.allowedViews ?? ['editor', 'tree', 'both', 'table']
+)
+const searchQuery = ref('')
+const searchMode = ref<TreeSearchMode>('key')
+
+// ── Split-view scroll sync (opt-in via `linkScroll`) ──────────────────────────
+let scrollCleanup: (() => void) | null = null
+function syncScroll(src: HTMLElement, dst: HTMLElement) {
+  const sMax = src.scrollHeight - src.clientHeight
+  const dMax = dst.scrollHeight - dst.clientHeight
+  if (sMax <= 0 || dMax <= 0) return
+  dst.scrollTop = (src.scrollTop / sMax) * dMax
+}
+function setupScrollSync() {
+  scrollCleanup?.()
+  scrollCleanup = null
+  if (!props.linkScroll || view.value !== 'both') return
+  nextTick(() => {
+    const body = bodyRef.value
+    if (!body) return
+    const left = body.querySelector<HTMLElement>('.je-editor .cm-scroller')
+    const right = body.querySelector<HTMLElement>('.je-tree')
+    if (!left || !right) return
+    let syncing = false
+    const onLeft = () => {
+      if (syncing) return
+      syncing = true
+      syncScroll(left, right)
+      requestAnimationFrame(() => (syncing = false))
+    }
+    const onRight = () => {
+      if (syncing) return
+      syncing = true
+      syncScroll(right, left)
+      requestAnimationFrame(() => (syncing = false))
+    }
+    left.addEventListener('scroll', onLeft)
+    right.addEventListener('scroll', onRight)
+    scrollCleanup = () => {
+      left.removeEventListener('scroll', onLeft)
+      right.removeEventListener('scroll', onRight)
+    }
+  })
+}
+watch([view, () => props.linkScroll], setupScrollSync)
+onMounted(setupScrollSync)
+onBeforeUnmount(() => scrollCleanup?.())
 
 const hasContent = computed(() => text.value.trim().length > 0)
 const errorInfo = computed(() => {
