@@ -8,11 +8,10 @@
   "homepage": "https://jsontoolbox.cc",
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/kbmjj123/jsontoolbox.cc.git",
-    "directory": "packages/json-editor"
+    "url": "git+https://github.com/kbmjj123/json-editor.git"
   },
   "bugs": {
-    "url": "https://github.com/kbmjj123/jsontoolbox.cc/issues"
+    "url": "https://github.com/kbmjj123/json-editor/issues"
   },
   "keywords": [
     "json",

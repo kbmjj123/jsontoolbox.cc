@@ -3,6 +3,8 @@
 A WXT + Vue 3 companion extension for [jsontoolbox.cc](https://jsontoolbox.cc).
 Chrome / Edge Manifest V3 only in v1.
 
+Source: [github.com/kbmjj123/json-browser-plugins](https://github.com/kbmjj123/json-browser-plugins).
+
 ## What it does
 
 The extension has **one job**: automatically turn raw JSON pages into a readable
@@ -80,8 +82,10 @@ third-party fetch.
 
 ## Code reuse
 
-This package is a pnpm workspace member and depends on `@kbmjj123/json-editor`
-(`workspace:*`):
+This package consumes the published `@kbmjj123/json-editor` from npm
+(`^0.1.1`), the same version the main site uses. Changing the library's source
+now requires publishing a new version and bumping this dependency — there is no
+local `dist/` rebuild step any more:
 
 | Subpath | Used by |
 |---|---|
@@ -102,23 +106,22 @@ Two locale systems, both using `zh` (never `zh-CN`):
 
 ## Development
 
-From the repository root:
+This is a standalone repository, so all scripts run from its own root:
 
 ```bash
-pnpm install                              # root postinstall builds dist/; extension postinstall runs wxt prepare
-pnpm --filter extension exec wxt prepare  # REQUIRED after editing _locales (regenerates literal getMessage keys)
-pnpm --filter extension compile           # vue-tsc --noEmit
-pnpm --filter extension dev               # HMR dev (-b chrome is already in the script)
-pnpm --filter extension build             # → extension/.output/chrome-mv3/
-pnpm --filter extension zip               # → extension/.output/*-chrome.zip
+pnpm install      # postinstall runs `wxt prepare`
+pnpm run compile  # vue-tsc --noEmit
+pnpm run dev      # HMR dev (-b chrome is already in the script)
+pnpm run build    # → .output/chrome-mv3/
+pnpm run zip      # → .output/*-chrome.zip
 ```
 
-> `precompile` / `predev` / `prebuild` / `prezip` build `@kbmjj123/json-editor`
-> first because its `exports` point at `dist/`. Do not invoke `wxt build`
-> directly (that bypasses the pnpm lifecycle scripts).
+`@kbmjj123/json-editor` is a published npm dependency (`^0.1.1`) — there is no
+workspace package to build first. `wxt prepare` regenerates the literal
+`getMessage` keys from `_locales`, so re-run it after editing those files.
 
 Load unpacked from `chrome://extensions` → Developer mode →
-`extension/.output/chrome-mv3`.
+`.output/chrome-mv3`.
 
 ## Verification checklist
 

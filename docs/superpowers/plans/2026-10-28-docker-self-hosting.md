@@ -1,5 +1,7 @@
 # Docker 自托管发布 Implementation Plan
 
+> **状态**：2026-10-28 已落地的实施记录。2026-11-11 拆仓后，文中的 `build:pkg`、`COPY packages ./packages`、`RUN pnpm run build:pkg` 均已移除；当前以 `docker/Dockerfile` 为准，下文保留原实施过程。
+
 > **For agentic workers:** REQUIRED SUB-SKILL: Use superpowers:subagent-driven-development (recommended) or superpowers:executing-plans to implement this plan task-by-task. Steps use checkbox (`- [ ]`) syntax for tracking.
 
 **Goal:** 让已安装 Docker 的用户拉取公开预构建镜像即可启动一个 JsonToolBox 实例：核心 JSON 处理仍在浏览器完成，默认不向第三方发起请求、默认不被索引，且官网（Cloudflare Pages 静态构建）的输出逐字不变。

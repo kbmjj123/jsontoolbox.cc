@@ -5,3 +5,6 @@ node_modules/
 .env.*
 !.env.example
 *.local
+*.zip
+*.tsbuildinfo
+.DS_Store

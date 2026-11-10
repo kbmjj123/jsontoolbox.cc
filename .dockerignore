@@ -20,6 +20,10 @@ reports
 docs
 libs
 scripts
+# Split-out repos: still on disk as copy sources until the migration finishes,
+# but the site build never reads them.
+packages
+extension
 .mcp.json
 .playwright-mcp
 .vscode

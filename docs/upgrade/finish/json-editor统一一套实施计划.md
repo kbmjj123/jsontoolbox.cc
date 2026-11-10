@@ -1,5 +1,7 @@
 # JSON 编辑器「合并为一套」实施计划（P1 方案）
 
+> **状态**：历史实施计划（2026-10-10 讨论）。2026-11-11 拆仓后 `@kbmjj123/json-editor` 已迁往独立 repo，主仓 `pnpm-workspace.yaml` 为 `packages: []`；旗舰页也已回退为站点自研输出层。文中「postinstall 构建本地包」「站点经 workspace 依赖它」「统一为一套」等描述不再适用于当前代码，保留作过程记录。
+
 > 主战场：`packages/json-editor/` + `app/components/universal/JsonEditor.vue`
 > 姊妹项：`JsonEditor-toolbar分组计划.md`（已落地）、`JsonEditor-B组外移计划.md`、`JsonOutputPanel-header精简计划.md`
 > 目标：站点自用编辑器与 npm 包 `@kbmjj123/json-editor` 收敛为**一套**——包成为唯一实现，站点旗舰页变成「包组件 + 站点外壳注入」。

@@ -1,0 +1,9 @@
+# Standalone-repo seed. `dist/` stays ignored in git; npm publish still ships
+# it because package.json `files: ["dist", ...]` is an explicit allowlist.
+node_modules/
+dist/
+demo-dist/
+.output/
+.nuxt/
+*.tsbuildinfo
+.DS_Store

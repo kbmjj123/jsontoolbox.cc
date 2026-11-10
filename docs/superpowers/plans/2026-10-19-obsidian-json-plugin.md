@@ -2,7 +2,9 @@
 
 > **For agentic workers:** REQUIRED SUB-SKILL: Use superpowers:subagent-driven-development (recommended) or superpowers:executing-plans to implement this plan task-by-task. Steps use checkbox (`- [ ]`) syntax for tracking.
 
-**Goal:** 在 jsontoolbox.cc monorepo 内新建自包含的 Obsidian 插件 `plugins/obsidian-json-toolbox/`——命令触发的富 JSON 查看器（可折叠树 + 14 类资源内联预览）+ 格式化/校验/JSON↔YAML/表格工具，为后续剥离成独立 repo 提交社区市场、获取指向 jsontoolbox.cc 的反向链接做准备。
+**Status:** 未实施（48 个步骤全部未勾选）。拆仓决策后改为**独立 GitHub repo 起步**，不再进入 monorepo；本计划中涉及 `plugins/*` 与 workspace 的路径描述，以 spec §9.1 为准。
+
+**Goal:** 以独立 repo 新建自包含的 Obsidian 插件——命令触发的富 JSON 查看器（可折叠树 + 14 类资源内联预览）+ 格式化/校验/JSON↔YAML/表格工具，用于提交社区市场、获取指向 jsontoolbox.cc 的反向链接。
 
 **Architecture:** 插件是完全自包含的目录，不引用站点 `app/` 内部任何路径。分三层：L1 纯逻辑（`mediaPreview.ts` 检测/解码、`jsonTree.ts` 树模型、`commands.ts` 纯函数）、L3 DOM 渲染（`treeView.ts` 用 `HTMLElement` 渲染树与内联预览）、Obsidian 适配层（`main.ts` 命令注册、`viewerModal.ts`、`settings.ts`）。`mediaPreview.ts` 从站点复制并标注同源，是插件差异化的核心。
 
@@ -12,7 +14,7 @@
 
 （以下每条对所有任务生效，逐字摘自 spec）
 
-- 目录：`plugins/obsidian-json-toolbox/`；`pnpm-workspace.yaml` 追加 `plugins/*`
+- 目录：独立 GitHub repo 的根目录（`manifest.json` 位于根）；不加入 `pnpm-workspace.yaml`，自带独立 `pnpm-lock.yaml`
 - **自包含铁律**：禁止 import `~/`、`app/` 内部路径；只允许依赖公开 npm 包与自身 `src/`
 - 依赖：`obsidian`（types）、`esbuild`、`typescript`、`js-yaml`、`vitest`、`jsdom`
 - 离线可用：除"资源预览"外不发起网络请求；无遥测、无账号、无云同步
@@ -279,21 +281,7 @@ Copy `main.js`, `manifest.json`, `styles.css` into
 `<vault>/.obsidian/plugins/json-toolbox/`.
 ```
 
-- [ ] **Step 8: 修改 pnpm-workspace.yaml 追加 plugins/***
-
-```yaml
-packages:
-  - packages/*
-  - plugins/*
-
-ignoredBuiltDependencies:
-  - '@parcel/watcher'
-  - '@sentry/cli'
-  - better-sqlite3
-  - esbuild
-  - unrs-resolver
-  - vue-demi
-```
+- [ ] ~~**Step 8: 修改 pnpm-workspace.yaml 追加 plugins/***~~ **已取消**（2026-11-11 拆仓决策）：插件直接以独立 repo 起步，`plugins/` 目录不再创建；主仓 `pnpm-workspace.yaml` 现为 `packages: []`，无需追加任何条目。本步骤不要执行。
 
 - [ ] **Step 9: 安装依赖（开发者本地执行）**
 

@@ -74,6 +74,6 @@ The CDN bundle is also available on [unpkg](https://unpkg.com/@kbmjj123/json-edi
 
 ## Source & license
 
-- [GitHub repository](https://github.com/kbmjj123/jsontoolbox.cc)
+- [GitHub repository](https://github.com/kbmjj123/json-editor)
 - [npm package](https://www.npmjs.com/package/@kbmjj123/json-editor)
-- [MIT license](https://github.com/kbmjj123/jsontoolbox.cc/blob/main/packages/json-editor/LICENSE)
+- [MIT license](https://github.com/kbmjj123/json-editor/blob/main/LICENSE)

@@ -9,7 +9,8 @@ tree view, a table view for arrays, and a value inspector. Use it as a
 All processing happens in the browser — your JSON never leaves the device.
 
 - [Demo / playground](https://jsontoolbox.cc/developers)
-- [Package source](https://github.com/kbmjj123/jsontoolbox.cc/tree/main/packages/json-editor)
+- [Package on npm](https://www.npmjs.com/package/@kbmjj123/json-editor)
+- [Source code](https://github.com/kbmjj123/json-editor)
 
 ---
 

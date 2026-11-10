@@ -6,8 +6,8 @@ on:
   pull_request:
 
 jobs:
-  json-editor:
-    name: '@kbmjj123/json-editor'
+  site:
+    name: 'jsontoolbox site'
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
@@ -20,12 +20,7 @@ jobs:
         with:
           node-version-file: .nvmrc
 
-      # Only the package and its workspace deps — the Nuxt site is not needed
-      # to typecheck, test or build this package.
-      # pnpm-lock.yaml is tracked, so this install is reproducible; keep it in
-      # sync with the site build (Cloudflare Pages uses --frozen-lockfile).
-      - run: pnpm install --filter @kbmjj123/json-editor...
-
-      - run: pnpm --filter @kbmjj123/json-editor run typecheck
-      - run: pnpm --filter @kbmjj123/json-editor run test
-      - run: pnpm --filter @kbmjj123/json-editor run build
+      # The standalone `@kbmjj123/json-editor` repo carries its own CI now.
+      # Site tests live in `tests/**` and no longer reference the workspace.
+      - run: pnpm install --frozen-lockfile
+      - run: pnpm test

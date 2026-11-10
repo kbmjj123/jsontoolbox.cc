@@ -29,7 +29,7 @@ Most JSON editors on the web fall into one of two camps: a read-only viewer you 
 We open-sourced the editor that powers [JSON Toolbox](https://jsontoolbox.cc) as a standalone package: **`@kbmjj123/json-editor`**. It is one editor, three surfaces, all processing in the browser. Your JSON never leaves the device.
 
 - Live playground: [jsontoolbox.cc/developers](https://jsontoolbox.cc/developers)
-- Source: [github.com/kbmjj123/jsontoolbox.cc/tree/main/packages/json-editor](https://github.com/kbmjj123/jsontoolbox.cc/tree/main/packages/json-editor)
+- Source: [github.com/kbmjj123/json-editor](https://github.com/kbmjj123/json-editor)
 
 ## Three ways to use it
 

@@ -32,7 +32,7 @@
 | 是否有运行时服务端 | **无**。`.output/` 下只有 `public/` 与 `nitro.json`，没有 `server/index.mjs` | 实际目录检查 |
 | server 路由 | 仅 4 个，全部构建期消费：`server/api/sitemap-urls.ts`、`server/api/sitemap-blog.ts`（sitemap 数据源）、`server/routes/llms.txt.ts`、`server/routes/llms-full.txt.ts`（已预渲染为 `llms.txt` / `llms-full.txt`） | 目录检查 + `.output/public/llms.txt` 存在 |
 | 构建脚本 | `nuxt build && cp .output/public/sitemap_index.xml .output/public/sitemap.xml` | `package.json:14` |
-| postinstall | `nuxt prepare && pnpm run build:pkg`（构建 workspace 包 `@kbmjj123/json-editor`） | `package.json:20` |
+| postinstall | `nuxt prepare`（2026-11-11 拆仓后：包由 npm 发布版提供，主仓已无 workspace 成员，`build:pkg` 已移除） | `package.json:20` |
 | 静态落盘规则 | 每个路由同时产出 `path.html` 与 `path/_payload.json`（例：`tools/format/json-editor.html` + `tools/format/json-editor/_payload.json`）；另有 `200.html`、`404.html` | 产物目录检查 |
 | Node 版本 | `v22.16.0` | `.nvmrc` |
 | 包管理器 | pnpm 10.25.0（`packageManager`），lockfile 已提交，CI 用 `--frozen-lockfile` | `package.json:12`、`.gitignore:30-33` |

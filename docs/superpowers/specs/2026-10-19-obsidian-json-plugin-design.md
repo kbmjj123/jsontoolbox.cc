@@ -1,7 +1,7 @@
 # Obsidian 富 JSON 查看器插件 — 设计文档
 
 - **日期**：2026-10-19
-- **状态**：MVP 已实现（方案 B），方案 A（代码块内联）待后续迭代
+- **状态**：设计定稿，**尚未实现**。实施计划 48 个步骤全部未勾选，`plugins/` 目录不存在，workspace 也未包含 `plugins/*`。本次拆仓后直接以独立 repo 起步（不再先进 monorepo）。方案 A（代码块内联）待后续迭代
 - **项目**：`jsontoolbox.cc`（面向开发者的 JSON 工具国际站，SEO 驱动）
 
 ---
@@ -27,12 +27,12 @@
 | 插件定位 | **JSON 工具型**（与站点同主题） | 同主题反链 SEO 权重更高、更自然，非 spam |
 | 架构路线 | **方案 C：先 B 后 A** | MVP 先上线验证，降低风险 |
 | 资源预览 | **移植现有 jsoneditor 全部 14 类** | 这是真正差异化卖点，区别于普通格式化器 |
-| 仓库策略 | **先同仓开发，后续剥离独立 repo** | 开发期享受 monorepo 便利；发布期满足社区市场硬约束 |
-| 目录 | 顶层 `plugins/obsidian-json-toolbox/`，`pnpm-workspace.yaml` 追加 `plugins/*` | 语义清晰，不与 `packages/` 组件库混淆 |
+| 仓库策略 | **直接以独立 repo 起步**（2026-11-11 拆仓决策修订） | 社区市场硬约束要求 `manifest.json` 在 repo 根；先同仓再剥离会多一次搬运，且主仓已无 workspace 成员 |
+| 目录 | 独立 GitHub repo 的根目录；不加入 `pnpm-workspace.yaml` | 满足市场要求；自包含，便于独立维护 |
 | 复用方式 | `mediaPreview.ts` 复制进插件（自包含）；其余能力装成熟 npm 包 | 最终要独立，自包含最利于剥离；避免跨层引用 |
 
 ### 关键硬约束
-Obsidian 社区插件提交要求 GitHub 仓库**根目录**包含 `manifest.json`（release 再挂 `main.js` / `styles.css`）。当前 monorepo 根是站点，不可能在根放插件 manifest，因此**插件最终必须作为独立 repo 发布**——这正是"先同仓开发、后续剥离"路线的原因。
+Obsidian 社区插件提交要求 GitHub 仓库**根目录**包含 `manifest.json`（release 再挂 `main.js` / `styles.css`）。因此插件**必须作为独立 repo 发布**；2026-11-11 拆仓后主仓已无 workspace 成员，也就不再有「先同仓开发」阶段，直接从独立 repo 起步。
 
 ---
 
@@ -153,16 +153,17 @@ plugins/obsidian-json-toolbox/
 
 ## 9. 开发、剥离与发布流程
 
-### 9.1 开发期
-1. 新建 `plugins/obsidian-json-toolbox/`，`pnpm-workspace.yaml` 追加 `plugins/*`。
-2. 从 `app/utils/mediaPreview.ts` 复制 `src/mediaPreview.ts`，文件头注明"同源：jsontoolbox.cc `app/utils/mediaPreview.ts`，改动请双向同步"。
+### 9.1 开发期（拆仓决策后：直接以独立 repo 起步）
+1. 新建独立 GitHub repo（如 `obsidian-json-toolbox`），`manifest.json` 直接放在 repo 根目录 —— 这是社区市场的硬约束，不再经历「先塞进 monorepo `plugins/*`、再整体迁出」这一步，也不会加入任何 pnpm workspace。
+2. 从 `app/utils/mediaPreview.ts` 复制 `src/mediaPreview.ts`，文件头注明"同源：jsontoolbox.cc `app/utils/mediaPreview.ts`，改动请双向同步"；这是与主仓唯一的代码耦合点，插件不依赖 `@kbmjj123/json-editor`。
 3. `npm run dev`（esbuild watch）→ 产物通过 symlink 挂到测试 vault 的 `.obsidian/plugins/json-toolbox/` 调试。
 4. 构建由开发者本地执行；AI 只写代码、文档与静态检查（遵守"AI 不跑 build"约束）。
 
-### 9.2 剥离期
-1. 将 `plugins/obsidian-json-toolbox/` 整体迁出为独立 GitHub repo（`manifest.json` 位于根，满足社区市场要求）。
-2. README 补全：功能说明、截图、安装方式、外链。
-3. 发 GitHub release，附 `main.js` / `manifest.json` / `styles.css`。
+独立 repo 根目录需自带：`manifest.json`、`package.json`、`pnpm-lock.yaml`、`tsconfig.json`、esbuild 构建脚本、`.github/workflows/release.yml`、`LICENSE`、`README.md`。
+
+### 9.2 发布准备（原「剥离期」已取消）
+1. README 补全：功能说明、截图、安装方式、外链。
+2. 发 GitHub release，附 `main.js` / `manifest.json` / `styles.css`。
 
 ### 9.3 发布期
 1. 向 `obsidianmd/obsidian-releases` 提交社区插件 PR（需 repo 地址、README、描述、截图）。

@@ -74,6 +74,6 @@ CDN 包也可通过 [unpkg](https://unpkg.com/@kbmjj123/json-editor) 获取。
 
 ## 源码与许可
 
-- [GitHub 仓库](https://github.com/kbmjj123/jsontoolbox.cc)
+- [GitHub 仓库](https://github.com/kbmjj123/json-editor)
 - [npm 包](https://www.npmjs.com/package/@kbmjj123/json-editor)
-- [MIT 许可证](https://github.com/kbmjj123/jsontoolbox.cc/blob/main/packages/json-editor/LICENSE)
+- [MIT 许可证](https://github.com/kbmjj123/json-editor/blob/main/LICENSE)

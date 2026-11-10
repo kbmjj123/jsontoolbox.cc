@@ -1,6 +1,7 @@
-packages:
-  - packages/*
-  - extension
+# `packages/json-editor` and `extension` now live in their own repositories.
+# The main site has no workspace members and consumes the published
+# `@kbmjj123/json-editor` from npm.
+packages: []
 
 ignoredBuiltDependencies:
   - '@parcel/watcher'
