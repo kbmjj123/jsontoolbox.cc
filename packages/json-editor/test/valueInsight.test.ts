@@ -36,4 +36,28 @@ describe('ValueInsight', () => {
     const wrapper = mount(ValueInsight, { props: { value: 'plain text' } })
     expect(wrapper.find('.je-insight').exists()).toBe(false)
   })
+
+  it('renders a remote image thumbnail when imagePreview is on', () => {
+    const wrapper = mount(ValueInsight, { props: { value: 'https://cdn.example.com/a.png' } })
+    expect(wrapper.find('.je-insight').classes()).toContain('is-image')
+    const img = wrapper.find('img.je-insight-img')
+    expect(img.exists()).toBe(true)
+    expect(img.attributes('src')).toBe('https://cdn.example.com/a.png')
+  })
+
+  it('renders a link (not an image) for remote images when imagePreview is off', () => {
+    const wrapper = mount(ValueInsight, { props: { value: 'https://cdn.example.com/a.png', imagePreview: false } })
+    expect(wrapper.find('img.je-insight-img').exists()).toBe(false)
+    expect(wrapper.find('a.je-insight-link').exists()).toBe(true)
+  })
+
+  it('renders an email as a mailto link', () => {
+    const wrapper = mount(ValueInsight, { props: { value: 'a@b.com' } })
+    expect(wrapper.find('a.je-insight-link').attributes('href')).toBe('mailto:a@b.com')
+  })
+
+  it('renders a URL as a clickable link', () => {
+    const wrapper = mount(ValueInsight, { props: { value: 'https://example.com/x' } })
+    expect(wrapper.find('a.je-insight-link').attributes('href')).toBe('https://example.com/x')
+  })
 })

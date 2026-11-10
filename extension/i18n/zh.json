@@ -12,7 +12,9 @@
   "config": {
     "title": "设置",
     "auto": "自动美化 JSON 页面",
-    "autoHint": "当整个页面是 JSON 文档时，自动显示树形视图。"
+    "autoHint": "当整个页面是 JSON 文档时，自动显示树形视图。",
+    "imagePreview": "预览 JSON 中的图片与媒体",
+    "imagePreviewHint": "为图片/音频/视频/PDF 链接显示缩略图。浏览器会向对应服务器请求这些资源；关闭可避免第三方请求。"
   },
   "tools": {
     "title": "常用工具",

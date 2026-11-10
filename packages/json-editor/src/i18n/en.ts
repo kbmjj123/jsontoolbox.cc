@@ -76,6 +76,17 @@ export const en = {
   insight_timestamp: 'Timestamp',
   insight_jwt: 'JWT',
   insight_base64: 'Base64',
+  insight_image: 'Image',
+  insight_audio: 'Audio',
+  insight_video: 'Video',
+  insight_pdf: 'PDF',
+  insight_url: 'URL',
+  insight_email: 'Email',
+  insight_uuid: 'UUID',
+  insight_ip: 'IP',
+  insight_markdown: 'Markdown',
+  insight_regex: 'Regex',
+  media_load_preview: 'Load preview',
   bytes: '{n} bytes',
 } as const
 

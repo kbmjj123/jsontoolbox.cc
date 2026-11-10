@@ -762,3 +762,40 @@ button.je-status-loc.je-jump {
   white-space: pre-wrap;
   word-break: break-word;
 }
+
+.je-insight-link {
+  color: var(--je-accent);
+  text-decoration: underline;
+  word-break: break-all;
+}
+
+.je-mono {
+  font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+}
+
+.je-insight-media {
+  display: block;
+  max-width: 240px;
+  max-height: 160px;
+  margin-top: 2px;
+  border-radius: 6px;
+  border: 1px solid var(--je-border);
+}
+
+.je-lightbox {
+  position: fixed;
+  inset: 0;
+  z-index: 9999;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: rgba(0, 0, 0, 0.82);
+  cursor: zoom-out;
+}
+
+.je-lightbox img {
+  max-width: 90vw;
+  max-height: 90vh;
+  border-radius: 8px;
+  box-shadow: 0 8px 40px rgba(0, 0, 0, 0.5);
+}

@@ -156,6 +156,7 @@
             :value="node.value"
             :locale="locale"
             :messages="messages"
+            :image-preview="imagePreview"
           />
         </template>
 
@@ -310,6 +311,8 @@ const props = withDefaults(
     masked?: boolean
     /** Dot-paths whose leaf values should be redacted when `masked` is true. */
     sensitivePaths?: string[]
+    /** Show remote image previews (default ON). Local base64/data-URI images always render. */
+    imagePreview?: boolean
   }>(),
   {
     value: undefined,
@@ -320,6 +323,7 @@ const props = withDefaults(
     indent: 2,
     masked: false,
     sensitivePaths: () => [],
+    imagePreview: true,
   }
 )
 

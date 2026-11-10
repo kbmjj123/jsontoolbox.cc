@@ -5,6 +5,20 @@ import { detectAndMount, type JsonDocument, type ViewerController, type ViewerLa
 import { getOptions, STORAGE_KEY, type ExtensionOptions } from '../utils/options'
 import { MAX_AUTO_JSON_BYTES, OWN_HOSTS } from '../utils/constants'
 
+/**
+ * Dev-only diagnostics. Detection rejections are intentionally silent in
+ * production; these logs make the reason visible while debugging injection.
+ * `import.meta.env.DEV` is compiled away in release builds.
+ */
+const DEBUG = import.meta.env.DEV
+function diag(message: string, detail?: unknown): void {
+  if (DEBUG) console.info(`[jt] ${message}`, detail ?? '')
+}
+function reject(reason: string): null {
+  diag(`detect rejected: ${reason}`)
+  return null
+}
+
 const IGNORED_TAGS = new Set([
   'script', 'style', 'noscript', 'template', 'link', 'meta', 'base', 'iframe',
 ])
@@ -27,13 +41,14 @@ const VIEWER_CONTAINER_CLASS = 'json-formatter-container'
  * Chrome's own viewer container are ignored (see filter below).
  */
 function findWholePageJson(): JsonDocument | null {
-  if (location.protocol !== 'http:' && location.protocol !== 'https:') return null
+  if (location.protocol !== 'http:' && location.protocol !== 'https:')
+    return reject(`protocol=${location.protocol}`)
 
   const host = location.hostname
-  if (OWN_HOSTS.some(h => host === h || host.endsWith(`.${h}`))) return null
+  if (OWN_HOSTS.includes(host)) return reject(`own host=${host}`)
 
   const body = document.body
-  if (!body) return null
+  if (!body) return reject('no <body>')
 
   const meaningful = Array.from(body.children).filter((el): el is HTMLElement => {
     if (!(el instanceof HTMLElement)) return false
@@ -43,10 +58,12 @@ function findWholePageJson(): JsonDocument | null {
     if (el.children.length === 0 && (el.textContent ?? '').trim() === '') return false
     return true
   })
-  if (meaningful.length !== 1) return null
+  if (meaningful.length !== 1)
+    return reject(`meaningful=${meaningful.length}, children=[${Array.from(body.children).map(el => el.tagName.toLowerCase()).join(',')}]`)
 
   const pre = meaningful[0]
-  if (!pre || pre.tagName.toLowerCase() !== 'pre') return null
+  if (!pre || pre.tagName.toLowerCase() !== 'pre')
+    return reject(`first child is <${pre?.tagName.toLowerCase() ?? 'none'}>, not <pre>`)
 
   // NOTE: do NOT reject `pre.children.length !== 0`. Chrome's own JSON viewer
   // renders `<body><pre id="json">…<span>…</span>…</pre></body>` — the <pre> has
@@ -58,14 +75,19 @@ function findWholePageJson(): JsonDocument | null {
   // Reject any visible text outside that <pre>.
   for (const node of Array.from(body.childNodes)) {
     if (node === pre) continue
-    if (node.nodeType === 3 && (node.textContent ?? '').trim()) return null
+    if (node.nodeType === 3 && (node.textContent ?? '').trim())
+      return reject('visible text node outside <pre>')
   }
 
   const trimmed = (pre.textContent ?? '').trim()
-  if (!/^[{[]/.test(trimmed)) return null
-  if (new Blob([trimmed]).size > MAX_AUTO_JSON_BYTES) return null
-  if (analyzeJson(trimmed).error !== null) return null
+  diag('detect: single <pre> found', { chars: trimmed.length, head: trimmed.slice(0, 40) })
+  if (!/^[{[]/.test(trimmed)) return reject(`root starts with ${JSON.stringify(trimmed[0])}`)
+  const bytes = new Blob([trimmed]).size
+  if (bytes > MAX_AUTO_JSON_BYTES) return reject(`too large: ${bytes} bytes`)
+  const analysis = analyzeJson(trimmed)
+  if (analysis.error !== null) return reject(`invalid JSON: ${analysis.error}`)
 
+  diag('detect ok', { bytes })
   return { text: trimmed, source: pre }
 }
 
@@ -83,27 +105,35 @@ export default defineContentScript({
   matches: ['<all_urls>'],
   runAt: 'document_idle',
   async main(ctx) {
+    diag('content script alive', { href: location.href, contentType: document.contentType })
     let opts: ExtensionOptions = await getOptions()
+    diag('options loaded', opts)
     // Cached: once mounted, <body> has extra hosts and re-detection would fail.
     let detected: JsonDocument | null = null
     let controller: ViewerController | null = null
 
     function ensure(): void {
-      if (ctx.isInvalid) return
+      if (ctx.isInvalid) {
+        diag('ensure: context invalidated')
+        return
+      }
 
       if (!opts.auto) {
+        diag('ensure: auto-beautify is OFF — restoring native <pre>')
         controller?.destroy()
         controller = null
         return
       }
       if (controller) {
+        diag('ensure: applying config to existing viewer')
         controller.apply(opts, viewerLabels())
         return
       }
 
       detected ??= findWholePageJson()
-      if (!detected) return // silent on non-JSON pages
+      if (!detected) return // rejection reason already logged by reject()
 
+      diag('ensure: mounting viewer')
       controller = detectAndMount(detected, opts, viewerLabels())
     }
 

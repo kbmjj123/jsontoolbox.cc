@@ -77,6 +77,7 @@
         :indent="indentValue"
         :editable="!readOnly"
         :on-notify="onNotify"
+        :image-preview="imagePreview"
         @select="onSelect"
       />
       <TableView
@@ -150,6 +151,8 @@ const props = withDefaults(
     attributionUrl?: string
     /** Receive node-edit notifications (errors/success) from the tree view. */
     onNotify?: (message: string, kind: 'error' | 'success') => void
+    /** Show remote image previews (default ON). Local base64/data-URI images always render. */
+    imagePreview?: boolean
   }>(),
   { bordered: true, showStatus: true }
 )

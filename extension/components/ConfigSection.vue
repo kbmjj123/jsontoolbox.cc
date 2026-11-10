@@ -29,6 +29,10 @@ const auto = computed({
   get: () => options.value.auto,
   set: (value: boolean) => void update({ auto: value }),
 })
+const imagePreview = computed({
+  get: () => options.value.imagePreview,
+  set: (value: boolean) => void update({ imagePreview: value }),
+})
 </script>
 
 <template>
@@ -79,6 +83,14 @@ const auto = computed({
     </label>
     <p class="text-[10px] leading-snug text-surface-500">
       {{ t('config.autoHint') }}
+    </p>
+
+    <label class="flex items-center justify-between gap-3 text-xs font-medium">
+      <span>{{ t('config.imagePreview') }}</span>
+      <input v-model="imagePreview" type="checkbox" class="h-4 w-4 accent-primary-600" />
+    </label>
+    <p class="text-[10px] leading-snug text-surface-500">
+      {{ t('config.imagePreviewHint') }}
     </p>
   </section>
 </template>

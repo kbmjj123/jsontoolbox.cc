@@ -76,4 +76,38 @@ describe('valueInspector (pure)', () => {
     const url = 'data:image/png;base64,iVBORw0KGgo='
     expect(inspectValue(url)?.kind).toBe('base64')
   })
+
+  it('recognizes remote image / audio / video / pdf URLs', () => {
+    expect(inspectValue('https://cdn.example.com/a.png')).toMatchObject({ kind: 'image', remote: true })
+    expect(inspectValue('https://x.com/a.mp3')?.kind).toBe('audio')
+    expect(inspectValue('https://x.com/a.mp4')?.kind).toBe('video')
+    expect(inspectValue('https://x.com/a.pdf')?.kind).toBe('pdf')
+  })
+
+  it('recognizes a non-base64 SVG data URI as an image', () => {
+    const svg = 'data:image/svg+xml,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%2F%3E'
+    const r = inspectValue(svg)
+    expect(r?.kind).toBe('base64')
+    expect(r).toMatchObject({ image: true })
+  })
+
+  it('recognizes email / uuid / ip / url / markdown / regex', () => {
+    expect(inspectValue('a@b.com')?.kind).toBe('email')
+    expect(inspectValue('550e8400-e29b-41d4-a716-446655440000')?.kind).toBe('uuid')
+    expect(inspectValue('192.168.1.1')?.kind).toBe('ip')
+    expect(inspectValue('https://example.com/x')?.kind).toBe('url')
+    expect(inspectValue('**bold**\n- one')?.kind).toBe('markdown')
+    expect(inspectValue('/ab+c/gi')?.kind).toBe('regex')
+  })
+
+  it('treats a numeric millisecond epoch as a timestamp', () => {
+    expect(inspectValue(1700000000000)?.kind).toBe('timestamp')
+  })
+
+  it('does not drop oversized Base64 — surfaces it without decoding', () => {
+    const big = 'A'.repeat(120_000)
+    const r = inspectValue(big)
+    expect(r?.kind).toBe('base64')
+    expect(r).toMatchObject({ bytes: 90_000, image: false, remote: false })
+  })
 })

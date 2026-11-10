@@ -12,7 +12,9 @@
   "config": {
     "title": "Settings",
     "auto": "Auto-beautify JSON pages",
-    "autoHint": "Automatically show a tree view when a whole page is a JSON document."
+    "autoHint": "Automatically show a tree view when a whole page is a JSON document.",
+    "imagePreview": "Preview images & media in JSON",
+    "imagePreviewHint": "Shows thumbnails for image/audio/video/PDF URLs. The browser fetches them from their servers; turn off to avoid third-party requests."
   },
   "tools": {
     "title": "Popular tools",

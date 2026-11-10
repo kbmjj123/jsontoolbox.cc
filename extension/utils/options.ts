@@ -16,6 +16,10 @@ export interface ExtensionOptions {
   /** Master config switch (default ON). NOT a permission opt-in: the extension
    *  auto-beautifies from install; this only lets the user turn the feature off. */
   auto: boolean
+  /** Show remote image/audio/video/PDF previews (default ON). Local base64 /
+   *  data-URI images always render. Turning this off also stops the browser
+   *  from fetching third-party media when a JSON value points at one. */
+  imagePreview: boolean
 }
 
 export const STORAGE_KEY = 'jsontb:options:v1'
@@ -28,6 +32,7 @@ export const DEFAULT_OPTIONS: ExtensionOptions = {
   locale: 'en',
   view: 'both',
   auto: true,
+  imagePreview: true,
 }
 
 export async function getOptions(): Promise<ExtensionOptions> {

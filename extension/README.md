@@ -31,8 +31,10 @@ empty childless elements and that container are ignored, and the viewer
 container is hidden while our overlay is up so "Raw" always shows plain text.
 Ordinary pages, blog posts and `<pre><code>` documentation samples have
 nav/article/footer siblings and are left completely untouched — **no overlay,
-no notification, no DOM changes**. Our own site (`jsontoolbox.cc`) is excluded,
-and documents over **2 MiB** are skipped silently.
+no notification, no DOM changes**. Only the tool site's own UI hosts
+(`jsontoolbox.cc` / `www.jsontoolbox.cc`) are excluded — subdomains are **not**,
+so the `resources.jsontoolbox.cc` sample files are beautified normally.
+Documents over **2 MiB** are skipped silently.
 
 ### Popup
 
@@ -68,6 +70,13 @@ remote scripts or fonts (Inter is bundled locally, the viewer's CSS is inlined).
 The only egress is a link the user clicks to open `jsontoolbox.cc`. `clipboardWrite`
 is not requested; the viewer's Copy button relies on the user-gesture Clipboard API
 with an `execCommand` fallback.
+
+One narrow exception: with **image & media preview** enabled (the default), the
+viewer renders `<img>` / `<audio>` / `<video>` / `<iframe>` for values that look
+like image / audio / video / PDF URLs, which makes the browser fetch those assets
+from their own servers. Local `data:` / `base64` images are rendered inline with
+**no request**. Toggle "Preview images & media" in the popup to disable every
+third-party fetch.
 
 ## Code reuse
 
@@ -137,7 +146,8 @@ live-config items:
    → overlay returns; there is no permanent Close
 3. `https://example.com`, a blog post with `<pre><code>{...}</code></pre>`, a
    GitHub blob view → no overlay, no toast, no DOM change
-4. `https://jsontoolbox.cc/tools/format/json-editor` → unaffected (self-exclusion)
+4. `https://jsontoolbox.cc/tools/format/json-editor` → unaffected (self-exclusion);
+   `https://resources.jsontoolbox.cc/orders-1mb.json` → tree overlay appears (subdomains are not excluded)
 5. With a JSON page open, change popup indent / theme / view / language → applies
    live without reload
 6. Turn "Auto-beautify" OFF → overlay + toggle removed and `<pre>` restored; ON →

@@ -19,6 +19,8 @@ export interface JsonEditorOptions {
   height?: string
   attribution?: boolean
   attributionUrl?: string
+  /** Show remote image previews (default ON). Local base64/data-URI images always render. */
+  imagePreview?: boolean
 }
 
 export interface JsonEditorErrorInfo {
@@ -71,6 +73,7 @@ function normalize(options: JsonEditorOptions) {
     height: options.height ?? '420px',
     attribution: options.attribution ?? false,
     attributionUrl: options.attributionUrl ?? 'https://jsontoolbox.cc',
+    imagePreview: options.imagePreview ?? true,
   }
 }
 
@@ -109,6 +112,7 @@ export function defineJsonEditor(el: HTMLElement, options: JsonEditorOptions = {
         height: state.height,
         attribution: state.attribution,
         attributionUrl: state.attributionUrl,
+        imagePreview: state.imagePreview,
         'onUpdate:modelValue': (value: string) => {
           state.value = value
           handlers.change.slice().forEach((fn) => fn(value))

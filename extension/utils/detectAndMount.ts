@@ -132,6 +132,7 @@ export function detectAndMount(
       readOnly: true,
       height: '100%',
       attribution: false,
+      imagePreview: next.imagePreview,
     }
   }
 
