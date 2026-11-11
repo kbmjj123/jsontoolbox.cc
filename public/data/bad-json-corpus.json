@@ -1,0 +1,235 @@
+{
+  "name": "Bad JSON Corpus",
+  "description": "Real-world invalid/malformed JSON samples, numbered and grouped by error type. Each entry carries a #in= deep link that opens the JSON Repair tool with the sample preloaded so the parse error is reproducible.",
+  "description_zh": "真实场景中的非法/损坏 JSON 样本，按错误类型编号分类。每条都附带 #in= 深链，可一键在 JSON Repair 工具中预载样本、复现报错。",
+  "generatedAt": "2026-11-11",
+  "tool": "json-repair",
+  "categories": [
+    {
+      "id": "truncated-response",
+      "en": "Truncated response",
+      "zh": "响应被截断"
+    },
+    {
+      "id": "trailing-comma",
+      "en": "Trailing comma",
+      "zh": "尾随逗号"
+    },
+    {
+      "id": "unquoted-keys",
+      "en": "Unquoted keys",
+      "zh": "未加引号的键"
+    },
+    {
+      "id": "single-quotes",
+      "en": "Single-quoted strings",
+      "zh": "单引号字符串"
+    },
+    {
+      "id": "comments",
+      "en": "Comments",
+      "zh": "注释"
+    },
+    {
+      "id": "python-constants",
+      "en": "Python constants",
+      "zh": "Python 常量"
+    },
+    {
+      "id": "js-constants",
+      "en": "JavaScript constants",
+      "zh": "JavaScript 常量"
+    },
+    {
+      "id": "concatenated-json",
+      "en": "Concatenated JSON",
+      "zh": "拼接的 JSON"
+    },
+    {
+      "id": "html-error-page",
+      "en": "HTML error page",
+      "zh": "HTML 错误页"
+    },
+    {
+      "id": "missing-comma",
+      "en": "Missing comma",
+      "zh": "缺少逗号"
+    },
+    {
+      "id": "invalid-escape",
+      "en": "Invalid escape sequence",
+      "zh": "非法转义"
+    },
+    {
+      "id": "encoding-bom",
+      "en": "UTF-8 BOM prefix",
+      "zh": "UTF-8 BOM 前缀"
+    },
+    {
+      "id": "bson-like",
+      "en": "BSON-like literals",
+      "zh": "BSON 风格字面量"
+    },
+    {
+      "id": "valid-control",
+      "en": "Valid JSON (control group)",
+      "zh": "合法 JSON（对照组）"
+    }
+  ],
+  "items": [
+    {
+      "id": "corpus-001",
+      "category": "truncated-response",
+      "title_en": "API response cut off inside an object",
+      "title_zh": "接口响应在对象中途被截断",
+      "description_en": "Backend or proxy truncated the JSON — common with timeouts or oversized responses.",
+      "description_zh": "后端或代理在 JSON 中途截断，常见于超时或超大响应。",
+      "input": "{\n  \"success\": true,\n  \"data\": {\n    \"id\": 12345,\n    \"name\": \"Alice\"",
+      "expectedError": "Expected ',' or '}' after property value in JSON at position 69 (line 5 column 20)",
+      "deepLink": "https://jsontoolbox.cc/tools/format/json-repair#in=anRiMWQ1yjsKgDAQRdGthFeniZ8mnfuYJsQpAhohk4gQ3LuMYnkPt-PkIunI8M6i8lXh0SkbQ5AWI4sQvKmlsf10DTUovZNCWjXdME6z_S2HnVUJy5YiE3A_"
+    },
+    {
+      "id": "corpus-002",
+      "category": "trailing-comma",
+      "title_en": "Trailing comma after the last element",
+      "title_zh": "最后一个元素后的尾随逗号",
+      "description_en": "Hand-written or pretty-printed JSON often leaves a trailing comma that strict JSON rejects.",
+      "description_zh": "手写或格式化后的 JSON 常残留尾随逗号，标准 JSON 不接受。",
+      "input": "{\n  \"name\": \"Alice\",\n  \"age\": 30,\n}",
+      "expectedError": "Expected double-quoted property name in JSON at position 34 (line 4 column 1)",
+      "deepLink": "https://jsontoolbox.cc/tools/format/json-repair#in=anRiMWSrVipLLSrOzM9TsjLUUSpJrShRslKqjslTUIhRykvMTY1RslKIUXLMyUxOjVHSgYgnpoOFjQ10YvJqlWoB"
+    },
+    {
+      "id": "corpus-003",
+      "category": "unquoted-keys",
+      "title_en": "Object keys without quotes",
+      "title_zh": "对象的键没有加引号",
+      "description_en": "Config files and JS object literals leave keys unquoted; JSON requires double quotes.",
+      "description_zh": "配置文件与 JS 对象字面量常省略键名引号，而 JSON 要求双引号。",
+      "input": "{\n  host: 'localhost',\n  port: 5432,\n  ssl: true\n}",
+      "expectedError": "Expected property name or '}' in JSON at position 4 (line 2 column 3)",
+      "deepLink": "https://jsontoolbox.cc/tools/format/json-repair#in=anRiMWSrVipLLSrOzM9TsjLUUSpJrShRslKqjslTUMjILy6xUlDPyU9OzAGx1XVAogX5RSVWCqYmxkZgbnFxjpVCSVFpakxerVItAA"
+    },
+    {
+      "id": "corpus-004",
+      "category": "single-quotes",
+      "title_en": "Single-quoted strings",
+      "title_zh": "单引号字符串",
+      "description_en": "JSON strings must use double quotes; single quotes come from JS or shell snippets.",
+      "description_zh": "JSON 字符串必须用双引号，单引号来自 JS 或 shell 片段。",
+      "input": "{\n  'name': 'Alice',\n  'age': 28\n}",
+      "expectedError": "Expected property name or '}' in JSON at position 4 (line 2 column 3)",
+      "deepLink": "https://jsontoolbox.cc/tools/format/json-repair#in=anRiMWSrVipLLSrOzM9TsjLUUSpJrShRslKqjslTUFDPS8xNVbdSUHfMyUxOVdcBiyWmg4SMLGLyapVqAQ"
+    },
+    {
+      "id": "corpus-005",
+      "category": "comments",
+      "title_en": "Line and block comments",
+      "title_zh": "行注释与块注释",
+      "description_en": "JSON has no comment syntax, but config and code samples often include them.",
+      "description_zh": "JSON 没有注释语法，但配置与代码示例常带注释。",
+      "input": "// server config\n{\n  \"debug\": true,\n  \"level\": \"info\"\n}",
+      "expectedError": "Unexpected token '/', \"// server \"... is not valid JSON",
+      "deepLink": "https://jsontoolbox.cc/tools/format/json-repair#in=anRiMWQlyEsKwCAMBcCrhLcWpFvPklXbKIJEiB8K4t1L6SxnYYq1XBXhcOjydAR4T01sitFVNebEuliJGLecIzECdRvi_isypXzHyBorg3Vjvw"
+    },
+    {
+      "id": "corpus-006",
+      "category": "python-constants",
+      "title_en": "Python constants True / False / None",
+      "title_zh": "Python 常量 True / False / None",
+      "description_en": "Dumped from Python dicts without json.dumps(); constants are not valid JSON.",
+      "description_zh": "未用 json.dumps() 直接打印的 Python 字典，常量不是合法 JSON。",
+      "input": "{\n  \"active\": True,\n  \"ratio\": NaN,\n  \"retry\": False\n}",
+      "expectedError": "Unexpected token 'T', ...\"\"active\": True,\n  \"r\"... is not valid JSON",
+      "deepLink": "https://jsontoolbox.cc/tools/format/json-repair#in=anRiMWSrVipLLSrOzM9TsjLUUSpJrShRslKqjslTUIhRSkwuySxLjVGyUggpKk3VgQgWJZZk5oPE_BL9YEKpJUWVICG3xJzi1Ji8WqVaAA"
+    },
+    {
+      "id": "corpus-007",
+      "category": "js-constants",
+      "title_en": "JavaScript constants undefined / NaN / Infinity",
+      "title_zh": "JavaScript 常量 undefined / NaN / Infinity",
+      "description_en": "console.log of a JS object embeds these tokens, which JSON rejects.",
+      "description_zh": "直接打印 JS 对象会带这些记号，JSON 不接受。",
+      "input": "{\n  \"value\": undefined,\n  \"score\": Infinity\n}",
+      "expectedError": "Unexpected token 'u', ...\" \"value\": undefined,\"... is not valid JSON",
+      "deepLink": "https://jsontoolbox.cc/tools/format/json-repair#in=anRiMWSrVipLLSrOzM9TsjLUUSpJrShRslKqjslTUIhRKkvMKU2NUbJSKM1LSU3LzEtN0YFIFCfnF4ElPPPSMvMySypj8mqVagE"
+    },
+    {
+      "id": "corpus-008",
+      "category": "concatenated-json",
+      "title_en": "Two JSON documents concatenated",
+      "title_zh": "两段 JSON 被拼接在一起",
+      "description_en": "Streamed or appended responses glue multiple top-level values together.",
+      "description_zh": "流式输出或拼接响应把多个顶层值粘在一起。",
+      "input": "{\"ok\": true}\n{\"ok\": false}",
+      "expectedError": "Unexpected non-whitespace character after JSON at position 13 (line 2 column 1)",
+      "deepLink": "https://jsontoolbox.cc/tools/format/json-repair#in=anRiMWSrVipLLSrOzM9TsjLUUSpJrShRslKqjlHKz45RslIoKSpNrY3Jg_PTEnOKU2uVagE"
+    },
+    {
+      "id": "corpus-009",
+      "category": "html-error-page",
+      "title_en": "HTML error page returned instead of JSON",
+      "title_zh": "返回的是 HTML 错误页而非 JSON",
+      "description_en": "A 502/504 from a gateway or a login redirect returns HTML; parsing it as JSON fails.",
+      "description_zh": "网关 502/504 或登录跳转返回了 HTML，按 JSON 解析必然失败。",
+      "input": "<!DOCTYPE html>\n<html><head><title>502 Bad Gateway</title></head>\n<body><h1>502 Bad Gateway</h1></body></html>",
+      "expectedError": "Unexpected token '<', \"<!DOCTYPE \"... is not valid JSON",
+      "deepLink": "https://jsontoolbox.cc/tools/format/json-repair#in=anRiMWSrVipLLSrOzM9TsjLUUSpJrShRslKyUXTxdw6JDHBVyCjJzbGLybMB0zYZqYkpdjYlmSU5qXamBkYKTokpCu6JJanliZU2-hBhG32wopg8m6T8lEo7mwxDTJUZhnY2-hBpfbDBSrUA"
+    },
+    {
+      "id": "corpus-010",
+      "category": "missing-comma",
+      "title_en": "Missing comma between properties",
+      "title_zh": "属性之间缺少逗号",
+      "description_en": "A forgotten separator between two object members.",
+      "description_zh": "两个对象成员之间漏写了分隔逗号。",
+      "input": "{\n  \"name\": \"Ada\"\n  \"role\": \"admin\"\n}",
+      "expectedError": "Expected ',' or '}' after property value in JSON at position 20 (line 3 column 3)",
+      "deepLink": "https://jsontoolbox.cc/tools/format/json-repair#in=anRiMWSrVipLLSrOzM9TsjLUUSpJrShRslKqjslTUIhRykvMTY1RslKIUXJMSYxRgggW5edABRNTcjPzQMK1SrUA"
+    },
+    {
+      "id": "corpus-011",
+      "category": "invalid-escape",
+      "title_en": "Invalid backslash escape in a Windows path",
+      "title_zh": "Windows 路径中的非法反斜杠转义",
+      "description_en": "Windows paths use single backslashes; \\U and \\a are not valid JSON escape sequences.",
+      "description_zh": "Windows 路径使用单反斜杠，\\U 与 \\a 不是合法的 JSON 转义序列。",
+      "input": "{\"path\": \"C:\\Users\\admin\"}",
+      "expectedError": "Bad escaped character in JSON at position 13 (line 1 column 14)",
+      "deepLink": "https://jsontoolbox.cc/tools/format/json-repair#in=anRiMWSrVipLLSrOzM9TsjLUUSpJrShRslKqjlEqSCzJiFGyUohRcraKiQktTi0qjolJTMnNzItRqlWqBQA"
+    },
+    {
+      "id": "corpus-012",
+      "category": "encoding-bom",
+      "title_en": "UTF-8 BOM prefix",
+      "title_zh": "UTF-8 BOM 前缀",
+      "description_en": "Files saved by some editors start with U+FEFF, which strict JSON.parse rejects.",
+      "description_zh": "部分编辑器保存的文件以 U+FEFF 开头，严格 JSON.parse 会拒绝。",
+      "input": "﻿{\"name\": \"Alice\"}",
+      "expectedError": "Unexpected token '﻿', \"﻿{\"name\": \"Alice\"}\" is not valid JSON",
+      "deepLink": "https://jsontoolbox.cc/tools/format/json-repair#in=anRiMWSrVipLLSrOzM9TsjLUUSpJrShRslJ6v3t_dYxSXmJuaoySlUKMkmNOZnJqjFKtUi0A"
+    },
+    {
+      "id": "corpus-013",
+      "category": "bson-like",
+      "title_en": "BSON-style literals ObjectId / ISODate",
+      "title_zh": "BSON 风格字面量 ObjectId / ISODate",
+      "description_en": "Pasted from MongoDB shell output; the wrappers are not JSON.",
+      "description_zh": "从 MongoDB shell 输出复制而来，包装函数不是 JSON。",
+      "input": "{\n  \"_id\": ObjectId(\"507f1f77bcf86cd799439011\"),\n  \"created\": ISODate(\"2024-01-01T00:00:00Z\")\n}",
+      "expectedError": "Unexpected token 'O', ...\"\n  \"_id\": ObjectId(\"\"... is not valid JSON",
+      "deepLink": "https://jsontoolbox.cc/tools/format/json-repair#in=anRiMWQly7EKgzAQBuBXCf-koHBnbdNk7uLk0E7loGhygh1SsKEUxHcvWPjWb8VHl_f8SvBcIes3w2OVZIzgMUeBN_341JC7WAiOZCeerB3DdD6FaJ1rD46YBWX1P2HRIev-umt_GbIWgoaatiauiW9EfncXlJI2bD8"
+    },
+    {
+      "id": "corpus-014",
+      "category": "valid-control",
+      "title_en": "Valid JSON (control group)",
+      "title_zh": "合法 JSON（对照组）",
+      "description_en": "A well-formed document — used to confirm the tool accepts valid input.",
+      "description_zh": "格式正确的文档，用于确认工具能正常接受合法输入。",
+      "input": "{\n  \"name\": \"Ada Lovelace\",\n  \"active\": true,\n  \"roles\": [\"admin\", \"editor\"]\n}",
+      "expectedError": null,
+      "deepLink": "https://jsontoolbox.cc/tools/format/json-repair#in=anRiMWQtyjEKwzAQRNGrLFOrSasufW7gSbFYWwjsFcgbETC-e7Dj9v2_Y1jfanPkR0LYN5Cx00UI19WILMSzqLzasEVnI9I_6xx1XEP0j93Y22LbaROhZa1OJCGs1GideNMPHD8"
+    }
+  ]
+}

@@ -33,6 +33,58 @@
 
 ---
 
+## 嵌入
+
+用单个 `<iframe>` 就能把 31 个工具中的任意一个放进你自己的文档、博客或内部 Wiki。两种方式：
+
+1. **生成器（推荐）：** 打开[嵌入生成器](https://jsontoolbox.cc/embed)，选择工具、主题、高度和语言，复制它生成的代码片段。
+2. **手动构造：** 用下面的参数自行拼接 iframe 的 `src`。
+
+### 嵌入 URL 参数
+
+端点是 `/embed/tool`。支持的查询参数：
+
+| 参数 | 取值 | 默认值 | 说明 |
+|---|---|---|---|
+| `tool` | 工具 slug（如 `json-to-csv`、`large-json-viewer`） | — | 选择工具。slug 在全部 31 个工具中全局唯一。 |
+| `theme` | `auto` \| `light` \| `dark` | `auto` | `auto` 跟随访问者的系统设置。 |
+| `height` | 像素（如 `520`） | `480` | iframe 初始高度。 |
+| `branding` | `0` 表示隐藏 | 显示 | 隐藏底部那行"本地运行 · JsonToolBox"署名。 |
+| `lang` | `en` \| `zh` | `en` | iframe 内的界面语言。 |
+
+### 示例
+
+嵌入 JSON → CSV 转换器，暗色主题，高 520px，不带署名：
+
+```html
+<iframe
+  src="https://jsontoolbox.cc/embed/tool?tool=json-to-csv&theme=dark&height=520&branding=0&lang=zh"
+  width="100%"
+  height="520"
+  loading="lazy"
+  title="JSON 转 CSV">
+</iframe>
+```
+
+### 说明
+
+- **一切都在访问者的浏览器里运行。** iframe 只加载静态资源，JSON 永远不会上传到任何服务器。
+- **嵌入的工具初始为空。** 它不会从 URL 预填数据（预填链接见[分享与带状态链接](#分享与带状态链接)中托管版工具页的部分）。
+- 旧的端点 `/embed/json?mode=editor|viewer&...` 对经典编辑器/查看器外壳仍然可用，但新的集成请使用 `tool=<slug>`。
+
+## 分享与带状态链接
+
+工具可以把当前输入写进 URL，于是链接就能保存你正在处理的数据。打开链接，工具自动预填——无需上传，也无需账号。
+
+这些数据位于 URL 的**片段**（fragment，`#in=…`）中，浏览器永远不会把它发给服务器，也不会记录到日志。它用 deflate-raw 压缩，所以即便是中等大小的输入也能保持 URL 安全；超过大小限制的输入会被静默丢弃，链接回退为一个空白工具。
+
+目前它出现在以下场景：
+
+- **工具间跳转。** 每个工具页底部的"相关工具"链接会附带 `#in=` 和你当前的输入，于是从一个工具跳到下一个时，数据会在整条工具链里流动。
+- **书签 / 分享链接。** 分享控件上线后会直接复制一个现成的 `#in=` 链接；在那之前，如果你用本站编码器拼出同样的片段，也同样可用。
+
+> 注意：嵌入用的 iframe（`/embed/tool`）是一个干净的壳，它**不读取** `#in=`——始终从空白开始，由访问者自行粘贴数据。
+
 ## 功能
 
 共 31 个工具，按任务分组。链接均指向在线版本。
@@ -162,6 +214,47 @@ pnpm build
 ```
 
 也可以用 `pnpm generate` 做完整预渲染，或用 `pnpm preview` 在本地预览构建结果。
+
+### 使用 Docker 自托管
+
+**方式 A — 预构建镜像（无需工具链）：**
+
+```bash
+docker run -d --name jsontoolbox -p 127.0.0.1:8080:8080 ghcr.io/kbmjj123/jsontoolbox:latest
+```
+
+然后打开 <http://127.0.0.1:8080>。
+
+**方式 B — 从源码构建：**
+
+```bash
+# 构建时把你的公网地址烘焙进去（canonical URL、sitemap、OG 卡片）
+docker build -t jsontoolbox \
+  --build-arg SITE_URL=https://your-domain.example \
+  --build-arg SITE_NAME="My JSON Tools" .
+
+docker run -d --name jsontoolbox -p 8080:8080 jsontoolbox
+```
+
+如果构建时还不知道公网地址，可以跳过 build 参数，改为在运行时覆盖（容器启动时会用 `JT_BASE_URL` 重写基础 URL）：
+
+```bash
+docker run -d --name jsontoolbox -p 8080:8080 \
+  -e JT_BASE_URL=https://your-domain.example \
+  jsontoolbox
+```
+
+| 变量 | 阶段 | 默认值 | 用途 |
+|---|---|---|---|
+| `NUXT_PUBLIC_SELF_HOSTED` | 构建期（Dockerfile） | `1` | 标记为自托管：禁用公开 sitemap/OG，并设置 `noindex`。 |
+| `NUXT_PUBLIC_SITE_URL` | 构建期（`--build-arg`） | `http://localhost:8080` | canonical URL、sitemap 与社会化分享卡片。 |
+| `NUXT_PUBLIC_SITE_NAME` | 构建期（`--build-arg`） | `JSON Toolbox` | 页面标题中使用的站点名称。 |
+| `JT_BASE_URL` | 运行时（`-e`） | — | 当构建时无法确定地址时，在容器启动时覆盖基础 URL。 |
+
+镜像为两阶段构建：先构建一次预渲染的静态站点，再由 nginx（非特权用户，端口 8080）提供服务。所有 JSON 处理仍在浏览器中完成。配置、离线行为、升级/回滚与网络暴露等细节见：
+[English](./docs/self-hosting/docker.en.md) · [简体中文](./docs/self-hosting/docker.zh-CN.md)
+
+> 镜像名称为暂定（`ghcr.io/kbmjj123/jsontoolbox`），arm64 尚未在真实硬件上冒烟测试。
 
 ### 注意事项
 

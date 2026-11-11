@@ -1,5 +1,7 @@
 <script setup lang="ts">
+import { useTools } from '~/composables/useTools'
 const { t, locale } = useI18n()
+const { allTools } = useTools()
 
 useSeoMeta({
   title: () => t('embed.seo.title'),
@@ -8,6 +10,7 @@ useSeoMeta({
 
 // ── Config state ─────────────────────────────────────────────
 const config = reactive({
+  tool: '' as string,
   mode: 'editor' as 'editor' | 'viewer',
   theme: 'auto' as 'auto' | 'light' | 'dark',
   height: 520,
@@ -20,7 +23,7 @@ const config = reactive({
 
 // 自托管实例生成指向自己的片段；官方站点上 origin 就是官网，输出与原来一致。
 const embedBase = computed(() =>
-  import.meta.client ? `${window.location.origin}/embed/json` : 'https://jsontoolbox.cc/embed/json',
+  import.meta.client ? `${window.location.origin}/embed` : 'https://jsontoolbox.cc/embed',
 )
 const attributionBase = computed(() =>
   import.meta.client ? `${window.location.origin}/tools/format/json-editor` : 'https://jsontoolbox.cc/tools/format/json-editor',
@@ -30,26 +33,37 @@ const attributionBase = computed(() =>
 const embedUrl = computed(() => {
   const base = embedBase.value
   const params = new URLSearchParams()
-  params.set('mode', config.mode)
   params.set('theme', config.theme)
   params.set('height', String(config.height))
+  if (!config.branding) params.set('branding', '0')
+  if (config.lang) params.set('lang', config.lang)
+  if (config.tool) {
+    return `${base}/tool?tool=${encodeURIComponent(config.tool)}&${params.toString()}`
+  }
+  params.set('mode', config.mode)
   if (!config.toolbar) params.set('toolbar', '0')
   if (config.readonly) params.set('readonly', '1')
   if (config.indent !== 2) params.set('indent', String(config.indent))
-  if (!config.branding) params.set('branding', '0')
-  if (config.lang) params.set('lang', config.lang)
-  return `${base}?${params.toString()}`
+  return `${base}/json?${params.toString()}`
 })
 
 // ── Attribution link ─────────────────────────────────────────
 const attributionUrl = computed(() => {
+  if (config.tool) {
+    const tl = allTools.value.find(t => t.slug === config.tool)
+    return tl?.path
+      ? (import.meta.client ? `${window.location.origin}${tl.path}` : `https://jsontoolbox.cc${tl.path}`)
+      : 'https://jsontoolbox.cc/tools'
+  }
   return attributionBase.value
 })
 
 const attributionText = computed(() => {
-  return config.mode === 'editor'
-    ? t('embed.attrEditor')
-    : t('embed.attrViewer')
+  if (config.tool) {
+    const tl = allTools.value.find(t => t.slug === config.tool)
+    return tl?.name || (t('embed.attrTool') || 'Open this tool')
+  }
+  return config.mode === 'editor' ? t('embed.attrEditor') : t('embed.attrViewer')
 })
 
 // ── Generated code ───────────────────────────────────────────
@@ -88,15 +102,18 @@ const previewSrc = computed(() => {
   // Use relative URL for dev, absolute for production
   if (import.meta.dev) {
     const params = new URLSearchParams()
-    params.set('mode', config.mode)
     params.set('theme', config.theme)
     params.set('height', String(config.height))
-    if (!config.toolbar) params.set('toolbar', '0')
-    if (config.readonly) params.set('readonly', '1')
-    if (config.indent !== 2) params.set('indent', String(config.indent))
     if (!config.branding) params.set('branding', '0')
     if (config.lang) params.set('lang', config.lang)
     params.set('preview', '1')
+    if (config.tool) {
+      return `/embed/tool?tool=${encodeURIComponent(config.tool)}&${params.toString()}`
+    }
+    params.set('mode', config.mode)
+    if (!config.toolbar) params.set('toolbar', '0')
+    if (config.readonly) params.set('readonly', '1')
+    if (config.indent !== 2) params.set('indent', String(config.indent))
     return `/embed/json?${params.toString()}`
   }
   return embedUrl.value
@@ -124,8 +141,19 @@ const previewSrc = computed(() => {
 							{{ $t('embed.configTitle') || 'Configuration' }}
 						</h2>
 
-						<!-- Mode -->
+						<!-- Tool -->
 						<div class="mb-4">
+							<label class="block text-sm font-medium text-surface-700 dark:text-surface-300 mb-1.5">
+								{{ $t('embed.tool') || 'Tool' }}
+							</label>
+							<select v-model="config.tool" class="w-full rounded-lg border border-surface-200 bg-white px-3 py-2 text-sm dark:border-surface-700 dark:bg-surface-800">
+								<option value="">{{ $t('embed.jsonEditorViewer') || 'JSON Editor / Viewer (legacy)' }}</option>
+								<option v-for="tl in allTools" :key="tl.slug" :value="tl.slug">{{ tl.name }}</option>
+							</select>
+						</div>
+
+						<!-- Mode (legacy editor/viewer only) -->
+						<div v-if="!config.tool" class="mb-4">
 							<label class="block text-sm font-medium text-surface-700 dark:text-surface-300 mb-1.5">
 								{{ $t('embed.mode') || 'Mode' }}
 							</label>
@@ -191,8 +219,8 @@ const previewSrc = computed(() => {
 							</div>
 						</div>
 
-						<!-- Indent -->
-						<div class="mb-4">
+						<!-- Indent (legacy only) -->
+						<div v-if="!config.tool" class="mb-4">
 							<label class="block text-sm font-medium text-surface-700 dark:text-surface-300 mb-1.5">
 								{{ $t('embed.indent') || 'Indent' }}
 							</label>
@@ -216,7 +244,7 @@ const previewSrc = computed(() => {
 
 						<!-- Toggles -->
 						<div class="space-y-3">
-							<label class="flex items-center gap-3 cursor-pointer">
+							<label v-if="!config.tool" class="flex items-center gap-3 cursor-pointer">
 								<button
 									@click="config.toolbar = !config.toolbar"
 									:class="config.toolbar ? 'bg-primary-600' : 'bg-surface-300 dark:bg-surface-600'"
@@ -232,7 +260,7 @@ const previewSrc = computed(() => {
 								<span class="text-sm text-surface-700 dark:text-surface-300">{{ $t('embed.showToolbar') || 'Show toolbar' }}</span>
 							</label>
 
-							<label class="flex items-center gap-3 cursor-pointer">
+							<label v-if="!config.tool" class="flex items-center gap-3 cursor-pointer">
 								<button
 									@click="config.readonly = !config.readonly"
 									:class="config.readonly ? 'bg-primary-600' : 'bg-surface-300 dark:bg-surface-600'"
@@ -377,12 +405,33 @@ const previewSrc = computed(() => {
 							<span>{{ $t('embed.limitation2') || 'Some features require a modern browser (Chrome, Firefox, Safari, Edge)' }}</span>
 						</li>
 						<li class="flex items-start gap-2">
-							<span class="text-surface-400 mt-0.5">•</span>
-							<span>{{ $t('embed.limitation3') || 'The iframe cannot access the parent page\'s DOM' }}</span>
+						  <span class="text-surface-400 mt-0.5">•</span>
+						  <span>{{ $t('embed.limitation3') || 'The iframe cannot access the parent page\'s DOM' }}</span>
 						</li>
-					</ul>
+						<li class="flex items-start gap-2">
+						  <span class="text-surface-400 mt-0.5">•</span>
+						  <span>{{ $t('embed.limitation4') || 'Embedded tools start empty — paste data inside the iframe. URL pre-fill (#in=) works on hosted tool pages, not on embeds.' }}</span>
+						</li>
+						</ul>
 				</div>
 			</div>
 		</div>
-	</div>
+	  <!-- Parameters -->
+  <div class="bg-white dark:bg-surface-800 rounded-xl border border-surface-200 dark:border-surface-700 p-6 mb-16">
+    <h3 class="text-base font-semibold text-surface-900 dark:text-surface-100 mb-3">
+      {{ $t('embed.paramsTitle') || 'URL parameters' }}
+    </h3>
+    <p class="text-sm text-surface-600 dark:text-surface-400 mb-3">
+      {{ $t('embed.paramsIntro') || 'The generated iframe points at /embed/tool. You can tweak the URL directly:' }}
+    </p>
+    <ul class="space-y-2 text-sm text-surface-600 dark:text-surface-400">
+      <li><code class="rounded bg-surface-100 px-1 py-0.5 text-xs dark:bg-surface-700">tool</code> — {{ $t('embed.paramTool') || 'which tool to embed (slug, e.g. json-to-csv). Required.' }}</li>
+      <li><code class="rounded bg-surface-100 px-1 py-0.5 text-xs dark:bg-surface-700">theme</code> — {{ $t('embed.paramTheme') || 'auto (default) / light / dark.' }}</li>
+      <li><code class="rounded bg-surface-100 px-1 py-0.5 text-xs dark:bg-surface-700">height</code> — {{ $t('embed.paramHeight') || 'iframe height in px (default 480).' }}</li>
+      <li><code class="rounded bg-surface-100 px-1 py-0.5 text-xs dark:bg-surface-700">branding</code> — {{ $t('embed.paramBranding') || 'set branding=0 to hide the footer attribution.' }}</li>
+      <li><code class="rounded bg-surface-100 px-1 py-0.5 text-xs dark:bg-surface-700">lang</code> — {{ $t('embed.paramLang') || 'en (default) / zh.' }}</li>
+    </ul>
+  </div>
+
+</div>
 </template>

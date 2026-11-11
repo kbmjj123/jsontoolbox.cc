@@ -370,6 +370,7 @@ import type { FileFormat } from '~/workers/recordStream.worker'
 import type { SearchTextHit } from '~/utils/textSearch'
 import { validateRegex } from '~/utils/textSearch'
 import { toJsonPath } from '@kbmjj123/json-editor/core'
+import { useRoute } from 'vue-router'
 
 const { t } = useI18n()
 // Shared CSS fullscreen state (same composable `ResizablePanel` uses): it locks
@@ -384,7 +385,16 @@ const rootEl = ref<HTMLElement>()
 // the `flex-1` chains collapse, the text viewer expands to its full content
 // height and the virtual list renders every line — freezing the tab.
 // While "fullscreen" the component becomes a fixed overlay filling the viewport.
+const route = useRoute()
+const isEmbed = computed(() => route.path.startsWith('/embed'))
+
 const rootClass = computed(() => {
+  // Inside an embed iframe the component must fill the shell's flex region, not
+  // the iframe viewport. The fullscreen overlay is disabled there so it never
+  // covers the shell's branding chrome.
+  if (isEmbed.value) {
+    return 'flex h-full min-h-0 flex-col'
+  }
   if (isFullscreen.value) {
     return 'fixed inset-0 z-50 flex h-screen min-h-0 flex-col bg-white p-4 dark:bg-surface-900'
   }

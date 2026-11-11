@@ -74,17 +74,6 @@
     <!-- Related Articles (component guards its own visibility) -->
     <ToolRelatedPosts :slugs="relatedPosts" />
 
-    <!-- Related Tools -->
-    <section v-if="relatedSlugs.length > 0">
-      <h2 class="mb-4 text-lg font-bold text-surface-900 dark:text-surface-100">
-        {{ $t('tool.related_title') }}
-      </h2>
-      <ToolRelated
-        :tools="relatedSlugs"
-        :current-slug="tool.slug"
-      />
-    </section>
-
 		<!-- FAQ -->
     <section v-if="tool.faq?.length">
       <h2 class="mb-4 text-lg font-bold text-surface-900 dark:text-surface-100">
@@ -105,14 +94,6 @@ const { getToolBySingleSlug } = useTools()
 // Curated blog slugs from the tool JSON. Drafts and posts missing the current
 // locale are filtered out inside useBlog, so they simply do not render.
 const relatedPosts = computed(() => props.tool.relatedPosts || [])
-
-// ToolRelated takes one flat slug list, so nextSteps and recommends are merged
-// here. Passing them separately left the component's `tools` prop undefined and
-// the whole block rendered empty.
-const relatedSlugs = computed(() => [
-  ...(props.tool.nextSteps || []),
-  ...(props.tool.recommends || []),
-])
 
 // Derive article links from nextSteps + recommends (no need to maintain article.links in JSON)
 const articleLinks = computed(() => {

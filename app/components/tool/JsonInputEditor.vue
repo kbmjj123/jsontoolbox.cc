@@ -248,6 +248,7 @@ import SensitiveFieldWarning from '~/components/tool/SensitiveFieldWarning.vue'
 import { useSensitiveFieldDetection } from '~/composables/useSensitiveFieldDetection'
 import { useDebounceFn } from '@vueuse/core'
 import { decodeInbound, InboundError, INBOUND_HASH_PREFIX } from '~/utils/share'
+import { useToolHandoff } from '~/composables/useToolHandoff'
 
 const { t } = useI18n()
 const toast = useToast()
@@ -319,6 +320,17 @@ const props = withDefaults(defineProps<Props>(), {
   readonly: false,
   showSensitiveWarning: true,
 })
+
+// ── Cross-tool handoff: mirror the live input so the related-tools links in
+// ToolRelated can carry it into the next tool via the #in= inbound protocol.
+// Client-only so SSR-rendered SEO links stay clean path-only URLs.
+const { setCurrentInput } = useToolHandoff()
+if (import.meta.client) {
+  watch(
+    () => props.modelValue,
+    (val) => setCurrentInput(val || ''),
+  )
+}
 
 const emit = defineEmits<{
   'update:modelValue': [value: string]

@@ -143,6 +143,12 @@
 | S1-1 配套 | `app/assets/data/examples/json-repair.json` 补 3 个对应真实排错查询的坏样本：`truncated-response`、`html-error-page`、`concatenated-json`；`useShareJson.ts` 的 `getToolPath` 加注释澄清为有意设计 |
 | S1-3（部分） | 修正 `llms.txt.ts:53,127` 的离线措辞（见 9.2） |
 | **方案 A：`#in=` 任意数据带状态进入** | 新增 `app/utils/share/inbound.ts`（复用 `jtb1d` + deflate-raw，独立 payload `{version,text,input2?,label?}`）；`JsonInputEditor` 接入，优先级 `#in=` > `?example=` > 默认示例；解码失败/超限给中英提示并回退；新增 `scripts/make-inbound-url.mjs` 生成链接（含自检、三层上限、敏感数据警示） |
+| **S2-3 坏 JSON 语料库** | 新增 `scripts/build-bad-json-corpus.mjs`：14 条样本按 14 类错误分类，每条用真实 `JSON.parse` 实测报错（非手写）并预生成 `#in=` 深链（`inbound.ts` 同格式）；落盘 `public/data/bad-json-corpus.json` 可下载，每条链接可在 JSON Repair 直接复现报错。覆盖原 `scripts/samples/` 死样本场景 |
+| **S2-1 embed 通用化** | 新增 `app/pages/embed/tool.vue` 通用壳：按 `?tool=<slug>` 复用工具页 `import.meta.glob` 解析任意 universal 组件并渲染，31 个工具一次覆盖；生成器 `embed/index.vue` 增加工具选择器并分支生成 `/embed/tool` 片段（旧 editor/viewer 走 `/embed/json` 保持兼容）；README 与 i18n 同步「可嵌入任意工具」。静态核查 32 个 universal 组件：仅 `LargeJsonViewer` 用硬编码视口高度（`100vh`/`calc`/`fixed`）需 embed 适配，已补 embed 分支（`h-full` 占满外壳、禁用全屏覆盖层）；其余组件均为 `ResizablePanel` / `h-full` 自管理根，与工具页形态一致，embed 下直接可用 |
+| **S2-2 结果驱动工具链** | 新增 `app/composables/useToolHandoff.ts`：客户端共享镜像「当前工具输入」（`useState`，SSR 为空，保证 SEO 链接干净）。`JsonInputEditor` 一处加客户端 watch 写入（覆盖 24 个用它的工具，同 S1-1 套路）；`ToolRelated` 的相关工具链接改为 `linkTo()`，读取镜像输入并经 `#in=` 协议异步编码附加到目标 URL，下游 universal 组件自动预填。8 个未用 `JsonInputEditor` 的工具（生成器/PDF/表格/大文件）降级为干净 path（与方案 A 的 `#in=` 覆盖范围一致）；SSR 不携带数据，仅客户端交互后生效 |
+| **S2-2 续：相关工具位置上移** | 把「相关工具」从 `ToolSeoContent` 底部（Features/Guide/Example/Article/FAQ 之后）抽到工具页 `universal` 组件正下方独立 section，使其紧贴工具主体、用户处理完数据即见下一步入口。`ToolSeoContent` 移除该 section 与死代码 `relatedSlugs`；合并逻辑（nextSteps+recommends）迁到工具页。embed 外壳不引用 `ToolSeoContent`，不受影响 |
+| **S2-6 离线可安装 PWA（技术部分）** | 手写 `public/sw.js`（导航 network-first、静态 cache-first、版本化缓存、旧缓存清理）+ 在 `app.vue` 生产环境注册（`import.meta.dev` 守卫，dev 不注册以免缓存干扰）。`site.webmanifest` 字段（name/icons/display/start_url/scope）本已齐备，补上 SW 即成为真 PWA。analytics 文案不属本项（归 S2-7/S1-3） |
+| **S2-7 README 产品说明书（非 B5 部分）** | README 新增 `## Embedding`（`/embed/tool` 参数表 tool/theme/height/branding/lang + 可复制 iframe 示例）、`## Share & stateful links`（#in= 片段协议、工具间跳转自动携带、诚实标注 embed 不读 #in=、Share 按钮待 S1-2）；增强 `### Self-hosting with Docker`（补源码 build 命令 + 环境变量表 NUXT_PUBLIC_SELF_HOSTED/SITE_URL/SITE_NAME/JT_BASE_URL）。embed 生成器页（`app/pages/embed/index.vue`）同步补「URL parameters」说明卡 + Limitations 补 limitation4（诚实标注 embed 不读 #in=、初始空白），en/zh locale 同步；中文 README（docs/README.zh-CN.md）同步补「嵌入」「分享与带状态链接」「使用 Docker 自托管」三块，双语一致。analytics 段仍待 B5 口径 |
 
 ### 9.2 按代码事实修正的清单描述
 
@@ -159,7 +165,10 @@
 | B1–B6 | 需用户导出报表 / 拍板 |
 | S1-2 | 依赖 B5（埋点口径） |
 | S1-4 | 依赖 B1 |
-| S2-1～S2-7 | 依赖 S1-1 验收与 B5；且属下一阶段工程 |
+| S2-4、S2-5 | S2-4 无依赖；S2-5 依赖 S1-1（已完成）。两者现在可做；S2-5 仍受「大文件如何站内托管（约 400MB，不能进 git）」与「LargeJsonViewer 远程加载深链（当前仅本地上传）」两个未决工程点制约 |
+| S2-6 离线 PWA | 已完成（手写 sw.js + 生产注册；manifest 字段已齐备），不依赖 B5 |
+| S2-7 README 说明书 | 非 B5 部分（嵌入 / 带状态链接 / 自托管文档）已完成；仅 analytics 说明段依赖 S1-3 的 tracking 口径（B5），待其拍板 |
+| S2-1、S2-2、S2-3 | 已完成（均不依赖 B5） |
 | S3 全部 | 依赖 T2 数据与预填链路验收 |
 | S1-3 tracking 部分 | 依赖 B5 |
 
@@ -177,3 +186,11 @@ node scripts/make-inbound-url.mjs /tools/format/json-schema-validator ./data.jso
 - 优先级：`#in=` > `?example=` > 内置默认示例；只在 `/tools/` 路径生效。
 - 覆盖 24 个使用 `JsonInputEditor` 的工具页；8 个未调用 `loadDefaultExample()` 的组件（生成器/PDF/表格/大文件查看器）暂不覆盖。
 - `JSON_TOOLBOX_ORIGIN` 环境变量可切换域名，便于本地验证。
+
+### 9.5 坏 JSON 语料库用法
+
+- 数据文件：`public/data/bad-json-corpus.json`，可访问 `/data/bad-json-corpus.json` 直接下载。
+- 结构：`categories`（14 类错误）+ `items`（14 条）；每条含 `id` / `category` / 中英标题与说明 / `input`（坏 JSON 原文）/ `expectedError`（由 `JSON.parse` 实测，非手写）/ `deepLink`（预生成的 `#in=` 链接）。
+- 复现：点 `deepLink` 即在 JSON Repair 预载样本，点「修复」即可看到对应报错；`expectedError` 即预期信息。
+- 重建：`node scripts/build-bad-json-corpus.mjs`（改样本或新增类别后重跑；`JSON_TOOLBOX_ORIGIN` 可切换域名）。
+- 注意：原 `scripts/samples/` 的 4 个文件已被本语料库系统覆盖，且实际无 Playwright 引用，属冗余死资源；清理留待后续（不在本轮删除范围）。

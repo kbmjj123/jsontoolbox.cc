@@ -20,18 +20,86 @@ Everything runs in your browser. Your JSON is parsed, converted, and rendered lo
 - **Built for large files.** Files over 5 MB are handed off to a dedicated viewer that renders only the visible rows and searches in a Web Worker, so multi-megabyte JSON and NDJSON stay usable instead of freezing the tab.
 - **Honest about limits.** Tools report when an operation does not help — for example, the JSON ↔ TOON converter tells you when TOON is larger than minified JSON, and JSON Repair reports an error rather than returning half-recovered output.
 - **Guides, not just tools.** Tutorials and comparisons that explain the *why* behind the formats: JSON vs JSONL, JSON vs YAML, JSON vs TOON, comments in JSON, and more.
-- **Embeddable.** Drop a JSON editor or viewer into your own docs with an iframe generated at [jsontoolbox.cc/embed](https://jsontoolbox.cc/embed).
+- **Embeddable.** Drop any of the 31 JSON tools into your own docs with an iframe generated at [jsontoolbox.cc/embed](https://jsontoolbox.cc/embed).
 
 ---
 
 ## Usage
 
 - **Hosted version:** [https://jsontoolbox.cc](https://jsontoolbox.cc)
-- **Embed in documentation:** generate an iframe snippet (editor or viewer, light/dark, height, readonly, branding) with the [embed generator](https://jsontoolbox.cc/embed)
+- **Embed in documentation:** generate an iframe snippet for any tool (light/dark, height, branding, language) with the [embed generator](https://jsontoolbox.cc/embed)
 - **Self-host:** deploy the whole toolbox on your own infrastructure
 - **Reuse components:** install the standalone editor from npm (`@kbmjj123/json-editor`) or drop it in with a script tag from jsDelivr/unpkg. See the [developers page](https://jsontoolbox.cc/developers).
 
 ---
+
+## Embedding
+
+Drop any of the 31 tools into your own docs, blog, or internal wiki with a
+single `<iframe>`. Two ways:
+
+1. **Generator (recommended):** open the [embed generator](https://jsontoolbox.cc/embed),
+   pick a tool, theme, height, and language, and copy the snippet it produces.
+2. **Manual:** construct the iframe `src` from the parameters below.
+
+### Embed URL parameters
+
+The endpoint is `/embed/tool`. Supported query parameters:
+
+| Param | Values | Default | Notes |
+|---|---|---|---|
+| `tool` | tool slug (e.g. `json-to-csv`, `large-json-viewer`) | — | Selects the tool. Slugs are globally unique across all 31 tools. |
+| `theme` | `auto` \| `light` \| `dark` | `auto` | `auto` follows the visitor's OS setting. |
+| `height` | pixels (e.g. `520`) | `480` | Initial iframe height. |
+| `branding` | `0` to hide | shown | Hides the small "Runs locally · JsonToolBox" footer. |
+| `lang` | `en` \| `zh` | `en` | UI language inside the iframe. |
+
+### Example
+
+Embed the JSON → CSV converter, dark theme, 520px tall, no branding:
+
+```html
+<iframe
+  src="https://jsontoolbox.cc/embed/tool?tool=json-to-csv&theme=dark&height=520&branding=0&lang=en"
+  width="100%"
+  height="520"
+  loading="lazy"
+  title="JSON to CSV">
+</iframe>
+```
+
+### Notes
+
+- **Everything runs in the visitor's browser.** The iframe loads static assets;
+  no JSON is ever uploaded to a server.
+- **The embedded tool starts empty.** It does not pre-fill data from the URL
+  (see [Share & stateful links](#share--stateful-links) for pre-filled links on
+  the hosted tool pages).
+- The legacy endpoint `/embed/json?mode=editor|viewer&...` still works for the
+  classic editor/viewer shell, but new integrations should use `tool=<slug>`.
+
+## Share & stateful links
+
+Tools can carry their current input in the URL, so a link preserves the data
+you're working on. Open it and the tool pre-fills automatically — no upload, no
+account.
+
+The payload lives in the URL **fragment** (`#in=…`), which browsers never send
+to a server and never log. It is compressed with deflate-raw so even moderately
+large inputs stay URL-safe; inputs over the size limit are silently dropped and
+the link falls back to an empty tool.
+
+Where this shows up today:
+
+- **Tool-to-tool jumps.** The "Related tools" links at the bottom of every tool
+  page append `#in=` with your current input, so moving from one tool to the
+  next keeps your data flowing through the chain.
+- **Bookmarks / shared links.** A Share control will copy a ready-made `#in=`
+  link once it ships; the same fragment also works if you build the URL with the
+  site's encoder.
+
+> Note: the embed iframe (`/embed/tool`) is a clean shell and does **not** read
+> `#in=` — it always starts empty so the visitor can paste their own data.
 
 ## Tools
 
@@ -165,7 +233,7 @@ You can also run `pnpm generate` for a full prerender, or `pnpm preview` to serv
 
 ### Self-hosting with Docker
 
-Run your own instance without a Node toolchain — no build step required:
+**Option A — prebuilt image (no toolchain):**
 
 ```bash
 docker run -d --name jsontoolbox -p 127.0.0.1:8080:8080 ghcr.io/kbmjj123/jsontoolbox:latest
@@ -173,7 +241,38 @@ docker run -d --name jsontoolbox -p 127.0.0.1:8080:8080 ghcr.io/kbmjj123/jsontoo
 
 Then open <http://127.0.0.1:8080>.
 
-The image is a two-stage build: the prerendered static site is built once, then served by nginx (unprivileged, port 8080). All JSON processing still happens in the browser. Configuration, offline behaviour, upgrade/rollback and network exposure:
+**Option B — build from source:**
+
+```bash
+# Build with your public address baked in (canonical URLs, sitemap, OG cards)
+docker build -t jsontoolbox \
+  --build-arg SITE_URL=https://your-domain.example \
+  --build-arg SITE_NAME="My JSON Tools" .
+
+docker run -d --name jsontoolbox -p 8080:8080 jsontoolbox
+```
+
+If the public address isn't known at build time, skip the build args and
+override it at runtime instead (the container rewrites the base URL from
+`JT_BASE_URL` on start):
+
+```bash
+docker run -d --name jsontoolbox -p 8080:8080 \
+  -e JT_BASE_URL=https://your-domain.example \
+  jsontoolbox
+```
+
+| Variable | Stage | Default | Purpose |
+|---|---|---|---|
+| `NUXT_PUBLIC_SELF_HOSTED` | build (Dockerfile) | `1` | Marks the build as self-hosted: disables public sitemap/OG and sets `noindex`. |
+| `NUXT_PUBLIC_SITE_URL` | build (`--build-arg`) | `http://localhost:8080` | Canonical URLs, sitemap, and social cards. |
+| `NUXT_PUBLIC_SITE_NAME` | build (`--build-arg`) | `JSON Toolbox` | Site name used in page titles. |
+| `JT_BASE_URL` | runtime (`-e`) | — | Overrides the base URL at container start when the address isn't known at build time. |
+
+The image is a two-stage build: the prerendered static site is built once, then
+served by nginx (unprivileged, port 8080). All JSON processing still happens in
+the browser. Configuration, offline behaviour, upgrade/rollback and network
+exposure:
 [English](./docs/self-hosting/docker.en.md) · [简体中文](./docs/self-hosting/docker.zh-CN.md)
 
 > Image name is provisional (`ghcr.io/kbmjj123/jsontoolbox`) and arm64 has not been smoke-tested on real hardware yet.

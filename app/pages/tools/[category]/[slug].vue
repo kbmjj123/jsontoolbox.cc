@@ -32,6 +32,19 @@
           <PrivacyNotice />
         </div>
 
+        <!-- Related Tools: result-driven chain surfaced directly below the tool
+             body, not buried in the SEO stack, so users can carry their data
+             into a next-step tool right after using this one. -->
+        <section v-if="relatedSlugs.length > 0" class="mt-8">
+          <h2 class="mb-4 text-lg font-bold text-surface-900 dark:text-surface-100">
+            {{ $t('tool.related_title') }}
+          </h2>
+          <ToolRelated
+            :tools="relatedSlugs"
+            :current-slug="tool.slug"
+          />
+        </section>
+
         <!-- SEO Content Sections -->
         <ToolSeoContent :tool="tool" class="mt-12" />
       </div>
@@ -58,6 +71,13 @@ const localePath = useLocalePath()
 const category = computed(() => route.params.category as string)
 const slug = computed(() => route.params.slug as string)
 const tool = computed(() => getToolDetail(category.value, slug.value))
+
+// Next-step tools for the result-driven chain. Mirrors the merge that used to
+// live inside ToolSeoContent so the block can sit directly under the tool body.
+const relatedSlugs = computed(() => [
+  ...(tool.value?.nextSteps || []),
+  ...(tool.value?.recommends || []),
+])
 
 // 1. 扫描组件 (使用 eager: false 进行懒加载)
 const componentFiles = import.meta.glob('~/components/universal/*.vue')

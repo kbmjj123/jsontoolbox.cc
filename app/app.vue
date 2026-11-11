@@ -116,6 +116,15 @@
     window.addEventListener('keydown', handler)
     onUnmounted(() => window.removeEventListener('keydown', handler))
   })
+
+  // Service worker: offline-capable PWA. Registered only in production builds
+  // so the dev server is never shadowed by a stale cache.
+  onMounted(() => {
+    if (import.meta.dev || !('serviceWorker' in navigator)) return
+    const register = () => navigator.serviceWorker.register('/sw.js').catch(() => {})
+    if (document.readyState === 'complete') register()
+    else window.addEventListener('load', register)
+  })
 </script>
 
 <template>
