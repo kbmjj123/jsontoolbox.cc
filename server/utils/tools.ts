@@ -36,7 +36,7 @@ export function getToolsFlat(): ToolInfo[] {
     for (const file of files) {
       try {
         const data = JSON.parse(readFileSync(resolve(catDir, file), 'utf-8'))
-        const slug = data.slug || file.replace('.json$', '')
+        const slug = data.slug || file.replace(/\.json$/, '')
         tools.push({
           name: data.en?.name || slug,
           description: data.en?.description || '',
@@ -87,7 +87,7 @@ export function getGroupedTools(): Record<string, CategoryGroup> {
     for (const file of files) {
       try {
         const data = JSON.parse(readFileSync(resolve(catDir, file), 'utf-8'))
-        const slug = data.slug || file.replace('.json$', '')
+        const slug = data.slug || file.replace(/\.json$/, '')
         tools.push({
           name: data.en?.name || slug,
           description: data.en?.description || '',

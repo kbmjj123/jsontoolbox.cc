@@ -33,7 +33,7 @@ export function getBlogs(): BlogEntry[] {
   for (const file of files) {
     try {
       const raw = readFileSync(resolve(contentDir, file), 'utf-8')
-      const slug = file.replace('.md$', '')
+      const slug = file.replace(/\.md$/, '')
 
       // 草稿文章不对外输出
       if (isDraft(raw)) continue

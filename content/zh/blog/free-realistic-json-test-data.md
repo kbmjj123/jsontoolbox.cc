@@ -7,7 +7,7 @@ lastmod: 2026-09-08
 author: "JSON Toolbox Team"
 image: "/blog/cover/zh/free-realistic-json-test-data-cover.svg"
 tags: ["JSON", "测试数据", "JSON 编辑器", "性能测试", "JSON 查看器", "开发者工具"]
-locales: ["zh"]
+locales: ["zh-CN", "en"]
 promo:
   slug: "json-editor"
   text: "🚀 想直接打开这些文件？试试 JSON 编辑器："

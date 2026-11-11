@@ -19,7 +19,8 @@ promo:
   text: "先检查 JSON 语法是否正确："
   btn: "打开 JSON 校验工具"
 locales:
-  - "zh"
+  - "zh-CN"
+  - "en"
   - "en"
 ---
 

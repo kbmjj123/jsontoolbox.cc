@@ -123,3 +123,19 @@ To enable cross-engine analysis:
 - Bing may index and rank pages differently than Google
 - Cross-engine analysis provides a more complete picture of search performance
 - Data is not committed to git (add to `.gitignore` if needed)
+
+## 当前报表（2026-11-11）与待补维度
+
+- `bing.csv`：76 天（2026-08-25 → 11-08），仅 4 列 `日期 / 点击次数 / 印象数 / 平均 点击率`，**没有 query、page、position**。
+- 后果：297 clicks / 25,861 impressions 完全无法归因到页面或查询词，也无法按 §Cross-Engine Analysis 与 GSC 做 query 级交叉分析。**这是当前最大的分析盲区。**
+- 补导方式：WMT portal 的 `Search Keywords` + `Page Traffic` 两个导出，或调用 `GetQueryTraffic` / `GetPageTraffic` / `GetQueryPageTraffic` 三个端点；按上方 File Naming Convention 命名为 `latest-queries.csv`、`latest-pages.csv`、`latest-query-page.csv`。
+- 期望列：`query,page,clicks,impressions,ctr,position`（中文列名也可，校验脚本会做归一匹配）。导出日期范围请与 GSC 对齐，否则不可比。
+- 口径警告：同期对齐后 Bing 曝光是 GSC 的 2.7×、点击 5.8×，两侧 impression 统计口径不同（Bing 可能含 Copilot 等 AI 搜索曝光）。**禁止相加、禁止据此下「Bing 流量更大」或「AI 拿走了流量」的结论**；先补齐维度再谈。
+
+## 校验
+
+```
+node scripts/validate-seo-reports.mjs
+```
+
+只做检查、不改写报表；`--strict` 可在缺维度时返回非 0 退出码。

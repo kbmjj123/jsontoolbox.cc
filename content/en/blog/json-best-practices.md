@@ -415,7 +415,7 @@ Benefits:
 
 ### 5.2 Use JSON Schema for Runtime Validation
 
-For third-party data or critical endpoints, define structure with JSON Schema and validate at runtime:
+For third-party data or critical endpoints, define structure with JSON Schema and validate at runtime. You can check a sample payload against a schema with the [JSON Schema Validator](/tools/format/json-schema-validator) before wiring validation into your code:
 
 ```json
 {

@@ -20,7 +20,7 @@ promo:
   btn: "Open JSON Schema Validator"
 locales:
   - "en"
-  - "zh"
+  - "zh-CN"
 ---
 
 

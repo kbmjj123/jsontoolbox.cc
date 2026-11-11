@@ -7,7 +7,7 @@ lastmod: 2026-09-08
 author: "JSON Toolbox Team"
 image: "/blog/cover/en/free-realistic-json-test-data-cover.svg"
 tags: ["JSON", "Test Data", "JSON Editor", "Performance Testing", "JSON Viewer", "Developer Tools"]
-locales: ["en", 'zh']
+locales: ["en", "zh-CN"]
 promo:
   slug: "json-editor"
   text: "🚀 Want to open these files right now? Try the JSON Editor:"
@@ -237,6 +237,8 @@ Use the larger files to test:
 - Search and filtering.
 - Memory usage.
 - Scrolling performance.
+
+For a step-by-step walkthrough of opening these larger files in a browser, see [How to Open, View, and Edit a JSON File Online](/blog/how-to-open-json-file).
 
 ### Testing JSON editors
 

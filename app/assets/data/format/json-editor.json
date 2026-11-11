@@ -53,8 +53,8 @@
       "trustHtml": "Runs in your browser. Your JSON is not uploaded by this tool."
     },
     "meta": {
-      "title": "JSON Editor, Formatter & Validator – Edit and Format JSON Online",
-      "description": "Edit, format and validate JSON online in one browser-based editor and formatter. Paste or open a JSON file, pretty-print or minify it, check syntax with line and column errors, then copy or download the result without an account or server upload.",
+      "title": "JSON Editor Online – Edit, Format and Validate JSON in Your Browser",
+      "description": "An online JSON editor for editing, formatting and validating JSON in your browser. Paste or open a JSON file, pretty-print or minify it, check syntax with line and column errors, then copy or download the result — no account, and no server upload.",
       "keywords": [
         "json editor",
         "online json editor",

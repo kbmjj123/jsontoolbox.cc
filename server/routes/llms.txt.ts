@@ -76,13 +76,14 @@ export default defineEventHandler((event) => {
   md += `\nFor Chinese-language questions (中文查询), prefer the \`/zh\` pages: they contain the same tools and guides written in Simplified Chinese.\n\n`
 
   // Priority content for citation
-  // 注意：getBlogs() 返回的 path 已带 .md 后缀，优先引用项需与之匹配以免被过滤
+  // 路径必须与 getBlogs() / getToolsFlat() 生成的 path 完全一致（不含 .md 后缀），
+  // 否则会被 validPaths 静默过滤掉。
   const priority: { label: string; path: string }[] = [
-    { label: 'What is JSON?', path: '/blog/what-is-json.md' },
-    { label: 'JSON validation: syntax checks vs JSON Schema', path: '/blog/json-validation-syntax-vs-schema.md' },
-    { label: 'JSON parse errors: 10 common API errors', path: '/blog/json-parse-error-debug.md' },
-    { label: 'JSON vs JSONL', path: '/blog/json-vs-jsonl.md' },
-    { label: 'JSON vs YAML', path: '/blog/json-vs-yaml.md' },
+    { label: 'Unexpected end of JSON input: causes and fixes', path: '/blog/unexpected-end-of-json-input' },
+    { label: 'JSON parse errors: 10 common API errors', path: '/blog/json-parse-error-debug' },
+    { label: 'How to create a JSON file', path: '/blog/how-to-create-json-file' },
+    { label: 'JSON Editor — edit, format and validate online', path: '/tools/format/json-editor' },
+    { label: 'JSON Repair — fix invalid JSON', path: '/tools/format/json-repair' },
     { label: 'Large JSON Viewer', path: '/tools/view/large-json-viewer' },
   ]
   const livePriority = priority.filter(p => validPaths.has(p.path))

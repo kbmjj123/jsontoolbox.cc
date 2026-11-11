@@ -1,6 +1,6 @@
 ---
 title: "Unexpected End of JSON Input: Causes and Fixes"
-description: "Unexpected end of JSON input: the parser ran out of text too early. Diagnose empty, truncated, or unclosed JSON, then fix it in fetch, Node, and files."
+description: "Unexpected end of JSON input means the parser ran out of text too early. Diagnose an empty, truncated, or unclosed response, then paste it into the browser-based JSON Repair tool to fix it — with examples for fetch, Node, and files."
 h1: "Unexpected End of JSON Input: What It Means and How to Fix It"
 category: "json_tools"
 date: 2026-10-04
