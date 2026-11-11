@@ -1,7 +1,7 @@
 ---
 title: About JSON Toolbox
 description: Learn about JSON Toolbox — a free, open-source collection of JSON tools for developers.
-updatedAt: 2026-08-25
+updatedAt: 2026-11-11
 ---
 
 # About JSON Toolbox
@@ -20,7 +20,7 @@ browser using client-side JavaScript — no data is ever uploaded to any server.
 - **100% Client-Side:** All processing happens in your browser. Your JSON data never leaves your device.
 - **Free Forever:** No sign-up, no limits, no hidden fees.
 - **Privacy First:** We don't track you, store your data, or show invasive ads.
-- **Open Source:** Our code is publicly available for transparency and community contributions.
+- **Open Source:** Our code is publicly available for transparency and community contributions. Find all four repositories on the [developers page](/developers).
 
 ## Available Tools
 

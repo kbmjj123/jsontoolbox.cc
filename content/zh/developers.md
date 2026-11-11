@@ -1,7 +1,7 @@
 ---
 title: 开发者与嵌入
 description: 在你自己的项目中使用 JSON Toolbox 编辑器 —— Vue 3 组件、Web Component 或纯 script 标签。免费、开源、100% 客户端。
-updatedAt: 2026-10-08
+updatedAt: 2026-11-11
 ---
 
 ## 安装
@@ -71,6 +71,17 @@ CDN 包也可通过 [unpkg](https://unpkg.com/@kbmjj123/json-editor) 获取。
 - 只读树视图：折叠展开、搜索、复制路径与值
 - 浅色 / 深色 / 自动主题
 - 可选 `attribution` 角标，自然获得反向链接
+
+## 开源项目
+
+JSON Toolbox 由四个独立仓库分别维护，每个项目都自包含，并回链到本站。
+
+| 仓库 | 说明 | 源码 |
+|---|---|---|
+| 主站 | 本站源码（Nuxt 4）：格式化、校验、转换与浏览 JSON 的纯前端工具 | [GitHub](https://github.com/kbmjj123/jsontoolbox.cc) |
+| `@kbmjj123/json-editor` | 已发布到 npm 的编辑器库：Vue 3 组件、Web Component 或 CDN 脚本 | [GitHub](https://github.com/kbmjj123/json-editor) |
+| 浏览器插件 | Chrome/Edge MV3 扩展，自动把裸 JSON 页面渲染为只读树视图 | [GitHub](https://github.com/kbmjj123/json-browser-plugins) |
+| Obsidian 插件 | Obsidian 内的富 JSON/YAML 查看器，含 14 类内联预览 | [GitHub](https://github.com/kbmjj123/json-toolbox) |
 
 ## 源码与许可
 

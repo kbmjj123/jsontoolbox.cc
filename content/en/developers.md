@@ -1,7 +1,7 @@
 ---
 title: Developers & Embed
 description: Use the JSON Toolbox editor in your own project — Vue 3 component, Web Component, or plain script tag. Free, open source, and 100% client-side.
-updatedAt: 2026-10-08
+updatedAt: 2026-11-11
 ---
 
 ## Get the package
@@ -71,6 +71,18 @@ The CDN bundle is also available on [unpkg](https://unpkg.com/@kbmjj123/json-edi
 - Read-only tree view with collapse/expand, search, copy path/value
 - Light / dark / auto theming
 - Optional `attribution` badge for a natural backlink
+
+## Open-source projects
+
+JSON Toolbox is maintained as four separate repositories. Each project is
+self-contained and links back to this site.
+
+| Repository | What it is | Source |
+|---|---|---|
+| Site | This Nuxt 4 site: client-side tools to format, validate, convert and view JSON | [GitHub](https://github.com/kbmjj123/jsontoolbox.cc) |
+| `@kbmjj123/json-editor` | The editor library published on npm — Vue 3 component, Web Component or CDN script | [GitHub](https://github.com/kbmjj123/json-editor) |
+| Browser extension | Chrome/Edge MV3 extension that turns raw JSON pages into a read-only tree | [GitHub](https://github.com/kbmjj123/json-browser-plugins) |
+| Obsidian plugin | Rich JSON/YAML viewer for Obsidian with 14 kinds of inline previews | [GitHub](https://github.com/kbmjj123/json-toolbox) |
 
 ## Source & license
 
