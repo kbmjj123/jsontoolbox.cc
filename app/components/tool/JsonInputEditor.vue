@@ -247,6 +247,7 @@
 import SensitiveFieldWarning from '~/components/tool/SensitiveFieldWarning.vue'
 import { useSensitiveFieldDetection } from '~/composables/useSensitiveFieldDetection'
 import { useDebounceFn } from '@vueuse/core'
+import { decodeInbound, InboundError, INBOUND_HASH_PREFIX } from '~/utils/share'
 
 const { t } = useI18n()
 const toast = useToast()
@@ -376,12 +377,50 @@ const onExampleSelect = (id: string) => {
   }
   showExampleMenu.value = false
 }
-const loadDefaultExample = () => {
-  const ex = examples.value[0]
+const route = useRoute()
+
+/** Fallback path: ?example=<id>, or the tool's first built-in example. */
+const loadFallbackExample = () => {
+  // ?example=<id> lets an external page (article, docs, error log) open a tool
+  // with a specific sample already loaded. Restrict to /tools/ so the same
+  // parameter name on /embed/json keeps its existing meaning (example slug).
+  const requestedId = route.path.startsWith('/tools/') && typeof route.query.example === 'string'
+    ? route.query.example
+    : ''
+  const ex = (requestedId ? examples.value.find(e => e.id === requestedId) : undefined)
+    ?? examples.value[0]
   if (!ex) return
   emit('update:modelValue', ex.input)
   emit('example-loaded', ex.input)
   if (ex.input2 != null) emit('example-loaded-secondary', ex.input2)
+}
+
+/** ?in=<encoded> carries arbitrary text into the editor: editable, no network. */
+const applyInbound = async (encoded: string) => {
+  try {
+    const payload = await decodeInbound(encoded)
+    emit('update:modelValue', payload.text)
+    emit('example-loaded', payload.text)
+    if (payload.input2 != null) emit('example-loaded-secondary', payload.input2)
+  } catch (err) {
+    const reason = err instanceof InboundError ? err.reason : 'invalid'
+    toast.error(t(reason === 'too-large' ? 'system.inboundTooLarge' : 'system.inboundInvalid'))
+    loadFallbackExample()
+  }
+}
+
+const loadDefaultExample = () => {
+  // The fragment is used instead of a query param so the encoded JSON never
+  // appears in server logs or Referer headers (same rationale as #share=).
+  const hash = typeof window !== 'undefined' ? window.location.hash : ''
+  const inbound = route.path.startsWith('/tools/') && hash.startsWith(INBOUND_HASH_PREFIX)
+    ? hash.slice(INBOUND_HASH_PREFIX.length)
+    : ''
+  if (inbound) {
+    void applyInbound(inbound)
+    return
+  }
+  loadFallbackExample()
 }
 const handleClickOutside = (e: MouseEvent) => {
   if (!showExampleMenu.value) return

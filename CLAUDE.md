@@ -36,6 +36,13 @@ Free, client-side JSON tools for developers. Nuxt 4 + Vue 3 + TypeScript + Tailw
 
 新增或改造工具落地页前**先读这份**：注册机制、字段由谁渲染、可复用组件/composable 清单、既有缺陷（如 `hero.trustHtml` 不渲染、`ToolRelated` props 不匹配）、ship gate 验证命令。规则文件讲规范，这份讲当前代码库的实际行为。
 
+## Content Direction & Next Steps
+
+@docs/content-direction-plan.md
+@docs/next-steps-checklist.md
+
+方向判断、取舍与被否决的备选路线看 `content-direction-plan.md`；**所有待办以 `next-steps-checklist.md` 为唯一执行入口**，不要从已删除的旧选题队列派工。
+
 ## Quick Reference
 
 ### Adding a New Tool

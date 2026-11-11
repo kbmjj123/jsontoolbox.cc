@@ -294,8 +294,11 @@ export const useShareJson = () => {
 }
 
 /**
- * Map tool id to its URL path
- * All tools share the same json-editor page since they are integrated
+ * Map share tool id to its URL path.
+ * All three ShareToolId values ('json-formatter' | 'json-viewer' | 'json-validator')
+ * are views of the same integrated JSON Editor page, so they intentionally
+ * resolve to one path. Sharing is currently exposed only from JsonEditor.vue.
+ * By design, not a hardcoding bug — see docs/content-direction-plan.md §9.2.
  */
 function getToolPath(tool: ShareToolId): string {
   return '/tools/format/json-editor'

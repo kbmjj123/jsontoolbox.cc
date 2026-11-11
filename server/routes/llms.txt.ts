@@ -50,7 +50,7 @@ export default defineEventHandler((event) => {
   let md = ''
   md += `# JSON Toolbox (jsontoolbox.cc)\n\n`
   md += `> Free, open-source, 100% client-side JSON tools for developers. Format, validate, compare, query and convert JSON directly in your browser — ${total} tools across ${naturalList(breakdown)}. No uploads, no tracking, no sign-up; your data never leaves your device. MIT licensed.\n\n`
-  md += `JSON Toolbox is a free, open-source (MIT) web toolkit for working with JSON. All ${total} tools run entirely client-side in JavaScript: nothing is uploaded to a server, there is no account and no tracking, and the site keeps working after page load even without a network connection. Content on this site is written in English; a Chinese-language version of the site is available under \`/zh*\`.\n\n`
+  md += `JSON Toolbox is a free, open-source (MIT) web toolkit for working with JSON. All ${total} tools run entirely client-side in JavaScript: nothing is uploaded to a server, there is no account and no tracking, and JSON processing needs no network connection once the page has loaded. Content on this site is written in English; a Chinese-language version of the site is available under \`/zh*\`.\n\n`
   md += `Supported formats: JSON, JSONC, JSON5 (via repair), JSONL / NDJSON, CSV / TSV, Excel (XLSX / XLS), YAML, XML, HTML tables, PDF, plain text, TOON, and generated code in TypeScript, Python, Go, Rust, Java, Kotlin, C#, and Swift.\n\n`
   md += `Last updated: ${today}\n\n`
 
@@ -124,7 +124,7 @@ export default defineEventHandler((event) => {
   md += `## Key facts\n\n`
   md += `- License: MIT (free for personal and commercial use)\n`
   md += `- Processing: 100% client-side JavaScript — no uploads, no server, no tracking, no sign-up\n`
-  md += `- Offline: works after page load without a network connection\n`
+  md += `- Offline: JSON processing needs no network once the page is loaded; reloading while offline is not guaranteed\n`
   const breakdownCounts = Object.keys(grouped)
     .map(k => `${counts[k]} ${categoryLabels[k] || k}`)
     .join(', ')

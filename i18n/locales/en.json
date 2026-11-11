@@ -286,7 +286,9 @@
     "fullscreen": "Fullscreen",
     "exitFullscreen": "Exit fullscreen",
     "escFullscreen": "Press ESC to exit fullscreen",
-    "loadUrlDisabled": "Loading from a URL is disabled on this self-hosted instance."
+    "loadUrlDisabled": "Loading from a URL is disabled on this self-hosted instance.",
+    "inboundTooLarge": "The data in this link is too large for a URL. Showing the default example.",
+    "inboundInvalid": "Could not read the data in this link. Showing the default example."
   },
   "toast": {
     "converted": "Converted successfully",

@@ -277,7 +277,9 @@
     "fullscreen": "全屏",
     "exitFullscreen": "退出全屏",
     "escFullscreen": "按 ESC 退出全屏",
-    "loadUrlDisabled": "这个自托管实例已关闭从 URL 加载。"
+    "loadUrlDisabled": "这个自托管实例已关闭从 URL 加载。",
+    "inboundTooLarge": "链接中的数据过大，已显示默认示例。",
+    "inboundInvalid": "无法读取链接中的数据，已显示默认示例。"
   },
   "toast": {
     "converted": "转换成功",

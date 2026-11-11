@@ -20,7 +20,7 @@ Never invent content priorities from generic SEO assumptions when local article 
 
 When the site is new and has no GSC/Bing data, use the **content plan** instead of search data:
 
-1. Read `references/content-plan.md` — the externally-researched article queue
+1. Read `content-plan.md` — the externally-researched article queue
 2. Scan local published Markdown files to avoid duplication
 3. Scan tool-page JSON configs for internal linking
 4. Pick the next article from the production queue
@@ -58,7 +58,7 @@ Before writing, inspect these sources in order:
 | 3 | Category meta | `app/assets/data/{category}/_meta.json` | Category names, icons, themes |
 | 4 | Blog categories | `app/assets/config/blog-category.json` | Valid category keys |
 | 5 | Content schema | `content.config.ts` | Frontmatter validation rules |
-| 6 | **Content plan** | `references/content-plan.md` | **Article queue for Mode A (no search data yet)** |
+| 6 | **Content plan** | `content-plan.md` | **Article queue for Mode A (no search data yet)** |
 | 7 | GSC data | `data/gsc/*.csv` or `data/gsc/*.json` | Google search performance (Mode B) |
 | 8 | Bing WMT data | `data/bing/*.csv` or `data/bing/*.json` | Bing search performance (Mode B) |
 | 9 | Content policy | `references/content-policy.md` | Writing rules and quality bar |

@@ -16,5 +16,23 @@
     "label_en": "Python Constants",
     "label_zh": "Python 常量",
     "input": "{\n  active: True,\n  count: None,\n  ratio: NaN,\n  retry: False,\n}"
+  },
+  {
+    "id": "truncated-response",
+    "label_en": "Truncated API Response",
+    "label_zh": "被截断的接口响应",
+    "input": "{\n  \"success\": true,\n  \"data\": {\n    \"id\": 12345,\n    \"name\": \"Alice\""
+  },
+  {
+    "id": "html-error-page",
+    "label_en": "HTML Error Page Instead of JSON",
+    "label_zh": "返回了 HTML 错误页",
+    "input": "<!DOCTYPE html>\n<html><head><title>502 Bad Gateway</title></head>\n<body><h1>502 Bad Gateway</h1></body></html>"
+  },
+  {
+    "id": "concatenated-json",
+    "label_en": "Two JSON Documents Concatenated",
+    "label_zh": "两段 JSON 被拼接",
+    "input": "{\"ok\": true}\n{\"ok\": false}"
   }
 ]

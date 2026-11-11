@@ -125,3 +125,55 @@
 - **删除**：重复副本、AI 对话草稿、写作过程（`draft.md` / `serp.md`）、被新方向取代的旧选题队列、已有真实数据后的空占位。
 - **保留**：`content-optimization-tasks.md`（口径基线与执行记录，被方向文档继承）、`content-direction-plan.md`（最新决策链）、`tool-page-playbook.md` / `README.zh-CN.md` / `self-hosting/docker.*`（活文档，被 `CLAUDE.md` / `README.md` / `compose.yml` 引用）、`docs/upgrade/finish/` 与 `docs/superpowers/`（已落地实施记录与架构决策）、`docs/left-pages/summary.md` 与 `semrush-summary.md`（调研底稿）、`docs/blog/` 下 8 篇工作稿（已发布文章的来源记录）、`docs/channel/`（未执行但有效的路线规格）。
 - 具体删除结果见本轮交付说明，不在本文档内重复维护。
+
+---
+
+## 9. 实施进度（2026-11-11）
+
+### 9.1 本轮已完成
+
+| 项 | 实际落地 |
+|---|---|
+| D-1 | 两个 skill 副本的 `SKILL.md` 中 `references/content-plan.md` → `content-plan.md`（真实文件在 skill 根目录） |
+| D-2 | 两份 `content-plan.md` 顶部标注「Mode A 已停用」，指向本清单与方向文档；旧 P0 队列保留为历史记录 |
+| D-3 | `.claude/seo-strategy.md` 新增 §7：工具型 92.1%、文章 KPI 改转化、停止科普稿、不封 AI 爬虫、口径约束 |
+| D-4 | `.claude/rules/seo-workflow.md` 新增「投入次序」5 条 |
+| D-5 | `CLAUDE.md` 新增「Content Direction & Next Steps」节，挂上两份文档 |
+| **S1-1（核心）** | `JsonInputEditor.vue` 的 `loadDefaultExample()` 支持 `?example=<id>`；**24 个调用该方法的工具组件一处改动全站生效**。无效 id 静默回退默认示例；加 `/tools/` 路径守卫避免与 `/embed/json` 同名参数（语义为示例文件名）冲突 |
+| S1-1 配套 | `app/assets/data/examples/json-repair.json` 补 3 个对应真实排错查询的坏样本：`truncated-response`、`html-error-page`、`concatenated-json`；`useShareJson.ts` 的 `getToolPath` 加注释澄清为有意设计 |
+| S1-3（部分） | 修正 `llms.txt.ts:53,127` 的离线措辞（见 9.2） |
+| **方案 A：`#in=` 任意数据带状态进入** | 新增 `app/utils/share/inbound.ts`（复用 `jtb1d` + deflate-raw，独立 payload `{version,text,input2?,label?}`）；`JsonInputEditor` 接入，优先级 `#in=` > `?example=` > 默认示例；解码失败/超限给中英提示并回退；新增 `scripts/make-inbound-url.mjs` 生成链接（含自检、三层上限、敏感数据警示） |
+
+### 9.2 按代码事实修正的清单描述
+
+1. **`getToolPath` 硬编码不是缺陷**：`ShareToolId` 只有 3 个值（`json-formatter` / `json-viewer` / `json-validator`），都是同一个 JSON Editor 页的视图，分享 UI 只在 `JsonEditor.vue` 出现。去掉映射会破坏功能，本轮只加注释说明；**全工具分享需另立任务**。
+2. **`meta.source` 运行时写入延后**：它与「来源标记 / 分发归因」同属 B5 隐私口径决策，擅自加会踩口径矛盾。协议层字段已存在（`app/utils/share/payload.ts:35-38`），等 B5 拍板。
+3. **S1-1 参数加 `/tools/` 守卫**：`/embed/json` 已有 `?example=<文件名>` 语义，不能全局复用同名参数。
+4. **S1-3 的 tracking 口径未动**：`llms.txt.ts:52,126`、`llms-full.txt.ts:78` 与 `content/en/privacy.md:54-62` 的矛盾属 B5 决策范围，本轮只改离线措辞。
+5. **`#in=` 用 URL fragment 而不是 query**：最初设计为 `?in=`，但数据放 query 会进服务器日志与 Referer 头；项目自有的 `#share=` 用 fragment 正是为此。统一后解码永不触发网络请求，数据不出现在 HTTP 层。注意页面内脚本（如 AdSense）仍可读 `location.href`，故生成器已附「勿用于密码/令牌」警示——与现有 `shareWarning` 口径一致。
+
+### 9.3 未实施及原因
+
+| 项 | 原因 |
+|---|---|
+| B1–B6 | 需用户导出报表 / 拍板 |
+| S1-2 | 依赖 B5（埋点口径） |
+| S1-4 | 依赖 B1 |
+| S2-1～S2-7 | 依赖 S1-1 验收与 B5；且属下一阶段工程 |
+| S3 全部 | 依赖 T2 数据与预填链路验收 |
+| S1-3 tracking 部分 | 依赖 B5 |
+
+### 9.4 `#in=` 用法
+
+```bash
+echo '{"a":1}' | node scripts/make-inbound-url.mjs /tools/format/json-editor
+node scripts/make-inbound-url.mjs /tools/format/json-repair ./broken.json
+# 双输入工具（JSON + Schema）：
+node scripts/make-inbound-url.mjs /tools/format/json-schema-validator ./data.json --input2 ./schema.json
+```
+
+- 输出形如 `https://jsontoolbox.cc/tools/format/json-editor#in=<base64url>`；数据在 fragment，**可编辑、不锁只读**，与只读的 `#share=` 语义分离。
+- 三层上限：原文 512 KB 字符、UTF-8 解压后 256 KB、完整 URL 4000 字符；超限生成器拒绝，接收端给本地化提示并回退默认示例。
+- 优先级：`#in=` > `?example=` > 内置默认示例；只在 `/tools/` 路径生效。
+- 覆盖 24 个使用 `JsonInputEditor` 的工具页；8 个未调用 `loadDefaultExample()` 的组件（生成器/PDF/表格/大文件查看器）暂不覆盖。
+- `JSON_TOOLBOX_ORIGIN` 环境变量可切换域名，便于本地验证。

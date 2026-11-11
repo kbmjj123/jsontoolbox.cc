@@ -1,7 +1,10 @@
 # JSON Toolbox Content Production Plan
 
-> 基于外部需求信号（SERP、Reddit、MDN、JSON Schema 官方文档、NDJSON 规范）的内容选题计划。
-> 站点刚起步，暂无 GSC/Bing 历史数据。约 3 个月后切换为数据驱动模式。
+> ⚠️ **状态：Mode A 已停用（2026-11-11）**。GSC / Bing 报表已到位（`data/gsc/`、`data/bing/`），本文件的 P0 选题队列基于「站点无搜索数据」的外部假设，**不再作为派工依据**。
+> 当前唯一执行入口：`docs/next-steps-checklist.md`；方向依据：`docs/content-direction-plan.md`（真实查询中工具型占 92.1% 曝光，已停止新写科普稿）。
+> 以下保留为历史调研记录；如需重排，按真实意图结构重写，不要照此队列写稿。
+
+> 历史说明（2026-08 撰写时）：基于外部需求信号（SERP、Reddit、MDN、JSON Schema 官方文档、NDJSON 规范）的内容选题计划；当时站点刚起步、暂无 GSC/Bing 历史数据，预计约 3 个月后切换为数据驱动模式。
 
 ---
 

@@ -16,6 +16,10 @@ export { serializePayload, deserializePayload, validatePayloadStructure } from '
 export type { CreatePayloadInput } from './schema'
 export { createSharePayload } from './schema'
 
+// Inbound deep-link protocol (editable, no read-only semantics)
+export { INBOUND_HASH_PREFIX, InboundError, encodeInbound, decodeInbound } from './inbound'
+export type { InboundPayload, InboundFailure } from './inbound'
+
 // Size limits
 export {
   RECOMMENDED_MAX,
