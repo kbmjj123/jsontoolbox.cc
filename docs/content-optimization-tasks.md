@@ -110,7 +110,7 @@ P6.57 / P9.71 已接近首屏却 0 点击；同时 `/tools/format/json-editor` �
 | # | 任务 | 依据 | 验收标准 |
 |---|---|---|---|
 | **T4** | 逐篇处置 F5 的 6 篇零曝光文章：先查索引状态与内链，再决定「改标题/并入已有页/补内链/暂缓观察」，**不做无差别重写** | F5；`how-to-create-json-file` 834 I / 9 C 是同站点对照组 | 每篇给出一句结论 + 对应动作，记录在本文档 §4 |
-| **T5** | 统一 frontmatter `locales`：修 `content/en/blog/free-realistic-json-test-data.md:10` 的 `["en", 'zh']`（单双引号混用且值应为 `zh-CN`）、`content/zh/blog/free-realistic-json-test-data.md:10` 的 `["zh"]`；统一行内/多行两种写法 | `docs/content-backlog.md:19` 命名坑；`content.config.ts` schema | 22 篇稿的 `locales` 全部只使用 `en` / `zh-CN`，格式一致；`draft` 与 `lastmod` 一并核对 |
+| **T5** | 统一 frontmatter `locales`：修 `content/en/blog/free-realistic-json-test-data.md:10` 的 `["en", 'zh']`（单双引号混用且值应为 `zh-CN`）、`content/zh/blog/free-realistic-json-test-data.md:10` 的 `["zh"]`；统一行内/多行两种写法 命名坑：博客 frontmatter 的 `locales` 写 `zh-CN`，工具 JSON 语言键是 `zh`，两套别写反；`content.config.ts` schema | 22 篇稿的 `locales` 全部只使用 `en` / `zh-CN`，格式一致；`draft` 与 `lastmod` 一并核对 |
 | **T6** | 排查中文内容曝光：确认 `/zh/blog/*` 的 sitemap、hreflang、索引状态；给已有中文排名的 `how-to-open-json-file` 补站内入口 | F6；`server/api/sitemap-blog.ts:45-51` 已生成 `/zh/blog/...` | `/zh` 博客 URL 在 sitemap 中齐全且可索引；下期报表能看到中文页曝光变化 |
 | **T7** | 重排 `llms.txt.ts:80-87` 的 `Priority content for citation`：从定义/对比类换成排错类与工具页（候选 `json-parse-error-debug`、`unexpected-end-of-json-input`、`/tools/view/large-json-viewer`） | F3：有点击的 3 篇都是实操/排错；F1 修完后此项才生效 | 引用清单里概念文占比下降，且每条路径在 `validPaths` 中；**与下一轮内容方向规划衔接，本轮只换清单不改条款** |
 
