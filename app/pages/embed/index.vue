@@ -415,8 +415,7 @@ const previewSrc = computed(() => {
 						</ul>
 				</div>
 			</div>
-		</div>
-	  <!-- Parameters -->
+		<!-- Parameters -->
   <div class="bg-white dark:bg-surface-800 rounded-xl border border-surface-200 dark:border-surface-700 p-6 mb-16">
     <h3 class="text-base font-semibold text-surface-900 dark:text-surface-100 mb-3">
       {{ $t('embed.paramsTitle') || 'URL parameters' }}
@@ -432,6 +431,6 @@ const previewSrc = computed(() => {
       <li><code class="rounded bg-surface-100 px-1 py-0.5 text-xs dark:bg-surface-700">lang</code> — {{ $t('embed.paramLang') || 'en (default) / zh.' }}</li>
     </ul>
   </div>
-
 </div>
+	  </div>
 </template>
