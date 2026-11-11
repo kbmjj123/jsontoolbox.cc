@@ -20,8 +20,7 @@ reports
 docs
 libs
 scripts
-# Split-out repos: still on disk as copy sources until the migration finishes,
-# but the site build never reads them.
+# Split-out repos live in sibling directories, not in this repository.
 packages
 extension
 .mcp.json
