@@ -233,7 +233,7 @@ AI 能完整复述的，是那 4.4% 信息型 + 3.8% 排错型的**文字答案*
 | 分享深链 | `#share=` 只在 json-editor 出现，`getToolPath` 硬编码单页 | 无 `?example=` 统一入口；`meta.source` 类型预留但运行时不写入，**链接无来源标记、无法归因** | `useShareJson.ts:130-132,300-302`、`app/utils/share/payload.ts:35-38` |
 | 工具链 | `nextSteps` / `recommends` 是底部静态推荐卡片 | 不携带结果/状态/来源，不随输出变化，**不是结果驱动闭环**；唯一带数据的是超大文件兜底单路径 | `ToolRelated.vue:4-21`、`useLargeFile.ts:136-148` |
 | 离线 | 只有 `site.webmanifest` 可安装元数据 | **无 service worker / 离线缓存**；`llms.txt.ts:53,127` 的「断网仍可用」仅靠静态预渲染 + 纯客户端计算支撑 | `public/site.webmanifest:1-25`、`app/app.vue:40` |
-| 度量 | 有条件注入 Umami 页面统计（构建期 ID） | **零自定义事件埋点**，无 embed 使用量 / share 转发量 / 工具间转化；且 `llms.txt` 宣称 no tracking 与 `privacy.md` 的 PV/referrer 采集**口径矛盾** | `nuxt.config.ts:131`、`useSiteSeo.ts:43-50`、`content/en/privacy.md:54-62`、`README.md:18` |
+| 度量 | 有条件注入 Umami 页面统计（构建期 ID） | **零自定义事件埋点**，无 embed 使用量 / share 转发量 / 工具间转化；且 `llms.txt` 宣称 no tracking 与 `privacy.md` 的 PV/referrer 采集**口径矛盾** | `nuxt.config.ts:131`、`useSiteSeo.ts:43-50`、`content/en/privacy.md:58-66`、`README.md:18` |
 
 ### 9.3 代价与风险
 

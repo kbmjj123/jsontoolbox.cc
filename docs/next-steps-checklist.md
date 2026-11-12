@@ -37,7 +37,7 @@
 | **B2** | 导出 GSC 中文页索引覆盖率报告（URL 检查） | `/zh/blog/*` 仅 2 页有曝光 | 能判定「未收录」还是「已收录未展示」 |
 | **B3** | 决策：中文文章 14 条工具内链是否统一加 `/zh` 前缀 | `content-optimization-tasks.md` §4.1；`/zh/tools/...` 路由存在但中文工具页排名差（如 `json-to-csv` P104.5） | 给出明确结论；若「加」，批量替换后校验 0 死链 |
 | **B4** | 决策：`content/en/blog/json-editor-component.md` 草稿重写还是归档 | 承诺「Vue 3 component / custom element / CDN script tag」，全仓 `app/` 无 `customElements` 实现，copy-accuracy 阻断 | 仓库不再留悬空草稿 |
-| **B5** | 决策并统一隐私 / 埋点口径 | 三处矛盾：`llms.txt.ts:52-53,126` 称 no tracking；`content/en/privacy.md:54-62` 声明采集 PV/referrer；`README.md:18` 称 no telemetry pipeline | 三处口径一致，并明确是否允许自定义事件埋点（**S1-2 的前提**） |
+| **B5** | 决策并统一隐私 / 埋点口径 | 三处矛盾：`llms.txt.ts:52-53,126` 称 no tracking；`content/en/privacy.md:58-66` 声明采集 PV/referrer；`README.md:18` 称 no telemetry pipeline | 三处口径一致，并明确是否允许自定义事件埋点（**S1-2 的前提**） |
 | **B6** | 确认是否把「纯 P 路线最小验证」作为阶段一范围 | `content-direction-plan.md` §9.5 | 阶段一范围锁定，不边做边扩 |
 
 ---
@@ -155,7 +155,7 @@
 1. **`getToolPath` 硬编码不是缺陷**：`ShareToolId` 只有 3 个值（`json-formatter` / `json-viewer` / `json-validator`），都是同一个 JSON Editor 页的视图，分享 UI 只在 `JsonEditor.vue` 出现。去掉映射会破坏功能，本轮只加注释说明；**全工具分享需另立任务**。
 2. **`meta.source` 运行时写入延后**：它与「来源标记 / 分发归因」同属 B5 隐私口径决策，擅自加会踩口径矛盾。协议层字段已存在（`app/utils/share/payload.ts:35-38`），等 B5 拍板。
 3. **S1-1 参数加 `/tools/` 守卫**：`/embed/json` 已有 `?example=<文件名>` 语义，不能全局复用同名参数。
-4. **S1-3 的 tracking 口径未动**：`llms.txt.ts:52,126`、`llms-full.txt.ts:78` 与 `content/en/privacy.md:54-62` 的矛盾属 B5 决策范围，本轮只改离线措辞。
+4. **S1-3 的 tracking 口径未动**：`llms.txt.ts:52,126`、`llms-full.txt.ts:78` 与 `content/en/privacy.md:58-66` 的矛盾属 B5 决策范围，本轮只改离线措辞。
 5. **`#in=` 用 URL fragment 而不是 query**：最初设计为 `?in=`，但数据放 query 会进服务器日志与 Referer 头；项目自有的 `#share=` 用 fragment 正是为此。统一后解码永不触发网络请求，数据不出现在 HTTP 层。注意页面内脚本（如 AdSense）仍可读 `location.href`，故生成器已附「勿用于密码/令牌」警示——与现有 `shareWarning` 口径一致。
 
 ### 9.3 未实施及原因
