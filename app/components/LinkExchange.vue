@@ -23,6 +23,7 @@
 
 						<!-- Text link -->
 						<a v-else :href="link.url" target="_blank" rel="noopener noreferrer"
+							:style="link.style"
 							class="shrink-0 text-[11px] font-body text-[var(--color-text-muted)] hover:text-[var(--color-text-link)] no-underline whitespace-nowrap transition-colors duration-150">{{
 								link.name }}</a>
 					</template>
@@ -40,6 +41,7 @@ export interface ExchangeLink {
 	url: string
 	type: 'text' | 'image'
 	imageUrl?: string
+	style?: string
 	imageWidth?: number
 	imageHeight?: number
 	alt?: string
