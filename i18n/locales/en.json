@@ -11,6 +11,7 @@
       "blog": "Blog",
       "embed": "Embed",
       "developers": "Developers",
+      "extension": "Chrome Extension",
       "about": "About",
       "contact": "Contact"
     },
@@ -50,6 +51,12 @@
     "seo": {
       "title": "Developers — Embed the JSON Toolbox Editor",
       "description": "Use the JSON Toolbox editor in your own project as a Vue 3 component, Web Component, or plain script tag. Free, open source, and 100% client-side."
+    }
+  },
+  "extension": {
+    "seo": {
+      "title": "JsonToolBox for Chrome — Read Raw JSON as a Tree",
+      "description": "A free Chrome and Edge extension that renders raw JSON pages as a read-only tree. No upload, no signup — install from the Web Store or download the unpacked zip."
     }
   },
   "home": {

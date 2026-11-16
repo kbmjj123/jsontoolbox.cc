@@ -80,7 +80,7 @@ JSON Toolbox 由四个独立仓库分别维护，每个项目都自包含，并�
 |---|---|---|
 | 主站 | 本站源码（Nuxt 4）：格式化、校验、转换与浏览 JSON 的纯前端工具 | [GitHub](https://github.com/kbmjj123/jsontoolbox.cc) |
 | `@kbmjj123/json-editor` | 已发布到 npm 的编辑器库：Vue 3 组件、Web Component 或 CDN 脚本 | [GitHub](https://github.com/kbmjj123/json-editor) |
-| 浏览器插件 | Chrome/Edge MV3 扩展，自动把裸 JSON 页面渲染为只读树视图 | [GitHub](https://github.com/kbmjj123/json-browser-plugins) |
+| 浏览器插件 | Chrome/Edge MV3 扩展，自动把裸 JSON 页面渲染为只读树视图 | [安装说明](/extension) · [GitHub](https://github.com/kbmjj123/json-browser-plugins) |
 | Obsidian 插件 | Obsidian 内的富 JSON/YAML 查看器，含 14 类内联预览 | [GitHub](https://github.com/kbmjj123/json-toolbox) |
 
 ## 源码与许可
