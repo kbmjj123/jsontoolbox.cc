@@ -90,5 +90,51 @@
         "a": "可以。所有处理在本地完成，文件大小仅受浏览器内存限制。"
       }
     ]
+  },
+  "de": {
+    "title": "JSON-Konvertierungstools",
+    "description": "Wandle JSON in CSV, YAML, XML und mehr um. Die gesamte Verarbeitung findet in deinem Browser statt.",
+    "keywords": [
+      "json to csv",
+      "csv to json",
+      "json to yaml",
+      "yaml to json",
+      "json to xml",
+      "xml to json",
+      "json to excel",
+      "json to typescript",
+      "json to c#",
+      "json to go",
+      "json converter",
+      "convert json"
+    ],
+    "h2": "Konvertierung",
+    "pdesc": "Wandle JSON in CSV, YAML, XML und andere Formate um — alles lokal in deinem Browser.",
+    "highlights": [
+      {
+        "icon": "lucide:arrow-right-left",
+        "title": "Mehrere Formate",
+        "description": "JSON in CSV, YAML, XML und mehr umwandeln."
+      },
+      {
+        "icon": "lucide:download",
+        "title": "Einfacher Export",
+        "description": "Konvertierte Dateien direkt herunterladen."
+      }
+    ],
+    "faq": [
+      {
+        "q": "In welche Formate kann ich JSON umwandeln?",
+        "a": "Du kannst JSON in CSV, YAML, XML und TypeScript-Interfaces umwandeln."
+      },
+      {
+        "q": "Sind meine Daten sicher?",
+        "a": "Ja. Die gesamte Umwandlung findet in deinem Browser statt. Es werden keine Daten hochgeladen."
+      },
+      {
+        "q": "Kann ich große Dateien umwandeln?",
+        "a": "Ja. Da die gesamte Verarbeitung lokal erfolgt, ist die Dateigröße nur durch den Speicher deines Browsers begrenzt."
+      }
+    ]
   }
 }

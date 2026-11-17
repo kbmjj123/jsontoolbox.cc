@@ -7,6 +7,7 @@ interface ToolExample {
   id: string
   label_en: string
   label_zh: string
+  label_de: string
   input: string
   input2?: string  // For tools with two inputs (e.g., JSON Compare)
 }
@@ -40,7 +41,9 @@ export const useToolExample = (toolSlug: string) => {
    * Get example label based on current locale
    */
   const getLabel = (example: ToolExample): string => {
-    return locale.value === 'zh' ? example.label_zh : example.label_en
+    if (locale.value === 'zh') return example.label_zh
+    if (locale.value === 'de') return example.label_de
+    return example.label_en
   }
 
   /**

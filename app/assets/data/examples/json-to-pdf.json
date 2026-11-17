@@ -3,18 +3,21 @@
     "id": "project",
     "label_en": "Project Info",
     "label_zh": "项目信息",
-    "input": "{\"project\":\"JSON Toolbox\",\"version\":\"1.0.0\",\"description\":\"Free online JSON tools\",\"features\":[\"Format\",\"Validate\",\"Convert\"],\"author\":{\"name\":\"JSON Toolbox Team\",\"website\":\"https://jsontoolbox.cc\"}}"
+    "input": "{\"project\":\"JSON Toolbox\",\"version\":\"1.0.0\",\"description\":\"Free online JSON tools\",\"features\":[\"Format\",\"Validate\",\"Convert\"],\"author\":{\"name\":\"JSON Toolbox Team\",\"website\":\"https://jsontoolbox.cc\"}}",
+    "label_de": "Projektinformationen"
   },
   {
     "id": "user",
     "label_en": "User Profile",
     "label_zh": "用户资料",
-    "input": "{\"id\":12345,\"name\":\"John Doe\",\"email\":\"john@example.com\",\"roles\":[\"admin\",\"editor\"],\"settings\":{\"theme\":\"dark\",\"language\":\"en\",\"notifications\":true}}"
+    "input": "{\"id\":12345,\"name\":\"John Doe\",\"email\":\"john@example.com\",\"roles\":[\"admin\",\"editor\"],\"settings\":{\"theme\":\"dark\",\"language\":\"en\",\"notifications\":true}}",
+    "label_de": "Benutzerprofil"
   },
   {
     "id": "order",
     "label_en": "Order Data",
     "label_zh": "订单数据",
-    "input": "{\"orderId\":\"ORD-2024-001\",\"customer\":\"Alice\",\"total\":1299.98,\"items\":[{\"name\":\"Laptop\",\"qty\":1,\"price\":999.99},{\"name\":\"Mouse\",\"qty\":2,\"price\":149.99}],\"status\":\"shipped\"}"
+    "input": "{\"orderId\":\"ORD-2024-001\",\"customer\":\"Alice\",\"total\":1299.98,\"items\":[{\"name\":\"Laptop\",\"qty\":1,\"price\":999.99},{\"name\":\"Mouse\",\"qty\":2,\"price\":149.99}],\"status\":\"shipped\"}",
+    "label_de": "Bestelldaten"
   }
 ]

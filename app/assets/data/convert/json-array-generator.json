@@ -280,5 +280,138 @@
       "title": "如何在线生成 JSON 数组",
       "content": "<h2>什么是 JSON 数组生成器？</h2><p>JSON 数组生成器（也叫 json 数组例子生成器）可以让你无需手写就创建 json 数组。它根据几个设置构建一组示例 JSON 对象组成的数组：设置对象数量和字段名，就能得到一份可直接使用的数组。</p><h2>如何生成 JSON 数组</h2><ol><li><strong>设置数量：</strong>选择数组要包含多少个对象。</li><li><strong>列出字段：</strong>用逗号分隔输入字段名。</li><li><strong>生成：</strong>工具会创建一个美化输出的 JSON 数组。</li><li><strong>复制或下载：</strong>把结果用作测试数据、mock 或示例。</li></ol><h2>适用场景</h2><ul><li><strong>测试数据：</strong>用示例数组为单元测试或 API 桩提供数据。</li><li><strong>mock 响应：</strong>在本地 mock 服务里返回逼真的数组。</li><li><strong>文档：</strong>在指南里展示清晰的 JSON 数组示例。</li><li><strong>原型：</strong>快速搭出表单或组件所期望的数据形状。</li></ul><h2>示例值</h2><p>名称类似 id 的字段会得到递增数字，email 类字段会得到示例地址，其他字段会得到带标签的示例文本。这些值都是占位符，投入生产前请替换成真实数据。</p><h2>隐私</h2><p>生成完全在你的浏览器中运行，你的设置不会被上传，也不需要账号。</p>"
     }
+  },
+  "de": {
+    "name": "JSON-Array-Generator",
+    "description": "Erzeuge ein Beispiel-JSON-Array in deinem Browser. Lege die Anzahl der Objekte und die Feldnamen fest und erhalte ein formatiertes JSON-Array mit Beispielobjekten, die du kopieren, herunterladen oder als Testdaten verwenden kannst.",
+    "hero": {
+      "trustHtml": "Läuft in deinem Browser. Deine Daten werden von diesem Tool nicht hochgeladen."
+    },
+    "meta": {
+      "title": "JSON-Array-Generator – Online ein JSON-Array-Beispiel erzeugen",
+      "description": "Erzeuge online ein JSON-Array. Lege die Elementanzahl und Feldnamen fest, um ein Beispiel-JSON-Array mit Beispielobjekten zu erstellen. Kopiere oder lade das Ergebnis in deinem Browser herunter.",
+      "keywords": [
+        "json array generator",
+        "json array example",
+        "generate json array",
+        "json array maker",
+        "sample json array",
+        "create json array",
+        "json array of objects",
+        "mock json data generator",
+        "generate json array with types"
+      ]
+    },
+    "features": [
+      {
+        "icon": "lucide:boxes",
+        "title": "Die Elementanzahl festlegen",
+        "description": "Wähle, wie viele Objekte das Array enthalten soll. Der Generator erzeugt genau so viele Elemente, beginnend beim ersten Element nummeriert."
+      },
+      {
+        "icon": "lucide:tags",
+        "title": "Feldnamen festlegen",
+        "description": "Tippe eine kommagetrennte Liste von Feldnamen ein. Jedes Objekt im Array verwendet diese Schlüssel, sodass das Ergebnis der benötigten Form entspricht."
+      },
+      {
+        "icon": "lucide:sparkles",
+        "title": "Intelligente Beispielwerte",
+        "description": "Feldtypen werden aus dem Namen abgeleitet: id erhält eine Zahl, email eine Adresse, age eine Zahl usw. Füge einen expliziten Typ mit field:type hinzu (z. B. age:int:18-65, active:bool, price:float, status:enum:active|inactive, tags:array), um einen Typ zu erzwingen, und verwende Punktnamen wie address.city, um verschachtelte Objekte zu bauen."
+      },
+      {
+        "icon": "lucide:braces",
+        "title": "Formatierte Ausgabe",
+        "description": "Das Ergebnis ist ein formatiertes JSON-Array, das du sofort lesen kannst. Kopiere es oder lade es als .json-Datei herunter."
+      },
+      {
+        "icon": "lucide:copy",
+        "title": "Kopieren oder herunterladen",
+        "description": "Kopiere das erzeugte Array in die Zwischenablage oder lade es als .json-Datei herunter für die Verwendung als Fixtures, Mocks oder API-Beispiele."
+      },
+      {
+        "icon": "lucide:shield-check",
+        "title": "Verarbeitung im Browser",
+        "description": "Die Generierung findet in deinem Browser statt. Die Seite erfordert kein Konto und sendet deine Eingabe nicht an einen entfernten Dienst."
+      }
+    ],
+    "ui": {
+      "label_count": "Anzahl der Objekte",
+      "label_fields": "Feldnamen (durch Kommas getrennt)",
+      "placeholder_fields": "id, name, email",
+      "hint_fields": "Optionale Typen: field:type oder field:type:rule, z. B. age:int:18-65, active:bool, price:float, status:enum:active|inactive, tags:array, address.city (Verschachtelung).",
+      "label_output": "Erzeugtes JSON-Array",
+      "placeholder_output": "Das erzeugte Array erscheint hier …",
+      "btn_view_text": "Text",
+      "btn_view_rich": "Rich",
+      "btn_view_table": "Tabelle",
+      "sample_name": "Name {n}",
+      "sample_value": "Wert {n}",
+      "sample_text": "Text {n}",
+      "btn_generate": "JSON-Array erzeugen",
+      "btn_copy": "Kopieren",
+      "btn_download": "JSON herunterladen",
+      "error_empty_fields": "Mindestens einen Feldnamen eingeben",
+      "error_invalid_count": "Eine Zahl größer als null eingeben",
+      "error_processing": "Das Array konnte nicht erzeugt werden"
+    },
+    "guide": [
+      {
+        "title": "Die Elementanzahl festlegen",
+        "description": "Gib ein, wie viele Objekte du im Array möchtest. Die Anzahl muss eine positive Zahl sein."
+      },
+      {
+        "title": "Die Feldnamen auflisten",
+        "description": "Tippe die Feldnamen kommagetrennt ein, etwa id, name, email. Füge einen Typ mit field:type hinzu, um einen Werttyp zu erzwingen (age:int:18-65, active:bool, price:float, status:enum:active|inactive, tags:array), und verwende Punktnamen wie address.city, um Objekte zu verschachteln."
+      },
+      {
+        "title": "Das Array erzeugen",
+        "description": "Klicke auf „JSON-Array erzeugen“. Das Tool baut ein formatiertes JSON-Array mit Beispielobjekten."
+      },
+      {
+        "title": "Kopieren oder herunterladen",
+        "description": "Kopiere das Array oder lade es als .json-Datei herunter. Verwende es als Testdaten, Mock-Antwort oder Dokumentationsbeispiel."
+      }
+    ],
+    "example": {
+      "title": "JSON-Array-Generator-Beispiel",
+      "description": "Erzeuge ein kleines Array von Beispiel-Benutzerobjekten mit typisierten und verschachtelten Feldern.",
+      "inputLabel": "Einstellungen",
+      "input": "Count: 2\nFields: id, name, email, age:int:18-40, active:bool, address.city",
+      "inputExplanation": "Zwei Objekte mit abgeleiteten Feldern sowie ein typisiertes age, ein Boolean-Flag und ein verschachtelter address.city-Schlüssel.",
+      "outputLabel": "Erzeugtes JSON-Array",
+      "output": "[\n  {\n    \"id\": 1,\n    \"name\": \"Name 1\",\n    \"email\": \"user1@example.com\",\n    \"age\": 27,\n    \"active\": true,\n    \"address\": {\n      \"city\": \"value 1\"\n    }\n  },\n  {\n    \"id\": 2,\n    \"name\": \"Name 2\",\n    \"email\": \"user2@example.com\",\n    \"age\": 33,\n    \"active\": false,\n    \"address\": {\n      \"city\": \"value 2\"\n    }\n  }\n]",
+      "outputExplanation": "id erhöht sich pro Element, age ist eine zufällige ganze Zahl im Bereich 18–40, active ist ein Boolean und address.city wird automatisch in ein Objekt verschachtelt.",
+      "note": "Beispielwerte sind Platzhalter für Tests, keine echten Datensätze."
+    },
+    "faq": [
+      {
+        "question": "Was macht der JSON-Array-Generator?",
+        "answer": "Es baut ein JSON-Array mit Beispielobjekten. Du legst die Anzahl der Objekte und die Feldnamen fest, und das Tool erzeugt ein formatiertes JSON-Array, das du kopieren oder herunterladen kannst."
+      },
+      {
+        "question": "Welche Beispielwerte erzeugt es?",
+        "answer": "Typen werden aus Feldnamen abgeleitet: id erhält eine fortlaufende Zahl, email eine Adresse wie user1@example.com, age oder price erhalten Zahlen und andere Felder beschrifteten Beispieltext. Du kannst jedes Feld mit einem expliziten Typ überschreiben, etwa age:int:18-65 oder active:bool, und Punktnamen wie address.city verwenden, um verschachtelte Objekte zu bauen."
+      },
+      {
+        "question": "Kann ich ein leeres oder null-langes Array erzeugen?",
+        "answer": "Die Anzahl muss eine positive Zahl sein, daher hat das kleinste Array ein Objekt. Das hält das erzeugte Beispiel als Testdaten nützlich."
+      },
+      {
+        "question": "Kann ich die Werttypen wählen?",
+        "answer": "Ja. Hänge einen Typ mit einem Doppelpunkt an ein Feld an, etwa age:int:18-65, active:bool, price:float, createdAt:date, id:uuid, website:url oder tags:array. Für ein Enum verwende status:enum:active|inactive|pending. Punktnamen wie address.city erzeugen automatisch verschachtelte Objekte."
+      },
+      {
+        "question": "Sind die erzeugten Daten echt?",
+        "answer": "Nein. Die Werte sind Platzhalter für Tests und Dokumentation. Behandle sie nicht als echte Personen oder Datensätze und ersetze sie, bevor du die Daten produktiv verwendest."
+      },
+      {
+        "question": "Ist dies ein kostenloser JSON-Array-Generator?",
+        "answer": "Ja. Du kannst ein JSON-Array erzeugen, kopieren oder als .json-Datei herunterladen, ohne ein Konto zu erstellen."
+      }
+    ],
+    "article": {
+      "title": "Ein JSON-Array online erzeugen",
+      "content": "<h2>Was ist ein JSON-Array-Generator?</h2><p>Ein JSON-Array-Ersteller, auch JSON-Array-Generator genannt, lässt dich JSON-Array-Inhalte erzeugen, ohne sie von Hand zu schreiben. Er baut ein JSON-Array von Objekten aus wenigen Einstellungen: Lege die Elementanzahl und die Feldnamen fest und erhalte ein sofort einsetzbares Array.</p><h2>So erzeugst du ein JSON-Array</h2><ol><li><strong>Anzahl festlegen:</strong> wähle, wie viele Objekte das Array enthalten soll.</li><li><strong>Felder auflisten:</strong> gib die Feldnamen durch Kommas getrennt ein.</li><li><strong>Erzeugen:</strong> das Tool erstellt ein formatiertes JSON-Array.</li><li><strong>Kopieren oder herunterladen:</strong> verwende das Ergebnis als Fixtures, Mocks oder Beispiele.</li></ol><h2>Wo es hilft</h2><ul><li><strong>Testdaten:</strong> fülle Unit-Tests oder API-Stubs mit Beispielarrays.</li><li><strong>Mock-Antworten:</strong> gib ein realistisches Array von einem lokalen Mock-Server zurück.</li><li><strong>Dokumentation:</strong> zeige ein klares JSON-Array-Beispiel in Anleitungen.</li><li><strong>Prototyping:</strong> gestalte schnell die Daten, die ein Formular oder eine Komponente erwartet.</li></ul><h2>Beispielwerte</h2><p>Felder mit Namen wie id erhalten fortlaufende Zahlen und E-Mail-ähnliche Felder Beispieladressen. Andere Felder erhalten beschrifteten Beispieltext. Die Werte sind Platzhalter, daher ersetze sie vor jeder produktiven Verwendung durch echte Daten.</p><h2>Datenschutz</h2><p>Die Generierung läuft vollständig in deinem Browser. Deine Einstellungen werden nicht hochgeladen und es ist kein Konto erforderlich.</p>"
+    }
   }
 }

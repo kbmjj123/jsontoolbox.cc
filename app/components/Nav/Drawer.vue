@@ -43,7 +43,7 @@
           <!-- Language Switcher -->
           <div class="mt-6 pt-6 border-t border-surface-200 dark:border-surface-700">
             <p class="text-xs font-bold text-surface-500 uppercase tracking-wider mb-3">{{ $t('nav.language') }}</p>
-            <div class="grid grid-cols-2 gap-2">
+            <div class="grid grid-cols-3 gap-2">
               <button
                 v-for="loc in locales"
                 :key="loc.code"
@@ -51,7 +51,7 @@
                 class="flex items-center gap-2 rounded-lg px-3 py-2 text-sm transition-colors"
                 :class="loc.code === locale ? 'bg-primary-50 text-primary-700 dark:bg-primary-900/30 dark:text-primary-400' : 'text-surface-600 hover:bg-surface-50 dark:text-surface-400 dark:hover:bg-surface-800'"
               >
-                <span>{{ (loc as any).flag }}</span>
+                <Icon :name="(loc as any).flag" class="w-4 h-4 shrink-0" />
                 <span>{{ loc.name }}</span>
               </button>
             </div>

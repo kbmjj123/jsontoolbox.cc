@@ -400,5 +400,198 @@
       "title": "如何在线比较 JSON 并查找差异",
       "content": "<h2>为什么要比较 JSON？</h2><p>比较 JSON 文档对于调试 API、验证配置更改和确保数据完整性非常重要。无论是在检查 API 响应、对比配置文件版本，还是验证数据迁移结果，JSON 差异工具都能帮助你快速、准确地发现每个差异。</p><h2>常见使用场景</h2><ul><li><strong>接口调试：</strong>对比预期响应与实际响应，定位缺失字段、值变化或类型异常。</li><li><strong>配置评审：</strong>对比不同环境的配置文件，或新旧版本的配置差异。</li><li><strong>数据迁移：</strong>检查导出、导入或转换过程中记录是否发生变化。</li><li><strong>回归测试：</strong>对比快照输出、测试夹具或序列化结果。</li><li><strong>代码评审：</strong>不逐行扫两份大文档，也能看清 JSON 载荷的改动。</li><li><strong>Webhook 与事件排查：</strong>对比两个事件载荷，找出嵌套属性或元数据的变化。</li></ul><h2>差异类型说明</h2><ul><li><strong>新增（绿色）：</strong>在 JSON B 中存在但在 JSON A 中缺失的键或值。</li><li><strong>删除（红色）：</strong>在 JSON A 中存在但在 JSON B 中缺失的键或值。</li><li><strong>修改（黄色）：</strong>在两个文档中都存在、但值发生变化的键。</li><li><strong>类型变化（紫色）：</strong>在两个文档中都存在、但值的 JSON 类型发生变化的键，例如数字变成字符串。</li></ul><p>嵌套对象和数组会递归比较，因此深层结构中的差异也会被检测并显示完整路径。</p><h2>如何在线比较 JSON</h2><ol><li><strong>粘贴 JSON A：</strong>将原始 JSON 文档加入左侧编辑器。</li><li><strong>粘贴 JSON B：</strong>将修改后的 JSON 文档加入右侧编辑器。</li><li><strong>设置比较规则：</strong>当键顺序无关时开启「排序键名」；对无序集合开启「忽略数组顺序」；在「忽略字段」中列出需要跳过的字段。</li><li><strong>点击比较：</strong>运行比较，解析两份文档。</li><li><strong>查看结果：</strong>检查新增、删除、修改与类型变化的数值及其 JSON 路径，然后复制路径、复制结果或导出报告。</li></ol><h2>最佳实践</h2><ul><li><strong>先归一化：</strong>当两份文档由不同序列化器生成、键顺序不同时，开启「排序键名」。</li><li><strong>忽略干扰项：</strong>使用「忽略字段」跳过 updatedAt、requestId 或时间戳等每次运行都会变化的字段。</li><li><strong>必要时反转：</strong>用「交换」从另一个方向查看比较，定位是哪一侧引入了变更。</li><li><strong>导出分享：</strong>复制变更路径或导出完整结果，附在问题记录或代码审查中。</li></ul><h2>浏览器本地处理与隐私</h2><p>这个 JSON 比较工具在浏览器中处理输入内容，不要求将数据上传到远程服务。对于开发数据和私密配置片段来说，本地处理更加方便。不过，仍然不建议在任何浏览器工具中输入密码、API 密钥、访问令牌或其他高度敏感的信息。</p>"
     }
+  },
+  "de": {
+    "name": "JSON-Vergleich",
+    "description": "Vergleiche zwei JSON-Dokumente online und erkenne hinzugefügte, entfernte, geänderte und typgeänderte Werte. Dieses browserbasierte JSON-Vergleichstool führt einen strukturellen Vergleich von Objekten und Arrays durch, hebt Unterschiede nach Kategorie hervor, lässt dich Schlüsselreihenfolge oder bestimmte Felder ignorieren und hilft dir, Änderungen nach JSON-Pfad zu prüfen.",
+    "hero": {
+      "trustHtml": "Läuft in deinem Browser. Dein JSON wird von diesem Tool nicht hochgeladen."
+    },
+    "meta": {
+      "title": "JSON-Vergleich – Kostenloses Online-JSON-Diff-Tool",
+      "description": "Vergleiche zwei JSON-Dokumente online mit einem strukturellen JSON-Diff. Finde hinzugefügte, entfernte, geänderte und typgeänderte Werte; sortiere Schlüssel, ignoriere Array-Reihenfolge oder bestimmte Felder, filtere nach Typ und kopiere oder exportiere das Ergebnis in deinem Browser.",
+      "keywords": [
+        "json compare",
+        "json diff",
+        "compare json",
+        "json diff online",
+        "json comparer",
+        "json compare online",
+        "compare json online",
+        "json difference checker",
+        "json type change",
+        "ignore fields json compare",
+        "copy json path diff"
+      ]
+    },
+    "features": [
+      {
+        "icon": "lucide:columns-2",
+        "title": "Vergleich nebeneinander",
+        "description": "Vergleiche das ursprüngliche und das geänderte JSON nebeneinander, wobei hinzugefügte, entfernte und geänderte Werte Zeile für Zeile in beiden Editoren hervorgehoben werden."
+      },
+      {
+        "icon": "lucide:git-compare-arrows",
+        "title": "Hinzugefügt, Entfernt, Geändert & Typänderungen",
+        "description": "Trenne Unterschiede in hinzugefügte, entfernte und geänderte Werte und erkenne Typänderungen wie eine Zahl, die zu einem String wird, oder ein Objekt, das zu einem Array wird."
+      },
+      {
+        "icon": "lucide:route",
+        "title": "Verschachtelter Pfad-Kontext",
+        "description": "Zeige, wo jeder Unterschied innerhalb der JSON-Struktur auftritt, etwa $.users[0].profile.name, und kopiere seinen JSONPath mit einem Klick."
+      },
+      {
+        "icon": "lucide:sort-asc",
+        "title": "Objektschlüssel sortieren",
+        "description": "Normalisiere die Reihenfolge der Objektschlüssel vor dem Vergleich, damit eine andere Eigenschaftsreihenfolge nicht als Datenänderung gemeldet wird. Die Reihenfolge der Array-Elemente bleibt erhalten."
+      },
+      {
+        "icon": "lucide:list-ordered",
+        "title": "Array-Reihenfolge ignorieren",
+        "description": "Behandle die Array-Position bei ungeordneten Sammlungen als unbedeutend, sodass das Umordnen von Elementen keine scheinbaren Änderungen erzeugt."
+      },
+      {
+        "icon": "lucide:filter",
+        "title": "Bestimmte Felder ignorieren",
+        "description": "Schließe verrauschte Felder wie updatedAt oder requestId nach Namen oder Pfad aus, damit sie beim Vergleich übersprungen werden."
+      },
+      {
+        "icon": "lucide:clipboard-list",
+        "title": "Kopieren & Exportieren",
+        "description": "Kopiere jeden geänderten Pfad, kopiere das vollständige Diff-Ergebnis oder exportiere es als Textbericht für Issues, Code-Review oder Dokumentation."
+      },
+      {
+        "icon": "lucide:arrow-left-right",
+        "title": "Eingaben tauschen",
+        "description": "Tausche JSON A und JSON B, um die Vergleichsrichtung umzukehren und Hinzufügungen und Entfernungen aus der entgegengesetzten Perspektive zu sehen."
+      },
+      {
+        "icon": "lucide:shield-check",
+        "title": "Vergleich im Browser",
+        "description": "JSON-Parsing und Vergleich finden in deinem Browser statt. Es ist kein Konto erforderlich und deine Dokumente werden nicht auf einen Server hochgeladen."
+      }
+    ],
+    "guide": [
+      {
+        "title": "Das ursprüngliche JSON eingeben",
+        "description": "Füge das Basis- oder Originaldokument in JSON A ein. Diese Version dient als Ausgangspunkt für die Klassifizierung hinzugefügter, entfernter und geänderter Werte."
+      },
+      {
+        "title": "Das geänderte JSON eingeben",
+        "description": "Füge das neuere oder zu vergleichende Dokument in JSON B ein. Das Tool vergleicht dieses Dokument mit JSON A."
+      },
+      {
+        "title": "Vergleichsregeln festlegen",
+        "description": "Aktiviere „Objektschlüssel sortieren“, wenn die Schlüsselreihenfolge keine Rolle spielen soll, aktiviere „Array-Reihenfolge ignorieren“ für ungeordnete Sammlungen und liste Felder im Feld „Felder ignorieren“ auf."
+      },
+      {
+        "title": "Vergleichen und prüfen",
+        "description": "Klicke auf „Vergleichen“, um beide Dokumente zu parsen. Unterschiede werden in beiden Editoren hervorgehoben und mit ihrem Pfad, Typ sowie altem oder neuem Wert aufgelistet."
+      },
+      {
+        "title": "Kopieren oder exportieren",
+        "description": "Filtere das Ergebnis nach Typ, kopiere geänderte Pfade, kopiere das vollständige Ergebnis oder exportiere einen Bericht. Nutze „Tauschen“, um die Vergleichsrichtung umzukehren."
+      }
+    ],
+    "faq": [
+      {
+        "question": "Vergleicht dies JSON semantisch oder als reinen Text?",
+        "answer": "Der Vergleich ist strukturell: Beide Eingaben werden als JSON geparst, sodass Leerzeichen und Formatierung nicht als Datenänderungen zählen. Die Reihenfolge der Objektschlüssel kann ebenfalls normalisiert werden, wenn „Schlüssel sortieren“ aktiviert ist."
+      },
+      {
+        "question": "Welche Unterschiede kann es erkennen?",
+        "answer": "Es klassifiziert Eigenschaften oder Array-Werte als hinzugefügt, entfernt oder geändert. Eine Typänderung, etwa eine Zahl, die zu einem String wird, oder ein Objekt, das zu einem Array wird, wird als eigene Kategorie „Typ geändert“ gemeldet."
+      },
+      {
+        "question": "Vergleicht es verschachtelte Objekte und Arrays?",
+        "answer": "Ja. Der Vergleich ist für verschachtelte JSON-Objekte und -Arrays rekursiv. Jeder Unterschied meldet seinen vollständigen JSON-Pfad, etwa $.items[2].price."
+      },
+      {
+        "question": "Was bewirkt „Schlüssel sortieren“?",
+        "answer": "„Schlüssel sortieren“ normalisiert die Reihenfolge der Objekteigenschaften vor dem Vergleich. Das verhindert, dass eine andere Eigenschaftsreihenfolge als sinnvolle Änderung gemeldet wird. Array-Elemente werden nicht neu geordnet."
+      },
+      {
+        "question": "Was bewirkt „Array-Reihenfolge ignorieren“?",
+        "answer": "Es behandelt die Array-Position als weniger wichtig, wenn das Array eine ungeordnete Sammlung darstellt. Verwende diese Option vorsichtig bei Arrays mit wiederholten oder teilweise geänderten Objekten, da dennoch eine Zuordnung erforderlich ist."
+      },
+      {
+        "question": "Werden Arrays nach Index verglichen?",
+        "answer": "Standardmäßig werden Arrays nach Position verglichen, sodass das Einfügen eines Elements am Anfang dazu führen kann, dass spätere Indizes als geändert erscheinen. Wenn die Daten eine ungeordnete Sammlung sind, aktiviere „Array-Reihenfolge ignorieren“."
+      },
+      {
+        "question": "Kann ich bestimmte Felder ignorieren?",
+        "answer": "Ja. Liste Feldnamen oder Pfade im Feld „Felder ignorieren“ auf, durch Kommas getrennt. Du kannst einen einfachen Schlüsselnamen wie updatedAt, ein Platzhalter-Präfix wie *.updatedAt oder einen exakten Pfad wie users.profile.updatedAt verwenden."
+      },
+      {
+        "question": "Was ist eine Typänderung?",
+        "answer": "Eine Typänderung wird erkannt, wenn sich der JSON-Typ eines Werts zwischen den beiden Dokumenten unterscheidet, beispielsweise eine Zahl, die zu einem String wird, oder ein Objekt, das zu einem Array wird. Sie wird als separater Eintrag „Typ geändert“ mit den Typen davor und danach angezeigt."
+      },
+      {
+        "question": "Kann ich JSON-Dateien unterschiedlicher Größe vergleichen?",
+        "answer": "Ja. Die Dokumente müssen nicht dieselbe Anzahl von Eigenschaften, Elementen oder Verschachtelungsebenen enthalten. Fehlende Eigenschaften werden je nach Vergleichsrichtung als entfernt oder hinzugefügt gemeldet."
+      },
+      {
+        "question": "Kann ich minimiertes und formatiertes JSON vergleichen?",
+        "answer": "Ja, sofern beide Eingaben gültiges JSON sind. Formatierung, Einrückung und Leerzeichen beeinflussen einen strukturellen Vergleich nicht."
+      },
+      {
+        "question": "Kann ich Zahlen und Strings mit ähnlichen Werten vergleichen?",
+        "answer": "Ein struktureller Vergleich unterscheidet JSON-Typen. Beispielsweise sind die Zahl 1 und der String \"1\" unterschiedliche Werte, auch wenn sie bei der Anzeige ähnlich aussehen."
+      },
+      {
+        "question": "Kann ich den Vergleich umkehren?",
+        "answer": "Ja. Verwende „Tauschen“, um JSON A und JSON B auszutauschen. Das kehrt um, welches Dokument als Original und welches als geänderte Version behandelt wird."
+      },
+      {
+        "question": "Kann ich JSON aus URL-Parametern laden?",
+        "answer": "Ja. Du kannst einen der beiden Editoren mit den URL-Parametern ?left= und ?right= mit JSON-Text vorbelegen. Das lädt nur den Text aus der Adresse; das Tool ruft keine entfernten URLs ab."
+      },
+      {
+        "question": "Kann ich das Ergebnis kopieren oder exportieren?",
+        "answer": "Ja. Du kannst jeden geänderten Pfad kopieren, das vollständige Diff-Ergebnis als Text kopieren oder als .txt-Bericht für Issues, Code-Review oder Dokumentation exportieren."
+      },
+      {
+        "question": "Kann ich große JSON-Dokumente vergleichen?",
+        "answer": "Das praktische Limit hängt von Browser-Speicher, Geräteleistung, Dokumenttiefe, Array-Größe und der Komplexität des Diff-Ergebnisses ab. Große Vergleiche können länger dauern und von Filterung oder Export des Ergebnisses profitieren."
+      },
+      {
+        "question": "Wird mein JSON auf einen Server hochgeladen?",
+        "answer": "Nein. Beide Dokumente werden in deinem Browser geparst und verglichen, ohne Server-Upload. Du solltest dennoch vermeiden, Passwörter, API-Schlüssel, Zugriffstokens oder vertrauliche Produktiv-Payloads in ein browserbasiertes Tool einzugeben."
+      },
+      {
+        "question": "Ist dies ein kostenloses JSON-Vergleichstool?",
+        "answer": "Ja. Du kannst zwei JSON-Dokumente eingeben, ihre Struktur und Werte vergleichen und die Unterschiede prüfen, ohne ein Konto zu erstellen."
+      }
+    ],
+    "ui": {
+      "label_json_a": "JSON A (Original)",
+      "label_json_b": "JSON B (Geändert)",
+      "btn_compare": "Vergleichen",
+      "btn_sort_keys": "Objektschlüssel sortieren",
+      "btn_swap": "Eingaben tauschen",
+      "btn_ignore_order": "Array-Reihenfolge ignorieren",
+      "ignore_fields": "Felder ignorieren (z. B. updatedAt)",
+      "status_removed": "entfernt",
+      "status_added": "hinzugefügt",
+      "status_changed": "geändert",
+      "status_type_changed": "Typ geändert",
+      "status_total": "Unterschiede",
+      "status_identical": "Die JSON-Dokumente sind strukturell identisch.",
+      "filter_all": "Alle",
+      "result_showing": "Erste anzeigen",
+      "copy_paths": "Alle Pfade kopieren",
+      "copy_result": "Ergebnis kopieren",
+      "export_result": "Exportieren",
+      "btn_copy_path": "Pfad kopieren",
+      "error_empty_a": "Zuerst JSON A eingeben",
+      "error_empty_b": "Zuerst JSON B eingeben",
+      "error_invalid_a": "JSON A ist kein gültiges JSON",
+      "error_invalid_b": "JSON B ist kein gültiges JSON",
+      "hint_esc_fullscreen": "Drücke ESC zum Beenden des Vollbilds"
+    },
+    "article": {
+      "title": "JSON-Dateien online vergleichen",
+      "content": "<h2> Was ist ein JSON-Vergleichstool?</h2><p> Ein JSON-Vergleichstool untersucht zwei JSON-Dokumente und meldet, wie sich ihre Struktur und Werte unterscheiden. Es ist nützlich, wenn du API-Antworten, Konfigurationsdateien, Test-Fixtures, exportierte Daten oder zwei Versionen einer Payload vergleichen möchtest.</p><p> Ein struktureller JSON-Vergleich parst die Dokumente, bevor er sie vergleicht. Das bedeutet, dass Formatierung, Einrückung und Leerzeichen normalerweise nicht als Änderungen zählen. Das Ergebnis kann sich auf aussagekräftige Datenunterschiede konzentrieren wie hinzugefügte Eigenschaften, entfernte Eigenschaften, geänderte Werte und Typänderungen.</p><h2>Common Use Cases</h2><ul><li><strong>API debugging:</strong> Vergleiche erwartete und tatsächliche Antworten, um fehlende Felder, geänderte Werte oder unerwartete Typen zu finden.</li><li><strong>Configuration review:</strong> Vergleiche umgebungsspezifische Dateien oder alte und neue Konfigurationsversionen.</li><li><strong>Data migration:</strong> Prüfe, ob sich Datensätze während eines Exports, Imports oder einer Umwandlung geändert haben.</li><li><strong>Regression testing:</strong> Vergleiche Snapshot-Ausgaben, Test-Fixtures oder serialisierte Ergebnisse.</li><li><strong>Code review:</strong> Prüfe Änderungen an JSON-Payloads, ohne zwei große Dokumente manuell zu scannen.</li><li><strong> Webhook- und Event-Debugging:</strong> Vergleiche zwei Event-Payloads, um Änderungen in verschachtelten Eigenschaften oder Metadaten zu finden.</li></ul><h2> Wie man zwei JSON-Dokumente vergleicht</h2><ol><li><strong>Enter JSON A:</strong> Füge das Original- oder Basisdokument in den ersten Editor ein.</li><li><strong>Enter JSON B:</strong> Füge das geänderte oder neuere Dokument in den zweiten Editor ein.</li><li><strong> Wähle Normalisierungsoptionen:</strong> Sortiere Objektschlüssel, wenn die Eigenschaftsreihenfolge keine Rolle spielen soll. Nutze „Array-Reihenfolge ignorieren“ nur, wenn die Array-Position semantisch unerheblich ist. Liste Felder im Feld „Felder ignorieren“ auf.</li><li><strong>Run the comparison:</strong> Klicke auf „Vergleichen“, um beide Eingaben zu parsen und zu vergleichen.</li><li><strong>Review the result:</strong> Prüfe hinzugefügte, entfernte, geänderte und typgeänderte Werte zusammen mit ihren JSON-Pfaden und kopiere dann Pfade, kopiere das Ergebnis oder exportiere einen Bericht.</li></ol><h2> Unterschiedstypen verstehen</h2><ul><li><strong>Added (green):</strong> Ein Schlüssel oder Wert, der in JSON B vorhanden, in JSON A aber fehlt.</li><li><strong>Removed (red):</strong> Ein Schlüssel oder Wert, der in JSON A vorhanden, in JSON B aber fehlt.</li><li><strong>Changed (yellow):</strong> Ein in beiden Dokumenten vorhandener Schlüssel, dessen Wert sich unterscheidet.</li><li><strong>Type changed (purple):</strong> Ein in beiden Dokumenten vorhandener Schlüssel, dessen Wert den JSON-Typ gewechselt hat, etwa eine Zahl, die zu einem String wird.</li></ul><p> Verschachtelte Objekte und Arrays werden rekursiv verglichen, sodass auch Unterschiede tief in der Struktur erkannt und mit ihrem vollständigen Pfad angezeigt werden.</p><h2>Best Practices</h2><ul><li><strong>Normalize first:</strong> Aktiviere „Objektschlüssel sortieren“, wenn die beiden Dokumente von verschiedenen Serialisierern mit unterschiedlicher Schlüsselreihenfolge erzeugt wurden.</li><li><strong>Ignore noise:</strong> Nutze „Felder ignorieren“, um flüchtige Felder wie updatedAt, requestId oder Zeitstempel zu überspringen, die sich bei jedem Lauf ändern.</li><li><strong>Reverse when needed:</strong> Nutze „Tauschen“, um den Vergleich aus der anderen Richtung zu betrachten, wenn du debuggst, welche Seite eine Änderung eingeführt hat.</li><li><strong>Export for sharing:</strong> Kopiere geänderte Pfade oder exportiere das vollständige Ergebnis, um es an ein Issue oder Code-Review anzuhängen.</li></ul><h2> Browserbasiert und privat</h2><p> Dieses JSON-Vergleichstool verarbeitet Eingaben in deinem Browser und erfordert keinen Upload deiner Dokumente auf einen Server. Für Entwicklungsdaten und Konfigurationsausschnitte ist diese lokale Verarbeitung praktisch. Vermeide dennoch Passwörter, API-Schlüssel, Zugriffstokens oder andere hochsensible Informationen in einem Browser-Tool.</p>"
+    }
   }
 }

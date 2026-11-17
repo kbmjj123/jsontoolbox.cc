@@ -319,5 +319,160 @@
       "title": "如何在线将 XML 转换为 JSON",
       "content": "<h2>XML 转 JSON 转换器做了什么？</h2><p>XML 转 JSON 转换器会解析 XML 文档，并把它的元素、属性、文本和重复结构表示成 JSON。这样 XML 数据在 JavaScript 应用、API、脚本和现代数据处理流程里更容易查看和使用。</p><p>XML 和 JSON 的数据模型并不相同。XML 会区分元素、属性、命名空间、文本节点、注释、处理指令、顺序和混合内容，而 JSON 只有对象、数组、字符串、数字、布尔和 null。因此转换必须依赖映射约定，结果不保证复现 XML 的每一个特性。</p><h2>常见使用场景</h2><ul><li><strong>API 集成：</strong>把 XML 响应转换成 JSON，供前端应用或 JavaScript 处理。</li><li><strong>遗留系统改造：</strong>内部改用 JSON，同时继续消费来自老服务的 XML。</li><li><strong>数据检查：</strong>调试或开发时，把深层嵌套的 XML 用 JSON 对象和数组的形式查看。</li><li><strong>配置转换：</strong>把 XML 配置数据转成接受 JSON 的工具或应用能用的结构。</li><li><strong>数据迁移：</strong>把 XML 记录整理成可供 JSON 库、脚本或存储系统处理的形式。</li></ul><h2>如何把 XML 转换为 JSON</h2><ol><li><strong>输入 XML：</strong>粘贴 XML 文档，或打开 .xml 文件。</li><li><strong>选择格式：</strong>选择 2 空格或 4 空格的 JSON 缩进。</li><li><strong>配置属性：</strong>设置属性前缀，例如 @ 或 @_，把 XML 属性和子元素区分开。</li><li><strong>选择文本处理方式：</strong>文档里存在子元素和混合内容时，可勾选“保留 #text”保留直接文本。</li><li><strong>转换并检查：</strong>生成 JSON 后检查属性、重复标签、文本值、命名空间和嵌套结构。</li><li><strong>复制或下载：</strong>复制 JSON，或保存为 .json 文件备用。</li></ol><h2>XML 元素如何映射到 JSON</h2><ul><li><strong>元素：</strong>XML 元素通常变成 JSON 对象的属性，根元素名会成为最外层的键。</li><li><strong>嵌套元素：</strong>子元素通常变成嵌套的 JSON 对象。</li><li><strong>属性：</strong>带子元素的元素会把属性写成带前缀的键，例如 <code>@id</code> 或 <code>@_id</code>；命名空间声明 <code>xmlns</code> 同样按属性输出。</li><li><strong>文本值：</strong>没有子元素的元素直接输出文本字符串。本页不做类型推断，<code>30</code> 会输出成字符串 <code>\"30\"</code>，需要数字类型请在下游自行转换。</li><li><strong>重复元素：</strong>同名的重复兄弟元素会表示为 JSON 数组。</li><li><strong>CDATA：</strong>CDATA 内容通常按文本处理，因为 JSON 没有对应的 CDATA 类型。</li></ul><h2>属性与文本节点</h2><p>XML 允许一个元素同时带有属性和文本，本页按下面的方式处理：</p><ul><li><strong>纯文本元素：</strong>没有子元素的元素直接输出文本字符串，它的属性不会出现在输出中。例如 <code>&lt;name priority=\"high\"&gt;Alice&lt;/name&gt;</code> 会输出 <code>\"name\": \"Alice\"</code>。</li><li><strong>带子元素的元素：</strong>属性按前缀输出，例如 <code>@priority</code>。</li><li><strong>保留 #text：</strong>勾选后，同时带有子元素和直接文本的元素会把文本写入 <code>#text</code> 键。</li></ul><p>示例：</p><pre><code>&lt;p priority=\"high\"&gt;Hello &lt;b&gt;world&lt;/b&gt;&lt;/p&gt;</code></pre><p>勾选“保留 #text”后可以表示为：</p><pre><code>{\"p\":{\"@priority\":\"high\",\"b\":\"world\",\"#text\":\"Hello\"}}</code></pre><p>具体键名取决于你的配置。可配置的属性前缀能避免属性和同名子元素冲突；专门的文本键能在单个字符串不够用时保留文本内容。</p><h2>重复元素与数组的歧义</h2><p>当多个兄弟元素使用同一个标签名时，转换器会把它们表示为 JSON 数组：</p><pre><code>&lt;items&gt;\n  &lt;item&gt;A&lt;/item&gt;\n  &lt;item&gt;B&lt;/item&gt;\n&lt;/items&gt;</code></pre><p>需要注意单个元素和重复元素的区别：只出现一次时输出的是字符串或对象，出现多次时才会变成数组。本页没有提供“让某些标签始终输出数组”的开关，因此如果下游应用依赖稳定的数据结构，请先确认输出形状，必要时在下游统一处理。</p><h2>命名空间、CDATA 与混合内容</h2><p>XML 命名空间没有直接对应的 JSON 概念。本页输出的元素名会保留源 XML 里的前缀（例如 <code>soap:Envelope</code>），命名空间声明 <code>xmlns</code> 会作为属性按前缀输出。CDATA 标记通常会被去掉，内容按文本保留。混合内容（文本穿插在子元素之间）在不显式保留顺序的情况下很难完整表示。</p><p>对于 SOAP、SVG、SAML、RSS、Atom 等大量使用命名空间的文档，请用有代表性的样本试一次，确认输出里保留了你的应用真正需要的信息。</p><h2>XML 转 JSON 并不总是可逆</h2><p>把 XML 转成 JSON 再转回 XML，可能得到结构相近的文档，但不一定是原文档。注释、空白、属性顺序、命名空间声明、CDATA 标记、文档排版和混合内容的顺序都可能变化或丢失。如果需要精确还原，请保留原始 XML。</p><h2>常见的 XML 转换错误</h2><ul><li><strong>标签未闭合：</strong>除自闭合标签外，每个开始标签都要有对应的结束标签。</li><li><strong>嵌套错误：</strong>XML 元素必须正确嵌套。</li><li><strong>未转义的 &：</strong>文本里的字面 & 通常需要写成 <code>&amp;amp;</code>。</li><li><strong>属性格式错误：</strong>属性值需要正确的引号。</li><li><strong>命名空间意外：</strong>命名空间声明和前缀会影响输出的键名。</li><li><strong>数组不稳定：</strong>重复元素只出现一次和出现多次时，输出的 JSON 形状可能不同。</li></ul><p>解析失败时，页面会显示“无效的 XML：”加上浏览器的解析信息，通常包含就近的行列位置，但不同浏览器给出的位置和描述精度不同，只能作为排查起点。</p><h2>浏览器本地处理与隐私</h2><p>本页在浏览器中解析 XML 并生成 JSON，不会把源文档发送到远程转换服务。这对开发数据和私有的集成样本比较方便。但它不能替代正规的密钥管理，所以不要把凭据、令牌、客户隐私信息或生产环境机密粘贴到任何在线转换器里。</p><h2>什么时候改用本地 XML 工具</h2><p>浏览器转换器适合一次性转换和临时查看。对于可重复的自动化、很大的文件、机密文档、CI 流水线或严格的 schema 要求，建议使用可信的本地库或命令行工具，并显式定义 XML 到 JSON 的映射规则。</p>"
     }
+  },
+  "de": {
+    "name": "XML-zu-JSON-Konverter",
+    "ui": {
+      "btn_convert": "In JSON umwandeln",
+      "btn_example": "Beispiel laden",
+      "error_conversion": "Das XML konnte nicht umgewandelt werden",
+      "error_empty_input": "XML eingeben oder eine XML-Datei öffnen",
+      "error_invalid_xml": "Ungültiges XML: ",
+      "label_attr_prefix": "Attribut-Präfix:",
+      "label_indent": "Einrückung:",
+      "label_input": "XML eingeben",
+      "label_output": "JSON-Ausgabe",
+      "label_preserve_text": "Textknoten beibehalten",
+      "option_spaces_2": "2 Leerzeichen",
+      "option_spaces_4": "4 Leerzeichen",
+      "placeholder_output": "JSON-Ausgabe erscheint hier …",
+      "status_elements": "{count} Elemente"
+    },
+    "description": "Wandle XML-Daten online in deinem Browser in JSON um. Füge XML ein oder öffne eine .xml-Datei, lege fest, wie Attribute und Textknoten dargestellt werden, und lade oder kopiere die formatierte JSON-Ausgabe. Wiederholte Elemente können nach den Zuordnungsregeln des Konverters als Arrays dargestellt werden.",
+    "hero": {
+      "trustHtml": "Läuft in deinem Browser. Dein XML wird von diesem Tool nicht hochgeladen."
+    },
+    "meta": {
+      "title": "XML-zu-JSON-Konverter – Kostenloses Online-Tool",
+      "description": "Wandle XML online in JSON um. Füge XML ein oder öffne eine Datei, konfiguriere Attribut-Präfixe und die Behandlung von Textknoten, formatiere die Ausgabe und kopiere oder lade das Ergebnis herunter. Kostenlos und browserbasiert.",
+      "keywords": [
+        "xml to json",
+        "xml to json converter",
+        "convert xml to json",
+        "xml to json online",
+        "online xml to json",
+        "free xml to json",
+        "xml json converter",
+        "xml to json tool"
+      ]
+    },
+    "features": [
+      {
+        "icon": "lucide:file-input",
+        "title": "XML einfügen oder öffnen",
+        "description": "Füge XML direkt in den Editor ein oder öffne eine .xml-Datei von deinem Gerät. Die Eingabe wird im Browser geparst, bevor die JSON-Ausgabe erzeugt wird."
+      },
+      {
+        "icon": "lucide:download",
+        "title": "JSON kopieren oder herunterladen",
+        "description": "Kopiere das umgewandelte JSON in die Zwischenablage oder lade es als .json-Datei herunter für die Verwendung in APIs, Skripten, Frontend-Anwendungen und Datenverarbeitungs-Workflows."
+      },
+      {
+        "icon": "lucide:settings-2",
+        "title": "Konfigurierbare Zuordnung",
+        "description": "Wähle die JSON-Einrückung, konfiguriere das Präfix für XML-Attribute und steuere, ob Textinhalt unter einem eigenen Text-Schlüssel bewahrt wird."
+      },
+      {
+        "icon": "lucide:tag",
+        "title": "Attribut-Zuordnung",
+        "description": "Stelle XML-Attribute als JSON-Eigenschaften mit einem konfigurierbaren Präfix wie @ oder @_ dar. Ein Präfix hilft, Attribute von Kindelementen mit ähnlichen Namen zu unterscheiden."
+      },
+      {
+        "icon": "lucide:layers-2",
+        "title": "Verschachtelte Elemente und wiederholte Tags",
+        "description": "Wandle verschachtelte XML-Elemente in verschachtelte JSON-Objekte um und stelle wiederholte Geschwisterelemente als Arrays dar, sofern die Zuordnungsregeln des Parsers sie als wiederholte Werte erkennen."
+      },
+      {
+        "icon": "lucide:align-left",
+        "title": "Behandlung von Textknoten",
+        "description": "Bewahre Elementtext unter einem eigenen Schlüssel auf, wenn ein Element sowohl Attribute als auch Text enthält. Das hilft, Informationen in gemischten XML-Strukturen nicht zu verlieren."
+      },
+      {
+        "icon": "lucide:shield-check",
+        "title": "Verarbeitung im Browser",
+        "description": "XML-Parsing und JSON-Erzeugung finden in deinem Browser statt. Die Seite erfordert kein Konto und lädt das XML nicht auf einen entfernten Konvertierungsdienst hoch."
+      }
+    ],
+    "guide": [
+      {
+        "title": "XML eingeben oder öffnen",
+        "description": "Füge ein wohlgeformtes XML-Dokument in den Eingabe-Editor ein oder öffne eine .xml-Datei von deinem Gerät. Du kannst eine API-Antwort, ein Konfigurationsdokument oder einen XML-Export verwenden."
+      },
+      {
+        "title": "Zuordnungsoptionen wählen",
+        "description": "Wähle die JSON-Einrückung, wähle ein Attribut-Präfix und entscheide, ob Elementtext unter einem eigenen Text-Schlüssel bewahrt werden soll."
+      },
+      {
+        "title": "Das Dokument umwandeln",
+        "description": "Klicke auf „In JSON umwandeln“, um den XML-Baum zu parsen und eine JSON-Darstellung zu erzeugen. Wenn das XML fehlerhaft ist, prüfe den Parser-Fehler und korrigiere das Quelldokument."
+      },
+      {
+        "title": "Prüfen und exportieren",
+        "description": "Prüfe Attribute, Textwerte, wiederholte Elemente, Namespaces und verschachtelte Strukturen in der Ausgabe. Kopiere das JSON oder lade es als .json-Datei herunter."
+      }
+    ],
+    "example": {
+      "input": "<user id=\"42\">\n  <name>Alice</name>\n  <age>30</age>\n</user>",
+      "output": "{\n  \"user\": {\n    \"@id\": \"42\",\n    \"name\": \"Alice\",\n    \"age\": \"30\"\n  }\n}",
+      "useCase": "Wandle eine XML-API-Antwort in JSON für die Verarbeitung in einer Frontend- oder JavaScript-Anwendung um."
+    },
+    "faq": [
+      {
+        "question": "Ist die XML-zu-JSON-Konvertierung verlustfrei?",
+        "answer": "Nicht immer. XML und JSON haben unterschiedliche Datenmodelle, sodass Attribute, Namespaces, gemischte Inhalte, Kommentare, Verarbeitungsanweisungen, Reihenfolge und manche Typinformationen Konventionen erfordern oder nicht exakt erhalten bleiben können. Prüfe die Ausgabe, bevor du sie weiterverwendest."
+      },
+      {
+        "question": "Wie werden XML-Attribute dargestellt?",
+        "answer": "Attribute werden als JSON-Eigenschaften mit dem konfigurierten Präfix dargestellt, etwa @id oder @_id. Das Präfix hilft, ein XML-Attribut von einem Kindelement mit demselben Namen zu unterscheiden."
+      },
+      {
+        "question": "Was bewirkt „Textknoten beibehalten“?",
+        "answer": "Wenn aktiviert, kann Textinhalt unter einem eigenen Schlüssel wie #text gespeichert werden, wenn ein Element auch Attribute oder Kindelemente enthält. Das hilft, Text zu bewahren, der sich sonst schwer neben Attributen darstellen lässt."
+      },
+      {
+        "question": "Wie werden wiederholte XML-Elemente behandelt?",
+        "answer": "Wiederholte Geschwisterelemente mit demselben Tag-Namen werden üblicherweise als JSON-Array dargestellt. Ein einzelnes Vorkommen kann je nach Zuordnungsregel des Parsers ein Skalar oder Objekt bleiben."
+      },
+      {
+        "question": "Kann ich das Attribut-Präfix anpassen?",
+        "answer": "Ja, wenn die Option in der Oberfläche verfügbar ist. Gängige Konventionen sind @ und @_. Wähle ein Präfix, das nicht mit den von deiner nachgelagerten Anwendung erwarteten Elementnamen kollidiert."
+      },
+      {
+        "question": "Unterstützt es XML-Namensräume?",
+        "answer": "Einfaches namespace-qualifiziertes XML kann geparst werden, aber die Namespace-Behandlung hängt vom Parser und der Zuordnungsimplementierung ab. Präfixe können in Elementnamen verbleiben, entfernt werden oder zusätzliche Verarbeitung erfordern. Gehe nicht davon aus, dass ein umgewandelter Namespace dieselbe Bedeutung hat wie im ursprünglichen XML."
+      },
+      {
+        "question": "Unterstützt es CDATA-Abschnitte?",
+        "answer": "Viele XML-Parser geben CDATA-Inhalte als Text aus, aber die genaue Ausgabe hängt vom Parser ab. CDATA-Markierungen bleiben meist nicht als eigener JSON-Typ erhalten, da JSON kein direktes CDATA-Äquivalent hat."
+      },
+      {
+        "question": "Kann ich SOAP-XML in JSON umwandeln?",
+        "answer": "Du kannst möglicherweise ein wohlgeformtes SOAP-Envelope als XML umwandeln, aber das Ergebnis ist nur eine strukturelle Darstellung. Es wandelt SOAP-Operationen, Namespaces, Schemas, Authentifizierung und dienstspezifische Semantik nicht automatisch in eine REST-artige JSON-API um."
+      },
+      {
+        "question": "Kann ich JSON zurück in XML umwandeln?",
+        "answer": "Verwende ein separates JSON-zu-XML-Tool für die umgekehrte Richtung. Eine JSON-Darstellung enthält möglicherweise nicht genug Informationen, um das ursprüngliche XML exakt zu rekonstruieren, insbesondere wenn Attribute, Namespaces, Reihenfolge, gemischte Inhalte oder Kommentare nicht bewahrt wurden."
+      },
+      {
+        "question": "Kann ich eine große XML-Datei umwandeln?",
+        "answer": "Das praktische Limit hängt von Browser-Speicher, Geräteleistung, XML-Tiefe, Elementanzahl und Parser-Verhalten ab. Große XML-Dateien brauchen möglicherweise länger zum Parsen und erfordern erheblichen Speicher, da das Dokument im Browser geladen wird."
+      },
+      {
+        "question": "Warum lässt sich mein XML nicht umwandeln?",
+        "answer": "Häufige Ursachen sind ein nicht geschlossenes Tag, nicht zusammenpassende Elementnamen, ungültige Verschachtelung, fehlerhafte Attribute, eine ungültige Deklaration, nicht maskierte Ampersands oder unvollständiges XML. Prüfe die gemeldete Position und validiere das Quelldokument, bevor du es erneut versuchst."
+      },
+      {
+        "question": "Wird mein XML auf einen Server hochgeladen?",
+        "answer": "Diese Seite ist dazu konzipiert, XML in deinem Browser ohne Server-Upload zu parsen und JSON zu erzeugen. Du solltest dennoch vermeiden, Passwörter, API-Schlüssel, Zugriffstokens, private Kundendaten oder vertrauliche Produktiv-XML in ein browserbasiertes Tool einzugeben."
+      },
+      {
+        "question": "Ist dies ein kostenloser XML-zu-JSON-Konverter?",
+        "answer": "Ja. Du kannst XML einfügen oder öffnen, die verfügbaren Zuordnungsoptionen konfigurieren und die JSON-Ausgabe kopieren oder herunterladen, ohne ein Konto zu erstellen."
+      }
+    ],
+    "article": {
+      "title": "XML online in JSON umwandeln",
+      "content": "<h2> Was macht ein XML-zu-JSON-Konverter?</h2><p> Ein XML-zu-JSON-Konverter parst ein XML-Dokument und erstellt eine JSON-Darstellung seiner Elemente, Attribute, Texte und wiederholten Strukturen. Das kann XML-Daten in JavaScript-Anwendungen, APIs, Skripten und modernen Datenverarbeitungs-Workflows leichter prüfbar und nutzbar machen.</p><p> XML und JSON haben nicht identische Datenmodelle. XML unterscheidet Elemente, Attribute, Namespaces, Textknoten, Kommentare, Verarbeitungsanweisungen, Reihenfolge und gemischte Inhalte, während JSON Objekte, Arrays, Strings, Zahlen, Booleans und null darstellt. Ein Konverter benötigt daher Zuordnungskonventionen, und das Ergebnis ist möglicherweise keine verlustfreie Wiedergabe jedes XML-Merkmals.</p><h2>Common Use Cases</h2><ul><li><strong>API integration:</strong> Wandle XML-Antworten in JSON für Frontend-Anwendungen oder JavaScript-basierte Verarbeitung um.</li><li><strong> Modernisierung alter Systeme:</strong> Verwende JSON intern, während du weiterhin XML von älteren Diensten konsumierst.</li><li><strong>Data inspection:</strong> Zeige tief verschachteltes XML während des Debuggings oder der Entwicklung als JSON-Objekte und -Arrays.</li><li><strong> Konfigurationsumwandlung:</strong> Wandle XML-Konfigurationsdaten in eine JSON-Struktur für ein Tool oder eine Anwendung um, das JSON akzeptiert.</li><li><strong>Data migration:</strong> Bereite XML-Datensätze zur Verarbeitung durch JSON-basierte Bibliotheken, Skripte oder Speichersysteme vor.</li></ul><h2> Wie man XML in JSON umwandelt</h2><ol><li><strong>Enter XML:</strong> Füge das XML-Dokument ein oder öffne eine .xml-Datei.</li><li><strong>Choose formatting:</strong> Wähle 2 oder 4 Leerzeichen für die JSON-Einrückung.</li><li><strong>Configure attributes:</strong> Wähle ein Präfix wie @ oder @_, um XML-Attribute von Kindelementen zu unterscheiden.</li><li><strong>Choose text handling:</strong> Bewahre Text unter einem eigenen Schlüssel auf, wenn das Dokument Attribute, Kindelemente oder gemischte Inhalte enthält.</li><li><strong>Convert und inspect:</strong> Erzeuge das JSON und prüfe Attribute, wiederholte Tags, Textwerte, Namespaces und verschachtelte Strukturen.</li><li><strong>Copy oder download:</strong> Kopiere das JSON oder speichere es als .json-Datei für die spätere Verwendung.</li></ol><h2> Wie XML-Elemente auf JSON abgebildet werden</h2><ul><li><strong>Elements:</strong> XML-Elemente werden üblicherweise zu JSON-Objekteigenschaften.</li><li><strong>Nested elements:</strong> Kindelemente werden üblicherweise zu verschachtelten JSON-Objekten.</li><li><strong>Attributes:</strong> Attribute können zu Eigenschaften mit einem Präfix wie <code>@id</code> oder <code>@_id</code>.</li><li><strong>Text Werts:</strong> Einfacher Elementtext kann zu einem String-Wert werden, während Text neben Attributen oder Kindelementen einen Schlüssel wie <code>#text</code>.</li><li><strong>Repeated elements:</strong> Wiederholte Geschwister-Tags werden üblicherweise als JSON-Arrays dargestellt.</li><li><strong>CDATA:</strong> CDATA-Inhalte werden im Allgemeinen als Text behandelt, da JSON keinen nativen CDATA-Typ hat.</li></ul><h2> Attribute und Textknoten</h2><p> XML erlaubt es einem Element, sowohl Attribute als auch Text zu enthalten:</p><pre><code>&lt;name priority=\"high\"&gt;Alice&lt;/name&gt;</code></pre><p> Eine gängige JSON-Darstellung ist:</p><pre><code>{\"name\":{\"@priority\":\"high\",\"#text\":\"Alice\"}}</code></pre><p> Die genauen Schlüssel hängen von der Konfiguration des Konverters ab. Ein konfigurierbares Attribut-Präfix hilft, Kollisionen zwischen einem Attribut und einem Kindelement mit demselben Namen zu verhindern. Ein eigener Text-Schlüssel hilft, Textinhalte zu bewahren, wenn ein einfacher String-Wert nicht ausreicht.</p><h2> Wiederholte Elemente und Array-Mehrdeutigkeit</h2><p> Wenn mehrere Geschwisterelemente denselben Tag haben, kann ein Konverter sie als JSON-Array darstellen:</p><pre><code>&lt;items&gt;\n  &lt;item&gt;A&lt;/item&gt;\n  &lt;item&gt;B&lt;/item&gt;\n&lt;/items&gt;</code></pre><p> Eine Herausforderung ist der Unterschied zwischen einem einzelnen und einem wiederholten Element. Manche Konverter geben bei einem Vorkommen einen Skalar oder ein Objekt zurück und nur bei mehreren Vorkommen ein Array. Andere Konverter erzwingen für ausgewählte Elementnamen immer Arrays. Prüfe die Ausgabeform, wenn deine Anwendung ein stabiles Schema erwartet.</p><h2> Namespaces, CDATA und gemischte Inhalte</h2><p> XML-Namensräume haben keine direkte JSON-Entsprechung. Ein Konverter kann Präfixe in Eigenschaftsnamen bewahren, Präfixe entfernen oder Namespace-Deklarationen separat ausgeben. CDATA-Markierungen werden meist entfernt, während ihre Inhalte als Text erhalten bleiben. Gemischte Inhalte, bei denen Text zwischen Kindelementen steht, lassen sich ohne explizite Erhaltung der Reihenfolge schwer darstellen.</p><p> Für SOAP-, SVG-, SAML-, RSS-, Atom- oder andere Namespace-reiche Dokumente teste ein repräsentatives Beispiel und prüfe, ob die Ausgabe die Informationen behält, die deine Anwendung tatsächlich benötigt.</p><h2> XML-zu-JSON ist nicht immer umkehrbar</h2><p> Das Umwandeln von XML zu JSON und zurück zu XML kann ein strukturell ähnliches Dokument ergeben, aber nicht unbedingt das Original. Kommentare, Leerzeichen, Attributreihenfolge, Namespace-Deklarationen, CDATA-Markierungen, Dokumentformatierung und die Reihenfolge gemischter Inhalte können sich ändern oder verschwinden. Bewahre das ursprüngliche XML, wenn exakte Rekonstruktion wichtig ist.</p><h2> Häufige XML-Umwandlungsfehler</h2><ul><li><strong>Unclosed tags:</strong> Jedes öffnende Element muss ein passendes schließendes Element haben, sofern es nicht selbstschließend ist.</li><li><strong>Invalid nesting:</strong> XML-Elemente müssen ordnungsgemäß verschachtelt sein.</li><li><strong>Unescaped ampersands:</strong> Ein wörtliches Ampersand im Text muss meist geschrieben werden als <code>&amp;amp;</code>.</li><li><strong>Malformed attributes:</strong> Attributwerte benötigen gültige Anführungszeichen.</li><li><strong>Unexpected namespaces:</strong> Namespace-Deklarationen und Präfixe können die Ausgabe-Schlüssel beeinflussen.</li><li><strong>Unstable arrays:</strong> Ein einzelnes Vorkommen eines wiederholten Elements kann eine andere JSON-Form ergeben als mehrere Vorkommen.</li></ul><h2>Browser-Based Privacy</h2><p> Dieser Konverter ist darauf ausgelegt, XML im Browser zu parsen und JSON zu erzeugen, statt das Quelldokument an einen entfernten Konvertierungsdienst zu senden. Das kann für Entwicklungsdaten und private Integrationsbeispiele nützlich sein. Es ersetzt keine sichere Geheimnisverwaltung, daher vermeide Zugangsdaten, Tokens, private Kundeninformationen oder Produktiv-Geheimnisse in einem Online-Konverter.</p><h2> Wann ein lokales XML-Tool nutzen</h2><p> Ein browserbasierter Konverter ist praktisch für einmalige Umwandlungen und Prüfung. Für wiederholbare Automatisierung, sehr große Dateien, vertrauliche Dokumente, CI-Pipelines oder strenge Schema-Anforderungen verwende eine vertrauenswürdige lokale Bibliothek oder ein Kommandozeilen-Tool und definiere die XML-zu-JSON-Zuordnung explizit.</p>"
+    }
   }
 }

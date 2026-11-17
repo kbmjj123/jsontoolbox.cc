@@ -352,5 +352,172 @@
       "title": "如何把 JSON 转换为 Excel 和 Google Sheets 可用的 CSV",
       "content": "<h2>什么是 JSON 转 CSV？</h2><p>JSON 常用于 API、应用数据、配置和数据库导出。CSV 是一种扁平的分隔格式，适合电子表格、报表工具和简单的数据导入流程。当你需要把记录当成行和列来查看，而不是当成嵌套对象时，把 JSON 转换为 CSV 就很有用。</p><p>最合适的 JSON 输入是顶层对象数组。每个对象代表一条记录，它的属性成为 CSV 字段。由于 CSV 只有两个维度，嵌套对象和数组必须先确定表示方式才能导出。</p><h2>常见使用场景</h2><ul><li><strong>API 数据分析：</strong>把 JSON API 响应转成电子表格，用于筛选、审查、制图或报表。</li><li><strong>数据库与应用导出：</strong>把 JSON 记录转成电子表格或导入工具可以直接打开的格式。</li><li><strong>人工审核：</strong>把结构化记录显示为行和列，用于 QA、审计或内容检查。</li><li><strong>数据迁移：</strong>为只接受 CSV、不接受 JSON 的系统准备扁平文件。</li><li><strong>电子表格工作流：</strong>把 JSON 数据导入 Excel 或 Google Sheets，不需要额外安装转换程序。</li></ul><h2>如何把 JSON 转换为 CSV</h2><ol><li><strong>输入 JSON：</strong>粘贴 JSON 对象数组，或打开 .json 文件。</li><li><strong>确定记录：</strong>确认输入数组就是你要导出的那些行。如果数据被包在对象里，先找到对应的记录数组。</li><li><strong>配置嵌套字段：</strong>需要 <code>user.name</code>、<code>address.city</code> 这类路径单独成列时，开启嵌套对象展平。</li><li><strong>检查列：</strong>查看检测到的表头、行数和表格预览。提供字段选择时，去掉不想导出的字段。</li><li><strong>下载 CSV：</strong>生成并保存 CSV 文件，然后在 Excel 中打开或导入 Google Sheets。</li></ol><h2>展平嵌套 JSON</h2><p>如果不先确定表示方式，嵌套对象无法直接放进扁平的表格单元格。常见做法是用点号展平对象路径：</p><pre><code>{\"user\":{\"name\":\"Alice\",\"address\":{\"city\":\"New York\"}},\"status\":\"active\"}</code></pre><p>展平后，字段可能变成 <code>user.name</code>、<code>user.address.city</code> 和 <code>status</code>。这对嵌套对象很有效，但嵌套数组需要另外的规则：它们可能被序列化成 JSON 文本、拼进一个单元格、展开成多个列，或者按转换设计的不同拆成多行。</p><h2>键不同与缺失值</h2><p>真实数据里的记录往往字段并不完全一致。转换器可以扫描这些记录，取所有键的并集。某条记录没有某个字段时，对应的 CSV 单元格为空。这样保持了行对齐，但当源数据包含大量可选属性时，表格可能会变得很宽。</p><h2>CSV 转义规则</h2><p>包含逗号、双引号或换行的 CSV 值需要特殊处理。含逗号的值通常用双引号包起来，值内部的双引号则写成两个双引号。当名称、描述、地址或 API 字段包含标点或多行文本时，正确的转义非常重要。</p><p>CSV 是相对简单的格式，但不同表格软件对分隔符、行尾、字符编码和公式解析的假设可能不同。分发大批量导出结果之前，先用有代表性的样本测试。</p><h2>在 Excel 中打开 CSV 文件</h2><p>对于多语言数据，UTF-8 通常是通用性最好的编码。微软文档说明，带 BOM 保存的 UTF-8 CSV 可以在 Excel 中正确打开；没有 BOM 的文件可能需要通过 Excel 的数据或文本导入流程，并手动选择 UTF-8。[164][166]</p><p>BOM 能改善部分 Excel 环境下的直接打开体验，但不是对所有表格软件都适用的通用方案。如果文件仍然显示异常，就使用导入对话框，明确选择 UTF-8 和正确的分隔符。</p><h2>JSON 转 CSV 的局限</h2><ul><li><strong>嵌套数据：</strong>对象和数组需要展平、序列化或其他映射规则。</li><li><strong>类型信息：</strong>CSV 不能像 JSON 那样保留对象和数组类型。</li><li><strong>空值：</strong>null 可能变成空单元格，也可能变成字面值，取决于转换器的规则。</li><li><strong>大体积数据：</strong>浏览器内存和渲染时间会限制客户端转换的实际规模。</li><li><strong>类似公式的值：</strong>表格软件可能把以 <code>=</code>、<code>+</code>、<code>-</code>、<code>@</code> 开头的值当成公式处理。谨慎对待来源不可信的导出结果，为他人导出数据时考虑公式注入防护。</li></ul><h2>浏览器本地处理与隐私</h2><p>这个转换器的设计是在浏览器里处理 JSON 并生成 CSV，而不是把源数据发送到远程转换服务。这对内部记录和开发数据很有用。但浏览器工具不应被当作安全的密钥管理系统，不要在任何在线转换器中输入凭证、令牌、客户隐私数据或生产环境密钥。</p><h2>什么时候应该继续用 JSON</h2><p>CSV 适合扁平记录和电子表格工作流，但如果需要保留嵌套结构、数组、精确的数据类型或机器之间的数据交换，JSON 通常是更好的选择。如果转换成 CSV 会产生大量含义不明的列，或者丢失重要关系，就保留原始 JSON，或使用为嵌套数据设计的格式。</p>"
     }
+  },
+  "de": {
+    "name": "JSON-zu-CSV-Konverter",
+    "description": "Wandle JSON-Datensätze online in CSV für Excel, Google Sheets und andere Tabellenprogramme um. Füge JSON ein oder öffne eine Datei, zeige die erkannten Spalten an, glätte optional verschachtelte Objekte und lade eine CSV-Datei direkt aus deinem Browser herunter.",
+    "hero": {
+      "trustHtml": "Läuft in deinem Browser. Dein JSON wird von diesem Tool nicht hochgeladen."
+    },
+    "meta": {
+      "title": "JSON-zu-CSV-Konverter – Kostenloses Online-Tool für Excel",
+      "description": "Wandle JSON-Arrays online in CSV um. Zeige Zeilen und Spalten an, glätte verschachtelte Objekte, wähle Felder aus und lade tabellenfertiges CSV für Excel oder Google Sheets herunter. Kostenlos und browserbasiert.",
+      "keywords": [
+        "json to csv",
+        "convert json to csv",
+        "json to csv converter",
+        "json array to csv",
+        "json to csv online",
+        "json to csv for excel",
+        "nested json to csv",
+        "json csv converter"
+      ]
+    },
+    "features": [
+      {
+        "icon": "lucide:file-json-2",
+        "title": "JSON-Datensätze zu CSV",
+        "description": "Wandle ein JSON-Array von Objekten in CSV-Zeilen und -Spalten um. Jedes Objekt wird zu einem Datensatz, und die erkannten Felder werden als CSV-Kopfzeilen verwendet."
+      },
+      {
+        "icon": "lucide:table-2",
+        "title": "Tabellen-Vorschau",
+        "description": "Prüfe die erkannten Spalten und umgewandelten Zeilen vor dem Herunterladen. So findest du fehlende Felder, unerwartete Werte und Abflachungsprobleme, bevor du die Datei exportierst."
+      },
+      {
+        "icon": "lucide:layers-2",
+        "title": "Verschachtelte Objekte abflachen",
+        "description": "Wandle verschachtelte Objekteigenschaften in Punktnotations-Spalten wie user.name oder address.city um. Verschachtelte Arrays können je nach Struktur serialisiert werden oder eine separate Umwandlung erfordern."
+      },
+      {
+        "icon": "lucide:list-checks",
+        "title": "Exportierte Felder auswählen",
+        "description": "Wähle die Spalten aus, die in die CSV-Ausgabe aufgenommen werden sollen, wenn du nur bestimmte Felder aus einer größeren JSON-Antwort oder einem Datensatz benötigst."
+      },
+      {
+        "icon": "lucide:separator-horizontal",
+        "title": "CSV-Formatierungsoptionen",
+        "description": "Erzeuge standardmäßige kommagetrennte Ausgabe und maskiere Werte mit Kommas, Anführungszeichen oder Zeilenumbrüchen korrekt. Nutze die von der Seite unterstützten Trennzeichen- und Kodierungsoptionen."
+      },
+      {
+        "icon": "lucide:download",
+        "title": "Tabellenfreundlicher Download",
+        "description": "Lade die erzeugte CSV-Datei für die Verwendung in Excel, Google Sheets, Datenbankimporten, Berichts-Workflows oder anderen Anwendungen herunter, die durch Trennzeichen getrennten Text akzeptieren."
+      },
+      {
+        "icon": "lucide:upload",
+        "title": "JSON einfügen oder öffnen",
+        "description": "Füge JSON direkt in den Editor ein oder öffne eine .json-Datei von deinem Gerät. Die Eingabe wird im Browser geparst, bevor die CSV erzeugt wird."
+      },
+      {
+        "icon": "lucide:shield-check",
+        "title": "Verarbeitung im Browser",
+        "description": "JSON-Parsing, Tabellenvorbereitung und CSV-Erzeugung finden in deinem Browser statt. Der Konverter erfordert kein Konto und keinen Server-Upload."
+      }
+    ],
+    "guide": [
+      {
+        "title": "JSON-Daten eingeben",
+        "description": "Füge ein JSON-Array von Objekten in das Eingabefeld ein oder öffne eine .json-Datei. API-Antworten und exportierte Datensätze müssen meist auf das Array reduziert werden, das die Zeilen enthält."
+      },
+      {
+        "title": "Die erkannten Spalten prüfen",
+        "description": "Führe die Umwandlung aus und prüfe die Tabellenvorschau. Der Konverter sammelt Felder über die Datensätze hinweg, sodass Zeilen mit unterschiedlichen Schlüsseln in manchen Spalten leere Zellen erzeugen können."
+      },
+      {
+        "title": "Verschachtelte Daten und Felder konfigurieren",
+        "description": "Aktiviere das Abflachen verschachtelter Objekte, wenn du Eigenschaften wie user.name oder address.city als eigene Spalten benötigst. Wähle nur die Felder aus, die du exportieren möchtest, wenn der Datensatz unnötige Eigenschaften enthält."
+      },
+      {
+        "title": "Die CSV herunterladen",
+        "description": "Prüfe die umgewandelten Zeilen und lade dann die CSV-Datei herunter. Öffne sie in Excel oder importiere sie in Google Sheets und bestätige Trennzeichen und Zeichenkodierung, falls die Tabelle unerwartete Zeichen anzeigt."
+      }
+    ],
+    "example": {
+      "input": "[\n  { \"name\": \"Alice\", \"age\": 30, \"city\": \"New York\" },\n  { \"name\": \"Bob\", \"age\": 25, \"city\": \"London\" }\n]",
+      "output": "name,age,city\nAlice,30,New York\nBob,25,London",
+      "useCase": "Wandle eine API-Antwort mit Benutzerdatensätzen in eine CSV-Datei für die Tabellenanalyse um."
+    },
+    "faq": [
+      {
+        "question": "Wie konvertiere ich JSON für Excel in CSV?",
+        "answer": "Füge ein JSON-Array von Objekten ein oder öffne eine .json-Datei, prüfe die erkannten Spalten und lade die erzeugte CSV herunter. Wenn Excel Nicht-ASCII-Zeichen falsch darstellt, verwende eine UTF-8-CSV mit BOM, sofern verfügbar, oder importiere die Datei über den Textimport von Excel und wähle UTF-8."
+      },
+      {
+        "question": "Welche JSON-Struktur eignet sich am besten für die CSV-Konvertierung?",
+        "answer": "Die am besten geeignete Eingabe ist ein Array der obersten Ebene mit Objekten, wobei jedes Objekt eine Zeile darstellt. Zum Beispiel: [{\"name\":\"Alice\",\"age\":30},{\"name\":\"Bob\",\"age\":25}]."
+      },
+      {
+        "question": "Kann ich ein JSON-Objekt statt eines Arrays umwandeln?",
+        "answer": "Die Seite ist in erster Linie für Arrays von Datensätzen konzipiert. Wenn deine Daten in ein Objekt wie {\"results\":[...]} eingepackt sind, extrahiere das Datensatz-Array vor der Umwandlung. Ein einzelnes Objekt kann nur dann als ein Datensatz behandelt werden, wenn das von der aktuellen Implementierung unterstützt wird."
+      },
+      {
+        "question": "Unterstützt es verschachtelte JSON-Objekte?",
+        "answer": "Ja. Wenn das Abflachen aktiviert ist, können verschachtelte Objekte zu Spalten in Punktnotation wie user.name und address.city werden. Das erzeugt eine flache Struktur, die leichter in eine Tabelle importiert werden kann."
+      },
+      {
+        "question": "Wie werden verschachtelte Arrays behandelt?",
+        "answer": "Eine CSV-Datei hat Zeilen und Spalten, daher haben verschachtelte Arrays nicht immer eine eindeutige Darstellung. Je nach Implementierung kann ein Array in eine Zelle serialisiert, zu Text zusammengefügt, auf zusätzliche Spalten verteilt oder muss separat umgewandelt werden."
+      },
+      {
+        "question": "Wie werden JSON-Objekte mit unterschiedlichen Schlüsseln behandelt?",
+        "answer": "Der Konverter kann Felder über die Eingabedatensätze hinweg sammeln und als Spaltenüberschriften verwenden. Wenn ein Datensatz ein bestimmtes Feld nicht enthält, bleibt seine Zelle leer."
+      },
+      {
+        "question": "Kann ich auswählen, welche JSON-Felder exportiert werden?",
+        "answer": "Ja, wenn die Feldauswahl in der Oberfläche aktiviert ist. Nachdem die Spalten erkannt wurden, wähle die Felder aus, die du behalten möchtest, und schließe unnötige oder sensible Eigenschaften von der CSV-Ausgabe aus."
+      },
+      {
+        "question": "Unterstützt der Konverter API-Antworten?",
+        "answer": "Ja, wenn die API-Antwort ein JSON-Array von Datensätzen oder ein Wrapper-Objekt mit einem records-Array enthält. Wenn die Antwort verschachtelt ist, identifiziere das Array, das die Zeilen darstellt, bevor du mit der Umwandlung beginnst."
+      },
+      {
+        "question": "Wie werden Kommas, Anführungszeichen und Zeilenumbrüche maskiert?",
+        "answer": "CSV-Werte, die Kommas, Anführungszeichen oder Zeilenumbrüche enthalten, müssen nach gängigen CSV-Regeln maskiert und in Anführungszeichen gesetzt werden. Prüfe die Vorschau oder öffne einen kleinen Testexport in deiner Ziel-Tabellenanwendung, bevor du einen großen Datensatz verarbeitest."
+      },
+      {
+        "question": "Kann ich die CSV in Google Sheets verwenden?",
+        "answer": "Ja. Lade die CSV herunter und importiere sie in Google Sheets. UTF-8 ist normalerweise die sicherste Wahl für mehrsprachige Daten, und der Import-Dialog kann auch zur Auswahl des richtigen Trennzeichens und der Zeichenkodierung verwendet werden."
+      },
+      {
+        "question": "Warum sind chinesische Zeichen oder Zeichen mit Akzenten in Excel verstümmelt?",
+        "answer": "Excel kann eine CSV mit falscher Zeichenkodierung interpretieren, wenn die Datei direkt geöffnet wird. Eine UTF-8-CSV mit BOM wird von Excel meist korrekt erkannt; alternativ importiere die Datei über den Datenimport von Excel und wähle UTF-8 manuell."
+      },
+      {
+        "question": "Kann ich eine große JSON-Datei umwandeln?",
+        "answer": "Diese Seite wandelt kleine und mittlere Dokumente um (bis 5 MB). Darüber versucht sie nicht, die Datei zu parsen — sie übergibt den Inhalt an den Large JSON Explorer, der große Dateien in einem Web Worker scannt und daraus CSV exportiert. Der Inhalt wird automatisch übernommen, sodass du ihn nicht zweimal hochladen musst."
+      },
+      {
+        "question": "Werden meine JSON-Daten auf einen Server hochgeladen?",
+        "answer": "Diese Seite ist dazu konzipiert, die Eingabe in deinem Browser ohne Server-Upload zu parsen und CSV zu erzeugen. Du solltest dennoch vermeiden, Passwörter, API-Schlüssel, Zugriffstokens, persönliche Informationen oder vertrauliche Produktivdaten in ein browserbasiertes Tool einzugeben."
+      },
+      {
+        "question": "Ist dies ein kostenloser JSON-zu-CSV-Konverter?",
+        "answer": "Ja. Du kannst JSON einfügen oder eine Datei öffnen, die umgewandelten Daten prüfen und eine CSV herunterladen, ohne ein Konto zu erstellen."
+      }
+    ],
+    "ui": {
+      "label_input": "JSON eingeben",
+      "label_output": "CSV-Ausgabe",
+      "btn_convert": "In CSV umwandeln",
+      "btn_download": "CSV herunterladen",
+      "error_no_data": "Die zu konvertierenden JSON-Daten eingeben",
+      "error_invalid_input": "Eingabe muss gültiges JSON sein",
+      "error_not_array": "Eingabe muss ein JSON-Array von Objekten sein",
+      "error_empty_array": "Das JSON-Array ist leer",
+      "error_invalid_row": "Jedes Array-Element muss ein JSON-Objekt sein",
+      "error_no_columns": "Es wurden keine exportierbaren Felder gefunden",
+      "option_flatten": "Verschachtelte Objekte abflachen",
+      "option_encoding": "Kodierung",
+      "option_delimiter": "Trennzeichen",
+      "option_field_selection": "Felder auswählen",
+      "preview_title": "CSV-Vorschau",
+      "status_rows": "{count} Zeilen",
+      "status_columns": "{count} Spalten"
+    },
+    "article": {
+      "title": "JSON für Excel und Google Sheets in CSV umwandeln",
+      "content": "<h2> Was ist JSON-zu-CSV-Umwandlung?</h2><p> JSON wird häufig für APIs, Anwendungsdaten, Konfiguration und Datenbank-Exporte verwendet. CSV ist ein flaches, durch Trennzeichen getrenntes Format, das gut mit Tabellenprogrammen, Berichtstools und einfachen Datenimport-Workflows funktioniert. Die Umwandlung von JSON zu CSV ist nützlich, wenn du Datensätze als Zeilen und Spalten statt als verschachtelte Objekte prüfen möchtest.</p><p> Die am besten geeignete JSON-Eingabe ist ein Array der obersten Ebene mit Objekten. Jedes Objekt stellt einen Datensatz dar, dessen Eigenschaften zu CSV-Feldern werden. Da CSV nur zwei Dimensionen hat, benötigen verschachtelte Objekte und Arrays eine explizite Darstellung, bevor sie exportiert werden können.</p><h2>Common Use Cases</h2><ul><li><strong>API data analysis:</strong> Wandle eine JSON-API-Antwort in eine Tabelle zum Filtern, Prüfen, Diagramm oder Bericht um.</li><li><strong> Datenbank- und Anwendungs-Exporte:</strong> Wandle JSON-Datensätze in ein Format um, das von Tabellen- oder Import-Tools geöffnet werden kann.</li><li><strong>Manual review:</strong> Zeige strukturierte Datensätze als Zeilen und Spalten zur Qualitätssicherung, Prüfung oder Inhaltskontrolle.</li><li><strong>Data migration:</strong> Bereite eine flache Datei für ein System vor, das CSV statt JSON akzeptiert.</li><li><strong>Spreadsheet workflows:</strong> Bringe JSON-Daten in Excel oder Google Sheets, ohne ein separates Konvertierungsprogramm zu installieren.</li></ul><h2> Wie man JSON in CSV umwandelt</h2><ol><li><strong>Enter the JSON:</strong> Füge ein JSON-Array von Objekten ein oder öffne eine .json-Datei.</li><li><strong>Detect the records:</strong> Bestätige, dass das Eingabe-Array die Zeilen darstellt, die du exportieren möchtest. Wenn die Daten in ein Objekt eingepackt sind, suche zuerst das relevante Datensatz-Array.</li><li><strong>Configure nested fields:</strong> Aktiviere das Abflachen für verschachtelte Objekte, wenn du Pfade wie <code>user.name</code> und <code>address.city</code> um eigene Spalten zu werden.</li><li><strong>Review columns:</strong> Prüfe die erkannten Kopfzeilen, die Zeilenanzahl und die Tabellenvorschau. Entferne Felder, die du nicht exportieren möchtest, wenn die Feldauswahl verfügbar ist.</li><li><strong>Download the CSV:</strong> Erzeuge und speichere die CSV-Datei und öffne sie dann in Excel oder importiere sie in Google Sheets.</li></ol><h2>Flattening Nested JSON</h2><p> Verschachtelte Objekte können nicht direkt in eine flache Tabellenzelle gestellt werden, ohne eine Darstellung zu wählen. Ein gängiger Ansatz ist das Abflachen von Objektpfaden mit Punktnotation:</p><pre><code>{\"user\":{\"name\":\"Alice\",\"address\":{\"city\":\"New York\"}},\"status\":\"active\"}</code></pre><p> Nach dem Abflachen können die Felder zu <code>user.name</code>, <code>user.address.city</code>, und <code>status</code> Das funktioniert gut für verschachtelte Objekte, aber verschachtelte Arrays benötigen eigene Regeln. Sie können als JSON-Text serialisiert, in eine Zelle zusammengefügt, auf Spalten verteilt oder als zusätzliche Zeilen behandelt werden, je nach Konvertierungsdesign.</p><h2> Unterschiedliche Schlüssel und fehlende Werte</h2><p> Echte Datensätze haben oft nicht exakt dieselben Felder. Ein Konverter kann die Datensätze scannen und eine Vereinigung der gefundenen Schlüssel erstellen. Wenn ein Datensatz ein Feld nicht enthält, bleibt die entsprechende CSV-Zelle leer. Das bewahrt die Zeilenausrichtung, kann aber eine breite Tabelle erzeugen, wenn die Quelldaten viele optionale Eigenschaften enthalten.</p><h2>CSV Escaping Rules</h2><p> CSV-Werte mit Kommas, doppelten Anführungszeichen oder Zeilenumbrüchen benötigen besondere Behandlung. Ein Wert mit einem Komma wird normalerweise in doppelte Anführungszeichen eingeschlossen, und ein inneres doppeltes Anführungszeichen wird durch Verdopplung maskiert. Korrektes Maskieren ist wichtig, wenn Namen, Beschreibungen, Adressen oder API-Felder Satzzeichen oder mehrzeiligen Text enthalten.</p><p> CSV ist ein relativ einfaches Format, aber Tabellenprogramme können bei Trennzeichen, Zeilenenden, Zeichenkodierung und Formel-Interpretation unterschiedliche Annahmen treffen. Teste ein repräsentatives Beispiel, bevor du einen großen Export verteilst.</p><h2> CSV-Dateien in Excel öffnen</h2><p> Für mehrsprachige Daten ist UTF-8 meist die interoperabelste Kodierung. Microsoft dokumentiert, dass eine mit BOM gespeicherte UTF-8-CSV in Excel korrekt geöffnet werden kann, während Dateien ohne BOM möglicherweise über den Daten- oder Textimport von Excel mit manuell gewähltem UTF-8 importiert werden müssen.[164][166]</p><p> Eine BOM kann das direkte Öffnen in manchen Excel-Umgebungen verbessern, ist aber keine universelle Lösung für jede Tabellenanwendung. Wenn die Datei weiterhin falsch angezeigt wird, nutze den Import-Dialog und wähle explizit UTF-8 und das richtige Trennzeichen.</p><h2>JSON to CSV Limitations</h2><ul><li><strong>Nested data:</strong> Objekte und Arrays müssen abgeflacht, serialisiert oder anderweitig abgebildet werden.</li><li><strong>Type information:</strong> CSV bewahrt JSON-Objekt- und Array-Typen nicht in derselben Weise wie JSON.</li><li><strong>Null Werts:</strong> Null kann je nach Regel des Konverters zu einer leeren Zelle oder einem wörtlichen Wert werden.</li><li><strong>Large payloads:</strong> Browser-Speicher und Renderzeit können die praktische Größe einer clientseitigen Umwandlung begrenzen.</li><li><strong>Formula-like Werts:</strong> Tabellenanwendungen können Werte interpretieren, die mit Zeichen wie <code>=</code>, <code>+</code>, <code>-</code>, oder <code>@</code> als Formeln. Behandle nicht vertrauenswürdige Exporte vorsichtig und erwäge Schutz vor Formel-Injektion, wenn du Daten für andere Benutzer exportierst.</li></ul><h2>Browser-Based Privacy</h2><p> Dieser Konverter ist darauf ausgelegt, JSON im Browser zu verarbeiten und CSV zu erstellen, statt die Quelldaten an einen entfernten Konvertierungsdienst zu senden. Das kann für interne Datensätze und Entwicklungsdaten nützlich sein. Ein browserbasiertes Tool sollte jedoch nicht als sicheres Geheimnisverwaltungssystem behandelt werden. Vermeide Zugangsdaten, Tokens, private Kundendaten oder Produktiv-Geheimnisse in einem Online-Konverter.</p><h2> Wann du JSON stattdessen behalten solltest</h2><p> CSV ist nützlich für flache Datensätze und Tabellen-Workflows, aber JSON ist meist die bessere Wahl, wenn verschachtelte Strukturen, Arrays, exakte Datentypen oder Maschinen-zu-Maschinen-Austausch erhalten bleiben müssen. Wenn die Umwandlung in CSV viele mehrdeutige Spalten erzeugen oder wichtige Beziehungen verlieren würde, behalte das ursprüngliche JSON oder verwende ein für verschachtelte Daten entwickeltes Format.</p>"
+    }
   }
 }

@@ -388,5 +388,193 @@
       "title": "如何从 JSON 生成代码",
       "content": "<h2>什么是 JSON 转代码生成器？</h2><p>JSON 转代码生成器读取一份 JSON 样本，然后为另一种语言生成声明。根据目标不同，输出可能是 TypeScript 接口、Python dataclass、Go 结构体、Rust 结构体、Java 类、Kotlin data class、C# 类或 Swift 结构体，以及这些类型引用的嵌套声明。</p><p>它帮你省掉重复的样板代码，但并不了解你的应用规则。请把结果当成起始模型，之后仍需检查、编译、测试，并按目标项目的规范做调整。</p><h2>常见使用场景</h2><ul><li><strong>API 对接：</strong>用 REST、GraphQL、webhook 或内部服务的响应样本，生成第一批响应模型。</li><li><strong>前端开发：</strong>为 Vue、React、Angular 或其他 JavaScript 项目生成 TypeScript 类型。</li><li><strong>后端模型：</strong>为 Go、Python、Rust、Java、Kotlin、C# 或 Swift 服务生成结构体或类的起始版本。</li><li><strong>数据契约核对：</strong>把日志或文档里的报文转成可读模型，再开始写业务代码。</li></ul><h2>如何从 JSON 生成代码</h2><ol><li><strong>提供有代表性的输入：</strong>粘贴对象、对象数组，或打开 JSON 文件。真实数据里存在可选字段或不同结构时，请一并包含。</li><li><strong>选择目标语言：</strong>选择 TypeScript、Python、Go、Rust、Java、Kotlin、C# 或 Swift。</li><li><strong>设置根类型名称：</strong>用能说明模型用途的名称，例如 UserResponse 或 Order。</li><li><strong>配置选项：</strong>按当前语言显示的选项调整：导出声明、可选字段、保留 null、格式提示和缩进。</li><li><strong>生成：</strong>先看一遍嵌套声明、数组和字段映射，再决定是否采用。</li><li><strong>编译并测试：</strong>把输出放进真实文件，运行目标语言的编译器或格式化工具，并用有代表性的数据跑一遍。</li></ol><h2>JSON 类型如何映射为代码</h2><ul><li><strong>字符串：</strong>变成字符串类型，例如 <code>string</code>、<code>str</code> 或 <code>String</code>。</li><li><strong>数字：</strong>Python、Go、Rust 会区分整数和浮点数，分别得到 <code>int</code>/<code>float</code>、<code>int</code>/<code>float64</code>、<code>i64</code>/<code>f64</code>。TypeScript 两者都用 <code>number</code>。</li><li><strong>布尔值：</strong>变成 <code>boolean</code>、<code>bool</code> 或对应语言的等价类型。</li><li><strong>对象：</strong>变成命名声明：接口、类或结构体。</li><li><strong>数组：</strong>变成 <code>Item[]</code>（TypeScript）、<code>list[Item]</code>（Python）、<code>[]Item</code>（Go）、<code>Vec&lt;Item&gt;</code>（Rust）、<code>List&lt;Item&gt;</code>（Java、Kotlin、C#）或 <code>[Item]</code>（Swift）。</li><li><strong>null：</strong>根据所选语言和你的选项，变成 <code>null</code>、<code>None</code>、指针或 <code>Option&lt;T&gt;</code>。</li></ul><h2>嵌套对象与命名</h2><p>在所有支持的语言中，嵌套 JSON 对象都会生成为独立的命名声明。名称由属性名推导，但 <code>data</code>、<code>items</code>、<code>value</code> 这类属性容易产生通用或含义不清的名称。当生成的名称不能清楚表达领域模型时，请重命名。</p><p>字段命名也因语言而异：Go 字段名需要导出，并在结构体标签中保留原始 JSON 键；Rust 字段名用 snake_case，并用 <code>serde(rename)</code> 属性保留原始键；Python 在键可以直接作为字段名时保持不变，否则做清洗；TypeScript 会对非法标识符加引号。重命名后，请确认序列化时字段仍能映射回原始 JSON 键。</p><h2>数组与混合结构</h2><p>当数组里每个元素结构都相同时，建模很简单。真实的 API 响应经常出现不同变体：</p><pre><code>[{\"type\":\"user\",\"name\":\"Alice\"},{\"type\":\"error\",\"code\":400,\"message\":\"Bad request\"}]</code></pre><p>这些对象变体会合并成一个模型，其中不同的字段被标记为可选。只有在数字、字符串这类基本类型混合时才会生成联合类型，且仅限 TypeScript 和 Python；Go、Rust、Java、Kotlin、C# 和 Swift 没有联合类型，遇到这种情况会退化为宽松的值类型，需要你手动建模。</p><h2>可选字段与可空字段</h2><p>“部分样本中缺失的字段”和“值为 <code>null</code> 的字段”不是一回事：前者表示这个键可能不存在，后者表示键存在但值为 null。</p><ul><li><strong>可选：</strong>TypeScript 写成 <code>key?</code>，Python 加 <code>None</code> 默认值，Go 在结构体标签里加 <code>omitempty</code>，Rust 使用 <code>Option</code>，Kotlin、C#、Swift 追加 <code>?</code>（Java 用装箱可空类型如 <code>Integer</code> 表示可选字段）。</li><li><strong>可空：</strong>TypeScript 写成 <code>T | null</code>，Python 写成 <code>T | None</code>，Go 写成 <code>*string</code> 这样的指针，Rust 写成 <code>Option&lt;T&gt;</code>，Kotlin、C#、Swift 写成 <code>T?</code>（Java 用装箱可空类型如 <code>Integer</code>）。</li><li><strong>信息不足：</strong>关闭“保留类型中的 null”后，只有 null 样本的字段会变成宽松类型，如 <code>unknown</code>（TypeScript）、<code>Any</code>（Python）、<code>interface{}</code>（Go）、<code>serde_json::Value</code>（Rust）、<code>Object</code>（Java）、<code>Any?</code>（Kotlin）、<code>dynamic</code>（C#）或 <code>Any</code>（Swift）。</li></ul><h2>各语言可用的选项</h2><p>每种语言只显示对它有意义的选项。所有语言都支持可选字段、保留 null 和缩进。除 Go 外（Go 通过首字母大写导出字段）所有目标都支持导出声明。除 Rust 外（其标准库没有日期类型）所有目标都支持格式提示。被改名的 JSON 键通过序列化元数据保留：Java 用 <code>@JsonProperty</code>，Kotlin 用 <code>@SerialName</code>，C# 用 <code>[JsonPropertyName]</code>，Swift 用 <code>CodingKeys</code> 枚举，Go 用 json 标签，Rust 用 <code>serde(rename)</code>，TypeScript 用加引号键名，Python 用清洗后的名称。</p><p>Go 通过首字母大写来导出标识符，所以没有导出开关；Rust 标准库没有日期类型，所以没有格式提示选项。</p><h2>整数与浮点数</h2><p>TypeScript 只有一种数字类型，所以 <code>42</code> 和 <code>4.2</code> 都是 <code>number</code>。Python、Go、Rust、Java、Kotlin、C#、Swift 都会区分整数与浮点数：没有小数部分的样本得到 <code>int</code>、<code>int</code>、<code>i64</code>、<code>Integer</code>、<code>Int</code>、<code>int</code>、<code>Int</code>，有小数部分的样本得到 <code>float</code>、<code>float64</code>、<code>f64</code>、<code>Double</code>、<code>Double</code>、<code>double</code>、<code>Double</code>。单个样本无法体现全部取值范围，请对照真实数据契约放宽或收紧这些类型。</p><h2>静态类型不等于运行时校验</h2><p>生成的 TypeScript 接口、Go 结构体、Python dataclass 或 Rust 结构体都不会自动校验传入的 JSON。外部数据可能格式错误、字段缺失，或者已被其他服务改动。如果应用依赖运行时保证，请额外添加运行时解析、schema 校验、反序列化检查或生成的序列化器。</p><h2>尽量使用多份样本</h2><p>单份样本可能漏掉可选字段，也无法体现其他响应结构。多份有代表性的样本能更好地推断可选属性、可空值、混合数组和联合类型。如果工具只接受一份输入，请先人工合并或逐个核对代表性示例，再确定最终模型。</p><h2>检查生成的代码</h2><ul><li>检查字段名和类型名。</li><li>核对 JSON 序列化标签或注解。</li><li>检查可空性和可选属性。</li><li>检查数字精度和整数处理。</li><li>查看元素结构不一致的数组。</li><li>运行目标语言的编译器或格式化工具。</li><li>用合法和非法数据测试模型。</li><li>让生成的代码与真实 API 契约保持同步。</li></ul><h2>浏览器端隐私</h2><p>这个生成器在浏览器中解析 JSON 并生成代码，不需要把数据发送到远程服务。这对 API 样本和开发数据很方便，但它不是密钥管理系统。请不要把凭证、令牌、客户隐私记录或生产环境的保密数据粘贴到任何在线工具里。</p>"
     }
+  },
+  "de": {
+    "name": "JSON-zu-Code-Generator",
+    "ui": {
+      "label_input_json": "JSON eingeben",
+      "label_output": "Erzeugter Code",
+      "label_language": "Ziel:",
+      "label_root_name": "Name des Wurzeltyps:",
+      "btn_generate": "Code erzeugen",
+      "btn_example": "Beispiel laden",
+      "placeholder_output": "Erzeugter Code erscheint hier …",
+      "placeholder_name": "RootObject",
+      "option_export": "Export hinzufügen",
+      "option_optional": "Felder als optional markieren",
+      "option_null": "null in Typen beibehalten",
+      "option_format": "Gängige Formate erkennen",
+      "option_indent": "Einrückung:",
+      "option_indent_2": "2 Leerzeichen",
+      "option_indent_4": "4 Leerzeichen",
+      "error_invalid_input": "Eingabe muss gültiges JSON sein",
+      "error_empty_input": "Zuerst JSON eingeben oder eine JSON-Datei öffnen",
+      "error_empty_array": "Das JSON-Array ist leer",
+      "error_invalid_name": "Der Name des Wurzeltyps ist für das gewählte Ziel nicht gültig",
+      "error_unsupported": "Dieses Ziel ist nicht verfügbar",
+      "error_generation": "Code konnte nicht erzeugt werden",
+      "warning_sample_based": "Erzeugter Code wird aus dem bereitgestellten JSON-Beispiel abgeleitet"
+    },
+    "description": "Erzeuge Start-Datenmodelle aus JSON-Beispielen in TypeScript, Python, Go, Rust, Java, Kotlin, C# oder Swift. Typen, verschachtelte Modelle, nullable Felder und Sammlungen werden aus dem aktuellen Beispiel abgeleitet; danach kannst du den erzeugten Code prüfen, kopieren oder herunterladen.",
+    "hero": {
+      "trustHtml": "Läuft in deinem Browser. Dein JSON wird von diesem Tool nicht hochgeladen."
+    },
+    "meta": {
+      "title": "JSON-zu-Code-Generator – TypeScript, Python, Go, Rust, Java, Kotlin, C# & Swift",
+      "description": "Erzeuge TypeScript-Interfaces, Python-Dataclasses, Go-Structs, Rust-Structs, Java-Klassen, Kotlin-Data-Classes, C#-Klassen oder Swift-Structs aus einem JSON-Beispiel. Kostenlos, browserbasiert, ohne Upload.",
+      "keywords": [
+        "json to code",
+        "generate code from json",
+        "json to typescript",
+        "json to python",
+        "json to go",
+        "json to rust",
+        "json to java",
+        "json to c#"
+      ]
+    },
+    "features": [
+      {
+        "icon": "lucide:languages",
+        "title": "Acht unterstützte Ziele",
+        "description": "Erzeuge Datenmodell-Code für TypeScript, Python, Go, Rust, Java, Kotlin, C# oder Swift. Ausgabesyntax, Benennung, Nullbarkeit und Sammlungs-Konventionen unterscheiden sich je nach Ziel."
+      },
+      {
+        "icon": "lucide:braces",
+        "title": "Typhinferenz aus JSON",
+        "description": "Leite Primitive, Objekte, Arrays, verschachtelte Strukturen sowie nullable oder gemischte Werte aus repräsentativen JSON-Beispielen ab. Union-Typen werden erzeugt, wo die Zielsprache sie unterstützt."
+      },
+      {
+        "icon": "lucide:git-branch",
+        "title": "Verschachtelte Modelle",
+        "description": "Verschachtelte Objekte und Arrays von Objekten werden zu separaten benannten Deklarationen, die vom übergeordneten Typ referenziert werden. Erzeugte Namen werden aus JSON-Eigenschaftsnamen abgeleitet und müssen möglicherweise manuell verfeinert werden."
+      },
+      {
+        "icon": "lucide:settings-2",
+        "title": "Benennungs- und Ausgabeoptionen",
+        "description": "Setze den Namen des Wurzeltyps und konfiguriere die für das gewählte Ziel angezeigten Optionen, etwa Export-Deklarationen, optionale Felder, null-Behandlung, Format-Hinweise oder Einrückung."
+      },
+      {
+        "icon": "lucide:copy",
+        "title": "Erzeugten Code kopieren",
+        "description": "Kopiere den erzeugten Quellcode in die Zwischenablage und platziere ihn in einer Interface-, Klassen-, Struct- oder Typdefinitionsdatei."
+      },
+      {
+        "icon": "lucide:download",
+        "title": "Quelldateien herunterladen",
+        "description": "Lade die erzeugte Ausgabe mit der Dateiendung des gewählten Ziels herunter: .ts, .py, .go oder .rs. Prüfe die Ausgabe, bevor du sie einer Produktiv-Codebasis hinzufügst."
+      },
+      {
+        "icon": "lucide:upload",
+        "title": "JSON einfügen oder öffnen",
+        "description": "Füge ein JSON-Objekt oder -Array in den Editor ein oder öffne eine lokale .json-Datei. Repräsentative Beispiele liefern nützlichere Ergebnisse."
+      },
+      {
+        "icon": "lucide:shield-check",
+        "title": "Generierung im Browser",
+        "description": "JSON-Parsing und Code-Generierung finden in deinem Browser statt. Die Seite erfordert kein Konto und lädt die Quelldaten nicht auf einen entfernten Generierungsdienst hoch."
+      }
+    ],
+    "guide": [
+      {
+        "title": "Repräsentatives JSON eingeben",
+        "description": "Füge ein Objekt, ein Array von Objekten oder eine JSON-Datei mit repräsentativen Daten ein. Nimm wichtige Variationen auf, wenn die echte Payload optionale Felder oder unterschiedliche Elementformen enthalten kann."
+      },
+      {
+        "title": "Ein Ziel wählen",
+        "description": "Wähle TypeScript, Python, Go, Rust, Java, Kotlin, C# oder Swift. Jedes Ziel verwendet möglicherweise andere Konventionen für Namen, Nullbarkeit, Arrays und Serialisierung, daher prüfe die Ausgabe für das gewählte Ziel."
+      },
+      {
+        "title": "Den Namen des Wurzeltyps festlegen",
+        "description": "Gib einen gültigen Wurznamen wie UserResponse, Product oder ApiResult ein. Namen verschachtelter Deklarationen werden aus der Struktur abgeleitet und können nach der Generierung angepasst werden."
+      },
+      {
+        "title": "Zieloptionen konfigurieren",
+        "description": "Aktiviere die für das gewählte Ziel unterstützten Optionen, etwa Export-Deklarationen, optionale Felder, null-Erhaltung, Format-Hinweise oder Einrückung."
+      },
+      {
+        "title": "Erzeugen und prüfen",
+        "description": "Klicke auf „Code erzeugen“ und prüfe verschachtelte Typen, Arrays, Unions, null-Behandlung und Eigenschaftsnamen, bevor du die Ausgabe verwendest."
+      },
+      {
+        "title": "Kopieren oder herunterladen",
+        "description": "Kopiere das Ergebnis oder lade die Quelldatei herunter. Erzeugter Code ist ein Ausgangspunkt und sollte kompiliert, formatiert, getestet und an die Konventionen des Zielprojekts angepasst werden."
+      }
+    ],
+    "example": {
+      "input": "{\n  \"id\": 1,\n  \"name\": \"Alice\",\n  \"email\": \"alice@example.com\"\n}",
+      "output": "export interface RootObject {\n  id: number;\n  name: string;\n  email: string;\n}",
+      "useCase": "Erzeuge ein TypeScript-Interface als Ausgangspunkt aus einem API-Antwortbeispiel."
+    },
+    "faq": [
+      {
+        "question": "Was erzeugt dieser JSON-zu-Code-Generator?",
+        "answer": "Es erzeugt Deklarationen für das gewählte Ziel: ein TypeScript-Interface, eine Python-Dataclass, ein Go-Struct, ein Rust-Struct, eine Java-Klasse, eine Kotlin-Data-Class, eine C#-Klasse oder ein Swift-Struct sowie die verschachtelten Deklarationen, auf die diese Typen verweisen. Die Ausgabe wird aus dem Beispiel abgeleitet und muss möglicherweise manuell angepasst werden."
+      },
+      {
+        "question": "Welche Sprachen werden unterstützt?",
+        "answer": "TypeScript, Python, Go, Rust, Java, Kotlin, C# und Swift. Jedes Ziel benennt Felder, bildet Arrays ab und behandelt Nullbarkeit unterschiedlich, daher prüfe die Ausgabe für das gewählte Ziel."
+      },
+      {
+        "question": "Erzeugt es produktionsreifen Code?",
+        "answer": "Es erzeugt einen nützlichen Ausgangspunkt, kein garantiert produktionsreifes Modell. Prüfe Benennung, optionale Felder, Nullbarkeit, Serialisierungsverhalten, Validierung, Imports und sprachspezifische Konventionen, bevor du die Ausgabe übernimmst."
+      },
+      {
+        "question": "Erzeugt es Serialisierungscode?",
+        "answer": "Teilweise. Go-Structs enthalten json-Struktur-Tags und Rust-Structs leiten Serialize und Deserialize ab, daher tragen diese Ziele grundlegende Serialisierungs-Metadaten. TypeScript-Interfaces und Python-Dataclasses beschreiben nur die Form; sie fügen kein Laufzeit-Parsing, keine Validierung und keine benutzerdefinierten Konverter hinzu."
+      },
+      {
+        "question": "Wie werden verschachtelte Objekte behandelt?",
+        "answer": "Verschachtelte Objekte werden in jedem unterstützten Ziel als separate Deklarationen erzeugt und vom übergeordneten Typ referenziert. Die genaue Syntax hängt von der gewählten Sprache ab, und erzeugte Namen müssen möglicherweise angepasst werden, wenn Eigenschaftsnamen generisch oder wiederverwendet sind."
+      },
+      {
+        "question": "Wie werden JSON-Arrays behandelt?",
+        "answer": "Arrays werden in TypeScript zu Item[], in Python zu list[Item], in Go zu []Item, in Rust zu Vec<Item>, in Java, Kotlin und C# zu List<Item> und in Swift zu [Item]. Gemischte oder uneinheitliche Elementformen erzeugen in TypeScript und Python Union-Typen, während Go, Rust, Java, Kotlin, C# und Swift auf einen permissiven Werttyp zurückfallen, der manuell modelliert werden muss."
+      },
+      {
+        "question": "Kann ein einzelnes JSON-Beispiel alle Typen korrekt bestimmen?",
+        "answer": "Nein. Ein einzelnes Beispiel kann nicht jedes optionale Feld, jede alternative Objektform, jeden nullable Wert, jedes Enum, jeden Bereich oder jede zukünftige API-Variation offenbaren. Verwende repräsentative Beispiele und prüfe den erzeugten Code gegen den tatsächlichen Datenvertrag."
+      },
+      {
+        "question": "Wie werden null- und optionale Felder behandelt?",
+        "answer": "Mit aktivierter Option „null in Typen beibehalten“ wird ein Feld, dessen Beispielwert null ist, je nach Ziel zu null, None, einem nullable Pointer oder Option; bei deaktivierter Option werden solche Felder zu einem permissiven Typ wie unknown, Any, interface{} oder serde_json::Value. „Felder als optional markieren“ fügt stattdessen ?, einen None-Standardwert, omitempty oder Option hinzu. Ein optionales Feld darf fehlen, was sich davon unterscheidet, mit null vorhanden zu sein."
+      },
+      {
+        "question": "Kann ich mehrere JSON-Beispiele angeben?",
+        "answer": "Nur wenn die aktuelle Oberfläche mehrere Beispiele oder einen dokumentierten Beispiel-Zusammenführungsmodus unterstützt. Mehrere repräsentative Beispiele verbessern die Ableitung für optionale Felder, gemischte Arrays und alternative Antwortformen."
+      },
+      {
+        "question": "Was passiert mit JSON-Schlüsseln, die keine gültigen Bezeichner sind?",
+        "answer": "Der Generator kann sie je nach gewähltem Ziel maskieren, bereinigen, umbenennen oder abbilden. Prüfe das Ergebnis, da das Ändern eines erzeugten Eigenschaftsnamens ein Serialisierungs-Tag oder eine explizite Zuordnung erfordern kann, um den ursprünglichen JSON-Schlüssel zu bewahren."
+      },
+      {
+        "question": "Welche Optionen gibt es für jedes Ziel?",
+        "answer": "Es werden nur die Optionen angezeigt, die für das gewählte Ziel gelten. Jedes Ziel unterstützt optionale Felder, null-Erhaltung und Einrückung. Export-Deklarationen sind für alle Ziele außer Go verfügbar (das Felder durch Großschreibung exportiert). Format-Hinweise (date, date-time, uuid) sind für alle Ziele außer Rust verfügbar (das keinen Standard-Datumstyp hat). Umbenannte JSON-Schlüssel werden über Serialisierungs-Metadaten bewahrt: @JsonProperty für Java, @SerialName für Kotlin, [JsonPropertyName] für C#, ein CodingKeys-Enum für Swift, json-Struktur-Tags für Go, serde(rename) für Rust, zitierte Schlüssel für TypeScript und bereinigte Namen für Python."
+      },
+      {
+        "question": "Benötigt der erzeugte Rust-Code externe Crates?",
+        "answer": "Nur Rust benötigt externe Crates: Seine Ausgabe verwendet serde-Attribute und fällt bei untypisierten Positionen auf serde_json::Value zurück, daher füge serde und serde_json zu deiner Cargo.toml hinzu. TypeScript, Python, Go, Java, Kotlin, C# und Swift verwenden alle Standard-Sprachfunktionen; Python nutzt das dataclasses-Modul, Go importiert möglicherweise time, und Java, Kotlin, C# und Swift importieren bei aktiver Formaterkennung möglicherweise standardmäßige Datums- oder UUID-Typen."
+      },
+      {
+        "question": "Validiert der erzeugte TypeScript- oder andere Code JSON zur Laufzeit?",
+        "answer": "Meist nicht. Statische Modelle helfen Compilern und Editoren, validieren aber keine nicht vertrauenswürdigen Laufzeitdaten. Füge eine Laufzeitvalidierungsebene oder erzeugte Serializer hinzu, wenn die Anwendung Schutz vor fehlerhaften Eingaben benötigt."
+      },
+      {
+        "question": "Kann ich die Ausgabe direkt in einem API-Projekt verwenden?",
+        "answer": "Du kannst es als Ausgangsmodell verwenden, aber kompiliere oder formatiere es, prüfe Serialisierungs-Tags und nullable Felder, teste es mit repräsentativen Payloads und passe es an die Framework- und Bibliothekskonventionen deines Projekts an."
+      },
+      {
+        "question": "Wird mein JSON auf einen Server hochgeladen?",
+        "answer": "Diese Seite ist dazu konzipiert, JSON in deinem Browser ohne Server-Upload zu parsen und Code zu erzeugen. Du solltest dennoch vermeiden, Zugangsdaten, Zugriffstokens, private Kundendaten oder vertrauliche Produktiv-Payloads in ein browserbasiertes Tool einzugeben."
+      },
+      {
+        "question": "Ist dies ein kostenloser JSON-zu-Code-Generator?",
+        "answer": "Ja. Du kannst JSON einfügen oder öffnen, ein verfügbares Ziel wählen, Code erzeugen und das Ergebnis kopieren oder herunterladen, ohne ein Konto zu erstellen."
+      }
+    ],
+    "article": {
+      "title": "Code aus JSON erzeugen",
+      "content": "<h2> Was ist ein JSON-zu-Code-Generator?</h2><p> Ein JSON-zu-Code-Generator liest ein JSON-Beispiel und schreibt Deklarationen für eine andere Sprache. Je nach Ziel ist die Ausgabe ein TypeScript-Interface, eine Python-Dataclass, ein Go-Struct, ein Rust-Struct, eine Java-Klasse, eine Kotlin-Data-Class, eine C#-Klasse oder ein Swift-Struct sowie alle verschachtelten Deklarationen, auf die diese Typen verweisen.</p><p> Der Generator entfernt wiederholte Boilerplate-Arbeit, kennt aber nicht die Regeln deiner Anwendung. Behandle das Ergebnis als Ausgangsmodell, das dennoch geprüft, kompiliert, getestet und an die Konventionen des Zielprojekts angepasst werden muss.</p><h2>Common Use Cases</h2><ul><li><strong>API integration:</strong> Erstelle erste Antwortmodelle aus REST-, GraphQL-, Webhook- oder internen Service-Payloads.</li><li><strong>Frontend development:</strong> Erstelle TypeScript-Typen für Vue-, React-, Angular- oder andere JavaScript-Projekte.</li><li><strong>Backend models:</strong> Erstelle erste Structs oder Klassen für Go-, Python-, Rust-, Java-, Kotlin-, C#- oder Swift-Dienste.</li><li><strong>Data contract review:</strong> Wandle eine aus Logs oder Dokumentation stammende Payload in ein lesbares Modell um, bevor du dagegen programmierst.</li></ul><h2>Code aus JSON erzeugen</h2><ol><li><strong> Stelle repräsentative Eingaben bereit:</strong> Füge ein Objekt, ein Array von Objekten ein oder öffne eine JSON-Datei. Nimm optionale Felder und Formvariationen auf, wie sie in echten Daten vorkommen.</li><li><strong>Select a target:</strong> Wähle TypeScript, Python, Go, Rust, Java, Kotlin, C# oder Swift.</li><li><strong>Set the root name:</strong> Verwende einen Namen, der die Rolle des Modells beschreibt, etwa UserResponse oder Order.</li><li><strong>Configure options:</strong> Schalte die für dieses Ziel angezeigten Optionen um: Export-Deklarationen, optionale Felder, null-Erhaltung, Format-Hinweise und Einrückung.</li><li><strong>Generate:</strong> Lies verschachtelte Deklarationen, Arrays und Feldzuordnungen, bevor du ihnen vertraust.</li><li><strong>Compile und test:</strong> Füge die Ausgabe in eine echte Datei, führe den Ziel-Compiler oder -Formatierer aus und gib repräsentative Payloads hindurch.</li></ol><h2> Wie JSON-Typen auf Code abgebildet werden</h2><ul><li><strong>Strings:</strong> Werden zu string-ähnlichen Typen wie <code>string</code>, <code>str</code>, oder <code>String</code>.</li><li><strong>Numbers:</strong> Python, Go und Rust trennen ganze Zahlen und Gleitkommawerte als <code>int</code>/<code>float</code>, <code>int</code>/<code>float64</code>, und <code>i64</code>/<code>f64</code>. TypeScript uses <code>number</code> for both.</li><li><strong>Booleans:</strong> Werden <code>boolean</code>, <code>bool</code> oder ein zielspezifisches Äquivalent.</li><li><strong>Objects:</strong> Werden zu benannten Deklarationen: Interfaces, Klassen oder Structs.</li><li><strong>Arrays:</strong> Werden <code>Item[]</code> (TypeScript), <code>list[Item]</code> (Python), <code>[]Item</code> (Go), <code>Vec&lt;Item&gt;</code> (Rust), <code>List&lt;Item&gt;</code> (Java, Kotlin, C#), oder <code>[Item]</code> (Swift).</li><li><strong>Null:</strong> Wird zu <code>null</code>, <code>None</code>, a Pointer, oder <code>Option&lt;T&gt;</code> je nach Ziel und den von dir gesetzten Optionen.</li></ul><h2> Verschachtelte Objekte und Benennung</h2><p> Verschachtelte JSON-Objekte werden in jedem unterstützten Ziel als separate benannte Deklarationen ausgegeben. Namen werden aus Eigenschaftsnamen abgeleitet, aber Eigenschaften wie <code>data</code>, <code>items</code>, oder <code>value</code> können generische oder mehrdeutige Namen erzeugen. Benenne Deklarationen um, wenn die erzeugten Namen das Domänenmodell nicht klar beschreiben.</p><p> Die Benennung von Feldern variiert ebenfalls je nach Ziel. Go-Feldnamen werden exportiert und behalten den ursprünglichen JSON-Schlüssel in einem Struktur-Tag. Rust-Feldnamen sind snake_case und behalten den ursprünglichen Schlüssel in einem <code>serde(rename)</code> Attribut. Python behält den Schlüssel, wenn er als Feldname verwendet werden kann, und bereinigt ihn andernfalls; TypeScript zitiert Schlüssel, die keine gültigen Bezeichner sind. Bestätige nach dem Umbenennen, dass die Serialisierung das Feld weiterhin auf den ursprünglichen JSON-Schlüssel abbildet.</p><h2>Arrays und Mixed Shapes</h2><p> Ein Array von Objekten ist unkompliziert, wenn jedes Element dieselbe Form hat. Echte API-Antworten enthalten oft Varianten:</p><pre><code>[{\"type\":\"user\",\"name\":\"Alice\"},{\"type\":\"error\",\"code\":400,\"message\":\"Bad request\"}]</code></pre><p> Die Objekt-Varianten verschmelzen zu einem Modell, dessen Felder als optional markiert sind. Eine Union wird nur für gemischte primitive Werte wie Zahlen und Strings erzeugt, und nur in TypeScript und Python; Go, Rust, Java, Kotlin, C# und Swift haben keinen Union-Typ, sodass eine solche Position auf einen permissiven Werttyp zurückfällt, den du manuell modellieren solltest.</p><h2>Optionale und nullable Felder</h2><p> Ein Feld, das in manchen Beispielen fehlt, und ein Feld, dessen Wert <code>null</code> sind unterschiedliche Dinge. Ersteres bedeutet, dass der Schlüssel fehlen darf, Letzteres, dass der Schlüssel mit einem null-Wert vorhanden ist.</p><ul><li><strong>Optional:</strong> TypeScript writes <code>key?</code>, Python adds a <code>None</code> Standard, Go adds <code>omitempty</code> zum Struktur-Tag, Rust verwendet <code>Option</code>, und Kotlin, C# und Swift hängen <code>?</code> (Java stellt ein optionales Feld mit einem boxed nullable Typ dar wie <code>Integer</code>).</li><li><strong>Nullable:</strong> TypeScript writes <code>T | null</code>, Python writes <code>T | None</code>, Go schreibt einen Pointer wie <code>*string</code>, Rust writes <code>Option&lt;T&gt;</code>, und Kotlin, C# und Swift schreiben <code>T?</code> (Java verwendet einen boxed nullable Typ wie <code>Integer</code>).</li><li><strong>No information:</strong> Wenn die null-Erhaltung deaktiviert ist, werden null-exklusive Felder zu einem permissiven Typ wie <code>unknown</code> (TypeScript), <code>Any</code> (Python), <code>interface{}</code> (Go), <code>serde_json::Value</code> (Rust), <code>Object</code> (Java), <code>Any?</code> (Kotlin), <code>dynamic</code> (C#), oder <code>Any</code> (Swift).</li></ul><h2> Optionen, die je nach Ziel unterschiedlich sind</h2><p> Jedes Ziel bietet nur die Optionen, die für es sinnvoll sind. Jedes Ziel unterstützt optionale Felder, null-Erhaltung und Einrückung. Export-Deklarationen sind für alle Ziele außer Go verfügbar (das Felder durch Großschreibung exportiert). Format-Hinweise sind für alle Ziele außer Rust verfügbar. Umbenannte JSON-Schlüssel werden über Serialisierungs-Metadaten bewahrt: <code>@JsonProperty</code> for Java, <code>@SerialName</code> for Kotlin, <code>[JsonPropertyName]</code> for C#, a <code>CodingKeys</code> Enum für Swift, json-Struktur-Tags für Go, <code>serde(rename)</code> für Rust, zitierte Schlüssel für TypeScript und bereinigte Namen für Python.</p><p> Go exportiert Bezeichner durch Großschreibung, daher gibt es keinen Export-Umschalter. Rust hat in seiner Standardbibliothek keinen Datumstyp, daher gibt es keinen Format-Hinweis.</p><h2> Ganze Zahlen und Gleitkommazahlen</h2><p> TypeScript hat einen einzigen numerischen Typ, daher sind sowohl <code>42</code> und <code>4.2</code> werden <code>number</code> Python, Go, Rust, Java, Kotlin, C# und Swift trennen ganze Zahlen von Gleitkommawerten: ein Beispiel ohne Nachkommateil wird zu <code>int</code>, <code>int</code>, <code>i64</code>, <code>Integer</code>, <code>Int</code>, <code>int</code>, oder <code>Int</code>, und ein Beispiel mit einem wird zu <code>float</code>, <code>float64</code>, <code>f64</code>, <code>Double</code>, <code>Double</code>, <code>double</code>, oder <code>Double</code> Ein einzelnes Beispiel kann nicht jeden Bereich offenbaren, daher erweitere oder verenge diese Typen nach Prüfung des tatsächlichen Datenvertrags.</p><h2> Statische Typen sind keine Laufzeitvalidierung</h2><p> Erzeugte TypeScript-Interfaces, Go-Structs, Python-Dataclasses oder Rust-Structs validieren eingehendes JSON nicht automatisch. Externe Daten können fehlerhaft, unvollständig oder von einem anderen Dienst geändert sein. Füge Laufzeit-Parsing, Schema-Validierung, Deserialisierungsprüfungen oder erzeugte Serializer hinzu, wenn die Anwendung auf Laufzeitgarantien angewiesen ist.</p><h2> Mehrere Beispiele verwenden, wenn möglich</h2><p> Ein einzelnes Beispiel kann optionale Felder weglassen oder alternative Antwortformen nicht zeigen. Mehrere repräsentative Beispiele können die Ableitung für optionale Eigenschaften, nullable Werte, gemischte Arrays und Unions verbessern. Wenn das Tool nur ein Eingabedokument akzeptiert, kombiniere oder prüfe repräsentative Beispiele manuell, bevor du das Modell fertigstellst.</p><h2>Review Generated Code</h2><ul><li> Prüfe Feld- und Typnamen.</li><li> Prüfe JSON-Serialisierungs-Tags oder -Annotationen.</li><li> Prüfe Nullbarkeit und optionale Eigenschaften.</li><li> Prüfe Zahlenpräzision und Umgang mit ganzen Zahlen.</li><li> Prüfe Arrays mit gemischten Elementformen.</li><li> Führe den Ziel-Compiler oder -Formatierer aus.</li><li> Teste das Modell mit gültigen und ungültigen Payloads.</li><li> Halte den erzeugten Code mit dem tatsächlichen API-Vertrag synchron.</li></ul><h2>Browser-Based Privacy</h2><p> Dieser Generator ist darauf ausgelegt, JSON im Browser zu parsen und Code zu erzeugen statt die Eingabe an einen entfernten Dienst zu senden. Das ist praktisch für API-Beispiele und Entwicklungsdaten, aber kein sicheres Geheimnisverwaltungssystem. Vermeide Zugangsdaten, Tokens, private Kundendatensätze oder vertrauliche Produktiv-Payloads in einem Online-Tool.</p>"
+    }
   }
 }

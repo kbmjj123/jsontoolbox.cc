@@ -402,5 +402,199 @@
       "title": "如何在线测试 JSONPath 表达式",
       "content": "<h2>什么是 JSONPath 测试工具？</h2><p>JSONPath 测试工具用来验证一条表达式在给定 JSON 文档上到底选中了什么。它会返回匹配到的值，以及每个匹配在文档中的位置，避免把未经验证的表达式直接写进代码。</p><p>不同实现对 JSONPath 的支持范围并不一致，因此在一个工具里能跑通的表达式，换到另一个库里可能报错或结果不同。使用时应以目标库实际支持的方言为准。</p><h2>常见使用场景</h2><ul><li><strong>接口调试：</strong>从接口响应里快速取出关心的字段，确认路径写法。</li><li><strong>日志排查：</strong>在结构复杂的日志 JSON 里定位嵌套字段。</li><li><strong>脚本预演：</strong>把要写进脚本的表达式先验证一遍，减少反复试错。</li><li><strong>数据核对：</strong>确认某个字段在整份数据里出现了几次、分别在哪里。</li></ul><h2>如何使用</h2><ol><li><strong>输入 JSON：</strong>粘贴 JSON 或打开 .json 文件。</li><li><strong>写下表达式：</strong>例如 `$.store.books[*].title`，也可以点选常用路径。</li><li><strong>执行求值：</strong>点击求值按钮或按回车。</li><li><strong>核对结果：</strong>查看匹配值、JSONPath、JSON Pointer 和节点类型。</li><li><strong>复制复用：</strong>复制表达式或结果，写进文档或代码。</li></ol><h2>本页支持的语法子集</h2><ul><li><strong>$：</strong>根选择器。</li><li><strong>.name 与 ['name']：</strong>按名称取子节点，两种写法都支持。</li><li><strong>[index]：</strong>按下标取数组元素。</li><li><strong>*：</strong>通配符，选中所有子节点。</li><li><strong>..name：</strong>递归下降，在任意深度查找该名称。</li><li><strong>[?(expr)]：</strong>简单过滤，支持 ==、!=、&lt;、&gt;、&lt;=、&gt;=。</li></ul><p>不支持数组切片、并集、正则匹配和函数调用。遇到这些语法时会提示表达式非法，而不是返回不完整的匹配。</p><h2>语法错误与无匹配</h2><p>这是两种不同的失败：语法错误说明表达式本身无法解析或用了不支持的语法，需要改表达式；无匹配说明表达式合法，但当前 JSON 里没有对应节点，需要检查数据结构或路径写法。把两者分开提示，可以避免把数据问题误判成语法问题。</p><h2>JSONPath 与 JSON Pointer</h2><p>JSONPath 是查询表达式，可以一次选中多个节点；JSON Pointer（RFC 6901）是定位单个节点的路径表示，例如 `/store/books/0/title`。本页同时给出两种表示，方便在只接受 Pointer 的工具里继续使用。</p><h2>需要留意的限制</h2><ul><li><strong>方言差异：</strong>本页是明确说明的子集，不是完整 RFC 9535 实现。</li><li><strong>只做查询：</strong>不提供修改、删除或写入节点的能力。</li><li><strong>递归代价：</strong>递归下降和通配符会遍历大量节点，大文档上会变慢。</li><li><strong>类型展示：</strong>节点类型只做基本区分（object、array、string、number、boolean、null）。</li></ul><h2>浏览器本地处理与隐私</h2><p>解析和求值都在你的浏览器中完成，不需要把 JSON 上传到远程服务，适合接口响应和日志片段这类内容。但它不是密钥管理方案，请勿在浏览器工具中粘贴密码、API 密钥、访问令牌或生产环境的敏感数据。</p>"
     }
+  },
+  "de": {
+    "name": "JSONPath-Tester",
+    "ui": {
+      "label_input": "JSON eingeben",
+      "label_expression": "JSONPath-Ausdruck",
+      "label_results": "Ergebnisse",
+      "label_common_paths": "Gängige Pfade:",
+      "label_match_path": "Pfad:",
+      "label_json_pointer": "Zeiger:",
+      "label_type": "Typ:",
+      "label_reference": "JSONPath-Referenz",
+      "label_operators": "Operatoren",
+      "label_filter_operators": "Filteroperatoren",
+      "col_operator": "Operator",
+      "col_description": "Beschreibung",
+      "col_example": "Beispiel",
+      "btn_copy_expression": "Kopieren",
+      "btn_copy_results": "Ergebnisse kopieren",
+      "btn_example": "Beispiel",
+      "placeholder_expression": "$.store.books[0].title",
+      "placeholder_results": "Passende Werte und Pfade erscheinen hier …",
+      "status_matches": "{count} Treffer",
+      "status_no_matches": "Der Ausdruck ist gültig, hatte aber keine Treffer",
+      "status_invalid_expression": "Dieser Ausdruck ist ungültig oder verwendet nicht unterstützte Syntax",
+      "status_invalid_json": "Das JSON konnte nicht geparst werden",
+      "error_no_json": "Bitte JSON-Daten eingeben",
+      "error_no_expression": "Bitte einen JSONPath-Ausdruck eingeben",
+      "note_supported_syntax": "Diese Seite wertet eine dokumentierte JSONPath-Teilmenge aus. Sie ist keine vollständige RFC-9535-Implementierung: Array-Bereiche, Unions, reguläre Ausdrücke und Funktionen werden nicht unterstützt.",
+      "op_root": "Wurzelelement",
+      "op_current": "Aktueller Knoten innerhalb eines Filters",
+      "op_wildcard": "Platzhalter: jedes Kind",
+      "op_deep_scan": "Rekursiver Abstieg",
+      "op_dot": "Kind nach Namen",
+      "op_bracket": "Kind in Klammernotation",
+      "op_filter": "Filterausdruck",
+      "filter_eq": "Gleich",
+      "filter_ne": "Ungleich",
+      "filter_lt": "Kleiner als",
+      "filter_gt": "Größer als",
+      "filter_lte": "Kleiner oder gleich",
+      "filter_gte": "Größer oder gleich"
+    },
+    "description": "Werte JSONPath-Ausdrücke gegen JSON-Daten in deinem Browser aus. Frage verschachtelte Objekte und Arrays ab, teste Selektoren, prüfe gefundene Werte und Pfade und kopiere die Ergebnisse für API-Debugging, Konfigurationsarbeit und Datenverarbeitung.",
+    "hero": {
+      "trustHtml": "Läuft in deinem Browser. Dein JSON wird von diesem Tool nicht hochgeladen."
+    },
+    "meta": {
+      "title": "JSONPath-Tester – JSONPath-Ausdrücke online testen",
+      "description": "Teste JSONPath-Ausdrücke online gegen JSON. Frage verschachtelte Objekte und Arrays ab, prüfe gefundene Werte und Pfade und unterscheide Syntaxfehler von Treffer-fehlt-Ergebnissen. Kostenlos und browserbasiert.",
+      "keywords": [
+        "jsonpath tester",
+        "json path tester",
+        "jsonpath online",
+        "test jsonpath",
+        "jsonpath query tool",
+        "jsonpath evaluator",
+        "json path finder",
+        "jsonpath extractor"
+      ]
+    },
+    "features": [
+      {
+        "icon": "lucide:route",
+        "title": "JSONPath-Ausdrücke auswerten",
+        "description": "Führe einen JSONPath-Ausdruck gegen ein geparstes JSON-Dokument aus und prüfe die von der aktuellen Auswertung ausgewählten Werte."
+      },
+      {
+        "icon": "lucide:search-check",
+        "title": "Passende Werte prüfen",
+        "description": "Sieh die Anzahl der Treffer und die vom Ausdruck zurückgegebenen extrahierten Werte. Ergebnisse sollten auch dann unterscheidbar bleiben, wenn mehrere Treffer identische Daten enthalten."
+      },
+      {
+        "icon": "lucide:map-pin",
+        "title": "Trefferpfade anzeigen",
+        "description": "Jedes Ergebnis zeigt seinen JSONPath, den entsprechenden JSON Pointer (RFC 6901) und den Knotentyp, damit du den Treffer im Quelldokument oder in einem anderen Tool finden kannst."
+      },
+      {
+        "icon": "lucide:brackets",
+        "title": "Gängige JSONPath-Syntax",
+        "description": "Verwende den Wurzel-Selektor, Kindeigenschaften, Klammernotation, Array-Indizes, Platzhalter, rekursiven Abstieg und einfache Vergleichsfilter. Bereiche, Unions, reguläre Ausdrücke und Funktionen werden nicht unterstützt."
+      },
+      {
+        "icon": "lucide:book-open",
+        "title": "Syntax-Referenz",
+        "description": "Öffne die integrierte Referenz, um die von dieser Auswertung unterstützten Operatoren zu prüfen, mit Beispielen, die du in das Ausdrucksfeld kopieren kannst."
+      },
+      {
+        "icon": "lucide:copy",
+        "title": "Abfrage oder Ergebnisse kopieren",
+        "description": "Kopiere den getesteten Ausdruck, gefundene Werte, Pfade oder Ergebnis-JSON für die Verwendung in API-Tests, Skripten, Konfiguration, Dokumentation oder Debugging."
+      },
+      {
+        "icon": "lucide:shield-check",
+        "title": "Auswertung im Browser",
+        "description": "JSON-Parsing und JSONPath-Auswertung finden in deinem Browser statt. Die Seite erfordert kein Konto und lädt dein Dokument nicht auf einen entfernten Dienst hoch."
+      }
+    ],
+    "guide": [
+      {
+        "title": "Gültiges JSON eingeben",
+        "description": "Füge eine API-Antwort, ein Konfigurationsdokument, einen Export oder anderes gültiges JSON in den Eingabe-Editor ein. Das JSON muss erfolgreich geparst werden, bevor eine Abfrage ausgeführt werden kann."
+      },
+      {
+        "title": "Einen JSONPath-Ausdruck schreiben",
+        "description": "Beginne mit dem Wurzel-Selektor $, dann füge Eigenschaften, Indizes, Platzhalter, rekursive Selektoren, Bereiche oder vom aktuellen Auswerter unterstützte Filter hinzu."
+      },
+      {
+        "title": "Den Ausdruck auswerten",
+        "description": "Klicke auf „Auswerten“, um die Abfrage auszuführen. Das Ergebnis unterscheidet zwischen einem gültigen Ausdruck ohne Treffer und einem Ausdruck, der nicht geparst oder nicht unterstützt werden kann."
+      },
+      {
+        "title": "Werte und Positionen prüfen",
+        "description": "Prüfe jeden gefundenen Wert zusammen mit seinem konkreten Pfad und, sofern verfügbar, seinem JSON Pointer oder Knotentyp."
+      },
+      {
+        "title": "Kopieren und verfeinern",
+        "description": "Kopiere den Ausdruck oder ausgewählte Ergebnisse für die Verwendung in Code und verfeinere die Abfrage schrittweise, bis sie genau die benötigten Knoten zurückgibt."
+      }
+    ],
+    "example": {
+      "title": "JSONPath-Abfragebeispiel",
+      "description": "Verwende einen JSONPath-Ausdruck, um den Titel des ersten Buchs auszuwählen und ihn mit einer Platzhalter-Abfrage zu vergleichen.",
+      "input": "{\n  \"store\": {\n    \"book\": [\n      {\n        \"title\": \"Sayings of the Century\",\n        \"price\": 8.95\n      },\n      {\n        \"title\": \"Sword of Honour\",\n        \"price\": 12.99\n      }\n    ]\n  }\n}",
+      "expression": "$.store.book[0].title",
+      "output": "[\n  {\n    \"path\": \"$.store.book[0].title\",\n    \"value\": \"Sayings of the Century\"\n  }\n]",
+      "useCase": "Teste einen API-Antwort-Selektor, bevor du den JSONPath-Ausdruck in Anwendungscode oder einem API-Test-Workflow verwendest."
+    },
+    "faq": [
+      {
+        "question": "Was ist JSONPath?",
+        "answer": "JSONPath ist eine Abfragesyntax zum Auswählen von Werten oder Knoten aus einem JSON-Dokument. Es bietet Selektoren für das Wurzelelement, Objekteigenschaften, Arrays, Platzhalter, rekursive Suchen, Bereiche und Filter, abhängig vom Dialekt und der Auswertungsimplementierung."
+      },
+      {
+        "question": "Welche JSONPath-Spezifikation unterstützt dieses Tool?",
+        "answer": "Diese Seite verwendet einen eigenen Auswerter für eine dokumentierte JSONPath-Teilmenge: `$`, `.name`, `['name']`, `[index]`, `*`, `..name` und einfache Filter wie `[?(@.price < 10)]`. Sie implementiert nicht den vollständigen RFC-9535-Standard: Array-Bereiche, Unions, reguläre Ausdrücke und Funktionen werden nicht unterstützt. Ausdrücke außerhalb der Teilmenge werden als ungültig gemeldet, statt teilweise Ergebnisse zu liefern."
+      },
+      {
+        "question": "Was ist der Unterschied zwischen einem Syntaxfehler und fehlenden Treffern?",
+        "answer": "Ein Syntaxfehler bedeutet, dass der Ausdruck nicht geparst werden kann oder nicht unterstützte Syntax verwendet. Keine Treffer bedeutet, dass der Ausdruck für die Auswertung gültig ist, aber keinen Knoten im bereitgestellten JSON auswählt. Diese Fälle erfordern unterschiedliche Korrekturen."
+      },
+      {
+        "question": "Was sind gängige JSONPath-Ausdrücke?",
+        "answer": "Beispiele umfassen $.user.name für eine verschachtelte Eigenschaft, $.items[0] für das erste Array-Element, $.items[*].id für jede Element-ID, $..price für rekursive Preissuchen und $.items[?(@.price > 10)] für einen Filter, wenn Filter-Syntax unterstützt wird."
+      },
+      {
+        "question": "Was bedeutet $ in JSONPath?",
+        "answer": "Das Dollarzeichen steht meist für das Wurzelelement des JSON-Dokuments. Beispielsweise beginnt $.users an der Wurzel und wählt die Eigenschaft users."
+      },
+      {
+        "question": "Was bedeutet .. in JSONPath?",
+        "answer": "Rekursiver Abstieg durchsucht Nachfahren unterhalb der aktuellen Position. Beispielsweise kann $..id id-Eigenschaften auf mehreren Verschachtelungsebenen treffen, abhängig von der Semantik der Auswertung."
+      },
+      {
+        "question": "Unterstützt das Tool Filter?",
+        "answer": "Ja, mit einer begrenzten Menge von Vergleichsoperatoren: `==`, `!=`, `<`, `>`, `<=` und `>=`, etwa `$.store.books[?(@.price < 10)]`. Reguläre Ausdrucksfilter und Funktionsaufrufe werden nicht unterstützt und als ungültige Ausdrücke gemeldet."
+      },
+      {
+        "question": "Unterstützt das Tool Array-Slices?",
+        "answer": "Nein. Slice-Ausdrücke wie `$.items[0:3]` werden von dieser Auswertung nicht unterstützt, ebensowenig Unions wie `$.items[0,2]`. Verwende einen Platzhalter mit Filter oder wähle die benötigten Indizes einzeln."
+      },
+      {
+        "question": "Warum erhalte ich doppelt wirkende Ergebnisse?",
+        "answer": "Verschiedene Knoten können denselben Wert enthalten. Prüfe den konkreten Trefferpfad, JSON Pointer oder die Quellposition, um sie zu unterscheiden, statt dich nur auf den angezeigten Wert zu verlassen."
+      },
+      {
+        "question": "Kann ich sehen, woher jedes Ergebnis stammt?",
+        "answer": "Wenn Pfadberichte aktiviert sind, kann jeder Treffer seinen konkreten JSONPath-Pfad und möglicherweise einen RFC-6901-JSON-Pointer enthalten. Das ist nützlich, wenn identische Werte an mehreren Stellen eines Dokuments vorkommen."
+      },
+      {
+        "question": "Kann ich JSONPath zum Ändern von JSON verwenden?",
+        "answer": "Diese Seite ist zum Abfragen und Extrahieren von Werten konzipiert. JSONPath selbst ist primär eine Auswahlsyntax; das Ändern der ausgewählten Daten erfordert eine separate Umwandlung oder Aktualisierungsoperation."
+      },
+      {
+        "question": "Kann ich es mit API-Antworten verwenden?",
+        "answer": "Ja. Füge eine gültige API-Antwort ein und verwende JSONPath, um Felder, Arrays, verschachtelte Objekte und gefilterte Ergebnisse zu prüfen. Der Auswerter fragt nur die der Seite übergebenen Daten ab und kennt die Geschäftssemantik der API nicht."
+      },
+      {
+        "question": "Kann ich große JSON-Dokumente testen?",
+        "answer": "Das praktische Limit hängt von Dokumentgröße, Verschachtelungstiefe, Array-Länge, Auswerter-Komplexität, Ergebnisanzahl und Browser-Speicher ab. Filter und rekursive Suchen können mehr Arbeit erfordern als direkter Eigenschaftszugriff."
+      },
+      {
+        "question": "Wird mein JSON auf einen Server hochgeladen?",
+        "answer": "Diese Seite ist dazu konzipiert, JSON in deinem Browser ohne Server-Upload zu parsen und abzufragen. Du solltest dennoch vermeiden, Passwörter, API-Schlüssel, Zugriffstokens, private Kundendaten oder vertrauliche Produktiv-Payloads in ein browserbasiertes Tool einzugeben."
+      },
+      {
+        "question": "Ist dies ein kostenloser JSONPath-Tester?",
+        "answer": "Ja. Du kannst JSON einfügen, unterstützte JSONPath-Ausdrücke testen, Treffer und Pfade prüfen und die Ergebnisse kopieren, ohne ein Konto zu erstellen."
+      }
+    ],
+    "article": {
+      "title": "JSONPath-Ausdrücke online testen",
+      "content": "<h2>What Is JSONPath?</h2><p> JSONPath ist eine Abfragesyntax zum Navigieren und Auswählen von Daten aus JSON-Dokumenten. Es wird häufig verwendet, um verschachtelte Eigenschaften, Array-Elemente, passende Datensätze und Werte in API-Antworten oder Konfigurationsdateien zu finden.</p><p> JSONPath-Implementierungen sind nicht alle identisch. Manche Tools folgen dem neueren IETF-JSONPath-RFC 9535, andere implementieren ältere oder bibliotheksspezifische Dialekte. Ein zuverlässiger Tester sollte angeben, welche Syntax er unterstützt, statt zu suggerieren, dass jeder JSONPath-Ausdruck überall funktioniert.</p><h2> Wie man einen JSONPath-Tester verwendet</h2><ol><li><strong>Enter JSON:</strong> Füge ein gültiges JSON-Objekt oder -Array in den Dokument-Editor ein.</li><li><strong>Write an expression:</strong> Beginne mit <code>$</code> und füge Eigenschaften, Array-Indizes, Platzhalter, rekursive Selektoren, Bereiche oder vom Auswerter unterstützte Filter hinzu.</li><li><strong>Evaluate:</strong> Führe die Abfrage gegen das geparste Dokument aus.</li><li><strong>Classify the result:</strong> Bestimme, ob der Ausdruck ungültig, gültig aber ohne Treffer ist oder einen oder mehrere Knoten zurückgibt.</li><li><strong>Inspect Pfads:</strong> Prüfe den konkreten Pfad, den JSON Pointer, den Wert und den Knotentyp, sofern verfügbar.</li><li><strong>Copy the query:</strong> Verwende den getesteten Ausdruck in Anwendungscode, API-Tests, einer Pipeline oder Dokumentation.</li></ol><h2> Gängige JSONPath-Ausdrücke</h2><ul><li><strong><code>$</code>:</strong> Wähle das Wurzeldokument.</li><li><strong><code>$.user.name</code>:</strong> Wähle eine verschachtelte Eigenschaft mit Punktnotation.</li><li><strong><code>$[\"user-name\"]</code>:</strong> Wähle eine Eigenschaft, deren Name Klammernotation erfordert.</li><li><strong><code>$.items[0]</code>:</strong> Wähle das erste Element in einem Array.</li><li><strong><code>$.items[*].id</code>:</strong> Wähle die id-Eigenschaft aus jedem Element.</li><li><strong><code>$..price</code>:</strong> Suche rekursiv nach price-Eigenschaften.</li><li><strong><code>$.items[?(@.price &gt; 10)]</code>:</strong> Filtere Elemente, wenn Prädikat-Syntax unterstützt wird.</li></ul><h2> Punktnotation und Klammernotation</h2><p> Punktnotation ist prägnant für gewöhnliche Eigenschaftsnamen:</p><pre><code>$.store.book[0].title</code></pre><p> Klammernotation ist nützlich für Eigenschaftsnamen mit Leerzeichen, Bindestrichen, Satzzeichen oder Zeichen, die in einem Bezeichner unpraktisch sind:</p><pre><code>$[\"user profile\"][\"display-name\"]</code></pre><p> Verwende die vom Auswerter unterstützte Notation und zitiere Eigenschaftsnamen genau so, wie sie im JSON erscheinen.</p><h2> Platzhalter, rekursiver Abstieg und Bereiche</h2><p> Ein Platzhalter wählt mehrere Kindelemente aus, während rekursiver Abstieg unterhalb der aktuellen Position sucht. Array-Bereiche wählen einen Bereich, sofern unterstützt:</p><ul><li><strong><code>*</code>:</strong> Findet Kindelemente oder Array-Elemente.</li><li><strong><code>..</code>:</strong> Durchsuche Nachfahren rekursiv.</li><li><strong><code>[0:3]</code>:</strong> Wähle einen Bereich, wenn der Auswerter Bereichs-Syntax unterstützt.</li></ul><p> Rekursive Abfragen können viele Knoten zurückgeben, insbesondere in großen Dokumenten. Prüfe die Trefferpfade, statt anzunehmen, dass jeder Wert mit demselben Schlüssel zum selben logischen Objekt gehört.</p><h2>Filter Expressions</h2><p> Mit Filtern kannst du Array-Elemente anhand einer Bedingung auswählen, etwa:</p><pre><code>$.store.book[?(@.price &lt; 10)].title</code></pre><p> Filter-Syntax und verfügbare Funktionen unterscheiden sich zwischen JSONPath-Implementierungen. Vergleiche mit fehlenden Eigenschaften, null-Werten, Strings und Zahlen sollten gegen den tatsächlichen Auswerter getestet werden.</p><h2> Gefundene Werte allein reichen nicht</h2><p> Zwei Knoten können denselben Wert zurückgeben, aber unterschiedliche Positionen darstellen:</p><pre><code>{\"users\":[{\"id\":1},{\"id\":1}]}</code></pre><p> Eine nützliche Ergebnisansicht sollte sowohl den Wert als auch seinen Pfad zeigen, etwa <code>$.users[0].id</code> und <code>$.users[1].id</code> Ein RFC-6901-JSON-Pointer kann ein weiteres präzises Ortsformat für die Integration mit Tools liefern, die JSON Patch oder Pointer-basierte Aktualisierungen verwenden.</p><h2> Ungültiger Ausdruck vs. kein Treffer</h2><p> Diese Ergebnisse sind unterschiedlich:</p><ul><li><strong>Invalid expression:</strong> Der Parser versteht die Abfrage nicht oder der Auswerter unterstützt einen Teil ihrer Syntax nicht.</li><li><strong>No match:</strong> Der Ausdruck ist gültig, wählt aber keinen Knoten im aktuellen Dokument aus.</li><li><strong>Successful match:</strong> Ein oder mehrere Werte oder Knoten wurden ausgewählt.</li></ul><p> Das getrennte Halten dieser Zustände macht Debugging viel schneller. Ein Syntaxfehler sollte im Ausdruck behoben werden, während ein Ergebnis ohne Treffer meist das Prüfen von Eigenschaftsnamen, Array-Indizes, Dokumentstruktur oder Filterbedingungen erfordert.</p><h2> JSONPath und JSON Pointer</h2><p> JSONPath ist eine Abfragesprache, die mehrere Knoten auswählen kann. JSON Pointer, definiert durch RFC 6901, identifiziert einen Ort mit schrägstrichgetrennten Tokens wie <code>/users/0/name</code> Sie lösen unterschiedliche Probleme und sollten nicht als austauschbare Syntax dargestellt werden.</p><h2>JSONPath in API Testing</h2><p> JSONPath ist nützlich zum Prüfen von API-Antworten, Extrahieren von Feldern und Schreiben von Assertions. Beispielsweise kann ein Test prüfen, dass <code>$.data.items[*].id</code> liefert erwartete Bezeichner. Die genaue Ausdruckssyntax muss zum API-Testtool oder zur Bibliothek des Projekts passen.</p><h2> Implementierung und Kompatibilität</h2><p> Teste eine Abfrage in der Zielbibliothek, bevor du sie in Produktivcode kopierst. Eine Abfrage, die in einem Browser-Tester funktioniert, kann in einem Tool mit anderem JSONPath-Dialekt, anderen Funktionen, anderer Filter-Syntax oder anderem Ergebnismodell fehlschlagen. Wenn die Seite RFC 9535 implementiert, nimm die Spezifikationsversion und unterstützte Erweiterungen in die Referenz auf.</p><h2>Large JSON Documents</h2><p> Direkter Eigenschaftszugriff ist meist günstiger als rekursive Suchen und komplexe Filter. Bei großen Dokumenten kann das Rendern der Ergebnisse genauso wichtig werden wie die Auswertung. Ein Web Worker, träges Filtern, virtualisierte Ergebnisse und ein Ergebnislimit können die Oberfläche reaktionsfähig halten.</p><h2>Browser-Based Privacy</h2><p> Dieser Tester ist darauf ausgelegt, JSON im Browser zu parsen und auszuwerten statt das Dokument an einen entfernten Dienst zu senden. Das ist nützlich für Entwicklungs-Payloads und private Konfigurationsbeispiele, aber kein System zur Geheimnisverwaltung. Vermeide Zugangsdaten, Tokens, private Kundeninformationen oder Produktiv-Geheimnisse in einem Online-Tool.</p>"
+    }
   }
 }

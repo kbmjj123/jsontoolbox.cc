@@ -5,8 +5,16 @@
   "icon": "lucide:table-2",
   "sort": 17,
   "applicationCategory": "DeveloperApplication",
-  "nextSteps": ["json-to-csv", "json-to-table"],
-  "recommends": ["json-editor", "json-schema-validator", "json-path-tester", "json-to-html"],
+  "nextSteps": [
+    "json-to-csv",
+    "json-to-table"
+  ],
+  "recommends": [
+    "json-editor",
+    "json-schema-validator",
+    "json-path-tester",
+    "json-to-html"
+  ],
   "en": {
     "name": "HTML Table to JSON Converter",
     "description": "Convert HTML tables into JSON arrays in your browser. Paste HTML or open an .html file, pick the table, choose how headers are detected, preview the rows, optionally infer basic types, then copy or download the JSON.",
@@ -427,6 +435,217 @@
     "article": {
       "title": "如何把 HTML 表格转换成 JSON",
       "content": "<h2>什么是 HTML 表格转 JSON</h2><p>HTML 表格转 JSON 是解析 HTML 标记并把表格数据表示为 JSON。通常的结果是一个对象数组：每个表格行成为一个对象，每一列成为一个属性。</p><p>这和把整个文档表示成含标签、属性、文本和子节点的 JSON DOM 树不同。本页只提取表格，不会序列化整个页面。</p><h2>如何把 HTML 表格转成 JSON</h2><ol><li><strong>输入 HTML：</strong>粘贴含表格的标记，或打开本地 .html、.htm 文件。</li><li><strong>选择表格：</strong>存在多个表格时，选中你需要的那个。</li><li><strong>识别表头：</strong>用 th 单元格、强制第一行，或生成列名。</li><li><strong>配置取值：</strong>去除文本空白、推断基础类型，或把空单元格转成 null。</li><li><strong>查看提示：</strong>检查合并单元格、表头重命名和行不齐。</li><li><strong>转换：</strong>生成 JSON 对象数组。</li><li><strong>复制或下载：</strong>把结果保存为 .json 文件。</li></ol><h2>HTML 表格示例</h2><p>输入：</p><pre><code>&lt;table&gt;\n  &lt;thead&gt;\n    &lt;tr&gt;&lt;th&gt;Name&lt;/th&gt;&lt;th&gt;Age&lt;/th&gt;&lt;/tr&gt;\n  &lt;/thead&gt;\n  &lt;tbody&gt;\n    &lt;tr&gt;&lt;td&gt;Alice&lt;/td&gt;&lt;td&gt;30&lt;/td&gt;&lt;/tr&gt;\n  &lt;/tbody&gt;\n&lt;/table&gt;</code></pre><p>默认选项下的输出：</p><pre><code>[\n  {\"Name\":\"Alice\",\"Age\":\"30\"}\n]</code></pre><p>因为类型推断默认关闭，Age 保持字符串 \"30\"。开启后会得到数字 30。</p><h2>表头处理</h2><p>列名可以来自显式的 thead 区块、开头的 th 单元格行，或自动生成的名字。表头单元格为空时按位置变成 <code>column_N</code>；重复的名字会加上数字后缀，例如 <code>Name_2</code>，因此不会有列被悄悄丢掉。这两种情况都会给出提示。</p><p>如果表格有多行表头，本页使用第一行并给出提示，因为分组或堆叠的表头无法无歧义地扁平化。</p><h2>为什么 colspan 和 rowspan 很重要</h2><p><code>colspan=\"2\"</code> 的单元格占两个逻辑位置，<code>rowspan</code> 跨多行。要正确展开它们，需要建立网格并填充被跨越的每个位置。本版本不做这件事：它按原始写法读取每一行，发现跨行列属性时给出提示，让你手动核对列对齐，而不是给出看似正确实则错位的结果。</p><h2>取文本内容，不是 HTML</h2><p>取值来自单元格的文本内容。单元格里的标签只贡献文本，所以 <code>&lt;td&gt;&lt;strong&gt;Alice&lt;/strong&gt;&lt;/td&gt;</code> 得到 Alice。标记和 href、src 这类属性不会被提取。这让输出保持为纯数据，也意味着表格里的链接和图片不会出现在结果中。</p><h2>类型推断会改变值</h2><p>表格单元格是文本，文本没有类型。开启推断后，小写的 <code>true</code> 和 <code>false</code> 变成布尔值，整数或小数变成数字。<code>00123</code>、<code>SKU-001</code>、<code>1e5</code>、<code>TRUE</code> 都不会被转换，所以编号、邮编和带格式金额能保持原样。除非确实需要数值类型，否则请保持关闭。</p><h2>HTML 转 JSON 不是爬虫</h2><p>本工具解析的是你粘贴或本地打开的 HTML，不会抓取 URL、执行 JavaScript、处理分页或判断访问权限。需要反复从线上站点提取时，应该用本地爬虫或构建阶段的处理；浏览器转换器适合处理已保存的标记、复制的片段和一次性提取。</p><h2>隐私与浏览器本地处理</h2><p>解析和转换都在浏览器里完成，粘贴的 HTML 留在你的设备上。这适合已保存的页面和导出的标记，但它不是密钥管理系统。不要把登录后的页面内容、凭证或客户机密数据粘贴到任何在线工具里。</p><h2>什么时候改用本地解析器</h2><p>处理大量文件、重复任务、超大文档或机密内容时，请用本地 HTML 解析器，把转换放在自己的流程里。浏览器转换更适合快速提取、查看和小到中等体积的表格。</p>"
+    }
+  },
+  "de": {
+    "name": "HTML-Tabelle-zu-JSON-Konverter",
+    "description": "Wandle HTML-Tabellen in deinem Browser in JSON-Arrays um. Füge HTML ein oder öffne eine .html-Datei, wähle die Tabelle, lege fest, wie Kopfzeilen erkannt werden, zeige die Zeilen an, leite optional grundlegende Typen ab und kopiere oder lade das JSON herunter.",
+    "hero": {
+      "trustHtml": "Läuft in deinem Browser. Dein HTML wird von diesem Tool nicht hochgeladen."
+    },
+    "meta": {
+      "title": "HTML-Tabelle-zu-JSON-Konverter – Kostenloses Online-Tool",
+      "description": "Wandle HTML-Tabellen online in JSON-Arrays um. Füge HTML ein oder öffne eine Datei, erkenne Tabellenkopfzeilen, zeige Zeilen an und kopiere oder lade strukturiertes JSON herunter. Kostenlos und browserbasiert.",
+      "keywords": [
+        "html to json converter",
+        "html table to json",
+        "convert html to json",
+        "html table to json converter",
+        "html to json online",
+        "html table json",
+        "convert html table to json",
+        "free html to json converter"
+      ]
+    },
+    "ui": {
+      "label_input": "HTML eingeben",
+      "label_output": "JSON-Ausgabe",
+      "placeholder_input": "HTML einfügen oder eine .html-Datei öffnen …",
+      "placeholder_output": "JSON-Ausgabe erscheint hier …",
+      "label_table": "Tabelle:",
+      "option_table_index": "Tabelle {index}",
+      "option_header": "Umgang mit Kopfzeilen:",
+      "option_detect_header": "Kopfzeile erkennen",
+      "option_first_row_header": "Erste Zeile ist Kopfzeile",
+      "option_no_header": "Keine Kopfzeile",
+      "option_infer_types": "Grundlegende Typen ableiten",
+      "option_empty_as_null": "Leere Zellen in null umwandeln",
+      "option_trim_text": "Zelltext zuschneiden",
+      "option_indent": "Einrückung:",
+      "option_indent_2": "2 Leerzeichen",
+      "option_indent_4": "4 Leerzeichen",
+      "btn_convert": "In JSON umwandeln",
+      "label_preview": "Tabellen-Vorschau",
+      "label_rows": "Zeilen:",
+      "label_columns": "Spalten:",
+      "label_tables": "Gefundene Tabellen:",
+      "label_warnings": "Warnungen:",
+      "preview_showing": "{shown} von {total} werden angezeigt",
+      "error_empty_input": "Zuerst HTML eingeben oder eine Datei öffnen",
+      "error_invalid_html": "Die Eingabe enthält kein HTML-Markup",
+      "error_no_table": "Es wurde keine HTML-Tabelle gefunden",
+      "error_inconsistent_cells": "Einige Zeilen haben eine andere Anzahl von Zellen",
+      "warning_colspan": "Die Tabelle enthält colspan oder rowspan, was nicht aufgelöst wird",
+      "warning_duplicate_headers": "Doppelte oder leere Kopfzeilen wurden umbenannt",
+      "warning_multi_header": "Die Tabelle hat mehr als eine Kopfzeile; die erste wird verwendet"
+    },
+    "features": [
+      {
+        "icon": "lucide:table-2",
+        "title": "HTML-Tabelle zu JSON",
+        "description": "Extrahiere Tabellenkopfzeilen und -zeilen aus HTML und mache sie zu einem JSON-Array von Objekten, einem Objekt pro Tabellenzeile, wobei der Zelltextinhalt verwendet wird."
+      },
+      {
+        "icon": "lucide:layers-2",
+        "title": "Die richtige Tabelle wählen",
+        "description": "Sieh, wie viele Tabellen die Eingabe enthält, und wandle die aus, die du nach Index auswählst. Zeilen, die zu einer innerhalb einer Zelle verschachtelten Tabelle gehören, bleiben bei dieser verschachtelten Tabelle."
+      },
+      {
+        "icon": "lucide:heading",
+        "title": "Kopfzeilenerkennung",
+        "description": "Verwende Kopfzellen aus thead oder einer führenden Zeile von th-Elementen, erzwinge die erste Zeile als Kopfzeile oder erzeuge column_1, column_2 usw."
+      },
+      {
+        "icon": "lucide:eye",
+        "title": "Zeilen und Spalten anzeigen",
+        "description": "Zeige die erkannten Kopfzeilen und die ersten 10 Datenzeilen vor dem Export an, zusammen mit der Zeilen-, Spalten- und Tabellenanzahl."
+      },
+      {
+        "icon": "lucide:badge-check",
+        "title": "Optionale Typinferenz",
+        "description": "Wenn aktiviert, werden kleingeschriebenes true und false zu Booleans und einfache ganze Zahlen oder Dezimalzahlen zu Zahlen. Standardmäßig ist es aus, sodass Werte wie 00123 und SKU-001 Strings bleiben."
+      },
+      {
+        "icon": "lucide:alert-triangle",
+        "title": "Strukturelle Warnungen",
+        "description": "Werde auf colspan und rowspan, doppelte oder leere Kopfzeilennamen, Tabellen mit mehr als einer Kopfzeile und Zeilen mit unterschiedlicher Zellenzahl hingewiesen."
+      },
+      {
+        "icon": "lucide:copy",
+        "title": "JSON-Ausgabe kopieren",
+        "description": "Kopiere das erzeugte JSON-Array in die Zwischenablage für Skripte, APIs, Datenbanken oder Datenverarbeitungs-Workflows. „Kopieren“ enthält immer alle Zeilen, nicht nur die in der Vorschau angezeigten."
+      },
+      {
+        "icon": "lucide:download",
+        "title": "JSON herunterladen",
+        "description": "Lade die extrahierten Tabellendaten als .json-Datei für lokale Speicherung, Analyse, Tests oder weitere Umwandlung herunter."
+      },
+      {
+        "icon": "lucide:shield-check",
+        "title": "Verarbeitung im Browser",
+        "description": "HTML-Parsing und JSON-Erzeugung finden in deinem Browser statt. Es ist kein Konto erforderlich und die Eingabe-HTML wird nicht an einen entfernten Dienst gesendet."
+      }
+    ],
+    "guide": [
+      {
+        "title": "HTML eingeben",
+        "description": "Füge HTML ein, das eine Tabelle enthält, oder öffne eine lokale .html-, .htm- oder .txt-Datei. Diese Seite ist für Tabellen-Markup gebaut, nicht zum Abrufen oder Crawlen einer entfernten Seite."
+      },
+      {
+        "title": "Die Tabelle wählen",
+        "description": "Wenn die Eingabe mehr als eine Tabelle enthält, wähle aus, welche umgewandelt wird. Die Anzahl der gefundenen Tabellen wird über der Vorschau angezeigt."
+      },
+      {
+        "title": "Kopfzeilen und Werte konfigurieren",
+        "description": "Wähle, ob Kopfzeilen aus th-Elementen erkannt, aus der ersten Zeile übernommen oder erzeugt werden. Entscheide, ob Zelltext zugeschnitten, grundlegende Typen abgeleitet oder leere Zellen in null umgewandelt werden."
+      },
+      {
+        "title": "Die Vorschau prüfen",
+        "description": "Prüfe die erkannten Kopfzeilen, die ersten 10 Zeilen, die Zeilen- und Spaltenanzahl sowie alle Warnungen zu Bereichen, umbenannten Kopfzeilen oder unebenen Zeilen."
+      },
+      {
+        "title": "Umwandeln und exportieren",
+        "description": "Klicke auf „In JSON umwandeln“, kopiere dann das Ergebnis oder lade es als .json-Datei herunter. Die Ausgabe aktualisiert sich auch während der Eingabe automatisch."
+      }
+    ],
+    "example": {
+      "title": "Eine HTML-Tabelle in JSON umwandeln",
+      "description": "Eine einfache Tabelle mit einer Kopfzeile, umgewandelt in ein Array von JSON-Objekten.",
+      "inputLabel": "HTML eingeben",
+      "input": "<table>\n  <thead>\n    <tr><th>Name</th><th>Age</th><th>City</th></tr>\n  </thead>\n  <tbody>\n    <tr><td>Alice</td><td>30</td><td>New York</td></tr>\n    <tr><td>Bob</td><td>25</td><td>London</td></tr>\n  </tbody>\n</table>",
+      "inputExplanation": "Ein thead-Abschnitt mit drei th-Zellen und ein tbody mit zwei Datenzeilen.",
+      "outputLabel": "JSON-Array",
+      "output": "[\n  {\n    \"Name\": \"Alice\",\n    \"Age\": \"30\",\n    \"City\": \"New York\"\n  },\n  {\n    \"Name\": \"Bob\",\n    \"Age\": \"25\",\n    \"City\": \"London\"\n  }\n]",
+      "outputExplanation": "Standardoptionen: Kopfzeilen aus thead erkannt, Typhinferenz aus, sodass 30 und 25 Strings bleiben.",
+      "note": "Schalte „Grundlegende Typen ableiten“ ein, um 30 und 25 als JSON-Zahlen auszugeben. Die Vorschau zeigt die ersten 10 Zeilen; Kopieren und Herunterladen umfassen immer jede Zeile."
+    },
+    "faq": [
+      {
+        "question": "Was macht dieser HTML-zu-JSON-Konverter?",
+        "answer": "Es extrahiert HTML-Tabellenzeilen und -spalten und wandelt sie in ein JSON-Array von Objekten um. Jede Tabellenzeile wird zu einem Objekt und die erkannten Kopfzeilen werden zu Eigenschaftsnamen."
+      },
+      {
+        "question": "Kann ich eine vollständige HTML-Seite in JSON umwandeln?",
+        "answer": "Diese Seite extrahiert nur Tabellen. Alles außerhalb eines Table-Elements wird ignoriert, da die meisten Seiten-Markups nicht auf Zeilen und Spalten abgebildet werden können. Sie ruft keine URL ab und wandelt keine vollständige Seite in ein JSON-Dokument um."
+      },
+      {
+        "question": "Wie werden Tabellenkopfzeilen erkannt?",
+        "answer": "„Kopfzeile erkennen“ verwendet die erste Zeile innerhalb von thead oder eine führende Zeile, deren Zellen alle th-Elemente sind. „Erste Zeile ist Kopfzeile“ erzwingt die Verwendung der ersten Zeile. „Keine Kopfzeile“ erzeugt column_1, column_2 usw."
+      },
+      {
+        "question": "Was, wenn das HTML mehrere Tabellen enthält?",
+        "answer": "Die Anzahl der gefundenen Tabellen wird angezeigt und du kannst auswählen, welche umgewandelt wird. Tabellen, die innerhalb einer Zelle verschachtelt sind, werden ebenfalls gezählt und können einzeln ausgewählt werden."
+      },
+      {
+        "question": "Kann ich eine HTML-Tabelle ohne Kopfzeile umwandeln?",
+        "answer": "Ja. Wähle „Keine Kopfzeile“ und der Konverter erzeugt column_1, column_2, column_3 usw. Erzeugte Namen funktionieren, sind aber weniger aussagekräftig als echte Kopfzeilen."
+      },
+      {
+        "question": "Unterstützt es rowspan und colspan?",
+        "answer": "Nein. Diese Version dehnt Zellen, die sich über mehrere Positionen erstrecken, nicht aus, da dafür ein Raster-Erweiterungsalgorithmus nötig wäre. Wenn ein colspan- oder rowspan-Attribut größer als 1 gefunden wird, warnt die Seite, damit die Spaltenausrichtung manuell geprüft werden kann."
+      },
+      {
+        "question": "Was passiert bei doppelten oder leeren Kopfzeilennamen?",
+        "answer": "Eine leere Kopfzeile wird an ihrer Position zu column_N, und ein wiederholter Name erhält ein numerisches Suffix wie Name_2, sodass keine Spalte stillschweigend verworfen wird. Beide Fälle lösen eine Warnung aus."
+      },
+      {
+        "question": "Behält es HTML innerhalb von Tabellenzellen bei?",
+        "answer": "Nein. Es wird nur der Textinhalt der Zellen extrahiert, sodass Tags wie a, strong und span innerhalb einer Zelle nur ihren Text beitragen. Markup innerhalb von Zellen wird nicht beibehalten, und es gibt keine Option, es zu erhalten."
+      },
+      {
+        "question": "Leitet es Zahlen und Booleans ab?",
+        "answer": "Nur wenn „Grundlegende Typen ableiten“ aktiviert ist, und nur für eine enge Menge von Werten: kleingeschriebenes true und false werden zu Booleans, einfache ganze Zahlen oder Dezimalzahlen zu Zahlen. Werte wie 00123, SKU-001, 1e5 und TRUE bleiben Strings, daher lass die Option aus, wenn Bezeichner oder formatierte Beträge Text bleiben müssen."
+      },
+      {
+        "question": "Was passiert mit leeren und fehlenden Zellen?",
+        "answer": "Eine fehlende Zelle wird zu einem leeren String oder zu null, wenn „Leere Zellen in null umwandeln“ aktiviert ist. Zeilen mit einer anderen Anzahl von Zellen als die Kopfzeile werden dennoch umgewandelt und als Warnung gemeldet."
+      },
+      {
+        "question": "Kann ich Tabellendaten von einer URL extrahieren?",
+        "answer": "Nein. Das Abrufen einer URL führt zu CORS-Einschränkungen sowie Bedenken hinsichtlich externer Inhalte und Datenschutz und funktioniert nicht für per JavaScript gerenderte Seiten. Füge das HTML stattdessen ein oder öffne eine lokale Datei."
+      },
+      {
+        "question": "Kann ich HTML-Attribute in JSON umwandeln?",
+        "answer": "Nein. Es wird nur der Textinhalt der Zellen extrahiert. Attribute wie class, href, src und data-* werden nicht umgewandelt, und es gibt keine Option für Attribut-Zuordnung."
+      },
+      {
+        "question": "Kann ich HTML in einen JSON-DOM-Baum umwandeln?",
+        "answer": "Nein. Diese Seite wandelt Tabellen in JSON-Datensätze um. Ein DOM-Baum-Modus, der Tags, Attribute, Text und Kindelemente darstellt, ist nicht verfügbar."
+      },
+      {
+        "question": "Ist HTML-zu-JSON dasselbe wie Website-Scraping?",
+        "answer": "Nein. Dieses Tool parst HTML, das du bereitstellst. Eine Website zu scrapen bedeutet üblicherweise URLs abzurufen, JavaScript auszuführen, Seitennavigation zu handhaben und Zugriffsrichtlinien zu beachten — nichts davon tut diese Seite."
+      },
+      {
+        "question": "Kann ich JSON zurück in HTML umwandeln?",
+        "answer": "Verwende die Seite JSON zu HTML für die umgekehrte Richtung. Ein JSON-Array von Objekten kann wieder zu Zeilen und Spalten gerendert werden."
+      },
+      {
+        "question": "Kann ich eine große HTML-Datei umwandeln?",
+        "answer": "Das praktische Limit hängt von Dokumentgröße, Tabellenanzahl, DOM-Komplexität, Browser-Speicher und Vorschau-Rendering ab. Große Seiten lassen sich möglicherweise besser mit einem lokalen Parser verarbeiten."
+      },
+      {
+        "question": "Wird mein HTML auf einen Server hochgeladen?",
+        "answer": "Nein. Die Seite parst HTML und erzeugt JSON in deinem Browser. Du solltest dennoch vermeiden, private Kundendaten, authentifizierte Seiteninhalte, Zugangsdaten oder vertrauliches HTML in ein browserbasiertes Tool einzufügen."
+      },
+      {
+        "question": "Ist dies ein kostenloser HTML-zu-JSON-Konverter?",
+        "answer": "Ja. Du kannst HTML einfügen oder öffnen, Tabellendaten extrahieren, das Ergebnis prüfen und JSON kopieren oder herunterladen, ohne ein Konto zu erstellen."
+      }
+    ],
+    "article": {
+      "title": "Eine HTML-Tabelle in JSON umwandeln",
+      "content": "<h2> Was ist HTML-Tabelle-zu-JSON-Umwandlung?</h2><p> Die HTML-Tabelle-zu-JSON-Umwandlung parst HTML-Markup und stellt Tabellendaten als JSON dar. Das übliche Ergebnis ist ein Array von Objekten: jede Tabellenzeile wird zu einem Objekt und jede Spalte zu einer Eigenschaft.</p><p> Das unterscheidet sich davon, ein gesamtes Dokument als JSON-DOM-Baum mit Tags, Attributen, Text und Kindelementen darzustellen. Diese Seite extrahiert nur Tabellen; sie serialisiert keine vollständige Seite.</p><h2>Eine HTML-Tabelle in JSON umwandeln</h2><ol><li><strong>Enter HTML:</strong> füge Markup mit einer Tabelle ein oder öffne eine lokale .html- oder .htm-Datei.</li><li><strong>Pick the table:</strong> wähle bei mehreren Tabellen die aus, die du benötigst.</li><li><strong>Detect headers:</strong> verwende th-Zellen, erzwinge die erste Zeile oder erzeuge Spaltennamen.</li><li><strong>Configure Werts:</strong> schneide Text zu, leite grundlegende Typen ab oder mach leere Zellen zu null.</li><li><strong>Review warnings:</strong> prüfe Bereiche, umbenannte Kopfzeilen und unebene Zeilen.</li><li><strong>Convert:</strong> erzeuge ein JSON-Array von Objekten.</li><li><strong>Copy oder download:</strong> speichere das Ergebnis als .json-Datei.</li></ol><h2>Example HTML Table</h2><p>Input:</p><pre><code>&lt;table&gt;\n  &lt;thead&gt;\n    &lt;tr&gt;&lt;th&gt;Name&lt;/th&gt;&lt;th&gt;Age&lt;/th&gt;&lt;/tr&gt;\n  &lt;/thead&gt;\n  &lt;tbody&gt;\n    &lt;tr&gt;&lt;td&gt;Alice&lt;/td&gt;&lt;td&gt;30&lt;/td&gt;&lt;/tr&gt;\n  &lt;/tbody&gt;\n&lt;/table&gt;</code></pre><p> Ausgabe mit den Standardoptionen:</p><pre><code>[\n  {\"Name\":\"Alice\",\"Age\":\"30\"}\n]</code></pre><p> Age bleibt der String \"30\", da die Typhinferenz standardmäßig aus ist. Schalte sie ein, um die Zahl 30 zu erhalten.</p><h2>Header Handling</h2><p> Spaltennamen können aus einem expliziten thead-Abschnitt, einer führenden Zeile von th-Zellen oder aus erzeugten Namen stammen. Wenn eine Kopfzelle leer ist, wird sie zu <code>column_N</code> für diese Position, und ein wiederholter Name erhält ein numerisches Suffix wie <code>Name_2</code>, sodass keine Spalte stillschweigend verworfen wird. Beide Fälle werden als Warnung gemeldet.</p><p> Wenn eine Tabelle mehr als eine Kopfzeile hat, verwendet diese Seite die erste und warnt dich, da gruppierte oder gestapelte Überschriften nicht eindeutig abgeflacht werden können.</p><h2> Warum colspan und rowspan wichtig sind</h2><p>A cell with <code>colspan=\"2\"</code> belegt zwei logische Positionen, und <code>rowspan</code> erstreckt sich über mehrere Zeilen. Das korrekte Auflösen erfordert den Aufbau eines Rasters und das Füllen jeder Position, die das Element überspannt. Diese Version tut das nicht: Sie liest jede Zeile wie geschrieben und warnt bei einem Bereich, damit die Spaltenausrichtung manuell geprüft statt stillschweigend falsch werden kann.</p><h2>Text Content, Not HTML</h2><p> Werte werden aus dem Zelltextinhalt gelesen. Tags innerhalb einer Zelle tragen ihren Text bei, sodass <code>&lt;td&gt;&lt;strong&gt;Alice&lt;/strong&gt;&lt;/td&gt;</code> ergibt Alice. Markup und Attribute wie href oder src werden nicht extrahiert. Das hält die Ausgabe als reine Daten und bedeutet auch, dass Links und Bilder innerhalb einer Tabelle nicht Teil des Ergebnisses sind.</p><h2> Typhinferenz kann Werte ändern</h2><p> Tabellenzellen sind Text, und Text hat keinen Typ. Bei aktivierter Inferenz werden kleingeschriebenes <code>true</code> und <code>false</code> werden zu Booleans und einfache ganze Zahlen oder Dezimalzahlen zu Zahlen. Werte wie <code>00123</code>, <code>SKU-001</code>, <code>1e5</code>, und <code>TRUE</code> werden nie umgewandelt, sodass Bezeichner, Postleitzahlen und formatierte Beträge intakt bleiben. Lass die Option aus, es sei denn, du benötigst numerische Typen.</p><h2> HTML-zu-JSON ist kein Scraping</h2><p> Dieses Tool parst HTML, das du einfügst oder lokal öffnest. Es ruft keine URLs ab, führt kein JavaScript aus, folgt keiner Seitennavigation und prüft keine Zugriffsrichtlinien. Für wiederholte Extraktion aus Live-Seiten ist ein lokaler Scraper oder ein Build-Schritt das richtige Werkzeug; der Browser-Konverter ist für gespeichertes Markup, kopierte Fragmente und einmalige Extraktion gedacht.</p><h2> Datenschutz und browserbasierte Verarbeitung</h2><p> Parsing und Umwandlung finden im Browser statt, sodass das eingefügte HTML auf deinem Gerät bleibt. Das passt zu gespeicherten Seiten und exportiertem Markup, ist aber kein System zur Geheimnisverwaltung. Vermeide es, authentifizierte Seiteninhalte, Zugangsdaten oder vertrauliche Kundendaten in ein Online-Tool einzufügen.</p><h2> Wann einen lokalen Parser nutzen</h2><p> Für viele Dateien, wiederholte Aufträge, sehr große Dokumente oder vertrauliche Inhalte verwende einen lokalen HTML-Parser und behalte die Umwandlung in deiner eigenen Pipeline. Die Browser-Umwandlung eignet sich am besten für schnelle Extraktion, Prüfung und kleine bis mittlere Tabellen.</p>"
     }
   }
 }

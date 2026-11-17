@@ -31,6 +31,7 @@ export default defineNuxtConfig({
       routes: [
         '/',
         '/zh',
+        '/de',
         '/tools',
         '/blog',
         '/llms.txt',
@@ -159,6 +160,7 @@ export default defineNuxtConfig({
     locales: [
       { code: 'en', name: 'English', file: 'en.json', language: 'en-US', flag: 'circle-flags:us' },
       { code: 'zh', name: '简体中文', file: 'zh-CN.json', language: 'zh-CN', flag: 'circle-flags:cn' },
+      { code: 'de', name: 'Deutsch', file: 'de.json', language: 'de-DE', flag: 'circle-flags:de' },
     ],
     defaultLocale: 'en',
     strategy: 'prefix_except_default',

@@ -356,5 +356,175 @@
       "title": "如何在线压缩 JSON（Minify）",
       "content": "<h2>什么是 JSON 压缩（Minify）？</h2><p>JSON 压缩是指移除合法 JSON 中 token 之间无意义的空白，得到更紧凑的表示形式。输出通常是单行，但关键在于「移除空白的同时不改变解析后的数据」。</p><p>标准流程会先解析输入再重新序列化，而不是直接删除所有空格字符 —— 因为字符串内部的空格是有意义的数据。</p><h2>正确的实现方式</h2><p>应当交给标准库：</p><pre><code>JSON.stringify(JSON.parse(input))</code></pre><p>而不是简单地删掉所有空白：</p><pre><code>input.replace(/\\s+/g, \"\")</code></pre><p>后者会连字符串内部的空格一起删掉。例如 <code>{\"city\":\"New York\"}</code> 经过替换会变成 <code>{\"city\":\"NewYork\"}</code>，数据已经被改动。</p><h2>如何压缩 JSON</h2><ol><li><strong>输入 JSON：</strong>粘贴格式化 JSON，或打开本地 .json 文件。</li><li><strong>确认有效：</strong>必须是标准 JSON 语法。</li><li><strong>执行压缩：</strong>解析后重新序列化，不带缩进和多余的 token 间距。</li><li><strong>对比体积：</strong>查看压缩前后的字符数和 UTF-8 字节数。</li><li><strong>复制或下载：</strong>把紧凑输出用于 API、应用资源、配置流程或本地文件。</li></ol><h2>字符数和 UTF-8 字节数</h2><p>两者不一定相同。纯 ASCII 的 JSON 用常见编码时两者接近，但中文、emoji 等非 ASCII 字符在 UTF-8 里通常占多个字节。比较之前先确认自己用的是哪一种单位。</p><p>本页按 UTF-8 字节计算节省数量和百分比：</p><pre><code>节省量 = 原始字节数 - 压缩后字节数\n节省比例 = 节省量 / 原始字节数 × 100</code></pre><h2>字符串内部的内容不会被动</h2><p>安全的压缩器必须保留引号内部的空白和转义序列。例如：</p><pre><code>{\"message\":\"第一行\\n第二行\",\"title\":\"New York\"}</code></pre><p>其中的换行转义和 <code>New York</code> 里的空格都属于数据，删掉就改变了值。</p><h2>JSON、JSONC 与 JSON5</h2><p>标准 JSON 不允许注释和尾随逗号。JSONC、JSON5 增加了注释、单引号字符串等特性，严格的 JSON 压缩器会直接报错而不是悄悄处理，因为注释里可能包含重要说明。</p><h2>什么时候该压缩 JSON</h2><ul><li><strong>生产资源：</strong>减小静态 JSON 文件的体积。</li><li><strong>嵌入数据：</strong>把紧凑 JSON 放进生成的代码或模板。</li><li><strong>存储：</strong>在不需要人工阅读时保存紧凑表示。</li><li><strong>测试数据：</strong>生成一行式的 fixture。</li><li><strong>构建流程：</strong>在部署时自动压缩，同时保留可读源文件。</li></ul><h2>什么时候不要压缩</h2><p>当有人需要阅读或编辑、内容放在版本库里、或者清晰的 diff 比字节数更重要时，请保留格式化 JSON。常见做法是保留可读源文件，把紧凑版本当作构建产物。</p><h2>浏览器本地处理与隐私</h2><p>本工具在你的浏览器中完成解析和序列化，不会把输入发送到远端服务。这对于开发数据和配置片段很方便，但它不是密钥管理系统。请不要在任何在线工具里输入密码、令牌、客户隐私数据或生产环境的机密信息。</p><h2>生产环境的替代方案</h2><p>需要可重复的构建时，用本地格式化工具、CI 步骤或命令行工具，例如 <code>jq -c</code>。生产流程应当校验输出、保留可读源文件，并在目标应用里实测压缩后的文件。</p>"
     }
+  },
+  "de": {
+    "name": "JSON-Minifier",
+    "description": "Minimiere gültiges JSON durch Entfernen unwesentlicher Leerzeichen zwischen JSON-Tokens. Erzeuge kompakte Single-Line-Ausgabe ohne Änderung geparster Werte oder Struktur, vergleiche Zeichen- und Byte-Größen und kopiere oder lade das Ergebnis direkt in deinem Browser herunter.",
+    "hero": {
+      "trustHtml": "Läuft in deinem Browser. Dein JSON wird von diesem Tool nicht hochgeladen."
+    },
+    "meta": {
+      "title": "JSON-Minifier – JSON online kostenlos minimieren",
+      "description": "Minimiere gültiges JSON online durch Entfernen von Einrückung, Zeilenumbrüchen und unnötigen Leerzeichen. Vergleiche Original- und minimierte Größe und kopiere oder lade kompaktes JSON in deinem Browser herunter.",
+      "keywords": [
+        "json minifier",
+        "json minify",
+        "minify json",
+        "minify json online",
+        "compress json online",
+        "json compact",
+        "json to one line",
+        "free json minifier"
+      ]
+    },
+    "features": [
+      {
+        "icon": "lucide:minimize-2",
+        "title": "Kompakte JSON-Ausgabe",
+        "description": "Parse gültiges JSON und serialisiere es ohne unnötige Leerzeichen zwischen Tokens. Das Ergebnis ist meist eine kompakte Single-Line-Darstellung."
+      },
+      {
+        "icon": "lucide:check-circle-2",
+        "title": "Vor dem Minimieren validieren",
+        "description": "Die Eingabe wird geparst, bevor die Ausgabe erzeugt wird. Ungültiges JSON erzeugt einen Fehler statt stillschweigend ein unzuverlässiges minimiertes Ergebnis zu erstellen."
+      },
+      {
+        "icon": "lucide:bar-chart-3",
+        "title": "Größenvergleich",
+        "description": "Vergleiche die Zeichenanzahlen oder Byte-Größen von Original und minimierter Version und prüfe dann die absolute und prozentuale Reduktion für die aktuelle Eingabe."
+      },
+      {
+        "icon": "lucide:copy",
+        "title": "Kopieren mit einem Klick",
+        "description": "Kopiere das kompakte JSON in die Zwischenablage für API-Payloads, Konfigurationsdateien, Browser-Speicher, Test-Fixtures oder andere Entwicklungs-Workflows."
+      },
+      {
+        "icon": "lucide:download",
+        "title": "Minimiertes JSON herunterladen",
+        "description": "Lade das kompakte Ergebnis als .json-Datei für lokale Speicherung, Deployment-Assets, Tests oder Build-bezogene Workflows herunter."
+      },
+      {
+        "icon": "lucide:file-json-2",
+        "title": "JSON-Werte beibehalten",
+        "description": "Leerzeichen zwischen JSON-Tokens werden entfernt, während bedeutungsvolle Leerzeichen innerhalb von String-Werten Teil der Daten bleiben. Schlüssel, Werte, Typen und Struktur bleiben nach dem Parsen erhalten."
+      },
+      {
+        "icon": "lucide:upload",
+        "title": "JSON einfügen oder öffnen",
+        "description": "Füge formatiertes JSON ein oder öffne eine lokale .json-Datei, wenn Dateieingabe verfügbar ist. Die Quelle wird im Browser geparst, bevor sie minimiert wird."
+      },
+      {
+        "icon": "lucide:shield-check",
+        "title": "Verarbeitung im Browser",
+        "description": "Parsing, Größenberechnung und Minimierung finden in deinem Browser statt. Die Seite erfordert kein Konto und lädt das Quell-JSON nicht auf einen entfernten Dienst hoch."
+      }
+    ],
+    "ui": {
+      "label_input": "JSON eingeben",
+      "label_output": "Minimierte Ausgabe",
+      "placeholder_output": "Minimiertes JSON erscheint hier …",
+      "unit_chars": "Zeichen",
+      "unit_bytes": "Bytes",
+      "unit_saved": "gespeichert",
+      "unit_smaller": "kleiner",
+      "label_original_size": "Ursprüngliche Größe",
+      "label_minified_size": "Minimierte Größe",
+      "label_savings": "Einsparung",
+      "btn_minify": "JSON minimieren",
+      "btn_copy": "Kopieren",
+      "btn_download": "JSON herunterladen",
+      "btn_beautify": "Verschönern",
+      "error_empty_input": "Zuerst JSON eingeben oder eine Datei öffnen",
+      "error_invalid_json": "Eingabe ist kein gültiges JSON",
+      "error_processing": "Das JSON konnte nicht minimiert werden"
+    },
+    "guide": [
+      {
+        "title": "Gültiges JSON eingeben",
+        "description": "Füge formatiertes oder teilweise kompaktes JSON in das Eingabefeld ein oder öffne eine lokale .json-Datei. Standard-JSON-Syntax ist erforderlich, sofern kein separater JSONC- oder JSON5-Modus verfügbar ist."
+      },
+      {
+        "title": "Validieren und minimieren",
+        "description": "Klicke auf „JSON minimieren“, um die Eingabe zu parsen und ohne unwesentliche Leerzeichen zu serialisieren. Wenn das Parsen fehlschlägt, behebe zuerst den gemeldeten Syntaxfehler."
+      },
+      {
+        "title": "Den Größenunterschied prüfen",
+        "description": "Vergleiche die Zeichen- oder Byte-Anzahlen von Original und minimierter Version. Die Einsparung hängt vom Umfang an Einrückung, Leerzeichen und Zeilenumbrüchen in der Quelle ab."
+      },
+      {
+        "title": "Kopieren oder herunterladen",
+        "description": "Kopiere das kompakte Ergebnis oder lade es als .json-Datei herunter. Bewahre eine formatierte Quellversion für spätere Wartung und Prüfung auf."
+      }
+    ],
+    "example": {
+      "title": "JSON-Minimierungsbeispiel",
+      "description": "Entferne Formatierungs-Leerzeichen aus gültigem JSON, während die geparsten Daten erhalten bleiben.",
+      "inputLabel": "Formatiertes JSON",
+      "input": "{\n  \"name\": \"Alice\",\n  \"age\": 28,\n  \"active\": true\n}",
+      "inputExplanation": "Die Quelle enthält Einrückung und Zeilenumbrüche, die die Lesbarkeit verbessern, aber Zeichen außerhalb der eigentlichen JSON-Werte hinzufügen.",
+      "outputLabel": "Minimiertes JSON",
+      "output": "{\"name\":\"Alice\",\"age\":28,\"active\":true}",
+      "outputExplanation": "Das minimierte Ergebnis entfernt unwesentliche Leerzeichen zwischen JSON-Tokens. Eigenschaftsnamen, Werte, Typen und Struktur bleiben gleich.",
+      "note": "Minimierung ist nicht dasselbe wie gzip- oder Brotli-Komprimierung. Verwende eine HTTP-Komprimierungsebene, wenn du Komprimierung auf Netzwerkebene benötigst.",
+      "useCase": "Erzeuge eine kompakte JSON-Payload oder ein Asset für einen Produktiv-Workflow und behalte eine formatierte Quelldatei zum Bearbeiten."
+    },
+    "faq": [
+      {
+        "question": "Was bewirkt JSON-Minimierung?",
+        "answer": "JSON-Minimierung parst gültiges JSON und serialisiert es ohne unwesentliche Leerzeichen. Sie entfernt Formatierungsleerzeichen, Einrückung, Tabulatoren und Zeilenumbrüche zwischen Tokens, während bedeutungsvolle Leerzeichen innerhalb von String-Werten erhalten bleiben."
+      },
+      {
+        "question": "Ändert die Minimierung von JSON die Daten?",
+        "answer": "Bei gültigem JSON und einem standardmäßigen Minimierungsprozess bleiben geparste Werte und Struktur äquivalent. Die ursprüngliche Textformatierung, gewählte Eigenschaftsreihenfolge und Leerzeichen außerhalb von String-Werten können sich ändern."
+      },
+      {
+        "question": "Entfernt die Minimierung Leerzeichen innerhalb von Strings?",
+        "answer": "Nein. Ein Leerzeichen innerhalb eines JSON-Strings sind Daten und müssen erhalten bleiben. Beispielsweise muss der Wert \"New York\" nach der Minimierung \"New York\" bleiben."
+      },
+      {
+        "question": "Wie viel kleiner wird minimiertes JSON?",
+        "answer": "Die Reduktion hängt von der ursprünglichen Formatierung ab. Stark eingerücktes JSON mit vielen Zeilenumbrüchen kann deutlich schrumpfen, während bereits kompaktes JSON wenig oder keine Reduktion ergibt. Prüfe die angezeigten Zeichen- oder Byte-Anzahlen für die aktuelle Eingabe."
+      },
+      {
+        "question": "Ist JSON-Minimierung dasselbe wie Komprimierung?",
+        "answer": "Nein. Minimierung entfernt Formatierungszeichen aus dem JSON-Text. Komprimierungsalgorithmen wie gzip und Brotli reduzieren Daten bei Speicherung oder Netzwerkübertragung weiter und werden getrennt von der JSON-Minimierung konfiguriert."
+      },
+      {
+        "question": "Kann ich ungültiges JSON minimieren?",
+        "answer": "Ein standardmäßiger JSON-Minifier sollte ungültiges JSON ablehnen, statt zu raten, wie es repariert werden könnte. Behebe zuerst fehlende Kommas, ungültige Anführungszeichen, nachgestellte Kommas, nicht zusammenpassende Klammern oder andere Syntaxfehler, sofern kein separates Repair- oder JSONC-Modus bereitgestellt wird."
+      },
+      {
+        "question": "Unterstützt es Kommentare in JSON?",
+        "answer": "Standard-JSON unterstützt keine Kommentare. Wenn die Eingabe Kommentare enthält, ist sie JSONC, JSON5 oder ein anderes JSON-ähnliches Format und erfordert einen expliziten Parser-Modus. Entferne Kommentare nicht automatisch, es sei denn, die Seite kennzeichnet und implementiert dieses Verhalten eindeutig."
+      },
+      {
+        "question": "Kann ich eine JSON-Datei minimieren?",
+        "answer": "Ja, wenn lokale Dateieingabe implementiert ist. Öffne eine .json-Datei, validiere sie und lade das minimierte Ergebnis als weitere JSON-Datei herunter. Bewahre die Originaldatei als Backup auf."
+      },
+      {
+        "question": "Kann ich große JSON-Dateien minimieren?",
+        "answer": "Das praktische Limit hängt von Browser-Speicher, Dateigröße, Parsing-Zeit und der Art ab, wie die Ausgabe gerendert wird. Sehr große Dateien können die Seite verlangsamen oder einen lokalen Streaming- oder Kommandozeilen-Workflow erfordern."
+      },
+      {
+        "question": "Kann ich JSON von einer URL laden?",
+        "answer": "Die empfohlene Eingabe ist eingefügtes JSON oder eine lokale Datei. Das Laden von URLs kann aufgrund von CORS fehlschlagen und remote oder private Daten dem Browser aussetzen. Füge URL-Eingabe nur mit URL-Validierung, Antwortgrößenbegrenzung und passenden Datenschutz-Kontrollen hinzu."
+      },
+      {
+        "question": "Kann ich minimiertes JSON wiederherstellen?",
+        "answer": "Ja. Verwende einen JSON-Formatierer oder Verschönerer, um das minimierte Dokument zu parsen und Einrückung und Zeilenumbrüche hinzuzufügen. Das Formatieren stellt die Lesbarkeit wieder her, reproduziert aber nicht unbedingt die ursprünglichen Leerzeichen oder die Darstellungsreihenfolge."
+      },
+      {
+        "question": "Ist minimiertes JSON immer besser?",
+        "answer": "Nein. Minimiertes JSON ist nützlich für kompakte Übertragung und Speicherung, aber formatiertes JSON ist für Menschen leichter zu prüfen, zu lesen und zu bearbeiten. Bewahre lesbare Quelldateien auf und minimiere bei Bedarf in einem Build- oder Auslieferungsschritt."
+      },
+      {
+        "question": "Ist dies ein kostenloser JSON-Minifier?",
+        "answer": "Ja. Du kannst JSON validieren und minimieren, Größen vergleichen, das Ergebnis kopieren oder herunterladen, ohne ein Konto zu erstellen."
+      }
+    ],
+    "article": {
+      "title": "JSON online minimieren",
+      "content": "<h2> Was ist JSON-Minimierung?</h2><p> JSON-Minimierung entfernt unwesentliche Leerzeichen aus gültigem JSON und erzeugt eine kompakte Darstellung. Die Ausgabe erscheint meist auf einer Zeile, aber die wichtige Eigenschaft ist, dass Leerzeichen zwischen JSON-Tokens entfernt werden, ohne die geparsten Daten zu ändern.</p><p> Ein Standard-Minifier parst die Eingabe und serialisiert sie erneut. Das ist sicherer als das Löschen jedes Leerzeichens, da Leerzeichen innerhalb von JSON-String-Werten Bedeutung haben und unverändert bleiben müssen.</p><h2>How to Minify JSON</h2><ol><li><strong>Enter JSON:</strong> Füge formatiertes JSON ein oder öffne eine lokale .json-Datei.</li><li><strong>Validate the input:</strong> Bestätige, dass die Quelle gültiges Standard-JSON ist.</li><li><strong>Minify:</strong> Parse und serialisiere das Dokument ohne Einrückung oder unnötige Token-Abstände.</li><li><strong>Compare sizes:</strong> Prüfe die Zeichen- oder Byte-Anzahlen von Original und minimierter Version.</li><li><strong>Copy oder download:</strong> Verwende die kompakte Ausgabe in einer API, einem Anwendungs-Asset, einem Konfigurations-Workflow oder einer lokalen Datei.</li></ol><h2> Was entfernt ein JSON-Minifier?</h2><p> Es entfernt normalerweise Leerzeichen zwischen JSON-Tokens, einschließlich Einrückung, Zeilenumbrüche und Leerzeichen um Satzzeichen. Zum Beispiel:</p><pre><code>{\n  \"name\": \"Alice\",\n  \"active\": true\n}</code></pre><p>can werden:</p><pre><code>{\"name\":\"Alice\",\"active\":true}</code></pre><p> Das Leerzeichen in einem Wert wie <code>\"New York\"</code> wird nicht entfernt, da es Teil der String-Daten ist.</p><h2> JSON-Minimierung vs. Komprimierung</h2><p> Minimierung und Komprimierung sind unterschiedliche Operationen. Minimierung verändert den JSON-Text durch Entfernen von Formatierungsaufwand. Netzwerkkomprimierung wie gzip oder Brotli kodiert die resultierenden Bytes mit einem Kompressionsalgorithmus. Viele HTTP-Server können gzip oder Brotli automatisch anwenden, selbst wenn das Quell-JSON formatiert oder minimiert ist.</p><p> Minimierung kann dennoch für statische Assets, eingebettete Payloads, Speicherung oder Workflows nützlich sein, in denen der rohe JSON-Text selbst übertragen oder gemessen wird. Gehe nicht davon aus, dass Minimierung allein denselben Nutzen wie HTTP-Komprimierung bietet.</p><h2>How to Measure Savings</h2><p> Zeichenanzahl und Byte-Anzahl sind nicht immer identisch. Für reines ASCII-JSON können sie bei gängigen Kodierungen ähnlich sein, aber Nicht-ASCII-Text kann in UTF-8 mehrere Bytes belegen. Ein sinnvoller Größenvergleich sollte angeben, ob er die JavaScript-String-Länge, kodierte UTF-8-Bytes oder Datei-Bytes misst.</p><p> Die prozentuale Einsparung kann berechnet werden als:</p><pre><code>savings = (originalSize - minifiedSize) / originalSize × 100</code></pre><p> Vergleiche immer dieselbe Maßeinheit, bevor du den Prozentsatz interpretierst.</p><h2> Minimierung ändert nicht den String-Inhalt</h2><p> Ein sicherer Minifier muss Leerzeichen und Escape-Sequenzen innerhalb von Strings in Anführungszeichen bewahren. Betrachte:</p><pre><code>{\"message\":\"Line one\\nLine two\",\"title\":\"New York\"}</code></pre><p> Die Newline-Escape-Sequenz und das Leerzeichen in <code>New York</code> sind Daten. Das Entfernen würde den Wert verändern und die Operation fehlerhaft machen.</p><h2>JSON, JSONC, und JSON5</h2><p> Standard-JSON erlaubt keine Kommentare oder nachgestellten Kommas. JSONC und JSON5 sind verwandte Formate, die Funktionen wie Kommentare, Strings in einfachen Anführungszeichen oder gelockerte Syntax hinzufügen. Ein strikter JSON-Minifier sollte solche Eingaben ablehnen, es sei denn, er unterstützt ausdrücklich einen JSONC- oder JSON5-Parser-Modus.</p><p> Manche spezialisierten Minifier entfernen Kommentare aus JSON-ähnlichen Inhalten, aber das ist eine Umwandlung über die Standard-JSON-Minimierung hinaus. Sie sollte klar gekennzeichnet sein, da Kommentare wichtige Dokumentation enthalten können.</p><h2>When to Minify JSON</h2><ul><li><strong>Production assets:</strong> Reduziere die rohe Dateigröße für statische JSON-Ressourcen.</li><li><strong>Embedded data:</strong> Platziere kompaktes JSON in erzeugtem Code oder Vorlagen.</li><li><strong>Storage:</strong> Speichere eine kompakte Darstellung, wenn menschliche Lesbarkeit nicht erforderlich ist.</li><li><strong>Fixtures:</strong> Erstelle einzeilige Testdaten, wenn dieses Format für ein Testgerüst nützlich ist.</li><li><strong>Build pipelines:</strong> Automatisiere die Minimierung während des Deployments, während du eine lesbare Quelldatei bewahrst.</li></ul><h2>When Not to Minify JSON</h2><p> Behalte formatiertes JSON, wenn Menschen es prüfen oder bearbeiten müssen, wenn es in der Versionskontrolle gepflegt wird oder wenn klare Diffs wertvoller sind als rohe Textgröße. Ein gängiger Workflow ist, eine lesbare Quellversion zu pflegen und minimierte Ausgabe als Build-Artefakt zu erzeugen.</p><h2>Browser-Based Privacy</h2><p> Dieser Minifier ist darauf ausgelegt, JSON im Browser zu parsen und zu serialisieren statt die Eingabe an einen entfernten Dienst zu senden. Das ist praktisch für Entwicklungsdaten und Konfigurationsausschnitte, aber kein System zur Geheimnisverwaltung. Vermeide Zugangsdaten, Tokens, private Kundendaten oder vertrauliche Produktivinformationen in einem Online-Tool.</p><h2>Production Alternatives</h2><p> Für wiederholbare Builds verwende einen lokalen Formatierer, einen CI-Schritt oder ein Kommandozeilen-Tool wie <code>jq -c</code> Ein Produktiv-Workflow sollte die Ausgabe validieren, eine lesbare Quellkopie behalten und die minimierte Datei in der Zielanwendung testen.</p>"
+    }
   }
 }

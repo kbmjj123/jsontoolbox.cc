@@ -3,6 +3,7 @@
     "id": "config",
     "label_en": "App Config",
     "label_zh": "应用配置",
-    "input": "{\"server\":{\"host\":\"localhost\",\"port\":3000},\"database\":{\"url\":\"postgres://localhost/mydb\",\"pool\":5},\"logging\":{\"level\":\"info\",\"format\":\"json\"}}"
+    "input": "{\"server\":{\"host\":\"localhost\",\"port\":3000},\"database\":{\"url\":\"postgres://localhost/mydb\",\"pool\":5},\"logging\":{\"level\":\"info\",\"format\":\"json\"}}",
+    "label_de": "App-Konfiguration"
   }
 ]

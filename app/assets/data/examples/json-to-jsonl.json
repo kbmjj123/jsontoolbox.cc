@@ -3,12 +3,14 @@
     "id": "records",
     "label_en": "Array of Records",
     "label_zh": "记录数组",
-    "input": "[\n  { \"id\": 1, \"name\": \"Alice\", \"active\": true },\n  { \"id\": 2, \"name\": \"Bob\", \"active\": false },\n  { \"id\": 3, \"name\": \"Carol\", \"active\": true }\n]"
+    "input": "[\n  { \"id\": 1, \"name\": \"Alice\", \"active\": true },\n  { \"id\": 2, \"name\": \"Bob\", \"active\": false },\n  { \"id\": 3, \"name\": \"Carol\", \"active\": true }\n]",
+    "label_de": "Datensatz-Array"
   },
   {
     "id": "single-object",
     "label_en": "Single Object",
     "label_zh": "单个对象",
-    "input": "{ \"status\": \"ok\", \"total\": 42 }"
+    "input": "{ \"status\": \"ok\", \"total\": 42 }",
+    "label_de": "Einzelnes Objekt"
   }
 ]

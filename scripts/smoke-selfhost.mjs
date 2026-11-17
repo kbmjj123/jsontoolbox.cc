@@ -33,7 +33,7 @@ async function findWorkerChunk() {
 }
 
 const results = []
-for (const path of ['/', '/zh', '/tools', '/tools/format/json-editor']) {
+for (const path of ['/', '/zh', '/de', '/tools', '/tools/format/json-editor']) {
   const r = await head(path)
   results.push([`GET ${path} → 200 HTML`, r.status === 200 && r.type.includes('text/html'), `${r.status} ${r.type}`])
 }

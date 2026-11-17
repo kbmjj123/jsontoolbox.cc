@@ -4,7 +4,11 @@
   "component": "LargeJsonViewer",
   "icon": "lucide:eye",
   "featured": false,
-  "recommends": ["json-to-csv", "json-editor", "json-to-text"],
+  "recommends": [
+    "json-to-csv",
+    "json-editor",
+    "json-to-text"
+  ],
   "relatedPosts": [
     "json-vs-jsonl",
     "how-to-open-json-file"
@@ -282,6 +286,144 @@
     "article": {
       "title": "在本地查看与搜索大型 JSON",
       "content": "<h2>这个工具做什么</h2><p>大文件 JSON 查看器在浏览器中打开 JSON 与 NDJSON 文件，让你在本地阅读与搜索。它是只读查看器：不编辑、不美化、也不压缩文档。这种专注让它在处理大文件时快速且可预期。</p><h2>为什么需要单独的查看器</h2><p>普通编辑器会把整个文档解析进内存以便编辑。对非常大的文件来说，这会卡住页面。本查看器在 Web Worker 中流式读取文件，以带行号的只读文本展示，并在 Worker 中搜索，从而让主线程保持响应。</p><h2>阅读文档</h2><p>视口只渲染可见的行，每行都有行号。开启折行可折叠长行；关闭时，超长行受到保护，可单独展开，页面不会尝试一次性排版一整行超长内容。“结构”按钮会显示根类型、最大嵌套深度与各类 JSON 类型的数量，便于快速了解一个没见过的文件。</p><h2>搜索</h2><p>你可以按值、键名或路径搜索，并可区分大小写。打开 <code>.*</code> 开关还能用正则表达式搜索：输入时实时校验，语法错误立即提示，容易引发灾难性回溯的写法会被拦截而不是执行。无论哪种方式，搜索都在 Web Worker 中进行，带进度条与取消按钮，因此随时可以停止对超大文件的搜索。</p><h2>跳转与上下文</h2><p>每条命中都带有行号、列号与字符偏移。点击命中或用上一个 / 下一个切换，视口会滚动到对应行并高亮；同时显示前后上下文行，可复制到剪贴板。</p><h2>导出</h2><p>命中行可导出为 TXT、JSON 或 CSV。对于记录型数据（JSON 对象数组或 NDJSON 流），记录也可导出为 CSV 表格——即 JSON 转 CSV 转换器产出的结果。</p><h2>隐私</h2><p>一切都在浏览器中完成。文件在本地被打开、搜索与导出，不会上传到服务器。但也不要在其中粘贴你不会在任何本地程序中打开的密钥等敏感信息。</p>"
+    },
+    "ui": {}
+  },
+  "de": {
+    "name": "Large JSON Viewer",
+    "description": "Öffne große JSON- und NDJSON-Dateien in deinem Browser und durchsuche sie lokal. Schreibgeschützte Ansicht mit Zeilennummern, Volltextsuche nach Schlüssel, Wert oder Pfad, Sprung zum Treffer und Exporten — ohne Upload.",
+    "meta": {
+      "title": "Large JSON Viewer – Big JSON/NDJSON online durchsuchen und anzeigen",
+      "description": "Öffne große JSON- und NDJSON-Dateien in deinem Browser. Schreibgeschützte Ansicht mit Zeilennummern, Volltextsuche nach Schlüssel, Wert oder Pfad, Sprung zu Treffern, Kontextzeilen und TXT/JSON/CSV-Export. Privat und clientseitig.",
+      "keywords": [
+        "large json viewer",
+        "view large json",
+        "search json online",
+        "ndjson viewer",
+        "json file viewer",
+        "large json file viewer",
+        "inspect big json"
+      ]
+    },
+    "features": [
+      {
+        "icon": "lucide:eye",
+        "title": "Schreibgeschützte JSON-Anzeige",
+        "description": "Öffne große JSON- und NDJSON-Dateien als schreibgeschützten Text mit Zeilennummern und scrollbarem Ansichtsbereich. Die Datei wird lokal gerendert; nichts wird bearbeitet oder hochgeladen."
+      },
+      {
+        "icon": "lucide:list",
+        "title": "Zeilennummern & virtuelles Scrollen",
+        "description": "Jede Zeile ist nummeriert und der Ansichtsbereich rendert nur sichtbare Zeilen, sodass selbst Dateien mit mehreren Megabyte geöffnet und flüssig gescrollt werden können, ohne die gesamte Datei in den Editor zu laden."
+      },
+      {
+        "icon": "lucide:search",
+        "title": "Lokale Volltextsuche",
+        "description": "Durchsuche das Dokument nach Schlüssel, Wert oder Pfad in einem Web Worker, mit groß-/kleinschreibungsabhängiger Suche, einem Live-Fortschrittsbalken und einer Abbrechen-Schaltfläche. Der Haupt-Thread bleibt reaktionsfähig."
+      },
+      {
+        "icon": "lucide:regex",
+        "title": "Suche mit regulärem Ausdruck",
+        "description": "Schalte den .*-Umschalter um, um mit einem regulären Ausdruck zu suchen. Das Muster wird während der Eingabe validiert, sodass Syntaxfehler sofort erscheinen, und Muster mit katastrophalem Backtracking (wie (a+)+) werden abgelehnt, bevor sie die Seite einfrieren können."
+      },
+      {
+        "icon": "lucide:binary",
+        "title": "Strukturübersicht",
+        "description": "Öffne das Struktur-Panel, um den Wurztyp, die maximale Verschachtelungstiefe und eine Anzahl jedes JSON-Typs (Objekt, Array, String, Zahl, Boolean, null) zu sehen — eine schnelle Orientierung in einer unbekannten Datei."
+      },
+      {
+        "icon": "lucide:crosshair",
+        "title": "Zu Treffern springen",
+        "description": "Jeder Treffer meldet seine Zeile, Spalte und Zeichenposition. Nutze „Zurück“/„Weiter“, um zwischen Treffern zu wechseln; der Viewer scrollt direkt zur Trefferzeile und hebt sie hervor."
+      },
+      {
+        "icon": "lucide:rows-3",
+        "title": "Kontextzeilen & Kopieren",
+        "description": "Für den aktuellen Treffer siehst du die umgebenden Zeilen (davor und danach) und kannst diesen Kontext zur Referenz oder Berichterstellung in die Zwischenablage kopieren."
+      },
+      {
+        "icon": "lucide:download",
+        "title": "Treffer exportieren",
+        "description": "Exportiere die gefundenen Zeilen als TXT, JSON oder CSV. Für JSON im Datensatzstil oder NDJSON kannst du das Datensatz-Array auch als CSV exportieren — dieselbe Ausgabe, die das JSON-zu-CSV-Tool erzeugt."
+      },
+      {
+        "icon": "lucide:shield-check",
+        "title": "Privat & clientseitig",
+        "description": "Alle Vorgänge zum Lesen, Suchen und Exportieren finden in deinem Browser statt. Die Datei wird nie auf einen Server hochgeladen."
+      },
+      {
+        "icon": "lucide:binary",
+        "title": "JSONPath, Knotenvorschau & Seitenumbruch",
+        "description": "Kopiere den JSONPath eines Treffers, öffne eine lokale formatierte Vorschau des gefundenen Knotens und gehe mit einem Pager durch Array- oder NDJSON-Elemente der obersten Ebene — ohne einen vollständigen Knotenindex aufzubauen."
+      }
+    ],
+    "guide": [
+      {
+        "title": "Eine Datei öffnen",
+        "description": "Ziehe eine .json-, .ndjson-, .jsonl- oder .jsonlines-Datei in den Ablagebereich oder nutze die Schaltfläche „Datei auswählen“. Du kannst eine Datei auch aus einem anderen Tool öffnen, wenn sie für die direkte Bearbeitung zu groß ist."
+      },
+      {
+        "title": "Die schreibgeschützte Ansicht ansehen",
+        "description": "Scrolle durch das Dokument mit Zeilennummern. Schalte Zeilenumbruch ein, um lange Zeilen zu falten, oder lass ihn aus, damit sehr lange Zeilen geschützt und nur beim Aufklappen vollständig angezeigt werden."
+      },
+      {
+        "title": "Schlüssel, Werte oder Pfade suchen",
+        "description": "Tippe eine Abfrage ein und wähle, ob Werte, Schlüssel oder Pfade gefunden werden sollen. Aktiviere bei Bedarf die groß-/kleinschreibungsabhängige Suche oder schalte den .*-Umschalter ein, um mit einem regulären Ausdruck zu suchen. Die Suche läuft in einem Web Worker mit einem Fortschrittsbalken, den du abbrechen kannst. Nutze die Struktur-Schaltfläche für eine schnelle Übersicht über die Form des Dokuments."
+      },
+      {
+        "title": "Springen, prüfen und exportieren",
+        "description": "Klicke auf einen Treffer, um zu seiner Zeile zu springen, den umgebenden Kontext zu prüfen und die Treffer als TXT, JSON oder CSV zu kopieren oder zu exportieren."
+      }
+    ],
+    "faq": [
+      {
+        "question": "Werden meine JSON-Daten auf einen Server hochgeladen?",
+        "answer": "Nein. Die Datei wird vollständig in deinem Browser geöffnet, durchsucht und exportiert. Nichts wird an einen Server gesendet, deshalb funktioniert es auch für große lokale Dateien."
+      },
+      {
+        "question": "Welche Dateitypen werden unterstützt?",
+        "answer": "JSON und NDJSON (auch .jsonl und .jsonlines). NDJSON wird als ein JSON-Wert pro Zeile behandelt, was zu Zeilennummern und Zeilen-Navigation passt."
+      },
+      {
+        "question": "Kann es die Datei bearbeiten oder neu formatieren?",
+        "answer": "Nein. Dies ist ein schreibgeschützter Viewer und Suchwerkzeug. Es bearbeitet, verschönert oder minimiert das Dokument nicht. Verwende den JSON-Editor zum Bearbeiten oder Formatieren kleinerer Dateien; diese Seite übergibt übergroße Dateien automatisch von jenen Tools."
+      },
+      {
+        "question": "Gibt es eine Dateigrößenbegrenzung?",
+        "answer": "Der Viewer streamt und sucht in einem Web Worker, daher ist er für große Dateien gebaut. Andere Tools auf dieser Seite leiten Dateien über 5 MB hierher um, statt sie direkt zu parsen. Sehr kleine Dateien funktionieren ebenfalls — öffne sie direkt über den Ablagebereich."
+      },
+      {
+        "question": "Wie meldet die Suche eine Trefferposition?",
+        "answer": "Jeder Treffer enthält seine Zeilennummer, Spalte und Zeichenposition. Der Viewer scrollt zu dieser Zeile und hebt den Treffer hervor, und du kannst mit den Steuerungen „Zurück“/„Weiter“ durch die Treffer gehen."
+      },
+      {
+        "question": "Kann ich mit regulären Ausdrücken suchen?",
+        "answer": "Ja. Schalte den .*-Umschalter ein und deine Abfrage wird als regulärer Ausdruck behandelt. Das Muster wird während der Eingabe validiert, sodass ein Syntaxfehler vor der Suche gemeldet wird, und Muster mit möglicherweise katastrophalem Backtracking werden abgelehnt, statt auf deiner Datei ausgeführt zu werden."
+      },
+      {
+        "question": "Was zeigt die Strukturübersicht?",
+        "answer": "Es meldet den Wurzeltyp (Objekt oder Array), die maximale Verschachtelungstiefe und wie viele Werte jeden JSON-Typs die Datei enthält. Es ist standardmäßig eingeklappt, damit es dem Text keinen Platz wegnimmt — öffne es mit der Struktur-Schaltfläche, wenn du die Übersicht möchtest."
+      },
+      {
+        "question": "Kann ich die Ergebnisse exportieren?",
+        "answer": "Ja. Du kannst die gefundenen Zeilen als TXT, JSON oder CSV exportieren. Wenn das Dokument ein Datensatz-Array oder ein NDJSON-Stream ist, kannst du die Datensätze auch als CSV-Tabelle exportieren — dieselbe Ausgabeart, die das JSON-zu-CSV-Tool erzeugt."
+      },
+      {
+        "question": "Warum werden Kontextzeilen angezeigt?",
+        "answer": "Für den aktuellen Treffer zeigt der Viewer einige Zeilen davor und danach, damit du den Treffer im Kontext verstehen kannst. Du kannst diesen Kontextblock in die Zwischenablage kopieren."
+      },
+      {
+        "question": "Kann ich den JSONPath eines Werts kopieren oder den Knoten anzeigen?",
+        "answer": "Ja. Jeder Suchtreffer zeigt seinen JSONPath (etwa $.user.address.city). Nutze die Kopierschaltfläche, um diesen Pfad zu kopieren, oder die Augenschaltfläche, um eine lokale formatierte Vorschau des gefundenen Knotens zu öffnen. Große Knoten werden in der Vorschau gekürzt, damit die Seite reaktionsfähig bleibt."
+      },
+      {
+        "question": "Wie gehe ich Array-Elemente einzeln durch?",
+        "answer": "Wenn das Dokument ein NDJSON-Stream oder ein JSON-Array an der Wurzel ist, erscheint ein Pager in der Symbolleiste. Nutze „Erste/Zurück/Weiter/Letzte“ oder gib eine Elementnummer ein, um direkt zur Zeile dieses Elements im Viewer zu springen."
+      }
+    ],
+    "article": {
+      "title": "Großes JSON lokal anzeigen und durchsuchen",
+      "content": "<h2>What This Tool Does</h2><p> Der Large JSON Viewer öffnet JSON- und NDJSON-Dateien in deinem Browser und lässt dich sie lokal lesen und durchsuchen. Es ist ein schreibgeschützter Viewer: Er bearbeitet, verschönert oder minimiert das Dokument nicht. Diese Fokussierung hält ihn für große Dateien schnell und vorhersehbar.</p><h2>Why a Separate Viewer</h2><p> Standard-Editoren parsen das gesamte Dokument in den Speicher, damit du es bearbeiten kannst. Bei sehr großen Dateien blockiert das die Seite. Dieser Viewer streamt die Datei in einem Web Worker, zeigt sie als nummerierten schreibgeschützten Text an und durchsucht sie dort ebenfalls — sodass der Haupt-Thread reaktionsfähig bleibt.</p><h2>Reading the Document</h2><p> Der Ansichtsbereich rendert nur die sichtbaren Zeilen, mit einer Zeilennummer für jede Zeile. Zeilenumbruch falten lange Zeilen; bei ausgeschaltetem Umbruch werden sehr lange Zeilen geschützt und einzeln aufgeklappt, sodass die Seite nie versucht, eine riesige Zeile darzustellen. Die Struktur-Schaltfläche zeigt den Wurztyp, die maximale Verschachtelungstiefe und eine Anzahl jedes JSON-Typs, was hilft, wenn du eine dir unbekannte Datei öffnest.</p><h2>Searching</h2><p> Du kannst nach Wert, Schlüssel oder Pfad suchen, wobei die Suche groß-/kleinschreibungsabhängig sein kann. Schalte den <code>.*</code> Umschalter, um mit einem regulären Ausdruck zu suchen: Das Muster wird während der Eingabe validiert, Syntaxfehler werden sofort gemeldet und Muster mit katastrophalem Backtracking werden abgelehnt statt ausgeführt. In beiden Fällen läuft die Suche in einem Web Worker mit Fortschrittsbalken und Abbrechen-Schaltfläche, sodass du eine Suche in einer riesigen Datei jederzeit stoppen kannst.</p><h2>Jumping und Context</h2><p> Jeder Treffer enthält seine Zeile, Spalte und Zeichenposition. Klicke auf einen Treffer oder nutze „Zurück“/„Weiter“, um durch sie zu navigieren; der Viewer scrollt zur Zeile und hebt den Treffer hervor. Die umgebenden Zeilen werden als Kontext angezeigt, und du kannst diesen Kontext kopieren.</p><h2>Exporting</h2><p> Gefundene Zeilen können als TXT, JSON oder CSV exportiert werden. Für Daten im Datensatzstil (ein JSON-Array von Objekten oder ein NDJSON-Stream) können die Datensätze auch als CSV-Tabelle exportiert werden — dieselbe Ausgabe, die der JSON-zu-CSV-Konverter erzeugt.</p><h2>Privacy</h2><p> Alles passiert in deinem Browser. Die Datei wird lokal geöffnet, durchsucht und exportiert und nicht auf einen Server hochgeladen. Vermeide dennoch das Einfügen von Geheimnissen, die du in keiner lokalen Anwendung öffnen würdest.</p>"
     },
     "ui": {}
   }

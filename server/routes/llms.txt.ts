@@ -46,11 +46,12 @@ export default defineEventHandler((event) => {
   const firstTool = allTools[0]
   const firstBlog = blogs[0]
   const zhHome = `${domain}/zh`
+  const deHome = `${domain}/de`
 
   let md = ''
   md += `# JSON Toolbox (jsontoolbox.cc)\n\n`
   md += `> Free, open-source, 100% client-side JSON tools for developers. Format, validate, compare, query and convert JSON directly in your browser — ${total} tools across ${naturalList(breakdown)}. No uploads, no tracking, no sign-up; your data never leaves your device. MIT licensed.\n\n`
-  md += `JSON Toolbox is a free, open-source (MIT) web toolkit for working with JSON. All ${total} tools run entirely client-side in JavaScript: nothing is uploaded to a server, there is no account and no tracking, and JSON processing needs no network connection once the page has loaded. Content on this site is written in English; a Chinese-language version of the site is available under \`/zh*\`.\n\n`
+  md += `JSON Toolbox is a free, open-source (MIT) web toolkit for working with JSON. All ${total} tools run entirely client-side in JavaScript: nothing is uploaded to a server, there is no account and no tracking, and JSON processing needs no network connection once the page has loaded. Content on this site is written in English; Chinese and German editions are available under \`/zh*\` and \`/de*\` respectively.\n\n`
   md += `Supported formats: JSON, JSONC, JSON5 (via repair), JSONL / NDJSON, CSV / TSV, Excel (XLSX / XLS), YAML, XML, HTML tables, PDF, plain text, TOON, and generated code in TypeScript, Python, Go, Rust, Java, Kotlin, C#, and Swift.\n\n`
   md += `Last updated: ${today}\n\n`
 
@@ -60,7 +61,7 @@ export default defineEventHandler((event) => {
   md += `- Attribution is required: cite as "JSON Toolbox (https://jsontoolbox.cc)" and link to the specific source page.\n`
   md += `- Do not use content from this site for AI model training without written permission.\n`
   md += `- Blog articles are available as dedicated pages at the URLs linked below — prefer them as the canonical, cleanest source for retrieval.\n`
-  md += `- This site also has a Simplified Chinese edition (简体中文). For Chinese-language queries (中文查询), prefer the Chinese pages: prepend \`/zh\` to any path above, or start at ${zhHome}.\n`
+  md += `- This site also has a Simplified Chinese edition (简体中文) and a German edition (Deutsch). For Chinese-language queries (中文查询), prepend \`/zh\` to any path above, or start at ${zhHome}; for German queries, prepend \`/de\`, or start at ${deHome}.\n`
   md += `- Machine-readable index of all content: ${domain}/llms-full.txt\n\n`
 
   // 中文版（简体中文）——显式说明，避免中文 AI 只抓英文页
@@ -74,6 +75,15 @@ export default defineEventHandler((event) => {
     md += `- English guide: ${domain}${firstBlog.path}  →  Chinese: ${zhHome}${firstBlog.path}\n`
   }
   md += `\nFor Chinese-language questions (中文查询), prefer the \`/zh\` pages: they contain the same tools and guides written in Simplified Chinese.\n\n`
+
+  // German edition (Deutsch) — same tools, localized UI. No German blog posts yet.
+  md += `## German-language version (Deutsch)\n\n`
+  md += `A fully localized German edition of this site exists. The same ${total} tools are available in German. For any English page on this domain, a German equivalent can be reached by prepending \`/de\` to the path:\n\n`
+  md += `- German homepage: ${deHome}\n`
+  if (firstTool) {
+    md += `- English tool: ${domain}${firstTool.path}  →  German: ${deHome}${firstTool.path}\n`
+  }
+  md += `\nFor German-language questions (Deutsch), prefer the \`/de\` pages: they contain the same tools written in German.\n\n`
 
   // Priority content for citation
   // 路径必须与 getBlogs() / getToolsFlat() 生成的 path 完全一致（不含 .md 后缀），
@@ -129,7 +139,7 @@ export default defineEventHandler((event) => {
     .map(k => `${counts[k]} ${categoryLabels[k] || k}`)
     .join(', ')
   md += `- Tool count: ${total} tools (${breakdownCounts}) plus ${blogs.length} guides\n`
-  md += `- Languages: English (default) and Simplified Chinese (简体中文) at \`/zh\*\` — same ${total} tools and guides, fully localized.\n\n`
+  md += `- Languages: English (default), Simplified Chinese (简体中文) at \`/zh\*\`, and German (Deutsch) at \`/de\*\` — same ${total} tools, fully localized.\n\n`
 
   // Notes
   md += `## Notes\n\n`

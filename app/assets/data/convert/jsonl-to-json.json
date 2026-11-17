@@ -239,5 +239,118 @@
       "title": "如何在线把 JSONL 转为 JSON",
       "content": "<h2>什么是 JSONL？</h2><p>JSONL（JSON Lines），也叫 NDJSON，把数据存成每行一个 JSON 值。每一行彼此独立，因此这种格式很容易流式传输和记录日志。ndjson 转 json（即 json lines 转 json）把这些行收集成一个数组；你可以逐行解析 jsonl，也可以一次性解析。把它转成 JSON 数组后，在需要单个文档的 API 和脚本里用起来更方便。</p><h2>如何把 JSONL 转为 JSON</h2><ol><li><strong>输入 JSON Lines：</strong>把每行一个 JSON 值粘贴到输入框。</li><li><strong>转换：</strong>每一行非空内容会被解析成一个值。</li><li><strong>汇总：</strong>这些值被收集进一个 JSON 数组并美化输出。</li><li><strong>复制或下载：</strong>把结果当作标准 JSON 数组使用。</li></ol><h2>错误处理</h2><p>如果某一行不是合法的 JSON，工具会指出出错的行号。空行会自动跳过。修正报告的那一行后再转换即可。</p><h2>什么时候用它</h2><ul><li><strong>导入日志：</strong>把按行分隔的日志转成 JSON 数组用于分析。</li><li><strong>数据管道：</strong>很多工具输出 JSONL；转成单文档以适配其他系统。</li><li><strong>存储迁移：</strong>把 JSONL 导出文件搬进一个 JSON 文件。</li></ul><h2>隐私</h2><p>转换完全在你的浏览器中运行，JSONL 不会被上传，也不需要账号。请勿在任何在线工具里粘贴密码、令牌或生产环境凭据。</p>"
     }
+  },
+  "de": {
+    "name": "JSONL zu JSON",
+    "description": "Wandle JSONL (JSON Lines / NDJSON) in deinem Browser in JSON um. Parse jede Zeile zu einem Wert und sammle sie in einem formatierten JSON-Array. Kopiere oder lade das Ergebnis herunter, ohne deine Daten hochzuladen.",
+    "hero": {
+      "trustHtml": "Läuft in deinem Browser. Dein JSONL wird von diesem Tool nicht hochgeladen."
+    },
+    "meta": {
+      "title": "JSONL-zu-JSON-Konverter – JSON Lines online in JSON umwandeln",
+      "description": "Wandle JSONL online in JSON um. Parse jede Zeile der JSON Lines zu einem Wert und sammle sie in einem JSON-Array. Kopiere oder lade das JSON in deinem Browser herunter.",
+      "keywords": [
+        "jsonl to json",
+        "convert jsonl to json",
+        "jsonl to json converter",
+        "ndjson to json",
+        "json lines to json",
+        "parse jsonl"
+      ]
+    },
+    "features": [
+      {
+        "icon": "lucide:file-json",
+        "title": "Jede Zeile parsen",
+        "description": "Jede nicht leere Zeile wird als unabhängiger JSON-Wert geparst. Leere Zeilen werden übersprungen, damit sie die Umwandlung nicht unterbrechen."
+      },
+      {
+        "icon": "lucide:braces",
+        "title": "In ein JSON-Array sammeln",
+        "description": "Die geparsten Werte werden zu einem einzigen JSON-Array gesammelt und mit Einrückung zur leichteren Lesbarkeit formatiert."
+      },
+      {
+        "icon": "lucide:check-circle-2",
+        "title": "Zeilenfehler melden",
+        "description": "Wenn eine Zeile kein gültiges JSON ist, meldet das Tool, welche Zeile fehlgeschlagen ist, damit du die Quelle korrigieren kannst, statt zu raten."
+      },
+      {
+        "icon": "lucide:copy",
+        "title": "Kopieren oder herunterladen",
+        "description": "Kopiere das JSON-Array in die Zwischenablage oder lade es als .json-Datei herunter für die Verwendung in APIs, Skripten oder der Datenverarbeitung."
+      },
+      {
+        "icon": "lucide:shield-check",
+        "title": "Verarbeitung im Browser",
+        "description": "Parsing und Umwandlung finden in deinem Browser statt. Die Seite erfordert kein Konto und lädt dein JSONL nicht auf einen entfernten Dienst hoch."
+      }
+    ],
+    "ui": {
+      "label_input": "JSON-Lines-Eingabe",
+      "placeholder_input": "{\"id\": 1, \"name\": \"Alice\"}\n{\"id\": 2, \"name\": \"Bob\"}",
+      "label_output": "JSON-Ausgabe",
+      "placeholder_output": "JSON erscheint hier …",
+      "btn_convert": "In JSON umwandeln",
+      "btn_copy": "Kopieren",
+      "btn_download": "JSON herunterladen",
+      "error_empty_input": "Zuerst JSON Lines eingeben oder eine Datei öffnen",
+      "error_invalid_json": "Zeile {line} ist kein gültiges JSON",
+      "error_processing": "Die JSON Lines konnten nicht umgewandelt werden"
+    },
+    "guide": [
+      {
+        "title": "JSON Lines eingeben",
+        "description": "Füge JSONL oder NDJSON in die Eingabe ein: ein JSON-Wert pro Zeile. Leere Zeilen werden ignoriert."
+      },
+      {
+        "title": "In JSON umwandeln",
+        "description": "Klicke auf „In JSON umwandeln“. Jede Zeile wird geparst und die Werte werden in einem JSON-Array gesammelt."
+      },
+      {
+        "title": "Kopieren oder herunterladen",
+        "description": "Kopiere das JSON-Array oder lade es als .json-Datei herunter. Wenn eine Zeile nicht geparst werden kann, korrigiere sie in der Quelle und versuche es erneut."
+      }
+    ],
+    "example": {
+      "title": "JSONL-zu-JSON-Beispiel",
+      "description": "Einen JSON-Wert pro Zeile in ein einzelnes JSON-Array umwandeln.",
+      "inputLabel": "JSON-Lines-Eingabe",
+      "input": "{ \"id\": 1, \"name\": \"Alice\" }\n{ \"id\": 2, \"name\": \"Bob\" }",
+      "inputExplanation": "Zwei unabhängige JSON-Objekte, eines pro Zeile.",
+      "outputLabel": "JSON-Ausgabe",
+      "output": "[\n  {\n    \"id\": 1,\n    \"name\": \"Alice\"\n  },\n  {\n    \"id\": 2,\n    \"name\": \"Bob\"\n  }\n]",
+      "outputExplanation": "Jede Zeile wird zu einem Element des resultierenden JSON-Arrays. Die Ausgabe ist gültiges, formatiertes JSON.",
+      "note": "JSON Lines und NDJSON sind dasselbe Format: ein JSON-Wert pro Zeile."
+    },
+    "faq": [
+      {
+        "question": "Was ist JSONL?",
+        "answer": "JSONL (JSON Lines), auch NDJSON genannt, ist ein Format, bei dem jede Zeile ein separater, vollständiger JSON-Wert ist. Dieses Tool sammelt diese Zeilen in einem einzigen JSON-Array."
+      },
+      {
+        "question": "Wie funktioniert die JSONL-zu-JSON-Konvertierung?",
+        "answer": "Jede nicht leere Zeile wird als ein JSON-Wert geparst. Die geparsten Werte werden in einem Array gesammelt und formatiert. Leere Zeilen werden übersprungen."
+      },
+      {
+        "question": "Was, wenn eine Zeile ungültig ist?",
+        "answer": "Das Tool meldet die Zeilennummer, die nicht geparst werden konnte. Korrigiere diese Zeile in der Quelle und wandle erneut um. Es überspringt fehlerhafte Zeilen nicht stillschweigend."
+      },
+      {
+        "question": "Unterstützt es NDJSON?",
+        "answer": "Ja. NDJSON und JSONL sind dasselbe zeilengetrennte Format, daher funktioniert NDJSON-Eingabe genau wie JSONL."
+      },
+      {
+        "question": "Was, wenn meine Eingabe bereits ein JSON-Array auf einer Zeile ist?",
+        "answer": "Diese einzelne Zeile wird als ein Wert geparst, sodass die Ausgabe ein Array ist, das dein ursprüngliches Array enthält. Setze einen Wert pro Zeile, wenn jeder Datensatz ein eigenes Element werden soll."
+      },
+      {
+        "question": "Ist dies ein kostenloser JSONL-zu-JSON-Konverter?",
+        "answer": "Ja. Du kannst JSON Lines zu JSON umwandeln, das Ergebnis kopieren oder als .json-Datei herunterladen, ohne ein Konto zu erstellen."
+      }
+    ],
+    "article": {
+      "title": "JSONL online in JSON umwandeln",
+      "content": "<h2>What Is JSONL?</h2><p> JSONL (JSON Lines), auch NDJSON genannt, speichert Daten als einen JSON-Wert pro Zeile. Jede Zeile ist unabhängig, was das Format leicht stream- und protokollierbar macht. Ein NDJSON-zu-JSON-Schritt sammelt diese Zeilen in einem einzigen Array; du kannst JSONL Zeile für Zeile oder auf einmal parsen. Die Umwandlung in ein JSON-Array macht die Daten in APIs und Skripten leichter nutzbar, die ein einzelnes Dokument erwarten.</p><h2> Wie man JSONL in JSON umwandelt</h2><ol><li><strong>Enter JSON Lines:</strong> füge einen JSON-Wert pro Zeile in die Eingabe ein.</li><li><strong>Convert:</strong> wird jede nicht leere Zeile als Wert geparst.</li><li><strong>Collect:</strong> werden die Werte in einem JSON-Array gesammelt und formatiert.</li><li><strong>Copy oder download:</strong> verwende das Ergebnis als Standard-JSON-Array.</li></ol><h2>Handling Errors</h2><p> Wenn eine Zeile kein gültiges JSON ist, meldet das Tool die fehlerhafte Zeilennummer. Leere Zeilen werden automatisch übersprungen. Korrigiere die gemeldete Zeile und wandle erneut um.</p><h2>When to Use It</h2><ul><li><strong>Import logs:</strong> mache zeilengetrennte Logs zu einem JSON-Array zur Analyse.</li><li><strong>Data pipelines:</strong> geben viele Tools JSONL aus; wandle es für Systeme um, die ein einzelnes Dokument erwarten.</li><li><strong>Storage migration:</strong> verschiebe JSONL-Exporte in eine einzelne JSON-Datei.</li></ul><h2>Privacy</h2><p> Die Umwandlung läuft vollständig in deinem Browser. Dein JSONL wird nicht hochgeladen und es ist kein Konto erforderlich. Füge keine Passwörter, Tokens oder Produktiv-Zugangsdaten in ein Online-Tool ein.</p>"
+    }
   }
 }

@@ -357,5 +357,178 @@
       "title": "如何在线将 JSON 转换为 XML",
       "content": "<h2>JSON 转 XML 转换器做了什么？</h2><p>JSON 转 XML 转换器把 JSON 对象、数组和标量转换成 XML 元素结构：键变成元素名，值变成元素内容或嵌套元素。它适合需要在只接受 XML 的系统里复用 JSON 数据的场景。</p><p>这种转换不是等价映射。JSON 和 XML 的数据模型不同，因此类型信息、属性、命名空间和混合内容都需要按目标系统的规则另行处理。</p><h2>常见使用场景</h2><ul><li><strong>系统集成：</strong>把 JSON 数据整理成只接受 XML 的老系统或中间件的输入格式。</li><li><strong>报文草稿：</strong>先生成主体结构，再手工补上命名空间、属性和信封等要求。</li><li><strong>配置迁移：</strong>把 JSON 配置转成 XML 形态，交给基于 XML 的工具链。</li><li><strong>调试对照：</strong>把接口返回的 JSON 转成 XML，与已有 XML 样例逐节点比对。</li></ul><h2>如何将 JSON 转换为 XML</h2><ol><li><strong>输入 JSON：</strong>粘贴 JSON，或打开 .json 文件。</li><li><strong>指定元素名：</strong>设置根元素名和数组元素名，两者都要符合 XML 命名规则。</li><li><strong>选择格式：</strong>选择缩进宽度，并决定是否输出 XML 声明。</li><li><strong>检查输出：</strong>确认元素名、嵌套层级和特殊字符转义都符合预期。</li><li><strong>复制或下载：</strong>复制 XML，或下载为 .xml 文件，然后按目标系统的 schema 校验。</li></ol><h2>映射规则</h2><ul><li><strong>对象：</strong>每个键变成一个元素，嵌套对象变成嵌套元素。</li><li><strong>数组：</strong>每个元素生成一个同名元素，元素名可自定义；对象里的数组沿用键名。</li><li><strong>标量：</strong>字符串、数字、布尔值和 null 写成文本内容。</li><li><strong>键名整理：</strong>不符合 XML 命名规则的键会被替换成合法名称，通常是下划线。</li><li><strong>转义：</strong>文本中的 &、小于号、大于号、双引号和单引号都会被转义。</li></ul><h2>为什么映射规则很重要</h2><p>同样的 JSON，不同工具可能生成结构差异很大的 XML：属性还是元素、数组用包裹元素还是重复元素、null 是空元素还是自闭合标签、命名空间如何处理。这些规则没有唯一正确答案。</p><p>本页采用可预测的简单规则：一切都是元素，数组元素名可配置，不做属性推断。这样结果容易被脚本再次处理；如果需要属性或命名空间，请在生成后按目标 schema 调整。</p><h2>需要留意的限制</h2><ul><li><strong>不会自动推断属性：</strong>所有键都写成元素。</li><li><strong>类型会退化为文本：</strong>数字和布尔值需要读取方按 schema 解释。</li><li><strong>名称会被整理：</strong>特殊字符的键名会被替换，转换后要复核。</li><li><strong>不做 schema 校验：</strong>格式良好的 XML 不代表对目标系统有效。</li></ul><h2>浏览器本地处理与隐私</h2><p>转换在你的浏览器中完成，不需要把 JSON 上传到远程服务，这对接口调试和内部数据整理更方便。但它不是密钥管理方案，请勿在浏览器工具中粘贴密码、API 密钥、访问令牌或生产环境的敏感数据。</p>"
     }
+  },
+  "de": {
+    "name": "JSON-zu-XML-Konverter",
+    "description": "Wandle JSON-Objekte und -Arrays online in deinem Browser in XML um. Wähle ein Wurzelelement, konfiguriere wiederholte Array-Elemente, formatiere die Ausgabe und kopiere oder lade ein wohlgeformtes XML-Dokument herunter. Sonderzeichen werden während der Umwandlung maskiert, aber JSON-zu-XML-Zuordnungen müssen möglicherweise für Attribute und Ziel-Schemas angepasst werden.",
+    "hero": {
+      "trustHtml": "Läuft in deinem Browser. Dein JSON wird von diesem Tool nicht hochgeladen."
+    },
+    "meta": {
+      "title": "JSON-zu-XML-Konverter – Kostenloses Online-Tool",
+      "description": "Wandle JSON online in XML um. Füge JSON ein, wähle ein Wurzelelement und einen Array-Elementnamen, formatiere das XML und kopiere oder lade das Ergebnis herunter. Kostenlos, schnell und browserbasiert.",
+      "keywords": [
+        "json to xml",
+        "json to xml converter",
+        "convert json to xml",
+        "json to xml online",
+        "online json to xml",
+        "free json to xml",
+        "json to xml tool",
+        "json array to xml"
+      ]
+    },
+    "features": [
+      {
+        "icon": "lucide:code-2",
+        "title": "Wohlgeformte XML-Ausgabe",
+        "description": "Wandle gültige JSON-Objekte, -Arrays und Skalarwerte in eingerücktes XML-Markup mit maskiertem Textinhalt und optionaler XML-Deklaration um."
+      },
+      {
+        "icon": "lucide:settings-2",
+        "title": "Benutzerdefinierte Wurzel und Array-Elemente",
+        "description": "Wähle das Wurzelelement und den Elementnamen für die Elemente eines JSON-Arrays. Beide Namen werden validiert, und ein ungültiger Name wird gemeldet, statt stillschweigend defektes Markup zu erzeugen."
+      },
+      {
+        "icon": "lucide:indent-increase",
+        "title": "Lesbare Formatierung",
+        "description": "Wähle 2 oder 4 Leerzeichen für die Einrückung, damit das erzeugte XML leichter geprüft, kopiert, validiert und gewartet werden kann."
+      },
+      {
+        "icon": "lucide:file-code-2",
+        "title": "XML-Deklaration",
+        "description": "Schalte die XML-Deklaration ein oder aus. Wenn sie aktiviert ist, gibt die Deklaration UTF-8 an, was auch die Kodierung der heruntergeladenen Datei ist."
+      },
+      {
+        "icon": "lucide:copy",
+        "title": "XML kopieren oder herunterladen",
+        "description": "Kopiere das erzeugte XML in die Zwischenablage oder lade es als .xml-Datei herunter für Entwicklung, Integrationstests, Dokumentation oder Datenaustausch-Workflows."
+      },
+      {
+        "icon": "lucide:layers-2",
+        "title": "Verschachtelte Objekte und Arrays",
+        "description": "Verschachtelte JSON-Objekte werden zu verschachtelten XML-Elementen, während Array-Elemente mit dem konfigurierten Elementnamen oder der Umwandlungsregel zu wiederholten Elementen werden."
+      },
+      {
+        "icon": "lucide:shield-check",
+        "title": "Verarbeitung im Browser",
+        "description": "JSON-Parsing und XML-Erzeugung finden in deinem Browser statt. Die Seite erfordert kein Konto und lädt das Quell-JSON nicht auf einen entfernten Konvertierungsdienst hoch."
+      }
+    ],
+    "guide": [
+      {
+        "title": "JSON eingeben",
+        "description": "Füge ein gültiges JSON-Objekt oder -Array in das Eingabefeld ein oder öffne eine .json-Datei, wenn Dateieingabe verfügbar ist. API-Antworten, Konfigurationsdaten und strukturierte Datensätze können als Beispiele dienen."
+      },
+      {
+        "title": "Die XML-Struktur wählen",
+        "description": "Setze einen gültigen Wurzelelementnamen und wähle bei der Umwandlung von Arrays den Elementnamen für wiederholte Elemente. Prüfe, ob diese Namen zum XML-Schema oder empfangenden System passen."
+      },
+      {
+        "title": "Formatierung konfigurieren",
+        "description": "Wähle 2 oder 4 Leerzeichen für die Einrückung und konfiguriere die XML-Deklaration bzw. die von der Oberfläche unterstützten Kodierungsoptionen."
+      },
+      {
+        "title": "Umwandeln und prüfen",
+        "description": "Klicke auf „In XML umwandeln“ und prüfe Elementnamen, Array-Ausgabe, maskierte Werte, leere oder null-Werte sowie die gesamte Dokumentstruktur."
+      },
+      {
+        "title": "Kopieren oder herunterladen",
+        "description": "Kopiere die XML-Ausgabe oder lade sie als .xml-Datei herunter. Validiere das Ergebnis gegen das Schema der Zielanwendung, bevor du es im Produktivbetrieb verwendest."
+      }
+    ],
+    "example": {
+      "input": "{\n  \"user\": {\n    \"name\": \"Alice\",\n    \"age\": 30\n  }\n}",
+      "output": "<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n<root>\n  <user>\n    <name>Alice</name>\n    <age>30</age>\n  </user>\n</root>",
+      "useCase": "Wandle JSON-Daten in XML um — für Tests, Dokumentation oder die Integration mit einem System, das XML erwartet."
+    },
+    "faq": [
+      {
+        "question": "Erzeugt dieser Konverter ein echtes XML-Dokument?",
+        "answer": "Es erzeugt XML-Markup mit verschachtelten Elementen und maskierten Textwerten. Ob das Ergebnis von einer bestimmten Anwendung akzeptiert wird, hängt von deren Schema, erforderlichen Namespaces, Attributen, Elementnamen, Reihenfolge und Validierungsregeln ab."
+      },
+      {
+        "question": "Wie werden JSON-Objekte in XML umgewandelt?",
+        "answer": "JSON-Objekteigenschaften werden normalerweise in verschachtelte XML-Elemente umgewandelt. Beispielsweise kann {\"user\":{\"name\":\"Alice\"}} zu <user><name>Alice</name></user> werden."
+      },
+      {
+        "question": "Wie werden JSON-Arrays in XML umgewandelt?",
+        "answer": "JSON-Arrays werden üblicherweise als wiederholte XML-Elemente dargestellt. Da JSON-Arrays keinen XML-Elementnamen definieren, sollte der Konverter einen konfigurierten Array-Elementnamen oder eine andere dokumentierte Benennungsregel verwenden."
+      },
+      {
+        "question": "Kann ich das Wurzelelement anpassen?",
+        "answer": "Ja. Gib einen gültigen XML-Elementnamen für das Dokument-Wurzelelement ein. Der Standard kann root sein, aber du kannst ihn an die von deinem Zielsystem erwartete Vokabular anpassen."
+      },
+      {
+        "question": "Kann ich den Elementnamen des Array-Elements anpassen?",
+        "answer": "Wenn die Option verfügbar ist, ja. Das ist nützlich, wenn ein Array wie products zu wiederholten <product>-Elementen statt generischen <item>-Elementen werden soll. Der korrekte Name hängt vom Ziel-XML-Schema ab."
+      },
+      {
+        "question": "Behält die JSON-zu-XML-Konvertierung die Datentypen bei?",
+        "answer": "Nicht vollständig. XML-Elementinhalte sind Text, sofern kein Schema oder eine anwenderspezifische Konvention Typinformationen liefert. Zahlen, Booleans und null-Werte müssen daher möglicherweise von der empfangenden Anwendung interpretiert werden."
+      },
+      {
+        "question": "Können JSON-Eigenschaften zu XML-Attributen werden?",
+        "answer": "Nicht automatisch in einer generischen JSON-zu-XML-Zuordnung, sofern der Konverter keine Attribut-Konvention oder explizite Zuordnungsoptionen bietet. JSON hat kein natives Attribut-Konzept, daher erfordern XML-Attribute eine dokumentierte Konvention wie einen reservierten Schlüssel oder eine Zuordnungsregel."
+      },
+      {
+        "question": "Was passiert mit null-Werten?",
+        "answer": "Null-Werte können zu leeren Elementen, ausgelassenen Eigenschaften oder einer implementierungsspezifischen Darstellung werden. Prüfe die Ausgabe und bestätige das vom Ziel-XML-System erwartete Verhalten."
+      },
+      {
+        "question": "Was passiert mit JSON-Schlüsseln mit Sonderzeichen?",
+        "answer": "JSON-Schlüssel, die als XML-Elementnamen verwendet werden, müssen den XML-Benennungsregeln entsprechen. Schlüssel mit Leerzeichen, Satzzeichen oder führenden Ziffern werden zu gültigen Namen bereinigt, meist durch Ersetzen nicht unterstützter Zeichen durch Unterstriche. Prüfe die Ausgabe, wenn die Schlüssel keine üblichen Bezeichner sind."
+      },
+      {
+        "question": "Werden Sonderzeichen in JSON-Werten maskiert?",
+        "answer": "Ja. Ampersands, Kleiner-als-Zeichen, Größer-als-Zeichen, doppelte Anführungszeichen und Apostrophe in Textwerten werden maskiert. Das Maskieren eines Werts macht einen ungültigen Elementnamen nicht gültig."
+      },
+      {
+        "question": "Welche Kodierung verwendet die Ausgabe?",
+        "answer": "Das erzeugte Dokument wird als UTF-8 geschrieben, und die XML-Deklaration gibt UTF-8 an, wenn sie aktiviert ist. Es gibt keine separate Kodierungsoption, da eine Deklaration, die nicht zu den tatsächlichen Bytes passt, das Dokument ungültig machen würde."
+      },
+      {
+        "question": "Kann ich die Ausgabe für SOAP verwenden?",
+        "answer": "Das erzeugte XML kann als Payload-Fragment oder Ausgangspunkt nützlich sein, aber eine SOAP-Anfrage erfordert außerdem die korrekte Envelope, Namespaces, Operationsstruktur, Header, Authentifizierung und ein dienstspezifisches Schema. Die JSON-zu-XML-Umwandlung allein erzeugt keine vollständig gültige SOAP-Anfrage."
+      },
+      {
+        "question": "Kann ich XML zurück in JSON umwandeln?",
+        "answer": "Verwende ein XML-zu-JSON-Tool für die umgekehrte Richtung. Der Round-Trip reproduziert die ursprünglichen Daten möglicherweise nicht exakt, da XML-Attribute, Namespaces, Reihenfolge, gemischte Inhalte und Schema-Typen keine direkten Entsprechungen in gewöhnlichem JSON haben."
+      },
+      {
+        "question": "Kann ich eine große JSON-Datei umwandeln?",
+        "answer": "Das praktische Limit hängt von Browser-Speicher, Geräteleistung, Dokumenttiefe, Elementanzahl und den Anforderungen an PDF- oder Text-Erzeugung ab. Große Eingaben können langsamer geparst und erzeugt werden."
+      },
+      {
+        "question": "Wird mein JSON auf einen Server hochgeladen?",
+        "answer": "Diese Seite ist dazu konzipiert, JSON in deinem Browser ohne Server-Upload zu parsen und XML zu erzeugen. Du solltest dennoch vermeiden, Passwörter, API-Schlüssel, Zugriffstokens, private Kundendaten oder vertrauliche Produktivdaten in ein browserbasiertes Tool einzugeben."
+      },
+      {
+        "question": "Ist dies ein kostenloser JSON-zu-XML-Konverter?",
+        "answer": "Ja. Du kannst JSON einfügen oder öffnen, die verfügbaren XML-Optionen konfigurieren und die Ausgabe kopieren oder herunterladen, ohne ein Konto zu erstellen."
+      }
+    ],
+    "ui": {
+      "label_input": "JSON eingeben",
+      "label_output": "XML-Ausgabe",
+      "btn_convert": "In XML umwandeln",
+      "option_root_element": "Wurzelelement:",
+      "option_array_item": "Elementname des Array-Elements:",
+      "option_indent": "Einrückung:",
+      "option_indent_2": "2 Leerzeichen",
+      "option_indent_4": "4 Leerzeichen",
+      "option_declaration": "XML-Deklaration einbeziehen",
+      "placeholder_root": "Wurzel",
+      "placeholder_array_item": "Element",
+      "placeholder_output": "XML-Ausgabe erscheint hier …",
+      "error_invalid_json": "Eingabe ist kein gültiges JSON",
+      "error_empty_input": "Zuerst JSON eingeben oder eine JSON-Datei öffnen",
+      "error_invalid_root": "Name des Wurzelelements ist kein gültiges XML",
+      "error_invalid_array_item": "Elementname des Array-Elements ist kein gültiges XML"
+    },
+    "article": {
+      "title": "JSON online in XML umwandeln",
+      "content": "<h2> Was ist ein JSON-zu-XML-Konverter?</h2><p> Ein JSON-zu-XML-Konverter bildet JSON-Objekte, -Arrays und Skalarwerte auf XML-Elemente und Textinhalte ab. Das kann helfen, wenn ein moderner JSON-Workflow mit einer älteren Integration, einem XML-basierten Konfigurationssystem, einem Dokumentformat oder einem Dienst kommunizieren muss, der XML erwartet.</p><p> JSON und XML sind unterschiedliche Datenmodelle. JSON hat Objekte und Arrays, während XML Elemente, Attribute, Namespaces, Textknoten, gemischte Inhalte und Dokument-deklarationen hat. Eine Umwandlung folgt daher einem Satz von Abbildungsregeln statt eines perfekt verlustfreien Formattauschs.</p><h2>Common Use Cases</h2><ul><li><strong>Legacy integration:</strong> Bereite JSON-Daten für ein System vor, das XML statt JSON akzeptiert.</li><li><strong>API und service testing:</strong> Wandle Beispiel-JSON in XML um, um einen XML-Endpunkt oder eine Integrationsgrenze zu testen.</li><li><strong> Konfigurationsumwandlung:</strong> Erstelle eine XML-Darstellung für ein Tool, das XML-Konfiguration erwartet.</li><li><strong>Documentation:</strong> Zeige die XML-Form eines Beispiel-JSON-Objekts, wenn du eine Datenabbildung dokumentierst.</li><li><strong>Data migration:</strong> Wandle strukturiertes JSON in einen XML-Ausgangspunkt für einen Migrations- oder Import-Workflow um.</li></ul><h2> Wie man JSON in XML umwandelt</h2><ol><li><strong>Enter JSON:</strong> Füge ein gültiges JSON-Objekt, -Array oder einen unterstützten Skalarwert ein.</li><li><strong>Choose a root element:</strong> Setze einen gültigen XML-Wurznamen, der zum Zieldokument oder Schema passt.</li><li><strong>Choose array item names:</strong> Wenn die Eingabe Arrays enthält, definiere den Elementnamen für wiederholte Elemente, sofern unterstützt.</li><li><strong>Configure formatting:</strong> Wähle die Einrückung und entscheide, ob die XML-Deklaration einbezogen werden soll.</li><li><strong>Convert:</strong> Erzeuge das XML und prüfe die Ausgabe auf gültige Namen, maskierten Text, null-Werte und wiederholte Elemente.</li><li><strong>Copy oder download:</strong> Kopiere das XML oder speichere es als .xml-Datei zum Testen oder für die Integration.</li></ol><h2> Wie JSON-Strukturen auf XML abgebildet werden</h2><ul><li><strong>Objects:</strong> Objekteigenschaften werden zu verschachtelten XML-Elementen.</li><li><strong>Arrays:</strong> Array-Werte werden üblicherweise durch wiederholte Geschwisterelemente dargestellt.</li><li><strong>Strings:</strong> Strings werden zu XML-Textinhalt, nachdem Sonderzeichen maskiert wurden.</li><li><strong>Numbers und Booleans:</strong> Werte werden zu Text, daher muss das empfangende System ihre Typen interpretieren oder ein XML-Schema anwenden.</li><li><strong>Null:</strong> Null kann zu einem leeren Element werden, ausgelassen werden oder einer dokumentierten Konvention folgen.</li></ul><h2> Arrays benötigen eine XML-Benennungsregel</h2><p> JSON-Arrays enthalten Werte, weisen aber jedem Element keinen Elementnamen zu. XML erfordert Elementnamen, daher muss ein Konverter eine Regel wählen. Zum Beispiel:</p><pre><code>{\"products\":[{\"name\":\"Laptop\"},{\"name\":\"Mouse\"}]}</code></pre><p>may werden:</p><pre><code>&lt;products&gt;\n  &lt;product&gt;\n    &lt;name&gt;Laptop&lt;/name&gt;\n  &lt;/product&gt;\n  &lt;product&gt;\n    &lt;name&gt;Mouse&lt;/name&gt;\n  &lt;/product&gt;\n&lt;/products&gt;</code></pre><p>Some converters use <code>item</code> manche leiten eine Singularform ab wie <code>product</code>, und andere erlauben einen expliziten Elementnamen. Wenn die Ausgabe einem XSD oder API-Schema genügen muss, konfiguriere den Array-Elementnamen bewusst.</p><h2> XML-Elementnamen und Maskierung</h2><p> JSON-Schlüssel werden nur dann zu XML-Elementnamen, wenn sie den XML-Benennungsregeln folgen. Schlüssel mit Leerzeichen, ungültiger Satzzeichen oder führenden Ziffern müssen möglicherweise bereinigt werden oder verursachen einen Umwandlungsfehler. Textwerte haben eine separate Anforderung: Zeichen wie <code>&amp;</code>, <code>&lt;</code>, und <code>&gt;</code> müssen maskiert werden, damit sie das XML-Dokument nicht beschädigen.</p><p> Das Maskieren von Textwerten löst ungültige Tag-Namen nicht. Wenn das Quell-JSON beliebige benutzergenerierte Schlüssel enthält, prüfe oder bilde diese Schlüssel ab, bevor du dich auf die XML-Ausgabe verlässt.</p><h2> XML-Deklaration und Kodierung</h2><p> Eine XML-Deklaration kann die Dokumentversion und die deklarierte Kodierung angeben:</p><pre><code>&lt;?xml version=\"1.0\" encoding=\"UTF-8\"?&gt;</code></pre><p> Die deklarierte Kodierung sollte zu den tatsächlichen Bytes in der heruntergeladenen Datei passen. Ein im Browser angezeigter Text-String kann Unicode sein, während eine heruntergeladene Datei je nach Implementierung eine andere Kodierung verwenden kann. Lass Benutzer keine Kodierungsbezeichnung wählen, die der Export tatsächlich nicht erzeugt.</p><h2>Attributes und JSON</h2><p> JSON hat keinen eingebauten Attributtyp. Ein generischer Konverter stellt JSON-Eigenschaften daher meist als XML-Elemente statt als Attribute dar. Wenn ein Zielsystem Attribute erfordert, verwende eine explizite Zuordnungskonvention wie reservierte Schlüssel oder eine Feld-Zuordnungskonfiguration und validiere die Ausgabe gegen das Ziel-Schema.</p><h2>JSON to XML und SOAP</h2><p> XML kann von SOAP-Diensten verwendet werden, aber die Umwandlung von JSON zu XML erzeugt nicht automatisch eine gültige SOAP-Anfrage. SOAP erfordert außerdem eine Envelope, Namespaces, einen operationsspezifischen Body, Header, Authentifizierung und ein dienstdefiniertes Schema. Verwende das erzeugte XML erst als Payload- oder Zuordnungsreferenz, nachdem du die Dokumentation des Dienstes geprüft hast.</p><h2> JSON-zu-XML ist nicht immer umkehrbar</h2><p> Das Umwandeln von JSON zu XML und zurück zu JSON kann die Datenform verändern. XML führt Attribute, Namespaces, Reihenfolge, Textknoten und gemischte Inhalte ein, während JSON Arrays und Objekte anders unterscheidet. Bewahre das ursprüngliche JSON und validiere das erzeugte XML, wenn exakte Datenerhaltung wichtig ist.</p><h2> Validierung und häufige Probleme</h2><ul><li><strong>Invalid JSON:</strong> Fehlende Kommas, nicht zusammenpassende Klammern, ungültige Anführungszeichen und nachgestellte Kommas können die Umwandlung verhindern.</li><li><strong>Invalid root name:</strong> Das Wurzelelement muss den XML-Benennungsregeln folgen.</li><li><strong>Ambiguous arrays:</strong> Der erzeugte Name des wiederholten Elements passt möglicherweise nicht zum Ziel-Schema.</li><li><strong>Null handling:</strong> Leere oder ausgelassene Werte werden von empfangenden Systemen möglicherweise nicht gleich interpretiert.</li><li><strong>Attributes missing:</strong> Die generische JSON-zu-XML-Umwandlung erzeugt meist Elemente, keine XML-Attribute.</li><li><strong>Schema mismatch:</strong> Wohlgeformtes XML kann dennoch gegen ein XSD oder ein dienstspezifisches Schema fehlschlagen.</li></ul><h2>Browser-Based Privacy</h2><p> Dieser Konverter ist darauf ausgelegt, JSON im Browser zu parsen und XML zu erzeugen, statt die Quelldaten an einen entfernten Konvertierungsdienst zu senden. Das ist praktisch für einmalige Umwandlungen und Integrationstests, ersetzt aber keine sichere Geheimnisverwaltung. Vermeide es, Zugangsdaten, Zugriffstokens, private Kundeninformationen oder Produktiv-Geheimnisse in ein Web-Tool einzugeben.</p><h2> Wann einen lokalen oder schema-bewussten Konverter nutzen</h2><p> Ein Browser-Tool eignet sich für schnelle Umwandlungen und Prüfung. Verwende eine lokale Bibliothek, ein Kommandozeilen-Tool oder einen schema-bewussten Integrations-Workflow für wiederholbare Automatisierung, vertrauliche Daten, große Dateien, strenge XSD-Validierung, Namespaces, SOAP-Envelopes oder präzise Attribut-Zuordnungen.</p>"
+    }
   }
 }

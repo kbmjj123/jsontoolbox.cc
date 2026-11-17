@@ -14,7 +14,7 @@ const toast = useToast()
 
 // Apply locale from query param
 const queryLocale = route.query.lang as string
-if (queryLocale && ['en', 'zh'].includes(queryLocale)) {
+if (queryLocale && ['en', 'zh', 'de'].includes(queryLocale)) {
   setLocale(queryLocale)
 }
 

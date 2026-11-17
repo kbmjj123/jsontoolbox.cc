@@ -5,7 +5,11 @@
   "icon": "lucide:file-text",
   "sort": 14,
   "applicationCategory": "DeveloperApplication",
-  "nextSteps": ["json-editor", "csv-to-json", "json-to-text"],
+  "nextSteps": [
+    "json-editor",
+    "csv-to-json",
+    "json-to-text"
+  ],
   "recommends": [
     "json-schema-validator",
     "large-json-viewer",
@@ -479,6 +483,239 @@
     "article": {
       "title": "如何把 TXT 和纯文本转换成 JSON",
       "content": "<h2>什么是 TXT 转 JSON</h2><p>TXT 转 JSON 是把无结构或半结构化文本转换成 JSON 对象或数组的过程。和固定文件格式转换不同，纯文本本身没有统一结构，所以转换器必须应用明确的解析规则。</p><p>行列表、键值文件和类 CSV 表格都是文本，但它们应该生成完全不同的 JSON 形状。选对解析模式比改文件后缀重要得多。</p><h2>选择合适的解析模式</h2><ul><li><strong>每行转数组：</strong>每个非空行是一个字符串值。</li><li><strong>键值文本：</strong>每行是用冒号或等号分隔的键和值。</li><li><strong>分隔行：</strong>文本里有按逗号、制表符、分号或竖线分隔的列。</li></ul><h2>把行列表转换成 JSON 数组</h2><p>输入：</p><pre><code>Alice\nBob\nCharlie</code></pre><p>输出：</p><pre><code>[\"Alice\", \"Bob\", \"Charlie\"]</code></pre><p>这个模式适合 ID、URL、邮箱、标签、关键词这类列表。数组保持输入顺序；开启「去除重复行」时会丢掉后面的重复项，首次出现的位置不变。</p><h2>把键值文本转换成 JSON 对象</h2><p>输入：</p><pre><code>name: Alice\nage: 30\nactive: true</code></pre><p>开启「推断基础类型」时的输出：</p><pre><code>{\n  \"name\": \"Alice\",\n  \"age\": 30,\n  \"active\": true\n}</code></pre><p>默认关闭该选项时，输出是：</p><pre><code>{\n  \"name\": \"Alice\",\n  \"age\": \"30\",\n  \"active\": \"true\"\n}</code></pre><p>键值解析只在<strong>第一个</strong>分隔符处切分。<code>url: https://example.com/a:b</code> 会得到键 <code>url</code> 和值 <code>https://example.com/a:b</code>，而不会把 URL 拆开。没有分隔符或键为空的行会被跳过并在预览里计数，不会让整次转换失败。</p><h2>把分隔文本转换成 JSON 记录</h2><p>输入：</p><pre><code>name,age,city\nAlice,30,New York\nBob,25,London</code></pre><p>输出：</p><pre><code>[\n  {\"name\":\"Alice\",\"age\":\"30\",\"city\":\"New York\"},\n  {\"name\":\"Bob\",\"age\":\"25\",\"city\":\"London\"}\n]</code></pre><p>当字段里可能出现分隔符、转义引号或换行时，必须使用兼容 CSV 的解析器。分隔模式支持带引号的字段：双引号包裹的值里可以包含分隔符和换行，连续两个双引号表示一个真正的双引号。这种数据不能靠简单地按分隔符切分来处理。</p><h2>类型推断会改变值</h2><p>纯文本没有可靠的类型系统。本转换器只在开启「推断基础类型」时推断很窄的一类值：小写的 <code>true</code> 和 <code>false</code> 变成布尔值，符合 <code>-?\\d+</code> 或 <code>-?\\d+\\.\\d+</code> 的整数或小数变成数字。</p><ul><li><strong>前导零：</strong><code>00123</code> 保持字符串 \"00123\"。</li><li><strong>版本号：</strong><code>1.10</code> 转成数字会丢掉末尾的 0，所以关闭推断时它保持文本。</li><li><strong>大写与空值样式的文本：</strong><code>TRUE</code>、<code>FALSE</code>、<code>NULL</code> 都不识别，保持字符串。</li><li><strong>科学计数法：</strong><code>1e5</code> 不识别，保持字符串。</li><li><strong>日期和邮编：</strong>除非开启推断且恰好匹配数字格式，否则按文本处理。</li></ul><p>当保留原始文本比方便更重要时，请不要开启类型推断。</p><h2>表头与行列不齐</h2><p>分隔文本可能有表头行，也可能有缺失值、多余值或空表头。关闭「第一行是表头」，或表头单元格为空时，转换器会生成 <code>column_1</code>、<code>column_2</code> 这样的列名。列数与其他行不一致的行会在预览里高亮并给出警告；转换仍会执行，缺失的单元格变成空值，超出列数的多余值被忽略。</p><h2>文本转 JSON 不是自然语言理解</h2><p>纯文本本身有歧义。一段话、日志文件、Markdown 文档或 AI 回答，不可能在没有规则的情况下变成有意义的 JSON 结构。请使用明确的模式：一行一个值、键值对或统一的分隔符。对于 AI 生成的输出，先确保它遵循可预测的结构。</p><h2>TXT 转 JSON 与 JSON 字符串解析的区别</h2><p>「TXT 转 JSON」可能指几件不同的事。本页处理的是结构化的纯文本和文本文件。如果输入已经是 JSON 编码的字符串，例如 <code>\"{\\\"name\\\":\\\"Alice\\\"}\"</code>，请改用 JSON 反转义的流程。如果输入本身就是普通的 JSON 文档，请用 JSON 格式化或验证工具，而不是文本转换器。</p><h2>TXT 转 JSON 与 JSONL 的区别</h2><p>JSON 数组把很多值放在一个 JSON 文档里；JSON Lines 是每行一个 JSON 值。本页输出 JSON 数组或 JSON 对象，不提供 JSONL 输出模式，所以下游系统需要 JSONL 时要再单独转换一步。</p><h2>隐私与浏览器本地处理</h2><p>本转换器在你的浏览器里读取文本并生成 JSON，不会把输入上传到远程服务。这对内部清单和开发数据很方便，但它不是密钥管理系统。不要把凭证、令牌、客户隐私数据或生产环境机密文本粘贴到任何在线工具里。</p><h2>什么时候改用本地解析器</h2><p>处理超大文件、可重复的数据管道、严格的 CSV 兼容要求、机密数据或自动化处理时，请用本地解析器或命令行流程。浏览器转换更适合快速处理、查看和小到中等体积的输入。</p>"
+    }
+  },
+  "de": {
+    "name": "TXT-zu-JSON-Konverter",
+    "description": "Wandle reinen Text, TXT-Dateien, Zeilenlisten, Key-Value-Text und durch Trennzeichen getrennte Datensätze in JSON um. Wähle einen von drei Parsing-Modi, prüfe die Live-Vorschau und Warnungen und kopiere oder lade das Ergebnis herunter.",
+    "hero": {
+      "trustHtml": "Läuft in deinem Browser. Dein Text wird von diesem Tool nicht hochgeladen."
+    },
+    "meta": {
+      "title": "TXT-zu-JSON-Konverter – Kostenloses Online-Text-zu-JSON-Tool",
+      "description": "Wandle TXT und reinen Text online in JSON um. Mache Zeilen zu einem JSON-Array, Key-Value-Text zu einem Objekt oder durch Trennzeichen getrennten Text zu JSON-Datensätzen. Kostenlos, browserbasiert und ohne Upload.",
+      "keywords": [
+        "txt to json",
+        "txt to json converter",
+        "convert txt to json",
+        "text to json converter",
+        "convert text to json",
+        "convert text file to json",
+        "txt file to json",
+        "free txt to json converter"
+      ]
+    },
+    "ui": {
+      "label_input": "Text oder TXT-Datei eingeben",
+      "label_output": "JSON-Ausgabe",
+      "placeholder_input": "Text einfügen oder eine .txt-Datei öffnen …",
+      "placeholder_output": "Konvertiertes JSON erscheint hier …",
+      "label_mode": "Parsing-Modus:",
+      "option_lines_array": "Zeilen zu JSON-Array",
+      "option_key_value": "Key-Value-Text zu Objekt",
+      "option_delimited_rows": "Durch Trennzeichen getrennter Text zu Objekten",
+      "option_delimiter": "Trennzeichen:",
+      "option_auto_delimiter": "Automatisch erkennen",
+      "option_delimiter_comma": "Komma (,)",
+      "option_delimiter_semicolon": "Semikolon (;)",
+      "option_delimiter_tab": "Tab",
+      "option_delimiter_pipe": "Senkrechtstrich (|)",
+      "option_key_separator": "Schlüsseltrenner:",
+      "option_separator_colon": "Doppelpunkt (:)",
+      "option_separator_equals": "Gleich (=)",
+      "option_has_header": "Erste Zeile ist Kopfzeile",
+      "option_infer_types": "Grundlegende Typen ableiten",
+      "option_empty_as_null": "Leere Werte in null umwandeln",
+      "option_trim_values": "Leerzeichen entfernen",
+      "option_skip_empty": "Leere Zeilen überspringen",
+      "option_unique": "Doppelte Zeilen entfernen",
+      "option_indent": "Einrückung:",
+      "option_indent_2": "2 Leerzeichen",
+      "option_indent_4": "4 Leerzeichen",
+      "btn_convert": "In JSON umwandeln",
+      "preview_title": "Geparste Vorschau",
+      "preview_lines": "Zeilen:",
+      "preview_keys": "Schlüssel:",
+      "preview_key": "Schlüssel",
+      "preview_value": "Wert",
+      "preview_rows": "Zeilen:",
+      "preview_columns": "Spalten:",
+      "preview_showing": "{shown} von {total} werden angezeigt",
+      "preview_empty": "Text eingeben, um das geparste Ergebnis anzuzeigen",
+      "error_empty_input": "Zuerst Text eingeben oder eine Datei öffnen",
+      "error_no_lines": "Es wurden keine verwendbaren Zeilen gefunden",
+      "error_no_pairs": "Es wurden keine Key-Value-Paare gefunden",
+      "error_no_headers": "Es wurden keine verwendbaren Kopfzeilen gefunden",
+      "error_inconsistent_columns": "Einige Zeilen enthalten eine andere Anzahl von Spalten",
+      "warning_duplicate_keys": "{count} doppelte Schlüssel gefunden: der letzte Wert wird behalten",
+      "warning_skipped_lines": "{count} Zeile(n) übersprungen: kein Schlüsseltrenner gefunden",
+      "warning_empty_keys": "{count} Zeile(n) übersprungen: der Schlüssel war leer"
+    },
+    "features": [
+      {
+        "icon": "lucide:file-text",
+        "title": "TXT- und reine Text-Eingabe",
+        "description": "Füge reinen Text in den Editor ein oder öffne eine lokale .txt-, .csv-, .tsv-, .text- oder .log-Datei. Die Datei wird in deinem Browser gelesen und nie hochgeladen."
+      },
+      {
+        "icon": "lucide:list",
+        "title": "Zeilen zu JSON-Array",
+        "description": "Mache ein Element pro Zeile zu einem JSON-Array in der ursprünglichen Eingabereihenfolge. Leere Zeilen können übersprungen und doppelte Werte entfernt werden, wobei die Position des ersten Auftretens erhalten bleibt."
+      },
+      {
+        "icon": "lucide:braces",
+        "title": "Key-Value-Text zu Objekt",
+        "description": "Parse Zeilen wie name: Alice oder name=Alice in ein JSON-Objekt. Die Zeile wird nur am ersten Trennzeichen geteilt, sodass url: https://example.com/a:b die vollständige URL als Wert behält."
+      },
+      {
+        "icon": "lucide:table-2",
+        "title": "Durch Trennzeichen getrennter Text zu Datensätzen",
+        "description": "Wandle komma-, tab-, semikolon- oder senkrechtstrichgetrennten Text in ein JSON-Array von Objekten um, mit verfügbarer automatischer Erkennung. Verwende die erste Zeile als Kopfzeile oder lass das Tool die Spalten column_1, column_2 usw. benennen."
+      },
+      {
+        "icon": "lucide:scan-search",
+        "title": "Vorschau- und Parsing-Warnungen",
+        "description": "Prüfe die ersten 10 geparsten Zeilen, Key-Value-Einträge oder Datenzeilen vor dem Export. Doppelte Schlüssel, übersprungene Zeilen und Zeilen mit unterschiedlicher Spaltenanzahl werden in der Vorschau gemeldet."
+      },
+      {
+        "icon": "lucide:badge-check",
+        "title": "Optionale Typinferenz",
+        "description": "Wenn aktiviert, werden kleingeschriebenes true und false zu Booleans und einfache ganze Zahlen oder Dezimalzahlen wie 30 oder 1.5 zu Zahlen. Standardmäßig ist es aus, sodass Werte wie 00123, 1.10, TRUE und NULL Strings bleiben."
+      },
+      {
+        "icon": "lucide:copy",
+        "title": "JSON-Ausgabe kopieren",
+        "description": "Kopiere das erzeugte JSON in die Zwischenablage für Skripte, APIs, Konfigurationsdateien, Test-Fixtures oder Frontend-Anwendungen. „Kopieren“ enthält immer alle geparsten Elemente, nicht nur die in der Vorschau angezeigten."
+      },
+      {
+        "icon": "lucide:download",
+        "title": "JSON-Datei herunterladen",
+        "description": "Lade das vollständige Ergebnis als .json-Datei herunter, nachdem du die geparste Struktur und Warnungen geprüft hast."
+      },
+      {
+        "icon": "lucide:shield-check",
+        "title": "Verarbeitung im Browser",
+        "description": "Text-Parsing und JSON-Erzeugung finden in deinem Browser statt. Es ist kein Konto erforderlich und der Eingabetext wird nicht an einen entfernten Konvertierungsdienst gesendet."
+      }
+    ],
+    "guide": [
+      {
+        "title": "Text einfügen oder öffnen",
+        "description": "Füge reinen Text in den Eingabe-Editor ein oder öffne eine lokale .txt-Datei. Die Eingabe kann eine Zeilenliste, Key-Value-Text oder eine durch Trennzeichen getrennte Tabelle sein."
+      },
+      {
+        "title": "Einen Parsing-Modus wählen",
+        "description": "Wähle „Zeilen zu JSON-Array“ für ein Element pro Zeile, „Key-Value-Text zu Objekt“ für Key/Value-Datensätze oder „Durch Trennzeichen getrennter Text zu Objekten“ für tabellenartige Daten. Das Laden eines integrierten Beispiels wechselt den Modus für dich."
+      },
+      {
+        "title": "Parsing-Regeln konfigurieren",
+        "description": "Die verfügbaren Optionen hängen vom Modus ab: Trennzeichen und Kopfzeilen-Schalter erscheinen im Modus mit Trennzeichen, der Schlüsseltrenner im Key-Value-Modus, und „Leere Zeilen überspringen“ und „Doppelte Zeilen entfernen“ gelten für Zeilen- und Key-Value-Text. Typhinferenz, Leerwerte-, Zuschneide- und Einrückungsoptionen sind immer verfügbar."
+      },
+      {
+        "title": "Die Vorschau prüfen",
+        "description": "Prüfe die erkannten Zeilen, Schlüssel, Zeilen und Spalten zusammen mit allen Warnungen zu doppelten Schlüsseln, übersprungenen Zeilen oder unebenen Zeilen, bevor du das endgültige JSON erzeugst."
+      },
+      {
+        "title": "Umwandeln und exportieren",
+        "description": "Klicke auf „In JSON umwandeln“, kopiere dann das Ergebnis oder lade es als .json-Datei herunter. Die Ausgabe aktualisiert sich auch während der Eingabe automatisch, sodass du die Optionen anpassen und die Änderung beobachten kannst. Validiere die Ausgabe, bevor du sie an ein anderes System sendest."
+      }
+    ],
+    "example": {
+      "title": "Durch Trennzeichen getrennten Text in JSON umwandeln",
+      "description": "Eine kleine kommagetrennte Tabelle mit einer Kopfzeile, umgewandelt in ein Array von JSON-Objekten.",
+      "inputLabel": "Durch Trennzeichen getrennter Text",
+      "input": "name,age,city\nAlice,30,New York\nBob,25,London",
+      "inputExplanation": "Komma-getrennter Text, dessen erste Zeile die Kopfzeile ist.",
+      "outputLabel": "JSON-Array",
+      "output": "[\n  {\n    \"name\": \"Alice\",\n    \"age\": 30,\n    \"city\": \"New York\"\n  },\n  {\n    \"name\": \"Bob\",\n    \"age\": 25,\n    \"city\": \"London\"\n  }\n]",
+      "outputExplanation": "Gezeigt mit aktivierter Option „Grundlegende Typen ableiten“. Die Option ist standardmäßig aus, sodass 30 und 25 die Strings \"30\" und \"25\" bleiben, es sei denn, du schaltest sie ein.",
+      "note": "Die Einrückung ist in diesem Beispiel auf 2 Leerzeichen gesetzt. Die heruntergeladene Datei enthält immer jede geparste Zeile, auch wenn die Vorschau nur die ersten 10 zeigt."
+    },
+    "faq": [
+      {
+        "question": "Was macht dieser TXT-zu-JSON-Konverter?",
+        "answer": "Es wandelt reinen Text mit einem von dir gewählten Parsing-Modus in JSON um. „Zeilen zu JSON-Array“ macht aus einem Element pro Zeile ein JSON-Array, „Key-Value-Text zu Objekt“ macht aus Key/Value-Zeilen ein einzelnes JSON-Objekt und „Durch Trennzeichen getrennter Text zu Objekten“ macht aus tabellenartigem Text ein Array von JSON-Objekten."
+      },
+      {
+        "question": "Kann ich eine TXT-Datei in JSON umwandeln?",
+        "answer": "Ja. Öffne eine .txt-, .csv-, .tsv-, .text- oder .log-Datei von deinem Gerät oder füge deren Inhalt ein. Wähle dann den zur Datei passenden Parsing-Modus, prüfe die Vorschau und kopiere oder lade das erzeugte JSON herunter."
+      },
+      {
+        "question": "Wie konvertiere ich eine Liste von Zeilen in ein JSON-Array?",
+        "answer": "Wähle „Zeilen zu JSON-Array“ und füge einen Wert pro Zeile ein. Drei Zeilen mit Alice, Bob und Charlie werden zu [\"Alice\", \"Bob\", \"Charlie\"]. Das Array behält die ursprüngliche Eingabereihenfolge."
+      },
+      {
+        "question": "Kann ich Key-Value-Text in JSON umwandeln?",
+        "answer": "Ja. Wähle „Key-Value-Text zu Objekt“ und verwende Zeilen wie name: Alice oder name=Alice. Die Zeile wird nur am ersten Trennzeichen geteilt, sodass eine Zeile wie url: https://example.com/a:b den Schlüssel url mit der vollständigen URL als Wert ergibt."
+      },
+      {
+        "question": "Welche Schlüsseltrenner werden unterstützt?",
+        "answer": "Doppelpunkt (:) und Gleichheitszeichen (=). Wähle das, das zu deiner Eingabe passt. Zeilen ohne das gewählte Trennzeichen werden übersprungen und in der Vorschau gezählt, statt die gesamte Umwandlung scheitern zu lassen."
+      },
+      {
+        "question": "Kann ich CSV-ähnlichen Text in JSON umwandeln?",
+        "answer": "Ja. Wähle „Durch Trennzeichen getrennter Text zu Objekten“, wähle das Trennzeichen und gib an, ob die erste Zeile Kopfzeilen enthält. Jede Datenzeile wird zu einem JSON-Objekt."
+      },
+      {
+        "question": "Welche Trenner werden unterstützt?",
+        "answer": "Komma, Tabulator, Semikolon und Senkrechtstrich sowie automatische Erkennung. Die automatische Erkennung bewertet jeden Kandidaten danach, wie konsistent er die ersten Zeilen in dieselbe Anzahl von Spalten zerlegt. Wähle das Trennzeichen manuell, wenn die Eingabe mehrdeutig ist oder ein Trennzeichen auch in Werten vorkommt."
+      },
+      {
+        "question": "Unterstützt es maskierte Werte?",
+        "answer": "Ja im Modus mit Trennzeichen. Ein in doppelte Anführungszeichen eingeschlossenes Feld darf das Trennzeichen und Zeilenumbrüche enthalten, und zwei aufeinanderfolgende doppelte Anführungszeichen innerhalb eines maskierten Feldes stellen ein wörtliches doppeltes Anführungszeichen dar."
+      },
+      {
+        "question": "Kann ich Text ohne Kopfzeile umwandeln?",
+        "answer": "Ja. Schalte „Erste Zeile ist Kopfzeile“ aus und der Konverter benennt die Spalten column_1, column_2, column_3 usw. Eine leere Zelle innerhalb einer Kopfzeile fällt auf denselben erzeugten Namen zurück."
+      },
+      {
+        "question": "Leitet es Zahlen und Booleans ab?",
+        "answer": "Nur wenn „Grundlegende Typen ableiten“ aktiviert ist, und nur für eine enge Menge von Werten: kleingeschriebenes true und false werden zu Booleans, einfache ganze Zahlen oder Dezimalzahlen wie 30, -7 oder 1.5 werden zu Zahlen. Werte wie TRUE, NULL, 1e5, .5, +5, 00123, 1.10 und 2026-09-18 bleiben Strings. Lass die Option aus, wenn Bezeichner, Postleitzahlen, Versionsstrings oder formatierte Werte Text bleiben müssen."
+      },
+      {
+        "question": "Was passiert mit leeren Zeilen und leeren Werten?",
+        "answer": "Im Zeilen- und Key-Value-Modus ist „Leere Zeilen überspringen“ standardmäßig aktiv und entfernt leere Zeilen. Leere Werte werden zu leeren Strings oder zu null, wenn „Leere Werte in null umwandeln“ aktiviert ist. Im Modus mit Trennzeichen werden leere Zeilen vom Parser verworfen und fehlende Zellen werden zu leeren Werten."
+      },
+      {
+        "question": "Was passiert bei doppelten Schlüsseln?",
+        "answer": "Der Konverter meldet, wie viele doppelte Schlüssel gefunden wurden, und behält den letzten Wert für diesen Schlüssel. Der Schlüssel bleibt an der Position seines ersten Auftretens, da ein JSON-Objekt keine zwei separaten Eigenschaften mit demselben Namen enthalten kann."
+      },
+      {
+        "question": "Kann ich doppelte Zeilen entfernen?",
+        "answer": "Ja. Schalte im Modus „Zeilen zu JSON-Array“ „Doppelte Zeilen entfernen“ ein. Das erste Auftreten behält seine Position und spätere Duplikate werden verworfen, sodass die verbleibende Reihenfolge der Eingabe folgt."
+      },
+      {
+        "question": "Kann ich eingerückten Text in verschachteltes JSON umwandeln?",
+        "answer": "Nein. Text mit Einrückung oder Hierarchie wird nicht unterstützt, da die Einrückungsregeln mehrdeutig sind. Glätte den Text zu einem Element pro Zeile, Key-Value-Paaren oder durch Trennzeichen getrennten Zeilen und wandle ihn dann um."
+      },
+      {
+        "question": "Kann ich ChatGPT- oder KI-generierten Text in JSON umwandeln?",
+        "answer": "Nur wenn der Text einer erkennbaren Struktur folgt wie einem Element pro Zeile, Key-Value-Paaren oder einem konsistenten Trennzeichen. Diese Seite ist kein Parser für natürliche Sprache und errät keine Feldnamen oder Schemas aus Fließtext."
+      },
+      {
+        "question": "Kann ich Text in JSON Lines umwandeln?",
+        "answer": "Nein. Diese Seite gibt für Zeilen- und Trennzeichen-Eingaben ein JSON-Array und für Key-Value-Eingaben ein JSON-Objekt aus. Es gibt keinen JSONL-Ausgabe-Modus."
+      },
+      {
+        "question": "Begrenzt die Vorschau das exportierte JSON?",
+        "answer": "Nein. Die Vorschau zeigt die ersten 10 geparsten Zeilen, Key-Value-Einträge oder Datenzeilen, damit du die Parsing-Regeln schnell prüfen kannst. Kopieren und Herunterladen verwenden immer alle geparsten Elemente."
+      },
+      {
+        "question": "Kann ich eine große TXT-Datei umwandeln?",
+        "answer": "Das praktische Limit hängt von Dateigröße, Zeilenanzahl, Browser-Speicher, Parsing-Modus und Vorschau-Rendering ab. Sehr große Dateien können im Editor langsam gerendert werden; in diesem Fall ist ein lokaler Parser oder ein Kommandozeilen-Tool besser geeignet."
+      },
+      {
+        "question": "Wird mein Text auf einen Server hochgeladen?",
+        "answer": "Nein. Die Seite liest die Eingabe und erzeugt JSON in deinem Browser. Du solltest dennoch vermeiden, Passwörter, Zugriffstokens, private Kundendaten oder vertrauliche Produktiv-Texte in ein browserbasiertes Tool einzugeben."
+      },
+      {
+        "question": "Ist dies ein kostenloser TXT-zu-JSON-Konverter?",
+        "answer": "Ja. Du kannst Text einfügen oder öffnen, einen Parsing-Modus wählen, die Ausgabe prüfen und JSON kopieren oder herunterladen, ohne ein Konto zu erstellen."
+      }
+    ],
+    "article": {
+      "title": "TXT und reinen Text in JSON umwandeln",
+      "content": "<h2> Was ist TXT-zu-JSON-Umwandlung?</h2><p> Die TXT-zu-JSON-Umwandlung macht aus unstrukturiertem oder semistrukturiertem Text ein JSON-Objekt oder -Array. Anders als bei einer festen Formatumwandlung definiert reiner Text keine universelle Struktur, daher muss der Konverter explizite Parsing-Regeln anwenden.</p><p> Eine Zeilenliste, eine Key-Value-Datei und eine CSV-ähnliche Tabelle sind alle Text, sollten aber unterschiedliche JSON-Formen ergeben. Die Wahl des richtigen Parsing-Modus ist wichtiger als das Ändern der Dateiendung.</p><h2> Wähle den richtigen Parsing-Modus</h2><ul><li><strong>Lines to array:</strong> verwende, wenn jede nicht leere Zeile ein String-Wert ist.</li><li><strong>Key-Wert text:</strong> verwende, wenn jede Zeile einen Schlüssel und einen Wert enthält, getrennt durch einen Doppelpunkt oder ein Gleichheitszeichen.</li><li><strong>Delimited rows:</strong> verwende, wenn der Text Spalten hat, die durch Kommas, Tabulatoren, Semikolons oder Senkrechtstriche getrennt sind.</li></ul><h2> Zeilen in ein JSON-Array umwandeln</h2><p>Input:</p><pre><code>Alice\nBob\nCharlie</code></pre><p>Output:</p><pre><code>[\"Alice\", \"Bob\", \"Charlie\"]</code></pre><p> Dieser Modus eignet sich für Listen von IDs, URLs, E-Mails, Tags und Schlüsselwörtern. Das Array behält die Eingabereihenfolge, und „Doppelte Zeilen entfernen“ verwirft spätere Duplikate, während das erste Auftreten erhalten bleibt.</p><h2> Key-Value-Text in ein JSON-Objekt umwandeln</h2><p>Input:</p><pre><code>name: Alice\nage: 30\nactive: true</code></pre><p> Ausgabe mit aktivierter Option „Grundlegende Typen ableiten“:</p><pre><code>{\n  \"name\": \"Alice\",\n  \"age\": 30,\n  \"active\": true\n}</code></pre><p> Bei deaktivierter Option, dem Standard, ist die Ausgabe:</p><pre><code>{\n  \"name\": \"Alice\",\n  \"age\": \"30\",\n  \"active\": \"true\"\n}</code></pre><p> Key-Value-Parsing teilt jede Zeile am <strong>first</strong> Trennzeichen. Eine Zeile wie <code>url: https://example.com/a:b</code> ergibt den Schlüssel <code>url</code> und the Wert <code>https://example.com/a:b</code> statt die URL auseinanderzubrechen. Zeilen ohne Trennzeichen oder mit leerem Schlüssel werden übersprungen und in der Vorschau gezählt, statt die gesamte Umwandlung scheitern zu lassen.</p><h2> Durch Trennzeichen getrennten Text in JSON-Datensätze umwandeln</h2><p>Input:</p><pre><code>name,age,city\nAlice,30,New York\nBob,25,London</code></pre><p>Output:</p><pre><code>[\n  {\"name\":\"Alice\",\"age\":\"30\",\"city\":\"New York\"},\n  {\"name\":\"Bob\",\"age\":\"25\",\"city\":\"London\"}\n]</code></pre><p> Verwende einen CSV-kompatiblen Parser, wenn Felder Trennzeichen, maskierte Anführungszeichen oder Zeilenumbrüche enthalten können. Im Modus mit Trennzeichen werden maskierte Felder unterstützt: Ein in doppelte Anführungszeichen eingeschlossener Wert darf das Trennzeichen und Zeilenumbrüche enthalten, und zwei aufeinanderfolgende doppelte Anführungszeichen darin stellen ein wörtliches Anführungszeichen dar. Ein einfaches Aufteilen am Trennzeichen reicht für solche Daten nicht aus.</p><h2> Typhinferenz kann Werte ändern</h2><p> Reiner Text trägt kein zuverlässiges Typsystem. Dieser Konverter leitet nur eine enge Menge von Werten ab, und nur wenn „Grundlegende Typen ableiten“ aktiviert ist: kleingeschriebenes <code>true</code> und <code>false</code> werden zu Booleans, und einfache ganze Zahlen oder Dezimalzahlen, die <code>-?\\d+</code> oder <code>-?\\d+\\.\\d+</code> werden Zahlen.</p><ul><li><strong>Leading zeros:</strong> <code>00123</code> bleibt der String \"00123\".</li><li><strong>Version Strings:</strong> <code>1.10</code> würde als Zahl die nachgestellte Null verlieren, daher bleibt sie bei deaktivierter Inferenz Text.</li><li><strong> Großgeschriebene und null-ähnliche Texte:</strong> <code>TRUE</code>, <code>FALSE</code>, und <code>NULL</code> werden nicht erkannt und bleiben Strings.</li><li><strong>Scientific notation:</strong> <code>1e5</code> wird nicht erkannt und bleibt ein String.</li><li><strong>Dates und postal codes:</strong> werden als Text behandelt, es sei denn, du aktivierst die Inferenz und sie passen zufällig zu den numerischen Mustern.</li></ul><p> Lass die Typhinferenz deaktiviert, wenn das Bewahren des exakten Quelltexts wichtiger ist als Bequemlichkeit.</p><h2>Headers und Uneven Rows</h2><p> Eingaben mit Trennzeichen können eine Kopfzeile, fehlende Werte, zusätzliche Werte oder leere Kopfzellen enthalten. Wenn „Erste Zeile ist Kopfzeile“ aus ist oder eine Kopfzelle leer ist, erzeugt der Konverter die Namen <code>column_1</code>, <code>column_2</code>, und so weiter. Zeilen mit einer anderen Spaltenanzahl werden in der Vorschau hervorgehoben und als Warnung gemeldet; die Umwandlung läuft dennoch, fehlende Zellen werden zu leeren Werten und zusätzliche Werte über die Spaltenanzahl hinaus werden ignoriert.</p><h2> Text-zu-JSON ist kein Verständnis natürlicher Sprache</h2><p> Reiner Text kann mehrdeutig sein. Ein Absatz, eine Protokolldatei, ein Markdown-Dokument oder eine KI-Antwort kann ohne Regeln nicht zu einer sinnvollen JSON-Struktur werden. Verwende ein explizites Muster wie ein Element pro Zeile, Key-Value-Paare oder ein konsistentes Trennzeichen. Bei KI-generierter Ausgabe stelle zuerst sicher, dass sie einer vorhersehbaren Struktur folgt.</p><h2> TXT-zu-JSON vs. JSON-String-Parsing</h2><p> TXT zu JSON kann mehrere Dinge bedeuten. Diese Seite verarbeitet strukturierten reinen Text und Textdateien. Wenn die Eingabe bereits ein JSON-kodierter String ist wie <code>\"{\\\"name\\\":\\\"Alice\\\"}\"</code> verwende stattdessen einen JSON-Unescape-Workflow. Wenn die Eingabe ein gewöhnliches JSON-Dokument ist, verwende einen JSON-Formatierer oder -Validator statt eines Text-Konverters.</p><h2>TXT to JSON vs JSONL</h2><p> Ein JSON-Array speichert viele Werte in einem JSON-Dokument. JSON Lines speichert einen JSON-Wert pro Zeile. Diese Seite gibt ein JSON-Array oder ein JSON-Objekt aus und bietet keinen JSONL-Ausgabe-Modus; wenn ein nachgelagertes System JSONL benötigt, wandle es in einem separaten Schritt um.</p><h2> Datenschutz und browserbasierte Verarbeitung</h2><p> Dieser Konverter liest Text und erzeugt JSON im Browser statt die Eingabe an einen entfernten Dienst hochzuladen. Das ist nützlich für interne Listen und Entwicklungsdaten, aber kein System zur Geheimnisverwaltung. Vermeide Zugangsdaten, Tokens, private Kundendatensätze oder vertrauliche Produktiv-Texte in einem Online-Tool.</p><h2> Wann einen lokalen Parser nutzen</h2><p> Für sehr große Dateien, wiederholbare Datenpipelines, strenge CSV-Kompatibilität, vertrauliche Daten oder automatisierte Verarbeitung verwende einen lokalen Parser oder einen Kommandozeilen-Workflow. Die Browser-Umwandlung eignet sich am besten für schnelle Umwandlungen, Prüfung und kleine bis mittlere Eingaben.</p>"
     }
   }
 }

@@ -315,5 +315,157 @@
       "title": "如何在线将 JSON 转换为 PDF",
       "content": "<h2>什么是 JSON 转 PDF 转换器？</h2><p>JSON 转 PDF 转换器会把 JSON 解析、格式化后写入 PDF 文件，便于打印、归档和分享。它适合需要把接口响应、配置或日志片段交给非技术同事，或者需要留存一份不易被误改的副本的场景。</p><p>它做的是“把 JSON 文本排版成 PDF”，而不是把数据变成报表。表格布局、图表、页眉页脚和自定义主题都不在本页能力范围内。</p><h2>常见使用场景</h2><ul><li><strong>存档：</strong>把接口响应的快照保存为 PDF，用于事后复盘或审计。</li><li><strong>分享：</strong>把 JSON 交给不需要编辑原始数据的人阅读。</li><li><strong>打印：</strong>把配置或日志片段打印出来用于评审、培训或会议讨论。</li><li><strong>交付物：</strong>在文档或工单里附带一份格式稳定的 JSON 副本。</li></ul><h2>如何将 JSON 转换为 PDF</h2><ol><li><strong>输入 JSON：</strong>粘贴 JSON，或打开 .json 文件。</li><li><strong>预览格式：</strong>页面会格式化 JSON 并按当前字号和方向分页。</li><li><strong>选择字号和方向：</strong>内容多时用小字号加横向，内容少时用纵向。</li><li><strong>下载：</strong>点击下载 PDF；需要继续编辑时可下载 TXT。</li><li><strong>检查输出：</strong>打开 PDF 确认分页和换行符合预期。</li></ol><h2>JSON 文本型 PDF 与报表型 PDF</h2><p>文本型 PDF 保留 JSON 的缩进结构，逐行呈现键和值，适合阅读与核对。报表型 PDF 会把数组渲染成表格、把对象渲染成键值清单，适合业务汇报。</p><p>本页属于前者：它不猜测数据的业务含义，也不会生成表格或图表。如果你需要报表形态，应先用 JSON 转 CSV 或表格工具整理数据，再用报表工具输出。</p><h2>纵向与横向</h2><p>纵向更接近文档阅读习惯，适合层级深、单行短的数据；横向能提供更大的行宽，适合键名长或值很长的 JSON，可以减少换行和总页数。选择时可以先用预览确认分页效果。</p><h2>PDF 文本与可搜索性</h2><p>由文本对象构成的 PDF，通常可以在兼容的阅读器中选中和搜索；而截图式导出虽然看起来一样，但字符并不是可选文本。</p><p>最终得到哪一种，取决于 JSON 里的字符。只使用内置 PDF 字体覆盖字符（Latin-1）的内容会以真实文本对象写入；包含该范围之外字符（例如中文）的内容会导出为渲染图像，以保证显示正确，但其中的文本无法选中或搜索。</p><h2>需要留意的限制</h2><ul><li><strong>必须是合法 JSON：</strong>非法输入会报错，不会生成输出。</li><li><strong>大文件：</strong>非常大的 JSON 会占用较多内存，格式化、预览和生成都会变慢。</li><li><strong>字体覆盖：</strong>超出内置字体范围的字符会触发图像回退。</li><li><strong>排版选项有限：</strong>只能调整字号和方向，不能改页边距或添加页眉页脚。</li></ul><h2>什么时候该换别的工具</h2><p>如果你需要数组表格、图表、分组统计或品牌化的报表样式，本页并不合适。先把 JSON 转成 CSV、表格或 Excel，再用报表或 BI 工具输出 PDF，通常更高效。</p><h2>浏览器本地处理与隐私</h2><p>PDF 在你的浏览器中生成，不需要把 JSON 上传到远程转换服务。这对日常开发和排查很方便，但它不是密钥管理方案。请勿在浏览器工具中粘贴密码、API 密钥、访问令牌或生产环境的敏感数据。</p><h2>保留原始 JSON</h2><p>PDF 适合阅读和归档，但不适合继续编辑。请把原始 JSON 或格式化后的 TXT 一并保留，后续需要修改、重新生成或导入其他工具时会省很多事。</p>"
     }
+  },
+  "de": {
+    "name": "JSON-zu-PDF-Konverter",
+    "description": "Wandle JSON-Daten online in ein druckbares PDF-Dokument um. Zeige formatiertes JSON mit Einrückung an, wähle Schriftgröße und Seitenausrichtung und lade das Ergebnis direkt aus deinem Browser als PDF oder reine Textdatei herunter.",
+    "ui": {
+      "label_input": "JSON eingeben",
+      "label_preview": "Formatierte Vorschau",
+      "btn_preview": "JSON anzeigen",
+      "btn_example": "Beispiel laden",
+      "btn_download_pdf": "PDF herunterladen",
+      "btn_download_txt": "TXT herunterladen",
+      "option_font_size": "Schriftgröße:",
+      "option_orientation": "Ausrichtung:",
+      "option_portrait": "Hochformat",
+      "option_landscape": "Querformat",
+      "placeholder_preview": "Formatierte JSON-Vorschau erscheint hier …",
+      "error_invalid_json": "Eingabe ist kein gültiges JSON",
+      "error_pdf_generation": "Das PDF konnte nicht erzeugt werden",
+      "label_pdf_title": "JSON-Ausgabe",
+      "notice_snapshot_fallback": "Dieses PDF wurde als Bild gerendert, weil das JSON Zeichen außerhalb der integrierten PDF-Schriften enthält."
+    },
+    "hero": {
+      "trustHtml": "Läuft in deinem Browser. Dein JSON wird von diesem Tool nicht hochgeladen."
+    },
+    "meta": {
+      "title": "JSON-zu-PDF-Konverter – Kostenloses Online-Tool",
+      "description": "Wandle JSON online in ein druckbares PDF um. Formatiere und zeige JSON an, wähle Schriftgröße und Seitenausrichtung und lade eine PDF- oder TXT-Datei herunter. Kostenlos und browserbasiert.",
+      "keywords": [
+        "json to pdf",
+        "convert json to pdf",
+        "json to pdf converter",
+        "json to pdf online",
+        "json to pdf generator",
+        "online json to pdf",
+        "free json to pdf",
+        "json report to pdf"
+      ]
+    },
+    "features": [
+      {
+        "icon": "lucide:file-text",
+        "title": "Formatiertes JSON als PDF",
+        "description": "Erzeuge ein druckbares PDF mit deinem JSON in lesbarer Einrückung und einem Monospace-ähnlichen Layout. Die Ausgabe ist für Prüfung, Dokumentation, Teilen und Archivierung gedacht. Lange Werte werden umgebrochen und das Dokument wird nach Größe und Ausrichtung seitenweise unterteilt."
+      },
+      {
+        "icon": "lucide:eye",
+        "title": "Vorschau vor dem Herunterladen",
+        "description": "Zeige das formatierte JSON an, bevor du das PDF erzeugst. So bestätigst du, dass die Eingabe korrekt geparst wurde und die Ausgabe lesbar ist."
+      },
+      {
+        "icon": "lucide:settings-2",
+        "title": "Schrift- und Ausrichtungsoptionen",
+        "description": "Wähle die verfügbare Schriftgröße und wechsle zwischen Hoch- und Querformat, um die Lesbarkeit von schmalen oder breiten JSON-Inhalten zu verbessern."
+      },
+      {
+        "icon": "lucide:download",
+        "title": "PDF- und TXT-Downloads",
+        "description": "Lade das formatierte Ergebnis als PDF zum Drucken oder Teilen herunter, oder speichere es als reine Textdatei für die Verwendung in einem Editor, Skript oder Dokumentations-Workflow."
+      },
+      {
+        "icon": "lucide:upload",
+        "title": "JSON einfügen oder öffnen",
+        "description": "Füge JSON in den Editor ein oder öffne eine .json-Datei von deinem Gerät. Die Eingabe wird im Browser gelesen und formatiert."
+      },
+      {
+        "icon": "lucide:search",
+        "title": "Auswählbarer Text",
+        "description": "Das PDF wird aus echten Textobjekten statt aus einem Screenshot erstellt, sodass Schlüssel und Werte in kompatiblen Lesern auswählbar bleiben. Der Textmodus gilt für Inhalte innerhalb der integrierten PDF-Schriften; JSON mit anderen Zeichen wird als gerendertes Bild exportiert."
+      },
+      {
+        "icon": "lucide:shield-check",
+        "title": "Verarbeitung im Browser",
+        "description": "JSON-Parsing und Dokumenterzeugung finden in deinem Browser statt. Die Seite erfordert kein Konto und lädt das Quell-JSON nicht auf einen entfernten Konvertierungsdienst hoch."
+      }
+    ],
+    "guide": [
+      {
+        "title": "JSON eingeben oder öffnen",
+        "description": "Füge ein JSON-Objekt oder -Array in das Eingabefeld ein oder öffne eine .json-Datei von deinem Gerät. Die Eingabe muss gültiges JSON sein, bevor sie formatiert werden kann."
+      },
+      {
+        "title": "Die formatierte Ausgabe anzeigen",
+        "description": "Klicke auf „JSON anzeigen“, um die Eingabe zu validieren und zu formatieren. Prüfe Einrückung, lange Zeilen, verschachtelte Strukturen und die allgemeine Lesbarkeit vor dem Herunterladen."
+      },
+      {
+        "title": "PDF-Optionen wählen",
+        "description": "Wähle die verfügbare Schriftgröße und Hoch- oder Querformat. Querformat kann leichter lesbar sein, wenn JSON-Zeilen breit sind."
+      },
+      {
+        "title": "PDF oder TXT herunterladen",
+        "description": "Lade das formatierte JSON als PDF zum Drucken, Teilen oder Archivieren herunter, oder nutze den TXT-Download, wenn du bearbeitbaren reinen Text benötigst."
+      }
+    ],
+    "example": {
+      "input": "{\n  \"report\": \"Q1 2026\",\n  \"revenue\": 150000,\n  \"expenses\": 80000,\n  \"profit\": 70000\n}",
+      "output": "Formatted JSON preview available for PDF or TXT download.",
+      "useCase": "Erstelle eine druckbare Kopie eines JSON-Berichts oder einer API-Antwort für Dokumentation und Prüfung."
+    },
+    "faq": [
+      {
+        "question": "Was erzeugt dieser JSON-zu-PDF-Konverter?",
+        "answer": "Diese Seite erzeugt ein PDF mit formatiertem JSON-Text. Es ist für lesbare Prüfung, Drucken, Dokumentation, Teilen und Archivierung gedacht. Es ist nicht automatisch ein Geschäftsbericht oder eine Tabellenansicht, sofern solche Layouts nicht ausdrücklich von der Implementierung unterstützt werden."
+      },
+      {
+        "question": "Kann ich ein JSON-Array in eine PDF-Tabelle umwandeln?",
+        "answer": "Die aktuelle Seite formatiert JSON als JSON-Text. Ein JSON-Array wird nicht automatisch in eine Tabelle umgewandelt, sofern kein separates Tabellen-Layout implementiert ist. Verwende ein JSON-zu-Tabelle- oder JSON-zu-PDF-Bericht-Tool, wenn du Zeilen und Spalten benötigst."
+      },
+      {
+        "question": "Ist das erzeugte PDF durchsuchbar?",
+        "answer": "Für JSON, das nur Zeichen verwendet, die von den integrierten PDF-Schriften abgedeckt sind (Latin-1), wird das PDF als echter Text geschrieben und kann in kompatiblen Lesern ausgewählt und durchsucht werden. Enthält das JSON Zeichen außerhalb dieses Bereichs, etwa CJK-Text, exportiert die Seite stattdessen ein gerendertes Bild und der Text ist nicht durchsuchbar."
+      },
+      {
+        "question": "Warum wurde mein PDF als Bild exportiert?",
+        "answer": "Die integrierten PDF-Schriften decken nur einen begrenzten Zeichensatz ab. Enthält das JSON Zeichen außerhalb dieses Satzes, rendert die Seite jede Seite als Bild, damit der Inhalt trotzdem korrekt angezeigt wird. Der Nachteil ist, dass der Text in dieser Datei nicht auswählbar oder durchsuchbar ist. Das Entfernen oder Transliterieren dieser Zeichen oder ein PDF-Tool mit eingebetteter Schrift vermeidet den Rückfall."
+      },
+      {
+        "question": "Kann ich das PDF-Layout anpassen?",
+        "answer": "Du kannst die in der Oberfläche verfügbare Schriftgröße und Seitenausrichtung wählen. Die aktuelle Seite stellt nicht unbedingt Berichtstitel, Ränder, Farben, Kopf- und Fußzeilen, Tabellen oder mehrere Layout-Vorlagen bereit."
+      },
+      {
+        "question": "Wann sollte ich Hoch- oder Querformat verwenden?",
+        "answer": "Hochformat eignet sich für schmalere JSON-Zeilen und gewöhnliche Dokumente. Querformat kann mehr horizontalen Platz für lange Schlüssel, URLs, verschachtelte Werte oder breit formatierte Inhalte bieten, ersetzt aber nicht die Notwendigkeit, sehr lange Zeilen zu prüfen."
+      },
+      {
+        "question": "Kann ich das formatierte JSON als Text herunterladen?",
+        "answer": "Ja. Verwende „TXT herunterladen“, um das formatierte JSON als reine Textdatei zu speichern. TXT ist nützlich, wenn du das Ergebnis in einem Code-Editor bearbeiten oder in einem anderen Skript wiederverwenden möchtest."
+      },
+      {
+        "question": "Kann ich eine .json-Datei hochladen?",
+        "answer": "Ja. Du kannst eine .json-Datei von deinem Gerät öffnen oder JSON direkt in das Eingabefeld einfügen. Die Datei wird im Browser verarbeitet."
+      },
+      {
+        "question": "Kann ich ungültiges oder minimiertes JSON umwandeln?",
+        "answer": "Minimiertes, aber gültiges JSON kann formatiert und umgewandelt werden. Ungültiges JSON muss zuerst korrigiert werden, sofern die Seite nicht ausdrücklich eine Reparaturfunktion bietet. Häufige Probleme sind fehlende Kommas, nicht zusammenpassende Klammern, ungültige Anführungszeichen und nachgestellte Kommas."
+      },
+      {
+        "question": "Kann ich eine große JSON-Datei umwandeln?",
+        "answer": "Das praktische Limit hängt von Browser-Speicher, Geräteleistung, Dokumentkomplexität, PDF-Seitenerzeugungszeit und Zeilenanzahl ab. Sehr große JSON-Dateien können ein großes Dokument erzeugen oder länger zum Anzeigen und Herunterladen brauchen."
+      },
+      {
+        "question": "Wird mein JSON auf einen Server hochgeladen?",
+        "answer": "Diese Seite ist dazu konzipiert, das JSON in deinem Browser ohne Server-Upload zu parsen und das Dokument zu erzeugen. Du solltest dennoch vermeiden, Passwörter, API-Schlüssel, Zugriffstokens, persönliche Informationen oder vertrauliche Produktivdaten in ein browserbasiertes Tool einzugeben."
+      },
+      {
+        "question": "Ist dies ein kostenloser JSON-zu-PDF-Konverter?",
+        "answer": "Ja. Du kannst JSON einfügen oder öffnen, das formatierte Ergebnis anzeigen und eine PDF- oder TXT-Datei herunterladen, ohne ein Konto zu erstellen."
+      }
+    ],
+    "article": {
+      "title": "JSON online in PDF umwandeln",
+      "content": "<h2> Was ist ein JSON-zu-PDF-Konverter?</h2><p> Ein JSON-zu-PDF-Konverter macht aus strukturierten JSON-Daten ein druckbares Dokument. Statt rohes JSON nur im Code-Editor oder Browser anzusehen, kannst du ein PDF erstellen, das sich leichter teilen, drucken, an Dokumentation anhängen oder archivieren lässt.</p><p> Diese Seite erzeugt ein formatiertes JSON-Dokument. Sie bewahrt die JSON-Darstellung als lesbaren Text statt automatisch jedes Array in eine Berichtstabelle oder jedes Objekt in ein Geschäftsdokument umzuwandeln.</p><h2>Common Use Cases</h2><ul><li><strong>Documentation:</strong> Speichere eine formatierte API-Antwort, ein Konfigurationsbeispiel oder eine Datenstruktur als Dokument.</li><li><strong>Printing:</strong> Erstelle eine druckbare Kopie von JSON-Daten zur Prüfung oder Offline-Referenz.</li><li><strong>Sharing:</strong> Sende eine lesbare Darstellung strukturierter Daten an jemanden, der keinen Code-Editor verwendet.</li><li><strong>Archiving:</strong> Halte eine feste PDF-Momentaufnahme von JSON-Daten zu einem bestimmten Zeitpunkt fest.</li><li><strong>Debugging:</strong> Exportiere eine formatierte Antwort oder Konfigurationsdatei zur Diskussion, für Issue-Berichte oder technische Prüfung.</li></ul><h2> Wie man JSON in PDF umwandelt</h2><ol><li><strong>Enter JSON:</strong> Füge ein JSON-Objekt oder -Array ein oder öffne eine .json-Datei.</li><li><strong>Validate und format:</strong> Klicke auf „JSON anzeigen“, um zu prüfen, ob die Eingabe gültig ist, und sie mit lesbarer Einrückung anzuzeigen.</li><li><strong> Wähle die Layout-Optionen:</strong> Wähle die verfügbare Schriftgröße und Hoch- oder Querformat.</li><li><strong>Review the preview:</strong> Prüfe lange Zeilen, verschachtelte Strukturen, Sonderzeichen und Seitenlesbarkeit, bevor du die Datei erzeugst.</li><li><strong>Download:</strong> Speichere das Ergebnis als PDF zum Teilen oder Drucken, oder lade TXT für eine bearbeitbare reine Textversion herunter.</li></ol><h2> JSON-Text-PDF vs. JSON-Bericht-PDF</h2><p> Es gibt verschiedene Möglichkeiten, JSON in einem PDF darzustellen. Ein textorientierter Konverter bewahrt die vertraute JSON-Syntax, Einrückung, Klammern, Arrays und Key-Value-Beziehungen. Ein berichtsorientierter Konverter kann Arrays stattdessen als Tabellen, Objekte als Key-Value-Abschnitte und verschachtelte Daten als strukturierten Bericht darstellen.</p><ul><li><strong>Formatted JSON PDF:</strong> Besser zum Bewahren der Quelldarstellung und Prüfen exakter Schlüssel und Werte.</li><li><strong>Table PDF:</strong> Besser für Arrays von Datensätzen, die als Zeilen und Spalten gelesen werden müssen.</li><li><strong>Report PDF:</strong> Besser, wenn du einen Titel, Abschnitte, Zusammenfassungen, Formatierung und ein präsentationsorientiertes Layout benötigst.</li></ul><p> Wähle ein Tabellen- oder Bericht-Layout, wenn das Ziel ist, Daten nicht-technischen Lesern zu vermitteln. Wähle formatiertes JSON, wenn das Bewahren der maschinenlesbaren Struktur wichtiger ist.</p><h2> Hoch- und Querformat</h2><p> Hochformat ist meist für gewöhnliches formatiertes JSON geeignet. Querformat kann breite Zeilen leichter prüfbar machen, insbesondere wenn Schlüssel lang sind oder das Dokument tief verschachtelte Werte enthält. Die Ausrichtung umbricht nicht automatisch jede Zeile korrekt, sodass sehr lange Strings und URLs dennoch horizontale Prüfung oder zusätzliche Layout-Regeln erfordern können.</p><h2> PDF-Text und Durchsuchbarkeit</h2><p> Ein mit Textobjekten erzeugtes PDF kann in einem kompatiblen PDF-Viewer allgemein ausgewählt und durchsucht werden. Das unterscheidet sich vom Export eines Screenshots, bei dem die sichtbaren Zeichen möglicherweise nicht als durchsuchbarer Text verfügbar sind.</p><p> Welche du erhältst, hängt von den Zeichen im JSON ab. Inhalte, die nur Zeichen der integrierten PDF-Schriften verwenden, werden als echte Textobjekte geschrieben. Inhalte mit Zeichen außerhalb dieses Satzes, etwa CJK-Text, werden als gerendertes Bild exportiert, damit die Datei trotzdem korrekt angezeigt wird, aber dieser Text ist nicht auswählbar oder durchsuchbar.</p><h2> Wichtige JSON-Einschränkungen</h2><ul><li><strong>Invalid input:</strong> JSON muss gültig sein, bevor es zuverlässig formatiert und exportiert werden kann.</li><li><strong>Large documents:</strong> Große Dateien können erheblichen Browser-Speicher benötigen und viele PDF-Seiten erzeugen.</li><li><strong>Long lines:</strong> Lange Strings, URLs und ununterbrochene Werte passen ohne Umbruch- oder Kürzungsregeln möglicherweise nicht sauber auf eine Seite.</li><li><strong>Data Typs:</strong> Ein PDF ist ein Präsentationsdokument und sollte nicht als Ersatz für die ursprüngliche JSON-Datei behandelt werden.</li><li><strong>Dynamic data:</strong> Das PDF ist eine Momentaufnahme der Eingabe zum Zeitpunkt der Erzeugung und aktualisiert sich nicht, wenn sich die Quelldaten ändern.</li></ul><h2> Wann ein JSON-zu-PDF-Bericht-Tool nutzen</h2><p> Verwende einen berichtsorientierten Konverter, wenn du einen Titel, ein Tabellenlayout, Seitengröße, Ränder, wiederholte Tabellenüberschriften, Zeilennummern oder eine ansprechendere Darstellung benötigst. Aktuelle JSON-zu-PDF-Tools in den Suchergebnissen bieten zunehmend Arrays-zu-Tabelle-Ausgabe, Key-Value-Layouts, Berichtstitel, Seitenoptionen und druckreife Formatierung.[205][206][208][214]</p><h2>Browser-Based Privacy</h2><p> Diese Seite ist darauf ausgelegt, JSON im Browser zu formatieren und das Dokument zu erzeugen statt die Quelldaten an einen entfernten Konvertierungsdienst zu senden. Das kann für Entwicklungsdaten und interne Dokumentation nützlich sein. Es ersetzt keine sichere Dokumentverarbeitung, daher vermeide Zugangsdaten, private Kundeninformationen, API-Schlüssel oder Produktiv-Geheimnisse in einem Online-Tool.</p><h2>Keep the Original JSON</h2><p> Bewahre immer das ursprüngliche JSON auf, falls die Daten erneut geparst werden müssen. Ein PDF ist zum Lesen, Drucken und Teilen nützlich, aber kein verlustfreier Ersatz für die JSON-Quellstruktur oder ihre maschinenlesbaren Typen.</p>"
+    }
   }
 }

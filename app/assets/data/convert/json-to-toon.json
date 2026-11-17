@@ -5,8 +5,16 @@
   "icon": "lucide:sparkles",
   "sort": 19,
   "applicationCategory": "DeveloperApplication",
-  "nextSteps": ["json-minifier", "json-editor"],
-  "recommends": ["json-to-csv", "json-to-table", "json-schema-generator", "json-parse-stringify"],
+  "nextSteps": [
+    "json-minifier",
+    "json-editor"
+  ],
+  "recommends": [
+    "json-to-csv",
+    "json-to-table",
+    "json-schema-generator",
+    "json-parse-stringify"
+  ],
   "relatedPosts": [
     "json-vs-toon"
   ],
@@ -432,6 +440,218 @@
     "article": {
       "title": "JSON 转 TOON：先对比再决定",
       "content": "<h2>什么是 TOON</h2><p>TOON（Token-Oriented Object Notation，面向 token 的对象表示法）是 JSON 兼容结构化数据的一种紧凑表示，用于关注 token 消耗的场景，例如 LLM 提示词、AI 智能体和模型工具调用。它对重复的对象数组采用表格形式，同时保留嵌套数据的可读形式。</p><p>TOON 不是 JSON 的通用替代品。JSON 仍是接口、浏览器、数据库和通用应用互操作的标准格式。TOON 是在需要缩小 LLM 输入体积时可以试用的一��可选表示。</p><h2>如何对比 JSON 与 TOON</h2><ol><li><strong>输入 JSON</strong> 或 TOON，取决于你要的方向。</li><li><strong>转换</strong>并查看生成的输出。</li><li><strong>对比</strong>TOON 与压缩 JSON 的字符数、UTF-8 字节数和估算 token 数。</li><li><strong>看提示信息</strong>：TOON 是否真的更小，以及是否发现了统一对象数组。</li><li><strong>用「交换方向」做往返</strong>，确认数据能完整还原。</li><li><strong>测试理解程度</strong>：确认目标模型和提示词说明能正确解读 TOON 输出。</li></ol><h2>为什么统一数组可能受益</h2><p>重复的对象数组在 JSON 里会反复写出同样的字段名：</p><pre><code>{\"users\":[{\"id\":1,\"name\":\"Alice\",\"role\":\"admin\"},{\"id\":2,\"name\":\"Bob\",\"role\":\"editor\"}]}</code></pre><p>表格形式把字段声明一次，然后把值写成行：</p><pre><code>users[2]{id,name,role}:\n  1,Alice,admin\n  2,Bob,editor</code></pre><p>这是 TOON 能去掉重复语法的主要结构场景。</p><h2>TOON 不总是更小</h2><p>体积取决于数据的形状。统一数组可能受益，而嵌套很深的对象、稀疏记录、混合数组或配置对象可能差异很小，甚至变大。因此本页报告实测结果，并在 TOON 更大时给出警告，而不是重复某个固定的节省区间。</p><h2>字符、字节与 token 是三回事</h2><p>字符是编辑器里看到的，UTF-8 字节是传输和存储用的，token 才是模型计费的依据。某种表示可能字符更少但 token 并不更少，因为分词器有自己的切分方式。请对比与你成本对应的那个指标。</p><h2>关于 token 估算</h2><p>本页按字符数除以 4 并向上取整来估算 token，两侧使用同一公式。这是一个粗略的相对参考，不是某个模型分词器的真实计数。真实计数随模型和分词器不同而不同，成本决策前请用你自己的分词器核算。</p><h2>本页支持什么</h2><p>转换器支持对象与嵌套对象、基本类型数组的内联形式、字段统一对象数组的表格形式、非统一与混合数组的列表形式、空数组与空对象、根基本类型值、根对象与根数组，以及逗号、制表符、竖线分隔符。它没有实现键式表格根形式、嵌套字段组、键折叠和路径展开。</p><h2>往返与校验</h2><p>TOON 解析器会检查声明的数组长度与实际行数或条目数是否一致，数量不符的文档会被报错而不是被静默解析。可以用「交换方向」把输出回填，检查数据能否完整往返，重点留意含分隔符、冒号、引号或首尾空格的字符串。</p><h2>隐私与浏览器本地处理</h2><p>转换和对比都在浏览器里完成，粘贴的载荷留在你的设备上。这适合提示词和开发数据，但它不是密钥管理系统。不要把凭证、私密提示词或生产环境机密载荷粘贴到任何在线工具里。</p><h2>什么时候改用本地代码</h2><p>处理可重复的流水线、超大载荷或机密数据时，请在自己的环境里做转换，这样日志、token 计量和数据留存都由你控制。浏览器工具适合查看、一次性对比，以及判断某个载荷形状是否值得采用 TOON。</p>"
+    }
+  },
+  "de": {
+    "name": "JSON-zu-TOON-Konverter",
+    "description": "Wandle JSON in TOON und TOON zurück in JSON in deinem Browser um. Vergleiche minimiertes JSON und TOON nach Zeichen, UTF-8-Bytes und geschätzten Tokens für deine eigenen Daten, statt dich auf eine feste Einsparungsaussage zu verlassen.",
+    "hero": {
+      "trustHtml": "Läuft in deinem Browser. Deine JSON- und TOON-Daten werden von diesem Tool nicht hochgeladen."
+    },
+    "meta": {
+      "title": "JSON-zu-TOON-Konverter – LLM-Token-Verbrauch vergleichen",
+      "description": "Wandle JSON online in TOON um und vergleiche die Größe mit minimiertem JSON. Konvertiere TOON zurück in JSON, sieh die gemessenen Unterschiede bei Zeichen, Bytes und geschätzten Tokens und kopiere das Ergebnis. Kostenlos und browserbasiert.",
+      "keywords": [
+        "json to toon",
+        "toon to json",
+        "json toon converter",
+        "toon vs json",
+        "toon converter online",
+        "json to toon online",
+        "token optimized json",
+        "json for llm"
+      ]
+    },
+    "ui": {
+      "label_mode": "Konvertierungsmodus:",
+      "option_json_to_toon": "JSON zu TOON",
+      "option_toon_to_json": "TOON zu JSON",
+      "label_json_input": "JSON-Eingabe",
+      "label_toon_input": "TOON-Eingabe",
+      "label_json_output": "JSON-Ausgabe",
+      "label_toon_output": "TOON-Ausgabe",
+      "label_compare": "Formatvergleich",
+      "label_minified_json": "Minimiertes JSON",
+      "label_toon": "TOON",
+      "label_characters": "Zeichen:",
+      "label_bytes": "UTF-8-Bytes:",
+      "label_tokens": "Geschätzte Tokens:",
+      "label_difference": "Unterschied:",
+      "label_change": "Änderung:",
+      "label_warning": "Hinweis:",
+      "btn_convert": "Umwandeln",
+      "btn_swap": "Richtung tauschen",
+      "option_indent": "JSON-Einrückung:",
+      "option_indent_2": "2 Leerzeichen",
+      "option_indent_4": "4 Leerzeichen",
+      "option_minified": "Minimiert",
+      "option_delimiter": "TOON-Trenner:",
+      "option_comma": "Komma (,)",
+      "option_tab": "Tab",
+      "option_pipe": "Senkrechtstrich (|)",
+      "placeholder_json": "JSON hier einfügen …",
+      "placeholder_toon": "TOON hier einfügen …",
+      "error_empty_input": "Zuerst JSON- oder TOON-Daten eingeben",
+      "error_invalid_json": "Eingabe ist kein gültiges JSON",
+      "error_invalid_toon": "Eingabe ist kein gültiges TOON",
+      "warning_estimated_tokens": "Token-Anzahlen sind Schätzungen, keine Zählungen durch einen Modell-Tokenizer",
+      "warning_toon_larger": "TOON ist für diese Eingabe größer als minimiertes JSON",
+      "hint_uniform": "Ein gleichförmiges Objekt-Array wurde gefunden: TOON verwendet dafür die Tabellenform",
+      "hint_nested": "Es wurde kein gleichförmiges Objekt-Array gefunden und diese Daten sind tief verschachtelt: minimiertes JSON ist möglicherweise kleiner",
+      "hint_mixed": "Es wurde kein gleichförmiges Objekt-Array gefunden: vergleiche beide Ausgaben, bevor du wählst"
+    },
+    "features": [
+      {
+        "icon": "lucide:arrow-left-right",
+        "title": "Bidirektionales JSON und TOON",
+        "description": "Wandle JSON für tokenempfindliche LLM-Workflows in TOON um oder konvertiere unterstütztes TOON für Anwendungen, APIs und Standard-JSON-Tools zurück in JSON."
+      },
+      {
+        "icon": "lucide:bar-chart-3",
+        "title": "Gemessene Größe vergleichen",
+        "description": "Sieh Zeichen, UTF-8-Bytes und geschätzte Tokens für minimiertes JSON und TOON nebeneinander, sodass die Entscheidung auf deinen Daten statt auf einer festen Einsparungsaussage basiert."
+      },
+      {
+        "icon": "lucide:table-2",
+        "title": "Tabellenform für gleichförmige Arrays",
+        "description": "Gleichförmige Arrays von Objekten werden mit den Feldnamen ausgegeben, die einmal im Kopf deklariert sind, und einer Zeile pro Datensatz — hier entfernt TOON wiederholte Syntax."
+      },
+      {
+        "icon": "lucide:shield-alert",
+        "title": "Anzeigen, wenn TOON nicht kleiner ist",
+        "description": "Die Seite meldet, wenn TOON größer als minimiertes JSON ist, und kennzeichnet tief verschachtelte oder ungleichförmige Daten, die möglicherweise nicht von der Umwandlung profitieren."
+      },
+      {
+        "icon": "lucide:check-circle-2",
+        "title": "Beide Richtungen validieren",
+        "description": "JSON-Eingaben werden mit JSON.parse geparst und TOON-Eingaben mit einem TOON-Reader, der deklarierte Array-Längen und Zeilenbreiten prüft, sodass fehlerhafte Eingaben gemeldet statt stillschweigend akzeptiert werden."
+      },
+      {
+        "icon": "lucide:repeat-2",
+        "title": "Round-Trip mit Richtungswechsel",
+        "description": "Nutze „Richtung tauschen“, um die aktuelle Ausgabe wieder als Eingabe zu übernehmen und die umgekehrte Umwandlung auszuführen, damit du prüfen kannst, ob die Daten einen Round-Trip überstehen."
+      },
+      {
+        "icon": "lucide:download",
+        "title": "Das Ergebnis herunterladen",
+        "description": "Lade das umgewandelte TOON als .txt-Datei oder das umgewandelte JSON als .json-Datei für Prompts, Test-Fixtures, Pipelines oder Anwendungen herunter."
+      },
+      {
+        "icon": "lucide:shield-check",
+        "title": "Verarbeitung im Browser",
+        "description": "Umwandlung, Validierung und Vergleich finden in deinem Browser statt. Es ist kein Konto erforderlich und die Quelldaten werden nicht an einen entfernten Dienst gesendet."
+      }
+    ],
+    "guide": [
+      {
+        "title": "JSON oder TOON eingeben",
+        "description": "Füge JSON für die JSON-zu-TOON-Umwandlung ein oder TOON für die umgekehrte Richtung. Verwende Daten, die die Payload repräsentieren, die du tatsächlich senden möchtest."
+      },
+      {
+        "title": "Die Richtung wählen",
+        "description": "Wähle JSON zu TOON oder TOON zu JSON. Nutze „Richtung tauschen“, um die Ausgabe wieder als Eingabe zu verwenden und die umgekehrte Umwandlung auszuführen."
+      },
+      {
+        "title": "Mit minimiertem JSON vergleichen",
+        "description": "Der Vergleich misst TOON immer gegen minimiertes JSON, nicht gegen eingerücktes JSON, da Einrückung den Unterschied übertreiben würde."
+      },
+      {
+        "title": "Die Hinweise prüfen",
+        "description": "Lies den Hinweis zur Token-Schätzung, die Warnung, wenn TOON größer ist, und den Struktur-Hinweis, der dir sagt, ob ein gleichförmiges Objekt-Array gefunden wurde."
+      },
+      {
+        "title": "Kopieren oder herunterladen",
+        "description": "Kopiere oder lade die gewählte Darstellung herunter und teste sie mit dem Zielmodell und den Prompt-Anweisungen, bevor du dich im Produktivbetrieb darauf verlässt."
+      }
+    ],
+    "example": {
+      "title": "Ein gleichförmiges Datensatz-Array in TOON umwandeln",
+      "description": "Ein Array von Datensätzen mit denselben Feldern ist die Struktur, die TOON am kompaktesten darstellen kann.",
+      "inputLabel": "JSON eingeben",
+      "input": "{\n  \"users\": [\n    { \"id\": 1, \"name\": \"Alice\", \"role\": \"admin\" },\n    { \"id\": 2, \"name\": \"Bob\", \"role\": \"editor\" }\n  ]\n}",
+      "inputExplanation": "Ein Array, bei dem jedes Element ein Objekt mit denselben drei primitiven Feldern ist.",
+      "outputLabel": "TOON-Ausgabe",
+      "output": "users[2]{id,name,role}:\n  1,Alice,admin\n  2,Bob,editor",
+      "outputExplanation": "Die Feldnamen erscheinen einmal in der Kopfzeile, gefolgt von einer Zeile pro Datensatz mit dem standardmäßigen Komma-Trennzeichen.",
+      "note": "Das Vergleichsfeld zeigt die gemessenen Zeichen-, Byte- und geschätzten Token-Werte für diese Eingabe. Ein tief verschachteltes Konfigurationsobjekt ergibt meist einen viel kleineren Unterschied."
+    },
+    "faq": [
+      {
+        "question": "Was ist TOON?",
+        "answer": "TOON steht für Token-Oriented Object Notation. Es ist eine kompakte Darstellung JSON-kompatibler strukturierter Daten für tokenempfindliche LLM-Workflows. Es verwendet eine Tabellenform für wiederholte Objekt-Arrays, während verschachtelte Daten lesbar bleiben."
+      },
+      {
+        "question": "Verwendet TOON immer weniger Tokens als JSON?",
+        "answer": "Nein. Das Ergebnis hängt von der Datenstruktur und dem Tokenizer ab. Gleichförmige Arrays von Objekten können kleiner werden, während tief verschachtelte, spärliche, gemischte oder konfigurationsartige Daten wenig Unterschied oder eine größere Ausgabe als minimiertes JSON ergeben können. Das Vergleichsfeld zeigt, was für deine Eingabe tatsächlich passiert."
+      },
+      {
+        "question": "Warum wird TOON mit minimiertem JSON verglichen?",
+        "answer": "Weil das die realistische Vergleichsbasis ist. TOON mit eingerücktem JSON zu vergleichen misst Formatierungsaufwand statt Serialisierungseffizienz, wodurch der Unterschied größer wirkt, als er ist."
+      },
+      {
+        "question": "Wie genau ist die Token-Schätzung?",
+        "answer": "Es ist eine grobe Schätzung, keine Zählung durch einen Modell-Tokenizer. Diese Seite teilt die Zeichenanzahl durch vier und rundet auf, wobei dieselbe Formel auf beide Seiten angewendet wird. Echte Token-Anzahlen unterscheiden sich zwischen Modellen und Tokenizern, daher behandle die Zahlen als vergleichende Orientierung und prüfe mit deinem eigenen Tokenizer, wenn es um Kosten geht."
+      },
+      {
+        "question": "Welche TOON-Syntax unterstützt diese Seite?",
+        "answer": "Objekte und verschachtelte Objekte mit Key-Value-Zeilen und zwei Leerzeichen Einrückung; primitive Arrays in Inline-Form wie tags[3]: admin,ops,dev; gleichförmige Objekt-Arrays in Tabellenform mit einem Kopf, der die Felder deklariert; ungleichförmige Arrays und gemischte Werte in Listenform mit Bindestrich-Elementen; leere Arrays als key: [] und leere Objekte als key:; Wurzel-Primitive, Wurzel-Objekte und Wurzel-Arrays sowie Komma-, Tabulator- oder Senkrechtstrich-Trenner, die im Kopf deklariert werden."
+      },
+      {
+        "question": "Welche TOON-Funktionen werden nicht unterstützt?",
+        "answer": "Die schlüsselbasierte tabellarische Wurzelform wie [2:]{age,city}:, verschachtelte Feldgruppen wie field{sub1,sub2}, Schlüsselfaltung und Pfad-Erweiterung sind nicht implementiert. Eingaben, die sie verwenden, werden als ungültig gemeldet, statt teilweise dekodiert zu werden."
+      },
+      {
+        "question": "Kann ich TOON zurück in JSON umwandeln?",
+        "answer": "Ja, für die oben aufgeführte Syntax. Der Parser prüft außerdem, ob deklarierte Array-Längen zur Anzahl der Zeilen oder Elemente passen, sodass ein Dokument mit falscher Anzahl gemeldet statt stillschweigend akzeptiert wird."
+      },
+      {
+        "question": "Behält die Konvertierung meine Daten?",
+        "answer": "Für die unterstützte Syntax ja: Strings, Zahlen, Booleans, null, Objekte, Arrays und die Schlüsselreihenfolge bleiben erhalten, und die Seite kann dekodieren, was sie kodiert. Nutze „Richtung tauschen“, um einen Round-Trip mit deinen eigenen Daten auszuführen und das Ergebnis zu vergleichen — insbesondere bei Strings, die Trennzeichen oder Doppelpunkte enthalten."
+      },
+      {
+        "question": "Welche Trenner werden unterstützt?",
+        "answer": "Komma, Tabulator und Senkrechtstrich. Das gewählte Trennzeichen wird im TOON-Kopf deklariert und für Inline-Arrays, Tabellenzeilen und die Kopf-Feldliste verwendet. Werte, die das aktive Trennzeichen enthalten, werden automatisch maskiert."
+      },
+      {
+        "question": "Wann ist TOON am nützlichsten?",
+        "answer": "Größtenteils für große Arrays gleichförmiger Objekte und andere tabellarische Daten, die an ein LLM gesendet werden, bei denen wiederholte Feldnamen den Großteil der Syntax ausmachen. Teste die tatsächliche Payload, bevor du sie für Prompts, Agents oder Pipelines übernimmst."
+      },
+      {
+        "question": "Wann sollte ich minimiertes JSON behalten?",
+        "answer": "Behalte minimiertes JSON, wenn Kompatibilität, Standard-Tooling, tiefe Verschachtelung, spärliche Objekte, Konfigurationsdaten oder breite Parser-Unterstützung wichtiger sind als eine mögliche Größenreduktion."
+      },
+      {
+        "question": "Ist TOON ein Ersatz für JSON-APIs?",
+        "answer": "Nein. JSON bleibt das breit unterstützte Austauschformat für APIs, Browser, Datenbanken und Anwendungsbibliotheken. TOON ist besser als optionale Darstellung für kompatible KI- oder tokenempfindliche Workflows zu verstehen."
+      },
+      {
+        "question": "Kann ich TOON mit jedem LLM verwenden?",
+        "answer": "Nicht automatisch. Das Zielmodell muss die TOON-Syntax verstehen, und dein Prompt oder Systemanweisungen müssen das Format möglicherweise erklären. Teste Verständnis und Ausgabeverlässlichkeit, bevor du es produktiv einsetzt."
+      },
+      {
+        "question": "Senkt TOON die API-Kosten?",
+        "answer": "Es kann die Eingabe-Token-Kosten senken, wenn es für deinen Tokenizer weniger Tokens erzeugt, aber die tatsächlichen Kosten hängen vom Modell, Tokenizer, Payload, Prompt-Anweisungen, Ausgabeverhalten und Preis ab. Miss deinen echten Workflow, statt eine feste Prozentsatzersparnis anzunehmen."
+      },
+      {
+        "question": "Kann ich TOON hier mit CSV vergleichen?",
+        "answer": "Nein. Diese Seite vergleicht TOON nur mit minimiertem JSON. Es gibt auf dieser Seite keinen CSV-Vergleich."
+      },
+      {
+        "question": "Kann ich eine große JSON-Datei umwandeln?",
+        "answer": "Das praktische Limit hängt von Dokumentgröße, Verschachtelungstiefe, Browser-Speicher und Rendering ab. Sehr große Payloads können im Editor langsam gerendert werden; in diesem Fall ist ein lokaler Umwandlungsschritt besser geeignet."
+      },
+      {
+        "question": "Werden mein JSON oder TOON auf einen Server hochgeladen?",
+        "answer": "Nein. Die Seite parst, wandelt und vergleicht Daten in deinem Browser. Du solltest dennoch vermeiden, private Prompts, API-Schlüssel, Kundendaten oder vertrauliche Produktiv-Payloads in ein browserbasiertes Tool einzugeben."
+      },
+      {
+        "question": "Ist dies ein kostenloser JSON-zu-TOON-Konverter?",
+        "answer": "Ja. Du kannst unterstützte JSON- und TOON-Daten umwandeln, die Darstellungen vergleichen und die Ausgabe kopieren oder herunterladen, ohne ein Konto zu erstellen."
+      }
+    ],
+    "article": {
+      "title": "JSON zu TOON: Größe vor dem Wechsel vergleichen",
+      "content": "<h2>What Is TOON?</h2><p> TOON, oder Token-Oriented Object Notation, ist eine kompakte Darstellung JSON-kompatibler strukturierter Daten für tokenempfindliche Workflows wie LLM-Prompts, KI-Agenten und Modell-Tool-Aufrufe. Es verwendet eine tabellarische Darstellung für wiederholte Objekt-Arrays, während verschachtelte Daten lesbar bleiben.</p><p> TOON ist kein universeller Ersatz für JSON. JSON bleibt das Standardformat für APIs, Browser, Datenbanken und allgemeine Anwendungs-Interoperabilität. TOON ist eine optionale Darstellung, die du testen kannst, wenn die Reduktion der LLM-Eingabegröße wichtig ist.</p><h2> Wie man JSON und TOON vergleicht</h2><ol><li><strong>JSON eingeben</strong> oder TOON, je nach benötigter Richtung.</li><li><strong>Umwandeln</strong> und lies die erzeugte Ausgabe.</li><li><strong>Vergleichen</strong> TOON gegen minimiertes JSON nach Zeichen, UTF-8-Bytes und geschätzten Tokens.</li><li><strong>Read the notices</strong>: ob TOON tatsächlich kleiner ist und ob ein gleichförmiges Objekt-Array gefunden wurde.</li><li><strong>Round-trip</strong> mit „Richtung tauschen“, um zu bestätigen, dass die Daten den Round-Trip überstehen.</li><li><strong>Test comprehension</strong>: bestätige, dass das Zielmodell und die Prompt-Anweisungen die TOON-Ausgabe korrekt interpretieren.</li></ol><h2> Warum gleichförmige Arrays profitieren können</h2><p> Ein wiederholtes Array von Objekten schreibt dieselben Feldnamen in JSON viele Male:</p><pre><code>{\"users\":[{\"id\":1,\"name\":\"Alice\",\"role\":\"admin\"},{\"id\":2,\"name\":\"Bob\",\"role\":\"editor\"}]}</code></pre><p> Die Tabellenform deklariert die Felder einmal und schreibt die Werte als Zeilen:</p><pre><code>users[2]{id,name,role}:\n  1,Alice,admin\n  2,Bob,editor</code></pre><p> Das ist die zentrale strukturelle Situation, in der TOON wiederholte Syntax entfernt.</p><h2> TOON ist nicht immer kleiner</h2><p> Die Größe hängt von der Form der Daten ab. Gleichförmige Arrays können profitieren, während tief verschachtelte Objekte, spärliche Datensätze, gemischte Arrays oder Konfigurationsobjekte wenig Unterschied oder eine größere Ausgabe ergeben können. Deshalb meldet diese Seite das gemessene Ergebnis und warnt, wenn TOON größer ist, statt eine feste Einsparungsspanne zu wiederholen.</p><h2> Zeichen, Bytes und Tokens sind unterschiedlich</h2><p> Zeichen sind das, was der Editor anzeigt, UTF-8-Bytes das, was übertragen oder gespeichert wird, und Tokens das, was ein Modell berechnet. Eine Darstellung kann in Zeichen kleiner, aber nicht in Tokens sein, da Tokenizer Text auf eigene Weise zerlegen. Vergleiche die Metrik, die zu deinen Kosten passt.</p><h2>About the Token Estimate</h2><p> Diese Seite schätzt Tokens, indem sie die Zeichenanzahl durch vier teilt und aufrundet, wobei dieselbe Formel auf beide Seiten angewendet wird. Das ist eine grobe vergleichende Heuristik, keine Zählung durch einen bestimmten Modell-Tokenizer. Echte Anzahlen unterscheiden sich zwischen Modellen und Tokenizern, daher prüfe mit deinem eigenen Tokenizer, bevor du Kostenentscheidungen triffst.</p><h2>What This Page Supports</h2><p> Der Konverter verarbeitet Objekte und verschachtelte Objekte, primitive Arrays in Inline-Form, gleichförmige Objekt-Arrays in Tabellenform, ungleichförmige und gemischte Arrays in Listenform, leere Arrays und leere Objekte, Wurzel-Primitive, Wurzel-Objekte und Wurzel-Arrays sowie Komma-, Tabulator- oder Senkrechtstrich-Trenner. Er implementiert nicht die schlüsselbasierte tabellarische Wurzelform, verschachtelte Feldgruppen, Schlüsselfaltung oder Pfad-Erweiterung.</p><h2> Round-Trip und Validierung</h2><p> Der TOON-Reader prüft, ob deklarierte Array-Längen zur Anzahl der Zeilen oder Elemente passen, sodass ein Dokument mit falscher Anzahl gemeldet statt stillschweigend dekodiert wird. Nutze „Richtung tauschen“, um die Ausgabe wieder einzugeben und zu prüfen, ob deine Daten den Round-Trip überstehen, insbesondere bei Strings mit Trennzeichen, Doppelpunkten, Anführungszeichen oder führenden und nachgestellten Leerzeichen.</p><h2> Datenschutz und browserbasierte Verarbeitung</h2><p> Die Umwandlung und der Vergleich finden im Browser statt, sodass eingefügte Payloads auf deinem Gerät bleiben. Das passt zu Prompts und Entwicklungsdaten, ist aber kein System zur Geheimnisverwaltung. Vermeide es, Zugangsdaten, private Prompts oder vertrauliche Produktiv-Payloads in ein Online-Tool einzugeben.</p><h2>When to Use Local Code</h2><p> Für wiederholte Pipelines, sehr große Payloads oder vertrauliche Daten führe die Umwandlung in deiner eigenen Umgebung aus, in der du Logging, Token-Zählung und Datenaufbewahrung kontrollierst. Das Browser-Tool eignet sich am besten für Prüfung, einmalige Vergleiche und die Entscheidung, ob TOON für eine bestimmte Payload-Form die Umstellung wert ist.</p>"
     }
   }
 }

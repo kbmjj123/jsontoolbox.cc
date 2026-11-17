@@ -368,5 +368,182 @@
       "title": "如何在线从 JSON 生成 JSON Schema",
       "content": "<h2>JSON Schema 生成器做了什么？</h2><p>JSON Schema 生成器读取一份 JSON 样本，推断它的结构与类型，输出一份描述该结构的 JSON Schema。它适合在已有示例数据、但还没有正式契约时，快速得到一份可用的草稿。</p><p>推断出来的 schema 是起点而不是终点：样本里没有出现的字段、可选性、边界值和业务规则都无法自动获得，必须由人来补。</p><h2>常见使用场景</h2><ul><li><strong>接口契约：</strong>先用真实响应生成草稿，再人工整理成正式的请求/响应 schema。</li><li><strong>测试数据校验：</strong>为测试夹具或快照生成一份结构约束，防回归。</li><li><strong>文档与 Mock：</strong>为接口文档或 Mock 服务提供结构化描述。</li><li><strong>表单与配置：</strong>把结构描述交给表单生成工具或配置校验流程。</li></ul><h2>如何生成</h2><ol><li><strong>准备样本：</strong>选择能覆盖真实形态的 JSON，而不是最理想的那一条。</li><li><strong>选择 draft：</strong>按校验器或文档工具选择 Draft-07 或 2020-12。</li><li><strong>配置选项：</strong>决定 required、additionalProperties、格式检测和示例值。</li><li><strong>生成并检查：</strong>重点看数组元素、嵌套结构和格式关键字。</li><li><strong>下载并试跑：</strong>用真实数据在你的校验器里验证，再定稿。</li></ol><h2>推断的边界在哪里</h2><p>生成器只能描述它看到的东西：</p><ul><li><strong>类型：</strong>按样本值推断 string / number / integer / boolean / null / object / array。</li><li><strong>数组：</strong>采样前 20 个元素，结构一致则输出单个 items，不一致则输出 anyOf。</li><li><strong>格式：</strong>按规则猜测 email、date、date-time、URI、UUID，可关闭。</li><li><strong>不做推断：</strong>minimum / maximum、enum、pattern、唯一性、跨字段依赖等业务约束。</li></ul><p>这些边界决定了生成的 schema 必须复核，尤其是要拿去做强制校验时。</p><h2>required 与 additionalProperties 的风险</h2><p>把样本中出现的字段全部标为 required，会让缺少该字段的合法数据被判为不合法；而关闭 additionalProperties 又可能拒绝样本之外本来就合理的字段。两者都要按真实数据形态决定，默认设置只适合快速查看。</p><h2>如何选择 draft 版本</h2><p>Draft-07 兼容性最好，多数工具和库都支持；2020-12 引入了更新的关键字与语义表达。选择的依据应是目标校验器实际支持的版本，而不是版本新旧。</p><h2>浏览器本地处理与隐私</h2><p>生成过程在你的浏览器中完成，不需要把样本数据上传到远程服务，方便直接粘贴接口响应或配置片段。但它不是密钥管理方案，请勿在浏览器工具中粘贴密码、API 密钥、访问令牌或生产环境的敏感数据。</p>"
     }
+  },
+  "de": {
+    "name": "JSON-Schema-Generator",
+    "description": "Erzeuge eine JSON-Schema-Version aus repräsentativen JSON-Daten. Dieser JSON-Schema-Generator leitet Objektstruktur, Arrays, grundlegende Datentypen und ausgewählte String-Formate ab und lässt dich das erzeugte Schema für Validierung, API-Dokumentation und Entwicklungs-Workflows prüfen, kopieren oder herunterladen.",
+    "ui": {
+      "label_input": "JSON-Beispiel eingeben",
+      "label_output": "Erzeugtes JSON-Schema",
+      "btn_generate": "Schema erzeugen",
+      "btn_example": "Beispiel laden",
+      "placeholder_output": "Erzeugtes JSON-Schema erscheint hier …",
+      "option_indent": "Einrückung:",
+      "option_indent_2": "2 Leerzeichen",
+      "option_indent_4": "4 Leerzeichen",
+      "option_draft": "Schema-Version:",
+      "option_draft_7": "Entwurf-07",
+      "option_draft_2020": "Entwurf 2020-12",
+      "option_required": "Erkannte Felder als erforderlich markieren",
+      "option_additional": "Zusätzliche Eigenschaften erlauben",
+      "option_formats": "Gängige String-Formate erkennen",
+      "option_examples": "Beispiele einbeziehen",
+      "error_invalid_json": "Eingabe ist kein gültiges JSON",
+      "error_empty_input": "Zuerst JSON-Beispieldaten eingeben",
+      "error_generation": "Das JSON-Schema konnte nicht erzeugt werden",
+      "warning_sample_based": "Das Schema wird aus dem bereitgestellten Beispiel abgeleitet"
+    },
+    "hero": {
+      "trustHtml": "Läuft in deinem Browser. Dein JSON-Beispiel wird von diesem Tool nicht hochgeladen."
+    },
+    "meta": {
+      "title": "JSON-Schema-Generator – Schema aus JSON erzeugen",
+      "description": "Erzeuge online ein JSON-Schema aus JSON-Beispieldaten. Leite verschachtelte Objekte, Arrays, Typen, Pflichtfelder und gängige Formate ab und kopiere oder lade das Schema herunter. Kostenlos und browserbasiert.",
+      "keywords": [
+        "json schema generator",
+        "json schema from json",
+        "generate json schema from json",
+        "json to schema",
+        "create json schema",
+        "json schema creator",
+        "json to json schema",
+        "json schema converter"
+      ]
+    },
+    "features": [
+      {
+        "icon": "lucide:file-json-2",
+        "title": "Schema aus JSON erzeugen",
+        "description": "Analysiere ein repräsentatives JSON-Objekt oder -Array und erzeuge ein JSON-Schema als Ausgangspunkt, das die beobachtete Struktur und die grundlegenden Datentypen beschreibt."
+      },
+      {
+        "icon": "lucide:git-branch",
+        "title": "Verschachtelte Objekte und Arrays",
+        "description": "Leite rekursiv verschachtelte Objekteigenschaften und Array-Element-Schemas ab. Prüfe Arrays mit gemischten oder unvollständigen Elementstrukturen, bevor du das Ergebnis als Validierungsvertrag verwendest."
+      },
+      {
+        "icon": "lucide:list-checks",
+        "title": "Steuerung erforderlicher Felder",
+        "description": "Wähle, ob im Beispiel beobachtete Felder zum required-Array hinzugefügt werden sollen. Ein einzelnes Beispiel kann nicht zuverlässig belegen, dass jedes beobachtete Feld in allen zukünftigen Daten erforderlich ist."
+      },
+      {
+        "icon": "lucide:settings-2",
+        "title": "Zusätzliche Eigenschaften",
+        "description": "Wähle, ob erzeugte Objekt-Schemas Eigenschaften erlauben, die nicht im Beispiel enthalten waren. Verwende strenge Einstellungen vorsichtig, da echte Payloads Felder enthalten können, die nicht im Beispiel vorkommen."
+      },
+      {
+        "icon": "lucide:scan-search",
+        "title": "Erkennung gängiger Formate",
+        "description": "Erkenne optional gängige String-Muster wie E-Mail, Datum, Datum-Uhrzeit, URI und UUID, wenn der Wert den implementierten Erkennungsregeln entspricht. Erkannte Formate sind Vermutungen basierend auf dem Beispiel und können deaktiviert werden."
+      },
+      {
+        "icon": "lucide:braces",
+        "title": "Auswahl der Schema-Version",
+        "description": "Wähle die JSON-Schema-Version, die dein Validator oder Dokumentationstool unterstützt. Draft-07 ist breit kompatibel, neuere Entwürfe bieten neuere Vokabulare und Verhalten."
+      },
+      {
+        "icon": "lucide:copy",
+        "title": "Kopieren und herunterladen",
+        "description": "Kopiere das erzeugte Schema oder lade es als .json-Datei herunter für die Verwendung mit Validatoren, API-Dokumentation, Tests, Formulartools oder Code-Generierungs-Workflows."
+      },
+      {
+        "icon": "lucide:shield-check",
+        "title": "Generierung im Browser",
+        "description": "JSON-Parsing und Schema-Generierung finden in deinem Browser statt. Die Seite erfordert kein Konto und lädt die Beispieldaten nicht auf einen entfernten Dienst hoch."
+      }
+    ],
+    "guide": [
+      {
+        "title": "Repräsentatives JSON eingeben",
+        "description": "Füge ein Beispielobjekt, ein Array von Datensätzen oder eine lokale JSON-Datei ein, wenn Dateieingabe verfügbar ist. Nimm Beispiele für optionale Felder und unterschiedliche Array-Elementformen auf, wenn diese Variationen wichtig sind."
+      },
+      {
+        "title": "Die Schema-Version wählen",
+        "description": "Wähle Draft-07 oder Draft 2020-12 je nach Validator, API-Tool oder Dokumentationssystem, das das Schema verarbeiten wird."
+      },
+      {
+        "title": "Inferenzoptionen konfigurieren",
+        "description": "Wähle, ob beobachtete Felder erforderlich sein sollen, ob zusätzliche Eigenschaften erlaubt sind, ob gängige String-Formate erkannt werden und ob Beispiele einbezogen werden."
+      },
+      {
+        "title": "Erzeugen und prüfen",
+        "description": "Klicke auf „Schema erzeugen“ und prüfe dann Typen, Pflichtfelder, Array-Elemente, Formate, additionalProperties sowie alle Warnungen, dass das Ergebnis aus Beispieldaten abgeleitet ist."
+      },
+      {
+        "title": "Kopieren, herunterladen und validieren",
+        "description": "Kopiere oder lade das Schema herunter und teste es dann mit repräsentativen gültigen und ungültigen Dokumenten. Füge bei Bedarf Einschränkungen wie enum, pattern, minimum, maximum oder minLength manuell hinzu."
+      }
+    ],
+    "example": {
+      "input": "{\n  \"name\": \"Alice\",\n  \"age\": 30,\n  \"email\": \"alice@example.com\",\n  \"tags\": [\"admin\", \"user\"]\n}",
+      "output": "{\n  \"$schema\": \"http://json-schema.org/draft-07/schema#\",\n  \"type\": \"object\",\n  \"properties\": {\n    \"name\": {\n      \"type\": \"string\"\n    },\n    \"age\": {\n      \"type\": \"integer\"\n    },\n    \"email\": {\n      \"type\": \"string\",\n      \"format\": \"email\"\n    },\n    \"tags\": {\n      \"type\": \"array\",\n      \"items\": {\n        \"type\": \"string\"\n      }\n    }\n  },\n  \"required\": [\n    \"name\",\n    \"age\",\n    \"email\",\n    \"tags\"\n  ],\n  \"additionalProperties\": true\n}",
+      "useCase": "Erzeuge ein JSON-Schema als Ausgangspunkt für die Validierung einer API-Payload und die Dokumentation ihrer beobachteten Struktur."
+    },
+    "faq": [
+      {
+        "question": "Was ist JSON-Schema?",
+        "answer": "JSON-Schema ist ein Vokabular zur Beschreibung und Validierung der Struktur, Datentypen und Einschränkungen von JSON-Dokumenten. Es kann mit Validatoren, API-Dokumentationstools, Formulargeneratoren, Tests und Entwicklungs-Workflows verwendet werden."
+      },
+      {
+        "question": "Kann ein einzelnes JSON-Beispiel ein vollständiges Schema erzeugen?",
+        "answer": "Nein. Ein aus einem einzigen Beispiel erzeugtes Schema beschreibt, was in diesem Beispiel beobachtet wurde, nicht jede mögliche zukünftige Payload. Prüfe die Ausgabe und ergänze optionale Felder, alternative Typen, Einschränkungen, Enums, Muster und Array-Regeln basierend auf deinem tatsächlichen Datenvertrag."
+      },
+      {
+        "question": "Welche JSON-Schema-Version wird erzeugt?",
+        "answer": "Der erzeugte Entwurf hängt von der gewählten Option und der Implementierung ab. Draft-07 ist weit verbreitet, Draft 2020-12 ist neuer. Wähle immer den Entwurf, der vom Validator oder Tool unterstützt wird, der das Schema verarbeiten wird."
+      },
+      {
+        "question": "Was ist der Unterschied zwischen Draft-07 und Draft 2020-12?",
+        "answer": "Es sind unterschiedliche JSON-Schema-Spezifikationen mit unterschiedlichen Vokabularen, Bezeichnern und Verhalten. Ein für einen Entwurf geschriebenes Schema sollte mit einem für diesen Entwurf konfigurierten Validator getestet werden, statt anzunehmen, dass es überall identisch funktioniert."
+      },
+      {
+        "question": "Sind alle erkannten Felder als erforderlich markiert?",
+        "answer": "Nur wenn die erforderliche Option aktiviert ist. Selbst dann ist das Markieren jedes beobachteten Felds als erforderlich eine Ableitung aus dem Beispiel, kein Beleg dafür, dass alle zukünftigen Dokumente diese Felder enthalten müssen."
+      },
+      {
+        "question": "Was bedeutet additionalProperties?",
+        "answer": "Bei einem Objekt-Schema steuert additionalProperties, ob Eigenschaften akzeptiert werden, die nicht in properties aufgeführt sind. Das Erlauben ist flexibler; das Setzen auf false ist strenger, kann aber legitime Felder ablehnen, die nicht im Beispiel vorkamen."
+      },
+      {
+        "question": "Kann es ein Schema aus einem JSON-Array erzeugen?",
+        "answer": "Ja. Für ein Array erzeugt der Generator ein Array-Schema und leitet ein items-Schema aus den beobachteten Werten oder Objekten ab. Wenn Array-Elemente unterschiedliche Formen haben, prüfe, ob das Ergebnis ein kombiniertes Schema, oneOf, anyOf oder eine manuell bearbeitete Struktur verwenden soll."
+      },
+      {
+        "question": "Wie werden Arrays mit gemischten Typen behandelt?",
+        "answer": "Das Verhalten hängt vom Generator ab. Werte mit kompatiblen Typen können kombiniert werden, während inkompatible Elementformen ein Union-Schema wie anyOf oder oneOf erfordern können. Prüfe gemischte Arrays sorgfältig, statt anzunehmen, dass die abgeleitete items-Regel jeden Fall abdeckt."
+      },
+      {
+        "question": "Erkennt es E-Mail-, UUID-, Datums- und URI-Formate?",
+        "answer": "Ja, wenn Formaterkennung aktiviert ist. Die implementierten Regeln erkennen E-Mail-, Datums-, Datum-Uhrzeit-, URI- und UUID-Muster. Die Erkennung ist eine Vermutung basierend auf Beispielwerten, daher prüfe sie, bevor du dich bei der Validierung auf ein Format-Schlüsselwort verlässt."
+      },
+      {
+        "question": "Fügt es Minimum, Maximum, Enum oder Pattern hinzu?",
+        "answer": "Ein musterbasierter Generator kann grundlegende Typen und ausgewählte Formate ableiten, aber er kann nicht zuverlässig alle Geschäftsregeln aus einem einzelnen Wert ableiten. Füge enum, minimum, maximum, minLength, pattern und andere Einschränkungen manuell hinzu, wenn sie Teil deines tatsächlichen Vertrags sind."
+      },
+      {
+        "question": "Kann es das ursprüngliche JSON als Beispiel beibehalten?",
+        "answer": "Wenn „Beispiele einbeziehen“ aktiviert und unterstützt ist, kann der Generator repräsentative Beispielwerte in die Ausgabe aufnehmen. Beispiele dokumentieren beobachtete Daten, definieren aber nicht automatisch Validierungseinschränkungen."
+      },
+      {
+        "question": "Ist das erzeugte Schema bereit für OpenAPI?",
+        "answer": "Es kann einen nützlichen Ausgangspunkt für ein OpenAPI-Schema liefern, aber OpenAPI-Versionen verwenden einen verwandten Teilbereich oder Dialekt von JSON-Schema und können zusätzliche Regeln auferlegen. Prüfe und passe das erzeugte Schema an die OpenAPI-Version und die von dir verwendeten Tools an."
+      },
+      {
+        "question": "Kann ich JSON mit dem erzeugten Schema validieren?",
+        "answer": "Das erzeugte Schema kann als Eingabe für einen JSON-Schema-Validator verwendet werden, sollte aber zuerst geprüft und getestet werden. Ein Schema, das zu einem Beispiel passt, kann für Produktivdaten zu streng oder zu locker sein."
+      },
+      {
+        "question": "Werden meine JSON-Daten auf einen Server hochgeladen?",
+        "answer": "Diese Seite ist dazu konzipiert, das Beispiel in deinem Browser ohne Server-Upload zu parsen und das Schema zu erzeugen. Du solltest dennoch vermeiden, Passwörter, API-Schlüssel, Zugriffstokens, private Kundendaten oder vertrauliche Produktiv-Payloads in ein browserbasiertes Tool einzugeben."
+      },
+      {
+        "question": "Ist dies ein kostenloser JSON-Schema-Generator?",
+        "answer": "Ja. Du kannst repräsentatives JSON einfügen, die verfügbaren Optionen wählen und ein erzeugtes Schema kopieren oder herunterladen, ohne ein Konto zu erstellen."
+      }
+    ],
+    "article": {
+      "title": "JSON-Schema aus JSON-Daten erzeugen",
+      "content": "<h2>What Is JSON Schema?</h2><p> JSON Schema ist ein Vokabular zur Beschreibung der Struktur und Validierungsregeln von JSON-Dokumenten. Es kann Objekteigenschaften, Arrays, Datentypen, Pflichtfelder, Formate, Wert-Einschränkungen und die Erlaubnis zusätzlicher Eigenschaften definieren.</p><p> Ein JSON-Schema-Generator analysiert ein oder mehrere JSON-Beispiele und erstellt ein Schema als Ausgangspunkt. Das erzeugte Ergebnis ist nützlich, um manuelle Arbeit zu reduzieren, benötigt aber dennoch Prüfung, da Beispieldaten nicht jedes optionale Feld, jeden alternativen Typ, jeden Grenzwert oder jede Geschäftsregel offenbaren können.</p><h2> Warum JSON-Schema aus JSON erzeugen?</h2><ul><li><strong>API documentation:</strong> Erstelle eine erste Version eines Anfrage- oder Antwort-Schemas aus einer repräsentativen Payload.</li><li><strong>Validation:</strong> Definiere einen Ausgangspunkt für die Prüfung von JSON-Struktur und grundlegenden Typen.</li><li><strong>Testing:</strong> Verwende das erzeugte Schema, um gültige und ungültige Testfälle zu bauen.</li><li><strong>Form generation:</strong> Stelle Struktur und grundlegende Typen für Tools bereit, die Formulare aus Schemas erzeugen.</li><li><strong>Code generation:</strong> Stelle Schema-Informationen für Tools bereit, die Typen oder Modelle erzeugen, nachdem du das Ergebnis geprüft hast.</li><li><strong>Data contracts:</strong> Dokumentiere die beobachtete Form von Konfigurationsdateien, Events oder Integrations-Payloads.</li></ul><h2> Wie man ein JSON-Schema erzeugt</h2><ol><li><strong> Stelle repräsentatives JSON bereit:</strong> Füge ein Objekt, Array oder eine Beispiel-Payload ein, die echte Datenvariationen widerspiegelt.</li><li><strong>Select the draft:</strong> Wähle Draft-07 oder Draft 2020-12 je nach Ziel-Validator oder Dokumentationstool.</li><li><strong> Pflichtfelder konfigurieren:</strong> Entscheide, ob beobachtete Eigenschaften in required aufgeführt werden sollen.</li><li><strong> Objektstrenge konfigurieren:</strong> Entscheide, ob additionalProperties Felder erlauben soll, die nicht im Beispiel vorhanden sind.</li><li><strong>Enable format detection:</strong> Füge ausgewählte Format-Hinweise nur hinzu, wenn heuristische Erkennung für deinen Workflow nützlich ist.</li><li><strong>Generate the schema:</strong> Prüfe die erzeugten Typen, Arrays, Eigenschaften und verschachtelten Definitionen.</li><li><strong>Copy oder download:</strong> Exportiere das Schema und validiere es dann mit repräsentativen Dokumenten.</li></ol><h2> Wie der Generator Typen ableitet</h2><ul><li><strong>Objects:</strong> Werden zu Schemas mit Typ object und einer properties-Map.</li><li><strong>Arrays:</strong> Werden zu Schemas mit Typ array und einem items-Schema.</li><li><strong>Strings:</strong> Werden zum Typ string, mit optionalen Format-Hinweisen, wenn die Erkennung aktiviert ist.</li><li><strong>Numbers:</strong> Werden je nach Ableitungsregeln und beobachteten Werten zu Zahl oder Gleitkommazahl.</li><li><strong>Booleans:</strong> Werden Typ Boolean.</li><li><strong>Null:</strong> Kann je nach Generator zum Typ null oder einer Union mit einem anderen beobachteten Typ werden.</li></ul><p> Typhinferenz basiert auf beobachteten Werten. Sie weiß nicht automatisch, ob ein numerisches Feld eine Anzahl, ein Preis, eine Kennung, ein Zeitstempel oder ein Versionsstring ist.</p><h2> Pflichtfelder sind eine Ableitung</h2><p> Wenn eine Eigenschaft in einem Beispiel vorkommt, beweist das nur, dass sie in diesem Beispiel vorkam. Es beweist nicht, dass jedes gültige Dokument sie enthalten muss. Nutze die required-Option als Ausgangspunkt und vergleiche dann mehrere Beispiele oder bearbeite das required-Array basierend auf dem tatsächlichen API- oder Datenvertrag.</p><h2> Warum mehrere Beispiele besser sind</h2><p> Ein einzelnes JSON-Objekt kann optionale Felder weglassen oder nur einen Zweig einer bedingten Struktur zeigen. Mehrere repräsentative Beispiele können offenbaren:</p><ul><li> Felder, die manchmal fehlen.</li><li> Arrays mit mehr als einer Elementform.</li><li>Nullable Werts.</li><li> Alternative Objektstrukturen.</li><li> Unterschiedliche String-Formate.</li><li> Unerwartete Typen in echten Payloads.</li></ul><p> Wenn der Generator nur eine JSON-Eingabe akzeptiert, fasse repräsentative Datensätze zu einem Array zusammen oder prüfe das resultierende Schema manuell mit zusätzlichen Beispielen.</p><h2> additionalProperties und Strenge</h2><p>Setting <code>additionalProperties</code> auf false zu setzen macht ein Objekt-Schema streng: Eigenschaften, die nicht im Schema aufgeführt sind, werden abgelehnt. Das kann unerwartete Felder erkennen, aber auch legitime Felder ablehnen, die nicht im Beispiel vorkamen. additionalProperties zu erlauben ist toleranter und für sich entwickelnde APIs möglicherweise sicherer.</p><h2> Formaterkennung ist heuristisch</h2><p> Werte wie E-Mail-Adressen, URLs, UUIDs, IP-Adressen, Datumsangaben und Hostnamen können manchmal anhand von Mustern erkannt werden. Ein Format-Hinweis ist nicht dasselbe wie eine vollständige Validierungsregel, und die Erkennung kann falsch positive oder negative Ergebnisse liefern. Prüfe erzeugte Formate, bevor du dich auf sie verlässt.</p><h2> Einschränkungen benötigen Domänenwissen</h2><p> Ein Generator kann ableiten, dass ein Wert eine Zahl ist, aber er weiß meist nicht die korrekten Geschäftsgrenzen. Füge Regeln wie <code>minimum</code>, <code>maximum</code>, <code>minLength</code>, <code>maxLength</code>, <code>pattern</code>, <code>enum</code>, <code>oneOf</code>, oder <code>anyOf</code> basierend auf dokumentierten Anforderungen statt aus einem einzelnen Beispiel zu raten.</p><h2> JSON-Schema-Entwürfe und Tool-Kompatibilität</h2><p> JSON Schema Draft-07 wird von bestehenden Validatoren und Tools breit unterstützt. Draft 2020-12 ist neuer und verwendet aktualisierte Vokabulare und Verhalten. Die richtige Wahl hängt von deinem Validator, API-Dokumentationsgenerator, Formular-Bibliothek oder Code-Generierungs-Workflow ab. Nimm die passende <code>$schema</code> URI und teste das Ergebnis mit genau der Toolchain, die du verwenden möchtest.</p><h2> Erzeugtes Schema vs. Produktiv-Vertrag</h2><p> Ein erzeugtes Schema ist ein nützlicher Ausgangspunkt, nicht automatisch ein vollständiger Produktiv-Vertrag. Prüfe vor der Veröffentlichung Pflichtfelder, optionale Felder, Nullbarkeit, Zahlenbereiche, String-Formate, Enum-Werte, zusätzliche Eigenschaften, Array-Element-Regeln, Eigenschaftsnamen und sicherheitssensible Felder.</p><h2>Browser-Based Privacy</h2><p> Dieser Generator ist darauf ausgelegt, das Beispiel-JSON im Browser zu parsen und das Schema zu erstellen statt die Eingabe an einen entfernten Dienst zu senden. Das kann für Entwicklung und Dokumentation nützlich sein. Vermeide Zugangsdaten, Zugriffstokens, private Kundendatensätze oder vertrauliche Produktiv-Payloads in einem Online-Tool.</p>"
+    }
   }
 }

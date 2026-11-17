@@ -32,6 +32,7 @@ const emit = defineEmits<{
 const { locale } = useI18n()
 const colorMode = useColorMode()
 
+// The third-party editor ships en/zh only — German pages use its English UI.
 const editorLocale = computed(() => (locale.value === 'zh' ? 'zh' : 'en'))
 const editorTheme = computed(() =>
   colorMode.value === 'dark' ? 'dark' : 'light'

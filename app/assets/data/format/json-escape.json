@@ -371,5 +371,183 @@
       "title": "如何转义和反转义 JSON 字符串",
       "content": "<h2>什么是 JSON 字符串转义？</h2><p>JSON 字符串转义把文本转换成可以安全出现在 JSON 字符串里的表示形式。双引号、反斜杠和控制字符在 JSON 中有特殊含义，所以当它们作为内容出现时，必须用转义序列表示。</p><p>例如文本 <code>She said \"hello\"</code> 含有双引号。作为 JSON 字符串内容，它可以表示成 <code>She said \\\"hello\\\"</code>。改变的是表示形式，而不是文本本身的含义。</p><h2>JSON 转义序列</h2><p>标准 JSON 为字符串值定义了一组有限的转义序列：</p><ul><li><strong><code>\\\"</code>：</strong>双引号</li><li><strong><code>\\\\</code>：</strong>反斜杠</li><li><strong><code>\\n</code>：</strong>换行</li><li><strong><code>\\r</code>：</strong>回车</li><li><strong><code>\\t</code>：</strong>水平制表符</li><li><strong><code>\\b</code>：</strong>退格符</li><li><strong><code>\\f</code>：</strong>换页符</li><li><strong><code>\\uXXXX</code>：</strong>四位十六进制的 Unicode 转义</li></ul><p>把斜杠转义成 <code>\\/</code> 是允许的，但通常不是必须。JSON 不支持所有编程语言里的转义写法，所以 <code>\\a</code> 、<code>\\v</code> 、<code>\\0</code> 不应被当作合法的 JSON 转义。</p><h2>转义字符串 vs 转义 JSON 文档</h2><p>原始文本字符串和一整份 JSON 文档是相关但不相同的输入。如果想把一份 JSON 文档放进另一个 JSON 字符串，这份文档必须先变成字符串内容：</p><pre><code>{\"event\":\"created\"}</code></pre><p>它可能变成类似这样的 JSON 字符串字面量：</p><pre><code>\"{\\\"event\\\":\\\"created\\\"}\"</code></pre><p>外层双引号表示整份文档现在是一个 JSON 字符串值。如果只需要内部的转义内容，可以根据目标场景去掉外层引号。</p><h2>如何转义</h2><ol><li><strong>输入原始文本或 JSON：</strong>粘贴需要嵌入或序列化的内容。</li><li><strong>选择输出模式：</strong>决定结果要包含完整的 JSON 字符串字面量，还是只要内部内容。</li><li><strong>只转义一次：</strong>按 JSON 字符串规则转换引号、反斜杠和控制字符。</li><li><strong>检查输出：</strong>确认转义层数，以及目标位置是否真的需要一个 JSON 字符串。</li><li><strong>用解析器验证：</strong>用目标语言或 JSON 解析器确认结果能解回预期的值。</li></ol><h2>如何反转义</h2><ol><li><strong>粘贴转义后的值：</strong>可以来自日志、数据库字段、环境变量或 API 响应。</li><li><strong>判断层数：</strong>检查值是否带外层引号，以及是否被转义过多次。</li><li><strong>一次解一层：</strong>解出一个 JSON 字符串表示。</li><li><strong>检查结果：</strong>判断它现在是可读文本，还是一份需要继续解析的合法 JSON。</li><li><strong>必要时才重复：</strong>只有当数据确实被多次序列化时，才继续解下一层。</li></ol><h2>嵌套 JSON 与双重转义</h2><p>当一个 JSON 字段里放着另一份 JSON 文档的字符串时，就出现了嵌套 JSON：</p><pre><code>{\"payload\":\"{\\\"id\\\":1,\\\"status\\\":\\\"ok\\\"}\"}</code></pre><p>外层文档包含一个字符串，而这个字符串的内容恰好是 JSON 文本。要查看内部对象，先把字符串值解出来，再解析得到的 JSON。不按序列化层级、直接手动删反斜杠会破坏数据。</p><h2>写代码时用 JSON.stringify 和 JSON.parse</h2><p>在应用代码里应该用标准 JSON 库，而不是手动替换字符。在 JavaScript 中，<code>JSON.stringify(value)</code> 会生成带必要转义的 JSON 表示，<code>JSON.parse(text)</code> 会解析 JSON 并解码合法的字符串转义。Python、Java、C#、Go 等语言也都有对应的标准库函数。</p><p>在线转义工具适合检查和临时转换，但应用代码应该依赖经过检验的序列化器和解析器。</p><h2>JSON 转义不是 HTML 编码</h2><p>两者面向不同的上下文。JSON 在字符串值里使用反斜杠序列，HTML 使用 <code>&amp;quot;</code> 、<code>&amp;amp;</code> 这样的实体。为 JSON 做过转义，并不意味着在 HTML、JavaScript、SQL、URL 或 shell 命令里就是安全的。</p><h2>Unicode 与代理对</h2><p>Unicode 字符通常可以直接出现在 JSON 里。序列化器可以选择保留可读字符，也可以输出 Unicode 转义。位于基本多文种平面之外的字符（包括很多 emoji）在基于 UTF-16 的环境里可能用代理对转义表示，所以不要假设每个可见字符都只对应一个 <code>\\uXXXX</code> 序列。</p><h2>常见错误</h2><ul><li><strong>双重转义：</strong>对已经转义过的内容再次转义。</li><li><strong>手动删反斜杠：</strong>不解析 JSON 字符串就直接删除转义符号。</li><li><strong>用错上下文：</strong>在需要 HTML、SQL、URL 或 JavaScript 专用编码的地方使用 JSON 转义。</li><li><strong>把文本当成对象：</strong>反转义一个 JSON 字符串并不会自动把结果解析成对象。</li><li><strong>无效的转义序列：</strong>使用了 JSON 不支持的语言特有转义。</li><li><strong>外层引号用错：</strong>目标需要完整 JSON 字符串字面量时只嵌入了内部内容，或者反过来。</li></ul><h2>浏览器本地处理与隐私</h2><p>本工具在浏览器里完成转义和反转义，不会把内容发送到远端服务。这对于开发数据、日志和测试 fixture 很方便，但它不是密钥管理系统。请不要在任何在线工具里输入凭证、访问令牌、私钥、客户信息或生产环境的机密日志。</p>"
     }
+  },
+  "de": {
+    "name": "JSON-Escape & Unescape",
+    "description": "Maskiere Rohtext oder JSON-Inhalte in einen JSON-sicheren String und mache JSON-String-Literale wieder zu lesbarem Text. Verarbeite Anführungszeichen, Backslashes, Zeilenumbrüche, Tabulatoren, Steuerzeichen und Unicode-Escapes direkt in deinem Browser.",
+    "hero": {
+      "trustHtml": "Läuft in deinem Browser. Deine Eingabe wird von diesem Tool nicht hochgeladen."
+    },
+    "meta": {
+      "title": "JSON online unescapen – Kostenloses JSON-Escape-&-Unescape-Tool",
+      "description": "Mache JSON oder einen JSON-String online direkt in deinem Browser unescaped bzw. escaped. Verarbeite Anführungszeichen, Backslashes, Zeilenumbrüche, Tabulatoren, Steuerzeichen und Unicode-Escapes für verschachteltes JSON, Logs, API-Felder und Code. Kostenlos, ohne Upload.",
+      "keywords": [
+        "json escape",
+        "json unescape",
+        "escape json",
+        "unescape json",
+        "json string escape",
+        "json string unescape",
+        "escaped json",
+        "json escape tool"
+      ]
+    },
+    "features": [
+      {
+        "icon": "lucide:shield",
+        "title": "JSON-Strings escapen",
+        "description": "Wandle Rohtext oder JSON-Inhalte in eine JSON-sichere String-Darstellung mit maskierten Anführungszeichen, Backslashes, Zeilenumbrüchen, Tabulatoren und anderen erforderlichen Steuerzeichen um."
+      },
+      {
+        "icon": "lucide:undo-2",
+        "title": "JSON-Strings unescapen",
+        "description": "Dekodiere gültige JSON-String-Escape-Sequenzen wie \\\" , \\\\, \\n, \\t, \\r und \\uXXXX zurück in lesbaren Text oder JSON-Inhalte."
+      },
+      {
+        "icon": "lucide:layers-2",
+        "title": "Verschachtelte JSON-Strings behandeln",
+        "description": "Arbeite mit JSON, das in einem anderen JSON-String, einem Log-Feld, einer Datenbankspalte, einer Umgebungsvariable oder einer API-Antwort gespeichert ist. Prüfe die Maskierungstiefe, bevor du die Operation erneut anwendest."
+      },
+      {
+        "icon": "lucide:braces",
+        "title": "JSON-String- und Dokument-Modi",
+        "description": "Unterscheide zwischen dem Maskieren eines String-Werts und dem Serialisieren eines gesamten JSON-Dokuments. Der Ausgabe-Modus sollte klarstellen, ob umgebende JSON-String-Anführungszeichen enthalten sind."
+      },
+      {
+        "icon": "lucide:copy",
+        "title": "Das Ergebnis kopieren",
+        "description": "Kopiere die maskierte oder unmaskierte Ausgabe in die Zwischenablage für JSON-Payloads, Code, Logs, Tests, Konfigurationsdateien und Debugging-Workflows."
+      },
+      {
+        "icon": "lucide:download",
+        "title": "Text herunterladen",
+        "description": "Lade das Ergebnis als reine Textdatei herunter, wenn der maskierte Inhalt groß ist oder in einem anderen Tool wiederverwendet werden soll."
+      },
+      {
+        "icon": "lucide:refresh-cw",
+        "title": "Richtungen tauschen",
+        "description": "Verschiebe die Ausgabe zurück in den Eingabebereich, um die umgekehrte Operation zu prüfen. Wiederholtes Maskieren erhöht die Maskierungstiefe, daher nur verwenden, wenn eine weitere Serialisierungsebene beabsichtigt ist."
+      },
+      {
+        "icon": "lucide:shield-check",
+        "title": "Verarbeitung im Browser",
+        "description": "Maskieren und Unescapen finden in deinem Browser statt. Die Seite erfordert kein Konto und lädt die Eingabe nicht auf einen entfernten Dienst hoch."
+      }
+    ],
+    "guide": [
+      {
+        "title": "Text oder einen maskierten String eingeben",
+        "description": "Füge Rohtext, ein JSON-String-Literal, maskiertes JSON aus einem Log oder ein Feld aus einer API-Antwort ein. Wähle die Operation, die zur aktuellen Darstellung passt."
+      },
+      {
+        "title": "Escape oder Unescape wählen",
+        "description": "Verwende „Escape“, um Text zur Verwendung in einem JSON-String zu kodieren. Verwende „Unescape“, um gültige JSON-Escape-Sequenzen zu dekodieren und den dargestellten Text wiederherzustellen."
+      },
+      {
+        "title": "Den Maskierungsmodus prüfen",
+        "description": "Bestätige, ob die Ausgabe die umgebenden JSON-String-Anführungszeichen enthalten oder nur den inneren maskierten Inhalt zurückgeben soll. Dieser Unterschied bestimmt, wie das Ergebnis eingebettet wird."
+      },
+      {
+        "title": "Verschachteltes Escaping prüfen",
+        "description": "Wenn die Eingabe bereits Sequenzen wie \\\\\\\" oder \\\\\\\\ enthält, wurde sie möglicherweise mehrfach maskiert. Wende Escape nicht wiederholt an, es sei denn, eine weitere JSON- oder String-Serialisierungsebene ist erforderlich."
+      },
+      {
+        "title": "Kopieren oder herunterladen",
+        "description": "Kopiere das verarbeitete Ergebnis oder lade es als Text herunter. Teste die Ausgabe mit dem Parser oder der Programmiersprache, die sie verarbeiten werden."
+      }
+    ],
+    "example": {
+      "title": "JSON-Escape-Beispiel",
+      "description": "Maskiere ein JSON-Dokument, damit es als Wert eines anderen JSON-Strings gespeichert werden kann.",
+      "input": "{\"name\":\"Alice\",\"message\":\"She said \\\"OK\\\"\",\"path\":\"C:\\\\Users\\\\test\"}",
+      "output": "\"{\\\"name\\\":\\\"Alice\\\",\\\"message\\\":\\\"She said \\\\\\\"OK\\\\\\\"\\\",\\\"path\\\":\\\"C:\\\\\\\\Users\\\\\\\\test\\\"}\"",
+      "inputLabel": "JSON-Text",
+      "outputLabel": "JSON-String-Literal",
+      "note": "Die Ausgabe enthält umgebende Anführungszeichen, weil das gesamte JSON-Dokument als ein JSON-String-Wert dargestellt wird. Wenn deine Anwendung nur den inneren Inhalt erwartet, verwende den von der Seite implementierten Ausgabe-Modus.",
+      "useCase": "Bette eine JSON-Payload als String in ein anderes JSON-Dokument, einen Log-Eintrag, eine Test-Fixture oder ein API-Feld ein."
+    },
+    "faq": [
+      {
+        "question": "Was bewirkt JSON-Escaping?",
+        "answer": "JSON-Escaping kodiert Text, damit er sicher innerhalb eines JSON-Strings erscheinen kann. Es fügt Escape-Sequenzen für Zeichen hinzu, die sonst die String-Syntax verändern würden, einschließlich doppelter Anführungszeichen, Backslashes, Zeilenumbrüche, Tabulatoren, Wagenrücklauf, Backspace und Formfeed."
+      },
+      {
+        "question": "Was bewirkt JSON-Unescaping?",
+        "answer": "JSON-Unescaping dekodiert gültige JSON-Escape-Sequenzen zurück in die Zeichen, die sie darstellen. Beispielsweise wird \\\" zu einem doppelten Anführungszeichen, \\\\ zu einem Backslash und \\n zu einem Zeilenumbruch."
+      },
+      {
+        "question": "Fügt Escape doppelte Anführungszeichen hinzu?",
+        "answer": "Es gibt zwei gängige Ausgaben: Ein vollständiges JSON-String-Literal enthält umgebende doppelte Anführungszeichen, während der Modus für String-Inhalte nur die maskierten Zeichen innerhalb des Strings zurückgibt. Prüfe den gewählten Modus oder die Ausgabebeschreibung, bevor du das Ergebnis einbettest."
+      },
+      {
+        "question": "Was ist der Unterschied zwischen dem Maskieren eines JSON-Strings und dem Maskieren eines JSON-Dokuments?",
+        "answer": "Ein JSON-String enthält Text und muss Zeichen maskieren, die mit der String-Syntax kollidieren. Ein JSON-Dokument ist bereits strukturiertes JSON. Um das gesamte Dokument in einen anderen JSON-String einzubetten, serialisiere das Dokument zuerst als Text und maskiere oder stringifiziere diesen Text dann."
+      },
+      {
+        "question": "Welche Zeichen müssen in einem JSON-String maskiert werden?",
+        "answer": "Doppelte Anführungszeichen und Backslashes müssen maskiert werden. JSON definiert außerdem Escape-Sequenzen für Steuerzeicheneinschließlich Backspace, Formfeed, Zeilenvorschub, Wagenrücklauf und Tab. Eine Unicode-Escape-Sequenz wie \\uXXXX kann bei Bedarf für Zeichen verwendet werden. Das Maskieren des Schrägstrichs ist in Standard-JSON optional."
+      },
+      {
+        "question": "Können Unicode-Zeichen direkt in JSON erscheinen?",
+        "answer": "Ja. Gültige Unicode-Zeichen wie chinesischer Text, Zeichen mit Akzenten und Emojis können generell direkt in einem JSON-String erscheinen. Sie müssen nur in \\uXXXX umgewandelt werden, wenn ein nachgelagertes System maskiertes Unicode verlangt oder der Ausgabe-Modus entsprechend konfiguriert ist."
+      },
+      {
+        "question": "Warum enthält meine Ausgabe zu viele Backslashes?",
+        "answer": "Die Eingabe ist möglicherweise bereits maskiert, oder der Wert ist in mehr als einer String-Serialisierungsebene verschachtelt. Jede zusätzliche JSON-String-Ebene fügt eine weitere Maskierungsebene hinzu. Prüfe die tatsächliche Darstellung und mache jeweils eine Ebene unmaskiert."
+      },
+      {
+        "question": "Wie entferne ich die Maskierung von JSON aus einer API-Antwort oder einem Log?",
+        "answer": "Kopiere das Feld mit dem maskierten JSON-String, wähle „Unescape“ und prüfe, ob das Ergebnis lesbarer Text oder ein gültiges JSON-Dokument wird. Wenn es noch immer maskiert ist, enthält der Wert möglicherweise mehrere Serialisierungsebenen."
+      },
+      {
+        "question": "Parst dieses Tool maskiertes JSON in ein Objekt?",
+        "answer": "Maskieren und Parsen sind unterschiedliche Operationen. Eine Unescape-Operation kann den JSON-Text wiederherstellen, aber das Umwandeln dieses Texts in ein Objekt erfordert JSON-Parsing. Verwende einen JSON-Viewer oder Parser nach dem Unescapen, wenn du die Struktur prüfen möchtest."
+      },
+      {
+        "question": "Was ist der Unterschied zwischen JSON-Escaping und HTML-Kodierung?",
+        "answer": "JSON-Escaping verwendet Backslash-Sequenzen wie \\\" und \\\\ innerhalb von JSON-Strings. HTML-Kodierung verwendet Entitäten wie &quot; und &amp;. Sie lösen unterschiedliche Syntax- und Kontextprobleme und sind nicht austauschbar."
+      },
+      {
+        "question": "Ist JSON-Escaping dasselbe wie JavaScript-String-Escaping?",
+        "answer": "Sie überschneiden sich, sind aber nicht in jedem Detail identisch. JSON unterstützt eine bestimmte Menge von Escape-Sequenzen, während JavaScript-String-Literale zusätzliche Syntax wie Strings in einfachen Anführungszeichen, hexadezimale Escapes oder andere sprachspezifische Formen unterstützen können. Verwende die vom Zielkontext erforderlichen Maskierungsregeln."
+      },
+      {
+        "question": "Kann ich dieses Tool für JSONL verwenden?",
+        "answer": "Nur wenn die Eingabe als unabhängige Zeilen verarbeitet wird und jede Zeile für die gewählte Operation gültig ist. JSONL kann maskierte Zeilenumbrüche oder mehrzeilige Inhalte in Anführungszeichen enthalten, daher ist die Zeile-für-Zeile-Verarbeitung nicht immer gleichwertig mit dem Parsen eines einzelnen JSON-Dokuments."
+      },
+      {
+        "question": "Kann ich Eingaben von einer URL laden?",
+        "answer": "Die empfohlene Eingabe ist eingefügter Text oder eine lokale Datei. Beliebiges Laden von URLs kann aufgrund von CORS fehlschlagen und remote oder private Daten dem Browser aussetzen. Füge URL-Eingabe nur hinzu, wenn sie ausdrücklich mit URL-Validierung, Größenbegrenzungen und passenden Sicherheitskontrollen implementiert ist."
+      },
+      {
+        "question": "Gibt es eine Größenbegrenzung?",
+        "answer": "Das praktische Limit hängt von Browser-Speicher, Eingabelänge, Rendering und der Anzahl der Maskierungsebenen ab. Kleine und mittlere Strings sollten schnell verarbeitet werden, während sehr große Dateien die Seite verlangsamen oder lokale Streaming-Tools erfordern können."
+      },
+      {
+        "question": "Wird meine Eingabe auf einen Server hochgeladen?",
+        "answer": "Diese Seite ist dazu konzipiert, die Eingabe in deinem Browser ohne Server-Upload zu verarbeiten. Du solltest dennoch vermeiden, Passwörter, API-Schlüssel, Zugriffstokens, private Kundendaten oder vertrauliche Produktiv-Logs in ein browserbasiertes Tool einzugeben."
+      }
+    ],
+    "article": {
+      "title": "JSON-Strings escapen und unescapen",
+      "content": "<h2> Was ist JSON-String-Escaping?</h2><p> JSON-String-Escaping wandelt Text in eine Darstellung um, die sicher innerhalb eines JSON-Strings erscheinen kann. Doppelte Anführungszeichen, Backslashes und Steuerzeichen haben in JSON besondere Bedeutung und müssen daher mit Escape-Sequenzen dargestellt werden, wenn sie als Inhalt vorkommen.</p><p>For example, the text <code>She said \"hello\"</code> enthält doppelte Anführungszeichen. Als JSON-String-Inhalt kann sie dargestellt werden als <code>She said \\\"hello\\\"</code> Die Maskierung verändert die Darstellung, nicht den beabsichtigten Text.</p><h2>JSON Escape Sequences</h2><p> Standard-JSON definiert eine begrenzte Menge von Escape-Sequenzen für String-Werte:</p><ul><li><strong><code>\\\"</code>:</strong> doppelte Anführungszeichen</li><li><strong><code>\\\\</code>:</strong> Backslash</li><li><strong><code>\\n</code>:</strong> Zeilenvorschub</li><li><strong><code>\\r</code>:</strong> Wagenrücklauf</li><li><strong><code>\\t</code>:</strong> horizontaler Tab</li><li><strong><code>\\b</code>:</strong> Backspace</li><li><strong><code>\\f</code>:</strong> Formfeed</li><li><strong><code>\\uXXXX</code>:</strong> eine Unicode-Escape-Sequenz mit vier hexadezimalen Ziffern</li></ul><p> Das Maskieren des Schrägstrichs als <code>\\/</code> ist erlaubt, aber im Allgemeinen nicht erforderlich. JSON unterstützt nicht jede von Programmiersprachen akzeptierte Escape-Syntax, daher sollten Sequenzen wie <code>\\a</code>, <code>\\v</code>, und <code>\\0</code> sollte nicht als gültige JSON-Escapes angenommen werden.</p><h2> Einen String maskieren vs. ein JSON-Dokument maskieren</h2><p> Ein Rohtext-String und ein vollständiges JSON-Dokument sind verwandte, aber unterschiedliche Eingaben. Wenn du ein JSON-Dokument in einen anderen JSON-String einbetten möchtest, muss das Dokument zu String-Inhalt werden:</p><pre><code>{\"event\":\"created\"}</code></pre><p> kann zu einem JSON-String-Literal ähnlich werden:</p><pre><code>\"{\\\"event\\\":\\\"created\\\"}\"</code></pre><p> Die äußeren Anführungszeichen zeigen an, dass das gesamte Dokument jetzt ein JSON-String-Wert ist. Wenn du nur den inneren maskierten Inhalt benötigst, können die umgebenden Anführungszeichen je nach Zielkontext weggelassen werden.</p><h2>How to Escape JSON</h2><ol><li><strong>Enter raw text oder JSON:</strong> Füge den Inhalt ein, den du einbetten oder serialisieren möchtest.</li><li><strong>Choose the output mode:</strong> Entscheide, ob das Ergebnis das vollständige JSON-String-Literal oder nur seinen inneren Inhalt enthalten soll.</li><li><strong>Escape once:</strong> Wandle Anführungszeichen, Backslashes und Steuerzeichen gemäß den JSON-String-Regeln um.</li><li><strong>Review the output:</strong> Prüfe die Anzahl der Maskierungsebenen und bestätige, dass das Ziel einen JSON-String erwartet.</li><li><strong>Test with a parser:</strong> Verwende die Zielsprache oder den JSON-Parser, um zu bestätigen, dass das Ergebnis zum beabsichtigten Wert dekodiert.</li></ol><h2>How to Unescape JSON</h2><ol><li><strong>Paste the escaped Wert:</strong> Verwende einen String, der aus einem Log, einem Datenbankfeld, einer Umgebungsvariable oder einer API-Antwort kopiert wurde.</li><li><strong>Identify the layer:</strong> Prüfe, ob der Wert äußere Anführungszeichen enthält und ob er mehrfach maskiert wurde.</li><li><strong>Unescape one layer:</strong> Dekodiere die JSON-String-Darstellung.</li><li><strong>Inspect the result:</strong> Bestimme, ob es lesbarer Text oder gültiges JSON ist, das als Nächstes geparst werden soll.</li><li><strong> Nur bei Bedarf wiederholen:</strong> Dekodiere eine weitere Ebene nur, wenn die Daten absichtlich mehrfach serialisiert wurden.</li></ol><h2> Verschachteltes JSON und doppeltes Escaping</h2><p> Verschachteltes JSON ist häufig, wenn ein JSON-Feld ein anderes JSON-Dokument als String enthält:</p><pre><code>{\"payload\":\"{\\\"id\\\":1,\\\"status\\\":\\\"ok\\\"}\"}</code></pre><p> Das äußere Dokument enthält einen String, und der Inhalt des Strings ist zufällig JSON-Text. Um das innere Objekt zu prüfen, dekodiere den String-Wert und parse dann das resultierende JSON. Das manuelle Entfernen von Backslashes ohne Beachtung der Serialisierungsebenen kann die Daten beschädigen.</p><h2> JSON.stringify und JSON.parse beim Programmieren verwenden</h2><p> Verwende beim Schreiben von Anwendungscode lieber die Standard-JSON-Bibliothek statt Zeichen manuell zu ersetzen. In JavaScript <code>JSON.stringify(value)</code> erzeugt eine JSON-Darstellung mit der erforderlichen Maskierung, und <code>JSON.parse(text)</code> parst JSON und dekodiert gültige String-Escapes. Ähnliche Standardbibliotheksfunktionen gibt es in Python, Java, C#, Go und anderen Sprachen.</p><p> Ein Online-Escape-Tool ist für Prüfung und einmalige Umwandlungen nützlich, aber Anwendungscode sollte auf einen getesteten Serialisierer und Parser setzen.</p><h2> JSON-Escaping ist keine HTML-Kodierung</h2><p> JSON-Escaping und HTML-Kodierung zielen auf unterschiedliche Kontexte ab. JSON verwendet Backslash-Sequenzen innerhalb von String-Werten, während HTML Entitäten wie <code>&amp;quot;</code> und <code>&amp;amp;</code> Das Maskieren eines Werts für JSON macht ihn nicht automatisch sicher für HTML, JavaScript, SQL, URLs oder Shell-Befehle.</p><h2> Unicode und Ersatzpaare</h2><p> Unicode-Zeichen können normalerweise direkt in JSON erscheinen. Ein Serialisierer kann sie lesbar lassen oder Unicode-Escapes erzeugen. Zeichen außerhalb der Basic Multilingual Plane, einschließlich vieler Emojis, können in UTF-16-basierten Umgebungen durch Ersatzpaar-Escapes dargestellt werden, daher gehe nicht davon aus, dass jedes sichtbare Zeichen einem <code>\\uXXXX</code> Sequenz.</p><h2>Common Mistakes</h2><ul><li><strong>Double escaping:</strong> Das Anwenden von „Escape“ auf bereits maskierte Inhalte.</li><li><strong> Manuelles Entfernen von Backslashes:</strong> Das Löschen von Backslashes ohne Parsen des JSON-Strings.</li><li><strong>Wrong context:</strong> Die Verwendung von JSON-Escaping, wo HTML-, SQL-, URL- oder JavaScript-spezifische Kodierung erforderlich ist.</li><li><strong> Text mit einem Objekt verwechseln:</strong> Das Unescapen eines JSON-Strings parst den resultierenden Text nicht automatisch zu einem Objekt.</li><li><strong> Ungültige Escape-Sequenzen:</strong> Die Verwendung sprachspezifischer Escapes, die in JSON ungültig sind.</li><li><strong>Incorrect outer quotes:</strong> Das Einbetten von innerem maskiertem Inhalt, wo das Ziel ein vollständiges JSON-String-Literal erwartet, oder umgekehrt.</li></ul><h2>Browser-Based Privacy</h2><p> Dieses Tool ist darauf ausgelegt, Eingaben im Browser zu maskieren und unmaskieren statt sie an einen entfernten Dienst zu senden. Das ist praktisch für Entwicklungsdaten, Logs und Test-Fixtures, aber kein System zur Geheimnisverwaltung. Vermeide Zugangsdaten, Zugriffstokens, private Schlüssel, Kundeninformationen oder vertrauliche Produktiv-Logs in einem Online-Tool.</p>"
+    },
+    "ui": {
+      "label_input": "Text eingeben",
+      "label_output": "Ausgabe",
+      "placeholder_input": "Text zum Escapen oder Unescapen einfügen oder eintippen …",
+      "btn_escape": "Escape",
+      "btn_unescape": "Unescape",
+      "btn_swap": "Tauschen",
+      "btn_copy": "Kopieren",
+      "btn_download": "TXT herunterladen",
+      "option_include_quotes": "Umgebende Anführungszeichen einbeziehen",
+      "option_decode_layers": "Eine Ebene dekodieren",
+      "status_escaped": "Maskierter JSON-String",
+      "status_unescaped": "Unescapter Text",
+      "status_invalid": "Eingabe ist keine gültige JSON-String-Darstellung",
+      "status_no_escapes": "Die Eingabe ist ein gültiger String, enthält aber keine JSON-Escape-Sequenzen zum Dekodieren",
+      "placeholder_output": "Ausgabe erscheint hier …"
+    }
   }
 }

@@ -3,6 +3,7 @@
     "id": "data",
     "label_en": "XML Data",
     "label_zh": "XML 数据",
-    "input": "<user><name>Alice</name><age>28</age><hobbies><hobby>reading</hobby><hobby>coding</hobby></hobbies></user>"
+    "input": "<user><name>Alice</name><age>28</age><hobbies><hobby>reading</hobby><hobby>coding</hobby></hobbies></user>",
+    "label_de": "XML-Daten"
   }
 ]

@@ -50,7 +50,7 @@
       {
         "icon": "lucide:quote",
         "title": "Normalize Quotes",
-        "description": "Convert single quotes to double quotes and normalize smart quotes (\u201c \u201d \u2018 \u2019) to straight quotes. Unquoted object keys are wrapped in double quotes so the document parses."
+        "description": "Convert single quotes to double quotes and normalize smart quotes (“ ” ‘ ’) to straight quotes. Unquoted object keys are wrapped in double quotes so the document parses."
       },
       {
         "icon": "lucide:binary",
@@ -321,6 +321,160 @@
     "article": {
       "title": "如何在线修复无效的 JSON",
       "content": "<h2>什么是 JSON 修复？</h2><p>JSON 修复是把无效的 JSON 变成合法、可解析 JSON 的过程。现实中的 JSON 经常因为从代码里复制、导出的配置或交互式环境输出而损坏。JSON 修复工具会做最大努力的修正，让文档可以再次被解析。</p><h2>本工具能修复的常见 JSON 错误</h2><ul><li><strong>尾随逗号：</strong>闭合 <code>}</code> 或 <code>]</code> 前的逗号会被去掉。</li><li><strong>单引号：</strong>用单引号写的字符串会被转换成双引号。</li><li><strong>未加引号的键：</strong>没有引号的键会被包上双引号。</li><li><strong>缺失括号：</strong>在结构允许时会补上未闭合的 <code>{</code> 或 <code>[</code>。</li><li><strong>注释：</strong><code>//</code> 与 <code>/* */</code> 注释会被去掉。</li><li><strong>Python 与 JS 常量：</strong><code>True</code>、<code>False</code>、<code>None</code>、<code>NaN</code>、<code>Infinity</code> 会映射成合法的 JSON。</li></ul><h2>如何修复损坏的 JSON</h2><ol><li><strong>粘贴损坏的 JSON：</strong>可以包含注释、单引号或尾随逗号。</li><li><strong>修复：</strong>工具应用修复并解析结果。</li><li><strong>查看：</strong>确认输出是合法 JSON，必要时调整缩进。</li><li><strong>复制或下载：</strong>把修复后的文档用于你的工作流。</li></ol><h2>修复与格式化的区别</h2><p>修复是把语法改对，让文档变成合法 JSON；而格式化只是给本来就合法的 JSON 调整缩进和空格。先修复；如果你只需要给合法 JSON 换个好看的间距，用格式化工具就够了。</p><h2>JSON 修复的局限</h2><p>json 语法错误修复是最大努力的，无法凭空补出缺失的数据，也恢复不了结构根本错误的文档。如果输入损坏过于严重，工具会报错而不是返回误导性的结果。修复之后，重要的数据建议再用 JSON Schema 校验器验证，再用于生产。</p><h2>隐私</h2><p>修复完全在你的浏览器中运行，JSON 不会被上传，也不需要账号。请不要在任何在线工具里粘贴密码、令牌或生产环境凭据。</p>"
+    }
+  },
+  "de": {
+    "name": "JSON-Repair",
+    "description": "Repariere defektes oder ungültiges JSON in deinem Browser. Behebe nachgestellte Kommas, einfache Anführungszeichen, unmaskierte Schlüssel, fehlende Klammern, Kommentare und Python-Konstanten und kopiere oder lade dann gültiges JSON herunter, ohne deine Daten hochzuladen.",
+    "hero": {
+      "trustHtml": "Läuft in deinem Browser. Dein JSON wird von diesem Tool nicht hochgeladen."
+    },
+    "meta": {
+      "title": "JSON-Repair – Ungültiges JSON online kostenlos beheben",
+      "description": "Repariere JSON online durch Beheben häufiger Syntaxfehler: nachgestellte Kommas, einfache Anführungszeichen, unmaskierte Schlüssel, fehlende Klammern, Kommentare und Python-Konstanten. Kopiere oder lade gültiges JSON in deinem Browser herunter.",
+      "keywords": [
+        "json repair",
+        "repair json",
+        "fix json",
+        "fix invalid json",
+        "json fixer",
+        "repair json online",
+        "json syntax error fix",
+        "repair broken json"
+      ]
+    },
+    "features": [
+      {
+        "icon": "lucide:wrench",
+        "title": "Häufige JSON-Fehler beheben",
+        "description": "Repariere JSON mit nachgestellten Kommas, einfachen statt doppelten Anführungszeichen, unmaskierten Objektschlüsseln und fehlenden schließenden Klammern. Das Tool wendet bestmögliche Korrekturen an und gibt gültiges JSON zurück, wenn die Struktur wiederhergestellt werden kann."
+      },
+      {
+        "icon": "lucide:message-square-off",
+        "title": "JSON-Kommentare entfernen",
+        "description": "Entferne einzeilige (//) und Block- (/* */) Kommentare aus JSON-ähnlicher Eingabe. Kommentare sind kein gültiges Standard-JSON, daher werden sie entfernt, bevor das Ergebnis serialisiert wird."
+      },
+      {
+        "icon": "lucide:quote",
+        "title": "Anführungszeichen normalisieren",
+        "description": "Wandle einfache Anführungszeichen in doppelte um und normalisiere typografische Anführungszeichen (“ ” ‘ ’) zu geraden. Unmaskierte Objektschlüssel werden in doppelte Anführungszeichen gesetzt, damit das Dokument geparst werden kann."
+      },
+      {
+        "icon": "lucide:binary",
+        "title": "Python- und JS-Konstanten behandeln",
+        "description": "Wandle Python-Konstanten wie True, False und None sowie gängige JavaScript-Werte wie NaN und Infinity in gültige JSON-Werte um, wenn sie in der Eingabe erscheinen."
+      },
+      {
+        "icon": "lucide:check-circle-2",
+        "title": "Nach der Reparatur validieren",
+        "description": "Die reparierte Ausgabe wird geparst, um die Gültigkeit als JSON zu bestätigen, bevor sie angezeigt wird. Wenn das Dokument nicht wiederhergestellt werden kann, meldet das Tool einen Fehler statt einer teilweisen oder irreführenden Ausgabe."
+      },
+      {
+        "icon": "lucide:copy",
+        "title": "Kopieren oder herunterladen",
+        "description": "Kopiere das reparierte JSON in die Zwischenablage oder lade es als .json-Datei herunter für die Verwendung in APIs, Konfiguration, Tests oder anderen Entwicklungs-Workflows."
+      },
+      {
+        "icon": "lucide:upload",
+        "title": "JSON einfügen oder öffnen",
+        "description": "Füge defektes JSON in die Eingabe ein oder öffne eine lokale Datei. Die Reparatur läuft in deinem Browser, sodass der Quelltext nicht auf einen Server hochgeladen wird."
+      },
+      {
+        "icon": "lucide:shield-check",
+        "title": "Verarbeitung im Browser",
+        "description": "Reparatur, Validierung und Formatierung finden in deinem Browser statt. Die Seite erfordert kein Konto und sendet dein JSON nicht an einen entfernten Dienst."
+      }
+    ],
+    "ui": {
+      "label_input": "Defektes JSON",
+      "placeholder_input": "{ name: \"Alice\", age: 28, active: True, }",
+      "label_output": "Repariertes JSON",
+      "placeholder_output": "Repariertes JSON erscheint hier …",
+      "label_indent": "Einrückung",
+      "indent_2": "2 Leerzeichen",
+      "indent_4": "4 Leerzeichen",
+      "indent_tab": "Tab",
+      "unit_chars": "Zeichen",
+      "unit_bytes": "Bytes",
+      "label_input_size": "Eingabegröße",
+      "label_output_size": "Reparierte Größe",
+      "btn_repair": "JSON reparieren",
+      "btn_copy": "Kopieren",
+      "btn_download": "JSON herunterladen",
+      "error_empty_input": "Zuerst JSON eingeben oder eine Datei öffnen",
+      "error_cannot_repair": "Dieses JSON konnte nicht repariert werden",
+      "error_processing": "Das JSON konnte nicht verarbeitet werden"
+    },
+    "guide": [
+      {
+        "title": "Defektes JSON einfügen",
+        "description": "Füge ungültiges JSON in das Eingabefeld ein oder öffne eine lokale .json-Datei. Die Seite akzeptiert Dokumente mit nachgestellten Kommas, einfachen Anführungszeichen, unmaskierten Schlüsseln, Kommentaren oder fehlenden Klammern."
+      },
+      {
+        "title": "Die Eingabe reparieren",
+        "description": "Klicke auf „JSON reparieren“. Das Tool versucht bestmögliche Korrekturen und parst das Ergebnis. Wenn das Dokument wiederhergestellt werden kann, wird gültiges JSON erzeugt; andernfalls wird ein Fehler gemeldet."
+      },
+      {
+        "title": "Die gültige Ausgabe prüfen",
+        "description": "Prüfe das reparierte JSON im Ausgabebereich. Verwende die Einrückungsauswahl, um zwischen 2 Leerzeichen, 4 Leerzeichen oder einem Tab für die angezeigte Ausgabe zu wechseln."
+      },
+      {
+        "title": "Kopieren oder herunterladen",
+        "description": "Kopiere das reparierte JSON oder lade es als .json-Datei herunter. Validiere es mit einem JSON-Schema-Validator, bevor du es im Produktivbetrieb verwendest, wenn die Daten wichtig sind."
+      }
+    ],
+    "example": {
+      "title": "JSON-Repair-Beispiel",
+      "description": "Stelle ein ungültiges JSON-Dokument wieder her, das Kommentare, einfache Anführungszeichen, unmaskierte Schlüssel und ein nachgestelltes Komma verwendet.",
+      "inputLabel": "Defektes JSON",
+      "input": "// user record\n{\n  name: 'Alice',\n  age: 28,\n  active: True,\n  tags: ['admin', 'user',],\n}",
+      "inputExplanation": "Dieses Dokument ist kein gültiges JSON: Es hat einen //-Kommentar, Strings in einfachen Anführungszeichen, einen unmaskierten Schlüssel, ein Python-True und ein nachgestelltes Komma vor der schließenden Klammer.",
+      "outputLabel": "Repariertes JSON",
+      "output": "{\n  \"name\": \"Alice\",\n  \"age\": 28,\n  \"active\": true,\n  \"tags\": [\n    \"admin\",\n    \"user\"\n  ]\n}",
+      "outputExplanation": "Die Reparatur entfernt den Kommentar, wandelt Anführungszeichen und den Schlüssel um, bildet True auf true ab, entfernt das nachgestellte Komma und erzeugt gültiges, parsbares JSON.",
+      "note": "Reparatur ist bestmöglich. Sie kann keine fehlenden Daten erfinden, sodass ein zu stark strukturell beschädigtes Dokument möglicherweise nicht repariert werden kann."
+    },
+    "faq": [
+      {
+        "question": "Was bewirkt JSON-Repair?",
+        "answer": "JSON-Repair nimmt ungültiges JSON und wendet bestmögliche Korrekturen an, damit das Ergebnis gültiges, parsbares JSON ist. Kurz gesagt hilft es dir, JSON zu beheben, das andere Tools ablehnen. Es behebt häufige Probleme wie nachgestellte Kommas, einfache Anführungszeichen, unmaskierte Schlüssel, fehlende schließende Klammern, Kommentare sowie Python- oder JavaScript-Konstanten."
+      },
+      {
+        "question": "Kann es ungültiges JSON beheben?",
+        "answer": "Es kann ungültiges JSON beheben, wenn die Struktur wiederhergestellt werden kann. Es kann keine fehlenden Daten erfinden oder eine völlig falsche Struktur erraten. Wenn die Eingabe zu stark beschädigt ist, meldet das Tool einen Fehler, statt ein irreführendes Ergebnis zurückzugeben."
+      },
+      {
+        "question": "Entfernt es Kommentare aus JSON?",
+        "answer": "Ja. Einzeilige (//) und Block- (/* */) Kommentare werden entfernt, da Kommentare nicht Teil von Standard-JSON sind. Wenn du JSON mit Kommentaren benötigst, verwende stattdessen ein JSONC-Tool."
+      },
+      {
+        "question": "Ändert es meine Datenwerte?",
+        "answer": "Reparatur ändert Syntax, nicht deine Werte. String-Inhalte, Zahlen und Struktur bleiben erhalten. Konstanten wie Python True/False/None werden auf ihre JSON-Entsprechungen true/false/null abgebildet, damit das Dokument gültig wird."
+      },
+      {
+        "question": "Wie werden einfache Anführungszeichen und unmaskierte Schlüssel behandelt?",
+        "answer": "Einfache Anführungszeichen werden in doppelte umgewandelt und unmaskierte Objektschlüssel in doppelte Anführungszeichen gesetzt. Typografische Anführungszeichen werden ebenfalls zu geraden normalisiert, damit das Dokument geparst werden kann."
+      },
+      {
+        "question": "Kann es Python- oder JavaScript-Konstanten verarbeiten?",
+        "answer": "Ja. Werte wie True, False, None, NaN und Infinity werden in gültige JSON-Werte umgewandelt, wenn sie in der Eingabe erscheinen. Das ist nützlich beim Einfügen der Ausgabe aus einem Python- oder Node.js-REPL."
+      },
+      {
+        "question": "Sind meine JSON-Daten sicher?",
+        "answer": "Ja. Reparatur, Validierung und Formatierung laufen in deinem Browser. Dein JSON wird nicht auf einen Server hochgeladen und es ist kein Konto erforderlich. Vermeide es, Geheimnisse wie Passwörter, Tokens oder Produktiv-Zugangsdaten in ein Online-Tool einzufügen."
+      },
+      {
+        "question": "Was, wenn die Reparatur fehlschlägt?",
+        "answer": "Wenn das Dokument nicht wiederhergestellt werden kann, zeigt das Tool einen Fehler statt unvollständiger Ausgabe. Prüfe die Quelle auf fehlende oder doppelte Strukturzeichen und versuche es erneut."
+      },
+      {
+        "question": "Ist dies ein kostenloses JSON-Repair-Tool?",
+        "answer": "Ja. Du kannst JSON reparieren, das Ergebnis prüfen, kopieren oder herunterladen, ohne ein Konto zu erstellen."
+      }
+    ],
+    "article": {
+      "title": "Ungültiges JSON online beheben",
+      "content": "<h2>What Is JSON Repair?</h2><p> JSON-Repair ist der Prozess, ungültiges JSON in gültiges, parsbares JSON umzuwandeln. Echtes JSON bricht oft durch Kopieren aus Code, exportierte Konfiguration oder REPL-Ausgaben. Ein JSON-Fixer wendet bestmögliche Korrekturen an, damit das Dokument wieder geparst werden kann.</p><h2> Häufige JSON-Fehler, die dieses Tool behebt</h2><ul><li><strong>Trailing commas:</strong> ein Komma vor einem schließenden <code>}</code> oder <code>]</code> wird entfernt.</li><li><strong>Single quotes:</strong> Strings in einfachen Anführungszeichen werden in doppelte umgewandelt.</li><li><strong>Unquoted keys:</strong> Objektschlüssel ohne Anführungszeichen werden in doppelte Anführungszeichen gesetzt.</li><li><strong>Missing brackets:</strong> nicht geschlossen <code>{</code> oder <code>[</code> werden geschlossen, wenn die Struktur es zulässt.</li><li><strong>Comments:</strong> <code>//</code> und <code>/* */</code> comments werden entfernt.</li><li><strong>Python und JS constants:</strong> <code>True</code>, <code>False</code>, <code>None</code>, <code>NaN</code>, und <code>Infinity</code> werden auf gültiges JSON abgebildet.</li></ul><h2> Wie man defektes JSON repariert</h2><ol><li><strong>Paste the broken JSON:</strong> nimm Kommentare, einfache Anführungszeichen oder nachgestellte Kommas auf, falls vorhanden.</li><li><strong>Repair:</strong> wendet das Tool Korrekturen an und parst das Ergebnis.</li><li><strong>Review:</strong> bestätige, dass die Ausgabe gültiges JSON ist, und passe die Einrückung bei Bedarf an.</li><li><strong>Copy oder download:</strong> verwende das reparierte Dokument in deinem Workflow.</li></ol><h2>Repair vs Format</h2><p> Reparatur behebt Syntax, sodass das Dokument zu gültigem JSON wird. Formatierung ändert hingegen nur Einrückung und Abstände von bereits gültigem JSON. Verwende zuerst die Reparatur; wenn du nur lesbare Abstände für gültiges JSON benötigst, genügt ein Formatierer.</p><h2>Limits of JSON Repair</h2><p> Die Behebung von JSON-Syntaxfehlern ist bestmöglich. Sie kann keine fehlenden Daten erfinden oder ein Dokument wiederherstellen, dessen Struktur grundlegend falsch ist. Wenn die Eingabe zu stark beschädigt ist, meldet das Tool einen Fehler statt eines irreführenden Ergebnisses. Validiere nach der Reparatur wichtige Daten mit einem JSON-Schema-Validator, bevor du sie produktiv verwendest.</p><h2>Privacy</h2><p> Die Reparatur läuft vollständig in deinem Browser. Dein JSON wird nicht hochgeladen und es ist kein Konto erforderlich. Füge keine Passwörter, Tokens oder Produktiv-Zugangsdaten in ein Online-Tool ein.</p>"
     }
   }
 }

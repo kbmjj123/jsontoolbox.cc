@@ -21,7 +21,7 @@ export const useBlog = () => {
   // otherwise the link keeps the `/en` (or double-prefixes) and breaks.
   const getCleanPath = (postPath: string): string => {
     if (!postPath) return '/'
-    return postPath.replace(/^\/(en|zh|zh-HK|zh-TW|ja)(?=\/|$)/, '') || '/'
+    return postPath.replace(/^\/(en|zh|de|zh-HK|zh-TW|ja)(?=\/|$)/, '') || '/'
   }
 
   // Helper: drafts (frontmatter `draft: true`) never surface on the site

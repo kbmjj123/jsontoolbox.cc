@@ -3,24 +3,28 @@
     "id": "escape-json",
     "label_en": "JSON Object String",
     "label_zh": "JSON 对象字符串",
-    "input": "{\"name\": \"Alice\", \"msg\": \"She said \\\"OK\\\"\"}"
+    "input": "{\"name\": \"Alice\", \"msg\": \"She said \\\"OK\\\"\"}",
+    "label_de": "JSON-Objekt-String"
   },
   {
     "id": "unescape",
     "label_en": "Escaped String (Unescape)",
     "label_zh": "已转义字符串（反转义）",
-    "input": "{\\\"name\\\": \\\"Alice\\\", \\\"msg\\\": \\\"She said \\\\\\\"OK\\\\\\\"\\\"}"
+    "input": "{\\\"name\\\": \\\"Alice\\\", \\\"msg\\\": \\\"She said \\\\\\\"OK\\\\\\\"\\\"}",
+    "label_de": "Maskierter String (Unescape)"
   },
   {
     "id": "escape-array",
     "label_en": "JSON Array String",
     "label_zh": "JSON 数组字符串",
-    "input": "[{\"id\": 1, \"text\": \"Line one\"}, {\"id\": 2, \"text\": \"Line two\\nNew line\"}]"
+    "input": "[{\"id\": 1, \"text\": \"Line one\"}, {\"id\": 2, \"text\": \"Line two\\nNew line\"}]",
+    "label_de": "JSON-Array-String"
   },
   {
     "id": "escape-quotes-backslashes",
     "label_en": "Quotes & Backslash Path",
     "label_zh": "引号与反斜杠路径",
-    "input": "{\"name\":\"Alice\",\"message\":\"She said \\\"OK\\\"\",\"path\":\"C:\\\\Users\\\\test\"}"
+    "input": "{\"name\":\"Alice\",\"message\":\"She said \\\"OK\\\"\",\"path\":\"C:\\\\Users\\\\test\"}",
+    "label_de": "Anführungszeichen & Backslash-Pfad"
   }
 ]

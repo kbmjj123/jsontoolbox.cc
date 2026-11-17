@@ -10,7 +10,15 @@
   "en": {
     "title": "JSON Format & Beautify Tools",
     "description": "Format, beautify, and minify JSON data online. All processing happens in your browser.",
-    "keywords": ["json formatter", "json beautifier", "json minifier", "json editor", "json escape", "json unescape", "format json online"],
+    "keywords": [
+      "json formatter",
+      "json beautifier",
+      "json minifier",
+      "json editor",
+      "json escape",
+      "json unescape",
+      "format json online"
+    ],
     "h2": "Format & Beautify",
     "pdesc": "Format, beautify, and minify JSON data — all locally in your browser.",
     "highlights": [
@@ -48,7 +56,12 @@
   "zh": {
     "title": "JSON 编辑器",
     "description": "在线格式化、美化和压缩 JSON 数据。所有处理在浏览器中完成。",
-    "keywords": ["json格式化", "json美化", "json压缩", "在线json格式化"],
+    "keywords": [
+      "json格式化",
+      "json美化",
+      "json压缩",
+      "在线json格式化"
+    ],
     "h2": "格式化与美化",
     "pdesc": "格式化、美化和压缩 JSON 数据 — 全部在浏览器本地完成。",
     "highlights": [
@@ -80,6 +93,52 @@
       {
         "q": "可以格式化大型 JSON 文件吗？",
         "a": "可以。所有处理在本地完成，只要浏览器内存允许，你可以格式化任意大小的 JSON 文件。"
+      }
+    ]
+  },
+  "de": {
+    "title": "JSON-Formatier- & Verschöner-Tools",
+    "description": "Formatiere, verschönere und minimiere JSON-Daten online. Die gesamte Verarbeitung findet in deinem Browser statt.",
+    "keywords": [
+      "json formatter",
+      "json beautifier",
+      "json minifier",
+      "json editor",
+      "json escape",
+      "json unescape",
+      "format json online"
+    ],
+    "h2": "Formatieren & Verschönern",
+    "pdesc": "Formatiere, verschönere und minimiere JSON-Daten — alles lokal in deinem Browser.",
+    "highlights": [
+      {
+        "icon": "lucide:sparkles",
+        "title": "Sofortige Formatierung",
+        "description": "Unordentliches JSON sofort mit korrekter Einrückung formatieren."
+      },
+      {
+        "icon": "lucide:minimize",
+        "title": "JSON minimieren",
+        "description": "JSON für den Produktivbetrieb auf eine Zeile komprimieren."
+      },
+      {
+        "icon": "lucide:shield-check",
+        "title": "Privat & sicher",
+        "description": "Die gesamte Verarbeitung erfolgt in deinem Browser. Es werden keine Daten hochgeladen."
+      }
+    ],
+    "faq": [
+      {
+        "q": "Sind meine JSON-Daten sicher?",
+        "a": "Ja. Die gesamte Verarbeitung findet in deinem Browser statt. Dein JSON wird nie an einen Server gesendet."
+      },
+      {
+        "q": "Welche Einrückungsoptionen gibt es?",
+        "a": "Du kannst zwischen 2 Leerzeichen, 4 Leerzeichen oder Tabulator-Einrückung wählen."
+      },
+      {
+        "q": "Kann ich große JSON-Dateien formatieren?",
+        "a": "Ja. Da die gesamte Verarbeitung lokal erfolgt, kannst du JSON-Dateien so groß formatieren, wie es der Speicher deines Browsers zulässt."
       }
     ]
   }

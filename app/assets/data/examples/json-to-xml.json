@@ -3,6 +3,7 @@
     "id": "data",
     "label_en": "Data Object",
     "label_zh": "数据对象",
-    "input": "{\"user\":{\"name\":\"Alice\",\"age\":28,\"hobbies\":[\"reading\",\"coding\"]}}"
+    "input": "{\"user\":{\"name\":\"Alice\",\"age\":28,\"hobbies\":[\"reading\",\"coding\"]}}",
+    "label_de": "Datenobjekt"
   }
 ]

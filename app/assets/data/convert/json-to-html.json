@@ -323,5 +323,161 @@
       "title": "如何把 JSON 转成 HTML 表格",
       "content": "<h2>什么是 JSON 转 HTML 表格转换器？</h2><p>JSON 转 HTML 表格转换器把结构化的 JSON 记录写成 HTML 表格代码。典型的输入是对象数组：每个对象是一条记录，每个属性是一列。结果是静态代码，可以粘贴进网页、CMS 编辑器、邮件模板或文档站点。</p><p>当你手上有来自接口、数据库导出或配置文件的 JSON 数据，需要以表格形式展示给人看、而不是给机器读时，这个转换就很有用。</p><h2>支持的 JSON 结构</h2><p>支持的输入是顶层对象数组：</p><pre><code>[{\"name\":\"Alice\",\"age\":30},{\"name\":\"Bob\",\"age\":25}]</code></pre><p>数组里的每一项都必须是对象。[\"a\",\"b\"] 这样的字符串数组、数字数组、数组的数组都无法变成行和列，会被直接报错。如果数据被包在 {\"results\":[...]} 这样的对象里，请粘贴内层的数组。</p><h2>如何把 JSON 转成 HTML 表格</h2><ol><li><strong>输入 JSON：</strong>把对象数组粘贴进编辑器，或打开 .json 文件。</li><li><strong>处理嵌套：</strong>需要把嵌套属性变成点号列时启用展平。</li><li><strong>检查结果：</strong>在渲染预览和 HTML 源码之间切换，确认行列数量。</li><li><strong>复制代码：</strong>复制生成的表格，粘贴到你的页面或编辑器里。</li><li><strong>或下载文件：</strong>需要直接打开的页面时保存 .html 文档；要电子表格时用 CSV 按钮导出。</li></ol><h2>生成的 HTML 结构</h2><p>输出遵循标准表格结构：thead 里放一行 th 表头单元格，tbody 里每条记录一个 tr、每列一个 td。</p><pre><code>&lt;table class=\"json-table\"&gt;\n  &lt;thead&gt;\n    &lt;tr&gt;\n      &lt;th&gt;name&lt;/th&gt;\n    &lt;/tr&gt;\n  &lt;/thead&gt;\n  &lt;tbody&gt;\n    &lt;tr&gt;\n      &lt;td&gt;Alice&lt;/td&gt;\n    &lt;/tr&gt;\n  &lt;/tbody&gt;\n&lt;/table&gt;</code></pre><p>使用 thead、tbody、th、td 让代码保持语义化：屏幕阅读器等工具可以把表头单元格和下面的数据单元格关联起来。表现交给 CSS，所以表格只带类名，不再写 border、cellpadding、cellspacing 这类属性。</p><h2>HTML 安全与转义</h2><p>JSON 的值里可能含有在 HTML 中有特殊含义的字符。如果 script 标签或 & 这类内容不加转义就被插进代码，浏览器可能把它当成页面的一部分，而不是普通文本。</p><p>在把值写入 th 或 td 之前，本工具会转义 HTML 文本中有意义的五个字符：&amp;、&lt;、&gt;、双引号、单引号，分别变成 &amp;amp;、&amp;lt;、&amp;gt;、&amp;quot;、&amp;#39;。转义后的文本会按原始 JSON 字符串原样显示，不会引入新的标签。</p><p>转义输出是必要的，但不是所有场景下的充分条件。把生成的代码放进更大的应用时，还要遵守该应用的 HTML、模板和内容安全策略，尤其是当 JSON 来自不可信用户时。</p><h2>在网页中使用生成结果</h2><p>复制代码后，可以粘贴进 HTML 页面、CMS 编辑器、文档系统或邮件模板。边框、间距、字体、斑马纹和小屏下的响应式表现，都由你自己的 CSS 决定。</p><p>生成的表格是静态 HTML，不包含排序、筛选、分页、编辑或响应式控件，也不会加载任何脚本或样式表。这些行为需要在你的页面里额外补上 HTML、CSS 或 JavaScript。</p><h2>HTML 表格、CSV 与表格预览</h2><p>三种输出解决的是不同问题：</p><ul><li><strong>HTML 表格：</strong>数据要显示在页面上，或粘贴进支持代码的编辑器时使用。</li><li><strong>CSV：</strong>数据要继续进入 Excel、Google Sheets、数据库导入或报表流程时使用。</li><li><strong>表格预览：</strong>只需要在浏览器里阅读和检查数据时使用。</li><li><strong>原始 JSON：</strong>需要保留嵌套结构、精确类型或机器间交换时保留原格式。</li></ul><h2>浏览器本地处理与隐私</h2><p>这个工具在你的浏览器中解析 JSON 并生成代码，而不是把输入上传到远程转换服务。这对内部数据集和开发数据很方便，但并不等于绝对安全。不要在任何在线工具中输入凭证、访问令牌、个人信息或机密生产数据。</p>"
     }
+  },
+  "de": {
+    "name": "JSON zu HTML-Tabelle",
+    "description": "Wandle ein JSON-Array von Objekten online in eine HTML-Tabelle um. Erzeuge semantisches Tabellen-Markup mit thead, tbody, th und td, maskiere Werte mit HTML-Zeichen, zeige eine Vorschau und kopiere das Markup oder lade eine eigenständige .html-Datei herunter.",
+    "hero": {
+      "trustHtml": "Läuft in deinem Browser. Dein JSON wird von diesem Tool nicht hochgeladen."
+    },
+    "meta": {
+      "title": "JSON-zu-HTML-Tabelle-Generator – Kostenloser Online-Konverter",
+      "description": "Wandle JSON online in eine HTML-Tabelle um. Füge ein Array von Objekten ein, zeige Zeilen und Spalten an, kopiere semantisches Tabellen-Markup oder lade eine eigenständige .html-Datei herunter. Zellwerte werden maskiert. Kostenlos und browserbasiert.",
+      "keywords": [
+        "json to html",
+        "json to html table",
+        "json to html table generator",
+        "json array to html table",
+        "convert json to html",
+        "json html table converter",
+        "generate html table from json",
+        "json table html generator"
+      ]
+    },
+    "features": [
+      {
+        "icon": "lucide:code-2",
+        "title": "JSON-Array zu HTML-Tabelle",
+        "description": "Mache ein Array von JSON-Objekten zu HTML-Zeilen und -Spalten. Jedes Objekt wird zu einer Zeile und die Objektschlüssel zu den Kopfzellen."
+      },
+      {
+        "icon": "lucide:layout-list",
+        "title": "Semantisches Tabellen-Markup",
+        "description": "Die Ausgabe verwendet die Elemente table, thead, tbody, tr, th und td mit einer json-table-Klasse statt Inline-Darstellungsattributen, damit du sie mit eigenem CSS gestalten kannst."
+      },
+      {
+        "icon": "lucide:shield-check",
+        "title": "Maskierte Zellwerte",
+        "description": "Jede Kopfzeile und jeder Zellwert wird maskiert, bevor er in das Markup geschrieben wird. Die Zeichen &, <, >, doppeltes Anführungszeichen und einfaches Anführungszeichen werden zu HTML-Entitäten, sodass JSON-Text als Text statt als Markup dargestellt wird."
+      },
+      {
+        "icon": "lucide:copy",
+        "title": "Das HTML kopieren oder herunterladen",
+        "description": "Kopiere das erzeugte Markup in die Zwischenablage oder lade eine eigenständige .html-Datei mit einem minimalen Stylesheet herunter, damit du die Datei direkt im Browser öffnen kannst."
+      },
+      {
+        "icon": "lucide:table-2",
+        "title": "Vorschau vor dem Exportieren",
+        "description": "Wechsle zwischen der gerenderten Tabellenvorschau und dem erzeugten HTML-Quelltext und prüfe die Zeilen- und Spaltenanzahl, bevor du etwas kopierst oder herunterlädst."
+      },
+      {
+        "icon": "lucide:layers-2",
+        "title": "Optionale Verschachtelungs-Ausglättung",
+        "description": "Glätte verschachtelte Objekte zu Spalten in Punktnotation wie address.city. Bei ausgeschaltetem Abflachen wird ein Objekt- oder Array-Wert als kompakter JSON-Text in eine Zelle geschrieben."
+      },
+      {
+        "icon": "lucide:upload",
+        "title": "Datei einfügen oder öffnen",
+        "description": "Füge JSON in den Editor ein oder öffne eine .json-Datei von deinem Gerät. Parsing und HTML-Erzeugung finden im Browser statt."
+      },
+      {
+        "icon": "lucide:shield",
+        "title": "Verarbeitung im Browser",
+        "description": "Parsing, Maskierung und HTML-Erzeugung laufen in deinem Browser. Kein Konto und kein Upload an einen Konvertierungsserver."
+      }
+    ],
+    "guide": [
+      {
+        "title": "Ein JSON-Array von Objekten eingeben",
+        "description": "Füge ein Array wie [{\"name\":\"Alice\"},{\"name\":\"Bob\"}] ein oder öffne eine .json-Datei. Jedes Element muss ein Objekt sein, da jedes Element eine Zeile wird."
+      },
+      {
+        "title": "Umgang mit verschachtelten Daten wählen",
+        "description": "Aktiviere „Verschachtelte Objekte abflachen“, wenn verschachtelte Eigenschaften zu Spalten in Punktnotation wie address.city werden sollen."
+      },
+      {
+        "title": "Vorschau und Markup prüfen",
+        "description": "Nutze den Umschalter zwischen Vorschau und HTML, um die gerenderte Tabelle mit dem erzeugten Quelltext zu vergleichen, und bestätige, dass Zeilen- und Spaltenanzahl zu deinen Daten passen."
+      },
+      {
+        "title": "Das Ergebnis kopieren oder herunterladen",
+        "description": "Klicke auf „HTML kopieren“, um das Markup zu übernehmen, oder lade die .html-Datei herunter, wenn du eine direkt öffnbare Seite möchtest. Verwende die CSV-Schaltfläche, wenn du dieselben Datensätze in einer Tabelle brauchst."
+      }
+    ],
+    "example": {
+      "input": "[\n  { \"name\": \"Alice\", \"age\": 30, \"note\": \"a & b <tag> \\\"quoted\\\"\" },\n  { \"name\": \"Bob\", \"age\": 25, \"note\": \"plain text\" }\n]",
+      "output": "<table class=\"json-table\">\n  <thead>\n    <tr>\n      <th>name</th>\n      <th>age</th>\n      <th>note</th>\n    </tr>\n  </thead>\n  <tbody>\n    <tr>\n      <td>Alice</td>\n      <td>30</td>\n      <td>a &amp; b &lt;tag&gt; &quot;quoted&quot;</td>\n    </tr>\n    <tr>\n      <td>Bob</td>\n      <td>25</td>\n      <td>plain text</td>\n    </tr>\n  </tbody>\n</table>",
+      "useCase": "Mache ein Array von Datensätzen zu Tabellen-Markup, das in eine Seite, einen CMS-Editor oder eine Dokumentationsseite eingefügt werden kann."
+    },
+    "faq": [
+      {
+        "question": "Welche JSON-Eingabe akzeptiert dieses Tool?",
+        "answer": "Ein JSON-Array der obersten Ebene, dessen Elemente Objekte sind, zum Beispiel [{\"name\":\"Alice\",\"age\":30}]. Arrays von Strings, Zahlen oder Arrays werden abgelehnt, da jedes Element eine Zeile der Tabelle werden muss."
+      },
+      {
+        "question": "Welches HTML erzeugt das Tool?",
+        "answer": "Die Ausgabe ist ein Table-Element mit einem thead mit einer Kopfzeile aus th-Zellen und einem tbody mit einem tr pro Datensatz und einem td pro Spalte. Die Tabelle trägt eine json-table-Klasse statt Inline-Rahmen- oder Abstands-Attributen."
+      },
+      {
+        "question": "Werden Zellwerte maskiert?",
+        "answer": "Ja. Kopf- und Zelltext wird maskiert, bevor er in das Markup geschrieben wird: & wird zu &amp;, < wird zu &lt;, > wird zu &gt;, ein doppeltes Anführungszeichen wird zu &quot; und ein einfaches zu &#39;. Das verhindert, dass JSON-Werte wie Script-Tags als Markup interpretiert werden."
+      },
+      {
+        "question": "Enthält das erzeugte HTML CSS?",
+        "answer": "Das kopierte Markup ist nur die Tabelle mit einer json-table-Klasse und ohne Styles. Die heruntergeladene .html-Datei ist ein vollständiges Dokument, das ein minimales Stylesheet für Rahmen, Abstände und Kopfzeilenhintergrund hinzufügt."
+      },
+      {
+        "question": "Kann ich die Ausgabe auf meiner eigenen Website einbetten?",
+        "answer": "Ja. Die erzeugte Tabelle ist statisches Markup, das du in eine Seite, einen CMS-Editor oder ein Dokumentationssystem einfügen kannst. Füge eigenes CSS für Rahmen, Abstände, responsives Verhalten und Typografie hinzu und beachte die Inhalts- und Sicherheitsrichtlinien deiner Anwendung, wenn die Werte aus nicht vertrauenswürdigen Quellen stammen."
+      },
+      {
+        "question": "Kann ich verschachteltes JSON in eine HTML-Tabelle umwandeln?",
+        "answer": "Ja, mit Einschränkungen. Aktiviere „Verschachtelte Objekte abflachen“, um verschachtelte Eigenschaften zu Spalten in Punktnotation wie address.city zu machen. Verschachtelte Arrays haben nicht immer eine natürliche zweidimensionale Form, daher werden sie entweder als kompakter JSON-Text in eine Zelle geschrieben oder benötigen eine separate Umwandlung."
+      },
+      {
+        "question": "Kann ich ein einzelnes JSON-Objekt umwandeln?",
+        "answer": "Nein. Diese Seite erwartet ein Array von Datensätzen. Wenn deine Daten wie {\"results\":[...]} aussehen, füge stattdessen das innere Array ein oder verwende einen JSON-Viewer, der für die Objektprüfung gebaut ist."
+      },
+      {
+        "question": "Wie viele Zeilen zeigt die Vorschau?",
+        "answer": "Die Vorschau rendert die ersten 100 Zeilen, damit die Seite reaktionsfähig bleibt. Die gemeldete Zeilenanzahl und das kopierte oder heruntergeladene HTML umfassen weiterhin jeden Datensatz im Array."
+      },
+      {
+        "question": "Kann ich CSV statt HTML erhalten?",
+        "answer": "Ja. Dieselbe Tabelle kann als UTF-8-CSV-Datei mit BOM für Excel, Google Sheets oder andere Tabellenprogramme heruntergeladen werden."
+      },
+      {
+        "question": "Werden meine JSON-Daten auf einen Server hochgeladen?",
+        "answer": "Diese Seite parst JSON und erzeugt das Markup in deinem Browser und erfordert keinen Upload an einen Konvertierungsserver. Du solltest dennoch vermeiden, Passwörter, API-Schlüssel, Zugriffstokens oder andere hochsensible Informationen in ein browserbasiertes Tool einzugeben."
+      },
+      {
+        "question": "Ist dies ein kostenloser JSON-zu-HTML-Tabelle-Generator?",
+        "answer": "Ja. Du kannst JSON einfügen oder öffnen, die Tabelle anzeigen und das HTML kopieren oder herunterladen, ohne ein Konto zu erstellen."
+      }
+    ],
+    "ui": {
+      "label_input": "JSON eingeben",
+      "label_output": "HTML-Tabelle",
+      "view_preview": "Vorschau",
+      "view_html": "HTML",
+      "btn_render": "Tabelle rendern",
+      "btn_copy_html": "HTML kopieren",
+      "btn_download_html": ".html herunterladen",
+      "btn_download_csv": "CSV herunterladen",
+      "option_flatten": "Verschachtelte Objekte abflachen",
+      "empty_state": "Ein JSON-Array von Objekten einfügen, um eine HTML-Tabelle zu erzeugen",
+      "status_rows": "{count} Zeilen",
+      "status_columns": "{count} Spalten",
+      "preview_limit": "Die Vorschau zeigt die ersten {count} Zeilen. Das kopierte und heruntergeladene HTML enthält jede Zeile.",
+      "error_invalid_input": "Eingabe muss ein JSON-Array von Objekten sein",
+      "error_empty_array": "Das JSON-Array ist leer",
+      "error_invalid_row": "Jedes Array-Element muss ein JSON-Objekt sein",
+      "error_no_columns": "Es wurden keine Tabellenspalten gefunden",
+      "error_invalid_json": "Eingabe ist kein gültiges JSON"
+    },
+    "article": {
+      "title": "JSON in eine HTML-Tabelle umwandeln",
+      "content": "<h2> Was ist ein JSON-zu-HTML-Tabelle-Konverter?</h2><p> Ein JSON-zu-HTML-Tabelle-Konverter nimmt strukturierte JSON-Datensätze und gibt sie als HTML-Tabellen-Markup aus. Die typische Eingabe ist ein Array von Objekten, wobei jedes Objekt ein Datensatz und jede Eigenschaft eine Spalte ist. Das Ergebnis ist statisches Markup, das du in eine Webseite, einen CMS-Editor, eine E-Mail-Vorlage oder eine Dokumentationsseite einfügen kannst.</p><p> Das ist nützlich, wenn du JSON-Daten von einer API, einem Datenbank-Export oder einer Konfigurationsdatei hast und sie Personen als Tabelle statt als Rohtext zeigen möchtest.</p><h2>Supported JSON Structure</h2><p> Die unterstützte Eingabe ist ein Array der obersten Ebene mit Objekten:</p><pre><code>[{\"name\":\"Alice\",\"age\":30},{\"name\":\"Bob\",\"age\":25}]</code></pre><p> Jedes Element im Array muss ein Objekt sein. Ein Array von Strings wie [\"a\",\"b\"], ein Array von Zahlen oder ein Array von Arrays kann nicht in Zeilen und Spalten umgewandelt werden und wird daher mit einer Fehlermeldung abgelehnt. Wenn dein Dokument die Datensätze in ein Objekt wie {\"results\":[...]} einpackt, füge stattdessen das innere Array ein.</p><h2>JSON in eine HTML-Tabelle umwandeln</h2><ol><li><strong>Enter the JSON:</strong> Füge ein Array von Objekten in den Editor ein oder öffne eine .json-Datei.</li><li><strong>Handle nesting:</strong> Aktiviere das Abflachen, wenn verschachtelte Eigenschaften zu Spalten in Punktnotation werden sollen.</li><li><strong>Check the result:</strong> Wechsle zwischen gerenderter Vorschau und HTML-Quelltext und bestätige die Zeilen- und Spaltenanzahl.</li><li><strong>Copy the markup:</strong> Kopiere die erzeugte Tabelle und füge sie in deine Seite oder deinen Editor ein.</li><li><strong>Or download the file:</strong> Speichere das .html-Dokument, wenn du eine direkt öffnbare Seite möchtest, oder nutze die CSV-Schaltfläche für einen Tabellen-Export.</li></ol><h2> Die erzeugte HTML-Struktur</h2><p> Die Ausgabe folgt der Standard-Tabellenstruktur: ein thead mit einer Zeile von th-Kopfzellen und ein tbody mit einem tr pro Datensatz und einem td pro Spalte.</p><pre><code>&lt;table class=\"json-table\"&gt;\n  &lt;thead&gt;\n    &lt;tr&gt;\n      &lt;th&gt;name&lt;/th&gt;\n    &lt;/tr&gt;\n  &lt;/thead&gt;\n  &lt;tbody&gt;\n    &lt;tr&gt;\n      &lt;td&gt;Alice&lt;/td&gt;\n    &lt;/tr&gt;\n  &lt;/tbody&gt;\n&lt;/table&gt;</code></pre><p> Die Verwendung von thead, tbody, th und td hält das Markup semantisch: Screenreader und andere Tools können Kopfzellen mit den darunterliegenden Daten verbinden. Die Darstellung bleibt CSS überlassen, daher trägt die Tabelle eine Klasse statt Rahmen-, Zellabstands- oder Zellrand-Attributen.</p><h2>HTML Safety und Escaping</h2><p> JSON-Werte können Zeichen enthalten, die in HTML Bedeutung haben. Wenn ein Wert wie ein Script-Tag oder ein Ampersand ohne Maskierung in Markup eingefügt wird, kann der Browser ihn als Teil der Seite statt als Text interpretieren.</p><p> Bevor ein Wert in ein th- oder td-Element geschrieben wird, maskiert dieses Tool die fünf in HTML-Text wichtigen Zeichen: &amp;, &lt;, &gt;, das doppelte und das einfache Anführungszeichen. Sie werden zu &amp;amp;, &amp;lt;, &amp;gt;, &amp;quot; und &amp;#39;. Der maskierte Text wird genau wie der ursprüngliche JSON-String dargestellt, ohne Markup einzuführen.</p><p> Das Maskieren der Ausgabe ist notwendig, aber nicht in jedem Kontext hinreichend. Wenn du erzeugtes Markup in eine größere Anwendung einfügst, folge deren HTML-, Template- und Content-Security-Praktiken, insbesondere wenn das JSON von nicht vertrauenswürdigen Benutzern stammt.</p><h2> Die Ausgabe auf einer Webseite verwenden</h2><p> Füge das Markup nach dem Kopieren in eine HTML-Seite, einen CMS-Editor, ein Dokumentationssystem oder eine E-Mail-Vorlage ein. Füge eigenes CSS für Rahmen, Abstände, Typografie, Zebrastreifen und responsives Verhalten auf kleinen Bildschirmen hinzu.</p><p> Die erzeugte Tabelle ist statisches HTML. Sie enthält keine Sortierung, Filterung, Seitennavigation, Bearbeitung oder responsive Steuerungen und lädt kein eigenes Skript oder Stylesheet. Diese Verhaltensweisen erfordern zusätzliches HTML, CSS oder JavaScript in deiner Seite.</p><h2> HTML-Tabelle, CSV und Tabellenvorschau</h2><p> Die drei Ausgaben lösen unterschiedliche Probleme:</p><ul><li><strong>HTML table:</strong> Nutze es, wenn die Daten auf einer Seite angezeigt oder in einen Editor eingefügt werden müssen, der Markup akzeptiert.</li><li><strong>CSV:</strong> Nutze es, wenn die Datensätze weiter in Excel, Google Sheets, einen Datenbankimport oder eine Berichts-Pipeline gehen müssen.</li><li><strong>Table preview:</strong> Nutze es, wenn du die Datensätze nur im Browser lesen und auf Plausibilität prüfen möchtest.</li><li><strong>Raw JSON:</strong> Behalte es bei, wenn verschachtelte Strukturen, exakte Datentypen oder Maschinen-zu-Maschinen-Austausch erhalten bleiben müssen.</li></ul><h2>Browser-Based Privacy</h2><p> Dieses Tool ist darauf ausgelegt, JSON im Browser zu parsen und das Markup zu erzeugen statt die Eingabe an einen entfernten Konvertierungsdienst hochzuladen. Das ist nützlich für interne Datensätze und Entwicklungsdaten, aber keine Garantie für vollständige Sicherheit. Vermeide Zugangsdaten, Zugriffstokens, personenbezogene Informationen oder vertrauliche Produktivdaten in einem Web-Tool.</p>"
+    }
   }
 }

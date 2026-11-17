@@ -290,5 +290,145 @@
       "title": "如何在线把 Excel 转为 JSON",
       "content": "<h2>什么是 Excel 转 JSON？</h2><p>转换 excel 为 json（也叫表格转 json）是指读取一张电子表格，并生成一个 JSON 数组，其中每一行变成一个对象。Excel JSON 转换常用于把表格数据从 Excel 或 CSV 搬进 Web API、配置文件或数据管道。</p><h2>转换是怎么进行的</h2><ol><li><strong>打开文件：</strong>选择 .xlsx、.xls 或 .csv 文件，文件在你的浏览器中读取。</li><li><strong>用第一行作为键：</strong>标题行变成对象的键。</li><li><strong>映射每一行：</strong>其后的每一行变成一个 JSON 对象。</li><li><strong>收集所有行：</strong>所有对象以 JSON 数组的形式返回。</li></ol><h2>单元格类型</h2><p>数字单元格保持为数字，文本单元格保持为字符串，TRUE/FALSE 这类布尔单元格会变成 JSON 的 true/false。空单元格返回为空字符串，使每个对象都保留相同的键。原始的日期序列号可能以数字形式出现，因为转换器读取的是单元格底层的值。</p><h2>多个工作表</h2><p>当工作簿有多个工作表时，选择你要转换的那一个，只有所选工作表会被转成 JSON。</p><h2>什么时候用它</h2><ul><li><strong>API 请求体：</strong>把表格导出变成请求数据。</li><li><strong>配置：</strong>把表格设置搬进 JSON 配置。</li><li><strong>数据管道：</strong>把清洗后的行喂给脚本。</li><li><strong>原型：</strong>从一张表快速得到示例 JSON。</li></ul><h2>隐私</h2><p>转换完全在你的浏览器中运行，文件不会被上传，也不需要账号。请勿在任何在线工具中打开含有密码、令牌或生产环境凭据的文件。</p>"
     }
+  },
+  "de": {
+    "name": "Excel zu JSON",
+    "description": "Wandle Excel- und CSV-Dateien in deinem Browser in JSON um. Lade eine .xlsx-, .xls- oder .csv-Datei hoch, wähle ein Arbeitsblatt und erhalte ein JSON-Array, bei dem jede Zeile zu einem Objekt wird. Kopiere oder lade das Ergebnis herunter, ohne deine Daten auf einen Server hochzuladen.",
+    "hero": {
+      "trustHtml": "Läuft in deinem Browser. Deine Datei wird von diesem Tool nicht hochgeladen."
+    },
+    "meta": {
+      "title": "Excel-zu-JSON-Konverter – XLSX online in JSON umwandeln",
+      "description": "Wandle Excel online in JSON um. Lade eine .xlsx-, .xls- oder .csv-Datei hoch, wähle ein Blatt und mache jede Zeile zu einem JSON-Objekt. Kopiere oder lade das JSON in deinem Browser herunter.",
+      "keywords": [
+        "excel to json",
+        "convert excel to json",
+        "xlsx to json",
+        "excel to json converter",
+        "convert xls to json",
+        "excel json",
+        "xlsx to json online",
+        "spreadsheet to json"
+      ]
+    },
+    "features": [
+      {
+        "icon": "lucide:upload",
+        "title": "Excel oder CSV hochladen",
+        "description": "Öffne eine lokale .xlsx-, .xls- oder .csv-Datei. Die Datei wird in deinem Browser gelesen, sodass ihre Inhalte nicht auf einen Server hochgeladen werden."
+      },
+      {
+        "icon": "lucide:layout-grid",
+        "title": "Ein Arbeitsblatt wählen",
+        "description": "Wenn eine Arbeitsmappe mehr als ein Blatt enthält, wähle das aus, das du umwandeln möchtest. Die Zeilen des ausgewählten Blatts werden zur JSON-Ausgabe."
+      },
+      {
+        "icon": "lucide:braces",
+        "title": "Zeilen werden zu Objekten",
+        "description": "Die erste Zeile wird als Schlüssel verwendet und jede folgende Zeile wird zu einem JSON-Objekt. Das Ergebnis ist ein JSON-Array, das du direkt in Code verwenden kannst."
+      },
+      {
+        "icon": "lucide:table",
+        "title": "Zelltypen beibehalten",
+        "description": "Zahlen bleiben Zahlen und Text bleibt Text. Leere Zellen werden als leere Strings zurückgegeben, damit die Objektform über die Zeilen hinweg konsistent bleibt."
+      },
+      {
+        "icon": "lucide:copy",
+        "title": "Kopieren oder herunterladen",
+        "description": "Kopiere das JSON-Array in die Zwischenablage oder lade es als .json-Datei herunter für die Verwendung in APIs, Skripten oder Datenpipelines."
+      },
+      {
+        "icon": "lucide:shield-check",
+        "title": "Verarbeitung im Browser",
+        "description": "Lesen, Parsen und Umwandlung finden in deinem Browser statt. Die Seite erfordert kein Konto und sendet deine Datei nicht an einen entfernten Dienst."
+      }
+    ],
+    "ui": {
+      "label_input": "Excel-/CSV-Datei",
+      "label_output": "JSON-Ausgabe",
+      "btn_choose": "Datei auswählen",
+      "label_drop": "Eine .xlsx-, .xls- oder .csv-Datei hier ablegen",
+      "label_sheet": "Arbeitsblatt",
+      "placeholder_output": "JSON-Ausgabe erscheint hier …",
+      "status_rows": "{count} Zeilen",
+      "btn_copy": "Kopieren",
+      "btn_download": "JSON herunterladen",
+      "error_no_file": "Bitte eine Excel- oder CSV-Datei wählen",
+      "error_read": "Diese Datei konnte nicht gelesen werden",
+      "error_empty": "In der ausgewählten Tabelle wurden keine Zeilen gefunden",
+      "error_processing": "Die Datei konnte nicht umgewandelt werden",
+      "label_preview": "Quell-Vorschau",
+      "btn_view_text": "Text",
+      "btn_view_rich": "Rich",
+      "btn_view_table": "Tabelle",
+      "note_preview_limit": "Erste {shown} von {total} Zeilen werden angezeigt"
+    },
+    "guide": [
+      {
+        "title": "Eine Excel- oder CSV-Datei wählen",
+        "description": "Klicke auf „Datei auswählen“ oder lege eine .xlsx-, .xls- oder .csv-Datei im Eingabebereich ab. Die Datei wird lokal in deinem Browser gelesen."
+      },
+      {
+        "title": "Ein Arbeitsblatt wählen",
+        "description": "Wenn die Arbeitsmappe mehr als ein Blatt hat, wähle das aus, das du umwandeln möchtest. Die erste Zeile dieses Blatts wird als JSON-Schlüssel verwendet."
+      },
+      {
+        "title": "Die JSON-Ausgabe prüfen",
+        "description": "Jede Zeile wird zu einem JSON-Objekt und alle Zeilen bilden ein Array. Zahlen und Text behalten ihre Zelltypen, leere Zellen werden zu leeren Strings."
+      },
+      {
+        "title": "Kopieren oder herunterladen",
+        "description": "Kopiere das JSON-Array oder lade es als .json-Datei herunter. Validiere oder bereinige die Daten anschließend, wenn du sie im Produktivbetrieb verwenden möchtest."
+      }
+    ],
+    "example": {
+      "title": "Excel-zu-JSON-Beispiel",
+      "description": "Mache das erste Blatt einer Tabelle zu einem JSON-Array von Objekten.",
+      "inputLabel": "Tabellenblatt (erstes Blatt)",
+      "input": "Name,Age,Active\nAlice,28,TRUE\nBob,34,FALSE",
+      "inputExplanation": "Dies zeigt das erste Blatt als kommagetrennte Werte. Spaltenüberschriften werden zu Schlüsseln und jede Zeile wird zu einem JSON-Objekt.",
+      "outputLabel": "JSON-Ausgabe",
+      "output": "[\n  {\n    \"Name\": \"Alice\",\n    \"Age\": 28,\n    \"Active\": true\n  },\n  {\n    \"Name\": \"Bob\",\n    \"Age\": 34,\n    \"Active\": false\n  }\n]",
+      "outputExplanation": "Jede Zeile wird in ein Objekt umgewandelt. Zahlen bleiben Zahlen und die TRUE/FALSE-Zellen werden zu JSON-true/false-Werten.",
+      "note": "Excel speichert TRUE/FALSE und Zahlen in einem eigenen Format; der Konverter bildet sie auf die passenden JSON-Typen ab."
+    },
+    "faq": [
+      {
+        "question": "Welche Dateitypen kann ich umwandeln?",
+        "answer": "Du kannst .xlsx-, .xls- und .csv-Dateien umwandeln. Ob du xls zu json oder xlsx zu json umwandelst, derselbe Parser liest alle drei Formate, sodass sich ein CSV-Export wie ein einblättriges Arbeitsblatt verhält."
+      },
+      {
+        "question": "Wie werden Zeilen in JSON umgewandelt?",
+        "answer": "Die erste Zeile des ausgewählten Blatts wird als Spaltenüberschriften behandelt und als Objektschlüssel verwendet. Jede folgende Zeile wird zu einem JSON-Objekt. Das Endergebnis ist ein JSON-Array dieser Objekte."
+      },
+      {
+        "question": "Was, wenn meine Arbeitsmappe mehrere Blätter hat?",
+        "answer": "Eine Arbeitsblatt-Auswahl erscheint, wenn mehr als ein Blatt vorhanden ist. Wähle das gewünschte Blatt; nur das ausgewählte Blatt wird umgewandelt."
+      },
+      {
+        "question": "Bleiben Zahlen und Datumsangaben erhalten?",
+        "answer": "Numerische Zellen bleiben JSON-Zahlen und Textzellen Strings. Boolean-Zellen wie TRUE/FALSE werden zu JSON-true/false. Tabellen-Datumsserien können als Zahlen statt formatierter Datumsangaben zurückgegeben werden, da der Konverter rohe Zellwerte liest."
+      },
+      {
+        "question": "Wie werden leere Zellen behandelt?",
+        "answer": "Leere Zellen werden als leere Strings zurückgegeben, damit jedes Objekt denselben Satz von Schlüsseln hat. Wenn du stattdessen null benötigst, verarbeite die Ausgabe anschließend entsprechend."
+      },
+      {
+        "question": "Kann ich eine große Excel-Datei umwandeln?",
+        "answer": "Das praktische Limit hängt vom Browser-Speicher und der Dateigröße ab. Sehr große Blätter können die Seite oder den Download verlangsamen. Für riesige Exporte ist ein lokales Kommandozeilen-Tool wie ein Python- oder Node-Skript zuverlässiger."
+      },
+      {
+        "question": "Sind meine Dateidaten sicher?",
+        "answer": "Ja. Die Datei wird in deinem Browser gelesen und geparst. Sie wird nicht auf einen Server hochgeladen und es ist kein Konto erforderlich. Vermeide Dateien mit Passwörtern, Tokens oder anderen sensiblen Produktivdaten."
+      },
+      {
+        "question": "Ist dies ein kostenloser Excel-zu-JSON-Konverter?",
+        "answer": "Ja. Du kannst eine Excel- oder CSV-Datei umwandeln, das JSON prüfen, kopieren oder herunterladen, ohne ein Konto zu erstellen."
+      }
+    ],
+    "article": {
+      "title": "Excel online in JSON umwandeln",
+      "content": "<h2> Was ist Excel-zu-JSON-Umwandlung?</h2><p> Die Excel-zu-JSON-Umwandlung, auch Tabellen-zu-JSON-Umwandlung genannt, liest eine Tabelle und erzeugt ein JSON-Array, in dem jede Zeile zu einem Objekt wird. Ein Excel-JSON-Ergebnis ist ein portables Format, um tabellarische Daten aus Excel oder CSV in eine Web-API, eine Konfigurationsdatei oder eine Daten-Pipeline zu überführen.</p><h2>How the Conversion Works</h2><ol><li><strong>Open the file:</strong> wähle eine .xlsx-, .xls- oder .csv-Datei. Die Datei wird in deinem Browser gelesen.</li><li><strong> Erste Zeile als Schlüssel verwenden:</strong> wird die Kopfzeile zu den Objektschlüsseln.</li><li><strong>Map each row:</strong> wird jede folgende Zeile zu einem JSON-Objekt.</li><li><strong>Collect the rows:</strong> alle Objekte werden als JSON-Array zurückgegeben.</li></ol><h2>Cell Types</h2><p> Numerische Zellen bleiben JSON-Zahlen, Textzellen Strings und Boolean-Zellen wie TRUE/FALSE werden zu JSON-true/false. Leere Zellen werden als leere Strings zurückgegeben, damit jedes Objekt dieselben Schlüssel behält. Rohe Datums-Serien können als Zahlen erscheinen, da der Konverter rohe Zellwerte liest.</p><h2>Multiple Sheets</h2><p> Wenn eine Arbeitsmappe mehr als ein Blatt hat, wähle das aus, das du umwandeln möchtest. Nur das ausgewählte Blatt wird zu JSON.</p><h2>When to Use It</h2><ul><li><strong>API payloads:</strong> mache einen Tabellen-Export zu Anfrage-Bodies.</li><li><strong>Configuration:</strong> bringe tabellarische Einstellungen in die JSON-Konfiguration.</li><li><strong>Data pipelines:</strong> gib bereinigte Zeilen an Skripte weiter.</li><li><strong>Prototyping:</strong> erhalte schnell Beispiel-JSON aus einer Tabelle.</li></ul><h2>Privacy</h2><p> Die Umwandlung läuft vollständig in deinem Browser. Deine Datei wird nicht hochgeladen und es ist kein Konto erforderlich. Öffne in keinem Online-Tool Dateien mit Passwörtern, Tokens oder Produktiv-Zugangsdaten.</p>"
+    }
   }
 }

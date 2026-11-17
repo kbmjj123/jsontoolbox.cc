@@ -5,8 +5,17 @@
   "icon": "lucide:type",
   "sort": 15,
   "applicationCategory": "DeveloperApplication",
-  "nextSteps": ["json-editor", "txt-to-json"],
-  "recommends": ["json-to-csv", "json-to-table", "json-path-tester", "json-minifier", "json-parse-stringify"],
+  "nextSteps": [
+    "json-editor",
+    "txt-to-json"
+  ],
+  "recommends": [
+    "json-to-csv",
+    "json-to-table",
+    "json-path-tester",
+    "json-minifier",
+    "json-parse-stringify"
+  ],
   "en": {
     "name": "JSON to Text Converter",
     "description": "Turn JSON into readable plain text in your browser. Extract flattened paths, key-value lines, keys, values, or JSON Lines from valid JSON, then copy or download the result as a .txt file.",
@@ -405,6 +414,206 @@
     "article": {
       "title": "如何把 JSON 转换成可读文本",
       "content": "<h2>什么是 JSON 转文本转换器</h2><p>JSON 转文本转换器把结构化的 JSON 变成纯文本表示。这让嵌套的接口响应、配置数据和导出记录更容易搜索、粘进文档，或分享给不需要原始 JSON 语法的人。</p><p>并不存在唯一的「JSON 转文本」输出形态。扁平路径列表、键值报告、只要值的列表和 JSON Lines 文件，各自服务不同的目的。请选择与你下一步工作流匹配的那种表示。</p><h2>本页的输出模式</h2><ul><li><strong>扁平化为路径：</strong>每个叶子值一行并带路径，例如 <code>user.name: Alice</code> 或 <code>items[0].id: 1</code>。</li><li><strong>键值行：</strong><code>name: Alice</code> 或 <code>user.name = Alice</code> 这样的行，可用叶子键名或完整路径。</li><li><strong>只要值：</strong>叶子值单独成行，不带键名和路径。</li><li><strong>键名与路径：</strong>列出文档里出现的所有路径。</li><li><strong>JSON Lines：</strong>每行一个 JSON 值，通常对应数组的一项。</li></ul><h2>如何把 JSON 转成文本</h2><ol><li><strong>输入 JSON：</strong>粘贴合法的对象或数组，或打开本地 .json 文件。</li><li><strong>选择输出模式：</strong>扁平化路径、键值行、值、键名与路径或 JSON Lines。</li><li><strong>配置数组：</strong>选择带序号的路径（如 <code>tags[0]</code>），或让整个数组以紧凑 JSON 保持一行。</li><li><strong>选择分隔符：</strong>扁平化和键值输出可选冒号或等号。</li><li><strong>查看结果：</strong>复制前检查行数、字符数、路径和值。</li><li><strong>导出：</strong>复制文本，或下载为 .txt 文件。</li></ol><h2>扁平化路径说明</h2><p>输入：</p><pre><code>{\n  \"user\": {\n    \"name\": \"Alice\",\n    \"address\": { \"city\": \"Shanghai\" }\n  }\n}</code></pre><p>扁平化模式输出：</p><pre><code>user.name: Alice\nuser.address.city: Shanghai</code></pre><p>对象的键用点号连接，数组项用带序号的方括号。键名里本身含点号时按原样使用，会让路径产生歧义 —— 这也是扁平文本不是无损格式的原因之一。</p><h2>数组：带序号还是一行</h2><p>选择「每项一行」时，<code>user.roles</code> 下的 <code>[\"admin\", \"editor\"]</code> 会变成：</p><pre><code>user.roles[0]: admin\nuser.roles[1]: editor</code></pre><p>选择「数组保持一行」时，则只有一行：</p><pre><code>user.roles: [\"admin\",\"editor\"]</code></pre><p>需要定位或对比单个元素时用带序号的路径；数组只是你想一眼扫过的值时，用一行输出。</p><h2>空对象与空数组</h2><p>叶子值指不是容器的值：字符串、数字、布尔或 null。空对象和空数组不含叶子，所以默认不产生任何行。当「空容器本身」就是你需要的信息时，开启「包含空对象和空数组」，它们会带路径输出为 <code>{}</code> 或 <code>[]</code>。</p><h2>JSON Lines 不是压缩 JSON</h2><p>压缩 JSON 把完整的一个 JSON 文档放在一行里。JSON Lines 是每行一个 JSON 值，所以包含两条记录的根数组会变成两行，每行各自都是合法 JSON 文档：</p><pre><code>{\"id\":1,\"name\":\"Alice\"}\n{\"id\":2,\"name\":\"Bob\"}</code></pre><p>这种形态更便于流式处理、追加和逐行解析。本页不读取 JSONL 输入，只把 JSONL 作为一种输出模式。</p><h2>纯文本不是无损格式</h2><p>把 JSON 转成文本会丢失信息。数字、布尔、null 和字符串都会变成文本，字符串丢掉引号，空容器默认消失，含点号的键也无法与路径分隔符区分。只要涉及可逆转换、精确类型或机器可读结构，请保留原始 JSON。</p><h2>隐私与浏览器本地处理</h2><p>本页在你的浏览器里解析 JSON 并生成文本，不会把输入上传到远程服务。这适合接口响应和开发数据，但它不是密钥管理系统。不要把凭证、令牌、客户隐私数据或生产环境机密数据粘贴到任何在线工具里。</p><h2>什么时候改用本地转换器</h2><p>处理超大文档、可重复的流水线或机密数据时，请用本地脚本或 jq 这类命令行工具。浏览器转换更适合快速查看、写文档和小到中等体积的输入。</p>"
+    }
+  },
+  "de": {
+    "name": "JSON-zu-Text-Konverter",
+    "description": "Mache JSON in deinem Browser zu lesbarem reinem Text. Extrahiere abgeflachte Pfade, Key-Value-Zeilen, Schlüssel, Werte oder JSON Lines aus gültigem JSON und kopiere oder lade das Ergebnis als .txt-Datei herunter.",
+    "hero": {
+      "trustHtml": "Läuft in deinem Browser. Dein JSON wird von diesem Tool nicht hochgeladen."
+    },
+    "meta": {
+      "title": "JSON-zu-Text-Konverter – Lesbaren Text online extrahieren",
+      "description": "Wandle JSON online in reinen Text um. Glätte verschachtelte Objekte zu Key-Value-Pfaden, extrahiere Schlüssel oder Werte, erzeuge JSON Lines und kopiere oder lade das Ergebnis herunter. Kostenlos und browserbasiert.",
+      "keywords": [
+        "json to text converter",
+        "json to text",
+        "convert json to text",
+        "json to string",
+        "convert json to string",
+        "json to txt",
+        "json text converter",
+        "json flatten to text"
+      ]
+    },
+    "ui": {
+      "label_input": "JSON eingeben",
+      "label_output": "Textausgabe",
+      "placeholder_input": "JSON einfügen oder eine .json-Datei öffnen …",
+      "placeholder_output": "Textausgabe erscheint hier …",
+      "label_mode": "Ausgabe-Modus:",
+      "option_flatten": "Auf Pfade abflachen",
+      "option_key_value": "Key-Value-Zeilen",
+      "option_values": "Nur Werte",
+      "option_keys": "Schlüssel und Pfade",
+      "option_jsonl": "JSON Lines",
+      "option_separator": "Trenner:",
+      "option_separator_colon": "Doppelpunkt (:)",
+      "option_separator_equals": "Gleich (=)",
+      "option_array_mode": "Array-Behandlung:",
+      "option_array_each_line": "Ein Element pro Zeile",
+      "option_array_inline": "Arrays auf einer Zeile behalten",
+      "option_include_empty": "Leere Objekte und Arrays einbeziehen",
+      "option_include_paths": "Pfade einbeziehen",
+      "btn_convert": "In Text umwandeln",
+      "label_characters": "Zeichen:",
+      "label_lines": "Zeilen:",
+      "error_empty_input": "Zuerst JSON eingeben oder eine Datei öffnen",
+      "error_invalid_json": "Eingabe ist kein gültiges JSON",
+      "error_no_output": "Es wurde keine Textausgabe erzeugt"
+    },
+    "features": [
+      {
+        "icon": "lucide:file-text",
+        "title": "Lesbarer reiner Text",
+        "description": "Mache gültiges JSON zu Text, der leichter zu lesen, zu durchsuchen, in Dokumentation einzufügen oder mit Personen zu teilen ist, die die ursprüngliche JSON-Syntax nicht benötigen."
+      },
+      {
+        "icon": "lucide:route",
+        "title": "Verschachtelte Pfade abflachen",
+        "description": "Gib jeden Blattwert mit seinem Punktnotations-Pfad aus, etwa user.name: Alice. Array-Elemente verwenden indizierte Pfade wie items[0].id."
+      },
+      {
+        "icon": "lucide:list",
+        "title": "Nur Schlüssel oder Werte",
+        "description": "Extrahiere nur die im Dokument gefundenen Pfade oder nur die Blattwerte, wenn du eine Feldliste, eine Textliste oder eine vereinfachte Ansicht der Quelldaten benötigst."
+      },
+      {
+        "icon": "lucide:equal",
+        "title": "Key-Value-Ausgabe",
+        "description": "Erzeuge Zeilen wie name: Alice oder user.name = Alice in Berichten, Debug-Notizen und textbasierten Workflows. Verwende einen Doppelpunkt oder ein Gleichheitszeichen und zeige den Blattschlüssel oder den vollständigen Pfad."
+      },
+      {
+        "icon": "lucide:network",
+        "title": "JSON-Lines-Ausgabe",
+        "description": "Schreibe ein Array als einen JSON-Wert pro Zeile für Logs, Datenpipelines und JSONL-kompatible Tools. Das unterscheidet sich von minimiertem JSON, das ein ganzes Dokument auf einer einzigen Zeile hält."
+      },
+      {
+        "icon": "lucide:copy",
+        "title": "Das Ergebnis kopieren",
+        "description": "Kopiere den erzeugten Text, Pfade, Werte oder JSON Lines in die Zwischenablage für Dokumentation, E-Mail, Berichte, Skripte, Fehlertickets oder API-Debugging."
+      },
+      {
+        "icon": "lucide:download",
+        "title": "TXT herunterladen",
+        "description": "Lade die vollständige Ausgabe als .txt-Datei für lokale Speicherung, Teilen, Textverarbeitung oder einen anderen Entwicklungs-Workflow herunter."
+      },
+      {
+        "icon": "lucide:shield-check",
+        "title": "Verarbeitung im Browser",
+        "description": "JSON-Parsing und Text-Erzeugung finden in deinem Browser statt. Es ist kein Konto erforderlich und das Quell-JSON wird nicht an einen entfernten Dienst gesendet."
+      }
+    ],
+    "guide": [
+      {
+        "title": "Gültiges JSON eingeben",
+        "description": "Füge ein JSON-Objekt oder -Array in den Eingabe-Editor ein oder öffne eine lokale .json-Datei. Die Eingabe muss erfolgreich geparst werden, bevor Text extrahiert werden kann."
+      },
+      {
+        "title": "Einen Ausgabe-Modus wählen",
+        "description": "Wähle „Auf Pfade abflachen“, Key-Value-Zeilen, nur Werte, Schlüssel und Pfade oder JSON Lines. Jeder Modus erzeugt aus demselben JSON eine andere Textform."
+      },
+      {
+        "title": "Arrays und Trennzeichen konfigurieren",
+        "description": "Wähle, ob Array-Elemente als indizierte Pfade erscheinen oder auf einer Zeile bleiben, und ob Key-Value-Zeilen einen Doppelpunkt oder ein Gleichheitszeichen verwenden. Aktiviere leere Container, wenn deren Vorhandensein wichtig ist."
+      },
+      {
+        "title": "Umwandeln und prüfen",
+        "description": "Klicke auf „In Text umwandeln“ und prüfe Zeilenanzahl, Zeichenanzahl, Pfade und Werte. Die Ausgabe aktualisiert sich auch während der Eingabe automatisch, sodass du die Modi direkt vergleichen kannst."
+      },
+      {
+        "title": "Kopieren oder herunterladen",
+        "description": "Kopiere den Text in die Zwischenablage oder lade ihn als .txt-Datei herunter. Bewahre das ursprüngliche JSON auf, wenn du die maschinenlesbare Struktur und Datentypen erhalten möchtest."
+      }
+    ],
+    "example": {
+      "title": "JSON in lesbaren Text abflachen",
+      "description": "Ein verschachteltes Objekt mit einem Array, ausgegeben als ein Pfad-Wert-Paar pro Zeile.",
+      "inputLabel": "JSON eingeben",
+      "input": "{\n  \"user\": {\n    \"name\": \"Alice\",\n    \"roles\": [\"admin\", \"editor\"],\n    \"address\": {\n      \"city\": \"Shanghai\",\n      \"country\": \"CN\"\n    }\n  }\n}",
+      "inputExplanation": "Ein zwei Ebenen tief verschachteltes Objekt, das ein Array mit zwei Strings enthält.",
+      "outputLabel": "Abgeflachter Text",
+      "output": "user.name: Alice\nuser.roles[0]: admin\nuser.roles[1]: editor\nuser.address.city: Shanghai\nuser.address.country: CN",
+      "outputExplanation": "Standardoptionen: Doppelpunkt als Trenner, Array-Elemente als indizierte Pfade, leere Objekte und Arrays ausgeschlossen.",
+      "note": "Ein Blattwert wird ohne JSON-Anführungszeichen ausgegeben, daher erscheint \"Shanghai\" als Shanghai. Leere Objekte und Arrays werden übersprungen, sofern „Leere Objekte und Arrays einbeziehen“ nicht aktiviert ist."
+    },
+    "faq": [
+      {
+        "question": "Was macht ein JSON-zu-Text-Konverter?",
+        "answer": "Es parst gültiges JSON und erzeugt eine reine Textdarstellung. Diese Seite bietet fünf Modi: abgeflachte Pfade mit Werten, Key-Value-Zeilen, nur Werte, nur Schlüssel und Pfade sowie JSON Lines."
+      },
+      {
+        "question": "Ist JSON-zu-Text dasselbe wie JSON.stringify?",
+        "answer": "Nein. JSON.stringify serialisiert einen Wert in JSON-Syntax. Diese Seite extrahiert oder glättet den Inhalt stattdessen in lesbare Zeilen, sodass geschweifte Klammern, eckige Klammern und Anführungszeichen aus der Ausgabe entfernt werden."
+      },
+      {
+        "question": "Was ist abgeflachter JSON-Text?",
+        "answer": "Abgeflachter JSON-Text stellt jeden Blattwert mit seinem Pfad dar. Beispielsweise wird der verschachtelte Wert user.profile.name als Zeile wie user.profile.name: Alice ausgegeben, und Array-Elemente verwenden indizierte Pfade wie items[0].id."
+      },
+      {
+        "question": "Kann ich nur JSON-Werte extrahieren?",
+        "answer": "Ja. Der Modus „Nur Werte“ gibt jeden Blattwert auf einer eigenen Zeile ohne Eigenschaftsnamen oder JSON-Satzzeichen aus. Verwende ihn vorsichtig, da Werte allein den Kontext verlieren, der erklärt, woher sie stammen."
+      },
+      {
+        "question": "Kann ich JSON-Schlüssel und Pfade extrahieren?",
+        "answer": "Ja. Der Modus „Schlüssel und Pfade“ gibt jeden im Dokument gefundenen Pfad aus, etwa user.name und items[0].id. Er ist nützlich für API-Dokumentation, Feldinventare und das Entwerfen von JSONPath-Abfragen."
+      },
+      {
+        "question": "Wie werden Arrays dargestellt?",
+        "answer": "Die Array-Behandlung bietet zwei Optionen für Arrays im Dokument. „Ein Element pro Zeile“ gibt indizierte Pfade wie tags[0] und tags[1] aus; „Arrays auf einer Zeile behalten“ gibt das gesamte Array als kompaktes JSON auf einer einzigen Zeile aus. Das Wurzdeldokument wird immer durchlaufen, daher wird ein Wurzel-Array nie reduziert. Im JSON-Lines-Modus wird ein Wurzel-Array zu einem JSON-Wert pro Zeile."
+      },
+      {
+        "question": "Was passiert mit leeren Objekten und Arrays?",
+        "answer": "Standardmäßig erzeugen sie keine Zeilen, da sie keine Blattwerte enthalten. Aktiviere „Leere Objekte und Arrays einbeziehen“, um sie als {} oder [] mit ihrem Pfad auszugeben."
+      },
+      {
+        "question": "Kann ich JSON in Key-Value-Text umwandeln?",
+        "answer": "Ja. Wähle Key-Value-Zeilen und einen Doppelpunkt oder ein Gleichheitszeichen. Standardmäßig verwendet die Zeile den Blattschlüssel, etwa name: Alice; schalte „Pfade einbeziehen“ ein, um stattdessen den vollständigen Pfad auszugeben, etwa user.name: Alice."
+      },
+      {
+        "question": "Werden Punkte in Schlüsselnamen maskiert?",
+        "answer": "Nein. Schlüssel werden genau so verwendet, wie sie erscheinen, sodass ein Schlüssel, der bereits einen Punkt enthält, den abgeflachten Pfad mehrdeutig macht. Das ist einer der Gründe, warum reine Textausgabe kein verlustfreier Ersatz für JSON ist."
+      },
+      {
+        "question": "Kann ich JSON Lines erzeugen?",
+        "answer": "Ja. Der JSON-Lines-Modus schreibt einen JSON-Wert pro Zeile: Jedes Element eines Wurzel-Arrays wird zu einer Zeile, und ein Dokument, das kein Array ist, wird als eine einzige Zeile geschrieben. Das unterscheidet sich von minimiertem JSON, das ein vollständiges Dokument auf einer Zeile hält."
+      },
+      {
+        "question": "Behält JSON-zu-Text die Datentypen bei?",
+        "answer": "Nein. Reiner Text trägt keine JSON-Typen: Eine Zahl, ein Boolean, null und ein String werden alle zu Textausgabe, und Strings verlieren ihre umgebenden Anführungszeichen. Bewahre das ursprüngliche JSON auf, wenn genaue maschinenlesbare Typen wichtig sind."
+      },
+      {
+        "question": "Kann ich JSON in einen lesbaren Bericht umwandeln?",
+        "answer": "Abgeflachte Pfade, Key-Value-Zeilen sowie Schlüssel-und-Pfade-Modi machen JSON leichter prüfbar oder in einen Bericht einfügbar. Das Ergebnis ist weiterhin eine Textdarstellung der Daten, kein validierter Geschäftsbericht."
+      },
+      {
+        "question": "Erzeugt es einen ASCII-Baum oder eine eingerückte Gliederung?",
+        "answer": "Nein. Diese Seite erzeugt die fünf oben aufgeführten flachen Text-Modi. Eine ASCII-Baum- oder eingerückte Gliederungsansicht ist nicht verfügbar."
+      },
+      {
+        "question": "Kann ich JSON für einen LLM-Prompt in Text umwandeln?",
+        "answer": "Abgeflachte Pfade und Key-Value-Zeilen sind praktisch, wenn eine Textdarstellung besser lesbar ist, aber die Umwandlung von JSON in Text entfernt Struktur- und Typinformationen. Um die Größe bei gültigem JSON zu reduzieren, vergleiche stattdessen JSON-Minimierung."
+      },
+      {
+        "question": "Kann ich eine große JSON-Datei umwandeln?",
+        "answer": "Das praktische Limit hängt von Browser-Speicher, Verschachtelungstiefe, Anzahl der Blattwerte, Ausgabegröße und Render-Leistung ab. Sehr große Dokumente können langsam gerendert werden; in diesem Fall ist ein lokaler Kommandozeilen-Workflow besser geeignet."
+      },
+      {
+        "question": "Kann ich die Textausgabe zurück in JSON umwandeln?",
+        "answer": "Meist nicht ohne zusätzliche Regeln. Ausgaben mit nur Werten, Key-Value-Zeilen und Pfadlisten können Typen, Array-Grenzen, leere Container und den Unterschied zwischen null und dem String \"null\" verlieren. Bewahre das ursprüngliche JSON auf, wenn eine umkehrbare Umwandlung wichtig ist."
+      },
+      {
+        "question": "Wird mein JSON auf einen Server hochgeladen?",
+        "answer": "Nein. Die Seite parst JSON und erzeugt Text in deinem Browser. Du solltest dennoch vermeiden, Passwörter, API-Schlüssel, Zugriffstokens, private Kundendaten oder vertrauliche Produktiv-Payloads in ein browserbasiertes Tool einzugeben."
+      },
+      {
+        "question": "Ist dies ein kostenloser JSON-zu-Text-Konverter?",
+        "answer": "Ja. Du kannst JSON in lesbaren Text, Pfade, Schlüssel, Werte oder JSON Lines umwandeln und das Ergebnis kopieren oder herunterladen, ohne ein Konto zu erstellen."
+      }
+    ],
+    "article": {
+      "title": "JSON in lesbaren Text umwandeln",
+      "content": "<h2> Was ist ein JSON-zu-Text-Konverter?</h2><p> Ein JSON-zu-Text-Konverter macht aus strukturiertem JSON eine reine Textdarstellung. Das macht verschachtelte API-Antworten, Konfigurationsdaten und exportierte Datensätze leichter durchsuchbar, in Dokumente einfügbar oder mit Personen teilbar, die die ursprüngliche JSON-Syntax nicht benötigen.</p><p> Es gibt keine einzelne universelle JSON-zu-Text-Ausgabe. Eine abgeflachte Pfadliste, ein Key-Value-Bericht, eine Werte-Liste und eine JSON-Lines-Datei dienen unterschiedlichen Zwecken. Wähle die Darstellung, die zum nächsten Schritt deines Workflows passt.</p><h2> Die Ausgabe-Modi auf dieser Seite</h2><ul><li><strong>Flatten to Pfads:</strong> ein Blattwert pro Zeile mit seinem Pfad, etwa <code>user.name: Alice</code> oder <code>items[0].id: 1</code>.</li><li><strong>Key-Wert lines:</strong> lines such as <code>name: Alice</code> oder <code>user.name = Alice</code>, mit dem Blattschlüssel oder dem vollständigen Pfad.</li><li><strong>Values only:</strong> Blattwerte auf eigenen Zeilen, ohne Schlüssel oder Pfade.</li><li><strong>Keys und Pfads:</strong> eine Liste der im Dokument gefundenen Pfade.</li><li><strong>JSON Lines:</strong> ein JSON-Wert pro Zeile, meist ein Objekt pro Array-Element.</li></ul><h2> Wie man JSON in Text umwandelt</h2><ol><li><strong>Enter JSON:</strong> füge ein gültiges Objekt oder Array ein oder öffne eine lokale .json-Datei.</li><li><strong>Select an output mode:</strong> abgeflachte Pfade, Key-Value-Zeilen, Werte, Schlüssel und Pfade oder JSON Lines.</li><li><strong>Configure arrays:</strong> wähle indizierte Pfade wie <code>tags[0]</code> oder lass jedes Array als kompaktes JSON auf einer Zeile.</li><li><strong>Choose a separator:</strong> für abgeflachte und Key-Value-Ausgabe verwende einen Doppelpunkt oder ein Gleichheitszeichen.</li><li><strong>Review the result:</strong> prüfe Zeilenanzahl, Zeichenanzahl, Pfade und Werte, bevor du kopierst.</li><li><strong>Export:</strong> kopiere den Text oder lade ihn als .txt-Datei herunter.</li></ol><h2> Abgeflachte Pfade erklärt</h2><p>Input:</p><pre><code>{\n  \"user\": {\n    \"name\": \"Alice\",\n    \"address\": { \"city\": \"Shanghai\" }\n  }\n}</code></pre><p>Output in flatten mode:</p><pre><code>user.name: Alice\nuser.address.city: Shanghai</code></pre><p> Objektschlüssel werden mit Punkten verbunden und Array-Elemente verwenden indizierte Pfade. Ein Schlüssel, der bereits einen Punkt enthält, wird genau wie geschrieben verwendet, was den Pfad mehrdeutig macht — einer der Gründe, warum abgeflachter Text kein verlustfreies Format ist.</p><h2> Arrays: Indiziert oder Inline</h2><p>With One item per line, <code>[\"admin\", \"editor\"]</code> under <code>user.roles</code> werdens:</p><pre><code>user.roles[0]: admin\nuser.roles[1]: editor</code></pre><p> Mit „Arrays auf einer Zeile behalten“ wird es zu einer einzigen Zeile:</p><pre><code>user.roles: [\"admin\",\"editor\"]</code></pre><p> Verwende indizierte Pfade, wenn du einzelne Elemente adressieren oder vergleichen möchtest, und Inline-Ausgabe, wenn das Array nur ein Wert ist, den du auf einen Blick lesen möchtest.</p><h2>Empty Objects und Arrays</h2><p> Ein Blatt ist ein Wert, der kein Container ist: ein String, eine Zahl, ein Boolean oder null. Leere Objekte und Arrays enthalten kein Blatt, daher erzeugen sie standardmäßig keine Zeilen. Aktiviere „Leere Objekte und Arrays einbeziehen“, wenn deren bloßes Vorhandensein eine Information ist, die du benötigst; sie werden dann ausgegeben als <code>{}</code> oder <code>[]</code> with their Pfad.</p><h2> JSON Lines ist kein minimiertes JSON</h2><p> Minimiertes JSON hält ein vollständiges JSON-Dokument auf einer einzigen Zeile. JSON Lines schreibt einen JSON-Wert pro Zeile, sodass ein Wurzel-Array mit zwei Datensätzen zu zwei Zeilen wird, jeweils ein gültiges JSON-Dokument für sich:</p><pre><code>{\"id\":1,\"name\":\"Alice\"}\n{\"id\":2,\"name\":\"Bob\"}</code></pre><p> Diese Form lässt sich leichter streamen, anhängen und zeilenweise verarbeiten. Diese Seite liest keine JSONL-Eingabe; sie erzeugt JSONL als Ausgabe-Modus.</p><h2> Reiner Text ist nicht verlustfrei</h2><p> Das Umwandeln von JSON in Text verliert Informationen. Zahlen, Booleans, null und Strings werden alle zu Text, Strings verlieren ihre Anführungszeichen, leere Container verschwinden, sofern du sie nicht einbeziehst, und ein Schlüssel mit einem Punkt ist nicht von einem Pfadtrenner zu unterscheiden. Bewahre das ursprüngliche JSON immer dann, wenn umkehrbare Umwandlung, exakte Typen oder maschinenlesbare Struktur wichtig sind.</p><h2> Datenschutz und browserbasierte Verarbeitung</h2><p> Diese Seite parst JSON und erzeugt Text im Browser statt die Eingabe an einen entfernten Dienst hochzuladen. Das passt zu API-Antworten und Entwicklungsdaten, ist aber kein System zur Geheimnisverwaltung. Vermeide Zugangsdaten, Tokens, private Kundendatensätze oder vertrauliche Produktiv-Payloads in einem Online-Tool.</p><h2> Wann einen lokalen Konverter nutzen</h2><p> Für sehr große Dokumente, wiederholbare Pipelines oder vertrauliche Daten verwende ein lokales Skript oder ein Kommandozeilen-Tool wie jq. Die Browser-Umwandlung eignet sich am besten für schnelle Prüfung, Dokumentation und kleine bis mittlere Eingaben.</p>"
     }
   }
 }

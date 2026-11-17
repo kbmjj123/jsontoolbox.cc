@@ -329,5 +329,162 @@
       "title": "如何在线将 JSON 转换为 Excel",
       "content": "<h2>JSON 转 Excel 转换器做了什么？</h2><p>JSON 转 Excel 转换器会把 JSON 对象数组转换成一张 XLSX 工作表：每个数组元素是一行，检测到的字段是列。下载得到的是真正的工作簿文件，而不是需要再用导入向导处理一遍的文本。</p><p>它做的是结构转换，不是数据分析：不会生成图表、透视表或公式，也不会判断哪些字段该合并。</p><h2>常见使用场景</h2><ul><li><strong>业务分析：</strong>把接口返回的记录导出成表格，交给同事用 Excel 分析。</li><li><strong>数据交付：</strong>为运营、财务或客户提供可以直接打开的表格文件。</li><li><strong>排查核对：</strong>把一批记录铺平成行，人工检查字段缺失和异常值。</li><li><strong>迁移导入：</strong>把 JSON 数据整理成 CRM、ERP 或财务系统可导入的表格。</li></ul><h2>如何将 JSON 转换为 Excel</h2><ol><li><strong>准备数组：</strong>确保输入是 JSON 对象数组；单个对象请包成数组。</li><li><strong>选择选项：</strong>嵌套数据开启展平，并决定是否包含表头行。</li><li><strong>预览：</strong>确认列名、行数和展平结果符合预期。</li><li><strong>下载：</strong>导出 .xlsx 工作簿，或复制为 CSV 文本粘贴到表格里。</li><li><strong>复核：</strong>在表格软件里检查数字、日期和空值是否符合预期。</li></ol><h2>嵌套 JSON 如何变成列</h2><p>表格是二维结构，因此需要把嵌套结构摊平。开启展平后：</p><ul><li><strong>嵌套对象：</strong>`address.city` 这样的点号列名，层级深度不限。</li><li><strong>对象数组：</strong>`items.0.name` 这类带索引的列名。</li><li><strong>简单值数组：</strong>以 JSON 文本写入单元格，因为一列无法安全地表达不定长的列表。</li><li><strong>缺失字段：</strong>留空单元格，保证行与列对齐。</li></ul><p>不同工具对嵌套结构的处理规则并不统一，导出前先看一眼预览，比事后在表格里修更快。</p><h2>数据类型与空值</h2><p>数字和布尔值会写成同类型的单元格，可以直接参与排序和计算。null 和缺失字段写成空白单元格。日期保持原始 JSON 字符串，因为 JSON 没有日期类型，工具无法可靠判断字符串是不是日期；需要真正的日期单元格时，请在表格里转换。</p><h2>XLSX 与 CSV 的区别</h2><p>XLSX 是工作簿格式，一个文件里可以有多个工作表，单元格带类型信息，双击即可用表格软件打开。CSV 是纯文本，用分隔符表示列，不同地区的默认分隔符和编码处理都可能造成差异。</p><p>本页下载的是 XLSX；CSV 按钮只是把同样的数据以逗号分隔文本复制到剪贴板，方便直接粘贴。</p><h2>需要留意的限制</h2><ul><li><strong>输入必须是数组：</strong>根对象会报错，请先取出其中的数组。</li><li><strong>单个工作表：</strong>一次转换只产生一个工作表。</li><li><strong>超大数组：</strong>受浏览器内存限制，可能需要先抽样或分片。</li><li><strong>不做类型转换：</strong>日期、金额精度等需要在表格里复核。</li></ul><h2>浏览器本地处理与隐私</h2><p>工作簿在你的浏览器中生成，不需要把 JSON 上传到远程转换服务，这对日常开发和数据处理更方便。但它不是密钥管理方案，请勿在浏览器工具中粘贴密码、API 密钥、访问令牌或生产环境的敏感数据。</p>"
     }
+  },
+  "de": {
+    "name": "JSON-zu-Excel-Konverter",
+    "description": "Wandle ein JSON-Array von Datensätzen in ein XLSX-Arbeitsblatt um, das du in Excel, Google Sheets und LibreOffice Calc öffnen kannst. Glätte verschachtelte Objekte, sammle jedes Feld, nimm die Kopfzeile auf oder lasse sie weg, zeige die Zeilen an und lade die .xlsx-Datei direkt aus deinem Browser herunter.",
+    "ui": {
+      "label_input": "JSON-Array eingeben",
+      "label_preview": "Vorschau",
+      "btn_convert": "In Excel umwandeln",
+      "btn_copy_csv": "CSV kopieren",
+      "btn_download_xlsx": "XLSX herunterladen",
+      "option_flatten": "Verschachtelte Objekte abflachen",
+      "option_include_header": "Kopfzeile einbeziehen",
+      "status_rows": "{count} Zeilen",
+      "placeholder_preview": "Vorschau erscheint hier …",
+      "error_no_data": "Zuerst JSON eingeben oder eine JSON-Datei öffnen",
+      "error_not_array": "Eingabe muss ein JSON-Array von Objekten sein",
+      "error_invalid_row": "Jedes Array-Element muss ein JSON-Objekt sein",
+      "error_no_columns": "Es wurden keine exportierbaren Felder gefunden",
+      "error_export": "Die XLSX-Datei konnte nicht erstellt werden",
+      "error_invalid_json": "Eingabe muss gültiges JSON sein"
+    },
+    "hero": {
+      "trustHtml": "Läuft in deinem Browser. Dein JSON wird von diesem Tool nicht hochgeladen."
+    },
+    "meta": {
+      "title": "JSON-zu-Excel-Konverter – JSON online in XLSX exportieren",
+      "description": "Wandle JSON online in Excel um. Mache ein JSON-Array von Objekten zu einem XLSX-Arbeitsblatt mit geglätteten Spalten, optionalen Kopfzeilen und einer Vorschau. Kostenlos und browserbasiert.",
+      "keywords": [
+        "json to excel",
+        "json to excel converter",
+        "convert json to excel",
+        "json to xlsx converter",
+        "json array to excel",
+        "json to spreadsheet",
+        "convert json to xlsx",
+        "free json to excel"
+      ]
+    },
+    "features": [
+      {
+        "icon": "lucide:download",
+        "title": "Echtes XLSX-Arbeitsbuch",
+        "description": "Lade ein echtes .xlsx-Arbeitsbuch mit einem einzigen Arbeitsblatt herunter, bereit zum Öffnen in Excel, Google Sheets und LibreOffice Calc. Es ist kein Import-Assistent und keine Textspalten-Zuordnung erforderlich."
+      },
+      {
+        "icon": "lucide:braces",
+        "title": "Array von Datensätzen als Eingabe",
+        "description": "Füge ein JSON-Array von Objekten ein oder öffne eine .json-Datei. Jedes Array-Element wird zu einer Arbeitsblattzeile und die erkannten Felder zu Spalten."
+      },
+      {
+        "icon": "lucide:layers",
+        "title": "Verschachtelte Objekte abflachen",
+        "description": "Mache verschachtelte Objekte zu Spaltennamen in Punktnotation wie `address.city`. Arrays von Objekten werden zu indizierten Spalten wie `items.0.name`, und Arrays einfacher Werte werden als JSON-Text geschrieben."
+      },
+      {
+        "icon": "lucide:list",
+        "title": "Jedes Feld sammeln",
+        "description": "Spalten werden aus jedem Datensatz gesammelt, nicht nur aus dem ersten. Felder, die in einem Datensatz fehlen, werden als leere Zellen exportiert, statt die Zeile zu verschieben."
+      },
+      {
+        "icon": "lucide:rows-3",
+        "title": "Optionale Kopfzeile",
+        "description": "Nimm die Spaltennamen als erste Zeile auf, oder schalte die Kopfzeile aus, wenn du Daten unter einer bestehenden Tabelle anfügst."
+      },
+      {
+        "icon": "lucide:eye",
+        "title": "Vorschau vor dem Herunterladen",
+        "description": "Prüfe die abgeflachten Datensätze und erkannten Spalten im Vorschaubereich, bevor du die Arbeitsmappe exportierst."
+      },
+      {
+        "icon": "lucide:copy",
+        "title": "Als CSV-Text kopieren",
+        "description": "Kopiere dieselben Zeilen als kommagetrennten Text, wenn du nur Werte in eine Tabelle einfügen möchtest. Die CSV-Kopie verwendet ein Komma als Trennzeichen und folgt der Kopfzeilen-Einstellung."
+      },
+      {
+        "icon": "lucide:shield-check",
+        "title": "Verarbeitung im Browser",
+        "description": "JSON-Parsing und Arbeitsmappen-Erzeugung finden in deinem Browser statt. Die Seite erfordert kein Konto und lädt das Quell-JSON nicht auf einen entfernten Dienst hoch."
+      }
+    ],
+    "guide": [
+      {
+        "title": "JSON eingeben oder öffnen",
+        "description": "Füge ein JSON-Array von Objekten in den Editor ein oder öffne eine .json-Datei von deinem Gerät."
+      },
+      {
+        "title": "Exportoptionen wählen",
+        "description": "Aktiviere das Abflachen verschachtelter Objekte und entscheide, ob die erste Zeile Spaltennamen enthalten soll."
+      },
+      {
+        "title": "Umwandeln und anzeigen",
+        "description": "Führe die Umwandlung aus und prüfe die abgeflachten Datensätze, erkannten Spalten und die Zeilenanzahl im Vorschaubereich."
+      },
+      {
+        "title": "Herunterladen oder kopieren",
+        "description": "Lade das .xlsx-Arbeitsbuch herunter oder kopiere die Zeilen als CSV-Text, wenn du nur Werte einfügen möchtest."
+      }
+    ],
+    "example": {
+      "input": "[\n  { \"product\": \"Laptop\", \"price\": 999, \"stock\": { \"warehouse\": \"A\" } },\n  { \"product\": \"Mouse\", \"price\": 25, \"stock\": { \"warehouse\": \"B\" } }\n]",
+      "output": "[\n  { \"product\": \"Laptop\", \"price\": 999, \"stock.warehouse\": \"A\" },\n  { \"product\": \"Mouse\", \"price\": 25, \"stock.warehouse\": \"B\" }\n]",
+      "useCase": "Exportiere Produkt-Datensätze in ein XLSX-Arbeitsblatt zur Analyse in Excel."
+    },
+    "faq": [
+      {
+        "question": "Erzeugt dies eine echte Excel-XLSX-Datei?",
+        "answer": "Ja. Der Download ist ein echtes .xlsx-Arbeitsbuch mit einem einzigen Arbeitsblatt namens Sheet1, sodass du es direkt in Excel, Google Sheets und LibreOffice Calc öffnen kannst, ohne Text zu importieren."
+      },
+      {
+        "question": "Kann ich Komma, Semikolon oder Tabulator als Ausgabe wählen?",
+        "answer": "Der XLSX-Download verwendet kein Trennzeichen, daher ist keine Trennzeichen-Einstellung nötig. Die CSV-Kopierschaltfläche verwendet immer ein Komma, weil das Tabellenprogramme beim Einfügen von Text erwarten."
+      },
+      {
+        "question": "Welche JSON-Struktur eignet sich am besten?",
+        "answer": "Ein JSON-Array von Objekten eignet sich am besten, wobei jedes Objekt ein Datensatz ist. Flache Objekte exportieren eine Spalte pro Schlüssel, verschachtelte Objekte werden geglättet, wenn die Option aktiviert ist."
+      },
+      {
+        "question": "Kann ich ein JSON-Objekt statt eines Arrays umwandeln?",
+        "answer": "Nein. Die Eingabe muss ein JSON-Array sein. Fasse ein einzelnes Objekt in ein Array, etwa `[{ ... }]`, oder wähle das Array innerhalb des Objekts, etwa das `items`-Array einer API-Antwort."
+      },
+      {
+        "question": "Unterstützt es verschachtelte JSON-Objekte?",
+        "answer": "Ja, wenn das Abflachen aktiviert ist. Verschachtelte Objekte werden zu Spalten in Punktnotation wie `address.city`, Arrays von Objekten zu indizierten Spalten wie `items.0.name` und Arrays einfacher Werte als JSON-Text geschrieben. Schalte die Option aus, um verschachtelte Objekte aus den Arbeitsblatt-Spalten herauszuhalten."
+      },
+      {
+        "question": "Werden alle Felder exportiert oder nur die Felder des ersten Datensatzes?",
+        "answer": "Spalten werden aus jedem Datensatz im Array gesammelt. Ein Feld, das in einem Datensatz fehlt, wird in dieser Zeile zu einer leeren Zelle, sodass die Zeilen auch bei unterschiedlichen Feldern ausgerichtet bleiben."
+      },
+      {
+        "question": "Wie werden Zahlen, Booleans, Datumsangaben und null-Werte exportiert?",
+        "answer": "Zahlen und Booleans werden als Zellen dieses Typs geschrieben. Null und fehlende Werte werden zu leeren Zellen. Datumsangaben bleiben die ursprünglichen JSON-Strings, daher wandle sie in deiner Tabelle um, wenn du echte Datumszellen benötigst."
+      },
+      {
+        "question": "Kann ich die Kopfzeile entfernen?",
+        "answer": "Ja. Schalte die Kopfzeilen-Option aus und die Arbeitsmappe sowie die CSV-Kopie enthalten nur Datenzeilen, was nützlich ist, wenn du unter einem bestehenden Blatt anfügst."
+      },
+      {
+        "question": "Kann ich mehrere Arbeitsblätter exportieren?",
+        "answer": "Nein. Eine Umwandlung erzeugt ein Arbeitsblatt. Wenn du mehrere Blätter benötigst, wandle jedes Array separat um und kombiniere sie anschließend in deiner Tabellenanwendung."
+      },
+      {
+        "question": "Kann ich große JSON-Dateien umwandeln?",
+        "answer": "Das praktische Limit hängt von Browser-Speicher, Geräteleistung und Datensatzanzahl ab. Sehr große Arrays brauchen länger zum Abflachen und Exportieren und können den verfügbaren Speicher erschöpfen."
+      },
+      {
+        "question": "Wird mein JSON auf einen Server hochgeladen?",
+        "answer": "Die Arbeitsmappe wird in deinem Browser erzeugt und erfordert keinen Server-Upload. Du solltest dennoch vermeiden, Passwörter, API-Schlüssel, Tokens oder vertrauliche Kundendaten in ein browserbasiertes Tool einzugeben."
+      },
+      {
+        "question": "Ist dies ein kostenloser JSON-zu-Excel-Konverter?",
+        "answer": "Ja. Du kannst JSON einfügen oder eine Datei öffnen, die Zeilen anzeigen und das XLSX-Arbeitsbuch herunterladen, ohne ein Konto zu erstellen."
+      }
+    ],
+    "article": {
+      "title": "JSON in Excel (XLSX) umwandeln",
+      "content": "<h2> Was dieser JSON-zu-Excel-Konverter macht</h2><p> Ein JSON-zu-Excel-Konverter macht ein JSON-Array von Objekten zu einem XLSX-Arbeitsblatt: jedes Array-Element wird zu einer Zeile und die erkannten Felder zu Spalten. Die heruntergeladene Datei ist ein echtes Arbeitsbuch, das du direkt öffnen kannst, kein reiner Text, den du über einen Assistenten importieren musst.</p><p> Es strukturiert Daten um; es analysiert sie nicht. Es erstellt keine Diagramme, Pivot-Tabellen oder Formeln und entscheidet nicht, welche Felder zusammengeführt werden.</p>\n<h2>Common use cases</h2><ul><li><strong>Business analysis:</strong> Exportiere API-Datensätze in eine Tabelle, die deine Kollegen in Excel öffnen.</li><li><strong>Data delivery:</strong> Übergib den Ablauf-, Finanz- oder Kundenverantwortlichen eine Datei, die sie direkt öffnen können.</li><li><strong>Review und audit:</strong> Glätte Datensätze zu Zeilen, um fehlende Felder und unerwartete Werte zu prüfen.</li><li><strong>Migration und import:</strong> Bereite tabellarische Daten für ein CRM-, ERP- oder Finanzsystem vor.</li></ul>\n<h2> Wie man JSON in Excel umwandelt</h2><ol><li><strong>Prepare the array:</strong> Stelle sicher, dass die Eingabe ein JSON-Array von Objekten ist; fasse ein einzelnes Objekt in ein Array.</li><li><strong>Choose options:</strong> Aktiviere das Abflachen für verschachtelte Daten und entscheide, ob eine Kopfzeile einbezogen werden soll.</li><li><strong>Preview:</strong> Bestätige, dass Spaltennamen, Zeilenanzahl und Abflachungsergebnis stimmen.</li><li><strong>Download:</strong> Exportiere das .xlsx-Arbeitsbuch oder kopiere die Zeilen als CSV-Text, um sie in eine Tabelle einzufügen.</li><li><strong>Double-check:</strong> Prüfe in deiner Tabelle Zahlen, Datumsangaben und leere Werte.</li></ol>\n<h2> Wie verschachteltes JSON zu Spalten wird</h2><p> Tabellenblätter sind zweidimensional, daher müssen verschachtelte Strukturen abgeflacht werden. Mit aktiviertem Abflachen:</p><ul><li><strong>Nested objects:</strong> Spaltennamen in Punktnotation wie <code>address.city</code>, at any depth.</li><li><strong>Arrays of objects:</strong> Indizierte Spaltennamen wie <code>items.0.name</code>.</li><li><strong>Arrays of simple Werts:</strong> Als JSON-Text in einer Zelle geschrieben, da eine einzelne Spalte eine Liste variabler Länge nicht sicher halten kann.</li><li><strong>Missing fields:</strong> Bleiben als leere Zellen, damit die Zeilen mit den Spalten ausgerichtet bleiben.</li></ul><p> Verschiedene Tools flachen verschachtelte Strukturen unterschiedlich ab, daher vor dem Export eine Vorschau ansehen.</p>\n<h2> Datentypen und leere Werte</h2><p> Zahlen und Booleans werden als Zellen dieses Typs geschrieben und können direkt sortiert oder berechnet werden. Null und fehlende Felder werden zu leeren Zellen. Datumsangaben bleiben die ursprünglichen JSON-Strings, da JSON keinen Datumstyp hat und das Tool nicht zuverlässig erkennen kann, ob ein String ein Datum ist; wandle sie in deiner Tabelle um, wenn du echte Datumszellen benötigst.</p>\n<h2>XLSX vs CSV</h2><p> XLSX ist ein Arbeitsbuch-Format: Eine Datei kann mehrere Arbeitsblätter enthalten, Zellen tragen Typinformationen, und Tabellenanwendungen öffnen sie per Doppelklick. CSV ist reiner Text mit Trennzeichen, und regionale Voreinstellungen für Separator und Kodierung können abweichen. Diese Seite lädt XLSX herunter; die Schaltfläche „CSV kopieren“ legt nur dieselben Zeilen als kommagetrennten Text in die Zwischenablage zum schnellen Einfügen.</p>\n<h2> Einschränkungen im Auge behalten</h2><ul><li><strong>Input must be an array:</strong> Ein Wurzelobjekt verursacht einen Fehler; extrahiere zuerst sein Array.</li><li><strong>One worksheet:</strong> Eine Umwandlung erzeugt ein Arbeitsblatt.</li><li><strong>Very large arrays:</strong> Begrenzt durch Browser-Speicher; probiere oder teile bei Bedarf zuerst.</li><li><strong>No Typ conversion:</strong> Datumsangaben und Zahlenpräzision sollten in der Tabelle geprüft werden.</li></ul>\n<h2>Browser-based privacy</h2><p> Die Arbeitsmappe wird in deinem Browser erzeugt und das JSON nicht an einen entfernten Konvertierungsdienst gesendet, was für tägliche Entwicklungs- und Datenarbeit praktisch ist. Es ist kein System zur Geheimnisverwaltung, daher vermeide es, Passwörter, API-Schlüssel, Zugriffstokens oder produktive Kundendaten in ein Browser-Tool einzugeben.</p>"
+    }
   }
 }

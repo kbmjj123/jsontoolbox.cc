@@ -12,5 +12,12 @@
     "tutorials": "教程",
     "best_practices": "最佳实践",
     "data_formats": "数据格式"
+  },
+  "de": {
+    "all": "Alle",
+    "json_tools": "JSON-Tools",
+    "tutorials": "Anleitungen",
+    "best_practices": "Best Practices",
+    "data_formats": "Datenformate"
   }
 }

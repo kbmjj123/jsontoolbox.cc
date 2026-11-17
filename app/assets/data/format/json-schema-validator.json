@@ -332,5 +332,164 @@
       "title": "如何根据 JSON Schema 验证 JSON 数据",
       "content": "<h2>什么是 JSON Schema 验证？</h2><p>JSON Schema 验证用于检查 JSON 数据是否符合定义的结构、数据类型和约束条件。JSON Schema 描述了“合法的”JSON 文档应该长什么样，包括必需的属性、允许的类型、取值范围和模式等。</p><p>这种验证对于确保 API、配置文件、数据管道以及任何依赖结构化 JSON 输入的系统中的数据质量非常重要。</p><h2>为什么要根据 Schema 验证？</h2><ul><li><strong>API 质量：</strong>确保传入请求和传出响应符合预期格式</li><li><strong>数据完整性：</strong>在处理或存储数据之前进行校验</li><li><strong>错误预防：</strong>在开发早期发现结构和类型错误</li><li><strong>文档作用：</strong>将 Schema 作为数据契约的活文档</li><li><strong>一致性：</strong>在不同服务和客户端之间强制执行一致的数据形状</li></ul><h2>JSON Schema 可以验证什么？</h2><ul><li><strong>数据类型：</strong>string、number、integer、boolean、array、object、null</li><li><strong>必填字段：</strong>将某些属性标记为必须存在</li><li><strong>约束条件：</strong>最小/最大值、字符串长度、正则模式、枚举列表等</li><li><strong>嵌套结构：</strong>验证包含多层对象和数组的复杂结构</li><li><strong>条件规则：</strong>在更高级的 Schema 中，根据条件应用不同的子 Schema</li></ul><h2>如何根据 Schema 验证 JSON</h2><ol><li><strong>粘贴 JSON 数据：</strong>在“JSON 数据”字段中添加要验证的 JSON 文档。</li><li><strong>粘贴 JSON Schema：</strong>在“JSON Schema”字段中添加定义预期结构和约束的 Schema。</li><li><strong>点击验证：</strong>运行验证，检查 JSON 是否符合 Schema。</li><li><strong>查看结果：</strong>如果验证成功，会看到成功提示；如果失败，会看到带路径和描述的错误列表。</li><li><strong>修复并重新验证：</strong>根据错误信息调整 JSON 或 Schema，然后再次运行验证。</li></ol><h2>常见 Schema 关键字</h2><ul><li><strong>type：</strong>定义预期的数据类型（object、array、string、number 等）</li><li><strong>required：</strong>列出必须存在的属性名</li><li><strong>properties：</strong>为对象的各个属性定义结构和子 Schema</li><li><strong>items：</strong>为数组元素定义 Schema</li><li><strong>minimum / maximum：</strong>设置数值的上下限</li><li><strong>minLength / maxLength：</strong>设置字符串长度约束</li><li><strong>pattern：</strong>为字符串设置正则表达式模式</li><li><strong>enum：</strong>将值限制在一组固定的可选值之内</li></ul><h2>典型使用场景</h2><ul><li><strong>API 测试：</strong>验证请求体和响应体是否符合 API Schema</li><li><strong>配置校验：</strong>确保配置文件符合预期结构</li><li><strong>数据契约：</strong>在服务之间强制执行约定的数据形状</li><li><strong>表单数据：</strong>验证由表单或 UI 组件生成的 JSON</li><li><strong>ETL 和流水线：</strong>在转换或加载之前检查输入数据</li></ul><h2>高效进行 Schema 验证的技巧</h2><ul><li><strong>先定义清晰的 Schema：</strong>在验证大量数据之前，先明确数据契约</li><li><strong>利用详细错误：</strong>通过错误路径快速定位嵌套结构中的问题</li><li><strong>逐步迭代：</strong>从简单 Schema 开始，再根据需要增加约束</li><li><strong>区分场景：</strong>为不同场景使用不同 Schema（例如创建和更新载荷）</li><li><strong>版本化管理：</strong>将 Schema 变更与 API 或数据格式版本一起管理</li></ul><h2>浏览器本地处理与隐私</h2><p>这个 JSON Schema 验证器在浏览器中处理输入内容，不要求将数据上传到远程服务。对于开发数据和私密配置片段来说，本地处理更加方便。不过，仍然不建议在任何浏览器工具中输入密码、API 密钥、访问令牌或其他高度敏感的信息。</p>"
     }
+  },
+  "de": {
+    "name": "JSON-Schema-Validator",
+    "description": "Validiere JSON-Daten gegen ein JSON-Schema. Dieser Online-JSON-Schema-Validator lässt dich JSON gegen ein Schema prüfen, Struktur, Datentypen, Pflichtfelder und Einschränkungen kontrollieren und detaillierte Fehlermeldungen erhalten — alles in deinem Browser.",
+    "ui": {
+      "label_json_data": "JSON-Daten",
+      "label_json_schema": "JSON-Schema",
+      "label_result": "Validierungsergebnis",
+      "status_valid": "Gültiges JSON",
+      "status_invalid": "Ungültiges JSON",
+      "status_matches": "Die JSON-Daten entsprechen dem Schema.",
+      "error_expected_type": "Erwartet",
+      "error_got_null": "null erhalten",
+      "error_got_type": "erhalten",
+      "error_missing_required": "Fehlende erforderliche Eigenschaft",
+      "error_string_too_short": "Stringlänge",
+      "error_string_too_long": "Stringlänge",
+      "error_string_less_min": "kleiner als das Minimum",
+      "error_string_greater_max": "größer als das Maximum",
+      "error_string_no_match": "String entspricht nicht dem Muster",
+      "error_value_too_small": "Wert",
+      "error_value_too_large": "Wert",
+      "error_number_less_min": "kleiner als das Minimum",
+      "error_number_greater_max": "größer als das Maximum",
+      "error_array_too_short": "Array-Länge",
+      "error_array_too_long": "Array-Länge",
+      "error_array_less_min": "kleiner als das Minimum",
+      "error_array_greater_max": "größer als das Maximum",
+      "error_enum_invalid": "Wert muss einer der folgenden sein:",
+      "btn_load_sample": "Beispiel laden",
+      "error_both_required": "Bitte sowohl JSON-Daten als auch JSON-Schema eingeben.",
+      "error_invalid_json_data": "Ungültige JSON-Daten: {message}",
+      "status_errors_found": "{count} Fehler gefunden"
+    },
+    "hero": {
+      "trustHtml": "Läuft in deinem Browser. Dein JSON wird von diesem Tool nicht hochgeladen."
+    },
+    "meta": {
+      "title": "JSON-Schema-Validator — Kostenloses Online-Tool",
+      "description": "Validiere JSON-Daten online gegen JSON Schema. Prüfe Struktur, Datentypen, Pflichtfelder und Einschränkungen. Erhalte detaillierte Fehlermeldungen mit Pfaden. Kostenlos, 100 % clientseitig, ohne Upload.",
+      "keywords": [
+        "json schema validator",
+        "validate json against schema",
+        "json schema validation",
+        "json schema validator online",
+        "validate json schema",
+        "json schema check",
+        "json schema test",
+        "schema validation tool",
+        "json validator schema",
+        "online schema validator",
+        "free json schema validator",
+        "json schema validation online",
+        "validate json with schema",
+        "json schema checker"
+      ]
+    },
+    "features": [
+      {
+        "icon": "lucide:shield-check",
+        "title": "Schema-Validierung",
+        "description": "Validiere JSON-Daten gegen JSON Schema Draft 7. Das Tool prüft Datentypen, Pflichteigenschaften, Wert-Einschränkungen und verschachtelte Strukturen, damit dein JSON dem erwarteten Schema entspricht."
+      },
+      {
+        "icon": "lucide:map-pin",
+        "title": "Fehlerdetails",
+        "description": "Erhalte detaillierte Fehlermeldungen mit JSON-Pfad-Informationen, wenn die Validierung fehlschlägt. Jeder Fehler verweist auf die genaue Position und Ursache, etwa fehlende Pflichtfelder, Typkonflikte oder Verletzung von Einschränkungen."
+      },
+      {
+        "icon": "lucide:copy",
+        "title": "Kopieren & Exportieren",
+        "description": "Kopiere Validierungsergebnisse oder Fehlerdetails in die Zwischenablage. Du kannst die Ausgabe in Dokumentation, Fehlerberichten, API-Test-Workflows oder der Team-Kommunikation verwenden."
+      },
+      {
+        "icon": "lucide:layers",
+        "title": "Unterstützung für Verschachtelung",
+        "description": "Validiere tief verschachtelte Objekte und Arrays, einschließlich komplexer Schemas mit mehreren Ebenen von Eigenschaften, Elementen und bedingten Regeln."
+      },
+      {
+        "icon": "lucide:link",
+        "title": "URL-Eingabe",
+        "description": "Lade JSON-Daten und JSON-Schema über den ?url=-Parameter von einer URL, wenn dein Workflow öffentlich zugängliche Ressourcen bereitstellt. Prüfe den geladenen Inhalt, bevor du die Validierung ausführst."
+      },
+      {
+        "icon": "lucide:shield",
+        "title": "Privat",
+        "description": "Die gesamte Schema-Validierung findet in deinem Browser statt. Deine JSON-Daten und das Schema werden nicht auf einen Server hochgeladen, was bei privaten API-Payloads oder Konfigurationsdaten nützlich ist."
+      }
+    ],
+    "guide": [
+      {
+        "title": "Dein JSON einfügen",
+        "description": "Füge die JSON-Daten, die du validieren möchtest, in das Feld „JSON-Daten“ ein. Dies kann eine API-Anfrage oder -Antwort, eine Konfigurationsdatei oder ein beliebiges JSON-Dokument sein, das du gegen ein Schema prüfen möchtest."
+      },
+      {
+        "title": "Dein Schema einfügen",
+        "description": "Füge dein JSON-Schema in das Feld „JSON-Schema“ ein. Das Schema definiert die erwartete Struktur, Datentypen, Pflichtfelder und Einschränkungen für deine JSON-Daten."
+      },
+      {
+        "title": "Validieren klicken",
+        "description": "Klicke auf „Validieren“, um zu prüfen, ob dein JSON dem Schema entspricht. Das Tool meldet Erfolg oder zeigt detaillierte Fehler mit Pfaden und Beschreibungen."
+      },
+      {
+        "title": "Prüfen und beheben",
+        "description": "Wenn die Validierung fehlschlägt, nutze die Fehlermeldungen, um Probleme in deinem JSON oder Schema zu finden und zu beheben. Du kannst die Validierung so oft wie nötig erneut ausführen, bis die Daten dem Schema entsprechen."
+      }
+    ],
+    "example": {
+      "input": "{\n  \"name\": \"Alice\",\n  \"age\": 30,\n  \"email\": \"alice@example.com\"\n}",
+      "schema": "{\n  \"type\": \"object\",\n  \"properties\": {\n    \"name\": { \"type\": \"string\" },\n    \"age\": { \"type\": \"number\" },\n    \"email\": { \"type\": \"string\", \"format\": \"email\" }\n  },\n  \"required\": [\"name\", \"email\"]\n}",
+      "output": "✅ Valid — matches schema",
+      "useCase": "Validiere API-Anfragen/-Antworten gegen ein vordefiniertes JSON-Schema."
+    },
+    "faq": [
+      {
+        "question": "Werden meine JSON-Daten auf einen Server hochgeladen?",
+        "answer": "Nein. Die gesamte Validierung findet lokal in deinem Browser statt. Deine JSON-Daten und das Schema werden nicht auf einen entfernten Server hochgeladen und verlassen dein Gerät nicht."
+      },
+      {
+        "question": "Welche JSON-Schema-Version wird unterstützt?",
+        "answer": "Der Validator unterstützt JSON Schema Draft 7, das die meisten gängigen Anwendungsfälle für API-Validierung, Konfigurationsdateien und Datenverträge abdeckt."
+      },
+      {
+        "question": "Was kann JSON-Schema validieren?",
+        "answer": "JSON-Schema kann Datentypen, Pflichtfelder, String-Muster und -längen, Zahlenbereiche, Array-Längen, Enum-Werte sowie verschachtelte Objekt- und Array-Strukturen validieren."
+      },
+      {
+        "question": "Was ist der Unterschied zwischen JSON-Validierung und JSON-Schema-Validierung?",
+        "answer": "JSON-Validierung prüft, ob der Text wohlgeformtes JSON ist (korrekte Syntax). JSON-Schema-Validierung geht weiter und prüft, ob Datenstruktur, Typen und Werte einem definierten Schema entsprechen."
+      },
+      {
+        "question": "Kann ich die Validierungsergebnisse kopieren oder exportieren?",
+        "answer": "Ja. Nach der Validierung kannst du die Ergebnisse und Fehlerdetails in die Zwischenablage kopieren. Du kannst diese Ausgabe in Dokumentation, Fehlerberichten, API-Tests oder Team-Kommunikation verwenden."
+      },
+      {
+        "question": "Kann ich ein Schema aus JSON erzeugen?",
+        "answer": "Ja. Du kannst ein JSON-Schema-Generator-Tool verwenden, um automatisch ein Schema aus JSON-Beispieldaten zu erstellen. Das ist nützlich, um schnell ein Anfangsschema abzuleiten, das du dann verfeinern kannst."
+      },
+      {
+        "question": "Wie validiere ich JSON-Schema online?",
+        "answer": "Füge deine JSON-Daten und dein JSON-Schema in die jeweiligen Felder ein und klicke dann auf „Validieren“. Dieses kostenlose Online-Tool lässt dich JSON direkt in deinem Browser gegen ein Schema validieren, ohne Upload."
+      },
+      {
+        "question": "Was passiert, wenn mein JSON nicht dem Schema entspricht?",
+        "answer": "Wenn das JSON nicht dem Schema entspricht, zeigt das Tool Validierungsfehler mit Pfaden und Beschreibungen. Jeder Fehler erklärt, was erwartet und was gefunden wurde, damit du die Daten korrigieren oder das Schema anpassen kannst."
+      },
+      {
+        "question": "Kann ich große JSON-Dateien validieren?",
+        "answer": "Du kannst größere JSON-Dateien validieren, solange sie von deinem Browser geladen und verarbeitet werden können. Das praktische Limit hängt von verfügbarem Speicher, Geräteleistung und Schema-Komplexität ab."
+      },
+      {
+        "question": "Ist dies ein kostenloser JSON-Schema-Validator?",
+        "answer": "Ja. Dies ist ein kostenloser Online-JSON-Schema-Validator zum Prüfen von JSON-Daten gegen ein Schema. Du kannst Struktur, Typen und Einschränkungen validieren, ohne ein Konto zu erstellen oder Dateien hochzuladen."
+      }
+    ],
+    "article": {
+      "title": "JSON-Daten gegen JSON-Schema validieren",
+      "content": "<h2> Was ist JSON-Schema-Validierung?</h2><p> Die JSON-Schema-Validierung prüft, ob JSON-Daten einer definierten Struktur, Datentypen und Einschränkungen entsprechen. Ein JSON-Schema beschreibt, wie ein gültiges JSON-Dokument aussehen sollte, einschließlich erforderlicher Eigenschaften, erlaubter Typen, Wertbereiche und Muster.</p><p> Diese Art der Validierung ist entscheidend für Datenqualität in APIs, Konfigurationsdateien, Datenpipelines und jedem System, das auf strukturierte JSON-Eingaben angewiesen ist.</p><h2> Warum gegen Schema validieren?</h2><ul><li><strong>API quality:</strong> Stelle sicher, dass eingehende Anfragen und ausgehende Antworten dem erwarteten Format entsprechen</li><li><strong>Data integrity:</strong> Validiere Daten, bevor du sie verarbeitest oder speicherst</li><li><strong>Error prevention:</strong> Erkenne strukturelle und Typfehler früh in der Entwicklung</li><li><strong>Documentation:</strong> Nutze das Schema als lebendige Dokumentation deines Datenvertrags</li><li><strong>Consistency:</strong> Erzwinge konsistente Formen über verschiedene Dienste und Clients hinweg</li></ul><h2> Was kann JSON-Schema validieren?</h2><ul><li><strong>Data Typs:</strong> String, Zahl, ganze Zahl, Boolean, Array, Objekt, null</li><li><strong>Required fields:</strong> Markiere bestimmte Eigenschaften als verpflichtend</li><li><strong>Constraints:</strong> Minimal- und Maximalwerte, String-Längen, Regex-Muster, Enum-Listen</li><li><strong>Nested structures:</strong> Validiere komplex verschachtelte Objekte und Arrays mit items und additionalProperties</li><li><strong>Conditional rules:</strong> Wende je nach Bedingung unterschiedliche Subschemas an (in fortgeschritteneren Schemas)</li></ul><h2> Wie man JSON gegen ein Schema validiert</h2><ol><li><strong>Paste JSON data:</strong> Füge das zu validierende JSON-Dokument in das Feld „JSON-Daten“ ein.</li><li><strong>Paste JSON Schema:</strong> Füge das JSON-Schema hinzu, das die erwartete Struktur und Einschränkungen definiert.</li><li><strong>Click Validate:</strong> Führe die Validierung aus, um zu prüfen, ob das JSON dem Schema entspricht.</li><li><strong>Review results:</strong> Wenn die Validierung erfolgreich ist, siehst du eine Erfolgsmeldung. Wenn sie fehlschlägt, prüfe die detaillierten Fehler mit Pfaden und Beschreibungen.</li><li><strong>Fix und re-validate:</strong> Passe dein JSON oder Schema anhand der Fehlermeldungen an und führe die Validierung erneut aus.</li></ol><h2>Common Schema Keywords</h2><ul><li><strong>Typ:</strong> Definiere den erwarteten Datentyp (Objekt, Array, String, Zahl usw.)</li><li><strong>required:</strong> Liste Eigenschaftsnamen auf, die vorhanden sein müssen</li><li><strong>properties:</strong> Definiere die Struktur und Subschemas für Objekteigenschaften</li><li><strong>items:</strong> Definiere das Schema für Array-Elemente</li><li><strong>minimum / maximum:</strong> Setze numerische Wert-Einschränkungen</li><li><strong>minLength / maxLength:</strong> Setze String-Längen-Einschränkungen</li><li><strong>pattern:</strong> Erzwinge ein reguläres Ausdrucksmuster für Strings</li><li><strong>enum:</strong> Schränke einen Wert auf eine feste Menge erlaubter Optionen ein</li></ul><h2>Typical Use Cases</h2><ul><li><strong>API testing:</strong> Validiere Anfrage- und Antwort-Bodies gegen API-Schemas</li><li><strong> Konfigurationsvalidierung:</strong> Stelle sicher, dass Konfigurationsdateien der erwarteten Struktur entsprechen</li><li><strong>Data contracts:</strong> Erzwinge vereinbarte Datenformen zwischen Diensten</li><li><strong>Form data:</strong> Validiere JSON, das aus Formularen oder UI-Komponenten erzeugt wurde</li><li><strong>ETL und pipelines:</strong> Prüfe eingehende Daten vor Umwandlung oder Laden</li></ul><h2> Tipps für effektive Schema-Validierung</h2><ul><li><strong> Beginne mit einem klaren Schema:</strong> Definiere deinen Datenvertrag, bevor du große Datenmengen validierst</li><li><strong>Use descriptive errors:</strong> Nutze die Fehlerpfade, um Probleme in verschachtelten Strukturen schnell zu finden</li><li><strong>Iterate gradually:</strong> Beginne mit einem einfachen Schema und füge bei Bedarf weitere Einschränkungen hinzu</li><li><strong>Separate concerns:</strong> Verwende unterschiedliche Schemas für unterschiedliche Kontexte (z. B. Anfrage- vs. Antwort-Payloads)</li><li><strong>Keep schemas versioned:</strong> Verfolge Schema-Änderungen zusammen mit deinen API- oder Datenformat-Versionen</li></ul><h2>Client-Side Privacy</h2><p> Dieser JSON-Schema-Validator verarbeitet Eingaben in deinem Browser statt einen Upload an einen entfernten Dienst zu erfordern. Das kann für Entwicklungsdaten und private Konfigurationsausschnitte praktisch sein. Dennoch solltest du keine Passwörter, API-Schlüssel, Zugriffstokens oder andere hochsensible Informationen in ein browserbasiertes Tool eingeben.</p>"
+    }
   }
 }

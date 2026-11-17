@@ -307,5 +307,152 @@
       "title": "如何把 JSON 转成表格",
       "content": "<h2>什么是 JSON 转表格转换器？</h2><p>JSON 转表格转换器把结构化的 JSON 记录铺成行和列，方便人眼阅读。最适合的数据是对象数组：每个对象是一条记录，每个属性是一列。</p><p>开发者在查看接口响应、数据库导出、日志文件或配置快照时经常用到这个视图。把 200 条记录读成表格，通常比滚动原始 JSON 文本快得多；行数和列数也能让你一眼确认整个数组是否被完整读取。</p><h2>支持的 JSON 结构</h2><p>支持的输入是顶层对象数组：</p><pre><code>[{\"name\":\"Alice\",\"age\":30},{\"name\":\"Bob\",\"age\":25}]</code></pre><p>数组里的每一项都必须是对象。[\"a\",\"b\"] 这样的字符串数组、数字数组、数组的数组都无法变成行和列，会被直接报错。如果数据被包在 {\"results\":[...]} 这样的对象里，请粘贴内层的数组。</p><h2>如何把 JSON 转成表格</h2><ol><li><strong>输入 JSON：</strong>把对象数组粘贴进编辑器，或打开 .json 文件。</li><li><strong>看统计数字：</strong>先看识别到的行数和列数，确认整个数组都解析成功。</li><li><strong>检查表头：</strong>确认需要的字段都成了列，并且数值对齐。</li><li><strong>处理嵌套：</strong>需要把嵌套属性变成独立列时启用展平。</li><li><strong>导出：</strong>下载 CSV，然后在 Excel、Google Sheets 或其他电子表格里继续处理。</li></ol><h2>自动识别列与缺失值</h2><p>真实数据很少每条记录的键都完全一致：用户列表里手机号可能是可选的，订单列表里只有部分行有退款字段。转换器会从每一个对象里收集键，按首次出现的顺序组成列。</p><p>某条记录缺少某个字段时，单元格留空。行的对齐关系不会错，但如果原始数据里可选字段很多，表格就会变得很宽，空单元格也会变多。</p><h2>展平嵌套 JSON</h2><p>扁平表格最适合每个单元格都是字符串、数字、布尔或 null 这类标量值的情况。嵌套对象放不进一个单元格，所以可选的展平模式会把路径改写成点号列：</p><pre><code>{\"user\":{\"name\":\"Alice\"},\"address\":{\"city\":\"New York\"}}</code></pre><p>会变成 <code>user.name</code>、<code>address.city</code> 这样的列。嵌套数组更麻烦：它可能包含多个值或多个对象，没有唯一合适的二维形态。不展平时，对象和数组值会以一个单元格里的紧凑 JSON 文本显示。</p><h2>表格预览、CSV 与 HTML 输出</h2><p>这三种输出解决的是不同问题，开始前先选对：</p><ul><li><strong>表格预览：</strong>在浏览器里快速阅读和检查数据。</li><li><strong>CSV：</strong>数据要继续进入 Excel、Google Sheets、数据库导入或报表流程时使用。</li><li><strong>HTML 表格：</strong>结果要显示在网页上，或粘贴进 CMS、文档编辑器时使用。</li><li><strong>原始 JSON：</strong>需要保留嵌套结构、精确类型或机器间交换时保留原格式。</li></ul><h2>表格预览的边界</h2><p>预览是根据你的输入生成的静态视图，不提供排序、筛选、分页、编辑或列选择，也没有电子表格式的工具栏。为了保持页面流畅，预览只渲染前 100 行；显示的行数和 CSV 导出仍然覆盖每一条记录。</p><p>如果需要排序、筛选、做图表或编辑数据，请下载 CSV 后在电子表格里继续。如果需要可嵌入网页的代码，请使用“JSON 转 HTML 表格”页面。</p><h2>浏览器本地处理与隐私</h2><p>这个工具在你的浏览器中解析 JSON 并生成表格，而不是把输入上传到远程转换服务。这对内部数据集和开发数据很方便，但并不等于绝对安全。不要在任何在线工具中输入凭证、访问令牌、个人信息或机密生产数据。</p>"
     }
+  },
+  "de": {
+    "name": "JSON-zu-Tabelle-Konverter",
+    "description": "Wandle ein JSON-Array von Objekten online in eine lesbare Tabelle um. Dieser JSON-zu-Tabelle-Konverter erkennt Spalten automatisch, meldet Zeilen- und Spaltenanzahlen, glättet verschachtelte Objekte bei Bedarf und exportiert die Daten als CSV.",
+    "hero": {
+      "trustHtml": "Läuft in deinem Browser. Dein JSON wird von diesem Tool nicht hochgeladen."
+    },
+    "meta": {
+      "title": "JSON-zu-Tabelle-Konverter – Kostenloser Online-JSON-Tabellen-Viewer",
+      "description": "Wandle JSON online in eine Tabelle um. Füge ein Array von Objekten ein, zeige Zeilen und Spalten an, glätte verschachtelte Objekte und lade CSV herunter. Kostenlos und läuft in deinem Browser.",
+      "keywords": [
+        "json to table",
+        "json to table converter",
+        "convert json to table",
+        "json table converter",
+        "json array to table",
+        "json table viewer",
+        "json table generator",
+        "json to table online"
+      ]
+    },
+    "features": [
+      {
+        "icon": "lucide:table-2",
+        "title": "Array von Objekten zu Tabelle",
+        "description": "Mache ein Array von JSON-Objekten zu Zeilen und Spalten. Jedes Objekt wird zu einer Zeile und die Objektschlüssel zu den Tabellenüberschriften."
+      },
+      {
+        "icon": "lucide:columns-3",
+        "title": "Automatische Spaltenerkennung",
+        "description": "Spalten werden aus jedem Datensatz im Array gesammelt. Wenn ein Datensatz eine Spalte nicht enthält, bleibt die Zelle leer, statt die Zeile zu verschieben."
+      },
+      {
+        "icon": "lucide:rows-3",
+        "title": "Zeilen- und Spaltenanzahl",
+        "description": "Die Vorschau meldet, wie viele Zeilen und Spalten erkannt wurden, damit du bestätigen kannst, dass das gesamte Array gelesen wurde, bevor du exportierst."
+      },
+      {
+        "icon": "lucide:layers-2",
+        "title": "Optionale Verschachtelungs-Ausglättung",
+        "description": "Glätte verschachtelte Objekte zu Spalten in Punktnotation wie address.city. Bei ausgeschaltetem Abflachen wird ein Objekt- oder Array-Wert als kompaktes JSON in einer einzigen Zelle angezeigt."
+      },
+      {
+        "icon": "lucide:download",
+        "title": "CSV-Export",
+        "description": "Lade die Tabellendaten als UTF-8-CSV-Datei mit BOM herunter, bereit für Excel, Google Sheets oder andere Tabellenprogramme."
+      },
+      {
+        "icon": "lucide:upload",
+        "title": "Datei einfügen oder öffnen",
+        "description": "Füge JSON in den Editor ein oder öffne eine .json-Datei von deinem Gerät. Parsing und Darstellung finden im Browser statt."
+      },
+      {
+        "icon": "lucide:shield-check",
+        "title": "Verarbeitung im Browser",
+        "description": "Parsing, Spaltenerkennung und CSV-Erzeugung laufen in deinem Browser. Kein Konto und kein Upload an einen Konvertierungsserver."
+      }
+    ],
+    "guide": [
+      {
+        "title": "Ein JSON-Array von Objekten eingeben",
+        "description": "Füge ein Array wie [{\"name\":\"Alice\"},{\"name\":\"Bob\"}] ein oder öffne eine .json-Datei. Jedes Element muss ein Objekt sein, da jedes Element eine Zeile wird."
+      },
+      {
+        "title": "Die erkannten Spalten prüfen",
+        "description": "Die Tabelle wird gerendert, sobald das JSON geparst ist. Lies die Zeilen- und Spaltenanzahl und prüfe die Kopfzeilen, um sicherzustellen, dass jedes erwartete Feld vorhanden ist."
+      },
+      {
+        "title": "Verschachtelte Objekte bei Bedarf abflachen",
+        "description": "Aktiviere „Verschachtelte Objekte abflachen“, um verschachtelte Eigenschaften zu Spalten in Punktnotation zu machen. Lass es aus, wenn du verschachtelte Werte lieber als kompaktes JSON in einer Zelle sehen möchtest."
+      },
+      {
+        "title": "Die CSV herunterladen",
+        "description": "Klicke auf die CSV-Schaltfläche, um die Tabellendaten zu speichern. Öffne die Datei in Excel oder Google Sheets, um die Datensätze zu sortieren, zu filtern oder als Diagramm darzustellen."
+      }
+    ],
+    "example": {
+      "input": "[\n  { \"name\": \"Alice\", \"age\": 30, \"city\": \"New York\" },\n  { \"name\": \"Bob\", \"age\": 25, \"city\": \"London\" }\n]",
+      "output": "name    age  city\nAlice   30   New York\nBob     25   London",
+      "useCase": "Zeige ein Array von API-Datensätzen als Tabelle an, bevor du es in eine Tabelle exportierst."
+    },
+    "faq": [
+      {
+        "question": "Welche JSON-Eingabe akzeptiert dieses Tool?",
+        "answer": "Ein JSON-Array der obersten Ebene, dessen Elemente Objekte sind, zum Beispiel [{\"name\":\"Alice\",\"age\":30}]. Arrays von Strings, Zahlen oder Arrays werden abgelehnt, da jedes Element eine Zeile der Tabelle werden muss."
+      },
+      {
+        "question": "Kann ich ein einzelnes JSON-Objekt in eine Tabelle umwandeln?",
+        "answer": "Nein. Diese Seite erwartet ein Array von Datensätzen. Wenn deine Daten wie {\"results\":[...]} aussehen, füge stattdessen das innere Array ein oder verwende einen JSON-Viewer, der für die Objektprüfung entwickelt wurde."
+      },
+      {
+        "question": "Wie werden die Tabellenspalten gewählt?",
+        "answer": "Spalten werden aus jedem Objekt im Array gesammelt, in der Reihenfolge, in der die Schlüssel zuerst erscheinen. Ein Datensatz, der eine Spalte nicht enthält, lässt diese Zelle leer."
+      },
+      {
+        "question": "Kann ich verschachteltes JSON in eine Tabelle umwandeln?",
+        "answer": "Ja, mit Einschränkungen. Aktiviere „Verschachtelte Objekte abflachen“, um verschachtelte Eigenschaften zu Spalten in Punktnotation wie address.city zu machen. Verschachtelte Arrays haben nicht immer eine natürliche zweidimensionale Form, daher werden sie entweder in eine Zelle serialisiert oder benötigen eine separate Umwandlung."
+      },
+      {
+        "question": "Kann ich die Tabelle sortieren, filtern oder seitenweise anzeigen?",
+        "answer": "Nein. Die Vorschau ist eine statische Tabellenansicht: Sie bietet keine Sortierung, Filterung, Seitennavigation, Bearbeitung oder Spaltenauswahl. Lade die CSV herunter, wenn du mit den Datensätzen in einer Tabelle arbeiten möchtest."
+      },
+      {
+        "question": "Wie viele Zeilen zeigt die Vorschau?",
+        "answer": "Die Vorschau rendert die ersten 100 Zeilen, damit die Seite reaktionsfähig bleibt. Die gemeldete Zeilenanzahl und der CSV-Export umfassen weiterhin jeden Datensatz im Array."
+      },
+      {
+        "question": "Kann ich die Tabelle als CSV herunterladen?",
+        "answer": "Ja. Der CSV-Export verwendet UTF-8 mit BOM, damit Excel Zeichen mit Akzenten und nicht-lateinische Zeichen erkennt, und Werte mit Kommas, Anführungszeichen oder Zeilenumbrüchen werden maskiert und in Anführungszeichen gesetzt."
+      },
+      {
+        "question": "Kann ich eine große JSON-Datei umwandeln?",
+        "answer": "Die Seite legt kein festes Zeilenlimit fest, aber alles läuft in deinem Browser. Sehr große Arrays hängen vom Arbeitsspeicher deines Geräts ab und brauchen länger zum Parsen und Rendern."
+      },
+      {
+        "question": "Erzeugt diese Seite HTML-Code?",
+        "answer": "Nein. Diese Seite dient dazu, JSON-Datensätze als Tabelle anzuzeigen und als CSV zu exportieren. Verwende die Seite JSON zu HTML-Tabelle, wenn du kopierbares Tabellen-Markup oder eine herunterladbare .html-Datei benötigst."
+      },
+      {
+        "question": "Werden meine JSON-Daten auf einen Server hochgeladen?",
+        "answer": "Diese Seite parst JSON und baut die Tabelle in deinem Browser und erfordert keinen Upload an einen Konvertierungsserver. Du solltest dennoch vermeiden, Passwörter, API-Schlüssel, Zugriffstokens oder andere hochsensible Informationen in ein browserbasiertes Tool einzugeben."
+      },
+      {
+        "question": "Ist dies ein kostenloser JSON-zu-Tabelle-Konverter?",
+        "answer": "Ja. Du kannst JSON einfügen oder öffnen, die Tabelle anzeigen und CSV herunterladen, ohne ein Konto zu erstellen."
+      }
+    ],
+    "ui": {
+      "label_input": "JSON eingeben",
+      "label_output": "Tabellen-Vorschau",
+      "btn_render": "Tabelle rendern",
+      "btn_download_csv": "CSV herunterladen",
+      "option_flatten": "Verschachtelte Objekte abflachen",
+      "empty_state": "Ein JSON-Array von Objekten einfügen, um es als Tabelle anzuzeigen",
+      "status_rows": "{count} Zeilen",
+      "status_columns": "{count} Spalten",
+      "preview_limit": "Die Vorschau zeigt die ersten {count} Zeilen. Der CSV-Export enthält jede Zeile.",
+      "error_invalid_input": "Eingabe muss ein JSON-Array von Objekten sein",
+      "error_empty_array": "Das JSON-Array ist leer",
+      "error_invalid_row": "Jedes Array-Element muss ein JSON-Objekt sein",
+      "error_no_columns": "Es wurden keine Tabellenspalten gefunden",
+      "error_invalid_json": "Eingabe ist kein gültiges JSON"
+    },
+    "article": {
+      "title": "JSON in eine Tabelle umwandeln",
+      "content": "<h2> Was ist ein JSON-zu-Tabelle-Konverter?</h2><p> Ein JSON-zu-Tabelle-Konverter nimmt strukturierte JSON-Datensätze und ordnet sie als Zeilen und Spalten an, damit sie leichter lesbar sind. Die am besten geeignete Eingabe ist ein Array von Objekten, wobei jedes Objekt ein Datensatz und jede Eigenschaft eine Spalte ist.</p><p> Entwickler verwenden diese Ansicht beim Prüfen einer API-Antwort, eines Datenbank-Exports, einer Protokolldatei oder eines Konfigurations-Dumps. 200 Datensätze als Tabelle zu lesen ist meist schneller als das Scrollen durch rohen JSON-Text, und die Zeilen- und Spaltenanzahl zeigt dir auf einen Blick, ob das gesamte Array gelesen wurde.</p><h2>Supported JSON Structure</h2><p> Die unterstützte Eingabe ist ein Array der obersten Ebene mit Objekten:</p><pre><code>[{\"name\":\"Alice\",\"age\":30},{\"name\":\"Bob\",\"age\":25}]</code></pre><p> Jedes Element im Array muss ein Objekt sein. Ein Array von Strings wie [\"a\",\"b\"], ein Array von Zahlen oder ein Array von Arrays kann nicht in Zeilen und Spalten umgewandelt werden und wird daher mit einer Fehlermeldung abgelehnt. Wenn dein Dokument die Datensätze in ein Objekt wie {\"results\":[...]} einpackt, füge stattdessen das innere Array ein.</p><h2>JSON in eine Tabelle umwandeln</h2><ol><li><strong>Enter the JSON:</strong> Füge ein Array von Objekten in den Editor ein oder öffne eine .json-Datei.</li><li><strong>Read the counts:</strong> Prüfe die gemeldeten Zeilen- und Spaltenanzahlen, um zu bestätigen, dass das gesamte Array geparst wurde.</li><li><strong>Scan the headers:</strong> Bestätige, dass jedes erwartete Feld als Spalte erscheint und die Werte ausgerichtet sind.</li><li><strong>Handle nesting:</strong> Aktiviere das Abflachen, wenn verschachtelte Eigenschaften eigene Spalten werden sollen.</li><li><strong>Export:</strong> Lade die CSV herunter und arbeite in Excel, Google Sheets oder einer anderen Tabellenanwendung weiter.</li></ol><h2> Automatische Spaltenerkennung und fehlende Werte</h2><p> Echte Datensätze teilen selten exakt dieselben Schlüssel. Eine Benutzerliste kann eine optionale Telefonnummer haben, eine Bestellliste ein Rückerstattungsfeld nur in manchen Zeilen. Der Konverter sammelt die Schlüssel aus jedem Objekt im Array, in der Reihenfolge ihres ersten Auftretens, und verwendet diese Vereinigung als Spalten.</p><p> Wenn ein Datensatz eine Spalte nicht enthält, bleibt die Zelle leer. Die Zeilenausrichtung bleibt erhalten, aber ein Quell-Array mit vielen optionalen Eigenschaften erzeugt eine breite Tabelle mit vielen leeren Zellen.</p><h2>Flattening Nested JSON</h2><p> Eine flache Tabelle funktioniert am besten, wenn jede Zelle einen Skalarwert wie einen String, eine Zahl, einen Boolean oder null enthält. Verschachtelte Objekte passen nicht in eine einzelne Zelle, daher schreibt der optionale Abflachungs-Modus Pfade als Spalten in Punktnotation um:</p><pre><code>{\"user\":{\"name\":\"Alice\"},\"address\":{\"city\":\"New York\"}}</code></pre><p>werdens columns such as <code>user.name</code> und <code>address.city</code> Verschachtelte Arrays sind schwieriger: Sie können viele Werte oder viele Objekte enthalten, und es gibt keine eindeutige zweidimensionale Form. Bei deaktiviertem Abflachen wird ein Objekt- oder Array-Wert als kompakter JSON-Text in einer Zelle angezeigt.</p><h2> Tabellenvorschau, CSV und HTML-Ausgabe</h2><p> Die drei Optionen lösen unterschiedliche Probleme, daher lohnt es sich, vorab die richtige zu wählen:</p><ul><li><strong>Table preview:</strong> Nutze es, um die Datensätze im Browser zu lesen und auf Plausibilität zu prüfen.</li><li><strong>CSV:</strong> Nutze es, wenn die Daten weiter in Excel, Google Sheets, einen Datenbankimport oder eine Berichts-Pipeline gehen müssen.</li><li><strong>HTML table:</strong> Nutze es, wenn das Ergebnis auf einer Webseite angezeigt oder in einen CMS- oder Dokumentations-Editor eingefügt werden muss.</li><li><strong>Raw JSON:</strong> Behalte es bei, wenn verschachtelte Strukturen, exakte Datentypen oder Maschinen-zu-Maschinen-Austausch erhalten bleiben müssen.</li></ul><h2> Grenzen der Tabellenvorschau</h2><p> Die Vorschau ist eine statische Ansicht aus deiner Eingabe. Sie bietet keine Sortierung, Filterung, Seitennavigation, Bearbeitung oder Spaltenauswahl und enthält keine tabellenartige Symbolleiste. Die Vorschau rendert außerdem nur die ersten 100 Zeilen, damit die Seite reaktionsfähig bleibt; die gemeldete Zeilenanzahl und der CSV-Export umfassen weiterhin jeden Datensatz.</p><p> Wenn du die Datensätze sortieren, filtern, als Diagramm darstellen oder bearbeiten möchtest, lade die CSV herunter und arbeite in einer Tabellenanwendung weiter. Wenn du Markup zum Einbetten in eine Seite benötigst, verwende stattdessen die Seite JSON zu HTML-Tabelle.</p><h2>Browser-Based Privacy</h2><p> Dieses Tool ist darauf ausgelegt, JSON im Browser zu parsen und die Tabelle zu bauen statt die Eingabe an einen entfernten Konvertierungsdienst hochzuladen. Das ist nützlich für interne Datensätze und Entwicklungsdaten, aber keine Garantie für vollständige Sicherheit. Vermeide Zugangsdaten, Zugriffstokens, personenbezogene Informationen oder vertrauliche Produktivdaten in einem Web-Tool.</p>"
+    }
   }
 }

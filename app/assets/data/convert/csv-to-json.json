@@ -377,5 +377,186 @@
       "title": "如何在线把 CSV 转换成 JSON",
       "content": "<h2>什么是 CSV 到 JSON 的转换？</h2><p>CSV 是电子表格、数据库、分析工具和报表系统常用的行列格式。JSON 是 API、Web 应用和编程语言常用的结构化格式。CSV 转 JSON 就是把每一行表格数据映射成一条 JSON 记录，每一列映射成一个属性。</p><p>最常见的输出是 JSON 对象数组。例如表头行 <code>name,age,city</code> 会成为属性名，之后的每一行成为数组中的一个对象。</p><h2>如何把 CSV 转换成 JSON</h2><ol><li><strong>输入数据：</strong>粘贴 CSV、TSV 或其他受支持的分隔符文本，或打开本地文件。</li><li><strong>选择分隔符：</strong>选择逗号、分号、制表符、竖线，或在有自动检测时使用自动检测。</li><li><strong>配置表头：</strong>第一行是列名时勾选“第一行是表头”。</li><li><strong>选择类型处理方式：</strong>决定看起来像数字、布尔值或空值的文本是否要从字符串转换。</li><li><strong>预览解析结果：</strong>检查识别出的列、带引号的值、空单元格和列数不一致的行。</li><li><strong>生成 JSON：</strong>把解析后的表格转换成 JSON 对象数组。</li><li><strong>复制或下载：</strong>复制输出，或保存为 .json 文件用于代码和数据流程。</li></ol><h2>示例：CSV 转 JSON 数组</h2><pre><code>name,age,city\nAlice,30,New York\nBob,25,London</code></pre><p>把第一行作为表头时，结果是：</p><pre><code>[\n  {\"name\":\"Alice\",\"age\":30,\"city\":\"New York\"},\n  {\"name\":\"Bob\",\"age\":25,\"city\":\"London\"}\n]</code></pre><h2>带引号的字段与逗号</h2><p>CSV 中用双引号包裹时，字段内部可以包含分隔符本身。例如：</p><pre><code>name,address,notes\n\"Alice\",\"123 Main St, Apt 4\",\"Called on Monday\"</code></pre><p>正确的 CSV 解析器不会把带引号地址里的逗号当成新的一列。它还要能处理转义的双引号，并在支持的情况下处理引号内的换行。</p><h2>表头与生成的属性名</h2><p>表头会成为属性名，让生成的 JSON 更容易理解。如果文件没有表头行，转换器需要一套命名规则，例如 <code>column_1</code>、<code>column_2</code>。生成的名字能直接用，但用到生产代码里通常还需要重命名。</p><h2>类型推断需要人工复核</h2><p>CSV 本身不定义严格的数据类型。大多数值一开始都是文本，即使它们看起来像数字或布尔值。类型推断可以让 JSON 更好用，也可能改掉有意义的字符串：</p><ul><li><strong>带前导零的编号：</strong>00123 可能变成数字 123。</li><li><strong>版本号：</strong>1.10 的解释方式可能与原始文本不同。</li><li><strong>邮编：</strong>转成数字会丢掉前导零。</li><li><strong>日期：</strong>类似日期的文本可能被下游工具按不同方式解释。</li><li><strong>看起来像布尔的值：</strong>yes、no、TRUE、FALSE 在不同系统中的含义不一定一致。</li></ul><p>需要原样保留文本时，请关闭类型推断，或只对该字段单独处理。本页默认关闭类型推断：上例中的 30 在默认设置下保持为字符串 \"30\"，勾选“推断基础类型”后才会变成数字。</p><h2>空单元格与 null 值</h2><p>空的 CSV 单元格可能表示缺失数据、空字符串，或者应该变成 null 的值。没有统一答案。请显式选择一种策略，并核对接收方程序期望的 JSON schema。</p><h2>分隔符识别</h2><p>逗号、分号、制表符和竖线都是常见分隔符。自动检测会根据前几行估算哪个分隔符能切出更稳定的表格，但输入有歧义时可能判断错误。文件中出现多种标点、带引号文本或行列不齐时，手动选择更可靠。</p><h2>CSV 编码</h2><p>CSV 文件可能使用不同的字符编码。现代流程用 UTF-8 是合理的默认选择，但旧系统导出的文件可能不是。如果非 ASCII 字符显示成乱码，先检查源文件的编码，再在导出侧提供编码选项，而不是默认每个文件都是 UTF-8。</p><h2>扁平 JSON、嵌套 JSON 与 JSONL</h2><p>基础的 CSV 转 JSON 转换器输出扁平的对象数组。有些工具还支持其他模式，例如把带点的列名转成嵌套对象、按某个 ID 列生成键值结构的 JSON，或者每行一个对象写成 JSON Lines。这些是另一套输出模型，本页目前不提供。</p><h2>大型 CSV 文件</h2><p>在浏览器里一次性载入并解析大型 CSV 文件会占用大量内存。带引号的多行字段会让流式解析更复杂，把每一行都渲染到预览里也会拖慢页面。面向生产的大文件流程通常需要分块解析、Web Worker、虚拟滚动的预览，以及明确的行数或文件大小限制。</p><h2>常见的 CSV 转换问题</h2><ul><li><strong>所有数据都挤在一个字段里：</strong>选中的分隔符与文件不匹配。</li><li><strong>列错位：</strong>某个带引号的字段里有分隔符，或引号没有转义。</li><li><strong>各行长度不同：</strong>源文件里有缺少的分隔符、多余的分隔符或格式错误的行。</li><li><strong>编号变了：</strong>类型推断把带前导零的字符串转成了数字。</li><li><strong>字符乱码：</strong>源文件编码判断错误。</li><li><strong>表头名不可用：</strong>第一行可能有重复的列名、空列名或带大量空白的列名。</li></ul><h2>浏览器本地处理与隐私</h2><p>本转换器在浏览器中解析 CSV 并生成 JSON，不需要把源文件上传到远程服务。这对开发数据和内部导出很方便，但它不能替代安全的数据处理规范。不要在任何网页工具中输入凭证、访问令牌、客户隐私信息或生产环境的机密数据。</p><h2>什么时候改用本地或流式工具</h2><p>处理超大文件、自动化流水线、重复性转换或敏感数据时，请使用可信的本地解析器或流式数据处理流程。浏览器工具更适合快速转换、临时检查和中小规模的数据集。</p>"
     }
+  },
+  "de": {
+    "name": "CSV-zu-JSON-Konverter",
+    "description": "Wandle CSV, TSV oder durch Trennzeichen getrennten Text online in deinem Browser in JSON um. Füge Daten ein oder öffne eine Datei, wähle Trennzeichen und Kopfzeilenverhalten, zeige die geparsten Zeilen an und exportiere ein Array von JSON-Objekten mit optionaler Typhinferenz.",
+    "hero": {
+      "trustHtml": "Läuft in deinem Browser. Dein CSV wird von diesem Tool nicht hochgeladen."
+    },
+    "meta": {
+      "title": "CSV-zu-JSON-Konverter – Kostenloses Online-Tool",
+      "description": "Wandle CSV online in JSON um. Füge CSV ein oder öffne eine Datei, wähle das Trennzeichen, verwende die erste Zeile als Kopfzeile, zeige eine Vorschau und lade ein formatiertes JSON-Array herunter. Kostenlos und browserbasiert.",
+      "keywords": [
+        "csv to json",
+        "csv to json converter",
+        "convert csv to json",
+        "csv to json online",
+        "csv to json array",
+        "csv to json converter online",
+        "free csv to json",
+        "tsv to json"
+      ]
+    },
+    "ui": {
+      "label_input": "CSV eingeben",
+      "label_output": "JSON-Ausgabe",
+      "btn_convert": "In JSON umwandeln",
+      "btn_example": "Beispiel laden",
+      "option_delimiter": "Trennzeichen:",
+      "option_auto_delimiter": "Automatisch erkennen",
+      "option_delimiter_comma": "Komma (,)",
+      "option_delimiter_semicolon": "Semikolon (;)",
+      "option_delimiter_tab": "Tab",
+      "option_delimiter_pipe": "Senkrechtstrich (|)",
+      "option_has_header": "Erste Zeile ist Kopfzeile",
+      "option_infer_types": "Grundlegende Typen ableiten",
+      "option_empty_as_null": "Leere Zellen in null umwandeln",
+      "option_trim_values": "Umgebende Leerzeichen entfernen",
+      "option_indent": "Einrückung:",
+      "option_indent_2": "2 Leerzeichen",
+      "option_indent_4": "4 Leerzeichen",
+      "placeholder_output": "Konvertiertes JSON erscheint hier …",
+      "error_no_data": "Zuerst CSV-Daten eingeben oder eine Datei öffnen",
+      "error_parse": "Das CSV konnte nicht geparst werden",
+      "error_inconsistent_columns": "Einige Zeilen haben eine andere Anzahl von Spalten",
+      "error_no_headers": "Es wurden keine verwendbaren Spaltenüberschriften gefunden",
+      "preview_title": "Vorschau der geparsten Zeilen",
+      "preview_rows": "Zeilen",
+      "preview_columns": "Spalten",
+      "preview_showing": "{shown} von {total} werden angezeigt",
+      "preview_empty": "CSV-Daten eingeben, um die geparsten Zeilen anzuzeigen"
+    },
+    "features": [
+      {
+        "icon": "lucide:file-spreadsheet",
+        "title": "CSV, TSV und durch Trennzeichen getrennter Text",
+        "description": "Füge CSV-Text ein oder öffne eine unterstützte durch Trennzeichen getrennte Datei. Verwende Komma, Semikolon, Tabulator oder Senkrechtstrich entsprechend der Struktur deiner Daten."
+      },
+      {
+        "icon": "lucide:table-2",
+        "title": "Vorschau der Zeilen und Kopfzeilen",
+        "description": "Zeige die erkannten Spalten und die ersten 10 Datenzeilen an, bevor du JSON erzeugst. Das hilft, Trennzeichenfehler, fehlende Kopfzeilen, unebene Zeilen und unerwartete Werte zu erkennen."
+      },
+      {
+        "icon": "lucide:settings-2",
+        "title": "Optionen für Trennzeichen und Kopfzeile",
+        "description": "Wähle ein Trennzeichen manuell oder nutze die automatische Erkennung, sofern verfügbar, und entscheide dann, ob die erste Zeile zu den JSON-Eigenschaftsnamen werden soll."
+      },
+      {
+        "icon": "lucide:braces",
+        "title": "JSON-Array von Objekten",
+        "description": "Wandle jede tabellarische Zeile in ein JSON-Objekt um und verwende die Kopfzeile als Eigenschaftsnamen. Wenn keine Kopfzeile vorhanden ist, werden erzeugte Spaltennamen verwendet."
+      },
+      {
+        "icon": "lucide:badge-check",
+        "title": "Optionale Typinferenz",
+        "description": "Wandle Werte um, die eindeutig Zahlen oder Booleans darstellen, wenn die Typhinferenz aktiviert ist. Deaktiviere die Inferenz, wenn Bezeichner, Postleitzahlen oder formatierte Werte Strings bleiben müssen."
+      },
+      {
+        "icon": "lucide:download",
+        "title": "JSON kopieren oder herunterladen",
+        "description": "Kopiere das erzeugte JSON in die Zwischenablage oder lade es als .json-Datei herunter für APIs, Skripte, Frontend-Anwendungen, Tests und Datenverarbeitungs-Workflows."
+      },
+      {
+        "icon": "lucide:upload",
+        "title": "Lokale Dateieingabe",
+        "description": "Öffne eine .csv-, .tsv- oder unterstützte Textdatei von deinem Gerät. Die Datei wird im Browser gelesen, ohne dass ein Upload an einen Konvertierungsserver erforderlich ist."
+      },
+      {
+        "icon": "lucide:shield-check",
+        "title": "Verarbeitung im Browser",
+        "description": "CSV-Parsing und JSON-Erzeugung finden in deinem Browser statt. Die Seite erfordert kein Konto und überträgt die Eingabedaten nicht an einen entfernten Konverter."
+      }
+    ],
+    "guide": [
+      {
+        "title": "Durch Trennzeichen getrennte Daten eingeben oder öffnen",
+        "description": "Füge CSV, TSV oder durch Trennzeichen getrennten Text in den Eingabe-Editor ein oder öffne eine unterstützte lokale Datei. Nimm eine Kopfzeile auf, wenn du aussagekräftige JSON-Eigenschaftsnamen möchtest."
+      },
+      {
+        "title": "Parsing-Optionen wählen",
+        "description": "Wähle das Trennzeichen oder nutze die automatische Erkennung, gib an, ob die erste Zeile Kopfzeilen enthält, und entscheide, ob grundlegende Typen und leere Zellen abgeleitet werden sollen."
+      },
+      {
+        "title": "Die geparsten Zeilen anzeigen",
+        "description": "Prüfe die erkannten Spalten und die ersten 10 geparsten Zeilen vor der Umwandlung. Kontrolliere maskierte Felder, Zeilenumbrüche, fehlende Werte, führende Nullen und Zeilen mit uneinheitlicher Spaltenanzahl."
+      },
+      {
+        "title": "JSON umwandeln und exportieren",
+        "description": "Klicke auf „In JSON umwandeln“, kopiere dann das Ergebnis oder lade es als .json-Datei herunter. Validiere die Ausgabe, bevor du sie an eine API sendest oder in Anwendungscode verwendest."
+      }
+    ],
+    "example": {
+      "input": "name,age,city\nAlice,30,New York\nBob,25,London",
+      "output": "[\n  {\n    \"name\": \"Alice\",\n    \"age\": 30,\n    \"city\": \"New York\"\n  },\n  {\n    \"name\": \"Bob\",\n    \"age\": 25,\n    \"city\": \"London\"\n  }\n]",
+      "useCase": "Wandle aus einer Tabelle exportierte CSV-Datensätze in ein JSON-Array für einen Frontend- oder API-Workflow um."
+    },
+    "faq": [
+      {
+        "question": "Welches JSON-Format erzeugt dieser CSV-Konverter?",
+        "answer": "Die Standardausgabe ist ein JSON-Array von Objekten. Jede Datenzeile wird zu einem Objekt und die Kopfzeilenwerte werden zu Eigenschaftsnamen. Wenn es keine Kopfzeile gibt, verwendet der Konverter erzeugte Spaltennamen gemäß seiner konfigurierten Benennungsregel."
+      },
+      {
+        "question": "Geht es korrekt mit maskierten CSV-Feldern um?",
+        "answer": "Ein CSV-Parser sollte Trennzeichen in maskierten Feldern, maskierte Anführungszeichen und Zeilenumbrüche in maskierten Feldern verarbeiten. Prüfe die Vorschau, wenn die Quelle komplex maskierten Text enthält, da fehlerhafte Maskierung die Erkennung von Zeilen und Spalten verändern kann."
+      },
+      {
+        "question": "Welche Trenner werden unterstützt?",
+        "answer": "Die Seite kann Komma, Semikolon, Tabulator und Senkrechtstrich als Trennzeichen unterstützen, wenn diese Optionen implementiert sind. Verwende die manuelle Auswahl, wenn die Datei mehrdeutige Daten enthält, und behandle die automatische Erkennung als Annehmlichkeit, nicht als Garantie."
+      },
+      {
+        "question": "Kann ich eine TSV-Datei in JSON umwandeln?",
+        "answer": "Ja. TSV sind tabgetrennte Daten. Öffne die Datei oder füge ihren Inhalt ein und wähle Tabulator als Trennzeichen, es sei denn, die Seite erkennt es korrekt."
+      },
+      {
+        "question": "Was passiert, wenn das CSV keine Kopfzeile hat?",
+        "answer": "Deaktiviere „Erste Zeile ist Kopfzeile“. Der Konverter erzeugt dann Eigenschaftsnamen wie column0, column1 oder eine andere dokumentierte Benennungskonvention. Erzeugte Namen sind funktional, aber weniger aussagekräftig als echte Kopfzeilen."
+      },
+      {
+        "question": "Leitet es Zahlen und Booleans ab?",
+        "answer": "Wenn „Grundlegende Typen ableiten“ aktiviert ist, können Werte, die eindeutig unterstützten Zahlen- oder Boolean-Mustern entsprechen, von Strings in JSON-Zahlen oder -Booleans umgewandelt werden. Prüfe das Ergebnis, da Werte wie Postleitzahlen, Kontonummern, Versionsstrings und Datumsangaben Strings bleiben müssen."
+      },
+      {
+        "question": "Sollen leere CSV-Zellen zu null oder leeren Strings werden?",
+        "answer": "Das hängt von der gewählten Option ab. Leere Zellen können leere Strings bleiben oder zu JSON-null-Werten werden. Wähle das Verhalten, das zum von der empfangenden Anwendung erwarteten Schema passt."
+      },
+      {
+        "question": "Wie werden führende Nullen behandelt?",
+        "answer": "Bezeichner wie 00123 können ihre führenden Nullen verlieren, wenn die Typhinferenz sie in Zahlen umwandelt. Deaktiviere die Typhinferenz oder konfiguriere das Feld als String, wenn führende Nullen Bedeutung haben."
+      },
+      {
+        "question": "Was passiert, wenn Zeilen unterschiedliche Spaltenanzahlen haben?",
+        "answer": "Der Parser kann je nach Konfiguration einen Fehler melden, fehlende Zellen auffüllen oder zusätzliche Werte ignorieren. Prüfe die Zeilenvorschau und Fehlermeldung, bevor du die Ausgabe verwendest — insbesondere wenn die Eingabe fehlerhafte oder manuell bearbeitete Datensätze enthält."
+      },
+      {
+        "question": "Können CSV-Spalten zu verschachtelten JSON-Eigenschaften werden?",
+        "answer": "Die Standardausgabe ist meist ein flaches Array von Objekten. Manche Konverter unterstützen verschachtelte Schlüssel wie user.name oder einen separaten Zuordnungsmodus, aber diese Seite sollte verschachteltes JSON nur versprechen, wenn dieses Verhalten ausdrücklich implementiert ist."
+      },
+      {
+        "question": "Kann ich JSON Lines statt eines JSON-Arrays erzeugen?",
+        "answer": "Diese Seite gibt ein JSON-Array aus, sofern kein JSONL- oder NDJSON-Modus bereitgestellt ist. JSON Lines schreibt ein JSON-Objekt pro Zeile und ist nützlich für Streaming oder zeilenorientierte Datenpipelines."
+      },
+      {
+        "question": "Kann ich JSON zurück in CSV umwandeln?",
+        "answer": "Diese Seite konzentriert sich auf CSV zu JSON. Verwende das zugehörige JSON-zu-CSV-Tool, wenn du JSON-Datensätze in tabellenkompatibles CSV umwandeln möchtest."
+      },
+      {
+        "question": "Kann ich eine große CSV-Datei umwandeln?",
+        "answer": "Das praktische Limit hängt von Browser-Speicher, Dateigröße, Zeilenanzahl, Spaltenanzahl, zitierten mehrzeiligen Feldern und Vorschau-Rendering ab. Sehr große Dateien benötigen möglicherweise eine blockweise oder Streaming-Verarbeitung statt die gesamte Datei auf einmal zu laden."
+      },
+      {
+        "question": "Wird mein CSV auf einen Server hochgeladen?",
+        "answer": "Diese Seite ist dazu konzipiert, das CSV in deinem Browser ohne Server-Upload zu lesen und zu parsen. Du solltest dennoch vermeiden, Passwörter, API-Schlüssel, private Kundendatensätze oder vertrauliche Produktivdaten in ein browserbasiertes Tool einzugeben."
+      },
+      {
+        "question": "Ist dies ein kostenloser CSV-zu-JSON-Konverter?",
+        "answer": "Ja. Du kannst durch Trennzeichen getrennte Daten einfügen oder öffnen, den Parser konfigurieren, das Ergebnis anzeigen und JSON kopieren oder herunterladen, ohne ein Konto zu erstellen."
+      }
+    ],
+    "article": {
+      "title": "CSV online in JSON umwandeln",
+      "content": "<h2> Was ist CSV-zu-JSON-Umwandlung?</h2><p> CSV ist ein Zeilen-und-Spalten-Format, das häufig von Tabellenprogrammen, Datenbanken, Analyse-Tools und Berichtssystemen verwendet wird. JSON ist ein strukturiertes Format, das häufig von APIs, Webanwendungen und Programmiersprachen genutzt wird. Die CSV-zu-JSON-Umwandlung bildet jede tabellarische Zeile auf einen JSON-Datensatz und jede Spalte auf eine Eigenschaft ab.</p><p> Die häufigste Ausgabe ist ein JSON-Array von Objekten. Beispielsweise wird eine Kopfzeile mit <code>name,age,city</code> werden zu Eigenschaftsnamen, und jede folgende Zeile wird zu einem Objekt im Array.</p><h2> Wie man CSV in JSON umwandelt</h2><ol><li><strong>Enter the data:</strong> Füge CSV, TSV oder ein anderes unterstütztes durch Trennzeichen getrenntes Format ein oder öffne eine lokale Datei.</li><li><strong>Select the delimiter:</strong> Wähle Komma, Semikolon, Tabulator, Senkrechtstrich oder automatische Erkennung, sofern verfügbar.</li><li><strong>Configure headers:</strong> Aktiviere „Erste Zeile ist Kopfzeile“, wenn die erste Zeile Spaltennamen enthält.</li><li><strong>Choose Typ handling:</strong> Entscheide, ob Werte, die wie Zahlen, Booleans oder null aussehen, von Strings umgewandelt werden sollen.</li><li><strong>Preview the rows:</strong> Prüfe die erkannten Spalten, maskierten Werte, leeren Zellen und uneinheitlichen Datensätze.</li><li><strong>Generate JSON:</strong> Wandle die geparste Tabelle in ein Array von JSON-Objekten um.</li><li><strong>Copy oder download:</strong> Kopiere die Ausgabe oder speichere sie als .json-Datei zur Verwendung in Code oder Daten-Workflows.</li></ol><h2> Beispiel: CSV zu JSON-Array</h2><pre><code>name,age,city\nAlice,30,New York\nBob,25,London</code></pre><p> Wenn die erste Zeile als Kopfzeile behandelt wird, ist das Ergebnis:</p><pre><code>[\n  {\"name\":\"Alice\",\"age\":30,\"city\":\"New York\"},\n  {\"name\":\"Bob\",\"age\":25,\"city\":\"London\"}\n]</code></pre><h2>Quoted Fields und Commas</h2><p> CSV-Werte können das Trennzeichen selbst enthalten, wenn sie in doppelte Anführungszeichen eingeschlossen sind. Zum Beispiel:</p><pre><code>name,address,notes\n\"Alice\",\"123 Main St, Apt 4\",\"Called on Monday\"</code></pre><p> Ein korrekter CSV-Parser darf das Komma innerhalb der maskierten Adresse nicht als neue Spalte behandeln. Er sollte auch maskierte doppelte Anführungszeichen und, sofern unterstützt, Zeilenumbrüche innerhalb maskierter Felder verarbeiten.</p><h2> Kopfzeilen und erzeugte Eigenschaftsnamen</h2><p> Kopfzeilen machen das resultierende JSON leichter verständlich, da sie zu Eigenschaftsnamen werden. Wenn eine Datei keine Kopfzeile hat, benötigt der Konverter eine Benennungsregel wie <code>column0</code>, <code>column1</code>, oder <code>field_1</code> Erzeugte Namen sind für Rohdaten nützlich, aber eine spätere Umbenennung kann für Produktivcode erforderlich sein.</p><h2> Typhinferenz erfordert Prüfung</h2><p> CSV selbst definiert keine starken Datentypen. Die meisten Werte beginnen als Text, selbst wenn sie wie Zahlen oder Booleans aussehen. Typhinferenz kann das JSON praktischer machen, aber sie kann auch aussagekräftige Strings verändern:</p><ul><li><strong> Bezeichner mit führenden Nullen:</strong> 00123 kann zur Zahl 123 werden.</li><li><strong>Version Strings:</strong> 1.10 kann anders interpretiert werden als der ursprüngliche Text.</li><li><strong>Postal codes:</strong> Die numerische Umwandlung kann führende Nullen entfernen.</li><li><strong>Dates:</strong> Datumsähnlicher Text kann von nachgelagerten Tools unterschiedlich interpretiert werden.</li><li><strong>Boolean-looking Werts:</strong> yes, no, TRUE oder FALSE haben möglicherweise nicht in allen Systemen dieselbe Bedeutung.</li></ul><p> Wenn exakte Texterhaltung wichtig ist, deaktiviere die Typhinferenz oder verwende feldspezifische Umwandlungsregeln. Diese Seite liefert die Typhinferenz standardmäßig deaktiviert: Das 30 im obigen Beispiel bleibt der String \"30\", bis „Grundlegende Typen ableiten“ aktiviert ist.</p><h2> Leere Zellen und null-Werte</h2><p> Eine leere CSV-Zelle kann fehlende Daten, einen leeren String oder einen Wert darstellen, der zu null werden sollte. Es gibt keine universelle Antwort. Wähle eine explizite Richtlinie und prüfe das von der empfangenden Anwendung erwartete JSON-Schema.</p><h2>Delimiter Detection</h2><p> Komma, Semikolon, Tabulator und Senkrechtstrich sind gängige Trennzeichen. Die automatische Erkennung kann die ersten Zeilen prüfen und abschätzen, welches Trennzeichen eine konsistente Tabelle ergibt, aber mehrdeutige Eingaben können zu einer falschen Vermutung führen. Manuelle Auswahl ist sicherer, wenn die Datei mehrere Satzzeichen, maskierten Text oder uneinheitliche Zeilen enthält.</p><h2>CSV Encoding</h2><p> CSV-Dateien können unterschiedliche Zeichenkodierungen verwenden. UTF-8 ist für moderne Workflows eine gute Voreinstellung, aber ältere Exporte können eine andere Kodierung nutzen. Wenn Nicht-ASCII-Zeichen verstümmelt erscheinen, prüfe die Kodierung der Quelldatei und biete eine Import- oder Kodierungsoption statt anzunehmen, dass jede Datei UTF-8 ist.</p><h2> Flaches JSON, verschachteltes JSON und JSONL</h2><p> Ein einfacher CSV-zu-JSON-Konverter erzeugt ein flaches Array von Objekten. Manche Tools unterstützen zusätzliche Modi, etwa das Umwandeln von Spaltennamen in Punktnotation zu verschachtelten Objekten, das Erzeugen von JSON mit Schlüsseln nach einer gewählten ID-Spalte oder das Schreiben von JSON Lines mit einem Objekt pro Zeile. Dies sind separate Ausgabe-Modelle und sollten, sofern implementiert, klar gekennzeichnet sein.</p><h2>Large CSV Files</h2><p> Das vollständige Laden und Parsen einer großen CSV-Datei im Browser kann erheblichen Speicher verbrauchen. Maskierte mehrzeilige Felder erschweren das Streaming, und das Rendern jeder Zeile in einer Vorschau kann die Seite verlangsamen. Ein produktionsreifer Workflow für große Dateien benötigt möglicherweise blockweises Parsen, Web Worker, virtualisierte Vorschau und ein explizites Zeilen- oder Dateigrößenlimit.</p><h2> Häufige CSV-Umwandlungsprobleme</h2><ul><li><strong> Alle Daten erscheinen in einem Feld:</strong> Das gewählte Trennzeichen passt nicht zur Datei.</li><li><strong> Spalten verschieben sich unerwartet:</strong> Ein maskiertes Feld enthält ein Trennzeichen oder eine nicht maskierte Anführungszeichen.</li><li><strong> Zeilen haben unterschiedliche Längen:</strong> Die Quelle enthält fehlende Trennzeichen, zusätzliche Trennzeichen oder fehlerhafte Zeilen.</li><li><strong>Identifiers change:</strong> Die Typhinferenz hat einen String mit führenden Nullen in eine Zahl umgewandelt.</li><li><strong> Zeichen sind verstümmelt:</strong> Die Quellkodierung wurde falsch erkannt.</li><li><strong> Kopfzeilennamen sind unbrauchbar:</strong> Die erste Zeile kann doppelte, leere oder leerzeichenreiche Spaltennamen enthalten.</li></ul><h2>Browser-Based Privacy</h2><p> Dieser Konverter ist darauf ausgelegt, CSV im Browser zu parsen und JSON zu erzeugen, statt die Quelldatei an einen entfernten Dienst hochzuladen. Das kann für Entwicklungsdaten und interne Exporte nützlich sein, ersetzt aber keine sichere Datenverarbeitung. Vermeide es, Zugangsdaten, Zugriffstokens, private Kundeninformationen oder vertrauliche Produktivdaten in ein Web-Tool einzugeben.</p><h2> Wann ein lokales oder Streaming-Tool nutzen</h2><p> Für sehr große Dateien, automatisierte Pipelines, wiederholte Umwandlungen oder sensible Daten verwende einen vertrauenswürdigen lokalen Parser oder einen Streaming-Datenverarbeitungs-Workflow. Browser-Tools eignen sich am besten für schnelle Umwandlungen, Prüfung und kleine bis mittlere Datensätze.</p>"
+    }
   }
 }
