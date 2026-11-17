@@ -43,6 +43,12 @@ Free, client-side JSON tools for developers. Nuxt 4 + Vue 3 + TypeScript + Tailw
 
 方向判断、取舍与被否决的备选路线看 `content-direction-plan.md`；**所有待办以 `next-steps-checklist.md` 为唯一执行入口**，不要从已删除的旧选题队列派工。
 
+### docs/ 目录：本地维护，不进公开仓库
+- `docs/` 是内部工作文档区（路线图、计划、spec、渠道草稿、升级记录等），计划会持续在这里维护。除 `docs/README.zh-CN.md`（作为 zh README 由根 `README.md` 链接，需公开）外，**其余内容一律不进入公开仓库**。
+- 实现：`.gitignore` 用 `docs/**` + `!docs/README.zh-CN.md`；已跟踪文件已通过 `git rm --cached` 从索引移除（本地保留）。
+- 因此 `git status` / `git ls-files` 里看不到这些文件是**正常的，不是文件丢失**；本地仍在，上面 `@docs/...` 的引用照常可读。
+- 不要 `git add` / 提交 `docs/` 下除 `README.zh-CN.md` 以外的任何文件；新增的计划文档天然被忽略，无需额外操作。
+
 ## Quick Reference
 
 ### Adding a New Tool

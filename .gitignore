@@ -47,3 +47,9 @@ libs/json-generator/output/
 
 # Package demo build output (source is demo/index.html + demo/*.ts)
 packages/json-editor/demo/demo-dist
+
+# Internal working docs (roadmaps, plans, specs, channel drafts) are maintained
+# locally but must not be published in the public repo. Only the Chinese README
+# stays public — it is the zh README linked from the root README.md.
+docs/**
+!docs/README.zh-CN.md
