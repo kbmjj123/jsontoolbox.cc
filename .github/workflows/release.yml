@@ -1,0 +1,133 @@
+name: Release (manual)
+
+# Manual only: this workflow never listens to a tag push.
+# To publish, run it from the Actions tab, pick the commit under "Use workflow
+# from", enter a version, and tick "publish" only when you are ready.
+# Publishing a Release also triggers .github/workflows/docker.yml, which pushes
+# the image under the same tag.
+
+on:
+  workflow_dispatch:
+    inputs:
+      version:
+        description: 'Release tag, e.g. v1.0.0 (must have a matching notes file)'
+        required: true
+        type: string
+      publish:
+        description: 'Create the tag and Release (leave unchecked for a dry run)'
+        required: false
+        type: boolean
+        default: false
+
+permissions:
+  contents: write
+
+jobs:
+  release:
+    name: Validate and publish
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Validate version and notes
+        id: validate
+        env:
+          VERSION: ${{ inputs.version }}
+        run: |
+          set -euo pipefail
+
+          if [[ ! "$VERSION" =~ ^v[0-9]+\.[0-9]+\.[0-9]+(-[0-9A-Za-z.-]+)?$ ]]; then
+            echo "::error::Invalid version '$VERSION'. Expected v1.2.3 (or v1.2.3-beta.1)."
+            exit 1
+          fi
+
+          NOTES=".github/release-notes/${VERSION}.md"
+          if [[ ! -f "$NOTES" ]]; then
+            echo "::error::Missing notes file: $NOTES"
+            exit 1
+          fi
+
+          HEADLINE="$(head -n 1 "$NOTES")"
+          if [[ "$HEADLINE" != "## ${VERSION} —"* ]]; then
+            echo "::error::$NOTES must start with '## ${VERSION} — <user benefit>'"
+            exit 1
+          fi
+          TITLE="${HEADLINE:3}"
+          if [[ -z "$TITLE" ]]; then
+            echo "::error::Release title is empty"
+            exit 1
+          fi
+          echo "title=$TITLE" >> "$GITHUB_OUTPUT"
+
+          if git rev-parse -q --verify "refs/tags/${VERSION}" >/dev/null; then
+            echo "::error::Tag $VERSION already exists"
+            exit 1
+          fi
+
+          # Every /tools/<category>/<slug> link must point at a real tool config.
+          broken=0
+          while IFS= read -r path; do
+            category="${path#/tools/}"
+            category="${category%%/*}"
+            slug="${path##*/}"
+            if [[ ! -f "app/assets/data/${category}/${slug}.json" ]]; then
+              echo "::error::Broken tool link in $NOTES: $path"
+              broken=1
+            fi
+          done < <(grep -oE '/tools/[a-z-]+/[a-z0-9-]+' "$NOTES" | sort -u || true)
+          if [[ "$broken" -ne 0 ]]; then
+            exit 1
+          fi
+
+      - name: Create tag and GitHub Release
+        if: ${{ inputs.publish }}
+        id: publish
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          VERSION: ${{ inputs.version }}
+          TITLE: ${{ steps.validate.outputs.title }}
+        run: |
+          set -euo pipefail
+          NOTES=".github/release-notes/${VERSION}.md"
+
+          # Drop the heading line: GitHub shows it in the separate title field.
+          tail -n +3 "$NOTES" > "$RUNNER_TEMP/release-body.md"
+
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git tag -a "$VERSION" -m "$TITLE"
+          git push origin "refs/tags/$VERSION"
+
+          gh release create "$VERSION" \
+            --title "$TITLE" \
+            --notes-file "$RUNNER_TEMP/release-body.md" \
+            --verify-tag
+
+          echo "url=$(gh release view "$VERSION" --json url --jq .url)" >> "$GITHUB_OUTPUT"
+
+      - name: Dry run summary
+        if: ${{ !inputs.publish }}
+        env:
+          VERSION: ${{ inputs.version }}
+          TITLE: ${{ steps.validate.outputs.title }}
+        run: |
+          {
+            echo "### Dry run — nothing was published"
+            echo ""
+            echo "- Tag: \`$VERSION\` (not created)"
+            echo "- Title: $TITLE"
+            echo "- Notes: \`.github/release-notes/$VERSION.md\`"
+          } >> "$GITHUB_STEP_SUMMARY"
+
+      - name: Published summary
+        if: ${{ inputs.publish }}
+        env:
+          URL: ${{ steps.publish.outputs.url }}
+        run: |
+          {
+            echo "### Release published"
+            echo ""
+            echo "$URL"
+          } >> "$GITHUB_STEP_SUMMARY"
