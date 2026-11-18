@@ -1,7 +1,7 @@
 ---
 title: Entwickler & Einbettung
 description: Nutze den JSON-Toolbox-Editor in deinem eigenen Projekt — Vue-3-Komponente, Web Component oder einfaches Script-Tag. Kostenlos, Open Source und 100 % clientseitig.
-updatedAt: 2026-11-11
+updatedAt: 2026-11-18
 ---
 
 ## Paket installieren
@@ -81,7 +81,7 @@ in sich geschlossen und verlinkt auf diese Website.
 |---|---|---|
 | Website | Diese Nuxt-4-Website: clientseitige Tools zum Formatieren, Validieren, Umwandeln und Anzeigen von JSON | [GitHub](https://github.com/kbmjj123/jsontoolbox.cc) |
 | `@kbmjj123/json-editor` | Die auf npm veröffentlichte Editor-Bibliothek — Vue-3-Komponente, Web Component oder CDN-Script | [GitHub](https://github.com/kbmjj123/json-editor) |
-| Browser-Erweiterung | Chrome/Edge-MV3-Erweiterung, die rohe JSON-Seiten als schreibgeschützten Baum darstellt | [GitHub](https://github.com/kbmjj123/json-browser-plugins) |
+| Browser-Erweiterung | Für Chrome, Edge und Firefox: verwandelt rohe JSON-Seiten in einen bearbeitbaren Viewer mit Suche, Tabellenansicht und CSV-Export | [Details & Downloads](/extension) · [GitHub](https://github.com/kbmjj123/json-browser-plugins) |
 | Obsidian-Plugin | Umfangreicher JSON/YAML-Viewer für Obsidian mit 14 Arten von Inline-Vorschauen | [GitHub](https://github.com/kbmjj123/json-toolbox) |
 
 ## Quelle & Lizenz

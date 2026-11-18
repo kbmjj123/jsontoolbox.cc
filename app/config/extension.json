@@ -1,56 +1,68 @@
 {
-  "_note": "Single source of truth for /extension. Replace every __REPLACE_ME__ and every empty download path with real release data before shipping. Keep the en and zh key sets identical. Release checklist lives in the approved plan file.",
-  "product": "JsonToolBox for Chrome",
-  "version": "__REPLACE_ME__",
-  "releaseDate": "__REPLACE_ME__",
-  "fileSize": "__REPLACE_ME__",
-  "sha256": "__REPLACE_ME__",
-  "storeUrl": "",
+  "_note": "Single source of truth for /extension. Keep the en, zh and de key sets identical. Download paths are relative to r2Base and must be uploaded to R2 before launch. Source of truth for product facts: github.com/kbmjj123/json-browser-plugins (README, package.json, wxt.config.ts, store-descriptions/).",
+  "product": "JSON Toolbox",
+  "version": "1.0.1",
+  "releaseDate": "2026-11-18",
+  "fileSize": "890 KB",
+  "sha256": "b09b0420a3d520d79dbc76a31e4732fcb6391955e0478532393ee347eb7c4c29",
+  "storeUrl": "https://chromewebstore.google.com/detail/json-toolbox/iifmieidldhenocaekobhhinbhojlfoi",
+  "firefoxStoreUrl": "https://addons.mozilla.org/firefox/addon/jsontoolbox-cc/",
   "githubUrl": "https://github.com/kbmjj123/json-browser-plugins",
   "feedbackUrl": "https://github.com/kbmjj123/json-browser-plugins/issues",
-  "supportedBrowsers": [],
-  "hostPermissions": [],
+  "supportedBrowsers": ["Chrome", "Edge", "Firefox"],
+  "permissions": ["storage", "<all_urls>", "file:///*"],
   "r2Base": "https://resources.jsontoolbox.cc",
   "downloads": {
     "latest": {
-      "extensionZip": "",
-      "sourceZip": "",
-      "sha256Sums": "",
+      "extensionZip": "jsontoolboxextension-1.0.1-chrome.zip",
+      "firefoxZip": "jsontoolboxextension-1.0.1-firefox.zip",
+      "sourceZip": "jsontoolboxextension-1.0.1-sources.zip",
+      "sha256Sums": "SHA256SUMS.txt",
       "changelog": "",
       "install": ""
     },
-    "previous": []
+    "previous": [
+      {
+        "version": "1.0.0",
+        "releaseDate": "2026-11-12",
+        "extensionZip": "jsontoolboxextension-1.0.0-chrome.zip"
+      }
+    ]
   },
   "en": {
     "seo": {
-      "title": "JsonToolBox for Chrome — Read Raw JSON as a Tree",
-      "description": "A free Chrome and Edge extension that renders raw JSON pages as a read-only tree. No upload, no signup — install from the Web Store or download the unpacked zip."
+      "title": "JSON Toolbox Browser Extension — Edit & Inspect JSON Pages",
+      "description": "A free Chrome, Edge and Firefox extension that turns raw JSON pages into an editable viewer with search, table view and CSV export. Local processing, no signup."
     },
     "ui": {
-      "ctaStore": "Add to Chrome",
-      "ctaDownload": "Download .zip",
+      "ctaStore": "Add to Chrome / Edge",
+      "ctaFirefoxStore": "Get it for Firefox",
+      "ctaDownload": "Download for Chrome",
+      "ctaDownloadFirefox": "Download for Firefox",
       "ctaSource": "View source on GitHub",
-      "storeComingSoon": "Chrome Web Store listing coming soon",
+      "storeComingSoon": "Web Store listing coming soon",
       "tba": "TBA",
       "badgeVersion": "Version",
       "badgeReleased": "Released",
       "badgeSize": "Size",
       "badgeBrowsers": "Browsers",
-      "labelSha256": "SHA-256",
+      "labelSha256": "SHA-256 (Chrome .zip)",
       "btnCopySha": "Copy SHA-256",
       "btnCopied": "Copied!",
       "btnCopyFailed": "Copy failed",
-      "sectionFeatures": "Features",
+      "sectionFeatures": "What it does",
       "sectionScreenshots": "Screenshots",
       "sectionUseCases": "Use cases",
-      "sectionManual": "Manual installation",
+      "sectionManual": "Manual installation · Chrome / Edge",
+      "sectionManualFirefox": "Manual installation · Firefox",
       "sectionPrivacy": "Privacy & permissions",
       "sectionDownloads": "Download files",
       "sectionVersions": "Version history",
       "sectionFaq": "Frequently asked questions",
       "sectionGithub": "Source & feedback",
       "screenshotPlaceholder": "Screenshot placeholder — a real capture will be added when the release goes live",
-      "manualNote": "Manual installation is intended for developers and users who cannot access the Chrome Web Store. Unpacked extensions do NOT update automatically — you must download and reload a new version yourself.",
+      "manualNote": "Manual installation is for developers and networks where the Web Store is unavailable. Unpacked extensions do NOT update automatically — you must download and reload a new version yourself.",
+      "manualFirefoxNote": "Firefox manual installs are temporary: they are removed when Firefox closes. Use the AMO listing for a persistent install with automatic updates.",
       "manualInstallFile": "Read INSTALL.md",
       "permissionsTba": "Permission details will be published together with the first release.",
       "permissionCol": "Permission",
@@ -58,12 +70,13 @@
       "verifyTitle": "How to verify the download",
       "verifySteps": [
         "Download the .zip and SHA256SUMS.txt from this page.",
-        "Run: shasum -a 256 jsontoolbox-chrome-<version>.zip",
-        "Compare the result with the SHA-256 value shown above."
+        "Run: shasum -a 256 <filename>.zip (macOS) or sha256sum <filename>.zip (Linux).",
+        "Compare the result with the SHA-256 values in SHA256SUMS.txt and the value shown above."
       ],
       "fileCol": "File",
       "downloadCol": "Download",
-      "fileExtension": "Unpacked extension (.zip)",
+      "fileExtension": "Chrome / Edge extension (.zip)",
+      "fileFirefoxExtension": "Firefox extension (.zip)",
       "fileSource": "Source code (.zip)",
       "fileSha": "SHA256SUMS.txt",
       "fileChangelog": "CHANGELOG.md",
@@ -76,136 +89,178 @@
       "warningText": "Get files only from jsontoolbox.cc or the official GitHub repository. Manual installations do not update automatically."
     },
     "hero": {
-      "kicker": "Browser extension",
-      "title": "View JSON pages without leaving the browser",
-      "subtitle": "JsonToolBox for Chrome turns a raw JSON page into a clean, read-only tree. Install from the Chrome Web Store for automatic updates, or download the unpacked extension for manual installation."
+      "kicker": "Browser extension · v1.0.1",
+      "title": "Raw JSON pages, made readable — and editable",
+      "subtitle": "JSON Toolbox automatically turns a page that is just JSON into a full-screen viewer. Edit nodes, search with JSONPath, sort tables and export CSV — without copying data into another tool. Available for Chrome, Edge and Firefox."
     },
     "features": [
       {
+        "icon": "lucide:zap",
+        "title": "Automatic, silent detection",
+        "description": "Open a URL whose whole document is JSON and the viewer takes over. On every other page the extension does nothing — no popup, no notification, no DOM changes."
+      },
+      {
+        "icon": "lucide:split",
+        "title": "Editable editor + tree",
+        "description": "CodeMirror 6 source view with syntax highlighting, line numbers and 100-step undo/redo. Rename nodes, change types, add, remove or move items in either view."
+      },
+      {
+        "icon": "lucide:search",
+        "title": "Search by key, value or JSONPath",
+        "description": "A result drawer with cyclic prev/next, Enter / Shift+Enter, Esc and Ctrl/Cmd+F. Search is debounced and capped, and long trees render progressively as you scroll."
+      },
+      {
+        "icon": "lucide:table-2",
+        "title": "Table view + CSV export",
+        "description": "For arrays of objects: show or hide columns, sort by clicking a header, and export the rows to CSV."
+      },
+      {
         "icon": "lucide:eye",
-        "title": "Read-only tree view",
-        "description": "Raw JSON pages are rendered as a structured tree you can read at a glance."
+        "title": "Value insights & media previews",
+        "description": "Colors, timestamps, JWTs, base64, UUIDs, IPs and URLs are annotated inline. Preview images, audio, video and PDFs in a keyboard-navigable lightbox."
       },
       {
-        "icon": "lucide:folder-tree",
-        "title": "Built for JSON pages",
-        "description": "Open a JSON URL and inspect its structure directly, without copy-pasting into another tool."
-      },
-      {
-        "icon": "lucide:shield-check",
-        "title": "Local processing",
-        "description": "JSON content is handled in the browser. No upload and no account."
-      },
-      {
-        "icon": "lucide:puzzle",
-        "title": "Chrome and Edge",
-        "description": "A Manifest V3 extension for Chromium-based browsers."
+        "icon": "lucide:settings-2",
+        "title": "Six settings, applied live",
+        "description": "Theme, indentation, default view, language (EN / 中文 / 日本語 / Français / Español / Deutsch), media previews and an auto-beautify master switch. Saved on your device."
       }
     ],
     "screenshots": [
       {
-        "caption": "A raw JSON page before the extension runs",
-        "src": null
+        "caption": "A raw JSON page is automatically replaced by the editable viewer",
+        "src": "/screenshots/extension/en/01-auto-beautify.webp"
       },
       {
-        "caption": "The same page rendered as a read-only tree",
-        "src": null
+        "caption": "Search by key, value, path or JSONPath, with a result drawer",
+        "src": "/screenshots/extension/en/02-search.webp"
+      },
+      {
+        "caption": "Table view for arrays — sort columns and export to CSV",
+        "src": "/screenshots/extension/en/03-table.webp"
+      },
+      {
+        "caption": "Settings popover — theme, indentation, view, language and more",
+        "src": "/screenshots/extension/en/04-settings.webp"
+      },
+      {
+        "caption": "Image lightbox with thumbnail strip and keyboard navigation",
+        "src": "/screenshots/extension/en/05-lightbox.webp"
       }
     ],
     "useCases": [
       {
         "title": "Debug API responses",
-        "description": "Open an API endpoint that returns JSON and read the response as a tree instead of a wall of text."
+        "description": "Open the endpoint directly: its response becomes an editable, searchable document instead of a wall of text."
       },
       {
-        "title": "Inspect configuration",
-        "description": "Check the structure of JSON config files served over HTTP without downloading them first."
+        "title": "Inspect JSON config",
+        "description": "Read and edit JSON config files served over HTTP without downloading them first."
       },
       {
-        "title": "Read JSON logs",
-        "description": "Browse JSON log output in a structured view to find the fields you need."
+        "title": "Explore logs & exports",
+        "description": "Search keys and values, jump between matches, and turn an array of records into a sorted CSV."
       },
       {
-        "title": "Review webhook payloads",
-        "description": "Look at a sample webhook payload in a readable, nested layout."
+        "title": "Understand unfamiliar payloads",
+        "description": "Value insights label timestamps, tokens and IDs, and media previews show what a URL actually points to."
       }
     ],
     "manualInstall": {
       "summary": "Manual installation steps",
       "steps": [
-        "Download the latest .zip file.",
-        "Verify the SHA-256 checksum if needed.",
-        "Unzip the file to a permanent folder.",
-        "Open chrome://extensions.",
-        "Enable Developer mode.",
-        "Click Load unpacked.",
-        "Select the unzipped extension folder."
+        "Download the Chrome / Edge .zip from the download table below.",
+        "Optionally verify it with SHA256SUMS.txt from this page.",
+        "Unzip it to a permanent folder — it must stay there.",
+        "Open chrome://extensions (or edge://extensions).",
+        "Turn on Developer mode.",
+        "Click Load unpacked and select the unzipped folder."
+      ]
+    },
+    "manualInstallFirefox": {
+      "summary": "Manual installation steps",
+      "steps": [
+        "Download the Firefox .zip from the download table below.",
+        "Unzip it to a permanent folder.",
+        "Open about:debugging → This Firefox → Load Temporary Add-on.",
+        "Select any file inside the unzipped folder."
       ]
     },
     "privacy": {
-      "statement": "All processing happens locally in your browser — your JSON is never sent to a server. Manual installation does not change the extension's permissions or data handling.",
-      "permissionExplanations": {}
+      "statement": "All parsing, editing, formatting and search happen locally in your browser. There is no account, no telemetry, no analytics, no remote scripts or fonts, and no server of ours that receives your JSON. Your settings and the last previewed JSON are stored only in browser.storage.local on this device and disappear when the extension is uninstalled. With 'Preview images & media' on (the default), URLs found inside your JSON are loaded by your browser as images, audio, video or iframes — those requests reach the servers hosting them; turn the switch off to disable every third-party request. Inline data:/base64 media never makes a request.",
+      "permissionExplanations": {
+        "storage": "Saves your six settings and the most recently previewed JSON locally. Nothing is synced or uploaded.",
+        "<all_urls>": "Browsers have no API to inject a content script based on a response's Content-Type, so automatic detection needs a broad match. The script only reads an existing <pre> element, parses it in memory and renders into a shadow root; on other pages it exits without touching the DOM. No host_permissions are requested.",
+        "file:///*": "Lets the same detection run on local .json files. You must enable 'Allow access to file URLs' yourself on the extension's details page."
+      }
     },
     "faq": [
       {
         "question": "What does this extension do?",
-        "answer": "It renders raw JSON pages as a read-only tree view, so you can inspect structure without pasting data into a separate tool."
+        "answer": "It turns any page that is entirely a JSON document into an editable viewer — source editor, tree, search, table view and media previews. Click the toolbar icon any time to reopen the last preview in a dedicated tab, or paste JSON there to start fresh. On ordinary web pages it stays completely silent."
       },
       {
         "question": "Is my JSON uploaded anywhere?",
-        "answer": "No. Processing happens locally in your browser, and there is no account or upload step."
+        "answer": "No. Parsing, editing, formatting and search run locally; there is no account, telemetry or server of ours involved. Your settings and last preview live in browser.storage.local and disappear when you uninstall. One thing to be aware of: with 'Preview images & media' on, URLs inside your JSON are loaded from the sites that host them — switch it off to disable all third-party requests."
       },
       {
-        "question": "Why would I install manually instead of using the Chrome Web Store?",
-        "answer": "Manual installation is for developers, users who want to review the source, and anyone on a network where the Web Store is unavailable. The Web Store is the simpler option for most people because it updates automatically."
-      },
-      {
-        "question": "Will a manually installed extension update automatically?",
-        "answer": "No. Unpacked extensions do not receive automatic updates. You need to download the new version and reload it in chrome://extensions."
-      },
-      {
-        "question": "How do I verify the downloaded file?",
-        "answer": "Download SHA256SUMS.txt, run shasum -a 256 on the .zip, and compare the result with the SHA-256 shown on this page."
+        "question": "Why does it ask to read and change data on all websites?",
+        "answer": "That warning comes from the content-script match pattern. Browsers cannot inject based on a response's Content-Type, so detecting JSON pages automatically requires a broad match. The script only reads an existing <pre> element, parses it in memory and renders into a shadow root; it makes no DOM changes on other pages and requests no host_permissions."
       },
       {
         "question": "Which browsers are supported?",
-        "answer": "See the supported browsers listed in the details above. The extension targets Chromium-based browsers using Manifest V3."
+        "answer": "Chrome and Edge (Manifest V3, Chrome 116+), and Firefox (Manifest V3, Firefox 128+). Safari is not supported in v1."
+      },
+      {
+        "question": "Can I use it on local files or very large documents?",
+        "answer": "Local .json files work after you enable 'Allow access to file URLs' on the extension's details page. Documents over 2 MiB are deliberately left untouched."
+      },
+      {
+        "question": "Should I install from the store or manually?",
+        "answer": "Store installs are simpler and update automatically. Manual installation is for developers, people who want to review the source, or networks where the store is unavailable — but unpacked extensions do not update themselves."
+      },
+      {
+        "question": "How do I verify the downloaded file?",
+        "answer": "Download SHA256SUMS.txt, run shasum -a 256 <filename>.zip (or sha256sum on Linux), and compare the result with the values in that file and the SHA-256 shown above."
       }
     ],
     "github": {
-      "text": "The extension is open source. Review the code, build it yourself, or report a problem."
+      "text": "The extension is MIT-licensed and open source. Review the code, build it yourself, or report a problem."
     }
   },
   "zh": {
     "seo": {
-      "title": "JsonToolBox for Chrome — 把原始 JSON 页面渲染成树形视图",
-      "description": "免费的 Chrome / Edge 扩展，把原始 JSON 页面渲染为只读树形视图。不上传、无需注册——可从 Chrome 商店安装，或下载未打包的 zip 手动安装。"
+      "title": "JSON Toolbox 浏览器插件 — 编辑与查看 JSON 页面",
+      "description": "免费的 Chrome、Edge 和 Firefox 插件，把原始 JSON 页面变成可编辑的查看器，支持搜索、表格视图与 CSV 导出。本地处理，无需注册。"
     },
     "ui": {
-      "ctaStore": "添加到 Chrome",
-      "ctaDownload": "下载 .zip",
+      "ctaStore": "添加到 Chrome / Edge",
+      "ctaFirefoxStore": "获取 Firefox 版本",
+      "ctaDownload": "下载 Chrome 版",
+      "ctaDownloadFirefox": "下载 Firefox 版",
       "ctaSource": "在 GitHub 查看源码",
-      "storeComingSoon": "Chrome 商店页面即将上线",
+      "storeComingSoon": "商店页面即将上线",
       "tba": "待公布",
       "badgeVersion": "版本",
       "badgeReleased": "发布日期",
       "badgeSize": "大小",
       "badgeBrowsers": "支持浏览器",
-      "labelSha256": "SHA-256",
+      "labelSha256": "SHA-256（Chrome .zip）",
       "btnCopySha": "复制 SHA-256",
       "btnCopied": "已复制",
       "btnCopyFailed": "复制失败",
       "sectionFeatures": "功能",
       "sectionScreenshots": "截图",
       "sectionUseCases": "使用场景",
-      "sectionManual": "手动安装",
+      "sectionManual": "手动安装 · Chrome / Edge",
+      "sectionManualFirefox": "手动安装 · Firefox",
       "sectionPrivacy": "隐私与权限",
       "sectionDownloads": "下载文件",
       "sectionVersions": "版本历史",
       "sectionFaq": "常见问题",
       "sectionGithub": "源码与反馈",
       "screenshotPlaceholder": "截图占位——正式发布时会替换为真实截图",
-      "manualNote": "手动安装面向开发者，以及无法访问 Chrome 商店的用户。未打包的扩展不会自动更新——你需要自行下载新版本并重新加载。",
+      "manualNote": "手动安装面向开发者，以及无法访问商店的网络环境。未打包的扩展不会自动更新——你需要自行下载新版本并重新加载。",
+      "manualFirefoxNote": "Firefox 的手动安装是临时性的：关闭浏览器后即被移除。想要持久安装并自动更新，请使用 AMO 商店页面。",
       "manualInstallFile": "查看 INSTALL.md",
       "permissionsTba": "权限说明将与首个版本一起公布。",
       "permissionCol": "权限",
@@ -213,12 +268,13 @@
       "verifyTitle": "如何校验下载文件",
       "verifySteps": [
         "在本页下载 .zip 和 SHA256SUMS.txt。",
-        "运行命令：shasum -a 256 jsontoolbox-chrome-<version>.zip",
-        "把结果与本页显示的 SHA-256 值对比。"
+        "运行命令：shasum -a 256 <文件名>.zip（macOS）或 sha256sum <文件名>.zip（Linux）。",
+        "把结果与 SHA256SUMS.txt 及本页显示的 SHA-256 值对比。"
       ],
       "fileCol": "文件",
       "downloadCol": "下载",
-      "fileExtension": "未打包扩展（.zip）",
+      "fileExtension": "Chrome / Edge 扩展（.zip）",
+      "fileFirefoxExtension": "Firefox 扩展（.zip）",
       "fileSource": "源码包（.zip）",
       "fileSha": "SHA256SUMS.txt",
       "fileChangelog": "CHANGELOG.md",
@@ -231,104 +287,340 @@
       "warningText": "只从 jsontoolbox.cc 或官方 GitHub 仓库获取文件。手动安装的扩展不会自动更新。"
     },
     "hero": {
-      "kicker": "浏览器插件",
-      "title": "不离开浏览器，直接查看 JSON 页面",
-      "subtitle": "JsonToolBox for Chrome 把原始 JSON 页面渲染成简洁的只读树形视图。从 Chrome 商店安装可自动更新，或下载未打包的扩展手动安装。"
+      "kicker": "浏览器插件 · v1.0.1",
+      "title": "原始 JSON 页面，变得可读——也可编辑",
+      "subtitle": "JSON Toolbox 会自动把整页都是 JSON 的网址变成全屏查看器。直接编辑节点、用 JSONPath 搜索、给表格排序并导出 CSV——不用把数据复制到别的工具。支持 Chrome、Edge 和 Firefox。"
     },
     "features": [
       {
+        "icon": "lucide:zap",
+        "title": "自动识别，静默工作",
+        "description": "打开整页都是 JSON 的网址，查看器自动接管。其他页面完全无感——没有弹窗、没有通知、不改动 DOM。"
+      },
+      {
+        "icon": "lucide:split",
+        "title": "可编辑的编辑器 + 树视图",
+        "description": "CodeMirror 6 源码视图，带语法高亮、行号和 100 步撤销/重做。在编辑器或树里重命名节点、改类型、增删移动条目。"
+      },
+      {
+        "icon": "lucide:search",
+        "title": "按键、值或 JSONPath 搜索",
+        "description": "结果抽屉支持循环切换上一个/下一个、Enter / Shift+Enter、Esc 和 Ctrl/Cmd+F。搜索有防抖和上限，长树随滚动逐步渲染。"
+      },
+      {
+        "icon": "lucide:table-2",
+        "title": "表格视图 + CSV 导出",
+        "description": "对象数组专用：显示或隐藏列、点击表头排序，并把行导出为 CSV。"
+      },
+      {
         "icon": "lucide:eye",
-        "title": "只读树形视图",
-        "description": "把原始 JSON 页面渲染为结构清晰的树，一眼看清层级。"
+        "title": "值洞察与媒体预览",
+        "description": "颜色、时间戳、JWT、Base64、UUID、IP 和 URL 都有行内标注。图片、音频、视频和 PDF 可用键盘操作的灯箱预览。"
       },
       {
-        "icon": "lucide:folder-tree",
-        "title": "专为 JSON 页面设计",
-        "description": "打开 JSON 链接就能直接查看结构，不用复制到别的工具里。"
-      },
-      {
-        "icon": "lucide:shield-check",
-        "title": "本地处理",
-        "description": "JSON 内容在浏览器内处理，不上传、不需要账号。"
-      },
-      {
-        "icon": "lucide:puzzle",
-        "title": "支持 Chrome 与 Edge",
-        "description": "基于 Manifest V3 的 Chromium 系浏览器扩展。"
+        "icon": "lucide:settings-2",
+        "title": "六项设置，即时生效",
+        "description": "主题、缩进、默认视图、语言（EN / 中文 / 日本語 / Français / Español / Deutsch）、媒体预览，以及自动美化总开关。设置只保存在本机。"
       }
     ],
     "screenshots": [
       {
-        "caption": "扩展运行前的原始 JSON 页面",
-        "src": null
+        "caption": "原始 JSON 页面自动替换为可编辑的查看器",
+        "src": "/screenshots/extension/zh/01-auto-beautify.webp"
       },
       {
-        "caption": "同一页面渲染为只读树形视图",
-        "src": null
+        "caption": "按键、值、路径或 JSONPath 搜索，带结果抽屉",
+        "src": "/screenshots/extension/zh/02-search.webp"
+      },
+      {
+        "caption": "数组专用表格视图——列排序与 CSV 导出",
+        "src": "/screenshots/extension/zh/03-table.webp"
+      },
+      {
+        "caption": "设置弹层——主题、缩进、视图、语言等",
+        "src": "/screenshots/extension/zh/04-settings.webp"
+      },
+      {
+        "caption": "图片灯箱，带缩略图条和键盘导航",
+        "src": "/screenshots/extension/zh/05-lightbox.webp"
       }
     ],
     "useCases": [
       {
         "title": "调试 API 响应",
-        "description": "打开返回 JSON 的接口地址，以树形结构阅读响应，而不是一整坨文本。"
+        "description": "直接打开接口地址：响应会变成可编辑、可搜索的文档，而不是一整坨文本。"
       },
       {
-        "title": "检查配置",
-        "description": "直接查看通过 HTTP 提供的 JSON 配置文件结构，不用先下载。"
+        "title": "检查 JSON 配置",
+        "description": "直接阅读和编辑通过 HTTP 提供的 JSON 配置文件，不用先下载。"
       },
       {
-        "title": "阅读 JSON 日志",
-        "description": "以结构化视图浏览 JSON 日志输出，快速找到需要的字段。"
+        "title": "浏览日志与导出数据",
+        "description": "搜索键和值、在匹配项之间跳转，还能把记录数组导出成排好序的 CSV。"
       },
       {
-        "title": "查看 Webhook 负载",
-        "description": "用可读的嵌套布局检查 Webhook 示例数据。"
+        "title": "看懂陌生的负载",
+        "description": "值洞察会标出时间戳、令牌和 ID，媒体预览让你看到 URL 背后究竟是什么。"
       }
     ],
     "manualInstall": {
       "summary": "手动安装步骤",
       "steps": [
-        "下载最新的 .zip 文件。",
-        "按需校验 SHA-256 校验值。",
-        "把文件解压到一个固定文件夹。",
-        "打开 chrome://extensions。",
+        "从下方下载表格获取 Chrome / Edge 版 .zip。",
+        "按需用本页的 SHA256SUMS.txt 校验文件。",
+        "把文件解压到一个固定文件夹——之后不要移动它。",
+        "打开 chrome://extensions（或 edge://extensions）。",
         "开启开发者模式。",
-        "点击“加载已解压的扩展程序”。",
-        "选择解压后的扩展文件夹。"
+        "点击“加载已解压的扩展程序”，选择解压后的文件夹。"
+      ]
+    },
+    "manualInstallFirefox": {
+      "summary": "手动安装步骤",
+      "steps": [
+        "从下方下载表格获取 Firefox 版 .zip。",
+        "把文件解压到一个固定文件夹。",
+        "打开 about:debugging → 此 Firefox → 临时载入附加组件。",
+        "选择解压文件夹里的任意文件。"
       ]
     },
     "privacy": {
-      "statement": "所有处理在浏览器本地完成，你的 JSON 不会发送到任何服务器。手动安装不会改变扩展的权限或数据处理方式。",
-      "permissionExplanations": {}
+      "statement": "所有解析、编辑、格式化和搜索都在浏览器本地完成。没有账号、没有遥测、没有分析、没有远程脚本或字体，也没有我们的服务器接收你的 JSON。你的设置和最近一次预览的 JSON 只保存在本机的 browser.storage.local 中，卸载扩展后即消失。需要留意：当“预览图片和媒体”开启时（默认开启），JSON 中的 URL 会被浏览器作为图片、音频、视频或 iframe 加载，这些请求会发到对应资源的服务器；关闭该开关即可禁用所有第三方请求。内联的 data:/base64 媒体永远不会发起请求。",
+      "permissionExplanations": {
+        "storage": "在本机保存六项设置和最近一次预览的 JSON。不同步、不上传。",
+        "<all_urls>": "浏览器没有根据响应 Content-Type 注入脚本的 API，因此自动检测需要宽泛的匹配规则。脚本只读取已有的 <pre> 元素，在内存中解析并渲染到 Shadow DOM；在其他页面会直接退出，不改动 DOM。不申请任何 host_permissions。",
+        "file:///*": "让同样的检测逻辑也能处理本地 .json 文件。你需要在扩展详情页手动开启“允许访问文件网址”。"
+      }
     },
     "faq": [
       {
         "question": "这个插件是做什么的？",
-        "answer": "它把原始 JSON 页面渲染成只读树形视图，你可以直接查看结构，不用把数据粘贴到别的工具。"
+        "answer": "它把整页都是 JSON 的网址变成可编辑的查看器——源码编辑器、树视图、搜索、表格视图和媒体预览。随时点击工具栏图标，即可在独立标签页里重新打开最近预览的 JSON，也可以粘贴新内容从零开始。在普通网页上它完全静默。"
       },
       {
         "question": "我的 JSON 会被上传吗？",
-        "answer": "不会。处理全部在浏览器本地完成，没有账号，也没有上传步骤。"
+        "answer": "不会。解析、编辑、格式化和搜索全部在本地进行，没有账号、遥测或我们的服务器参与。设置和最近预览只存在 browser.storage.local，卸载后消失。需要注意：开启“预览图片和媒体”时，JSON 里的 URL 会从对应的网站加载——关掉该开关即可禁用所有第三方请求。"
       },
       {
-        "question": "为什么要手动安装，而不是用 Chrome 商店？",
-        "answer": "手动安装面向开发者、想审查源码的用户，以及无法访问商店的网络环境。对大多数人来说，商店安装更简单，因为会自动更新。"
-      },
-      {
-        "question": "手动安装的扩展会自动更新吗？",
-        "answer": "不会。已解压的扩展收不到自动更新，你需要下载新版本并在 chrome://extensions 里重新加载。"
-      },
-      {
-        "question": "怎么校验下载的文件？",
-        "answer": "下载 SHA256SUMS.txt，对 .zip 运行 shasum -a 256，把结果和本页显示的 SHA-256 值对比。"
+        "question": "为什么它要求读取和更改所有网站的数据？",
+        "answer": "这个提示来自内容脚本的匹配规则。浏览器无法根据响应的 Content-Type 注入脚本，因此自动检测 JSON 页面需要宽泛匹配。脚本只读取已有的 <pre> 元素，在内存中解析并渲染到 Shadow DOM；在其他页面不改动 DOM，也不申请 host_permissions。"
       },
       {
         "question": "支持哪些浏览器？",
-        "answer": "见上方信息栏列出的支持浏览器。本插件基于 Manifest V3，面向 Chromium 系浏览器。"
+        "answer": "Chrome 与 Edge（Manifest V3，Chrome 116+），以及 Firefox（Manifest V3，Firefox 128+）。v1 暂不支持 Safari。"
+      },
+      {
+        "question": "能处理本地文件和超大文档吗？",
+        "answer": "在扩展详情页开启“允许访问文件网址”后即可处理本地 .json 文件。超过 2 MiB 的文档会被刻意跳过。"
+      },
+      {
+        "question": "该从商店安装还是手动安装？",
+        "answer": "商店安装更简单，而且会自动更新。手动安装面向开发者、想审查源码的用户，以及无法访问商店的网络环境——但已解压的扩展不会自动更新。"
+      },
+      {
+        "question": "怎么校验下载的文件？",
+        "answer": "下载 SHA256SUMS.txt，运行 shasum -a 256 <文件名>.zip（Linux 用 sha256sum），把结果与文件中的值及本页显示的 SHA-256 对比。"
       }
     ],
     "github": {
-      "text": "插件是开源的。你可以审查代码、自行构建，或者反馈问题。"
+      "text": "插件基于 MIT 协议开源。你可以审查代码、自行构建，或者反馈问题。"
+    }
+  },
+  "de": {
+    "seo": {
+      "title": "JSON Toolbox Browser-Erweiterung — JSON-Seiten bearbeiten & ansehen",
+      "description": "Eine kostenlose Erweiterung für Chrome, Edge und Firefox, die rohe JSON-Seiten in einen bearbeitbaren Viewer mit Suche, Tabellenansicht und CSV-Export verwandelt. Lokale Verarbeitung, keine Anmeldung."
+    },
+    "ui": {
+      "ctaStore": "Zu Chrome / Edge hinzufügen",
+      "ctaFirefoxStore": "Für Firefox holen",
+      "ctaDownload": "Chrome-Version laden",
+      "ctaDownloadFirefox": "Firefox-Version laden",
+      "ctaSource": "Quellcode auf GitHub ansehen",
+      "storeComingSoon": "Store-Eintrag folgt in Kürze",
+      "tba": "TBA",
+      "badgeVersion": "Version",
+      "badgeReleased": "Veröffentlicht",
+      "badgeSize": "Größe",
+      "badgeBrowsers": "Browser",
+      "labelSha256": "SHA-256 (Chrome-.zip)",
+      "btnCopySha": "SHA-256 kopieren",
+      "btnCopied": "Kopiert!",
+      "btnCopyFailed": "Kopieren fehlgeschlagen",
+      "sectionFeatures": "Funktionen",
+      "sectionScreenshots": "Screenshots",
+      "sectionUseCases": "Anwendungsfälle",
+      "sectionManual": "Manuelle Installation · Chrome / Edge",
+      "sectionManualFirefox": "Manuelle Installation · Firefox",
+      "sectionPrivacy": "Datenschutz & Berechtigungen",
+      "sectionDownloads": "Dateien herunterladen",
+      "sectionVersions": "Versionsverlauf",
+      "sectionFaq": "Häufige Fragen",
+      "sectionGithub": "Quellcode & Feedback",
+      "screenshotPlaceholder": "Screenshot-Platzhalter — ein echter Screenshot wird mit dem Release ergänzt",
+      "manualNote": "Die manuelle Installation ist für Entwickler und Netzwerke ohne Store-Zugriff gedacht. Entpackte Erweiterungen werden NICHT automatisch aktualisiert — du musst eine neue Version selbst laden.",
+      "manualFirefoxNote": "Manuelle Firefox-Installationen sind temporär: Sie werden beim Schließen von Firefox entfernt. Nutze den AMO-Eintrag für eine dauerhafte Installation mit automatischen Updates.",
+      "manualInstallFile": "INSTALL.md lesen",
+      "permissionsTba": "Berechtigungsdetails werden mit dem ersten Release veröffentlicht.",
+      "permissionCol": "Berechtigung",
+      "reasonCol": "Warum sie nötig ist",
+      "verifyTitle": "Download verifizieren",
+      "verifySteps": [
+        "Lade die .zip und SHA256SUMS.txt von dieser Seite herunter.",
+        "Führe aus: shasum -a 256 <Dateiname>.zip (macOS) oder sha256sum <Dateiname>.zip (Linux).",
+        "Vergleiche das Ergebnis mit den Werten in SHA256SUMS.txt und dem oben angezeigten Wert."
+      ],
+      "fileCol": "Datei",
+      "downloadCol": "Download",
+      "fileExtension": "Chrome / Edge-Erweiterung (.zip)",
+      "fileFirefoxExtension": "Firefox-Erweiterung (.zip)",
+      "fileSource": "Quellcode (.zip)",
+      "fileSha": "SHA256SUMS.txt",
+      "fileChangelog": "CHANGELOG.md",
+      "fileInstall": "INSTALL.md",
+      "latest": "Neueste",
+      "previous": "Frühere Versionen",
+      "downloadUnavailable": "Nach dem Release verfügbar",
+      "feedbackLabel": "Problem melden",
+      "warningTitle": "Nur aus offiziellen Quellen laden",
+      "warningText": "Dateien nur von jsontoolbox.cc oder dem offiziellen GitHub-Repository beziehen. Manuelle Installationen werden nicht automatisch aktualisiert."
+    },
+    "hero": {
+      "kicker": "Browser-Erweiterung · v1.0.1",
+      "title": "Rohe JSON-Seiten: lesbar — und bearbeitbar",
+      "subtitle": "JSON Toolbox verwandelt eine Seite, die nur aus JSON besteht, automatisch in einen Vollbild-Viewer. Knoten bearbeiten, mit JSONPath suchen, Tabellen sortieren und nach CSV exportieren — ohne Daten in ein anderes Tool zu kopieren. Für Chrome, Edge und Firefox."
+    },
+    "features": [
+      {
+        "icon": "lucide:zap",
+        "title": "Automatische, lautlose Erkennung",
+        "description": "Öffne eine URL, deren gesamtes Dokument JSON ist, und der Viewer übernimmt. Auf allen anderen Seiten passiert nichts — kein Popup, keine Benachrichtigung, keine DOM-Änderungen."
+      },
+      {
+        "icon": "lucide:split",
+        "title": "Bearbeitbarer Editor + Baum",
+        "description": "CodeMirror 6-Quellansicht mit Syntaxhervorhebung, Zeilennummern und 100-Schritte-Verlauf. Knoten umbenennen, Typen ändern, Elemente hinzufügen, entfernen oder verschieben."
+      },
+      {
+        "icon": "lucide:search",
+        "title": "Suche nach Schlüssel, Wert oder JSONPath",
+        "description": "Ergebnisbereich mit zyklischem Vorher/Nächster, Enter / Umschalt+Enter, Esc und Strg/Cmd+F. Die Suche ist gedrosselt und begrenzt, lange Bäume werden beim Scrollen gerendert."
+      },
+      {
+        "icon": "lucide:table-2",
+        "title": "Tabellenansicht + CSV-Export",
+        "description": "Für Objektlisten: Spalten ein-/ausblenden, per Klick auf eine Überschrift sortieren und die Zeilen als CSV exportieren."
+      },
+      {
+        "icon": "lucide:eye",
+        "title": "Wert-Analysen & Medienvorschau",
+        "description": "Farben, Zeitstempel, JWTs, Base64, UUIDs, IPs und URLs werden direkt annotiert. Bilder, Audio, Video und PDFs lassen sich in einer tastaturbedienbaren Lightbox ansehen."
+      },
+      {
+        "icon": "lucide:settings-2",
+        "title": "Sechs Einstellungen, sofort wirksam",
+        "description": "Design, Einrückung, Standardansicht, Sprache (EN / 中文 / 日本語 / Français / Español / Deutsch), Medienvorschauen und ein Hauptschalter für automatische Formatierung. Lokal gespeichert."
+      }
+    ],
+    "screenshots": [
+      {
+        "caption": "Eine rohe JSON-Seite wird automatisch durch den bearbeitbaren Viewer ersetzt",
+        "src": "/screenshots/extension/de/01-auto-beautify.webp"
+      },
+      {
+        "caption": "Suche nach Schlüssel, Wert, Pfad oder JSONPath mit Ergebnisbereich",
+        "src": "/screenshots/extension/de/02-search.webp"
+      },
+      {
+        "caption": "Tabellenansicht für Arrays — Spalten sortieren und als CSV exportieren",
+        "src": "/screenshots/extension/de/03-table.webp"
+      },
+      {
+        "caption": "Einstellungspanel — Design, Einrückung, Ansicht, Sprache und mehr",
+        "src": "/screenshots/extension/de/04-settings.webp"
+      },
+      {
+        "caption": "Bild-Lightbox mit Thumbnail-Leiste und Tastaturnavigation",
+        "src": "/screenshots/extension/de/05-lightbox.webp"
+      }
+    ],
+    "useCases": [
+      {
+        "title": "API-Antworten debuggen",
+        "description": "Öffne den Endpunkt direkt: Die Antwort wird zu einem bearbeitbaren, durchsuchbaren Dokument statt zu einem Textblock."
+      },
+      {
+        "title": "JSON-Konfiguration prüfen",
+        "description": "Lies und bearbeite über HTTP ausgelieferte JSON-Konfigurationsdateien, ohne sie vorher herunterzuladen."
+      },
+      {
+        "title": "Logs und Exporte erkunden",
+        "description": "Durchsuche Schlüssel und Werte, springe zwischen Treffern und exportiere eine Liste sortiert als CSV."
+      },
+      {
+        "title": "Unbekannte Payloads verstehen",
+        "description": "Wert-Analysen kennzeichnen Zeitstempel, Tokens und IDs; Medienvorschauen zeigen, was hinter einer URL steckt."
+      }
+    ],
+    "manualInstall": {
+      "summary": "Schritte zur manuellen Installation",
+      "steps": [
+        "Lade die Chrome / Edge-.zip aus der Download-Tabelle unten herunter.",
+        "Prüfe die Datei optional mit SHA256SUMS.txt von dieser Seite.",
+        "Entpacke sie in einen dauerhaften Ordner — dort muss sie bleiben.",
+        "Öffne chrome://extensions (oder edge://extensions).",
+        "Aktiviere den Entwicklermodus.",
+        "Klicke auf „Entpackte Erweiterung laden“ und wähle den entpackten Ordner."
+      ]
+    },
+    "manualInstallFirefox": {
+      "summary": "Schritte zur manuellen Installation",
+      "steps": [
+        "Lade die Firefox-.zip aus der Download-Tabelle unten herunter.",
+        "Entpacke sie in einen dauerhaften Ordner.",
+        "Öffne about:debugging → Dieses Firefox → Temporäres Add-on laden.",
+        "Wähle eine beliebige Datei im entpackten Ordner."
+      ]
+    },
+    "privacy": {
+      "statement": "Alle Analysen, Bearbeitungen, Formatierungen und Suchen finden lokal in deinem Browser statt. Es gibt kein Konto, keine Telemetrie, keine Analytik, keine externen Skripte oder Schriften und keinen Server von uns, der dein JSON empfängt. Deine Einstellungen und das zuletzt angesehene JSON werden nur in browser.storage.local auf diesem Gerät gespeichert und beim Entfernen der Erweiterung gelöscht. Wenn „Bilder und Medien anzeigen“ aktiviert ist (Standard), werden URLs aus deinem JSON vom Browser als Bilder, Audio, Video oder iframes geladen — diese Anfragen erreichen die Server, die die URLs hosten; schalte den Schalter aus, um alle Anfragen an Dritte zu deaktivieren. Inline-Bilder mit data:/base64 verursachen nie eine Anfrage.",
+      "permissionExplanations": {
+        "storage": "Speichert deine sechs Einstellungen und das zuletzt angesehene JSON lokal. Nichts wird synchronisiert oder hochgeladen.",
+        "<all_urls>": "Browser bieten keine API, um anhand des Content-Type einer Antwort zu injizieren; die automatische Erkennung benötigt daher ein breites Muster. Das Skript liest nur einen vorhandenen <pre>-Eintrag, analysiert ihn im Speicher und rendert ihn in einen Shadow Root; auf anderen Seiten beendet es sich ohne DOM-Änderungen. Es werden keine host_permissions angefordert.",
+        "file:///*": "Ermöglicht dieselbe Erkennung für lokale .json-Dateien. Du musst „Zugriff auf Datei-URLs zulassen“ selbst auf der Detailseite der Erweiterung aktivieren."
+      }
+    },
+    "faq": [
+      {
+        "question": "Was macht diese Erweiterung?",
+        "answer": "Sie verwandelt jede Seite, die vollständig aus einem JSON-Dokument besteht, in einen bearbeitbaren Viewer — Quelleditor, Baum, Suche, Tabellenansicht und Medienvorschau. Klicke jederzeit auf das Symbol in der Symbolleiste, um die letzte Vorschau in einem eigenen Tab erneut zu öffnen oder JSON einzufügen. Auf normalen Webseiten bleibt sie vollständig still."
+      },
+      {
+        "question": "Wird mein JSON irgendwo hochgeladen?",
+        "answer": "Nein. Analysieren, Bearbeiten, Formatieren und Suchen laufen lokal; es gibt kein Konto, keine Telemetrie und keinen Server von uns. Einstellungen und die letzte Vorschau liegen in browser.storage.local und verschwinden beim Deinstallieren. Ein Hinweis: Bei aktivierter Medienvorschau werden URLs aus deinem JSON von den Hosting-Servern geladen — schalte sie aus, um alle Anfragen an Dritte zu deaktivieren."
+      },
+      {
+        "question": "Warum fragt sie Zugriff auf Daten aller Websites an?",
+        "answer": "Die Warnung kommt vom Content-Script-Match-Muster. Browser können nicht anhand des Content-Type einer Antwort injizieren, daher ist für die automatische Erkennung ein breites Muster nötig. Das Skript liest nur einen vorhandenen <pre>-Eintrag, analysiert ihn im Speicher und rendert ihn in einen Shadow Root; auf anderen Seiten verändert es das DOM nicht und fordert keine host_permissions an."
+      },
+      {
+        "question": "Welche Browser werden unterstützt?",
+        "answer": "Chrome und Edge (Manifest V3, Chrome 116+) sowie Firefox (Manifest V3, Firefox 128+). Safari wird in v1 nicht unterstützt."
+      },
+      {
+        "question": "Funktioniert sie mit lokalen Dateien oder sehr großen Dokumenten?",
+        "answer": "Lokale .json-Dateien funktionieren, nachdem du „Zugriff auf Datei-URLs zulassen“ auf der Detailseite der Erweiterung aktiviert hast. Dokumente über 2 MiB werden bewusst ausgelassen."
+      },
+      {
+        "question": "Store-Installation oder manuelle Installation?",
+        "answer": "Die Store-Installation ist einfacher und aktualisiert sich automatisch. Die manuelle Installation ist für Entwickler, Leute die den Quellcode prüfen wollen, oder Netzwerke ohne Store-Zugriff gedacht — entpackte Erweiterungen aktualisieren sich jedoch nicht selbst."
+      },
+      {
+        "question": "Wie verifiziere ich die heruntergeladene Datei?",
+        "answer": "Lade SHA256SUMS.txt herunter, führe shasum -a 256 <Dateiname>.zip (Linux: sha256sum) aus und vergleiche das Ergebnis mit den Werten in der Datei und dem oben angezeigten SHA-256."
+      }
+    ],
+    "github": {
+      "text": "Die Erweiterung ist unter der MIT-Lizenz Open Source. Prüfe den Code, baue sie selbst oder melde ein Problem."
     }
   }
 }

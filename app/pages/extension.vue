@@ -6,7 +6,7 @@ const localePath = useLocalePath()
 
 // Single source of truth — all metadata and all visible copy come from this file.
 const m = extension
-const c = computed<any>(() => (extension as any)[locale.value])
+const c = computed<any>(() => (extension as any)[locale.value] || (extension as any).en)
 
 const isPlaceholder = (v: unknown): boolean =>
   typeof v === 'string' && (!v.trim() || v === '__REPLACE_ME__')
@@ -30,7 +30,7 @@ const copyLabel = computed(() =>
 )
 
 const permissions = computed(() =>
-  m.hostPermissions.map((p: string) => ({
+  m.permissions.map((p: string) => ({
     value: p,
     reason: c.value.privacy.permissionExplanations[p] || c.value.ui.tba,
   }))
@@ -38,11 +38,12 @@ const permissions = computed(() =>
 
 const downloadFiles = computed(() => [
   { label: c.value.ui.fileExtension, path: m.downloads.latest.extensionZip },
+  { label: c.value.ui.fileFirefoxExtension, path: m.downloads.latest.firefoxZip },
   { label: c.value.ui.fileSource, path: m.downloads.latest.sourceZip },
   { label: c.value.ui.fileSha, path: m.downloads.latest.sha256Sums },
   { label: c.value.ui.fileChangelog, path: m.downloads.latest.changelog },
   { label: c.value.ui.fileInstall, path: m.downloads.latest.install },
-])
+].filter(f => hasUrl(f.path)))
 
 // ── SEO ──────────────────────────────────────────────────────
 useSeoMeta({
@@ -121,6 +122,17 @@ useSchemaOrg([
           </span>
 
           <a
+            v-if="hasUrl(m.firefoxStoreUrl)"
+            :href="m.firefoxStoreUrl"
+            target="_blank"
+            rel="noopener"
+            class="inline-flex items-center gap-2 rounded-xl border border-primary-300 dark:border-primary-700 px-5 py-3 text-sm font-semibold text-primary-700 dark:text-primary-300 hover:bg-primary-50 dark:hover:bg-primary-900/20 transition-colors"
+          >
+            <Icon name="lucide:puzzle" class="w-4 h-4" />
+            {{ c.ui.ctaFirefoxStore }}
+          </a>
+
+          <a
             v-if="hasUrl(m.downloads.latest.extensionZip)"
             :href="r2Url(m.downloads.latest.extensionZip)"
             :download="fileName(m.downloads.latest.extensionZip)"
@@ -129,8 +141,17 @@ useSchemaOrg([
             <Icon name="lucide:download" class="w-4 h-4" />
             {{ c.ui.ctaDownload }}
           </a>
+          <a
+            v-if="hasUrl(m.downloads.latest.firefoxZip)"
+            :href="r2Url(m.downloads.latest.firefoxZip)"
+            :download="fileName(m.downloads.latest.firefoxZip)"
+            class="inline-flex items-center gap-2 rounded-xl border border-surface-300 dark:border-surface-600 px-5 py-3 text-sm font-semibold text-surface-800 dark:text-surface-100 hover:bg-surface-50 dark:hover:bg-surface-800 transition-colors"
+          >
+            <Icon name="lucide:download" class="w-4 h-4" />
+            {{ c.ui.ctaDownloadFirefox }}
+          </a>
           <span
-            v-else
+            v-else-if="!hasUrl(m.downloads.latest.extensionZip)"
             class="inline-flex items-center rounded-xl border border-surface-200 dark:border-surface-700 px-5 py-3 text-sm font-medium text-surface-400 dark:text-surface-500 cursor-not-allowed"
           >
             {{ c.ui.downloadUnavailable }}
@@ -233,12 +254,14 @@ useSchemaOrg([
             :key="i"
             class="rounded-2xl border border-surface-200 dark:border-surface-700 bg-white dark:bg-surface-800 p-3 shadow-card"
           >
-            <img
-              v-if="s.src"
-              :src="s.src"
-              :alt="s.caption"
-              class="aspect-video w-full rounded-xl object-cover"
-            />
+            <a v-if="s.src" :href="s.src" target="_blank" rel="noopener" class="block">
+              <img
+                :src="s.src"
+                :alt="s.caption"
+                loading="lazy"
+                class="aspect-video w-full rounded-xl object-cover hover:opacity-90 transition-opacity"
+              />
+            </a>
             <div
               v-else
               class="aspect-video w-full rounded-xl border-2 border-dashed border-surface-300 dark:border-surface-600 flex items-center justify-center text-center px-6"
@@ -298,6 +321,22 @@ useSchemaOrg([
             </a>
           </div>
         </details>
+        <details class="group mt-3 rounded-2xl border border-surface-200 dark:border-surface-700 bg-white dark:bg-surface-800 shadow-card">
+          <summary
+            class="cursor-pointer list-none px-5 py-4 font-semibold text-surface-900 dark:text-surface-100 flex items-center justify-between"
+          >
+            {{ c.ui.sectionManualFirefox }}
+            <Icon name="lucide:chevron-down" class="w-5 h-5 text-surface-500 transition-transform group-open:rotate-180" />
+          </summary>
+          <div class="px-5 pb-5 border-t border-surface-100 dark:border-surface-700 pt-4">
+            <ol class="list-decimal list-inside space-y-2 text-sm text-surface-700 dark:text-surface-200">
+              <li v-for="(step, i) in c.manualInstallFirefox.steps" :key="i">{{ step }}</li>
+            </ol>
+            <p class="mt-4 rounded-lg bg-amber-50 dark:bg-amber-900/20 p-3 text-sm text-amber-800 dark:text-amber-200">
+              {{ c.ui.manualFirefoxNote }}
+            </p>
+          </div>
+        </details>
       </section>
 
       <!-- Privacy & permissions -->
@@ -308,7 +347,7 @@ useSchemaOrg([
         <div class="rounded-2xl border border-surface-200 dark:border-surface-700 bg-white dark:bg-surface-800 p-5 shadow-card">
           <p class="text-sm text-surface-700 dark:text-surface-200">{{ c.privacy.statement }}</p>
 
-          <div v-if="m.hostPermissions.length" class="mt-5 overflow-x-auto">
+          <div v-if="m.permissions.length" class="mt-5 overflow-x-auto">
             <table class="w-full text-sm text-left">
               <thead>
                 <tr class="border-b border-surface-200 dark:border-surface-700">
@@ -397,7 +436,15 @@ useSchemaOrg([
               :download="fileName(m.downloads.latest.extensionZip)"
               class="ml-auto text-sm font-medium text-primary-600 dark:text-primary-400 hover:underline"
             >
-              {{ c.ui.downloadCol }}
+              {{ c.ui.ctaDownload }}
+            </a>
+            <a
+              v-if="hasUrl(m.downloads.latest.firefoxZip)"
+              :href="r2Url(m.downloads.latest.firefoxZip)"
+              :download="fileName(m.downloads.latest.firefoxZip)"
+              class="text-sm font-medium text-primary-600 dark:text-primary-400 hover:underline"
+            >
+              {{ c.ui.ctaDownloadFirefox }}
             </a>
           </div>
           <div
@@ -422,25 +469,7 @@ useSchemaOrg([
         </div>
       </section>
 
-      <!-- FAQ -->
-      <section class="mb-12">
-        <h2 class="text-2xl font-bold text-surface-900 dark:text-surface-100 mb-6">
-          {{ c.ui.sectionFaq }}
-        </h2>
-        <div class="space-y-3">
-          <details
-            v-for="(item, i) in c.faq"
-            :key="i"
-            class="group rounded-xl border border-surface-200 dark:border-surface-700 bg-white dark:bg-surface-800"
-          >
-            <summary class="cursor-pointer list-none px-5 py-4 font-medium text-surface-900 dark:text-surface-100 flex items-center justify-between">
-              {{ item.question }}
-              <Icon name="lucide:chevron-down" class="w-4 h-4 text-surface-500 transition-transform group-open:rotate-180" />
-            </summary>
-            <p class="px-5 pb-4 text-sm text-surface-600 dark:text-surface-300">{{ item.answer }}</p>
-          </details>
-        </div>
-      </section>
+      
 
       <!-- GitHub / Feedback -->
       <section class="mb-4">
@@ -460,6 +489,14 @@ useSchemaOrg([
             </a>
           </div>
         </div>
+      </section>
+
+      <!-- FAQ -->
+      <section class="mb-12">
+        <h2 class="text-2xl font-bold text-surface-900 dark:text-surface-100 mb-6">
+          {{ c.ui.sectionFaq }}
+        </h2>
+        <ToolFaq :faq="c.faq" />
       </section>
     </div>
   </div>
