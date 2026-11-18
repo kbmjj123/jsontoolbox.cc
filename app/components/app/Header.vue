@@ -98,6 +98,7 @@ const navLinks = [
   { to: '/blog',        labelKey: 'app.nav.blog' },
   { to: '/embed',       labelKey: 'app.nav.embed' },
   { to: '/developers',  labelKey: 'app.nav.developers' },
+  { to: '/extension',   labelKey: 'app.nav.extension' },
   // { to: '/about',   labelKey: 'app.nav.about' },
   // { to: '/contact', labelKey: 'app.nav.contact' },
 ]
