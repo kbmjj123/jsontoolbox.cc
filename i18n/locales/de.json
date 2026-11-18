@@ -11,6 +11,7 @@
       "blog": "Blog",
       "embed": "Einbetten",
       "developers": "Entwickler",
+      "extension": "Chrome-Erweiterung",
       "about": "Über uns",
       "contact": "Kontakt"
     },
@@ -50,6 +51,12 @@
     "seo": {
       "title": "Entwickler — JSON Toolbox Editor einbetten",
       "description": "Nutze den JSON-Toolbox-Editor in deinem eigenen Projekt als Vue-3-Komponente, Web Component oder einfaches Script-Tag. Kostenlos, Open Source und 100 % clientseitig."
+    }
+  },
+  "extension": {
+    "seo": {
+      "title": "JsonToolBox für Chrome — Rohes JSON als Baum anzeigen",
+      "description": "Eine kostenlose Erweiterung für Chrome und Edge, die rohe JSON-Seiten als schreibgeschützten Baum darstellt. Kein Upload, keine Anmeldung — installiere sie über den Web Store oder lade das entpackte ZIP herunter."
     }
   },
   "home": {
