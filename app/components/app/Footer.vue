@@ -32,7 +32,11 @@
 					<!-- 换链组件：自托管默认关闭（避免第三方图片请求） -->
 					<LinkExchange v-if="flags.externalBadges" class="mb-2"/>
 
+					<!-- Trustpilot 评价：第三方请求，自托管默认关闭 -->
+					<TrustpilotReview v-if="flags.externalBadges" class="mb-2"/>
+
 					<div v-if="flags.branding" class="flex gap-3">
+						<DonationButton minimal :text="$t('app.footer.support_title')" />
 						<a href="https://github.com/kbmjj123/jsontoolbox.cc" title="github" target="_blank"
 							class="flex h-11 w-11 items-center justify-center rounded-xl border border-surface-200 bg-white/50 text-surface-500 transition-all hover:border-primary-200 hover:bg-white hover:text-primary-600 hover:shadow-sm dark:border-surface-700/50 dark:bg-surface-900 dark:text-surface-400 dark:hover:border-surface-600 dark:hover:text-surface-100">
 							<Icon name="lucide:github" class="w-5 h-5" />
